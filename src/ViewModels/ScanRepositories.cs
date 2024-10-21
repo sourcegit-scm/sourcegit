@@ -56,12 +56,9 @@ namespace SourceGit.ViewModels
                             var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
                             Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
                         }
-                        else
-                        {
-                            // Should not happen.
-                        }
                     }
 
+                    Preference.Instance.AutoRemoveInvalidNode();
                     Welcome.Instance.Refresh();
                 });
 

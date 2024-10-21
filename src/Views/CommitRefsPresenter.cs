@@ -14,16 +14,9 @@ namespace SourceGit.Views
         {
             public Geometry Icon { get; set; } = null;
             public FormattedText Label { get; set; } = null;
-            public IBrush LabelBG { get; set; } = null;
-        }
-
-        public static readonly StyledProperty<List<Models.Decorator>> RefsProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, List<Models.Decorator>>(nameof(Refs));
-
-        public List<Models.Decorator> Refs
-        {
-            get => GetValue(RefsProperty);
-            set => SetValue(RefsProperty, value);
+            public IBrush Brush { get; set; } = null;
+            public bool IsHead { get; set; } = false;
+            public double Width { get; set; } = 0.0;
         }
 
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
@@ -44,58 +37,40 @@ namespace SourceGit.Views
             set => SetValue(FontSizeProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> IconBackgroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(IconBackground), Brushes.White);
+        public static readonly StyledProperty<IBrush> BackgroundProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(Background), null);
 
-        public IBrush IconBackground
+        public IBrush Background
         {
-            get => GetValue(IconBackgroundProperty);
-            set => SetValue(IconBackgroundProperty, value);
+            get => GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> IconForegroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(IconForeground), Brushes.White);
+        public static readonly StyledProperty<IBrush> ForegroundProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(Foreground), Brushes.White);
 
-        public IBrush IconForeground
+        public IBrush Foreground
         {
-            get => GetValue(IconForegroundProperty);
-            set => SetValue(IconForegroundProperty, value);
+            get => GetValue(ForegroundProperty);
+            set => SetValue(ForegroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> LabelForegroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(LabelForeground), Brushes.White);
+        public static readonly StyledProperty<bool> UseGraphColorProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseGraphColor), false);
 
-        public IBrush LabelForeground
+        public bool UseGraphColor
         {
-            get => GetValue(LabelForegroundProperty);
-            set => SetValue(LabelForegroundProperty, value);
+            get => GetValue(UseGraphColorProperty);
+            set => SetValue(UseGraphColorProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> BranchNameBackgroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(BranchNameBackground), Brushes.White);
+        public static readonly StyledProperty<IBrush> TagBackgroundProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(TagBackground), Brushes.White);
 
-        public IBrush BranchNameBackground
+        public IBrush TagBackground
         {
-            get => GetValue(BranchNameBackgroundProperty);
-            set => SetValue(BranchNameBackgroundProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> HeadBranchNameBackgroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(HeadBranchNameBackground), Brushes.White);
-
-        public IBrush HeadBranchNameBackground
-        {
-            get => GetValue(HeadBranchNameBackgroundProperty);
-            set => SetValue(HeadBranchNameBackgroundProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> TagNameBackgroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(TagNameBackground), Brushes.White);
-
-        public IBrush TagNameBackground
-        {
-            get => GetValue(TagNameBackgroundProperty);
-            set => SetValue(TagNameBackgroundProperty, value);
+            get => GetValue(TagBackgroundProperty);
+            set => SetValue(TagBackgroundProperty, value);
         }
 
         static CommitRefsPresenter()
@@ -103,14 +78,11 @@ namespace SourceGit.Views
             AffectsMeasure<CommitRefsPresenter>(
                 FontFamilyProperty,
                 FontSizeProperty,
-                LabelForegroundProperty,
-                RefsProperty);
+                ForegroundProperty,
+                TagBackgroundProperty);
 
             AffectsRender<CommitRefsPresenter>(
-                IconBackgroundProperty,
-                IconForegroundProperty,
-                BranchNameBackgroundProperty,
-                TagNameBackgroundProperty);
+                BackgroundProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -118,39 +90,72 @@ namespace SourceGit.Views
             if (_items.Count == 0)
                 return;
 
-            var iconFG = IconForeground;
-            var iconBG = IconBackground;
-            var x = 0.0;
-
+            var useGraphColor = UseGraphColor;
+            var fg = Foreground;
+            var bg = Background;
+            var x = 1.0;
             foreach (var item in _items)
             {
                 var iconRect = new RoundedRect(new Rect(x, 0, 16, 16), new CornerRadius(2, 0, 0, 2));
-                var labelRect = new RoundedRect(new Rect(x + 16, 0, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
+                var entireRect = new RoundedRect(new Rect(x, 0, item.Width, 16), new CornerRadius(2));
 
-                context.DrawRectangle(iconBG, null, iconRect);
-                context.DrawRectangle(item.LabelBG, null, labelRect);
-                context.DrawText(item.Label, new Point(x + 20, 8.0 - item.Label.Height * 0.5));
+                if (item.IsHead)
+                {
+                    if (useGraphColor)
+                    {
+                        if (bg != null)
+                            context.DrawRectangle(bg, null, entireRect);
 
-                using (context.PushTransform(Matrix.CreateTranslation(x + 4, 4)))
-                    context.DrawGeometry(iconFG, null, item.Icon);
+                        using (context.PushOpacity(.6))
+                            context.DrawRectangle(item.Brush, null, entireRect);
+                    }
 
-                x += item.Label.Width + 16 + 8 + 4;
+                    context.DrawText(item.Label, new Point(x + 16, 8.0 - item.Label.Height * 0.5));
+                }
+                else
+                {
+                    if (bg != null)
+                        context.DrawRectangle(bg, null, entireRect);
+
+                    var labelRect = new RoundedRect(new Rect(x + 16, 0, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
+                    using (context.PushOpacity(.2))
+                        context.DrawRectangle(item.Brush, null, labelRect);
+
+                    context.DrawLine(new Pen(item.Brush), new Point(x + 16, 0), new Point(x + 16, 16));
+                    context.DrawText(item.Label, new Point(x + 20, 8.0 - item.Label.Height * 0.5));
+                }
+
+                context.DrawRectangle(null, new Pen(item.Brush), entireRect);
+
+                using (context.PushTransform(Matrix.CreateTranslation(x + 3, 3)))
+                    context.DrawGeometry(fg, null, item.Icon);
+
+                x += item.Width + 4;
             }
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            InvalidateMeasure();
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
             _items.Clear();
 
-            var refs = Refs;
+            var commit = DataContext as Models.Commit;
+            if (commit == null)
+                return new Size(0, 0);
+
+            var refs = commit.Decorators;
             if (refs != null && refs.Count > 0)
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
-                var labelFG = LabelForeground;
-                var branchBG = BranchNameBackground;
-                var headBG = HeadBranchNameBackground;
-                var tagBG = TagNameBackground;
+                var fg = Foreground;
+                var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
+                var tagBG = TagBackground;
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
 
@@ -164,28 +169,31 @@ namespace SourceGit.Views
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         isHead ? typefaceBold : typeface,
-                        labelSize,
-                        labelFG);
+                        isHead ? labelSize + 1 : labelSize,
+                        fg);
 
-                    var item = new RenderItem() { Label = label };
+                    var item = new RenderItem()
+                    {
+                        Label = label,
+                        Brush = normalBG,
+                        IsHead = isHead
+                    };
+
                     StreamGeometry geo;
                     switch (decorator.Type)
                     {
                         case Models.DecoratorType.CurrentBranchHead:
                         case Models.DecoratorType.CurrentCommitHead:
-                            item.LabelBG = headBG;
-                            geo = this.FindResource("Icons.Check") as StreamGeometry;
+                            geo = this.FindResource("Icons.Head") as StreamGeometry;
                             break;
                         case Models.DecoratorType.RemoteBranchHead:
-                            item.LabelBG = branchBG;
                             geo = this.FindResource("Icons.Remote") as StreamGeometry;
                             break;
                         case Models.DecoratorType.Tag:
-                            item.LabelBG = tagBG;
+                            item.Brush = tagBG;
                             geo = this.FindResource("Icons.Tag") as StreamGeometry;
                             break;
                         default:
-                            item.LabelBG = branchBG;
                             geo = this.FindResource("Icons.Branch") as StreamGeometry;
                             break;
                     }
@@ -193,7 +201,7 @@ namespace SourceGit.Views
                     var drawGeo = geo!.Clone();
                     var iconBounds = drawGeo.Bounds;
                     var translation = Matrix.CreateTranslation(-(Vector)iconBounds.Position);
-                    var scale = Math.Min(8.0 / iconBounds.Width, 8.0 / iconBounds.Height);
+                    var scale = Math.Min(10.0 / iconBounds.Width, 10.0 / iconBounds.Height);
                     var transform = translation * Matrix.CreateScale(scale, scale);
                     if (drawGeo.Transform == null || drawGeo.Transform.Value == Matrix.Identity)
                         drawGeo.Transform = new MatrixTransform(transform);
@@ -201,12 +209,14 @@ namespace SourceGit.Views
                         drawGeo.Transform = new MatrixTransform(drawGeo.Transform.Value * transform);
 
                     item.Icon = drawGeo;
+                    item.Width = 16 + (isHead ? 0 : 4) + label.Width + 4;
                     _items.Add(item);
-                    requiredWidth += label.Width + 16 /* icon */ + 8 /* label margin */ + 4 /* item right margin */;
+
+                    requiredWidth += item.Width + 4;
                 }
 
                 InvalidateVisual();
-                return new Size(requiredWidth, 16);
+                return new Size(requiredWidth + 2, 16);
             }
 
             InvalidateVisual();

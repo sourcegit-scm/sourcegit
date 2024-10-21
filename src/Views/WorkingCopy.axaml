@@ -185,7 +185,7 @@
       <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
@@ -198,7 +198,6 @@
 
         <Button Grid.Column="1"
                 Classes="icon_button"
-                Width="32"
                 Margin="4,2,0,0"
                 Click="OnOpenAIAssist"
                 ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}"
@@ -207,23 +206,33 @@
           <Path Width="15" Height="15" Data="{StaticResource Icons.AIAssist}"/>
         </Button>
 
-        <CheckBox Grid.Column="2"
+        <Button Grid.Column="2"
+                Classes="icon_button"
+                Margin="0,2,0,0"
+                Click="OnOpenConventionalCommitHelper"
+                ToolTip.Tip="{DynamicResource Text.ConventionalCommit}"
+                ToolTip.Placement="Top"
+                ToolTip.VerticalOffset="0">
+          <Path Width="15" Height="15" Data="{StaticResource Icons.CommitMessageGenerator}"/>
+        </Button>
+
+        <CheckBox Grid.Column="3"
                   Height="24"
                   Margin="4,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding AutoStageBeforeCommit, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.AutoStage}"/>
 
-        <CheckBox Grid.Column="3"
+        <CheckBox Grid.Column="4"
                   Height="24"
                   Margin="8,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding UseAmend, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.Amend}"/>
 
-        <v:LoadingIcon Grid.Column="5" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
+        <v:LoadingIcon Grid.Column="6" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
 
-        <Button Grid.Column="6"
+        <Button Grid.Column="7"
                 Classes="flat primary"
                 Content="{DynamicResource Text.WorkingCopy.Commit}"
                 Height="28"
@@ -248,13 +257,13 @@
         </Button>
         
         <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
-        <Button Grid.Column="7"
+        <Button Grid.Column="8"
                 Width="0" Height="0"
                 Background="Transparent"
                 Command="{Binding CommitWithAutoStage}"
                 HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"/>
 
-        <Button Grid.Column="8"
+        <Button Grid.Column="9"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
                 Height="28"

@@ -74,6 +74,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
+        public bool EnableReflog
+        {
+            get => _enableReflog;
+            set
+            {
+                if (SetProperty(ref _enableReflog, value))
+                    Task.Run(RefreshCommits);
+            }
+        }
+
         public bool EnableFirstParentInHistories
         {
             get => _enableFirstParentInHistories;
@@ -827,6 +837,8 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            if (_enableReflog)
+                limits += "--reflog ";
             if (_enableFirstParentInHistories)
                 limits += "--first-parent ";
 
@@ -862,7 +874,7 @@ namespace SourceGit.ViewModels
             {
                 if (_settings.Filters.Count != 0)
                     Dispatcher.UIThread.Invoke(() => _settings.Filters.Clear());
-                    
+
                 limits += "--exclude=refs/stash --all";
             }
 
@@ -1829,6 +1841,16 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var copyMessage = new MenuItem();
+            copyMessage.Header = App.Text("TagCM.CopyMessage");
+            copyMessage.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyMessage.IsEnabled = !string.IsNullOrEmpty(tag.Message);
+            copyMessage.Click += (_, ev) =>
+            {
+                App.CopyText(tag.Message);
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(createBranch);
             menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1838,6 +1860,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(archive);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
+            menu.Items.Add(copyMessage);
             return menu;
         }
 
@@ -2045,7 +2068,31 @@ namespace SourceGit.ViewModels
                 Task.Run(() =>
                 {
                     var files = new Commands.QueryCurrentRevisionFiles(_fullpath).Result();
-                    Dispatcher.UIThread.Invoke(() => _revisionFiles.AddRange(files));
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (_searchCommitFilterType != 3)
+                            return;
+
+                        _revisionFiles.AddRange(files);
+
+                        if (!string.IsNullOrEmpty(_searchCommitFilter) && _searchCommitFilter.Length > 2 && _revisionFiles.Count > 0)
+                        {
+                            var suggestion = new List<string>();
+                            foreach (var file in _revisionFiles)
+                            {
+                                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
+                                {
+                                    suggestion.Add(file);
+                                    if (suggestion.Count > 100)
+                                        break;
+                                }
+                            }
+
+                            SearchCommitFilterSuggestion.Clear();
+                            SearchCommitFilterSuggestion.AddRange(suggestion);
+                            IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
+                        }
+                    });
                 });
             }
         }
@@ -2091,6 +2138,7 @@ namespace SourceGit.ViewModels
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 2;
         private bool _onlySearchCommitsInCurrentBranch = false;
+        private bool _enableReflog = false;
         private bool _enableFirstParentInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();

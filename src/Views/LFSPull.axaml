@@ -25,7 +25,7 @@
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Remote}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+              <Path Margin="0,2,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
               <TextBlock Text="{Binding Name}"/>
             </StackPanel>
           </DataTemplate>

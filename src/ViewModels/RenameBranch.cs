@@ -62,7 +62,7 @@ namespace SourceGit.ViewModels
                         _repo.Settings.Filters.Remove(oldName);
                         _repo.Settings.Filters.Add($"refs/heads/{_name}");
                     }
-                    
+
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });

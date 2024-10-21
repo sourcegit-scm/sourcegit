@@ -86,8 +86,11 @@
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для фиксации сообщения</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Фиксация(и):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Фиксировать все изменения.</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Основной:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Обычно вы не можете выделить слияние, потому что не знаете, какую сторону слияния следует считать основной. Эта опция позволяет отобразить изменение относительно указанного родительского элемента.</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Очистить отложенные</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Вы пытаетесь очистить все отложенные. Вы уверены, что будете продолжать?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Клонировать внешнее хранилище</x:String>
@@ -158,6 +161,14 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Рабочие пространства</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Имя</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Цвет</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Восстанавливать вкладки при запуске</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Общепринятый помощник по фиксации изменений</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Кардинальные изменения:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Закрытая тема:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Детали изменений:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Область:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Коротнкое описание:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Тип изменения:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Копировать весь текст</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">КОПИРОВАТЬ СООБЩЕНИЕ</x:String>
@@ -182,7 +193,7 @@
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Рекомендуемый формат: v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Выложить на все внешние хранилища после создания</x:String>
   <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Создать новую метку</x:String>
-  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Добрый:</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Вид:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">Аннотированный</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Лёгкий</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Удерживайте Ctrl, чтобы начать непосредственно</x:String>
@@ -293,7 +304,7 @@
   <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Добавить шаблон отслеживания в ХБФ Git</x:String>
   <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Извлечь объекты ХБФ</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустите `git lfs fetch", чтобы загрузить объекты ХБФ Git. При этом рабочая копия не обновляется.</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустить `git lfs fetch", чтобы загрузить объекты ХБФ Git. При этом рабочая копия не обновляется.</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Установить перехват ХБФ Git</x:String>
   <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Показать блокировки</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">Нет заблокированных файлов</x:String>
@@ -315,15 +326,15 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все *{0} файлов</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Истории</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Переключение горизонтального/вертикального расположения</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Переключение режима построения кривой/полилинии</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">ВРЕМЯ ФИКСАЦИИ</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">ПОИСК SHA/СУБЪЕКТ/АВТОР. НАЖМИТЕ ВВОД ДЛЯ ПОИСКА, ESC ДЛЯ ВЫХОДА</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">ОЧИСТИТЬ</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАННЫЕ {0} ФИКСАЦИИ</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Удерживайте 'Ctrl' или 'Shift', чтобы выбрать несколько фиксаций.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Удерживайте ⌘ или ⇧, чтобы выбрать несколько фиксаций.</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ПОДСКАЗКИ:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Ссылка на сочетания клавиш</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ОБЩЕЕ</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Отменить текущее всплывающее окно</x:String>
@@ -361,10 +372,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Интерактивное перемещение</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Целевая ветка:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">На:</x:String>
-  <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ОШИБКА</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
-  <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">Открыть главное меню</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Слить ветку</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
@@ -373,9 +382,7 @@
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Выбрать родительский узел для:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git НЕ был настроен. Пожалуйста, перейдите в [Настройки] и сначала настройте его.</x:String>
-  <x:String x:Key="Text.Notice" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Открыть приложение каталогов данных</x:String>
-  <x:String x:Key="Text.OpenFolder" xml:space="preserve">ВЫБОР КАТАЛОГА</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Окрыть с...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необязательно.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Создать новую страницу</x:String>
@@ -595,6 +602,7 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
+  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение с метки</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>

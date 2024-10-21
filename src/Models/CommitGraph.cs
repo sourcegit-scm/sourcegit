@@ -186,6 +186,7 @@ namespace SourceGit.Models
                 // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
                 commit.Margin = new Thickness(Math.Max(offsetX, maxOffsetOld) + halfWidth + 2, 0, 0, 0);
+                commit.Color = dotColor;
             }
 
             // Deal with curves haven't ended yet.
@@ -326,14 +327,15 @@ namespace SourceGit.Models
         private static readonly List<Color> s_defaultPenColors = [
             Colors.Orange,
             Colors.ForestGreen,
-            Colors.Gold,
-            Colors.Magenta,
-            Colors.Red,
             Colors.Gray,
             Colors.Turquoise,
             Colors.Olive,
+            Colors.Magenta,
+            Colors.Red,
             Colors.Khaki,
             Colors.Lime,
+            Colors.RoyalBlue,
+            Colors.Teal,
         ];
     }
 }

@@ -23,7 +23,7 @@ namespace SourceGit.Views
             var item = vm.SelectedItem;
             if (item == null)
             {
-                base.OnKeyDown(e); 
+                base.OnKeyDown(e);
                 return;
             }
 

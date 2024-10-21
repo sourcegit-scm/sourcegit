@@ -302,13 +302,10 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Historique</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Basculer entre dispositions Horizontal/Vertical</x:String>
-  <x:String x:Key="Text.Histories.GraphMode" xml:space="preserve">Basculer en un graph courbe ou polyligne</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTEUR</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPHE &amp; SUJET</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">HEURE DE COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Search" xml:space="preserve">CHERCHER UN SHA/SUJET/AUTEUR. ENTRÉE POUR CHERCHER, ESC POUR QUITTER</x:String>
-  <x:String x:Key="Text.Histories.SearchClear" xml:space="preserve">EFFACER</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SÉLECTIONNÉS</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Référence des raccourcis clavier</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
@@ -345,19 +342,15 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>
-  <x:String x:Key="Text.Launcher" xml:space="preserve">Source Git</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
-  <x:String x:Key="Text.Launcher.Menu" xml:space="preserve">Open Main Menu</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nom :</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git n'a PAS été configuré. Veuillez d'abord le faire dans le menu Préférence.</x:String>
-  <x:String x:Key="Text.Notice" xml:space="preserve">NOTICE</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Ouvrir le dossier AppData</x:String>
-  <x:String x:Key="Text.OpenFolder" xml:space="preserve">SELECT FOLDER</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Open With...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Créer un nouvel onglet</x:String>

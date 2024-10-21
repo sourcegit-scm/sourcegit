@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 using Avalonia;
@@ -92,8 +93,8 @@ namespace SourceGit.Views
             if (avatar.User == null)
                 return;
 
-            var placeholder = string.IsNullOrWhiteSpace(avatar.User.Name) ? "?" : avatar.User.Name.Substring(0, 1);
-            var chars = placeholder.ToCharArray();
+            var fallback = GetFallbackString(avatar.User.Name);
+            var chars = fallback.ToCharArray();
             var sum = 0;
             foreach (var c in chars)
                 sum += Math.Abs(c);
@@ -105,11 +106,9 @@ namespace SourceGit.Views
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             };
 
-            var fontFamily = avatar.FindResource("Fonts.Monospace") as FontFamily;
-            var typeface = new Typeface(fontFamily);
-
+            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
             avatar._fallbackLabel = new FormattedText(
-                placeholder,
+                fallback,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 typeface,
@@ -117,6 +116,23 @@ namespace SourceGit.Views
                 Brushes.White);
 
             avatar.InvalidateVisual();
+        }
+
+        private static string GetFallbackString(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return "?";
+
+            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var chars = new List<char>();
+            foreach (var part in parts)
+                chars.Add(part[0]);
+
+            if (chars.Count >= 2)
+                return string.Format("{0}{1}", chars[0], chars[^1]);
+            if (chars.Count == 1)
+                return string.Format("{0}", chars[0]);
+            return name.Substring(0, 1);
         }
 
         private FormattedText _fallbackLabel = null;

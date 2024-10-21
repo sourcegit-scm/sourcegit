@@ -62,7 +62,7 @@ namespace SourceGit.Views
         ];
 
         private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "U", "★"];
-        private static readonly string[] TIPS = ["Unknown", "Modified", "Type Changed", "Added", "Deleted", "Renamed", "Copied", "Unmerged", "Untracked" ];
+        private static readonly string[] TIPS = ["Unknown", "Modified", "Type Changed", "Added", "Deleted", "Renamed", "Copied", "Unmerged", "Untracked"];
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
             AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));
@@ -142,7 +142,7 @@ namespace SourceGit.Views
                     ToolTip.SetTip(this, c.IsConflit ? "Conflict" : TIPS[(int)c.WorkTree]);
                 else
                     ToolTip.SetTip(this, TIPS[(int)c.Index]);
-                
+
                 InvalidateVisual();
             }
         }

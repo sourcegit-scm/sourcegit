@@ -83,7 +83,7 @@
     </Grid>
     
     <!-- Notification -->
-    <Grid Grid.Row="1" Width="360" HorizontalAlignment="Right" VerticalAlignment="Top">
+    <Grid Grid.Row="1" Width="480" HorizontalAlignment="Right" VerticalAlignment="Top">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <ItemsControl ItemsSource="{Binding Notifications}">
           <ItemsControl.ItemTemplate>

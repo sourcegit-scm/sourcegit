@@ -9,7 +9,7 @@ namespace SourceGit.Models
             get;
             set;
         } = string.Empty;
-        
+
         public DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
         {
             get;

@@ -453,6 +453,13 @@ namespace SourceGit.ViewModels
             Save();
         }
 
+        public void AutoRemoveInvalidNode()
+        {
+            var changed = RemoveInvalidRepositoriesRecursive(RepositoryNodes);
+            if (changed)
+                Save();
+        }
+
         public void Save()
         {
             if (_isLoading)
@@ -565,6 +572,27 @@ namespace SourceGit.ViewModels
             }
 
             return false;
+        }
+
+        private bool RemoveInvalidRepositoriesRecursive(List<RepositoryNode> collection)
+        {
+            bool changed = false;
+            
+            for (int i = collection.Count - 1; i >= 0; i--)
+            {
+                var node = collection[i];
+                if (node.IsInvalid)
+                {
+                    collection.RemoveAt(i);
+                    changed = true;
+                }
+                else if (!node.IsRepository)
+                {
+                    changed |= RemoveInvalidRepositoriesRecursive(node.SubNodes);
+                }
+            }
+
+            return changed;
         }
 
         private static Preference _instance = null;

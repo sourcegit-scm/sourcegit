@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -147,6 +148,74 @@ namespace SourceGit.ViewModels
             menu.Items.Add(apply);
             menu.Items.Add(pop);
             menu.Items.Add(drop);
+            return menu;
+        }
+
+        public ContextMenu MakeContextMenuForChange(Models.Change change)
+        {
+            if (change == null)
+                return null;
+
+            var diffWithMerger = new MenuItem();
+            diffWithMerger.Header = App.Text("DiffWithMerger");
+            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            diffWithMerger.Click += (_, ev) =>
+            {
+                var toolType = Preference.Instance.ExternalMergeToolType;
+                var toolPath = Preference.Instance.ExternalMergeToolPath;
+                var opt = new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, change);
+
+                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo.FullPath, toolType, toolPath, opt));
+                ev.Handled = true;
+            };
+
+            var fullPath = Path.Combine(_repo.FullPath, change.Path);
+            var explore = new MenuItem();
+            explore.Header = App.Text("RevealFile");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = File.Exists(fullPath);
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(fullPath, true);
+                ev.Handled = true;
+            };
+
+            var resetToThisRevision = new MenuItem();
+            resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+            resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+            resetToThisRevision.Click += (_, ev) =>
+            {
+                new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_selectedStash.SHA}");
+                ev.Handled = true;
+            };
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Click += (_, ev) =>
+            {
+                App.CopyText(change.Path);
+                ev.Handled = true;
+            };
+
+            var copyFileName = new MenuItem();
+            copyFileName.Header = App.Text("CopyFileName");
+            copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFileName.Click += (_, e) =>
+            {
+                App.CopyText(Path.GetFileName(change.Path));
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(diffWithMerger);
+            menu.Items.Add(explore);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(resetToThisRevision);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFileName);
+
             return menu;
         }
 

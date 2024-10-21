@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
 
                 if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
                 {
-                    _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);   
+                    _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
                 }
 
                 AutoSelectedCommit = commit;
@@ -424,7 +424,28 @@ namespace SourceGit.ViewModels
                 cherryPick.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new CherryPick(_repo, [commit]));
+                    {
+                        if (commit.Parents.Count <= 1)
+                        {
+                            PopupHost.ShowPopup(new CherryPick(_repo, [commit]));
+                        }
+                        else
+                        {
+                            var parents = new List<Models.Commit>();
+                            foreach (var sha in commit.Parents)
+                            {
+                                var parent = _commits.Find(x => x.SHA == sha);
+                                if (parent == null)
+                                    parent = new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
+
+                                if (parent != null)
+                                    parents.Add(parent);
+                            }
+
+                            PopupHost.ShowPopup(new CherryPick(_repo, commit, parents));
+                        }
+                    }
+
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);

@@ -10,12 +10,7 @@
       <Color x:Key="Color.Contents">#FFFAFAFA</Color>
       <Color x:Key="Color.Badge">#FFB0CEE8</Color>
       <Color x:Key="Color.BadgeFG">#FF1F1F1F</Color>
-      <Color x:Key="Color.DecoratorIconBG">#A0A0A0</Color>
-      <Color x:Key="Color.DecoratorIcon">White</Color>
-      <Color x:Key="Color.DecoratorBranch">#008585</Color>
-      <Color x:Key="Color.DecoratorHead">#0C0E21</Color>
-      <Color x:Key="Color.DecoratorTag">#79855f</Color>
-      <Color x:Key="Color.DecoratorFG">White</Color>
+      <Color x:Key="Color.DecoratorTag">DarkGreen</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
       <Color x:Key="Color.ConflictForeground">#FFFFFFFF</Color>
       <Color x:Key="Color.Border0">#FFCFCFCF</Color>
@@ -42,12 +37,7 @@
       <Color x:Key="Color.Contents">#FF1C1C1C</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
       <Color x:Key="Color.BadgeFG">#FFDDDDDD</Color>
-      <Color x:Key="Color.DecoratorIconBG">#FF505050</Color>
-      <Color x:Key="Color.DecoratorIcon">#FFF8F8F8</Color>
-      <Color x:Key="Color.DecoratorBranch">#FFFFB835</Color>
-      <Color x:Key="Color.DecoratorHead">#f4f1de</Color>
       <Color x:Key="Color.DecoratorTag">#84c88a</Color>
-      <Color x:Key="Color.DecoratorFG">Black</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
       <Color x:Key="Color.ConflictForeground">#FF252525</Color>
       <Color x:Key="Color.Border0">#FF181818</Color>
@@ -74,12 +64,7 @@
   <SolidColorBrush x:Key="Brush.Contents" Color="{DynamicResource Color.Contents}"/>
   <SolidColorBrush x:Key="Brush.Badge" Color="{DynamicResource Color.Badge}"/>
   <SolidColorBrush x:Key="Brush.BadgeFG" Color="{DynamicResource Color.BadgeFG}"/>
-  <SolidColorBrush x:Key="Brush.DecoratorIconBG" Color="{DynamicResource Color.DecoratorIconBG}"/>
-  <SolidColorBrush x:Key="Brush.DecoratorIcon" Color="{DynamicResource Color.DecoratorIcon}"/>
-  <SolidColorBrush x:Key="Brush.DecoratorBranch" Color="{DynamicResource Color.DecoratorBranch}"/>
-  <SolidColorBrush x:Key="Brush.DecoratorHead" Color="{DynamicResource Color.DecoratorHead}"/>
   <SolidColorBrush x:Key="Brush.DecoratorTag" Color="{DynamicResource Color.DecoratorTag}"/>
-  <SolidColorBrush x:Key="Brush.DecoratorFG" Color="{DynamicResource Color.DecoratorFG}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
   <SolidColorBrush x:Key="Brush.ConflictForeground" Color="{DynamicResource Color.ConflictForeground}"/>
   <SolidColorBrush x:Key="Brush.Border0" Color="{DynamicResource Color.Border0}"/>

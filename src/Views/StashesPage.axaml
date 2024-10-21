@@ -136,7 +136,7 @@
 
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
-            <Grid ColumnDefinitions="24,*">
+            <Grid ColumnDefinitions="24,*" Background="Transparent" ContextRequested="OnChangeContextRequested">
               <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" Change="{Binding}"/>
               <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="4,0,0,0"/>
             </Grid>

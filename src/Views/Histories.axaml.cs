@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -155,7 +156,7 @@ namespace SourceGit.Views
         private Status _status = Status.Normal;
     }
 
-    public class CommitSubjectPresenter : TextBlock
+    public partial class CommitSubjectPresenter : TextBlock
     {
         public static readonly StyledProperty<string> SubjectProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(Subject));
@@ -191,6 +192,21 @@ namespace SourceGit.Views
                 if (string.IsNullOrEmpty(subject))
                     return;
 
+                var offset = 0;
+                var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
+                if (!keywordMatch.Success)
+                    keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
+
+                if (keywordMatch.Success)
+                {
+                    var keyword = new Run(subject.Substring(0, keywordMatch.Length));
+                    keyword.FontWeight = FontWeight.Bold;
+                    Inlines.Add(keyword);
+
+                    offset = keywordMatch.Length;
+                    subject = subject.Substring(offset);
+                }
+
                 var rules = IssueTrackerRules;
                 if (rules == null || rules.Count == 0)
                 {
@@ -223,6 +239,7 @@ namespace SourceGit.Views
                     inlines.Add(link);
 
                     pos = match.Start + match.Length;
+                    match.Start += offset; // Because we use this index of whole subject to detect mouse event.
                 }
 
                 if (pos < subject.Length)
@@ -287,6 +304,12 @@ namespace SourceGit.Views
                 _lastHover = null;
             }
         }
+
+        [GeneratedRegex(@"^\[[\w\s]+\]")]
+        private static partial Regex REG_KEYWORD_FORMAT1();
+
+        [GeneratedRegex(@"^\w+([\<\(][\w\s_\-\*,]+[\>\)])?\s?:\s")]
+        private static partial Regex REG_KEYWORD_FORMAT2();
 
         private List<Models.Hyperlink> _matches = null;
         private Models.Hyperlink _lastHover = null;
