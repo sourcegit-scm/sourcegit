@@ -128,10 +128,9 @@ namespace SourceGit.Views
             foreach (var part in parts)
                 chars.Add(part[0]);
 
-            if (chars.Count >= 2)
+            if (chars.Count >= 2 && char.IsAsciiLetterOrDigit(chars[0]) && char.IsAsciiLetterOrDigit(chars[^1]))
                 return string.Format("{0}{1}", chars[0], chars[^1]);
-            if (chars.Count == 1)
-                return string.Format("{0}", chars[0]);
+                
             return name.Substring(0, 1);
         }
 
