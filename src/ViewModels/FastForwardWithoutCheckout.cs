@@ -31,7 +31,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                new Commands.Fetch(_repo.FullPath, To.Remote, Local.Name, To.Name, SetProgressDescription).Exec();
+                new Commands.UpdateRef(_repo.FullPath, Local.FullName, To.FullName, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });
