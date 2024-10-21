@@ -1355,8 +1355,9 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(checkout);
 
+                var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
-                if (upstream != null)
+                if (upstream != null && worktree == null)
                 {
                     var fastForward = new MenuItem();
                     fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream.FriendlyName);
