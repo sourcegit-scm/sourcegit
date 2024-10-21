@@ -1158,7 +1158,7 @@ namespace SourceGit.ViewModels
                     item.Icon = App.CreateMenuIcon("Icons.Code");
                     item.Click += (_, e) =>
                     {
-                        CommitMessage = template.Apply(_staged);
+                        CommitMessage = template.Apply(_repo, _staged);
                         e.Handled = true;
                     };
                     menu.Items.Add(item);
