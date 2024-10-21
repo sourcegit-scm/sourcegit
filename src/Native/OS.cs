@@ -26,6 +26,7 @@ namespace SourceGit.Native
         public static string GitExecutable { get; set; } = string.Empty;
         public static string ShellOrTerminal { get; set; } = string.Empty;
         public static List<Models.ExternalTool> ExternalTools { get; set; } = [];
+        public static string CustomPathEnv { get; set; } = string.Empty;
 
         static OS()
         {
