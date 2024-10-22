@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using SourceGit.ViewModels;
 
 namespace SourceGit.Models
 {
@@ -25,11 +24,11 @@ namespace SourceGit.Models
             set => SetProperty(ref _content, value);
         }
 
-        public string Apply(Repository repo, List<Change> changes)
+        public string Apply(Branch branch, List<Change> changes)
         {
             var content = _content
                 .Replace("${files_num}", $"{changes.Count}")
-                .Replace("${branch_name}", repo.CurrentBranch.Name);
+                .Replace("${branch_name}", branch.Name);
 
             var matches = REG_COMMIT_TEMPLATE_FILES().Matches(content);
             if (matches.Count == 0)
