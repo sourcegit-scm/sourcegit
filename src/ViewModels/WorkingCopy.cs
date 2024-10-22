@@ -410,17 +410,22 @@ namespace SourceGit.ViewModels
 
         public void Commit()
         {
-            DoCommit(false, false);
+            DoCommit(false, false, false);
         }
 
         public void CommitWithAutoStage()
         {
-            DoCommit(true, false);
+            DoCommit(true, false, false);
         }
 
         public void CommitWithPush()
         {
-            DoCommit(false, true);
+            DoCommit(false, true, false);
+        }
+
+        public void CommitWithoutFiles(bool autoPush)
+        {
+            DoCommit(false, autoPush, true);
         }
 
         public ContextMenu CreateContextMenuForUnstagedChanges()
@@ -1268,7 +1273,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(true);
         }
 
-        private void DoCommit(bool autoStage, bool autoPush)
+        private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
         {
             if (!PopupHost.CanCreatePopup())
             {
@@ -1282,23 +1287,16 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (!_useAmend)
+            if (!_useAmend && !allowEmpty)
             {
-                if (autoStage)
+                if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
                 {
-                    if (_count == 0)
+                    App.OpenDialog(new Views.ConfirmCommitWithoutFiles()
                     {
-                        App.RaiseException(_repo.FullPath, "No files added to commit!");
-                        return;
-                    }
-                }
-                else
-                {
-                    if (_staged.Count == 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "No files added to commit!");
-                        return;
-                    }
+                        DataContext = new ConfirmCommitWithoutFiles(this, autoPush)
+                    });
+
+                    return;
                 }
             }
 
@@ -1313,7 +1311,7 @@ namespace SourceGit.ViewModels
                     succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, true).Exec();
 
                 Dispatcher.UIThread.Post(() =>
                 {
