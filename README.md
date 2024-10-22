@@ -1,6 +1,6 @@
-# SourceGit
+# SourceGit - Opensource Git GUI client.
 
-Opensource Git GUI client.
+![stars](https://img.shields.io/github/stars/sourcegit-scm/sourcegit.svg) ![forks](https://img.shields.io/github/forks/sourcegit-scm/sourcegit.svg) ![license](https://img.shields.io/github/license/sourcegit-scm/sourcegit.svg) ![latest](https://img.shields.io/github/v/release/sourcegit-scm/sourcegit.svg) ![downloads](https://img.shields.io/github/downloads/sourcegit-scm/sourcegit/total)
 
 ## Highlights
 
