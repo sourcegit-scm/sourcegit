@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Commit : Command
     {
-        public Commit(string repo, string message, bool amend, bool allowEmpty = false)
+        public Commit(string repo, string message, bool amend)
         {
             var file = Path.GetTempFileName();
             File.WriteAllText(file, message);
@@ -12,11 +12,9 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-            Args = $"commit --file=\"{file}\"";
+            Args = $"commit --allow-empty --file=\"{file}\"";
             if (amend)
                 Args += " --amend --no-edit";
-            if (allowEmpty)
-                Args += " --allow-empty";
         }
     }
 }
