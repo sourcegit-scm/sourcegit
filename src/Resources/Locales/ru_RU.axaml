@@ -634,7 +634,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Игнорировать файлы в том же каталоге</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Игнорировать только эти файлы</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Изменить</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">Автоподготовка</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Теперь вы можете подготовитть этот файл.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">ЗАФИКСИРОВАТЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">ЗАФИКСИРОВАТЬ и ОТПРАВИТЬ</x:String>

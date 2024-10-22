@@ -79,12 +79,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isCommitting, value);
         }
 
-        public bool AutoStageBeforeCommit
-        {
-            get => _repo.Settings.AutoStageBeforeCommit;
-            set => _repo.Settings.AutoStageBeforeCommit = value;
-        }
-
         public bool UseAmend
         {
             get => _useAmend;
@@ -416,7 +410,7 @@ namespace SourceGit.ViewModels
 
         public void Commit()
         {
-            DoCommit(AutoStageBeforeCommit, false);
+            DoCommit(false, false);
         }
 
         public void CommitWithAutoStage()
@@ -426,7 +420,7 @@ namespace SourceGit.ViewModels
 
         public void CommitWithPush()
         {
-            DoCommit(AutoStageBeforeCommit, true);
+            DoCommit(false, true);
         }
 
         public ContextMenu CreateContextMenuForUnstagedChanges()

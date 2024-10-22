@@ -582,7 +582,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignorer les fichiers dans le même dossier</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">N'ignorer que ce fichier</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amender</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">Auto-Index</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Vous pouvez indexer ce fichier.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>

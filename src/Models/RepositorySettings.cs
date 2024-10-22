@@ -70,12 +70,6 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public bool AutoStageBeforeCommit
-        {
-            get;
-            set;
-        } = false;
-
         public AvaloniaList<string> Filters
         {
             get;
