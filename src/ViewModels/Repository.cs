@@ -2114,7 +2114,7 @@ namespace SourceGit.ViewModels
 
             IsAutoFetching = true;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
-            new Commands.Fetch(_fullpath, "--all", true, false, null) { RaiseError = false }.Exec();
+            new Commands.Fetch(_fullpath, "--all", false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             IsAutoFetching = false;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));

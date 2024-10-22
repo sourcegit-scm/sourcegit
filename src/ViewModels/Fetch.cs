@@ -22,12 +22,6 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public bool Prune
-        {
-            get;
-            set;
-        } = true;
-
         public bool NoTags
         {
             get => _repo.Settings.FetchWithoutTags;
@@ -53,13 +47,13 @@ namespace SourceGit.ViewModels
                     foreach (var remote in _repo.Remotes)
                     {
                         SetProgressDescription($"Fetching remote: {remote.Name}");
-                        new Commands.Fetch(_repo.FullPath, remote.Name, Prune, NoTags, SetProgressDescription).Exec();
+                        new Commands.Fetch(_repo.FullPath, remote.Name, NoTags, SetProgressDescription).Exec();
                     }
                 }
                 else
                 {
                     SetProgressDescription($"Fetching remote: {SelectedRemote.Name}");
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, Prune, NoTags, SetProgressDescription).Exec();
+                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, NoTags, SetProgressDescription).Exec();
                 }
 
                 CallUIThread(() =>

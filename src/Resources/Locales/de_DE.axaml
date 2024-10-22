@@ -243,7 +243,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Alle Remotes fetchen</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Ohne Tags fetchen</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Alle verwaisten Branches entfernen</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Remote-Änderungen fetchen</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Als unverändert annehmen</x:String>

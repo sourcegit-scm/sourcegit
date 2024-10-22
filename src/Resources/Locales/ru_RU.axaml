@@ -251,7 +251,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Извлечь все внешние хранилища</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Извлечь без меток</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Удалить внешние мёртвые ветки</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Извлечь внешние изменения</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Допустить без изменений</x:String>

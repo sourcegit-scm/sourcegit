@@ -229,7 +229,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch toutes les branches distantes</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch sans les tags</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Élaguer les branches mortes distantes</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Récupérer les changements distants</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Présumer inchangé</x:String>
