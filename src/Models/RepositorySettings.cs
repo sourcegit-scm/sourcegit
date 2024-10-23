@@ -106,6 +106,12 @@ namespace SourceGit.Models
             set;
         } = 10;
 
+        public bool EnableSignOffForCommit
+        {
+            get;
+            set;
+        } = false;
+
         public void PushCommitMessage(string message)
         {
             var existIdx = CommitMessages.IndexOf(message);

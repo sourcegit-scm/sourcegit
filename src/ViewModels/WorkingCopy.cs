@@ -1311,7 +1311,7 @@ namespace SourceGit.ViewModels
                     succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Run();
 
                 Dispatcher.UIThread.Post(() =>
                 {
