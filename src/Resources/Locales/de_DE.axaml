@@ -49,7 +49,7 @@
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">BINÄRE DATEI NICHT UNTERSTÜTZT!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME WIRD BEI DIESER DATEI NICHT UNTERSTÜTZT!!!</x:String>
-  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Auscheken von ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Auschecken von ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">Mit Branch vergleichen</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Mit HEAD vergleichen</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Mit Worktree vergleichen</x:String>
@@ -161,6 +161,13 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Zuletzt geöffnete Tabs beim Starten wiederherstellen</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Konventionelle Commit-Hilfe</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Inkompatible Änderung:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Geschlossenes Ticket:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Änderungen im Detail:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Geltungsbereich:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Kurzbeschreibung:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Art der Änderung:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Kopiere gesamten Text</x:String>
   <x:String x:Key="Text.CopyMessage" xml:space="preserve">COMMIT-NACHRICHT KOPIEREN</x:String>
@@ -324,6 +331,9 @@
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS AUSGEWÄHLT</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Halte 'Strg' oder 'Umschalt', um mehrere Commits auszuwählen.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Halte ⌘ oder ⇧, um mehrere Commits auszuwählen</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPPS:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Tastaturkürzel Referenz</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Aktuelles Popup schließen</x:String>
@@ -499,6 +509,7 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Alles löschen</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Repository Einstellungen</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
+  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Option '--reflog' einschalten</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches/Tags/Submodule</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">GEFILTERT:</x:String>
@@ -591,6 +602,7 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Submodul löschen</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Tag-Namen kopieren</x:String>
+  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Tag-Nachricht kopieren</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Lösche ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Pushe ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
