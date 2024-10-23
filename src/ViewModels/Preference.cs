@@ -315,6 +315,32 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string OpenAISubjectPrompt
+        {
+            get => Models.OpenAI.SubjectPrompt;
+            set
+            {
+                if (value != Models.OpenAI.SubjectPrompt)
+                {
+                    Models.OpenAI.SubjectPrompt = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string OpenAISummaryPrompt
+        {
+            get => Models.OpenAI.SummaryPrompt;
+            set
+            {
+                if (value != Models.OpenAI.SummaryPrompt)
+                {
+                    Models.OpenAI.SummaryPrompt = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public uint StatisticsSampleColor
         {
             get => _statisticsSampleColor;
