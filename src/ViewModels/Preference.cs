@@ -577,7 +577,7 @@ namespace SourceGit.ViewModels
         private bool RemoveInvalidRepositoriesRecursive(List<RepositoryNode> collection)
         {
             bool changed = false;
-            
+
             for (int i = collection.Count - 1; i >= 0; i--)
             {
                 var node = collection[i];

@@ -130,7 +130,7 @@ namespace SourceGit.Views
 
             if (chars.Count >= 2 && char.IsAsciiLetterOrDigit(chars[0]) && char.IsAsciiLetterOrDigit(chars[^1]))
                 return string.Format("{0}{1}", chars[0], chars[^1]);
-                
+
             return name.Substring(0, 1);
         }
 

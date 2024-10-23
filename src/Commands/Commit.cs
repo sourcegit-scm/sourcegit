@@ -22,7 +22,7 @@ namespace SourceGit.Commands
         public bool Run()
         {
             var succ = Exec();
-            
+
             try
             {
                 File.Delete(_tmpFile);

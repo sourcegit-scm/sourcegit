@@ -124,9 +124,9 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var dialog = new ConventionalCommitMessageBuilder() 
-                { 
-                    DataContext = new ViewModels.ConventionalCommitMessageBuilder(vm) 
+                var dialog = new ConventionalCommitMessageBuilder()
+                {
+                    DataContext = new ViewModels.ConventionalCommitMessageBuilder(vm)
                 };
 
                 App.OpenDialog(dialog);
