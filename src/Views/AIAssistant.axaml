@@ -7,7 +7,6 @@
                     xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120"
                     x:Class="SourceGit.Views.AIAssistant"
-                    x:DataType="vm:WorkingCopy"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.AIAssistant}"
@@ -55,6 +54,7 @@
                Margin="16"
                FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                HorizontalAlignment="Center"
+               Text="Generating commit message... Please wait!"
                TextTrimming="CharacterEllipsis"/>
   </Grid>
 </v:ChromelessWindow>

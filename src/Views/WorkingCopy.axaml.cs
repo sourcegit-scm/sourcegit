@@ -120,31 +120,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenAIAssist(object _, RoutedEventArgs e)
-        {
-            if (!Models.OpenAI.IsValid)
-            {
-                App.RaiseException(null, "Bad configuration for OpenAI");
-                return;
-            }
-
-            if (DataContext is ViewModels.WorkingCopy vm)
-            {
-                if (vm.Staged is { Count: > 0 })
-                {
-                    var dialog = new AIAssistant() { DataContext = vm };
-                    dialog.GenerateCommitMessage();
-                    App.OpenDialog(dialog);
-                }
-                else
-                {
-                    App.RaiseException(null, "No files added to commit!");
-                }
-            }
-
-            e.Handled = true;
-        }
-
         private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)

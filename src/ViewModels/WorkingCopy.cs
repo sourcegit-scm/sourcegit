@@ -33,11 +33,6 @@ namespace SourceGit.ViewModels
 
     public class WorkingCopy : ObservableObject
     {
-        public string RepoPath
-        {
-            get => _repo.FullPath;
-        }
-
         public bool IncludeUntracked
         {
             get => _repo.IncludeUntracked;
@@ -405,6 +400,25 @@ namespace SourceGit.ViewModels
                     PopupHost.ShowPopup(new Discard(_repo));
                 else
                     PopupHost.ShowPopup(new Discard(_repo, changes));
+            }
+        }
+
+        public void GenerateCommitMessageByAI()
+        {
+            if (!Models.OpenAI.IsValid)
+            {
+                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
+                return;
+            }
+
+            if (_staged is { Count: > 0 })
+            {
+                var dialog = new Views.AIAssistant(_repo.FullPath, _staged, generated => CommitMessage = generated);
+                App.OpenDialog(dialog);
+            }
+            else
+            {
+                App.RaiseException(_repo.FullPath, "No files added to commit!");
             }
         }
 
