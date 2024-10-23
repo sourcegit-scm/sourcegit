@@ -72,6 +72,8 @@ namespace SourceGit.Views
             {
                 _usePresenter = usePresenter;
                 _isOld = isOld;
+
+                Margin = new Thickness(8, 0);
                 ClipToBounds = true;
             }
 
@@ -105,32 +107,6 @@ namespace SourceGit.Views
                             continue;
 
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
-
-                        var prefix = null as FormattedText;
-                        if (info.Type == Models.TextDiffLineType.Added)
-                        {
-                            prefix = new FormattedText(
-                                "+",
-                                CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeface,
-                                presenter.FontSize,
-                                Brushes.Green);
-                        }
-                        else if (info.Type == Models.TextDiffLineType.Deleted)
-                        {
-                            prefix = new FormattedText(
-                                "-",
-                                CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeface,
-                                presenter.FontSize,
-                                Brushes.Red);
-                        }
-
-                        if (prefix != null)
-                            context.DrawText(prefix, new Point(0, y - prefix.Height * 0.5));
-
                         var txt = new FormattedText(
                             lineNumber,
                             CultureInfo.CurrentCulture,
@@ -152,7 +128,7 @@ namespace SourceGit.Views
                 var maxLineNumber = presenter.GetMaxLineNumber();
                 var typeface = TextView.CreateTypeface();
                 var test = new FormattedText(
-                    $"- {maxLineNumber}",
+                    $"{maxLineNumber}",
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
@@ -169,6 +145,89 @@ namespace SourceGit.Views
 
             private bool _usePresenter = false;
             private bool _isOld = false;
+        }
+
+        public class LineModifyTypeMargin : AbstractMargin
+        {
+            public LineModifyTypeMargin()
+            {
+                Margin = new Thickness(1, 0);
+                ClipToBounds = true;
+            }
+
+            public override void Render(DrawingContext context)
+            {
+                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
+                if (presenter == null)
+                    return;
+
+                var lines = presenter.GetLines();
+                var view = TextView;
+                if (view != null && view.VisualLinesValid)
+                {
+                    var typeface = view.CreateTypeface();
+                    foreach (var line in view.VisualLines)
+                    {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
+                        var index = line.FirstDocumentLine.LineNumber;
+                        if (index > lines.Count)
+                            break;
+
+                        var info = lines[index - 1];
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
+                        var indicator = null as FormattedText;
+                        if (info.Type == Models.TextDiffLineType.Added)
+                        {
+                            indicator = new FormattedText(
+                                "+",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                typeface,
+                                presenter.FontSize,
+                                Brushes.Green);
+                        }
+                        else if (info.Type == Models.TextDiffLineType.Deleted)
+                        {
+                            indicator = new FormattedText(
+                                "-",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                typeface,
+                                presenter.FontSize,
+                                Brushes.Red);
+                        }
+
+                        if (indicator != null)
+                            context.DrawText(indicator, new Point(0, y - indicator.Height * 0.5));
+                    }
+                }
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
+                if (presenter == null)
+                    return new Size(0, 0);
+
+                var maxLineNumber = presenter.GetMaxLineNumber();
+                var typeface = TextView.CreateTypeface();
+                var test = new FormattedText(
+                    $"-",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    presenter.FontSize,
+                    Brushes.White);
+                return new Size(test.Width, 0);
+            }
+
+            protected override void OnDataContextChanged(EventArgs e)
+            {
+                base.OnDataContextChanged(e);
+                InvalidateMeasure();
+            }
         }
 
         public class LineBackgroundRenderer : IBackgroundRenderer
@@ -700,10 +759,11 @@ namespace SourceGit.Views
     {
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
-            TextArea.LeftMargins.Add(new LineNumberMargin(false, true) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new LineNumberMargin(false, true));
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
-            TextArea.LeftMargins.Add(new LineNumberMargin(false, false) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new LineNumberMargin(false, false));
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
         public override List<Models.TextDiffLine> GetLines()
@@ -904,8 +964,9 @@ namespace SourceGit.Views
     {
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
-            TextArea.LeftMargins.Add(new LineNumberMargin(true, false) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new LineNumberMargin(true, false));
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
         public override List<Models.TextDiffLine> GetLines()
