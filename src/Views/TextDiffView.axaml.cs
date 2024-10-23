@@ -105,6 +105,32 @@ namespace SourceGit.Views
                             continue;
 
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
+
+                        var prefix = null as FormattedText;
+                        if (info.Type == Models.TextDiffLineType.Added)
+                        {
+                            prefix = new FormattedText(
+                                "+",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                typeface,
+                                presenter.FontSize,
+                                Brushes.Green);
+                        }
+                        else if (info.Type == Models.TextDiffLineType.Deleted)
+                        {
+                            prefix = new FormattedText(
+                                "-",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                typeface,
+                                presenter.FontSize,
+                                Brushes.Red);
+                        }
+
+                        if (prefix != null)
+                            context.DrawText(prefix, new Point(0, y - prefix.Height * 0.5));
+
                         var txt = new FormattedText(
                             lineNumber,
                             CultureInfo.CurrentCulture,
@@ -126,7 +152,7 @@ namespace SourceGit.Views
                 var maxLineNumber = presenter.GetMaxLineNumber();
                 var typeface = TextView.CreateTypeface();
                 var test = new FormattedText(
-                    $"{maxLineNumber}",
+                    $"- {maxLineNumber}",
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
