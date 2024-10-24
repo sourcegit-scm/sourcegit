@@ -20,6 +20,9 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch Existente</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">O que Checar:</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Adicionar Worktree</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistente do OpenAI</x:String>
+  <x:String x:Key="Text.AIAssistant.SelectedLanguageTip" xml:space="preserve">Idioma usado a gerar a mensagem de commit</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para gerar mensagem de commit</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Erros levantados e se recusa a aplicar o patch</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Erro</x:String>
   <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Semelhante a 'erro', mas mostra mais</x:String>

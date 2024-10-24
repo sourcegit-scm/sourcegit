@@ -22,6 +22,17 @@ namespace SourceGit.Views
             }
         }
 
+        public void OnOpenSelectLanguage(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
+            {
+                var menu = vm.CreateContextMenuForSelectedLanguage();
+                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                button.OpenContextMenu(menu);
+                e.Handled = true;
+            }
+        }
+
         private void OnUnstagedContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)

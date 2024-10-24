@@ -8,6 +8,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -1142,6 +1143,37 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(unstage);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
+            }
+
+            return menu;
+        }
+
+        public ContextMenu CreateContextMenuForSelectedLanguage()
+        {
+            var menu = new ContextMenu();
+            var selectedLanguage = string.IsNullOrEmpty(Preference.Instance.SelectedLanguage)
+                ? "English"
+                : Preference.Instance.SelectedLanguage;
+
+            foreach (var locale in Locale.Supported)
+            {
+                var language = locale.Name;
+
+                var item = new MenuItem
+                {
+                    Header = language,
+                    Icon = selectedLanguage.Equals(language, StringComparison.OrdinalIgnoreCase)
+                        ? App.CreateMenuIcon("Icons.Check")
+                        : null
+                };
+
+                item.Click += (_, e) =>
+                {
+                    Preference.Instance.SelectedLanguage = language;
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(item);
             }
 
             return menu;

@@ -70,12 +70,22 @@ namespace SourceGit.Commands
             }
         }
 
+        private static string GetSelectedLanguagePrompt()
+        {
+            var selectedLanguage = Models.OpenAI.SelectedLanguage == "English"
+                ? string.Empty
+                : $"{Environment.NewLine}Always write in {Models.OpenAI.SelectedLanguage}";
+
+            return selectedLanguage;
+        }
+
         private string GenerateChangeSummary(Models.Change change)
         {
             var rs = new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadToEnd();
             var diff = rs.IsSuccess ? rs.StdOut : "unknown change";
+            var selectedLanguagePrompt = GetSelectedLanguagePrompt();
 
-            var rsp = Models.OpenAI.Chat(Models.OpenAI.AnalyzeDiffPrompt, $"Here is the `git diff` output: {diff}", _cancelToken);
+            var rsp = Models.OpenAI.Chat(Models.OpenAI.AnalyzeDiffPrompt + selectedLanguagePrompt, $"Here is the `git diff` output: {diff}", _cancelToken);
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 
@@ -84,7 +94,8 @@ namespace SourceGit.Commands
 
         private string GenerateSubject(string summary)
         {
-            var rsp = Models.OpenAI.Chat(Models.OpenAI.GenerateSubjectPrompt, $"Here are the summaries changes:\n{summary}", _cancelToken);
+            var selectedLanguagePrompt = GetSelectedLanguagePrompt();
+            var rsp = Models.OpenAI.Chat(Models.OpenAI.GenerateSubjectPrompt + selectedLanguagePrompt, $"Here are the summaries changes:\n{summary}", _cancelToken);
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 
