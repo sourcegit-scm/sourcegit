@@ -496,6 +496,7 @@
               <TextBox Grid.Row="2" Grid.Column="1"
                        Height="28"
                        CornerRadius="3"
+                       PasswordChar="*"
                        Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
 
               <TextBlock Grid.Row="3" Grid.Column="0"
