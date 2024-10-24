@@ -52,7 +52,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">            
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.General.Locale}"
                        HorizontalAlignment="Right"
@@ -236,7 +236,7 @@
                        Margin="0,0,16,0"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
               <TextBlock Margin="0,0,8,0"
-                         Text="{Binding #ThisControl.GitVersion}" 
+                         Text="{Binding #ThisControl.GitVersion}"
                          IsVisible="{Binding #ThisControl.GitVersion, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
               <Border Background="Transparent"
@@ -368,7 +368,7 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
-              
+
               <TextBlock Grid.Row="0" Grid.Column="0"
                          Text="{DynamicResource Text.Preference.Shell.Type}"
                          HorizontalAlignment="Right"
@@ -405,7 +405,7 @@
                   </Button>
                 </TextBox.InnerRightContent>
               </TextBox>
-            </Grid>            
+            </Grid>
 
             <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Diff}"/>
@@ -417,7 +417,7 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
-              
+
               <TextBlock Grid.Row="0" Grid.Column="0"
                          Text="{DynamicResource Text.Preference.DiffMerge.Type}"
                          HorizontalAlignment="Right"
@@ -465,12 +465,12 @@
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.AI}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
-            <Grid Margin="8,0,0,0" RowDefinitions="32,32,32">
+            <Grid Margin="8,0,0,0" RowDefinitions="32,32,32,128,128">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
-              
+
               <TextBlock Grid.Row="0" Grid.Column="0"
                          Text="{DynamicResource Text.Preference.AI.Server}"
                          HorizontalAlignment="Right"
@@ -497,10 +497,38 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="3" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.AI.SubjectPrompt}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+
+              <TextBox Grid.Row="3" Grid.Column="1"
+                       Height="120"
+                       CornerRadius="3"
+                       VerticalContentAlignment="Top"
+                       Text="{Binding OpenAISubjectPrompt, Mode=TwoWay}"
+                       AcceptsReturn="true"
+                       Watermark="{DynamicResource Text.Preference.AI.SubjectPromptHint}"
+                       TextWrapping="Wrap"/>
+
+              <TextBlock Grid.Row="4" Grid.Column="0"
+                         Text="{DynamicResource Text.Preference.AI.SummaryPrompt}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+
+              <TextBox Grid.Row="4" Grid.Column="1"
+                       Height="120"
+                       CornerRadius="3"
+                       VerticalContentAlignment="Top"
+                       Text="{Binding OpenAISummaryPrompt, Mode=TwoWay}"
+                       AcceptsReturn="true"
+                       Watermark="{DynamicResource Text.Preference.AI.SummaryPromptHint}"
+                       TextWrapping="Wrap"/>
             </Grid>
-          </StackPanel>          
+          </StackPanel>
         </TabItem>
       </TabControl>
-    </Border>    
+    </Border>
   </Grid>
 </v:ChromelessWindow>
