@@ -94,13 +94,13 @@ namespace SourceGit.Models
             set;
         }
 
-        public static string SubjectPrompt
+        public static string AnalyzeDiffPrompt
         {
             get;
             set;
         }
 
-        public static string SummaryPrompt
+        public static string GenerateSubjectPrompt
         {
             get;
             set;

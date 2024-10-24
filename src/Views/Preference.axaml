@@ -499,31 +499,27 @@
                        Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
 
               <TextBlock Grid.Row="3" Grid.Column="0"
-                         Text="{DynamicResource Text.Preference.AI.SubjectPrompt}"
+                         Text="{DynamicResource Text.Preference.AI.AnalyzeDiffPrompt}"
                          HorizontalAlignment="Right"
                          Margin="0,0,16,0"/>
-
               <TextBox Grid.Row="3" Grid.Column="1"
                        Height="120"
                        CornerRadius="3"
                        VerticalContentAlignment="Top"
-                       Text="{Binding OpenAISubjectPrompt, Mode=TwoWay}"
+                       Text="{Binding OpenAIAnalyzeDiffPrompt, Mode=TwoWay}"
                        AcceptsReturn="true"
-                       Watermark="{DynamicResource Text.Preference.AI.SubjectPromptHint}"
                        TextWrapping="Wrap"/>
 
               <TextBlock Grid.Row="4" Grid.Column="0"
-                         Text="{DynamicResource Text.Preference.AI.SummaryPrompt}"
+                         Text="{DynamicResource Text.Preference.AI.GenerateSubjectPrompt}"
                          HorizontalAlignment="Right"
                          Margin="0,0,16,0"/>
-
               <TextBox Grid.Row="4" Grid.Column="1"
                        Height="120"
                        CornerRadius="3"
                        VerticalContentAlignment="Top"
-                       Text="{Binding OpenAISummaryPrompt, Mode=TwoWay}"
+                       Text="{Binding OpenAIGenerateSubjectPrompt, Mode=TwoWay}"
                        AcceptsReturn="true"
-                       Watermark="{DynamicResource Text.Preference.AI.SummaryPromptHint}"
                        TextWrapping="Wrap"/>
             </Grid>
           </StackPanel>
