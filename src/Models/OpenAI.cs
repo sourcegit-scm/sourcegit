@@ -94,6 +94,12 @@ namespace SourceGit.Models
             set;
         }
 
+        public static string SelectedLanguage
+        {
+            get;
+            set;
+        }
+
         public static string AnalyzeDiffPrompt
         {
             get;

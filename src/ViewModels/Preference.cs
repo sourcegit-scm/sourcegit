@@ -316,6 +316,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string SelectedLanguage
+        {
+            get => Models.OpenAI.SelectedLanguage;
+            set
+            {
+                if (value != Models.OpenAI.SelectedLanguage)
+                {
+                    Models.OpenAI.SelectedLanguage = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string OpenAIAnalyzeDiffPrompt
         {
             get => Models.OpenAI.AnalyzeDiffPrompt;
@@ -591,6 +604,9 @@ namespace SourceGit.ViewModels
                     - Be as concise as possible, keep the message under 50 characters.
                     """;
             }
+
+            if (string.IsNullOrEmpty(Models.OpenAI.SelectedLanguage))
+                Models.OpenAI.SelectedLanguage = "English";
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
