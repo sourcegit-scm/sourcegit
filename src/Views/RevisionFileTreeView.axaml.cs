@@ -284,7 +284,7 @@ namespace SourceGit.Views
             node.Children.Sort((l, r) =>
             {
                 if (l.IsFolder == r.IsFolder)
-                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                    return Models.NumericSort.Compare(l.Name, r.Name);
                 return l.IsFolder ? -1 : 1;
             });
 

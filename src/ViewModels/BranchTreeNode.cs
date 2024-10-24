@@ -194,9 +194,9 @@ namespace SourceGit.ViewModels
                         return -1;
 
                     if (l.Backend is Models.Branch)
-                        return r.Backend is Models.Branch ? string.Compare(l.Name, r.Name, StringComparison.Ordinal) : 1;
+                        return r.Backend is Models.Branch ? Models.NumericSort.Compare(l.Name, r.Name) : 1;
 
-                    return r.Backend is Models.Branch ? -1 : string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                    return r.Backend is Models.Branch ? -1 : Models.NumericSort.Compare(l.Name, r.Name);
                 });
 
                 foreach (var node in nodes)
