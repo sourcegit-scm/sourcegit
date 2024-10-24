@@ -150,6 +150,8 @@
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增匹配Jira规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">新增匹配GitLab议题规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">新增匹配GitLab合并请求规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自定义规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">匹配ISSUE的正则表达式 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">规则名 ：</x:String>

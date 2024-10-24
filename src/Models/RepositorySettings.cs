@@ -169,6 +169,32 @@ namespace SourceGit.Models
             return rule;
         }
 
+        public IssueTrackerRule AddGitLabIssueTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "GitLab ISSUE",
+                RegexString = "#(\\d+)",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/issues/$1" : $"{repoURL}/-/issues/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public IssueTrackerRule AddGitLabMergeRequestTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "GitLab MR",
+                RegexString = "!(\\d+)",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/merge_requests/$1" : $"{repoURL}/-/merge_requests/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
         public void RemoveIssueTracker(IssueTrackerRule rule)
         {
             if (rule != null)

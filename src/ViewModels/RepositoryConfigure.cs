@@ -172,6 +172,34 @@ namespace SourceGit.ViewModels
             SelectedIssueTrackerRule = _repo.Settings.AddJiraIssueTracker();
         }
 
+        public void AddSampleGitLabIssueTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.TryGetVisitURL(out string url))
+                {
+                    SelectedIssueTrackerRule = _repo.Settings.AddGitLabIssueTracker(url);
+                    return;
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGitLabIssueTracker(null);
+        }
+
+        public void AddSampleGitLabMergeRequestTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.TryGetVisitURL(out string url))
+                {
+                    SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(url);
+                    return;
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(null);
+        }
+
         public void NewIssueTracker()
         {
             SelectedIssueTrackerRule = _repo.Settings.AddNewIssueTracker();
