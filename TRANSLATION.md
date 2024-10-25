@@ -14,7 +14,7 @@
 
 </details>
 
-### fr_FR.axaml: 90.38%
+### fr_FR.axaml: 90.36%
 
 
 <details>
@@ -87,7 +87,7 @@
 
 </details>
 
-### pt_BR.axaml: 93.53%
+### pt_BR.axaml: 93.52%
 
 
 <details>
@@ -156,7 +156,7 @@
 
 </details>
 
-### zh_CN.axaml: 98.95%
+### zh_CN.axaml: 99.10%
 
 
 <details>
@@ -168,7 +168,6 @@
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Model
 - Text.Preference.AI.Server
-- Text.RemoteCM.Prune.Target
 
 </details>
 
