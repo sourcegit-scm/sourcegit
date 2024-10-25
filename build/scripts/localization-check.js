@@ -25,7 +25,7 @@ async function calculateTranslationRate() {
     const files = (await fs.readdir(localesDir)).filter(file => file !== 'en_US.axaml' && file.endsWith('.axaml'));
 
     // Add en_US badge first
-    badges.push(`![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)`);
+    badges.push(`[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md)`);
 
     for (const file of files) {
         const filePath = path.join(localesDir, file);
@@ -41,12 +41,12 @@ async function calculateTranslationRate() {
         // Add badges
         const locale = file.replace('.axaml', '').replace('_', '__');
         const badgeColor = translationRate === 100 ? 'brightgreen' : translationRate >= 75 ? 'yellow' : 'red';
-        badges.push(`![${locale}](https://img.shields.io/badge/${locale}-${translationRate.toFixed(2)}%25-${badgeColor})`);
+        badges.push(`[![${locale}](https://img.shields.io/badge/${locale}-${translationRate.toFixed(2)}%25-${badgeColor})](TRANSLATION.md)`);
     }
 
     console.log(translationRates.join('\n\n'));
 
-    await fs.writeFile(outputFile, translationRates.join('\n\n'), 'utf8');
+    await fs.writeFile(outputFile, translationRates.join('\n\n') + '\n', 'utf8');
 
     // Update README.md
     let readmeContent = await fs.readFile(readmeFile, 'utf8');
