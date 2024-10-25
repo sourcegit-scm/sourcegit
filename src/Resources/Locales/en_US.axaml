@@ -401,6 +401,7 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Last year</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Preference</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">Advanced Options</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API Key</x:String>

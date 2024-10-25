@@ -465,7 +465,7 @@
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.AI}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
-            <Grid Margin="8,0,0,0" RowDefinitions="32,32,32,128,128">
+            <Grid Margin="8,0,0,0" RowDefinitions="32,32,32,32,Auto,Auto">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
@@ -499,29 +499,39 @@
                        PasswordChar="*"
                        Text="{Binding OpenAIApiKey, Mode=TwoWay}"/>
 
-              <TextBlock Grid.Row="3" Grid.Column="0"
+              <ToggleButton Grid.Row="3" Grid.Column="1" Classes="group_expander" x:Name="OpenAIAdvancedOptions" HorizontalAlignment="Right">
+                <TextBlock Margin="0" Text="{DynamicResource Text.Preference.Advanced}"/>
+              </ToggleButton>
+
+              <TextBlock Grid.Row="4" Grid.Column="0"
                          Text="{DynamicResource Text.Preference.AI.AnalyzeDiffPrompt}"
                          HorizontalAlignment="Right"
-                         Margin="0,0,16,0"/>
-              <TextBox Grid.Row="3" Grid.Column="1"
+                         Margin="0,0,16,0"
+                         IsVisible="{Binding #OpenAIAdvancedOptions.IsChecked}"/>
+              <TextBox Grid.Row="4" Grid.Column="1"
                        Height="120"
+                       Margin="0,2"
                        CornerRadius="3"
                        VerticalContentAlignment="Top"
                        Text="{Binding OpenAIAnalyzeDiffPrompt, Mode=TwoWay}"
                        AcceptsReturn="true"
-                       TextWrapping="Wrap"/>
+                       TextWrapping="Wrap"
+                       IsVisible="{Binding #OpenAIAdvancedOptions.IsChecked}"/>
 
-              <TextBlock Grid.Row="4" Grid.Column="0"
+              <TextBlock Grid.Row="5" Grid.Column="0"
                          Text="{DynamicResource Text.Preference.AI.GenerateSubjectPrompt}"
                          HorizontalAlignment="Right"
-                         Margin="0,0,16,0"/>
-              <TextBox Grid.Row="4" Grid.Column="1"
+                         Margin="0,0,16,0"
+                         IsVisible="{Binding #OpenAIAdvancedOptions.IsChecked}"/>
+              <TextBox Grid.Row="5" Grid.Column="1"
                        Height="120"
+                       Margin="0,2"
                        CornerRadius="3"
                        VerticalContentAlignment="Top"
                        Text="{Binding OpenAIGenerateSubjectPrompt, Mode=TwoWay}"
                        AcceptsReturn="true"
-                       TextWrapping="Wrap"/>
+                       TextWrapping="Wrap"
+                       IsVisible="{Binding #OpenAIAdvancedOptions.IsChecked}"/>
             </Grid>
           </StackPanel>
         </TabItem>

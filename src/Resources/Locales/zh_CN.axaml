@@ -404,6 +404,7 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">高级设置</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>
