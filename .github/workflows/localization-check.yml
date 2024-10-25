@@ -1,0 +1,42 @@
+name: Localization Check
+on:
+  push:
+    branches: [ develop ]
+    paths:
+      - 'src/Resources/Locales/**'
+      - 'README.md'
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  localization-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm install fs-extra@11.2.0 path@0.12.7 xml2js@0.6.2
+
+      - name: Run localization check
+        run: node .github/scripts/localization-check.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          if [ -n "$(git status --porcelain)" ]; then
+            git add README.md TRANSLATION.md
+            git commit -m 'doc: Update translation status and missing keys'
+            git push
+          else
+            echo "No changes to commit"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
