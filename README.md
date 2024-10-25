@@ -41,6 +41,10 @@
 > [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
 
+## Translation Status
+
+![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen) ![de__DE](https://img.shields.io/badge/de__DE-98.95%25-yellow) ![fr__FR](https://img.shields.io/badge/fr__FR-90.38%25-yellow) ![pt__BR](https://img.shields.io/badge/pt__BR-93.53%25-yellow) ![ru__RU](https://img.shields.io/badge/ru__RU-98.80%25-yellow) ![zh__CN](https://img.shields.io/badge/zh__CN-98.95%25-yellow) ![zh__TW](https://img.shields.io/badge/zh__TW-99.70%25-yellow)
+
 ## How to Use
 
 **To use this tool, you need to install Git(>=2.23.0) first.**

@@ -23,6 +23,10 @@ ehthumbs_vista.db
 
 bin/
 obj/
+# ignore ci node files
+node_modules/
+package.json
+package-lock.json
 
 build/resources/
 build/SourceGit/
