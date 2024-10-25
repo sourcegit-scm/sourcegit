@@ -25,7 +25,7 @@ jobs:
         run: npm install fs-extra@11.2.0 path@0.12.7 xml2js@0.6.2
 
       - name: Run localization check
-        run: node .github/scripts/localization-check.js
+        run: node build/scripts/localization-check.js
 
       - name: Commit changes
         run: |
