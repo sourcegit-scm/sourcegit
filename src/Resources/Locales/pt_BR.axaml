@@ -464,7 +464,6 @@
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Editar...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Buscar</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Abrir no Navegador</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Alvo:</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Podar</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Habilitar Opção `--force`</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Alvo:</x:String>

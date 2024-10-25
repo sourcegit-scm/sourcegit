@@ -493,7 +493,6 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Im Browser öffnen</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Bestätige das entfernen des Worktrees</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Aktiviere `--force` Option</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Ziel:</x:String>

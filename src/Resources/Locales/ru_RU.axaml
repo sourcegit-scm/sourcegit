@@ -494,7 +494,6 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Открыть в браузере</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Удалить</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Цель:</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Подтвердить удаление рабочего дерева</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Включить опцию `--force`</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Цель:</x:String>
