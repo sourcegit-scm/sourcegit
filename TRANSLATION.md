@@ -171,13 +171,12 @@
 
 </details>
 
-### zh_TW.axaml: 99.70%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference.AI.AnalyzeDiffPrompt
-- Text.Preference.AI.GenerateSubjectPrompt
+
 
 </details>
