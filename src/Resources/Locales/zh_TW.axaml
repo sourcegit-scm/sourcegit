@@ -146,7 +146,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交資訊追加署名 (--signoff)</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交訊息追加署名 (--signoff)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增符合 GitHub Issue 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增符合 Jira 規則</x:String>
@@ -404,11 +404,13 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
-  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">進階選項</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">進階設定</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">OpenAI</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">伺服器</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API 金鑰</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
+  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>
+  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">產生提交訊息提示詞</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
@@ -642,7 +644,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">歷史輸入/範本</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">提交未包含變更檔案！是否繼續(--allow-empty)？</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>
