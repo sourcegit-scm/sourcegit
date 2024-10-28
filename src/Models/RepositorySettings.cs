@@ -130,6 +130,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public string PreferedOpenAIService
+        {
+            get;
+            set;
+        } = "---";
+
         public void PushCommitMessage(string message)
         {
             var existIdx = CommitMessages.IndexOf(message);

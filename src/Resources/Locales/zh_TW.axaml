@@ -158,6 +158,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">規則名稱:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">為 Issue 產生的網址連結:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在網址中使用 $1、$2 等變數填入正則表示式相符的內容</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">启用特定服务 ：</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">当【启用特定服务】被设置时，SourceGit将在本仓库中仅使用该服务。否则将弹出可用的OpenAI服务列表供用户选择。</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP 代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP 網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>

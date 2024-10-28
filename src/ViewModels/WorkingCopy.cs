@@ -8,7 +8,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -884,7 +883,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
 
             var ai = null as MenuItem;
-            var services = Preference.Instance.OpenAIServices;
+            var services = GetPreferedOpenAIServices();
             if (services.Count > 0)
             {
                 ai = new MenuItem();
@@ -1251,7 +1250,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            var services = Preference.Instance.OpenAIServices;
+            var services = GetPreferedOpenAIServices();
             if (services.Count == 0)
             {
                 App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
@@ -1438,6 +1437,25 @@ namespace SourceGit.ViewModels
             }
 
             return false;
+        }
+
+        private IList<Models.OpenAIService> GetPreferedOpenAIServices()
+        {
+            var services = Preference.Instance.OpenAIServices;
+            if (services == null || services.Count == 0)
+                return [];
+
+            if (services.Count == 1)
+                return services;
+
+            var prefered = _repo.Settings.PreferedOpenAIService;
+            foreach (var service in services)
+            {
+                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                    return [service];
+            }
+
+            return services;
         }
 
         private Repository _repo = null;

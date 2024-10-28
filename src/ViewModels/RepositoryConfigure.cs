@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -108,6 +109,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedIssueTrackerRule, value);
         }
 
+        public List<string> AvailableOpenAIServices
+        {
+            get;
+            private set;
+        }
+
+        public string PreferedOpenAIService
+        {
+            get => _repo.Settings.PreferedOpenAIService;
+            set => _repo.Settings.PreferedOpenAIService = value;
+        }
+
         public RepositoryConfigure(Repository repo)
         {
             _repo = repo;
@@ -115,6 +128,13 @@ namespace SourceGit.ViewModels
             Remotes = new List<string>();
             foreach (var remote in _repo.Remotes)
                 Remotes.Add(remote.Name);
+
+            AvailableOpenAIServices = new List<string>() { "---" };
+            foreach (var service in Preference.Instance.OpenAIServices)
+                AvailableOpenAIServices.Add(service.Name);
+
+            if (AvailableOpenAIServices.IndexOf(PreferedOpenAIService) == -1)
+                PreferedOpenAIService = "---";               
 
             _cached = new Commands.Config(repo.FullPath).ListAll();
             if (_cached.TryGetValue("user.name", out var name))
