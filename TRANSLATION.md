@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.80%
+### de_DE.axaml: 98.65%
 
 
 <details>
@@ -11,11 +11,12 @@
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Name
+- Text.Stash.KeepIndex
 - Text.WorkingCopy.ConfirmCommitWithoutFiles
 
 </details>
 
-### fr_FR.axaml: 90.23%
+### fr_FR.axaml: 90.09%
 
 
 <details>
@@ -75,6 +76,7 @@
 - Text.ScanRepositories
 - Text.ScanRepositories.RootDir
 - Text.Squash.Into
+- Text.Stash.KeepIndex
 - Text.Stash.OnlyStagedChanges
 - Text.Stash.TipForSelectedFiles
 - Text.Statistics.Overview
@@ -89,7 +91,7 @@
 
 </details>
 
-### pt_BR.axaml: 93.38%
+### pt_BR.axaml: 93.24%
 
 
 <details>
@@ -131,6 +133,7 @@
 - Text.Preference.AI.Name
 - Text.Push.CheckSubmodules
 - Text.Squash.Into
+- Text.Stash.KeepIndex
 - Text.Stash.OnlyStagedChanges
 - Text.Stash.TipForSelectedFiles
 - Text.Statistics.Overview
@@ -142,13 +145,14 @@
 
 </details>
 
-### ru_RU.axaml: 99.85%
+### ru_RU.axaml: 99.70%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.ChangeCM.GenerateCommitMessage
+- Text.Stash.KeepIndex
 
 </details>
 
