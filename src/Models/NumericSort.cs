@@ -50,22 +50,9 @@
                 string sub2 = new string(tmp2, 0, loc2);
                 int result;
                 if (isDigit1 && isDigit2)
-                {
-                    // compare numeric values
-                    if (sub1.Length == sub2.Length)
-                    {
-                        // if length is the same, lexicographical comparison is good also for numbers
-                        result = string.CompareOrdinal(sub1, sub2);
-                    }
-                    else
-                    {
-                        result = sub1.Length.CompareTo(sub2.Length);
-                    }
-                }
+                    result = loc1 == loc2 ? string.CompareOrdinal(sub1, sub2) : loc1 - loc2;
                 else
-                {
-                    result = string.Compare(sub1, sub2, System.StringComparison.Ordinal);
-                }
+                    result = string.CompareOrdinal(sub1, sub2);
 
                 if (result != 0)
                     return result;
