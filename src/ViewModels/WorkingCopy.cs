@@ -8,6 +8,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -881,6 +882,44 @@ namespace SourceGit.ViewModels
                 return null;
 
             var menu = new ContextMenu();
+
+            var ai = null as MenuItem;
+            var services = Preference.Instance.OpenAIServices;
+            if (services.Count > 0)
+            {
+                ai = new MenuItem();
+                ai.Icon = App.CreateMenuIcon("Icons.AIAssist");
+                ai.Header = App.Text("ChangeCM.GenerateCommitMessage");
+
+                if (services.Count == 1)
+                {
+                    ai.Click += (_, e) =>
+                    {
+                        var dialog = new Views.AIAssistant(services[0], _repo.FullPath, _selectedStaged, generated => CommitMessage = generated);
+                        App.OpenDialog(dialog);
+                        e.Handled = true;
+                    };
+                }
+                else
+                {
+                    foreach (var service in services)
+                    {
+                        var dup = service;
+
+                        var item = new MenuItem();
+                        item.Header = service.Name;
+                        item.Click += (_, e) =>
+                        {
+                            var dialog = new Views.AIAssistant(dup, _repo.FullPath, _selectedStaged, generated => CommitMessage = generated);
+                            App.OpenDialog(dialog);
+                            e.Handled = true;
+                        };
+
+                        ai.Items.Add(item);
+                    }
+                }
+            }
+
             if (_selectedStaged.Count == 1)
             {
                 var change = _selectedStaged[0];
@@ -958,24 +997,6 @@ namespace SourceGit.ViewModels
                 {
                     var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
                     window.Show();
-                    e.Handled = true;
-                };
-
-                var copyPath = new MenuItem();
-                copyPath.Header = App.Text("CopyPath");
-                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (_, e) =>
-                {
-                    App.CopyText(change.Path);
-                    e.Handled = true;
-                };
-
-                var copyFileName = new MenuItem();
-                copyFileName.Header = App.Text("CopyFileName");
-                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyFileName.Click += (_, e) =>
-                {
-                    App.CopyText(Path.GetFileName(change.Path));
                     e.Handled = true;
                 };
 
@@ -1070,6 +1091,30 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
+                if (ai != null)
+                {
+                    menu.Items.Add(ai);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Click += (_, e) =>
+                {
+                    App.CopyText(change.Path);
+                    e.Handled = true;
+                };
+
+                var copyFileName = new MenuItem();
+                copyFileName.Header = App.Text("CopyFileName");
+                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFileName.Click += (_, e) =>
+                {
+                    App.CopyText(Path.GetFileName(change.Path));
+                    e.Handled = true;
+                };
+
                 menu.Items.Add(copyPath);
                 menu.Items.Add(copyFileName);
             }
@@ -1123,6 +1168,12 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(unstage);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
+
+                if (ai != null)
+                {
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(ai);
+                }
             }
 
             return menu;
