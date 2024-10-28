@@ -410,6 +410,7 @@
   <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Запрос на анализ различий</x:String>
   <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Сгенерировать запрос на тему</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Модель</x:String>
+  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">ВИД</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Шрифт по-умолчанию</x:String>
