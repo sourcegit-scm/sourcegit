@@ -17,9 +17,11 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Push(List<Models.Change> changes, string message, bool onlyStaged)
+        public bool Push(List<Models.Change> changes, string message, bool onlyStaged, bool keepIndex)
         {
             var pathsBuilder = new StringBuilder();
+
+            var indexOpts = keepIndex ? "--keep-index" : "";
 
             if (onlyStaged)
             {
@@ -27,7 +29,7 @@ namespace SourceGit.Commands
                     pathsBuilder.Append($"\"{c.Path}\" ");
 
                 var paths = pathsBuilder.ToString();
-                Args = $"stash push --staged -m \"{message}\" -- {paths}";
+                Args = $"stash push {indexOpts} --staged -m \"{message}\" -- {paths}";
             }
             else
             {
@@ -53,7 +55,7 @@ namespace SourceGit.Commands
                 }
 
                 var paths = pathsBuilder.ToString();
-                Args = $"stash push -m \"{message}\" -- {paths}";
+                Args = $"stash push {indexOpts} -m \"{message}\" -- {paths}";
             }
 
             return Exec();

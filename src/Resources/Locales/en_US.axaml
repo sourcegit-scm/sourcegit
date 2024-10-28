@@ -573,6 +573,7 @@
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Include untracked files</x:String>
+  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Keep staged files</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</x:String>

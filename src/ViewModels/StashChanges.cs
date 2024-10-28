@@ -28,6 +28,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool KeepIndex
+        {
+            get;
+            set;
+        }
+
         public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
         {
             _repo = repo;
@@ -36,6 +42,7 @@ namespace SourceGit.ViewModels
             HasSelectedFiles = hasSelectedFiles;
             IncludeUntracked = true;
             OnlyStaged = false;
+            KeepIndex = false;
 
             View = new Views.StashChanges() { DataContext = this };
         }
@@ -63,7 +70,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Stash(_repo.FullPath).Push(jobs, Message, !HasSelectedFiles && OnlyStaged);
+                var succ = new Commands.Stash(_repo.FullPath).Push(jobs, Message, !HasSelectedFiles && OnlyStaged, KeepIndex);
                 CallUIThread(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
