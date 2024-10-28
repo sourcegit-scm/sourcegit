@@ -51,9 +51,16 @@
                 int result;
                 if (isDigit1 && isDigit2)
                 {
-                    int num1 = int.Parse(sub1);
-                    int num2 = int.Parse(sub2);
-                    result = num1 - num2;
+                    // compare numeric values
+                    if (sub1.Length == sub2.Length)
+                    {
+                        // if length is the same, lexicographical comparison is good also for numbers
+                        result = string.CompareOrdinal(sub1, sub2);
+                    }
+                    else
+                    {
+                        result = sub1.Length.CompareTo(sub2.Length);
+                    }
                 }
                 else
                 {
