@@ -511,9 +511,9 @@ namespace SourceGit.ViewModels
             }
 
             if (autoStart)
-                PopupHost.ShowAndStartPopup(new Fetch(this));
+                PopupHost.ShowAndStartPopup(new Fetch(this, null));
             else
-                PopupHost.ShowPopup(new Fetch(this));
+                PopupHost.ShowPopup(new Fetch(this, null));
         }
 
         public void Pull(bool autoStart)
@@ -1284,10 +1284,12 @@ namespace SourceGit.ViewModels
             push.Header = new Views.NameHighlightedTextBlock("BranchCM.Push", branch.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _remotes.Count > 0;
+
             push.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
                     PopupHost.ShowPopup(new Push(this, branch));
+
                 e.Handled = true;
             };
 
@@ -1296,10 +1298,12 @@ namespace SourceGit.ViewModels
                 var discard = new MenuItem();
                 discard.Header = App.Text("BranchCM.DiscardAll");
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
+
                 discard.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Discard(this));
+
                     e.Handled = true;
                 };
 
@@ -1353,10 +1357,12 @@ namespace SourceGit.ViewModels
                     CheckoutBranch(branch);
                     e.Handled = true;
                 };
+
                 menu.Items.Add(checkout);
 
                 var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
+
                 if (upstream != null && worktree == null)
                 {
                     var fastForward = new MenuItem();
@@ -1367,6 +1373,7 @@ namespace SourceGit.ViewModels
                     {
                         if (PopupHost.CanCreatePopup())
                             PopupHost.ShowAndStartPopup(new FastForwardWithoutCheckout(this, branch, upstream));
+
                         e.Handled = true;
                     };
 
@@ -1384,6 +1391,7 @@ namespace SourceGit.ViewModels
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Merge(this, branch.Name, _currentBranch.Name));
+
                     e.Handled = true;
                 };
 
@@ -1394,11 +1402,27 @@ namespace SourceGit.ViewModels
                 {
                     if (PopupHost.CanCreatePopup())
                         PopupHost.ShowPopup(new Rebase(this, _currentBranch, branch));
+
+                    e.Handled = true;
+                };
+
+                var fetch = new MenuItem
+                {
+                    Header = App.Text("RemoteCM.Fetch"),
+                    Icon = App.CreateMenuIcon("Icons.Fetch")
+                };
+
+                fetch.Click += (_, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowAndStartPopup(new Fetch(this, branch.Name) { FetchAllRemotes = false });
+
                     e.Handled = true;
                 };
 
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
+                menu.Items.Add(fetch);
 
                 if (_localChangesCount > 0)
                 {
@@ -1416,11 +1440,13 @@ namespace SourceGit.ViewModels
                             _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
                     };
+
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(compareWithWorktree);
                 }
 
                 var compareWithBranch = CreateMenuItemToCompareBranches(branch);
+
                 if (compareWithBranch != null)
                 {
                     if (_localChangesCount == 0)
@@ -1431,6 +1457,7 @@ namespace SourceGit.ViewModels
             }
 
             var detect = Commands.GitFlow.DetectType(_fullpath, _branches, branch.Name);
+
             if (detect.IsGitFlowBranch)
             {
                 var finish = new MenuItem();
@@ -1592,7 +1619,7 @@ namespace SourceGit.ViewModels
             fetch.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowAndStartPopup(new Fetch(this, remote));
+                    PopupHost.ShowAndStartPopup(new Fetch(this, null, remote));
                 e.Handled = true;
             };
 
@@ -2114,7 +2141,7 @@ namespace SourceGit.ViewModels
 
             IsAutoFetching = true;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
-            new Commands.Fetch(_fullpath, "--all", false, null) { RaiseError = false }.Exec();
+            new Commands.Fetch(_fullpath, "--all", null, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             IsAutoFetching = false;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));

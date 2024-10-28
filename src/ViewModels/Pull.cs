@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
                 if (FetchAllBranches)
                 {
                     SetProgressDescription($"Fetching remote: {_selectedRemote.Name}...");
-                    rs = new Commands.Fetch(_repo.FullPath, _selectedRemote.Name, NoTags, SetProgressDescription).Exec();
+                    rs = new Commands.Fetch(_repo.FullPath, _selectedRemote.Name, null, NoTags, SetProgressDescription).Exec();
                     if (!rs)
                         return false;
 
