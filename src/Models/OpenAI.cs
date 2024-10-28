@@ -6,6 +6,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace SourceGit.Models
 {
     public class OpenAIChatMessage
@@ -74,44 +76,78 @@ namespace SourceGit.Models
         }
     }
 
-    public static class OpenAI
+    public class OpenAIService : ObservableObject
     {
-        public static string Server
+        public string Name
         {
-            get;
-            set;
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
-        public static string ApiKey
+        public string Server
         {
-            get;
-            set;
+            get => _server;
+            set => SetProperty(ref _server, value);
         }
 
-        public static string Model
+        public string ApiKey
         {
-            get;
-            set;
+            get => _apiKey;
+            set => SetProperty(ref _apiKey, value);
         }
 
-        public static string AnalyzeDiffPrompt
+        public string Model
         {
-            get;
-            set;
+            get => _model;
+            set => SetProperty(ref _model, value);
         }
 
-        public static string GenerateSubjectPrompt
+        public string AnalyzeDiffPrompt
         {
-            get;
-            set;
+            get => _analyzeDiffPrompt;
+            set => SetProperty(ref _analyzeDiffPrompt, value);
         }
 
-        public static bool IsValid
+        public string GenerateSubjectPrompt
         {
-            get => !string.IsNullOrEmpty(Server) && !string.IsNullOrEmpty(Model);
+            get => _generateSubjectPrompt;
+            set => SetProperty(ref _generateSubjectPrompt, value);
         }
 
-        public static OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
+        public OpenAIService()
+        {
+            AnalyzeDiffPrompt = """
+                You are an expert developer specialist in creating commits.
+                Provide a super concise one sentence overall changes summary of the user `git diff` output following strictly the next rules:
+                - Do not use any code snippets, imports, file routes or bullets points.
+                - Do not mention the route of file that has been change.
+                - Write clear, concise, and descriptive messages that explain the MAIN GOAL made of the changes.
+                - Use the present tense and active voice in the message, for example, "Fix bug" instead of "Fixed bug.".
+                - Use the imperative mood, which gives the message a sense of command, e.g. "Add feature" instead of "Added feature".
+                - Avoid using general terms like "update" or "change", be specific about what was updated or changed.
+                - Avoid using terms like "The main goal of", just output directly the summary in plain text
+                """;
+
+            GenerateSubjectPrompt = """
+                You are an expert developer specialist in creating commits messages.
+                Your only goal is to retrieve a single commit message.
+                Based on the provided user changes, combine them in ONE SINGLE commit message retrieving the global idea, following strictly the next rules:
+                - Assign the commit {type} according to the next conditions:
+                    feat: Only when adding a new feature.
+                    fix: When fixing a bug.
+                    docs: When updating documentation.
+                    style: When changing elements styles or design and/or making changes to the code style (formatting, missing semicolons, etc.) without changing the code logic.
+                    test: When adding or updating tests.
+                    chore: When making changes to the build process or auxiliary tools and libraries.
+                    revert: When undoing a previous commit.
+                    refactor: When restructuring code without changing its external behavior, or is any of the other refactor types.
+                - Do not add any issues numeration, explain your output nor introduce your answer.
+                - Output directly only one commit message in plain text with the next format: {type}: {commit_message}.
+                - Be as concise as possible, keep the message under 50 characters.
+                """;
+        }
+
+        public OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
         {
             var chat = new OpenAIChatRequest() { Model = Model };
             chat.AddMessage("system", prompt);
@@ -144,5 +180,12 @@ namespace SourceGit.Models
                 throw;
             }
         }
+
+        private string _name;
+        private string _server;
+        private string _apiKey;
+        private string _model;
+        private string _analyzeDiffPrompt;
+        private string _generateSubjectPrompt;
     }
 }

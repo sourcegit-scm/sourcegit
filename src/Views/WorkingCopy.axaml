@@ -199,7 +199,7 @@
         <Button Grid.Column="1"
                 Classes="icon_button"
                 Margin="4,2,0,0"
-                Command="{Binding GenerateCommitMessageByAI}"
+                Click="OnOpenOpenAIHelper"
                 ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">

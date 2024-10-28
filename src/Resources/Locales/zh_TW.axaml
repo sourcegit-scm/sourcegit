@@ -403,12 +403,12 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} 個月前</x:String>
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
-  <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">進階設定</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">OpenAI</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">伺服器</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API 金鑰</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
+  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">名稱</x:String>
   <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>
   <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">產生提交訊息提示詞</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀設定</x:String>

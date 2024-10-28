@@ -404,7 +404,13 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
-  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">高级设置</x:String>
+  <x:String x:Key="Text.Preference.AI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
+  <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API密钥</x:String>
+  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
+  <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
+  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">配置名称</x:String>
+  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>

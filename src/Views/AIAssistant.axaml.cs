@@ -17,12 +17,14 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public AIAssistant(string repo, List<Models.Change> changes, Action<string> onDone)
+        public AIAssistant(Models.OpenAIService service, string repo, List<Models.Change> changes, Action<string> onDone)
         {
+            _service = service;
             _repo = repo;
             _changes = changes;
             _onDone = onDone;
             _cancel = new CancellationTokenSource();
+
             InitializeComponent();
         }
 
@@ -35,7 +37,7 @@ namespace SourceGit.Views
 
             Task.Run(() =>
             {
-                var message = new Commands.GenerateCommitMessage(_repo, _changes, _cancel.Token, SetDescription).Result();
+                var message = new Commands.GenerateCommitMessage(_service, _repo, _changes, _cancel.Token, SetDescription).Result();
                 if (_cancel.IsCancellationRequested)
                     return;
 
@@ -63,6 +65,7 @@ namespace SourceGit.Views
             Dispatcher.UIThread.Invoke(() => ProgressMessage.Text = message);
         }
 
+        private Models.OpenAIService _service;
         private string _repo;
         private List<Models.Change> _changes;
         private Action<string> _onDone;

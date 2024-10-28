@@ -20,8 +20,9 @@ namespace SourceGit.Commands
             }
         }
 
-        public GenerateCommitMessage(string repo, List<Models.Change> changes, CancellationToken cancelToken, Action<string> onProgress)
+        public GenerateCommitMessage(Models.OpenAIService service, string repo, List<Models.Change> changes, CancellationToken cancelToken, Action<string> onProgress)
         {
+            _service = service;
             _repo = repo;
             _changes = changes;
             _cancelToken = cancelToken;
@@ -75,7 +76,7 @@ namespace SourceGit.Commands
             var rs = new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadToEnd();
             var diff = rs.IsSuccess ? rs.StdOut : "unknown change";
 
-            var rsp = Models.OpenAI.Chat(Models.OpenAI.AnalyzeDiffPrompt, $"Here is the `git diff` output: {diff}", _cancelToken);
+            var rsp = _service.Chat(_service.AnalyzeDiffPrompt, $"Here is the `git diff` output: {diff}", _cancelToken);
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 
@@ -84,13 +85,14 @@ namespace SourceGit.Commands
 
         private string GenerateSubject(string summary)
         {
-            var rsp = Models.OpenAI.Chat(Models.OpenAI.GenerateSubjectPrompt, $"Here are the summaries changes:\n{summary}", _cancelToken);
+            var rsp = _service.Chat(_service.GenerateSubjectPrompt, $"Here are the summaries changes:\n{summary}", _cancelToken);
             if (rsp != null && rsp.Choices.Count > 0)
                 return rsp.Choices[0].Message.Content;
 
             return string.Empty;
         }
 
+        private Models.OpenAIService _service;
         private string _repo;
         private List<Models.Change> _changes;
         private CancellationToken _cancelToken;

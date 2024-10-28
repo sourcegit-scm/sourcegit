@@ -74,6 +74,15 @@ namespace SourceGit.Views
             set;
         }
 
+        public static readonly StyledProperty<Models.OpenAIService> SelectedOpenAIServiceProperty =
+            AvaloniaProperty.Register<Preference, Models.OpenAIService>(nameof(SelectedOpenAIService));
+
+        public Models.OpenAIService SelectedOpenAIService
+        {
+            get => GetValue(SelectedOpenAIServiceProperty);
+            set => SetValue(SelectedOpenAIServiceProperty, value);
+        }
+
         public Preference()
         {
             var pref = ViewModels.Preference.Instance;
@@ -310,6 +319,25 @@ namespace SourceGit.Views
                 App.OpenDialog(dialog);
             }
 
+            e.Handled = true;
+        }
+
+        private void OnAddOpenAIService(object sender, RoutedEventArgs e)
+        {
+            var service = new Models.OpenAIService() { Name = "Unnamed Service" };
+            ViewModels.Preference.Instance.OpenAIServices.Add(service);
+            SelectedOpenAIService = service;
+
+            e.Handled = true;
+        }
+
+        private void OnRemoveSelectedOpenAIService(object sender, RoutedEventArgs e)
+        {
+            if (SelectedOpenAIService == null)
+                return;
+
+            ViewModels.Preference.Instance.OpenAIServices.Remove(SelectedOpenAIService);
+            SelectedOpenAIService = null;
             e.Handled = true;
         }
     }

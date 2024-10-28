@@ -403,25 +403,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void GenerateCommitMessageByAI()
-        {
-            if (!Models.OpenAI.IsValid)
-            {
-                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
-                return;
-            }
-
-            if (_staged is { Count: > 0 })
-            {
-                var dialog = new Views.AIAssistant(_repo.FullPath, _staged, generated => CommitMessage = generated);
-                App.OpenDialog(dialog);
-            }
-            else
-            {
-                App.RaiseException(_repo.FullPath, "No files added to commit!");
-            }
-        }
-
         public void Commit()
         {
             DoCommit(false, false, false);
@@ -1209,6 +1190,51 @@ namespace SourceGit.ViewModels
             }
 
             return menu;
+        }
+
+        public ContextMenu CreateContextForOpenAI()
+        {
+            if (_staged == null || _staged.Count == 0)
+            {
+                App.RaiseException(_repo.FullPath, "No files added to commit!");
+                return null;
+            }
+
+            var services = Preference.Instance.OpenAIServices;
+            if (services.Count == 0)
+            {
+                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
+                return null;
+            }
+
+            if (services.Count == 1)
+            {
+                var dialog = new Views.AIAssistant(services[0], _repo.FullPath, _staged, generated => CommitMessage = generated);
+                App.OpenDialog(dialog);
+                return null;
+            }
+            else
+            {
+                var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
+
+                foreach (var service in services)
+                {
+                    var dup = service;
+
+                    var item = new MenuItem();
+                    item.Header = service.Name;
+                    item.Click += (_, e) =>
+                    {
+                        var dialog = new Views.AIAssistant(dup, _repo.FullPath, _staged, generated => CommitMessage = generated);
+                        App.OpenDialog(dialog);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+
+                return menu;
+            }
         }
 
         private List<Models.Change> GetStagedChanges()

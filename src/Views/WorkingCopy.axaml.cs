@@ -120,6 +120,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+            {
+                var menu = vm.CreateContextForOpenAI();
+                (sender as Button)?.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
+
         private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)

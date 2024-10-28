@@ -405,7 +405,6 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В пролому году</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Параметры</x:String>
-  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">Расширенные опции</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">Ключ API</x:String>
   <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Запрос на анализ различий</x:String>
