@@ -159,12 +159,12 @@
 
 </details>
 
-### zh_TW.axaml: 99.85%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference
+
 
 </details>
