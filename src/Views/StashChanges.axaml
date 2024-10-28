@@ -11,7 +11,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Stash.Title}"/>
-    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,Auto,32" ColumnDefinitions="120,*">
+    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,Auto,32,Auto" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0" 
                  HorizontalAlignment="Right" 
                  Margin="8,0" 
@@ -22,13 +22,6 @@
                Text="{Binding Message, Mode=TwoWay}"
                Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
-
-      <TextBlock Grid.Row="1" Grid.Column="1"
-                 Margin="0,4,0,0"
-                 Text="{DynamicResource Text.Stash.TipForSelectedFiles}"
-                 TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"
-                 IsVisible="{Binding HasSelectedFiles}"/>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
                 Height="32"
@@ -46,6 +39,13 @@
                 Height="32"
                 Content="{DynamicResource Text.Stash.KeepIndex}"
                 IsChecked="{Binding KeepIndex, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="4" Grid.Column="1"
+                 Margin="0,4,0,0"
+                 Text="{DynamicResource Text.Stash.TipForSelectedFiles}"
+                 TextWrapping="Wrap"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 IsVisible="{Binding HasSelectedFiles}"/>
     </Grid>
   </StackPanel>
 </UserControl>
