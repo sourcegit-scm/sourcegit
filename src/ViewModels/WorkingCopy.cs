@@ -33,11 +33,6 @@ namespace SourceGit.ViewModels
 
     public class WorkingCopy : ObservableObject
     {
-        public string RepoPath
-        {
-            get => _repo.FullPath;
-        }
-
         public bool IncludeUntracked
         {
             get => _repo.IncludeUntracked;
@@ -77,12 +72,6 @@ namespace SourceGit.ViewModels
         {
             get => _isCommitting;
             private set => SetProperty(ref _isCommitting, value);
-        }
-
-        public bool AutoStageBeforeCommit
-        {
-            get => _repo.Settings.AutoStageBeforeCommit;
-            set => _repo.Settings.AutoStageBeforeCommit = value;
         }
 
         public bool UseAmend
@@ -414,19 +403,43 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void GenerateCommitMessageByAI()
+        {
+            if (!Models.OpenAI.IsValid)
+            {
+                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
+                return;
+            }
+
+            if (_staged is { Count: > 0 })
+            {
+                var dialog = new Views.AIAssistant(_repo.FullPath, _staged, generated => CommitMessage = generated);
+                App.OpenDialog(dialog);
+            }
+            else
+            {
+                App.RaiseException(_repo.FullPath, "No files added to commit!");
+            }
+        }
+
         public void Commit()
         {
-            DoCommit(AutoStageBeforeCommit, false);
+            DoCommit(false, false, false);
         }
 
         public void CommitWithAutoStage()
         {
-            DoCommit(true, false);
+            DoCommit(true, false, false);
         }
 
         public void CommitWithPush()
         {
-            DoCommit(AutoStageBeforeCommit, true);
+            DoCommit(false, true, false);
+        }
+
+        public void CommitWithoutFiles(bool autoPush)
+        {
+            DoCommit(false, autoPush, true);
         }
 
         public ContextMenu CreateContextMenuForUnstagedChanges()
@@ -1158,7 +1171,7 @@ namespace SourceGit.ViewModels
                     item.Icon = App.CreateMenuIcon("Icons.Code");
                     item.Click += (_, e) =>
                     {
-                        CommitMessage = template.Apply(_staged);
+                        CommitMessage = template.Apply(_repo.CurrentBranch, _staged);
                         e.Handled = true;
                     };
                     menu.Items.Add(item);
@@ -1274,7 +1287,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(true);
         }
 
-        private void DoCommit(bool autoStage, bool autoPush)
+        private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
         {
             if (!PopupHost.CanCreatePopup())
             {
@@ -1288,23 +1301,16 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (!_useAmend)
+            if (!_useAmend && !allowEmpty)
             {
-                if (autoStage)
+                if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
                 {
-                    if (_count == 0)
+                    App.OpenDialog(new Views.ConfirmCommitWithoutFiles()
                     {
-                        App.RaiseException(_repo.FullPath, "No files added to commit!");
-                        return;
-                    }
-                }
-                else
-                {
-                    if (_staged.Count == 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "No files added to commit!");
-                        return;
-                    }
+                        DataContext = new ConfirmCommitWithoutFiles(this, autoPush)
+                    });
+
+                    return;
                 }
             }
 
@@ -1319,7 +1325,7 @@ namespace SourceGit.ViewModels
                     succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend).Exec();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Run();
 
                 Dispatcher.UIThread.Post(() =>
                 {

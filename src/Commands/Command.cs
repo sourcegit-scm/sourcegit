@@ -195,6 +195,10 @@ namespace SourceGit.Commands
             if (OperatingSystem.IsLinux())
                 start.Environment.Add("LANG", "en_US.UTF-8");
 
+            // Fix macOS `PATH` env
+            if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
+                start.Environment.Add("PATH", Native.OS.CustomPathEnv);
+
             // Force using this app as git editor.
             switch (Editor)
             {

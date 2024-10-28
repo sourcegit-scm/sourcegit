@@ -143,9 +143,12 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Enable --signoff for commit</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Add Sample Github Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Add Sample Jira Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Add Sample GitLab Issue Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Add Sample GitLab Merge Request Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">New Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Issue Regex Expression:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Rule Name:</x:String>
@@ -247,7 +250,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch without tags</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Prune remote dead branches</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Remote Changes</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Assume unchanged</x:String>
@@ -399,10 +401,13 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Last year</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Preference</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">Advanced Options</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">OPEN AI</x:String>
-  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Server</x:String>
+  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API Key</x:String>
+  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Model</x:String>
+  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Server</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPEARANCE</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Default Font Size</x:String>
@@ -491,7 +496,6 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirm to Remove Worktree</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Enable `--force` Option</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</x:String>
@@ -621,7 +625,7 @@
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
-  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>  
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changes</x:String>
@@ -631,13 +635,13 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignore files in the same folder</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignore this file only</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">Auto-Stage</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">You can stage this file now.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Histories</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">FILE CONFLICTS ARE RESOLVED</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>

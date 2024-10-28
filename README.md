@@ -1,6 +1,6 @@
-# SourceGit
+# SourceGit - Opensource Git GUI client.
 
-Opensource Git GUI client.
+![stars](https://img.shields.io/github/stars/sourcegit-scm/sourcegit.svg) ![forks](https://img.shields.io/github/forks/sourcegit-scm/sourcegit.svg) ![license](https://img.shields.io/github/license/sourcegit-scm/sourcegit.svg) ![latest](https://img.shields.io/github/v/release/sourcegit-scm/sourcegit.svg) ![downloads](https://img.shields.io/github/downloads/sourcegit-scm/sourcegit/total)
 
 ## Highlights
 
@@ -40,6 +40,10 @@ Opensource Git GUI client.
 
 > [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
+
+## Translation Status
+
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.95%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-90.36%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-93.52%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-99.10%25-yellow)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
@@ -81,6 +85,7 @@ For **macOS** users:
 * Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
 * You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
+* You can run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to generate a custom PATH env file to introduce `PATH` env to SourceGit.
 
 For **Linux** users:
 

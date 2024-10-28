@@ -146,9 +146,12 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交訊息追加署名 (--signoff)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增符合 GitHub Issue 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增符合 Jira 規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">新增符合 GitLab 議題規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">新增符合 GitLab 合併請求規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自訂規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">符合 Issue 的正則表達式:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">規則名稱:</x:String>
@@ -250,7 +253,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不提取遠端標籤</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">自動清理遠端已刪除分支</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">提取遠端存放庫內容</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不追蹤此檔案的變更</x:String>
@@ -402,10 +404,13 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">進階設定</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">OpenAI</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">伺服器</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API 金鑰</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
+  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>
+  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">產生提交訊息提示詞</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
@@ -494,7 +499,6 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">提取 (fetch) 更新</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">在瀏覽器中存取網址</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理遠端已刪除分支</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">刪除工作區操作確認</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">啟用 [--force] 選項</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">目標工作區:</x:String>
@@ -634,13 +638,13 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同路徑下所有檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修補 (--amend)</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">自動暫存</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提  交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交並推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">歷史輸入/範本</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>

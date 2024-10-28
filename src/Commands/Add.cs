@@ -11,7 +11,7 @@ namespace SourceGit.Commands
             Context = repo;
             Args = includeUntracked ? "add ." : "add -u .";
         }
-        
+
         public Add(string repo, List<Models.Change> changes)
         {
             WorkingDirectory = repo;

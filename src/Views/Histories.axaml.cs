@@ -308,7 +308,7 @@ namespace SourceGit.Views
         [GeneratedRegex(@"^\[[\w\s]+\]")]
         private static partial Regex REG_KEYWORD_FORMAT1();
 
-        [GeneratedRegex(@"^\w+([\<\(][\w\s_\-\*,]+[\>\)])?\s?:\s")]
+        [GeneratedRegex(@"^\S+([\<\(][\w\s_\-\*,]+[\>\)])?\!?\s?:\s")]
         private static partial Regex REG_KEYWORD_FORMAT2();
 
         private List<Models.Hyperlink> _matches = null;

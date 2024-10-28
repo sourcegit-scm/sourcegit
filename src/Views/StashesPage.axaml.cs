@@ -19,7 +19,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e) 
+        private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.StashesPage vm && sender is Grid grid)
             {

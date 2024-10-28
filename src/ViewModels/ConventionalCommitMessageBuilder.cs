@@ -68,12 +68,13 @@ namespace SourceGit.ViewModels
             {
                 builder.Append("(");
                 builder.Append(_scope);
-                builder.Append("): ");
+                builder.Append(")");
             }
-            else
-            {
+
+            if (string.IsNullOrEmpty(_breakingChanges))
                 builder.Append(": ");
-            }
+            else
+                builder.Append("!: ");
 
             builder.Append(_description);
             builder.Append("\n\n");

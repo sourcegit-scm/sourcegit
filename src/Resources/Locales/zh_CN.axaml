@@ -146,9 +146,12 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交信息追加署名 (--signoff)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增匹配Jira规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">新增匹配GitLab议题规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">新增匹配GitLab合并请求规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自定义规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">匹配ISSUE的正则表达式 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">规则名 ：</x:String>
@@ -250,7 +253,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不拉取远程标签</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">自动清理远程已删除分支</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取远程仓库内容</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不跟踪此文件的更改</x:String>
@@ -402,6 +404,7 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">高级设置</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>
@@ -629,13 +632,13 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同目录下所有文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本文件</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修补(--amend)</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">自动暂存</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">现在您已可将其加入暂存区中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交并推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">历史输入/模板</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">触发点击事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自动暂存所有变更并提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)？</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">检测到冲突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">文件冲突已解决</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>

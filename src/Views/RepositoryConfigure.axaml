@@ -51,7 +51,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -123,10 +123,14 @@
                     IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="6" Grid.Column="1"
+                    Content="{DynamicResource Text.Configure.Git.EnableSignOff}"
+                    IsChecked="{Binding EnableSignOffForCommit, Mode=TwoWay}"/>
+
+          <CheckBox Grid.Row="7" Grid.Column="1"
                     Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
 
-          <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
+          <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
@@ -227,7 +231,7 @@
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
                   <v:CommitMessageTextBox Margin="0,4,0,0" Height="100" Text="{Binding Content, Mode=TwoWay}"/>
                   <TextBlock Margin="0,2,0,0"
-                             Text="You can use ${files_num}, ${files} and ${files:N} where N is the max number of file paths to output."
+                             Text="You can use ${files_num}, ${branch_name}, ${files} and ${files:N} where N is the max number of file paths to output."
                              Foreground="{DynamicResource Brush.FG2}"
                              TextWrapping="Wrap"/>
                 </StackPanel>
@@ -283,6 +287,8 @@
                       <MenuItem Header="-"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGithub}" Command="{Binding AddSampleGithubIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabIssue}" Command="{Binding AddSampleGitLabIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabMergeRequest}" Command="{Binding AddSampleGitLabMergeRequestTracker}"/>
                     </MenuFlyout>
                   </Button.Flyout>
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Text;
 
 using Avalonia;
 
@@ -19,30 +18,9 @@ namespace SourceGit.Native
                 DisableDefaultApplicationMenuItems = true,
             });
 
-            {
-                var startInfo = new ProcessStartInfo();
-                startInfo.FileName = "zsh";
-                startInfo.Arguments = "--login -c \"echo $PATH\"";
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-                try
-                {
-                    var proc = new Process() { StartInfo = startInfo };
-                    proc.Start();
-                    var pathData = proc.StandardOutput.ReadToEnd();
-                    proc.WaitForExit();
-                    if (proc.ExitCode == 0)
-                        Environment.SetEnvironmentVariable("PATH", pathData);
-                    proc.Close();
-                }
-                catch
-                {
-                    // Ignore error.
-                }
-            }
+            var customPathFile = Path.Combine(OS.DataDir, "PATH");
+            if (File.Exists(customPathFile))
+                OS.CustomPathEnv = File.ReadAllText(customPathFile).Trim();
         }
 
         public string FindGitExecutable()

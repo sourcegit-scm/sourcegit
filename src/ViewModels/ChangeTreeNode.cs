@@ -114,9 +114,9 @@ namespace SourceGit.ViewModels
 
             nodes.Sort((l, r) =>
             {
-                if (l.IsFolder)
-                    return r.IsFolder ? string.Compare(l.FullPath, r.FullPath, StringComparison.Ordinal) : -1;
-                return r.IsFolder ? 1 : string.Compare(l.FullPath, r.FullPath, StringComparison.Ordinal);
+                if (l.IsFolder == r.IsFolder)
+                    return Models.NumericSort.Compare(l.FullPath, r.FullPath);
+                return l.IsFolder ? -1 : 1;
             });
         }
 

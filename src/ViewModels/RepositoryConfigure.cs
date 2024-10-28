@@ -60,6 +60,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
+        public bool EnableSignOffForCommit
+        {
+            get => _repo.Settings.EnableSignOffForCommit;
+            set => _repo.Settings.EnableSignOffForCommit = value;
+        }
+
         public bool EnableAutoFetch
         {
             get => _repo.Settings.EnableAutoFetch;
@@ -164,6 +170,34 @@ namespace SourceGit.ViewModels
         public void AddSampleJiraIssueTracker()
         {
             SelectedIssueTrackerRule = _repo.Settings.AddJiraIssueTracker();
+        }
+
+        public void AddSampleGitLabIssueTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.TryGetVisitURL(out string url))
+                {
+                    SelectedIssueTrackerRule = _repo.Settings.AddGitLabIssueTracker(url);
+                    return;
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGitLabIssueTracker(null);
+        }
+
+        public void AddSampleGitLabMergeRequestTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.TryGetVisitURL(out string url))
+                {
+                    SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(url);
+                    return;
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(null);
         }
 
         public void NewIssueTracker()

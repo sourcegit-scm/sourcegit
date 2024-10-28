@@ -94,6 +94,18 @@ namespace SourceGit.Models
             set;
         }
 
+        public static string AnalyzeDiffPrompt
+        {
+            get;
+            set;
+        }
+
+        public static string GenerateSubjectPrompt
+        {
+            get;
+            set;
+        }
+
         public static bool IsValid
         {
             get => !string.IsNullOrEmpty(Server) && !string.IsNullOrEmpty(Model);
@@ -113,14 +125,14 @@ namespace SourceGit.Models
             try
             {
                 var task = client.PostAsync(Server, req, cancellation);
-                task.Wait();
+                task.Wait(cancellation);
 
                 var rsp = task.Result;
                 if (!rsp.IsSuccessStatusCode)
                     throw new Exception($"AI service returns error code {rsp.StatusCode}");
 
                 var reader = rsp.Content.ReadAsStringAsync(cancellation);
-                reader.Wait();
+                reader.Wait(cancellation);
 
                 return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
             }

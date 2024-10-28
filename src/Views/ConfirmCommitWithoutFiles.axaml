@@ -4,13 +4,13 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:vm="using:SourceGit.ViewModels"
-                    xmlns:c="using:SourceGit.Converters"
-                    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120"
-                    x:Class="SourceGit.Views.AIAssistant"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.ConfirmCommitWithoutFiles"
+                    x:DataType="vm:ConfirmCommitWithoutFiles"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="{DynamicResource Text.AIAssistant}"
-                    Width="400" SizeToContent="Height"
+                    Title="{DynamicResource Text.Warn}"
+                    SizeToContent="WidthAndHeight"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto,Auto">
@@ -23,8 +23,8 @@
 
       <Path Grid.Column="0"
             Width="14" Height="14"
+            Data="{StaticResource Icons.Error}"
             Margin="10,0,0,0"
-            Data="{StaticResource Icons.AIAssist}"
             IsVisible="{OnPlatform True, macOS=False}"/>
 
       <v:CaptionButtonsMacOS Grid.Column="0"
@@ -34,7 +34,7 @@
 
       <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
                  Classes="bold"
-                 Text="{DynamicResource Text.AIAssistant}"
+                 Text="{DynamicResource Text.Warn}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
@@ -43,18 +43,32 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <!-- Animated Icon -->
-    <v:LoadingIcon Grid.Row="1"
-                   Width="24" Height="24"
-                   Margin="0,16,0,0"/>
+    <!-- Body -->
+    <Border Grid.Row="1" Margin="16">
+      <TextBlock Text="{DynamicResource Text.WorkingCopy.ConfirmCommitWithoutFiles}"/>
+    </Border>
 
-    <!-- Message -->
-    <TextBlock Grid.Row="2"
-               x:Name="ProgressMessage"
-               Margin="16"
-               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-               HorizontalAlignment="Center"
-               Text="Generating commit message... Please wait!"
-               TextTrimming="CharacterEllipsis"/>
+    <!-- Buttons -->
+    <StackPanel Grid.Row="2" Margin="0,0,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button Classes="flat"
+              Width="80"
+              Height="30"
+              Margin="4,0"
+              Click="Sure"
+              Content="{DynamicResource Text.Sure}"
+              HorizontalAlignment="Center"
+              HorizontalContentAlignment="Center"
+              VerticalContentAlignment="Center"/>
+      
+      <Button Classes="flat primary"
+              Width="80"
+              Height="30"
+              Margin="4,0"
+              Click="CloseWindow"
+              Content="{DynamicResource Text.Cancel}"
+              HorizontalAlignment="Center"
+              HorizontalContentAlignment="Center"
+              VerticalContentAlignment="Center"/>
+    </StackPanel>
   </Grid>
 </v:ChromelessWindow>

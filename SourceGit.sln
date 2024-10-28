@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\ci.yml = .github\workflows\ci.yml
 		.github\workflows\package.yml = .github\workflows\package.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\localization-check.yml = .github\workflows\localization-check.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49A7C2D6-558C-4FAA-8F5D-EEE81497AED7}"

@@ -73,15 +73,7 @@ namespace SourceGit.Commands
             if (data.Length < 8)
                 return;
 
-            var idx = data.IndexOf(' ', StringComparison.Ordinal);
-            if (idx == -1)
-            {
-                _current.Commit.Parents.Add(data);
-                return;
-            }
-
-            _current.Commit.Parents.Add(data.Substring(0, idx));
-            _current.Commit.Parents.Add(data.Substring(idx + 1));
+            _current.Commit.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
 
         private List<Models.CommitWithMessage> _commits = new List<Models.CommitWithMessage>();

@@ -229,7 +229,6 @@
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch toutes les branches distantes</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch sans les tags</x:String>
-  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Élaguer les branches mortes distantes</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote :</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Récupérer les changements distants</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Présumer inchangé</x:String>
@@ -454,7 +453,6 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirm to Remove Worktree</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Enable `--force` Option</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</x:String>
@@ -582,7 +580,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignorer les fichiers dans le même dossier</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">N'ignorer que ce fichier</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amender</x:String>
-  <x:String x:Key="Text.WorkingCopy.AutoStage" xml:space="preserve">Auto-Index</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Vous pouvez indexer ce fichier.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>

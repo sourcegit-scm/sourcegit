@@ -112,15 +112,7 @@ namespace SourceGit.Commands
             if (data.Length < 8)
                 return;
 
-            var idx = data.IndexOf(' ', StringComparison.Ordinal);
-            if (idx == -1)
-            {
-                _current.Parents.Add(data);
-                return;
-            }
-
-            _current.Parents.Add(data.Substring(0, idx));
-            _current.Parents.Add(data.Substring(idx + 1));
+            _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
 
         private void MarkFirstMerged()

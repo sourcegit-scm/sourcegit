@@ -70,12 +70,6 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public bool AutoStageBeforeCommit
-        {
-            get;
-            set;
-        } = false;
-
         public AvaloniaList<string> Filters
         {
             get;
@@ -111,6 +105,12 @@ namespace SourceGit.Models
             get;
             set;
         } = 10;
+
+        public bool EnableSignOffForCommit
+        {
+            get;
+            set;
+        } = false;
 
         public void PushCommitMessage(string message)
         {
@@ -163,6 +163,32 @@ namespace SourceGit.Models
                 Name = "Jira Tracker",
                 RegexString = "PROJ-(\\d+)",
                 URLTemplate = "https://jira.yourcompany.com/browse/PROJ-$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public IssueTrackerRule AddGitLabIssueTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "GitLab ISSUE",
+                RegexString = "#(\\d+)",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/issues/$1" : $"{repoURL}/-/issues/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public IssueTrackerRule AddGitLabMergeRequestTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "GitLab MR",
+                RegexString = "!(\\d+)",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/merge_requests/$1" : $"{repoURL}/-/merge_requests/$1",
             };
 
             IssueTrackerRules.Add(rule);
