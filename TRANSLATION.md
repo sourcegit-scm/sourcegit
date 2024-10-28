@@ -139,20 +139,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.80%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Configure.Git.EnableSignOff
-- Text.Configure.IssueTracker.AddSampleGitLabIssue
-- Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
-- Text.Preference.Advanced
-- Text.Preference.AI.AnalyzeDiffPrompt
-- Text.Preference.AI.GenerateSubjectPrompt
-- Text.Repository.EnableReflog
-- Text.WorkingCopy.ConfirmCommitWithoutFiles
+
 
 </details>
 
