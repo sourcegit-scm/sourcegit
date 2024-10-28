@@ -18,31 +18,27 @@ namespace SourceGit.ViewModels
 
         public bool IncludeUntracked
         {
-            get;
-            set;
+            get => _repo.Settings.IncludeUntrackedWhenStash;
+            set => _repo.Settings.IncludeUntrackedWhenStash = value;
         }
 
         public bool OnlyStaged
         {
-            get;
-            set;
+            get => _repo.Settings.OnlyStagedWhenStash;
+            set => _repo.Settings.OnlyStagedWhenStash = value;
         }
 
         public bool KeepIndex
         {
-            get;
-            set;
+            get => _repo.Settings.KeepIndexWhenStash;
+            set => _repo.Settings.KeepIndexWhenStash = value;
         }
 
         public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
         {
             _repo = repo;
             _changes = changes;
-
             HasSelectedFiles = hasSelectedFiles;
-            IncludeUntracked = true;
-            OnlyStaged = false;
-            KeepIndex = false;
 
             View = new Views.StashChanges() { DataContext = this };
         }

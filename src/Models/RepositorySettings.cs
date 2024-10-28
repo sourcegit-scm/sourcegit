@@ -112,6 +112,24 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool IncludeUntrackedWhenStash
+        {
+            get;
+            set;
+        } = true;
+
+        public bool OnlyStagedWhenStash
+        {
+            get;
+            set;
+        } = false;
+
+        public bool KeepIndexWhenStash
+        {
+            get;
+            set;
+        } = false;
+
         public void PushCommitMessage(string message)
         {
             var existIdx = CommitMessages.IndexOf(message);
