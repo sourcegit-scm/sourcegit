@@ -74,8 +74,8 @@
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Сбросить родительскую ревизию</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ИЗМЕНИТЬ РЕЖИМ ОТОБРАЖЕНИЯ</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Показывать в виде списка файлов и каталогов</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Показать в виде списка путей</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Показать в виде дерева файловой системы</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Показывать в виде списка путей</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Показывать в виде дерева файловой системы</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Проверить ветку</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Проверить фиксацию</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Предупреждение: При выполнении проверки фиксации ваша голова будет отсоединена</x:String>
@@ -146,9 +146,12 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автоматическое извлечение внешних хранилищ</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Удалённое хранилище по-умолчанию</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Разрешить --signoff  для фиксации</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Добавить пример правила для Git</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Добавить пример правила Jira</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Добавить пример правила выдачи GitLab</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Добавить пример правила запроса на слияние в GitLab</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Новое правило</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Проблема с регулярным выражением:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Имя правила:</x:String>
@@ -220,7 +223,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменение пробелов</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показать скрытые символы</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показывать скрытые символы</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ИЗМЕНЕНИЕ ОБЪЕКТА ХБФ</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее различие</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">НИКАКИХ ИЗМЕНЕНИЙ ИЛИ МЕНЯЕТСЯ ТОЛЬКО EOL</x:String>
@@ -305,7 +308,7 @@
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Извлечь объекты ХБФ</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустить `git lfs fetch", чтобы загрузить объекты ХБФ Git. При этом рабочая копия не обновляется.</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Установить перехват ХБФ Git</x:String>
-  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Показать блокировки</x:String>
+  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Показывать блокировки</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">Нет заблокированных файлов</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Блокировка</x:String>
   <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Показывать только мои блокировки</x:String>
@@ -402,10 +405,13 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В пролому году</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Параметры</x:String>
+  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">Расширенные опции</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
-  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">Ключ API</x:String>
+  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Запрос на анализ различий</x:String>
+  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Сгенерировать запрос на тему</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Модель</x:String>
+  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">ВИД</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Шрифт по-умолчанию</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Размер шрифта по-умолчанию</x:String>
@@ -423,7 +429,7 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Проверить обновления при старте</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Язык</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">История фиксаций</x:String>
-  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Показать время автора вместо времени фиксации на графике</x:String>
+  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени фиксации на графике</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Длина темы фиксации</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Включить автозавершение CRLF</x:String>
@@ -508,6 +514,7 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Очистить всё</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Настройка этого хранилища</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
+  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Разрешить опцию '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Открыть в файловом менеджере</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, меток и подмодулей</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">ОТФИЛЬТРОВАНО ОТ:</x:String>
@@ -527,7 +534,7 @@
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Автор и исполнитель</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Текущая ветка</x:String>
-  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показать метки как дерево</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показывать метки как дерево</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Статистики </x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">ПОДМОДУЛИ</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ДОБАВИТЬ ПОДМОДУЛЬ</x:String>
@@ -638,6 +645,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Шаблон/Истории</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Запустить событие щелчка</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Подготовить все изменения и зафиксировать</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Обнаружена пустая фиксация! Вы хотите продолжить (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТЬ НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
