@@ -84,11 +84,16 @@ For **Windows** users:
 
 For **macOS** users:
 
-* Download `sourcegit_x.y.osx-x64.zip` or `sourcegit_x.y.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
-* Move `SourceGit.app` to `Applications` folder.
-* Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
+* Thanks [@ybeapps](https://github.com/ybeapps) for making `SourceGit` available on `Homebrew`. You can simply install it with following command:
+  ```shell
+  brew tap ybeapps/homebrew-sourcegit
+  brew install --cask --no-quarantine sourcegit
+  ```
+* If you want to install `SourceGit.app` from Github Release manually, you need run following command to make sure it works:
+  ```shell
+  sudo xattr -cr /Applications/SourceGit.app
+  ```
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
-* You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
 * You can run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to generate a custom PATH env file to introduce `PATH` env to SourceGit.
 
 For **Linux** users:
