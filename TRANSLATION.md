@@ -7,9 +7,9 @@
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
-- Text.Preference.Advanced
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.GenerateSubjectPrompt
+- Text.Preference.AI.Name
 - Text.WorkingCopy.ConfirmCommitWithoutFiles
 
 </details>
@@ -55,12 +55,12 @@
 - Text.Hotkeys.Repo.DiscardSelected
 - Text.MoveRepositoryNode
 - Text.MoveRepositoryNode.Target
-- Text.Preference.Advanced
 - Text.Preference.AI
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.ApiKey
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Model
+- Text.Preference.AI.Name
 - Text.Preference.AI.Server
 - Text.Preference.General.ShowAuthorTime
 - Text.Preference.Integration
@@ -125,7 +125,7 @@
 - Text.GitLFS.Locks.OnlyMine
 - Text.MoveRepositoryNode
 - Text.MoveRepositoryNode.Target
-- Text.Preference.Advanced
+- Text.Preference.AI.Name
 - Text.Push.CheckSubmodules
 - Text.Squash.Into
 - Text.Stash.OnlyStagedChanges
@@ -139,7 +139,17 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.85%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.Preference.AI.Name
+
+</details>
+
+### zh_CN.axaml: 100.00%
 
 
 <details>
@@ -149,27 +159,12 @@
 
 </details>
 
-### zh_CN.axaml: 99.10%
+### zh_TW.axaml: 99.85%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference.AI
-- Text.Preference.AI.AnalyzeDiffPrompt
-- Text.Preference.AI.ApiKey
-- Text.Preference.AI.GenerateSubjectPrompt
-- Text.Preference.AI.Model
-- Text.Preference.AI.Server
-
-</details>
-
-### zh_TW.axaml: 100.00%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-
+- Text.Preference
 
 </details>
