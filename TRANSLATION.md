@@ -1,9 +1,10 @@
-### de_DE.axaml: 98.95%
+### de_DE.axaml: 98.80%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ChangeCM.GenerateCommitMessage
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
@@ -14,7 +15,7 @@
 
 </details>
 
-### fr_FR.axaml: 90.36%
+### fr_FR.axaml: 90.23%
 
 
 <details>
@@ -23,6 +24,7 @@
 - Text.About.Chart
 - Text.AIAssistant
 - Text.AIAssistant.Tip
+- Text.ChangeCM.GenerateCommitMessage
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline
 - Text.CherryPick.Mainline.Tips
@@ -87,7 +89,7 @@
 
 </details>
 
-### pt_BR.axaml: 93.52%
+### pt_BR.axaml: 93.38%
 
 
 <details>
@@ -96,6 +98,7 @@
 - Text.About.Chart
 - Text.AIAssistant
 - Text.AIAssistant.Tip
+- Text.ChangeCM.GenerateCommitMessage
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline
 - Text.CherryPick.Mainline.Tips
@@ -139,13 +142,13 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.85%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.ChangeCM.GenerateCommitMessage
 
 </details>
 
