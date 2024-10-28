@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.65%
+### de_DE.axaml: 98.21%
 
 
 <details>
@@ -8,6 +8,9 @@
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
+- Text.Configure.OpenAI
+- Text.Configure.OpenAI.Prefered
+- Text.Configure.OpenAI.Prefered.Tip
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Name
@@ -16,7 +19,7 @@
 
 </details>
 
-### fr_FR.axaml: 90.09%
+### fr_FR.axaml: 89.69%
 
 
 <details>
@@ -36,6 +39,9 @@
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
+- Text.Configure.OpenAI
+- Text.Configure.OpenAI.Prefered
+- Text.Configure.OpenAI.Prefered.Tip
 - Text.ConfigureWorkspace
 - Text.ConfigureWorkspace.Color
 - Text.ConfigureWorkspace.Restore
@@ -91,7 +97,7 @@
 
 </details>
 
-### pt_BR.axaml: 93.24%
+### pt_BR.axaml: 92.83%
 
 
 <details>
@@ -113,6 +119,9 @@
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
+- Text.Configure.OpenAI
+- Text.Configure.OpenAI.Prefered
+- Text.Configure.OpenAI.Prefered.Tip
 - Text.ConfigureWorkspace
 - Text.ConfigureWorkspace.Color
 - Text.ConfigureWorkspace.Restore
@@ -145,13 +154,16 @@
 
 </details>
 
-### ru_RU.axaml: 99.70%
+### ru_RU.axaml: 99.25%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.ChangeCM.GenerateCommitMessage
+- Text.Configure.OpenAI
+- Text.Configure.OpenAI.Prefered
+- Text.Configure.OpenAI.Prefered.Tip
 - Text.Stash.KeepIndex
 
 </details>
