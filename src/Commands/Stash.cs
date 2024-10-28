@@ -19,24 +19,27 @@ namespace SourceGit.Commands
 
         public bool Push(List<Models.Change> changes, string message, bool onlyStaged, bool keepIndex)
         {
-            var pathsBuilder = new StringBuilder();
-
-            var indexOpts = keepIndex ? "--keep-index" : "";
+            var builder = new StringBuilder();
+            builder.Append("stash push ");
+            if (onlyStaged)
+                builder.Append("--staged ");
+            if (keepIndex)
+                builder.Append("--keep-index ");
+            builder.Append("-m \"");
+            builder.Append(message);
+            builder.Append("\" -- ");
 
             if (onlyStaged)
             {
                 foreach (var c in changes)
-                    pathsBuilder.Append($"\"{c.Path}\" ");
-
-                var paths = pathsBuilder.ToString();
-                Args = $"stash push {indexOpts} --staged -m \"{message}\" -- {paths}";
+                    builder.Append($"\"{c.Path}\" ");
             }
             else
             {
                 var needAdd = new List<Models.Change>();
                 foreach (var c in changes)
                 {
-                    pathsBuilder.Append($"\"{c.Path}\" ");
+                    builder.Append($"\"{c.Path}\" ");
 
                     if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
                     {
@@ -53,11 +56,9 @@ namespace SourceGit.Commands
                     new Add(WorkingDirectory, needAdd).Exec();
                     needAdd.Clear();
                 }
-
-                var paths = pathsBuilder.ToString();
-                Args = $"stash push {indexOpts} -m \"{message}\" -- {paths}";
             }
 
+            Args = builder.ToString();
             return Exec();
         }
 
