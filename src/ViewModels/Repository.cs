@@ -1354,6 +1354,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
                 var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
@@ -1370,11 +1371,22 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    var fetchInto = new MenuItem();
+                    fetchInto.Header = new Views.NameHighlightedTextBlock("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
+                    fetchInto.Icon = App.CreateMenuIcon("Icons.Fetch");
+                    fetchInto.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                    fetchInto.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowAndStartPopup(new FetchInto(this, branch, upstream));
+                        e.Handled = true;
+                    };
+
                     menu.Items.Add(fastForward);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(fetchInto);
                 }
 
-                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(push);
 
                 var merge = new MenuItem();

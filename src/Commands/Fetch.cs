@@ -21,6 +21,16 @@ namespace SourceGit.Commands
             Args += remote;
         }
 
+        public Fetch(string repo, Models.Branch local, Models.Branch remote, Action<string> outputHandler)
+        {
+            _outputHandler = outputHandler;
+            WorkingDirectory = repo;
+            Context = repo;
+            TraitErrorAsOutput = true;
+            SSHKey = new Config(repo).Get($"remote.{remote.Remote}.sshkey");
+            Args = $"fetch --progress --verbose {remote.Remote} {remote.Name}:{local.Name}";
+        }
+
         protected override void OnReadline(string line)
         {
             _outputHandler?.Invoke(line);
