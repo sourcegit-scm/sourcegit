@@ -6,7 +6,7 @@ License: MIT
 URL: https://sourcegit-scm.github.io/
 Source: https://github.com/sourcegit-scm/sourcegit/archive/refs/tags/v%_version.tar.gz
 Requires: libX11
-Requires: libSM
+Requires: (libSM or libSM6)
 
 %define _build_id_links none
 
