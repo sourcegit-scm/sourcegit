@@ -12,7 +12,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*" MinWidth="300"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left -->

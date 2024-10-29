@@ -12,15 +12,15 @@
              x:Name="ThisControl">
   <v:LayoutableGrid UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <v:LayoutableGrid.RowDefinitions>
-      <RowDefinition Height="{Binding TopArea, Mode=TwoWay}"/>
+      <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>
-      <RowDefinition Height="{Binding BottomArea, Mode=TwoWay}"/>
+      <RowDefinition Height="{Binding BottomArea, Mode=TwoWay}" MinHeight="200"/>
     </v:LayoutableGrid.RowDefinitions>
 
     <v:LayoutableGrid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding LeftArea, Mode=TwoWay}"/>
+      <ColumnDefinition Width="{Binding LeftArea, Mode=TwoWay}" MinWidth="100"/>
       <ColumnDefinition Width="3"/>
-      <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}"/>
+      <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
     </v:LayoutableGrid.ColumnDefinitions>
     
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
