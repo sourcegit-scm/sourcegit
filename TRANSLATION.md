@@ -1,9 +1,10 @@
-### de_DE.axaml: 98.21%
+### de_DE.axaml: 98.06%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.BranchCM.FetchInto
 - Text.ChangeCM.GenerateCommitMessage
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
@@ -19,7 +20,7 @@
 
 </details>
 
-### fr_FR.axaml: 89.69%
+### fr_FR.axaml: 89.55%
 
 
 <details>
@@ -28,6 +29,7 @@
 - Text.About.Chart
 - Text.AIAssistant
 - Text.AIAssistant.Tip
+- Text.BranchCM.FetchInto
 - Text.ChangeCM.GenerateCommitMessage
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline
@@ -97,7 +99,7 @@
 
 </details>
 
-### pt_BR.axaml: 92.83%
+### pt_BR.axaml: 92.69%
 
 
 <details>
@@ -106,6 +108,7 @@
 - Text.About.Chart
 - Text.AIAssistant
 - Text.AIAssistant.Tip
+- Text.BranchCM.FetchInto
 - Text.ChangeCM.GenerateCommitMessage
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline
@@ -154,12 +157,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.25%
+### ru_RU.axaml: 99.10%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.BranchCM.FetchInto
 - Text.ChangeCM.GenerateCommitMessage
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
