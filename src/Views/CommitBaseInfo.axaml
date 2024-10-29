@@ -60,6 +60,22 @@
                        Margin="12,0,4,0" 
                        VerticalAlignment="Center"/>
 
+            <ContentControl Content="{Binding #ThisControl.SignInfo}">
+              <ContentControl.Styles>
+                <Style Selector="ToolTip">
+                  <Setter Property="MaxWidth" Value="800"/>
+                </Style>
+              </ContentControl.Styles>
+              
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="m:CommitSignInfo">
+                  <Border Width="24" Background="Transparent" ToolTip.Tip="{Binding ToolTip}">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Verified}" Fill="{Binding Brush}"/>
+                  </Border>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
+
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnCopyCommitSHA" ToolTip.Tip="{DynamicResource Text.Copy}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
             </Button>
@@ -105,7 +121,7 @@
                                    VerticalAlignment="Center"
                                    UseGraphColor="False"/>
           </Border>
-          
+
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
           <v:CommitMessagePresenter Grid.Row="3" Grid.Column="1" 
