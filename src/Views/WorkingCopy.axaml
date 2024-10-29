@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="SourceGit.Views.WorkingCopy"
              x:DataType="vm:WorkingCopy">
-  <Grid>
+  <Grid SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="5"/>

@@ -11,6 +11,20 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnMainLayoutSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid == null)
+                return;
+
+            var layout = ViewModels.Preference.Instance.Layout;
+            var width = grid.Bounds.Width;
+            var maxLeft = width - 304;
+
+            if (layout.WorkingCopyLeftWidth.Value - maxLeft > 1.0)
+                layout.WorkingCopyLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
+        }
+
         private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
