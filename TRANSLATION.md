@@ -20,6 +20,21 @@
 
 </details>
 
+### es_ES.axaml: 99.10%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.ChangeCM.GenerateCommitMessage
+- Text.Configure.OpenAI
+- Text.Configure.OpenAI.Prefered
+- Text.Configure.OpenAI.Prefered.Tip
+- Text.Preference.AI.Name
+- Text.Stash.KeepIndex
+
+</details>
+
 ### fr_FR.axaml: 89.55%
 
 
