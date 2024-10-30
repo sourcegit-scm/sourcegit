@@ -26,7 +26,7 @@
             return new Models.CommitSignInfo()
             {
                 VerifyResult = lines[0][0],
-                Signer = string.IsNullOrEmpty(lines[1]) ? "<UnKnown>" : lines[1],
+                Signer = lines[1],
                 Key = lines[2]
             };
 

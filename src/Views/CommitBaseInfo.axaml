@@ -81,7 +81,20 @@
 
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="m:CommitSignInfo">
-                  <Border Width="24" Background="Transparent" ToolTip.Tip="{Binding ToolTip}">
+                  <Border Width="24" Background="Transparent">
+                    <ToolTip.Tip>
+                      <StackPanel Orientation="Vertical">
+                        <TextBlock Margin="0,0,0,12" Text="{Binding ToolTip}"/>
+                        <TextBlock Margin="0,0,0,2" IsVisible="{Binding Signer, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                          <Run Text="Signer:"/>
+                          <Run Text="{Binding Signer}"/>
+                        </TextBlock>
+                        <TextBlock>
+                          <Run Text="KEY:"/>
+                          <Run Text="{Binding Key}"/>
+                        </TextBlock>
+                      </StackPanel>
+                    </ToolTip.Tip>
                     <Path Width="14" Height="14" Data="{StaticResource Icons.Verified}" Fill="{Binding Brush}"/>
                   </Border>
                 </DataTemplate>

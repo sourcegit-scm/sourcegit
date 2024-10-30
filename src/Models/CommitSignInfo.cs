@@ -37,19 +37,19 @@ namespace SourceGit.Models
                 switch (VerifyResult)
                 {
                     case 'G':
-                        return $"Good signature.\n\nSigner: {Signer}\n\nKey: {Key}";
-                    case 'B':
-                        return $"Bad signature.\n\nSigner: {Signer}\n\nKey: {Key}";
+                        return "Good signature.";
                     case 'U':
-                        return $"Good signature with unknown validity.\n\nSigner: {Signer}\n\nKey: {Key}";
+                        return "Good signature with unknown validity.";
                     case 'X':
-                        return $"Good signature but has expired.\n\nSigner: {Signer}\n\nKey: {Key}";
+                        return "Good signature but has expired.";
                     case 'Y':
-                        return $"Good signature made by expired key.\n\nSigner: {Signer}\n\nKey: {Key}";
+                        return "Good signature made by expired key.";
                     case 'R':
-                        return $"Good signature made by a revoked key.\n\nSigner: {Signer}\n\nKey: {Key}";
+                        return "Good signature made by a revoked key.";
+                    case 'B':
+                        return "Bad signature.";
                     case 'E':
-                        return $"Signature cannot be checked.\n\nSigner: {Signer}\n\nKey: {Key}";
+                        return "Signature cannot be checked.";
                     default:
                         return "No signature.";
                 }
