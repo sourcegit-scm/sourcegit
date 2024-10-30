@@ -85,14 +85,12 @@
                     <ToolTip.Tip>
                       <StackPanel Orientation="Vertical">
                         <TextBlock Margin="0,0,0,12" Text="{Binding ToolTip}"/>
-                        <TextBlock Margin="0,0,0,2" IsVisible="{Binding Signer, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                          <Run Text="Signer:"/>
-                          <Run Text="{Binding Signer}"/>
-                        </TextBlock>
-                        <TextBlock>
-                          <Run Text="KEY:"/>
-                          <Run Text="{Binding Key}"/>
-                        </TextBlock>
+                        <Grid ColumnDefinitions="Auto,8,Auto" RowDefinitions="Auto,Auto">
+                          <TextBlock Grid.Row="0" Grid.Column="0" Text="Signer:" IsVisible="{Binding HasSigner}"/>
+                          <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Signer}" IsVisible="{Binding HasSigner}"/>
+                          <TextBlock Grid.Row="1" Grid.Column="0" Text="Key:"/>
+                          <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Key}"/>
+                        </Grid>
                       </StackPanel>
                     </ToolTip.Tip>
                     <Path Width="14" Height="14" Data="{StaticResource Icons.Verified}" Fill="{Binding Brush}"/>

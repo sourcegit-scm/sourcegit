@@ -7,6 +7,7 @@ namespace SourceGit.Models
         public char VerifyResult { get; init; } = 'N';
         public string Signer { get; init; } = string.Empty;
         public string Key { get; init; } = string.Empty;
+        public bool HasSigner => !string.IsNullOrEmpty(Signer);
 
         public IBrush Brush
         {
