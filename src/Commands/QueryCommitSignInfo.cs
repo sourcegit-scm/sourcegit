@@ -7,10 +7,9 @@
             WorkingDirectory = repo;
             Context = repo;
 
-            if (useFakeSignersFile)
-                Args = $"-c gpg.ssh.allowedSignersFile=/dev/null show --no-show-signature --pretty=format:\"%G? %GK\" -s {sha}";
-            else
-                Args = $"show --no-show-signature --pretty=format:\"%G? %GK\" -s {sha}";
+            const string baseArgs = "show --no-show-signature --pretty=format:\"%G?%n%GS%n%GK\" -s";
+            const string fakeSignersFileArg = "-c gpg.ssh.allowedSignersFile=/dev/null";
+            Args = $"{(useFakeSignersFile ? fakeSignersFileArg : string.Empty)} {baseArgs} {sha}";
         }
 
         public Models.CommitSignInfo Result()
@@ -20,10 +19,17 @@
                 return null;
 
             var raw = rs.StdOut.Trim();
-            if (raw.Length > 1)
-                return new Models.CommitSignInfo() { VerifyResult = raw[0], Key = raw.Substring(2) };
+            if (raw.Length <= 1)
+                return null;
 
-            return null;
+            var lines = raw.Split('\n');
+            return new Models.CommitSignInfo()
+            {
+                VerifyResult = lines[0][0],
+                Signer = string.IsNullOrEmpty(lines[1]) ? "<UnKnown>" : lines[1],
+                Key = lines[2]
+            };
+
         }
     }
 }
