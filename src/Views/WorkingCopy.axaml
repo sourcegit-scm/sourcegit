@@ -80,6 +80,15 @@
                               ChangeDoubleTapped="OnUnstagedChangeDoubleTapped"
                               KeyDown="OnUnstagedKeyDown"/>
 
+
+      <!-- Splitter -->
+      <GridSplitter Grid.Row="2"
+                    MinWidth="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0,0,1,0"
+                    BorderBrush="{DynamicResource Brush.Border0}"/>
+
       <!-- Staged Toolbar -->
       <Border Grid.Row="2" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
         <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
