@@ -157,18 +157,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.10%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.FetchInto
-- Text.ChangeCM.GenerateCommitMessage
-- Text.Configure.OpenAI
-- Text.Configure.OpenAI.Prefered
-- Text.Configure.OpenAI.Prefered.Tip
-- Text.Stash.KeepIndex
+
 
 </details>
 
