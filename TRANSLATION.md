@@ -176,13 +176,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.85%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Configure.Git.EnablePruneOnFetch
+
 
 </details>
 
