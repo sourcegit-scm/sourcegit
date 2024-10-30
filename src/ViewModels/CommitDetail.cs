@@ -498,7 +498,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA).Result();
+                var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile).Result();
                 Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
             });
 

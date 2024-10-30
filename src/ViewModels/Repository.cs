@@ -45,6 +45,11 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public bool HasAllowedSignersFile
+        {
+            get => _hasAllowedSignersFile;
+        }
+
         public int SelectedViewIndex
         {
             get => _selectedViewIndex;
@@ -444,6 +449,12 @@ namespace SourceGit.ViewModels
 
         public void RefreshAll()
         {
+            Task.Run(() =>
+            {
+                var allowedSignersFile = new Commands.Config(_fullpath).Get("gpg.ssh.allowedSignersFile");
+                _hasAllowedSignersFile = !string.IsNullOrEmpty(allowedSignersFile);
+            });
+
             Task.Run(() =>
             {
                 RefreshBranches();
@@ -2135,6 +2146,7 @@ namespace SourceGit.ViewModels
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
+        private bool _hasAllowedSignersFile = false;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;

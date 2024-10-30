@@ -2,13 +2,12 @@
 {
     public class QueryCommitSignInfo : Command
     {
-        public QueryCommitSignInfo(string repo, string sha)
+        public QueryCommitSignInfo(string repo, string sha, bool useFakeSignersFile)
         {
             WorkingDirectory = repo;
             Context = repo;
 
-            var allowedSignersFile = new Config(repo).Get("gpg.ssh.allowedSignersFile");
-            if (string.IsNullOrEmpty(allowedSignersFile))
+            if (useFakeSignersFile)
                 Args = $"-c gpg.ssh.allowedSignersFile=/dev/null show --no-show-signature --pretty=format:\"%G? %GK\" -s {sha}";
             else
                 Args = $"show --no-show-signature --pretty=format:\"%G? %GK\" -s {sha}";
