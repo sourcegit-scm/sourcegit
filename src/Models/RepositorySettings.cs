@@ -16,6 +16,12 @@ namespace SourceGit.Models
             set;
         } = DealWithLocalChanges.DoNothing;
 
+        public bool EnablePruneOnFetch
+        {
+            get;
+            set;
+        } = false;
+
         public bool FetchWithoutTags
         {
             get;

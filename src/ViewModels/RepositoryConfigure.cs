@@ -67,6 +67,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableSignOffForCommit = value;
         }
 
+        public bool EnablePruneOnFetch
+        {
+            get => _repo.Settings.EnablePruneOnFetch;
+            set => _repo.Settings.EnablePruneOnFetch = value;
+        }
+
         public bool EnableAutoFetch
         {
             get => _repo.Settings.EnableAutoFetch;
@@ -134,7 +140,7 @@ namespace SourceGit.ViewModels
                 AvailableOpenAIServices.Add(service.Name);
 
             if (AvailableOpenAIServices.IndexOf(PreferedOpenAIService) == -1)
-                PreferedOpenAIService = "---";               
+                PreferedOpenAIService = "---";
 
             _cached = new Commands.Config(repo.FullPath).ListAll();
             if (_cached.TryGetValue("user.name", out var name))

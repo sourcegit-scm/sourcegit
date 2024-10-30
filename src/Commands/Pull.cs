@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Pull : Command
     {
-        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, Action<string> outputHandler)
+        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, bool prune, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
@@ -17,6 +17,8 @@ namespace SourceGit.Commands
                 Args += "--rebase ";
             if (noTags)
                 Args += "--no-tags ";
+            if (prune)
+                Args += "--prune ";
 
             Args += $"{remote} {branch}";
         }
