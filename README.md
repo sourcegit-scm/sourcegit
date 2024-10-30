@@ -162,4 +162,4 @@ Everyone is welcome to submit a PR. Please make sure your PR is based on the lat
 
 Thanks to all the people who contribute.
 
-[![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=10)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
