@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.06%
+### de_DE.axaml: 97.91%
 
 
 <details>
@@ -6,6 +6,7 @@
 
 - Text.BranchCM.FetchInto
 - Text.ChangeCM.GenerateCommitMessage
+- Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
@@ -20,13 +21,14 @@
 
 </details>
 
-### es_ES.axaml: 99.10%
+### es_ES.axaml: 98.96%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.ChangeCM.GenerateCommitMessage
+- Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
 - Text.Configure.OpenAI.Prefered.Tip
@@ -35,7 +37,7 @@
 
 </details>
 
-### fr_FR.axaml: 89.55%
+### fr_FR.axaml: 89.42%
 
 
 <details>
@@ -53,6 +55,7 @@
 - Text.CommitCM.SquashCommitsSinceThis
 - Text.CommitDetail.Info.WebLinks
 - Text.Configure.Git.DefaultRemote
+- Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
@@ -114,7 +117,7 @@
 
 </details>
 
-### pt_BR.axaml: 92.69%
+### pt_BR.axaml: 92.55%
 
 
 <details>
@@ -134,6 +137,7 @@
 - Text.CommitDetail.Info.ContainsIn.Title
 - Text.CommitDetail.Info.WebLinks
 - Text.Configure.Git.DefaultRemote
+- Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
@@ -172,13 +176,13 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.85%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Configure.Git.EnablePruneOnFetch
 
 </details>
 
