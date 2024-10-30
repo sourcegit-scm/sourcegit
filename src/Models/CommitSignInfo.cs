@@ -4,8 +4,9 @@ namespace SourceGit.Models
 {
     public class CommitSignInfo
     {
-        public string Key { get; set; } = string.Empty;
-        public char VerifyResult { get; set; } = 'N';
+        public char VerifyResult { get; init; } = 'N';
+        public string Signer { get; init; } = string.Empty;
+        public string Key { get; init; } = string.Empty;
 
         public IBrush Brush
         {
@@ -36,19 +37,19 @@ namespace SourceGit.Models
                 switch (VerifyResult)
                 {
                     case 'G':
-                        return $"Good signature.\n\nKey: {Key}";
+                        return $"Good signature.\n\nSigner: {Signer}\n\nKey: {Key}";
                     case 'B':
-                        return $"Bad signature.\n\nKey: {Key}";
+                        return $"Bad signature.\n\nSigner: {Signer}\n\nKey: {Key}";
                     case 'U':
-                        return $"Good signature with unknown validity.\n\nKey: {Key}";
+                        return $"Good signature with unknown validity.\n\nSigner: {Signer}\n\nKey: {Key}";
                     case 'X':
-                        return $"Good signature but has expired.\n\nKey: {Key}";
+                        return $"Good signature but has expired.\n\nSigner: {Signer}\n\nKey: {Key}";
                     case 'Y':
-                        return $"Good signature made by expired key.\n\nKey: {Key}";
+                        return $"Good signature made by expired key.\n\nSigner: {Signer}\n\nKey: {Key}";
                     case 'R':
-                        return $"Good signature made by a revoked key.\n\nKey: {Key}";
+                        return $"Good signature made by a revoked key.\n\nSigner: {Signer}\n\nKey: {Key}";
                     case 'E':
-                        return $"Signature cannot be checked.\n\nKey: {Key}";
+                        return $"Signature cannot be checked.\n\nSigner: {Signer}\n\nKey: {Key}";
                     default:
                         return "No signature.";
                 }
