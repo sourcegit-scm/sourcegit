@@ -1,3 +1,6 @@
+using System;
+
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -6,27 +9,29 @@ namespace SourceGit.Views
 {
     public partial class FileHistories : ChromelessWindow
     {
+        public static readonly StyledProperty<bool> HasLeftCaptionButtonProperty =
+            AvaloniaProperty.Register<FileHistories, bool>(nameof(HasLeftCaptionButton));
+
+        public bool HasLeftCaptionButton
+        {
+            get => GetValue(HasLeftCaptionButtonProperty);
+            set => SetValue(HasLeftCaptionButtonProperty, value);
+        }
+        
         public FileHistories()
         {
+            if (OperatingSystem.IsMacOS())
+                HasLeftCaptionButton = true;
+            
             InitializeComponent();
         }
-
-        private void MaximizeOrRestoreWindow(object _, TappedEventArgs e)
+        
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            if (WindowState == WindowState.Maximized)
-                WindowState = WindowState.Normal;
-            else
-                WindowState = WindowState.Maximized;
-
-            e.Handled = true;
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            if (e.ClickCount == 1)
-                BeginMoveDrag(e);
-
-            e.Handled = true;
+            base.OnPropertyChanged(change);
+            
+            if (change.Property == WindowStateProperty)
+                HasLeftCaptionButton = WindowState != WindowState.FullScreen;
         }
 
         private void OnPressCommitSHA(object sender, PointerPressedEventArgs e)

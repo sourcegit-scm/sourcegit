@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
@@ -164,11 +163,6 @@ namespace SourceGit.Views
             }
 
             base.OnClosing(e);
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
 
         private async void SelectThemeOverrideFile(object _, RoutedEventArgs e)

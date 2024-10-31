@@ -1,5 +1,3 @@
-using Avalonia.Input;
-
 namespace SourceGit.Views
 {
     public partial class Hotkeys : ChromelessWindow
@@ -7,11 +5,6 @@ namespace SourceGit.Views
         public Hotkeys()
         {
             InitializeComponent();
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
     }
 }

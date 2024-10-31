@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Threading;
 
 namespace SourceGit.Views
@@ -53,11 +52,6 @@ namespace SourceGit.Views
         {
             base.OnClosing(e);
             _cancel.Cancel();
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
 
         private void SetDescription(string message)

@@ -1,4 +1,3 @@
-using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -8,11 +7,6 @@ namespace SourceGit.Views
         public ConventionalCommitMessageBuilder()
         {
             InitializeComponent();
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
 
         private void OnApplyClicked(object _, RoutedEventArgs e)

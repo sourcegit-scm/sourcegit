@@ -32,14 +32,35 @@ namespace SourceGit.Views
                     Classes.Add("custom_window_frame");
                 }
             }
-            else
+            else if (OperatingSystem.IsWindows())
             {
                 ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
                 ExtendClientAreaToDecorationsHint = true;
-
-                if (OperatingSystem.IsWindows())
-                    Classes.Add("fix_maximized_padding");
+                Classes.Add("fix_maximized_padding");
             }
+            else
+            {
+                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome;
+                ExtendClientAreaToDecorationsHint = true;
+            }
+        }
+
+        public void BeginMoveWindow(object _, PointerPressedEventArgs e)
+        {
+            if (e.ClickCount == 1)
+                BeginMoveDrag(e);
+
+            e.Handled = true;
+        }
+
+        public void MaximizeOrRestoreWindow(object _, TappedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else
+                WindowState = WindowState.Maximized;
+
+            e.Handled = true;
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
