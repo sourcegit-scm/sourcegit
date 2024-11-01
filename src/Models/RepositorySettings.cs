@@ -100,6 +100,12 @@ namespace SourceGit.Models
             set;
         } = new AvaloniaList<IssueTrackerRule>();
 
+        public AvaloniaList<CustomAction> CustomActions
+        {
+            get;
+            set;
+        } = new AvaloniaList<CustomAction>();
+
         public bool EnableAutoFetch
         {
             get;
@@ -229,6 +235,23 @@ namespace SourceGit.Models
         {
             if (rule != null)
                 IssueTrackerRules.Remove(rule);
+        }
+
+        public CustomAction AddNewCustomAction()
+        {
+            var act = new CustomAction()
+            {
+                Name = "Unnamed Custom Action",
+            };
+
+            CustomActions.Add(act);
+            return act;
+        }
+
+        public void RemoveCustomAction(CustomAction act)
+        {
+            if (act != null)
+                CustomActions.Remove(act);
         }
     }
 }

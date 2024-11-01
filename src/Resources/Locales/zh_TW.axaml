@@ -111,6 +111,7 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">複製摘要資訊</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重設 (reset) ${0}$ 到此處</x:String>
@@ -142,6 +143,14 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">範本內容:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">指令行參數:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">使用${REPO}代表儲存庫的路徑，${SHA}代表所選的提交編號</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名稱 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">執行範圍:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">選取的提交</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">電子郵件地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git 設定</x:String>
@@ -255,6 +264,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">編輯群組</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯存放庫</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">執行自訂動作</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自訂動作:</x:String>
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快進 (fast-forward，無需 checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
@@ -519,6 +530,8 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空篩選規則</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">設定本存放庫</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自訂動作</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">沒有自訂的動作</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">啟用 [--reflog] 選項</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速搜尋分支/標籤/子模組</x:String>

@@ -605,6 +605,39 @@ namespace SourceGit.ViewModels
             menu.Items.Add(archive);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
+            var actions = new List<Models.CustomAction>();
+            foreach (var action in _repo.Settings.CustomActions)
+            {
+                if (action.Scope == Models.CustomActionScope.Commit)
+                    actions.Add(action);
+            }
+            if (actions.Count > 0)
+            {
+                var custom = new MenuItem();
+                custom.Header = App.Text("CommitCM.CustomAction");
+                custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                foreach (var action in actions)
+                {
+                    var dup = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = dup.Name;
+                    item.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(_repo, action, commit.SHA));
+
+                        e.Handled = true;
+                    };
+
+                    custom.Items.Add(item);
+                }
+
+                menu.Items.Add(custom);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Icon = App.CreateMenuIcon("Icons.Copy");

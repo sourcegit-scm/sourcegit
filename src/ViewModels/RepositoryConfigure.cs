@@ -127,6 +127,17 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.PreferedOpenAIService = value;
         }
 
+        public AvaloniaList<Models.CustomAction> CustomActions
+        {
+            get => _repo.Settings.CustomActions;
+        }
+
+        public Models.CustomAction SelectedCustomAction
+        {
+            get => _selectedCustomAction;
+            set => SetProperty(ref _selectedCustomAction, value);
+        }
+
         public RepositoryConfigure(Repository repo)
         {
             _repo = repo;
@@ -233,9 +244,19 @@ namespace SourceGit.ViewModels
 
         public void RemoveSelectedIssueTracker()
         {
-            if (_selectedIssueTrackerRule != null)
-                _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
+            _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
             SelectedIssueTrackerRule = null;
+        }
+
+        public void AddNewCustomAction()
+        {
+            SelectedCustomAction = _repo.Settings.AddNewCustomAction();
+        }
+
+        public void RemoveSelectedCustomAction()
+        {
+            _repo.Settings.RemoveCustomAction(_selectedCustomAction);
+            SelectedCustomAction = null;
         }
 
         public void Save()
@@ -271,5 +292,6 @@ namespace SourceGit.ViewModels
         private string _httpProxy;
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
+        private Models.CustomAction _selectedCustomAction = null;
     }
 }

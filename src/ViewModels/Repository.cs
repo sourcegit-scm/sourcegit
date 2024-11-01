@@ -1287,6 +1287,45 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public ContextMenu CreateContextMenuForCustomAction()
+        {
+            var actions = new List<Models.CustomAction>();
+            foreach (var action in _settings.CustomActions)
+            {
+                if (action.Scope == Models.CustomActionScope.Repository)
+                    actions.Add(action);
+            }
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
+            if (actions.Count > 0)
+            {
+                foreach (var action in actions)
+                {
+                    var dup = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = dup.Name;
+                    item.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(this, action, null));
+
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+            }
+            else
+            {
+                menu.Items.Add(new MenuItem() { Header = App.Text("Repository.CustomActions.Empty") });
+            }
+
+            return menu;
+        }
+
         public ContextMenu CreateContextMenuForLocalBranch(Models.Branch branch)
         {
             var menu = new ContextMenu();

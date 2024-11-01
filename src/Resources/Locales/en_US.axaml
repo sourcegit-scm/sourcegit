@@ -108,6 +108,7 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copy Info</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactive Rebase ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>
@@ -139,6 +140,14 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Content:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository's path; ${SHA} - Selected commit's SHA</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Executable File:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Scope:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
@@ -252,6 +261,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Edit Selected Group</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edit Selected Repository</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Run Custom Action</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Action Name:</x:String>
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (without checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
@@ -516,6 +527,8 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Clear all</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Custom Actions</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No Custom Actions</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Enable '--reflog' Option</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open In File Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</x:String>
