@@ -78,7 +78,7 @@ namespace SourceGit.Views
 
             var state = ViewModels.Preference.Instance.Layout.LauncherWindowState;
             if (state == WindowState.Maximized || state == WindowState.FullScreen)
-                WindowState = state;
+                WindowState = WindowState.Maximized;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
