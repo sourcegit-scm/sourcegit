@@ -1,4 +1,4 @@
-### de_DE.axaml: 97.91%
+### de_DE.axaml: 96.05%
 
 
 <details>
@@ -6,6 +6,15 @@
 
 - Text.BranchCM.FetchInto
 - Text.ChangeCM.GenerateCommitMessage
+- Text.CommitCM.CustomAction
+- Text.Configure.CustomAction
+- Text.Configure.CustomAction.Arguments
+- Text.Configure.CustomAction.Arguments.Tip
+- Text.Configure.CustomAction.Executable
+- Text.Configure.CustomAction.Name
+- Text.Configure.CustomAction.Scope
+- Text.Configure.CustomAction.Scope.Commit
+- Text.Configure.CustomAction.Scope.Repository
 - Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.Git.EnableSignOff
 - Text.Configure.IssueTracker.AddSampleGitLabIssue
@@ -13,31 +22,48 @@
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
 - Text.Configure.OpenAI.Prefered.Tip
+- Text.ExecuteCustomAction
+- Text.ExecuteCustomAction.Name
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Name
+- Text.Repository.CustomActions
+- Text.Repository.CustomActions.Empty
 - Text.Stash.KeepIndex
 - Text.WorkingCopy.ConfirmCommitWithoutFiles
 
 </details>
 
-### es_ES.axaml: 98.96%
+### es_ES.axaml: 97.08%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.ChangeCM.GenerateCommitMessage
+- Text.CommitCM.CustomAction
+- Text.Configure.CustomAction
+- Text.Configure.CustomAction.Arguments
+- Text.Configure.CustomAction.Arguments.Tip
+- Text.Configure.CustomAction.Executable
+- Text.Configure.CustomAction.Name
+- Text.Configure.CustomAction.Scope
+- Text.Configure.CustomAction.Scope.Commit
+- Text.Configure.CustomAction.Scope.Repository
 - Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
 - Text.Configure.OpenAI.Prefered.Tip
+- Text.ExecuteCustomAction
+- Text.ExecuteCustomAction.Name
 - Text.Preference.AI.Name
+- Text.Repository.CustomActions
+- Text.Repository.CustomActions.Empty
 - Text.Stash.KeepIndex
 
 </details>
 
-### fr_FR.axaml: 89.42%
+### fr_FR.axaml: 87.72%
 
 
 <details>
@@ -52,8 +78,17 @@
 - Text.CherryPick.Mainline
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.CommitCM.CustomAction
 - Text.CommitCM.SquashCommitsSinceThis
 - Text.CommitDetail.Info.WebLinks
+- Text.Configure.CustomAction
+- Text.Configure.CustomAction.Arguments
+- Text.Configure.CustomAction.Arguments.Tip
+- Text.Configure.CustomAction.Executable
+- Text.Configure.CustomAction.Name
+- Text.Configure.CustomAction.Scope
+- Text.Configure.CustomAction.Scope.Commit
+- Text.Configure.CustomAction.Scope.Repository
 - Text.Configure.Git.DefaultRemote
 - Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.Git.EnableSignOff
@@ -74,6 +109,8 @@
 - Text.ConventionalCommit.Type
 - Text.Diff.IgnoreWhitespace
 - Text.Discard.IncludeIgnored
+- Text.ExecuteCustomAction
+- Text.ExecuteCustomAction.Name
 - Text.FileHistory.FileChange
 - Text.GitLFS.Locks.OnlyMine
 - Text.Histories.Header.AuthorTime
@@ -97,6 +134,8 @@
 - Text.Preference.Shell.Type
 - Text.Preference.Shell.Path
 - Text.Repository.AutoFetching
+- Text.Repository.CustomActions
+- Text.Repository.CustomActions.Empty
 - Text.Repository.EnableReflog
 - Text.Repository.Search.InCurrentBranch
 - Text.ScanRepositories
@@ -117,7 +156,7 @@
 
 </details>
 
-### pt_BR.axaml: 92.55%
+### pt_BR.axaml: 90.79%
 
 
 <details>
@@ -132,10 +171,19 @@
 - Text.CherryPick.Mainline
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.CommitCM.CustomAction
 - Text.CommitCM.SquashCommitsSinceThis
 - Text.CommitDetail.Info.ContainsIn
 - Text.CommitDetail.Info.ContainsIn.Title
 - Text.CommitDetail.Info.WebLinks
+- Text.Configure.CustomAction
+- Text.Configure.CustomAction.Arguments
+- Text.Configure.CustomAction.Arguments.Tip
+- Text.Configure.CustomAction.Executable
+- Text.Configure.CustomAction.Name
+- Text.Configure.CustomAction.Scope
+- Text.Configure.CustomAction.Scope.Commit
+- Text.Configure.CustomAction.Scope.Repository
 - Text.Configure.Git.DefaultRemote
 - Text.Configure.Git.EnablePruneOnFetch
 - Text.Configure.Git.EnableSignOff
@@ -156,6 +204,8 @@
 - Text.ConventionalCommit.Type
 - Text.CopyAllText
 - Text.Discard.IncludeIgnored
+- Text.ExecuteCustomAction
+- Text.ExecuteCustomAction.Name
 - Text.FileHistory.FileContent
 - Text.FileHistory.FileChange
 - Text.GitLFS.Locks.OnlyMine
@@ -163,6 +213,8 @@
 - Text.MoveRepositoryNode.Target
 - Text.Preference.AI.Name
 - Text.Push.CheckSubmodules
+- Text.Repository.CustomActions
+- Text.Repository.CustomActions.Empty
 - Text.Squash.Into
 - Text.Stash.KeepIndex
 - Text.Stash.OnlyStagedChanges
@@ -176,13 +228,25 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 98.10%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CommitCM.CustomAction
+- Text.Configure.CustomAction
+- Text.Configure.CustomAction.Arguments
+- Text.Configure.CustomAction.Arguments.Tip
+- Text.Configure.CustomAction.Executable
+- Text.Configure.CustomAction.Name
+- Text.Configure.CustomAction.Scope
+- Text.Configure.CustomAction.Scope.Commit
+- Text.Configure.CustomAction.Scope.Repository
+- Text.ExecuteCustomAction
+- Text.ExecuteCustomAction.Name
+- Text.Repository.CustomActions
+- Text.Repository.CustomActions.Empty
 
 </details>
 
