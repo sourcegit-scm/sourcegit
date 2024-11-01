@@ -1310,7 +1310,7 @@ namespace SourceGit.ViewModels
                     item.Click += (_, e) =>
                     {
                         if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(this, action, null));
+                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(this, dup, null));
 
                         e.Handled = true;
                     };

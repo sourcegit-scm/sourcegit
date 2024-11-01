@@ -626,7 +626,7 @@ namespace SourceGit.ViewModels
                     item.Click += (_, e) =>
                     {
                         if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(_repo, action, commit.SHA));
+                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(_repo, dup, commit));
 
                         e.Handled = true;
                     };

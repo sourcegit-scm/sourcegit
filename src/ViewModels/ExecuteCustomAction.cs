@@ -10,12 +10,12 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, string sha)
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
         {
             _repo = repo;
             _args = action.Arguments.Replace("${REPO}", _repo.FullPath);
-            if (!string.IsNullOrEmpty(sha))
-                _args = _args.Replace("${SHA}", sha);
+            if (commit != null)
+                _args = _args.Replace("${SHA}", commit.SHA);
 
             CustomAction = action;
             View = new Views.ExecuteCustomAction() { DataContext = this };
