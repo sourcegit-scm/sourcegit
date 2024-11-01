@@ -902,7 +902,7 @@ namespace SourceGit.Views
             var scroller = this.FindDescendantOfType<ScrollViewer>();
             if (scroller != null)
             {
-                scroller.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.TwoWay));
+                scroller.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
                 scroller.GotFocus += OnTextViewScrollGotFocus;
             }
         }
@@ -1238,7 +1238,7 @@ namespace SourceGit.Views
             {
                 if (v.DataContext is Models.TextDiff diff)
                 {
-                    diff.SyncScrollOffset = Vector.Zero;
+                    diff.ScrollOffset = Vector.Zero;
 
                     if (v.UseSideBySideDiff)
                         v.Editor.Content = new ViewModels.TwoSideTextDiff(diff);

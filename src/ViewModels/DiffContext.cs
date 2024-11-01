@@ -203,7 +203,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     if (_content is Models.TextDiff old && rs is Models.TextDiff cur && old.File == cur.File)
-                        cur.SyncScrollOffset = old.SyncScrollOffset;
+                        cur.ScrollOffset = old.ScrollOffset;
 
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
