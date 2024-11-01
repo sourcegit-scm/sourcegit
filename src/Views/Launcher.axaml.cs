@@ -19,7 +19,7 @@ namespace SourceGit.Views
             get => GetValue(CaptionHeightProperty);
             set => SetValue(CaptionHeightProperty, value);
         }
-        
+
         public static readonly StyledProperty<bool> HasLeftCaptionButtonProperty =
             AvaloniaProperty.Register<Launcher, bool>(nameof(HasLeftCaptionButton));
 

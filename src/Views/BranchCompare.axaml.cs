@@ -4,9 +4,9 @@ using Avalonia.Input;
 namespace SourceGit.Views
 {
     public partial class BranchCompare : ChromelessWindow
-    {        
+    {
         public BranchCompare()
-        {            
+        {
             InitializeComponent();
         }
 

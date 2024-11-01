@@ -429,9 +429,9 @@ namespace SourceGit.Views
     }
 
     public partial class Blame : ChromelessWindow
-    {        
+    {
         public Blame()
-        {            
+        {
             InitializeComponent();
         }
 
