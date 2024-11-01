@@ -1205,6 +1205,15 @@ namespace SourceGit.Views
             set => SetValue(UseSideBySideDiffProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseFullTextDiffProperty =
+            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseFullTextDiff));
+
+        public bool UseFullTextDiff
+        {
+            get => GetValue(UseFullTextDiffProperty);
+            set => SetValue(UseFullTextDiffProperty, value);
+        }
+
         public static readonly StyledProperty<TextDiffViewChunk> SelectedChunkProperty =
             AvaloniaProperty.Register<TextDiffView, TextDiffViewChunk>(nameof(SelectedChunk));
 
@@ -1232,19 +1241,44 @@ namespace SourceGit.Views
             set => SetValue(EnableChunkSelectionProperty, value);
         }
 
+        private void RefreshContent(Models.TextDiff diff, bool keepScrollOffset = true)
+        {
+            if (SelectedChunk != null)
+                SetCurrentValue(SelectedChunkProperty, null);
+
+            if (diff == null)
+            {
+                Editor.Content = null;
+                GC.Collect();
+                return;
+            }
+
+            if (UseSideBySideDiff)
+            {
+                var previousContent = Editor.Content as ViewModels.TwoSideTextDiff;
+                Editor.Content = new ViewModels.TwoSideTextDiff(diff, keepScrollOffset ? previousContent : null);
+            }
+            else
+            {
+                if (!keepScrollOffset)
+                    diff.ScrollOffset = Vector.Zero;
+                Editor.Content = diff;
+            }
+
+            IsUnstagedChange = diff.Option.IsUnstaged;
+            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
+        }
+
         static TextDiffView()
         {
             UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
-                if (v.DataContext is Models.TextDiff diff)
-                {
-                    diff.ScrollOffset = Vector.Zero;
+                v.RefreshContent(v.DataContext as Models.TextDiff, false);
+            });
 
-                    if (v.UseSideBySideDiff)
-                        v.Editor.Content = new ViewModels.TwoSideTextDiff(diff);
-                    else
-                        v.Editor.Content = diff;
-                }
+            UseFullTextDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
+            {
+                v.RefreshContent(v.DataContext as Models.TextDiff, false);
             });
 
             SelectedChunkProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
@@ -1271,25 +1305,7 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
-
-            if (SelectedChunk != null)
-                SetCurrentValue(SelectedChunkProperty, null);
-
-            var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-            {
-                Editor.Content = null;
-                GC.Collect();
-                return;
-            }
-
-            if (UseSideBySideDiff)
-                Editor.Content = new ViewModels.TwoSideTextDiff(diff, Editor.Content as ViewModels.TwoSideTextDiff);
-            else
-                Editor.Content = diff;
-
-            IsUnstagedChange = diff.Option.IsUnstaged;
-            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
+            RefreshContent(DataContext as Models.TextDiff, true);
         }
 
         protected override void OnPointerExited(PointerEventArgs e)
