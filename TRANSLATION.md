@@ -228,25 +228,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.10%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitCM.CustomAction
-- Text.Configure.CustomAction
-- Text.Configure.CustomAction.Arguments
-- Text.Configure.CustomAction.Arguments.Tip
-- Text.Configure.CustomAction.Executable
-- Text.Configure.CustomAction.Name
-- Text.Configure.CustomAction.Scope
-- Text.Configure.CustomAction.Scope.Commit
-- Text.Configure.CustomAction.Scope.Repository
-- Text.ExecuteCustomAction
-- Text.ExecuteCustomAction.Name
-- Text.Repository.CustomActions
-- Text.Repository.CustomActions.Empty
+
 
 </details>
 
