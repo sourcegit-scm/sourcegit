@@ -39,9 +39,11 @@
         <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
       </Border>
       
-      <TextBox Margin="16"
+      <TextBox Name="PassphraseTextBox"
+               Margin="16"
                MinWidth="300" 
                Height="32" 
+               Focusable="True"
                Text="{Binding Passphrase, Mode=TwoWay}" 
                PasswordChar="*"
                RevealPassword="{Binding ShowPassword, Mode=OneWay}"

@@ -52,5 +52,11 @@ namespace SourceGit.Views
             Console.Out.Write($"{Passphrase}\n");
             App.Quit(0);
         }
+
+        protected override void OnOpened(EventArgs e)
+        {
+            PassphraseTextBox.Focus();
+            base.OnOpened(e);
+        }
     }
 }
