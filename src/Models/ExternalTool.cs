@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -16,12 +17,14 @@ namespace SourceGit.Models
         public string Executable { get; private set; }
         public string OpenCmdArgs { get; private set; }
         public Bitmap IconImage { get; private set; } = null;
+        public Func<string, string> ArgTransform { get; private set; }
 
-        public ExternalTool(string name, string icon, string executable, string openCmdArgs)
+        public ExternalTool(string name, string icon, string executable, string openCmdArgs, Func<string, string> argsTransform)
         {
             Name = name;
             Executable = executable;
             OpenCmdArgs = openCmdArgs;
+            ArgTransform = argsTransform ?? ((s) => s);
 
             try
             {
@@ -37,11 +40,16 @@ namespace SourceGit.Models
 
         public void Open(string repo)
         {
+            string arguments = string.Format(OpenCmdArgs, repo);
+
+            if (ArgTransform != null)
+                arguments = ArgTransform.Invoke(arguments);
+
             Process.Start(new ProcessStartInfo()
             {
                 WorkingDirectory = repo,
                 FileName = Executable,
-                Arguments = string.Format(OpenCmdArgs, repo),
+                Arguments = arguments,
                 UseShellExecute = false,
             });
         }
@@ -110,17 +118,17 @@ namespace SourceGit.Models
                 _customPaths = new ExternalToolPaths();
         }
 
-        public void TryAdd(string name, string icon, string args, string key, Func<string> finder)
+        public void TryAdd(string name, string icon, string args, string key, Func<string> finder, Func<string, string> argsTransform = null)
         {
             if (_customPaths.Tools.TryGetValue(key, out var customPath) && File.Exists(customPath))
             {
-                Founded.Add(new ExternalTool(name, icon, customPath, args));
+                Founded.Add(new ExternalTool(name, icon, customPath, args, argsTransform));
             }
             else
             {
                 var path = finder();
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                    Founded.Add(new ExternalTool(name, icon, path, args));
+                    Founded.Add(new ExternalTool(name, icon, path, args, argsTransform));
             }
         }
 
@@ -156,7 +164,21 @@ namespace SourceGit.Models
 
         public void VisualStudio(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio", "vs", "\"{0}\"", "VISUALSTUDIO", platformFinder);
+            TryAdd("Visual Studio", "vs", "\"{0}\"", "VISUALSTUDIO", platformFinder, VisualStudioTryFindSolution);
+        }
+
+        private static string VisualStudioTryFindSolution(string path)
+        {
+            try
+            {
+                if (Directory.GetFiles(path.Trim('\"'), "*.sln", SearchOption.AllDirectories).FirstOrDefault() is string solutionPath)
+                    return Path.GetFullPath(solutionPath);
+            }
+            catch
+            {
+                // do nothing
+            }
+            return path;
         }
 
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
@@ -176,7 +198,8 @@ namespace SourceGit.Models
                         $"{tool.DisplayName} {tool.DisplayVersion}",
                         supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
                         Path.Combine(tool.InstallLocation, tool.LaunchCommand),
-                        "\"{0}\""));
+                        "\"{0}\"",
+                        null));
                 }
             }
         }
