@@ -39,15 +39,15 @@
         <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
       </Border>
       
-      <TextBox Name="PassphraseTextBox"
-               Margin="16"
+      <TextBox Margin="16"
                MinWidth="300" 
                Height="32" 
                Focusable="True"
                Text="{Binding Passphrase, Mode=TwoWay}" 
                PasswordChar="*"
                RevealPassword="{Binding ShowPassword, Mode=OneWay}"
-               HorizontalAlignment="Stretch">
+               HorizontalAlignment="Stretch"
+               v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerRightContent>
           <ToggleButton Grid.Column="6"
                         Classes="toggle_untracked"
