@@ -154,6 +154,11 @@ namespace SourceGit.Models
             TryAdd("Zed", "zed", "\"{0}\"", "ZED", platformFinder);
         }
 
+        public void VisualStudio(Func<string> platformFinder)
+        {
+            TryAdd("Visual Studio", "vs", "\"{0}\"", "VISUALSTUDIO", platformFinder);
+        }
+
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
         {
             var exclude = new List<string> { "fleet", "dotmemory", "dottrace", "resharper-u", "androidstudio" };
