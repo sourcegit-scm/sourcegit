@@ -45,6 +45,9 @@ namespace SourceGit.Commands
             try
             {
                 proc.Start();
+                proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
+                proc.WaitForExit();
             }
             catch (Exception e)
             {
@@ -54,9 +57,6 @@ namespace SourceGit.Commands
                 });
             }
 
-            proc.BeginOutputReadLine();
-            proc.BeginErrorReadLine();
-            proc.WaitForExit();
             proc.Close();
         }
     }
