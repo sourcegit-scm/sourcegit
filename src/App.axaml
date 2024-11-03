@@ -19,6 +19,7 @@
       <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
       <ResourceInclude x:Key="zh_TW" Source="/Resources/Locales/zh_TW.axaml"/>
       <ResourceInclude x:Key="es_ES" Source="/Resources/Locales/es_ES.axaml"/>
+      <ResourceInclude x:Key="ja_JP" Source="/Resources/Locales/ja_JP.axaml"/>
     </ResourceDictionary>
   </Application.Resources>
 
