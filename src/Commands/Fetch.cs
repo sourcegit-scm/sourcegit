@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool noTags, Action<string> outputHandler)
+        public Fetch(string repo, string remote, bool noTags, bool prune, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
@@ -18,7 +18,20 @@ namespace SourceGit.Commands
             else
                 Args += "--force ";
 
+            if (prune)
+                Args += "--prune ";
+
             Args += remote;
+        }
+
+        public Fetch(string repo, Models.Branch local, Models.Branch remote, Action<string> outputHandler)
+        {
+            _outputHandler = outputHandler;
+            WorkingDirectory = repo;
+            Context = repo;
+            TraitErrorAsOutput = true;
+            SSHKey = new Config(repo).Get($"remote.{remote.Remote}.sshkey");
+            Args = $"fetch --progress --verbose {remote.Remote} {remote.Name}:{local.Name}";
         }
 
         protected override void OnReadline(string line)

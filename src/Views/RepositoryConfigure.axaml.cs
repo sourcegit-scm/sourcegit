@@ -1,5 +1,6 @@
 using Avalonia.Controls;
-using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
 {
@@ -16,9 +17,19 @@ namespace SourceGit.Views
             base.OnClosing(e);
         }
 
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
+        private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)
         {
-            BeginMoveDrag(e);
+            var options = new FilePickerOpenOptions()
+            {
+                FileTypeFilter = [new FilePickerFileType("Executable file(script)") { Patterns = ["*.*"] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
+            if (selected.Count == 1 && sender is Button { DataContext: Models.CustomAction action })
+                action.Executable = selected[0].Path.LocalPath;
+
+            e.Handled = true;
         }
     }
 }

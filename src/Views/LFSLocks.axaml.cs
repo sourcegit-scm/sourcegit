@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -9,11 +8,6 @@ namespace SourceGit.Views
         public LFSLocks()
         {
             InitializeComponent();
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
 
         private void OnUnlockButtonClicked(object sender, RoutedEventArgs e)

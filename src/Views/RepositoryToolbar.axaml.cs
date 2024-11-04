@@ -91,6 +91,17 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private void OpenCustomActionMenu(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForCustomAction();
+                (sender as Control)?.OpenContextMenu(menu);
+            }
+
+            e.Handled = true;
+        }
     }
 }
 

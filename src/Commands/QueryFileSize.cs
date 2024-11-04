@@ -11,7 +11,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree {revision} -l -- {file}";
+            Args = $"ls-tree {revision} -l -- \"{file}\"";
         }
 
         public long Result()

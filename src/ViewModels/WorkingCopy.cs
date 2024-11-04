@@ -403,25 +403,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void GenerateCommitMessageByAI()
-        {
-            if (!Models.OpenAI.IsValid)
-            {
-                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
-                return;
-            }
-
-            if (_staged is { Count: > 0 })
-            {
-                var dialog = new Views.AIAssistant(_repo.FullPath, _staged, generated => CommitMessage = generated);
-                App.OpenDialog(dialog);
-            }
-            else
-            {
-                App.RaiseException(_repo.FullPath, "No files added to commit!");
-            }
-        }
-
         public void Commit()
         {
             DoCommit(false, false, false);
@@ -900,6 +881,44 @@ namespace SourceGit.ViewModels
                 return null;
 
             var menu = new ContextMenu();
+
+            var ai = null as MenuItem;
+            var services = GetPreferedOpenAIServices();
+            if (services.Count > 0)
+            {
+                ai = new MenuItem();
+                ai.Icon = App.CreateMenuIcon("Icons.AIAssist");
+                ai.Header = App.Text("ChangeCM.GenerateCommitMessage");
+
+                if (services.Count == 1)
+                {
+                    ai.Click += (_, e) =>
+                    {
+                        var dialog = new Views.AIAssistant(services[0], _repo.FullPath, _selectedStaged, generated => CommitMessage = generated);
+                        App.OpenDialog(dialog);
+                        e.Handled = true;
+                    };
+                }
+                else
+                {
+                    foreach (var service in services)
+                    {
+                        var dup = service;
+
+                        var item = new MenuItem();
+                        item.Header = service.Name;
+                        item.Click += (_, e) =>
+                        {
+                            var dialog = new Views.AIAssistant(dup, _repo.FullPath, _selectedStaged, generated => CommitMessage = generated);
+                            App.OpenDialog(dialog);
+                            e.Handled = true;
+                        };
+
+                        ai.Items.Add(item);
+                    }
+                }
+            }
+
             if (_selectedStaged.Count == 1)
             {
                 var change = _selectedStaged[0];
@@ -977,24 +996,6 @@ namespace SourceGit.ViewModels
                 {
                     var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
                     window.Show();
-                    e.Handled = true;
-                };
-
-                var copyPath = new MenuItem();
-                copyPath.Header = App.Text("CopyPath");
-                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (_, e) =>
-                {
-                    App.CopyText(change.Path);
-                    e.Handled = true;
-                };
-
-                var copyFileName = new MenuItem();
-                copyFileName.Header = App.Text("CopyFileName");
-                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyFileName.Click += (_, e) =>
-                {
-                    App.CopyText(Path.GetFileName(change.Path));
                     e.Handled = true;
                 };
 
@@ -1089,6 +1090,30 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
+                if (ai != null)
+                {
+                    menu.Items.Add(ai);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Click += (_, e) =>
+                {
+                    App.CopyText(change.Path);
+                    e.Handled = true;
+                };
+
+                var copyFileName = new MenuItem();
+                copyFileName.Header = App.Text("CopyFileName");
+                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFileName.Click += (_, e) =>
+                {
+                    App.CopyText(Path.GetFileName(change.Path));
+                    e.Handled = true;
+                };
+
                 menu.Items.Add(copyPath);
                 menu.Items.Add(copyFileName);
             }
@@ -1142,6 +1167,12 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(unstage);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
+
+                if (ai != null)
+                {
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(ai);
+                }
             }
 
             return menu;
@@ -1209,6 +1240,51 @@ namespace SourceGit.ViewModels
             }
 
             return menu;
+        }
+
+        public ContextMenu CreateContextForOpenAI()
+        {
+            if (_staged == null || _staged.Count == 0)
+            {
+                App.RaiseException(_repo.FullPath, "No files added to commit!");
+                return null;
+            }
+
+            var services = GetPreferedOpenAIServices();
+            if (services.Count == 0)
+            {
+                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
+                return null;
+            }
+
+            if (services.Count == 1)
+            {
+                var dialog = new Views.AIAssistant(services[0], _repo.FullPath, _staged, generated => CommitMessage = generated);
+                App.OpenDialog(dialog);
+                return null;
+            }
+            else
+            {
+                var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
+
+                foreach (var service in services)
+                {
+                    var dup = service;
+
+                    var item = new MenuItem();
+                    item.Header = service.Name;
+                    item.Click += (_, e) =>
+                    {
+                        var dialog = new Views.AIAssistant(dup, _repo.FullPath, _staged, generated => CommitMessage = generated);
+                        App.OpenDialog(dialog);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+
+                return menu;
+            }
         }
 
         private List<Models.Change> GetStagedChanges()
@@ -1361,6 +1437,25 @@ namespace SourceGit.ViewModels
             }
 
             return false;
+        }
+
+        private IList<Models.OpenAIService> GetPreferedOpenAIServices()
+        {
+            var services = Preference.Instance.OpenAIServices;
+            if (services == null || services.Count == 0)
+                return [];
+
+            if (services.Count == 1)
+                return services;
+
+            var prefered = _repo.Settings.PreferedOpenAIService;
+            foreach (var service in services)
+            {
+                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                    return [service];
+            }
+
+            return services;
         }
 
         private Repository _repo = null;

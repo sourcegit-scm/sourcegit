@@ -9,11 +9,11 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.StashesPage"
              x:DataType="vm:StashesPage">
-  <Grid>
+  <Grid SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.StashesLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="4"/>
-      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*" MinWidth="300"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left -->

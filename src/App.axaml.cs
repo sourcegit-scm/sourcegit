@@ -59,6 +59,10 @@ namespace SourceGit
             builder.UsePlatformDetect();
             builder.LogToTrace();
             builder.WithInterFont();
+            builder.With(new FontManagerOptions()
+            {
+                DefaultFamilyName = "fonts:Inter#Inter"
+            });
             builder.ConfigureFonts(manager =>
             {
                 var monospace = new EmbeddedFontCollection(
@@ -223,7 +227,7 @@ namespace SourceGit
             if (onlyUseMonospaceFontInEditor)
             {
                 if (string.IsNullOrEmpty(defaultFont))
-                    resDic.Add("Fonts.Primary", new FontFamily("fonts:Inter#Inter, $Default"));
+                    resDic.Add("Fonts.Primary", new FontFamily("fonts:Inter#Inter"));
                 else
                     resDic.Add("Fonts.Primary", new FontFamily(defaultFont));
             }

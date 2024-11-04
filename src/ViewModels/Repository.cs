@@ -45,6 +45,11 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public bool HasAllowedSignersFile
+        {
+            get => _hasAllowedSignersFile;
+        }
+
         public int SelectedViewIndex
         {
             get => _selectedViewIndex;
@@ -444,6 +449,12 @@ namespace SourceGit.ViewModels
 
         public void RefreshAll()
         {
+            Task.Run(() =>
+            {
+                var allowedSignersFile = new Commands.Config(_fullpath).Get("gpg.ssh.allowedSignersFile");
+                _hasAllowedSignersFile = !string.IsNullOrEmpty(allowedSignersFile);
+            });
+
             Task.Run(() =>
             {
                 RefreshBranches();
@@ -1276,6 +1287,45 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public ContextMenu CreateContextMenuForCustomAction()
+        {
+            var actions = new List<Models.CustomAction>();
+            foreach (var action in _settings.CustomActions)
+            {
+                if (action.Scope == Models.CustomActionScope.Repository)
+                    actions.Add(action);
+            }
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
+            if (actions.Count > 0)
+            {
+                foreach (var action in actions)
+                {
+                    var dup = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = dup.Name;
+                    item.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(this, dup, null));
+
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+            }
+            else
+            {
+                menu.Items.Add(new MenuItem() { Header = App.Text("Repository.CustomActions.Empty") });
+            }
+
+            return menu;
+        }
+
         public ContextMenu CreateContextMenuForLocalBranch(Models.Branch branch)
         {
             var menu = new ContextMenu();
@@ -1354,6 +1404,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
                 var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
@@ -1370,11 +1421,22 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    var fetchInto = new MenuItem();
+                    fetchInto.Header = new Views.NameHighlightedTextBlock("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
+                    fetchInto.Icon = App.CreateMenuIcon("Icons.Fetch");
+                    fetchInto.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                    fetchInto.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowAndStartPopup(new FetchInto(this, branch, upstream));
+                        e.Handled = true;
+                    };
+
                     menu.Items.Add(fastForward);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(fetchInto);
                 }
 
-                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(push);
 
                 var merge = new MenuItem();
@@ -2114,7 +2176,7 @@ namespace SourceGit.ViewModels
 
             IsAutoFetching = true;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
-            new Commands.Fetch(_fullpath, "--all", false, null) { RaiseError = false }.Exec();
+            new Commands.Fetch(_fullpath, "--all", false, _settings.EnablePruneOnFetch, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             IsAutoFetching = false;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
@@ -2123,6 +2185,7 @@ namespace SourceGit.ViewModels
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
+        private bool _hasAllowedSignersFile = false;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;

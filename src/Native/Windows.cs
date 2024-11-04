@@ -134,6 +134,7 @@ namespace SourceGit.Native
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
             finder.SublimeText(FindSublimeText);
+            finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
             return finder.Founded;
         }
 
@@ -313,6 +314,27 @@ namespace SourceGit.Native
 
             return string.Empty;
         }
+
+        private string FindVisualStudio()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
+            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is Microsoft.Win32.RegistryKey launcher)
+            {
+                // Get actual path to the executable
+                if (launcher.GetValue(string.Empty) is string CLSID && 
+                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv && 
+                    devenv.GetValue(string.Empty) is string localServer32)
+                {
+                    return localServer32!.Trim('\"');
+                }
+            }
+
+            return string.Empty;
+        }
         #endregion
 
         private void OpenFolderAndSelectFile(string folderPath)
@@ -327,6 +349,32 @@ namespace SourceGit.Native
             {
                 ILFree(pidl);
             }
+        }
+
+        private string GenerateCommandlineArgsForVisualStudio(string repo)
+        {
+            var sln = FindVSSolutionFile(repo, 4);
+            return string.IsNullOrEmpty(sln) ? $"\"{repo}\"" : $"\"{sln}\"";
+        }
+
+        private string FindVSSolutionFile(string path, int leftDepth)
+        {
+            var found = Directory.GetFiles(path, "*.sln", SearchOption.TopDirectoryOnly);
+            if (found != null && found.Length > 0)
+                return Path.GetFullPath(found[0]);
+
+            if (leftDepth <= 0)
+                return null;
+
+            var subfolders = Directory.GetDirectories(path);
+            foreach (var subfolder in subfolders)
+            {
+                var first = FindVSSolutionFile(subfolder, leftDepth - 1);
+                if (!string.IsNullOrEmpty(first))
+                    return first;
+            }
+
+            return null;
         }
     }
 }

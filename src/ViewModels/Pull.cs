@@ -147,9 +147,18 @@ namespace SourceGit.ViewModels
                 if (FetchAllBranches)
                 {
                     SetProgressDescription($"Fetching remote: {_selectedRemote.Name}...");
-                    rs = new Commands.Fetch(_repo.FullPath, _selectedRemote.Name, NoTags, SetProgressDescription).Exec();
+                    rs = new Commands.Fetch(
+                        _repo.FullPath,
+                        _selectedRemote.Name,
+                        NoTags,
+                        _repo.Settings.EnablePruneOnFetch,
+                        SetProgressDescription).Exec();
+
                     if (!rs)
+                    {
+                        CallUIThread(() => _repo.SetWatcherEnabled(true));
                         return false;
+                    }
 
                     _repo.MarkFetched();
 
@@ -168,7 +177,14 @@ namespace SourceGit.ViewModels
                 else
                 {
                     SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
-                    rs = new Commands.Pull(_repo.FullPath, _selectedRemote.Name, _selectedBranch.Name, UseRebase, NoTags, SetProgressDescription).Exec();
+                    rs = new Commands.Pull(
+                        _repo.FullPath,
+                        _selectedRemote.Name,
+                        _selectedBranch.Name,
+                        UseRebase,
+                        NoTags,
+                        _repo.Settings.EnablePruneOnFetch,
+                        SetProgressDescription).Exec();
                 }
 
                 if (rs && needPopStash)

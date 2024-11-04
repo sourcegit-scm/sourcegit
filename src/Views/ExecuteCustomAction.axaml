@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="SourceGit.Views.ExecuteCustomAction"
+             x:DataType="vm:ExecuteCustomAction">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.ExecuteCustomAction}"/>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
+      <TextBlock Text="{DynamicResource Text.ExecuteCustomAction.Name}"/>
+      <Path Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Action}"/>
+      <TextBlock Text="{Binding CustomAction.Name}" Margin="8,0,0,0"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

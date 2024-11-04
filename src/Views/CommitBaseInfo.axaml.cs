@@ -17,6 +17,15 @@ namespace SourceGit.Views
             set => SetValue(MessageProperty, value);
         }
 
+        public static readonly StyledProperty<Models.CommitSignInfo> SignInfoProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, Models.CommitSignInfo>(nameof(SignInfo));
+
+        public Models.CommitSignInfo SignInfo
+        {
+            get => GetValue(SignInfoProperty);
+            set => SetValue(SignInfoProperty, value);
+        }
+
         public static readonly StyledProperty<bool> SupportsContainsInProperty =
             AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(SupportsContainsIn));
 

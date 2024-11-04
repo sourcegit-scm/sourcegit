@@ -21,11 +21,6 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
-        }
-
         private void OnVisitAvaloniaUI(object _, PointerPressedEventArgs e)
         {
             Native.OS.OpenBrowser("https://www.avaloniaui.net/");

@@ -1,5 +1,3 @@
-using Avalonia.Input;
-
 namespace SourceGit.Views
 {
     public partial class Statistics : ChromelessWindow
@@ -7,11 +5,6 @@ namespace SourceGit.Views
         public Statistics()
         {
             InitializeComponent();
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
     }
 }

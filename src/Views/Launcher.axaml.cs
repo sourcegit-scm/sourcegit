@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -17,6 +18,15 @@ namespace SourceGit.Views
         {
             get => GetValue(CaptionHeightProperty);
             set => SetValue(CaptionHeightProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> HasLeftCaptionButtonProperty =
+            AvaloniaProperty.Register<Launcher, bool>(nameof(HasLeftCaptionButton));
+
+        public bool HasLeftCaptionButton
+        {
+            get => GetValue(HasLeftCaptionButtonProperty);
+            set => SetValue(HasLeftCaptionButtonProperty, value);
         }
 
         public bool IsRightCaptionButtonsVisible
@@ -38,10 +48,21 @@ namespace SourceGit.Views
                 Height = layout.LauncherHeight;
             }
 
-            if (UseSystemWindowFrame)
+            if (OperatingSystem.IsMacOS())
+            {
+                HasLeftCaptionButton = true;
+                CaptionHeight = new GridLength(34);
+                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome |
+                                              ExtendClientAreaChromeHints.OSXThickTitleBar;
+            }
+            else if (UseSystemWindowFrame)
+            {
                 CaptionHeight = new GridLength(30);
+            }
             else
+            {
                 CaptionHeight = new GridLength(38);
+            }
 
             InitializeComponent();
         }
@@ -55,8 +76,8 @@ namespace SourceGit.Views
         {
             base.OnOpened(e);
 
-            var layout = ViewModels.Preference.Instance.Layout;
-            if (layout.LauncherWindowState == WindowState.Maximized)
+            var state = ViewModels.Preference.Instance.Layout.LauncherWindowState;
+            if (state == WindowState.Maximized || state == WindowState.FullScreen)
                 WindowState = WindowState.Maximized;
         }
 
@@ -67,12 +88,11 @@ namespace SourceGit.Views
             if (change.Property == WindowStateProperty)
             {
                 var state = (WindowState)change.NewValue!;
-                if (OperatingSystem.IsLinux() && UseSystemWindowFrame)
-                    CaptionHeight = new GridLength(30);
-                else if (state == WindowState.Maximized)
-                    CaptionHeight = new GridLength(OperatingSystem.IsMacOS() ? 34 : 30);
-                else
-                    CaptionHeight = new GridLength(38);
+                if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
+                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
+
+                if (OperatingSystem.IsMacOS())
+                    HasLeftCaptionButton = state != WindowState.FullScreen;
 
                 ViewModels.Preference.Instance.Layout.LauncherWindowState = state;
             }
@@ -223,24 +243,6 @@ namespace SourceGit.Views
         {
             (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
             base.OnClosing(e);
-        }
-
-        private void OnTitleBarDoubleTapped(object _, TappedEventArgs e)
-        {
-            if (WindowState == WindowState.Maximized)
-                WindowState = WindowState.Normal;
-            else
-                WindowState = WindowState.Maximized;
-
-            e.Handled = true;
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            if (e.ClickCount == 1)
-                BeginMoveDrag(e);
-
-            e.Handled = true;
         }
 
         private void OnOpenWorkspaceMenu(object sender, RoutedEventArgs e)

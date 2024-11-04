@@ -21,6 +21,7 @@
           <!-- Base Information -->
           <v:CommitBaseInfo Content="{Binding Commit}" 
                             Message="{Binding FullMessage}"
+                            SignInfo="{Binding SignInfo}"
                             SupportsContainsIn="True"
                             WebLinks="{Binding WebLinks}"
                             IssueTrackerRules="{Binding IssueTrackerRules}"/>

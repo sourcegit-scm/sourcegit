@@ -5,6 +5,7 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:ac="using:Avalonia.Controls.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.RepositoryConfigure"
                     x:DataType="vm:RepositoryConfigure"
@@ -16,30 +17,23 @@
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
-      <Border Grid.Column="0" Grid.ColumnSpan="3"
-              Background="{DynamicResource Brush.TitleBar}"
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Grid.Column="0"
-            Width="14" Height="14"
-            Data="{StaticResource Icons.Settings}"
+      <Path Width="14" Height="14"
             Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Settings}"
             IsVisible="{OnPlatform True, macOS=False}"/>
-      
-      <v:CaptionButtonsMacOS Grid.Column="0"
-                             Margin="0,2,0,0"
-                             IsCloseButtonOnly="True"
-                             IsVisible="{OnPlatform False, macOS=True}"/>
 
-      <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
-                 Classes="bold"
+      <TextBlock Classes="bold"
                  Text="{DynamicResource Text.Configure}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
-      <v:CaptionButtons Grid.Column="2"
+      <v:CaptionButtons HorizontalAlignment="Right"
                         IsCloseButtonOnly="True"
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
@@ -51,7 +45,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -130,7 +124,11 @@
                     Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
 
-          <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
+          <CheckBox Grid.Row="8" Grid.Column="1"
+                    Content="{DynamicResource Text.Configure.Git.EnablePruneOnFetch}"
+                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
+
+          <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
@@ -338,6 +336,149 @@
               </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
+        </TabItem.Header>
+
+        <Grid ColumnDefinitions="200,*" Height="250" Margin="0,8,0,16">
+          <Border Grid.Column="0"
+                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                  Background="{DynamicResource Brush.Contents}">
+            <Grid RowDefinitions="*,1,Auto">
+              <ListBox Grid.Row="0"
+                       Background="Transparent"
+                       ItemsSource="{Binding CustomActions}"
+                       SelectedItem="{Binding SelectedCustomAction, Mode=TwoWay}"
+                       SelectionMode="Single">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="MinHeight" Value="0"/>
+                    <Setter Property="Height" Value="26"/>
+                    <Setter Property="Padding" Value="4,2"/>
+                  </Style>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="m:CustomAction">
+                    <Grid Margin="4,0" ColumnDefinitions="Auto,*">
+                      <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Action}" Fill="{DynamicResource Brush.FG1}"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+              <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+              <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+                <Button Classes="icon_button" Command="{Binding AddNewCustomAction}">
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+                </Button>
+
+                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+
+                <Button Classes="icon_button" Command="{Binding RemoveSelectedCustomAction}">
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                </Button>
+
+                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+              </StackPanel>
+            </Grid>
+          </Border>
+
+          <ContentControl Grid.Column="1" Margin="16,0,0,0">
+            <ContentControl.Content>
+              <Binding Path="SelectedCustomAction">
+                <Binding.TargetNullValue>
+                  <Path Width="64" Height="64"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="{DynamicResource Brush.FG2}"
+                        Data="{StaticResource Icons.Empty}"/>
+                </Binding.TargetNullValue>
+              </Binding>
+            </ContentControl.Content>
+
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="m:CustomAction">
+                <StackPanel Orientation="Vertical">
+                  <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Name}"/>
+                  <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+
+                  <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                    <StackPanel.Resources>
+                      <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+                    </StackPanel.Resources>
+                    
+                    <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
+                    <RadioButton Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"
+                                 GroupName="CustomActionScope"
+                                 Margin="8,0"
+                                 IsChecked="{Binding Scope, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:CustomActionScope.Repository}}"/>
+                    <RadioButton Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"
+                                 GroupName="CustomActionScope"
+                                 IsChecked="{Binding Scope, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:CustomActionScope.Commit}}"/>
+                  </StackPanel>
+
+                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
+                  <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
+                    <TextBox.InnerRightContent>
+                      <Button Classes="icon_button" Width="30" Height="30" Click="SelectExecutableForCustomAction">
+                        <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                      </Button>
+                    </TextBox.InnerRightContent>
+                  </TextBox>
+
+                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
+                  <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
+                  <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Grid>
+      </TabItem>
+      
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.OpenAI}"/>
+        </TabItem.Header>
+
+        <Grid Margin="16,4,16,8" RowDefinitions="32,Auto" ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Configure.OpenAI.Prefered}"/>
+          <ComboBox Grid.Row="0" Grid.Column="1"
+                    Height="28" Padding="8,0"
+                    VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding AvailableOpenAIServices}"
+                    SelectedItem="{Binding PreferedOpenAIService, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.AIAssist}" Fill="{DynamicResource Brush.FG1}"/>
+                  <TextBlock Margin="6,0,0,0" Text="{Binding}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+
+          <TextBlock Grid.Row="1" Grid.Column="1"
+                     Margin="0,6,0,0"
+                     Text="{DynamicResource Text.Configure.OpenAI.Prefered.Tip}"
+                     TextWrapping="Wrap"
+                     Foreground="{DynamicResource Brush.FG2}"/>
         </Grid>
       </TabItem>
     </TabControl>

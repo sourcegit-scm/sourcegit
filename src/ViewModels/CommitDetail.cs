@@ -45,6 +45,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _fullMessage, value);
         }
 
+        public Models.CommitSignInfo SignInfo
+        {
+            get => _signInfo;
+            private set => SetProperty(ref _signInfo, value);
+        }
+
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -131,6 +137,7 @@ namespace SourceGit.ViewModels
                 _visibleChanges.Clear();
             if (_selectedChanges != null)
                 _selectedChanges.Clear();
+            _signInfo = null;
             _searchChangeFilter = null;
             _diffContext = null;
             _viewRevisionFileContent = null;
@@ -474,6 +481,7 @@ namespace SourceGit.ViewModels
         {
             _changes = null;
             FullMessage = string.Empty;
+            SignInfo = null;
             Changes = [];
             VisibleChanges = null;
             SelectedChanges = null;
@@ -486,6 +494,12 @@ namespace SourceGit.ViewModels
             {
                 var fullMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
                 Dispatcher.UIThread.Invoke(() => FullMessage = fullMessage);
+            });
+
+            Task.Run(() =>
+            {
+                var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile).Result();
+                Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
             });
 
             if (_cancelToken != null)
@@ -637,6 +651,7 @@ namespace SourceGit.ViewModels
         private int _activePageIndex = 0;
         private Models.Commit _commit = null;
         private string _fullMessage = string.Empty;
+        private Models.CommitSignInfo _signInfo = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

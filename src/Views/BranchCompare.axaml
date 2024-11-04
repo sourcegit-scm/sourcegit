@@ -21,29 +21,26 @@
     </Grid.RowDefinitions>
 
     <!-- TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto" Height="30" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
-      <Border Grid.Column="0" Grid.ColumnSpan="4"
-              Background="{DynamicResource Brush.TitleBar}"
+      <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
               DoubleTapped="MaximizeOrRestoreWindow"
               PointerPressed="BeginMoveWindow"/>
 
-      <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" IsVisible="{OnPlatform False, macOS=True}">
-        <v:CaptionButtonsMacOS/>
-      </Border>
+      <Path Width="12" Height="12"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Compare}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
 
-      <!-- Icon -->
-      <Path Grid.Column="1" Margin="8,0,0,0" Width="12" Height="12" Data="{StaticResource Icons.Compare}"/>
-
-      <!-- Title -->
-      <TextBlock Grid.Column="2" Margin="8,0,0,0" Text="{DynamicResource Text.BranchCompare}" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"/>
-
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.BranchCompare}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+      
       <!-- Caption Buttons (Windows/Linux) -->
-      <Border Grid.Column="3" IsVisible="{OnPlatform True, macOS=False}">
-        <v:CaptionButtons/>
-      </Border>
+      <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
     <!-- Compare Targets -->

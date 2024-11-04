@@ -58,6 +58,7 @@
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到 ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">拉取(fetch) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成 ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull) ${0}$</x:String>
@@ -72,6 +73,7 @@
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">重置文件到该版本</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重置文件到上一版本</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">生成提交信息</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">切换变更显示模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">文件名+路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路径列表模式</x:String>
@@ -109,6 +111,7 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">复制简要信息</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此处</x:String>
@@ -140,6 +143,14 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交信息模板</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">模板名 ：</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">模板内容 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">请使用${REPO}代替仓库路径，${SHA}代替提交哈希</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可执行文件路径 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名称 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">作用目标 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">选中的提交</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">仓库</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">电子邮箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">邮箱地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
@@ -147,6 +158,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
   <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交信息追加署名 (--signoff)</x:String>
+  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">拉取更新时启用修剪（--prune）</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增匹配Jira规则</x:String>
@@ -157,6 +169,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">规则名 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">为ISSUE生成的URL链接 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在URL中使用$1，$2等变量填入正则表达式匹配的内容</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">启用特定服务 ：</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">当【启用特定服务】被设置时，SourceGit将在本仓库中仅使用该服务。否则将弹出可用的OpenAI服务列表供用户选择。</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP网络代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">用户名</x:String>
@@ -249,6 +264,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">编辑分组</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">编辑仓库</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">执行自定义操作</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自定义操作 ：</x:String>
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快进(fast-forward，无需checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
@@ -404,7 +421,13 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好设置</x:String>
-  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">高级设置</x:String>
+  <x:String x:Key="Text.Preference.AI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
+  <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API密钥</x:String>
+  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
+  <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
+  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">配置名称</x:String>
+  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>
@@ -507,6 +530,8 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空过滤规则</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">配置本仓库</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自定义操作</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">自定义操作未设置</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">启用 --reflog 选项</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支/标签/子模块</x:String>
@@ -569,6 +594,7 @@
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">贮藏(stash)</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟踪的文件</x:String>
+  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">保留暂存区文件</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">信息 ：</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">选填，用于命名此贮藏</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">仅贮藏暂存区的变更</x:String>

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 
-using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -38,11 +37,6 @@ namespace SourceGit.Views
         {
             base.OnClosed(e);
             App.Quit(_exitCode);
-        }
-
-        private void BeginMoveWindow(object _, PointerPressedEventArgs e)
-        {
-            BeginMoveDrag(e);
         }
 
         private void SaveAndClose(object _1, RoutedEventArgs _2)

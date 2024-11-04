@@ -1,13 +1,17 @@
 # SourceGit - Opensource Git GUI client.
 
-![stars](https://img.shields.io/github/stars/sourcegit-scm/sourcegit.svg) ![forks](https://img.shields.io/github/forks/sourcegit-scm/sourcegit.svg) ![license](https://img.shields.io/github/license/sourcegit-scm/sourcegit.svg) ![latest](https://img.shields.io/github/v/release/sourcegit-scm/sourcegit.svg) ![downloads](https://img.shields.io/github/downloads/sourcegit-scm/sourcegit/total)
+[![stars](https://img.shields.io/github/stars/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/stargazers)
+[![forks](https://img.shields.io/github/forks/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/forks)
+[![license](https://img.shields.io/github/license/sourcegit-scm/sourcegit.svg)](LICENSE)
+[![latest](https://img.shields.io/github/v/release/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/releases/latest)
+[![downloads](https://img.shields.io/github/downloads/sourcegit-scm/sourcegit/total)](https://github.com/sourcegit-scm/sourcegit/releases)
 
 ## Highlights
 
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* English/Français/Deutsch/Português/Русский/简体中文/繁體中文
+* Deutsch/English/Español/Français/Português/Русский/简体中文/繁體中文
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
@@ -43,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.95%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-90.36%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-93.52%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-99.10%25-yellow)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-96.05%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-97.08%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-87.72%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-90.79%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
@@ -80,11 +84,16 @@ For **Windows** users:
 
 For **macOS** users:
 
-* Download `sourcegit_x.y.osx-x64.zip` or `sourcegit_x.y.osx-arm64.zip` from Releases. `x64` for Intel and `arm64` for Apple Silicon.
-* Move `SourceGit.app` to `Applications` folder.
-* Make sure your mac trusts all software from anywhere. For more information, search `spctl --master-disable`.
+* Thanks [@ybeapps](https://github.com/ybeapps) for making `SourceGit` available on `Homebrew`. You can simply install it with following command:
+  ```shell
+  brew tap ybeapps/homebrew-sourcegit
+  brew install --cask --no-quarantine sourcegit
+  ```
+* If you want to install `SourceGit.app` from Github Release manually, you need run following command to make sure it works:
+  ```shell
+  sudo xattr -cr /Applications/SourceGit.app
+  ```
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
-* You may need to run `sudo xattr -cr /Applications/SourceGit.app` to make sure the software works.
 * You can run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to generate a custom PATH env file to introduce `PATH` env to SourceGit.
 
 For **Linux** users:
@@ -110,14 +119,15 @@ For other AI service:
 
 This app supports open repository in external tools listed in the table below.
 
-| Tool                          | Windows | macOS | Linux | KEY IN `external_editors.json` |
-|-------------------------------|---------|-------|-------|--------------------------------|
-| Visual Studio Code            | YES     | YES   | YES   | VSCODE                         |
-| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS                |
-| VSCodium                      | YES     | YES   | YES   | VSCODIUM                       |
-| JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
-| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
-| Zed                           | NO      | YES   | YES   | ZED                            |
+| Tool                          | Windows | macOS | Linux |
+|-------------------------------|---------|-------|-------|
+| Visual Studio Code            | YES     | YES   | YES   |
+| Visual Studio Code - Insiders | YES     | YES   | YES   |
+| VSCodium                      | YES     | YES   | YES   |
+| Fleet                         | YES     | YES   | YES   |
+| Sublime Text                  | YES     | YES   | YES   |
+| Zed                           | NO      | YES   | YES   |
+| Visual Studio                 | YES     | NO    | NO    |
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
@@ -125,7 +135,7 @@ This app supports open repository in external tools listed in the table below.
 ```json
 {
     "tools": {
-        "VSCODE": "D:\\VSCode\\Code.exe"
+        "Visual Studio Code": "D:\\VSCode\\Code.exe"
     }
 }
 ```
@@ -153,4 +163,4 @@ Everyone is welcome to submit a PR. Please make sure your PR is based on the lat
 
 Thanks to all the people who contribute.
 
-[![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=10)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
