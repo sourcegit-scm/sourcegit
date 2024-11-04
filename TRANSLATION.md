@@ -1,4 +1,4 @@
-### de_DE.axaml: 95.77%
+### de_DE.axaml: 95.63%
 
 
 <details>
@@ -22,6 +22,7 @@
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
 - Text.Configure.OpenAI.Prefered.Tip
+- Text.Diff.VisualLines.All
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
 - Text.IssueLinkCM.OpenInBrowser
@@ -36,7 +37,7 @@
 
 </details>
 
-### es_ES.axaml: 96.79%
+### es_ES.axaml: 96.65%
 
 
 <details>
@@ -56,6 +57,7 @@
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
 - Text.Configure.OpenAI.Prefered.Tip
+- Text.Diff.VisualLines.All
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
 - Text.IssueLinkCM.OpenInBrowser
@@ -67,7 +69,7 @@
 
 </details>
 
-### fr_FR.axaml: 87.46%
+### fr_FR.axaml: 87.34%
 
 
 <details>
@@ -112,6 +114,7 @@
 - Text.ConventionalCommit.ShortDescription
 - Text.ConventionalCommit.Type
 - Text.Diff.IgnoreWhitespace
+- Text.Diff.VisualLines.All
 - Text.Discard.IncludeIgnored
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
@@ -162,7 +165,7 @@
 
 </details>
 
-### pt_BR.axaml: 90.52%
+### pt_BR.axaml: 90.39%
 
 
 <details>
@@ -209,6 +212,7 @@
 - Text.ConventionalCommit.ShortDescription
 - Text.ConventionalCommit.Type
 - Text.CopyAllText
+- Text.Diff.VisualLines.All
 - Text.Discard.IncludeIgnored
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
@@ -236,33 +240,34 @@
 
 </details>
 
-### ru_RU.axaml: 99.71%
+### ru_RU.axaml: 99.56%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Diff.VisualLines.All
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.85%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.VisualLines.All
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.85%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.VisualLines.All
 
 </details>
