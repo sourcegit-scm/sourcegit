@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -14,17 +13,13 @@ namespace SourceGit.Models
     public class ExternalTool
     {
         public string Name { get; private set; }
-        public string Executable { get; private set; }
-        public string OpenCmdArgs { get; private set; }
         public Bitmap IconImage { get; private set; } = null;
-        public Func<string, string> ArgTransform { get; private set; }
 
-        public ExternalTool(string name, string icon, string executable, string openCmdArgs, Func<string, string> argsTransform)
+        public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null)
         {
             Name = name;
-            Executable = executable;
-            OpenCmdArgs = openCmdArgs;
-            ArgTransform = argsTransform ?? ((s) => s);
+            _execFile = execFile;
+            _execArgsGenerator = execArgsGenerator ?? (repo => $"\"{repo}\"");
 
             try
             {
@@ -40,19 +35,17 @@ namespace SourceGit.Models
 
         public void Open(string repo)
         {
-            string arguments = string.Format(OpenCmdArgs, repo);
-
-            if (ArgTransform != null)
-                arguments = ArgTransform.Invoke(arguments);
-
             Process.Start(new ProcessStartInfo()
             {
                 WorkingDirectory = repo,
-                FileName = Executable,
-                Arguments = arguments,
+                FileName = _execFile,
+                Arguments = _execArgsGenerator.Invoke(repo),
                 UseShellExecute = false,
             });
         }
+
+        private string _execFile = string.Empty;
+        private Func<string, string> _execArgsGenerator = null;
     }
 
     public class JetBrainsState
@@ -118,67 +111,48 @@ namespace SourceGit.Models
                 _customPaths = new ExternalToolPaths();
         }
 
-        public void TryAdd(string name, string icon, string args, string key, Func<string> finder, Func<string, string> argsTransform = null)
+        public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null)
         {
-            if (_customPaths.Tools.TryGetValue(key, out var customPath) && File.Exists(customPath))
+            if (_customPaths.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
             {
-                Founded.Add(new ExternalTool(name, icon, customPath, args, argsTransform));
+                Founded.Add(new ExternalTool(name, icon, customPath, execArgsGenerator));
             }
             else
             {
                 var path = finder();
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                    Founded.Add(new ExternalTool(name, icon, path, args, argsTransform));
+                    Founded.Add(new ExternalTool(name, icon, path, execArgsGenerator));
             }
         }
 
         public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", platformFinder);
         }
 
         public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder);
         }
 
         public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM", platformFinder);
+            TryAdd("VSCodium", "codium", platformFinder);
         }
 
         public void Fleet(Func<string> platformFinder)
         {
-            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET", platformFinder);
+            TryAdd("Fleet", "fleet", platformFinder);
         }
 
         public void SublimeText(Func<string> platformFinder)
         {
-            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT", platformFinder);
+            TryAdd("Sublime Text", "sublime_text", platformFinder);
         }
 
         public void Zed(Func<string> platformFinder)
         {
-            TryAdd("Zed", "zed", "\"{0}\"", "ZED", platformFinder);
-        }
-
-        public void VisualStudio(Func<string> platformFinder)
-        {
-            TryAdd("Visual Studio", "vs", "\"{0}\"", "VISUALSTUDIO", platformFinder, VisualStudioTryFindSolution);
-        }
-
-        private static string VisualStudioTryFindSolution(string path)
-        {
-            try
-            {
-                if (Directory.GetFiles(path.Trim('\"'), "*.sln", SearchOption.AllDirectories).FirstOrDefault() is string solutionPath)
-                    return Path.GetFullPath(solutionPath);
-            }
-            catch
-            {
-                // do nothing
-            }
-            return path;
+            TryAdd("Zed", "zed", platformFinder);
         }
 
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
@@ -197,9 +171,7 @@ namespace SourceGit.Models
                     Founded.Add(new ExternalTool(
                         $"{tool.DisplayName} {tool.DisplayVersion}",
                         supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
-                        Path.Combine(tool.InstallLocation, tool.LaunchCommand),
-                        "\"{0}\"",
-                        null));
+                        Path.Combine(tool.InstallLocation, tool.LaunchCommand)));
                 }
             }
         }

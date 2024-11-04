@@ -119,15 +119,15 @@ For other AI service:
 
 This app supports open repository in external tools listed in the table below.
 
-| Tool                          | Windows | macOS | Linux | KEY IN `external_editors.json` |
-|-------------------------------|---------|-------|-------|--------------------------------|
-| Visual Studio Code            | YES     | YES   | YES   | VSCODE                         |
-| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS                |
-| VSCodium                      | YES     | YES   | YES   | VSCODIUM                       |
-| JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
-| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
-| Zed                           | NO      | YES   | YES   | ZED                            |
-| Visual Studio                 | YES     | YES   | YES   | VISUALSTUDIO                   |
+| Tool                          | Windows | macOS | Linux |
+|-------------------------------|---------|-------|-------|
+| Visual Studio Code            | YES     | YES   | YES   |
+| Visual Studio Code - Insiders | YES     | YES   | YES   |
+| VSCodium                      | YES     | YES   | YES   |
+| Fleet                         | YES     | YES   | YES   |
+| Sublime Text                  | YES     | YES   | YES   |
+| Zed                           | NO      | YES   | YES   |
+| Visual Studio                 | YES     | NO    | NO    |
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
@@ -135,7 +135,7 @@ This app supports open repository in external tools listed in the table below.
 ```json
 {
     "tools": {
-        "VSCODE": "D:\\VSCode\\Code.exe"
+        "Visual Studio Code": "D:\\VSCode\\Code.exe"
     }
 }
 ```
