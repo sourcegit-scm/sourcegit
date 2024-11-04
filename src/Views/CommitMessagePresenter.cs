@@ -190,11 +190,8 @@ namespace SourceGit.Views
                         open.Icon = App.CreateMenuIcon("Icons.OpenWith");
                         open.Click += (_, ev) =>
                         {
+                            Native.OS.OpenBrowser(link);
                             ev.Handled = true;
-
-                            var parentView = this.FindAncestorOfType<CommitBaseInfo>();
-                            if (parentView is { DataContext: ViewModels.CommitDetail detail })
-                                detail.NavigateTo(link);
                         };
 
                         var copy = new MenuItem();
