@@ -325,8 +325,8 @@ namespace SourceGit.Native
             if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is Microsoft.Win32.RegistryKey launcher)
             {
                 // Get actual path to the executable
-                if (launcher.GetValue(string.Empty) is string CLSID && 
-                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv && 
+                if (launcher.GetValue(string.Empty) is string CLSID &&
+                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv &&
                     devenv.GetValue(string.Empty) is string localServer32)
                 {
                     return localServer32!.Trim('\"');

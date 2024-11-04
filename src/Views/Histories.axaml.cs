@@ -706,7 +706,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: > 0 } } list)
             {
                 var menu = histories.MakeContextMenu(list);
-                list.OpenContextMenu(menu);
+                menu?.Open(list);
             }
             e.Handled = true;
         }

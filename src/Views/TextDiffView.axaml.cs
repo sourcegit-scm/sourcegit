@@ -589,8 +589,8 @@ namespace SourceGit.Views
 
             var menu = new ContextMenu();
             menu.Items.Add(copy);
+            menu.Open(TextArea.TextView);
 
-            TextArea.TextView.OpenContextMenu(menu);
             e.Handled = true;
         }
 

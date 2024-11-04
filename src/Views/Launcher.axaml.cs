@@ -250,7 +250,7 @@ namespace SourceGit.Views
             if (sender is Button btn && DataContext is ViewModels.Launcher launcher)
             {
                 var menu = launcher.CreateContextForWorkspace();
-                btn.OpenContextMenu(menu);
+                menu?.Open(btn);
             }
 
             e.Handled = true;

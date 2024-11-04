@@ -16,7 +16,7 @@ namespace SourceGit.Views
                 DataContext is ViewModels.CommitDetail vm)
             {
                 var menu = vm.CreateChangeContextMenu(selected[0]);
-                view.OpenContextMenu(menu);
+                menu?.Open(view);
             }
 
             e.Handled = true;
