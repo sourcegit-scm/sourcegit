@@ -18,8 +18,8 @@
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracking remote branch</x:String>
-  <x:String x:Key="Text.AIAssistant" xml:space="preserve">OpenAI Assistant</x:String>
-  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use OpenAI to generate commit message</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Assistant</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Raise errors and refuses to apply the patch</x:String>
@@ -166,7 +166,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Rule Name:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Result URL:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Please use $1, $2 to access regex groups values.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Prefered Service:</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">If the 'Prefered Service' is set, SourceGit will only use it in this repository. Otherwise, if there is more than one service available, a context menu to choose one of them will be shown.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
