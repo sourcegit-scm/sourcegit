@@ -353,23 +353,26 @@ namespace SourceGit.Native
 
         private string GenerateCommandlineArgsForVisualStudio(string repo)
         {
-            var sln = FindVSSolutionFile(repo, 4);
+            var sln = FindVSSolutionFile(new DirectoryInfo(repo), 4);
             return string.IsNullOrEmpty(sln) ? $"\"{repo}\"" : $"\"{sln}\"";
         }
 
-        private string FindVSSolutionFile(string path, int leftDepth)
+        private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)
         {
-            var found = Directory.GetFiles(path, "*.sln", SearchOption.TopDirectoryOnly);
-            if (found != null && found.Length > 0)
-                return Path.GetFullPath(found[0]);
+            var files = dir.GetFiles();
+            foreach (var f in files)
+            {
+                if (f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                    return f.FullName;
+            }
 
             if (leftDepth <= 0)
                 return null;
 
-            var subfolders = Directory.GetDirectories(path);
-            foreach (var subfolder in subfolders)
+            var subDirs = dir.GetDirectories();
+            foreach (var subDir in subDirs)
             {
-                var first = FindVSSolutionFile(subfolder, leftDepth - 1);
+                var first = FindVSSolutionFile(subDir, leftDepth - 1);
                 if (!string.IsNullOrEmpty(first))
                     return first;
             }
