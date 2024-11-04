@@ -247,24 +247,22 @@
 
 </details>
 
-### zh_CN.axaml: 99.71%
+### zh_CN.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.IssueLinkCM.OpenInBrowser
-- Text.IssueLinkCM.CopyLink
+
 
 </details>
 
-### zh_TW.axaml: 99.71%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.IssueLinkCM.OpenInBrowser
-- Text.IssueLinkCM.CopyLink
+
 
 </details>
