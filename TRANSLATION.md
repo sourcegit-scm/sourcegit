@@ -252,22 +252,22 @@
 
 </details>
 
-### zh_CN.axaml: 99.85%
+### zh_CN.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.VisualLines.All
+
 
 </details>
 
-### zh_TW.axaml: 99.85%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.VisualLines.All
+
 
 </details>
