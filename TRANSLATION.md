@@ -1,4 +1,4 @@
-### de_DE.axaml: 96.05%
+### de_DE.axaml: 95.77%
 
 
 <details>
@@ -24,6 +24,8 @@
 - Text.Configure.OpenAI.Prefered.Tip
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Name
@@ -34,7 +36,7 @@
 
 </details>
 
-### es_ES.axaml: 97.08%
+### es_ES.axaml: 96.79%
 
 
 <details>
@@ -56,6 +58,8 @@
 - Text.Configure.OpenAI.Prefered.Tip
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 - Text.Preference.AI.Name
 - Text.Repository.CustomActions
 - Text.Repository.CustomActions.Empty
@@ -63,7 +67,7 @@
 
 </details>
 
-### fr_FR.axaml: 87.72%
+### fr_FR.axaml: 87.46%
 
 
 <details>
@@ -119,6 +123,8 @@
 - Text.Histories.Tips.Prefix
 - Text.Hotkeys.Repo.CommitWithAutoStage
 - Text.Hotkeys.Repo.DiscardSelected
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 - Text.MoveRepositoryNode
 - Text.MoveRepositoryNode.Target
 - Text.Preference.AI
@@ -156,7 +162,7 @@
 
 </details>
 
-### pt_BR.axaml: 90.79%
+### pt_BR.axaml: 90.52%
 
 
 <details>
@@ -209,6 +215,8 @@
 - Text.FileHistory.FileContent
 - Text.FileHistory.FileChange
 - Text.GitLFS.Locks.OnlyMine
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 - Text.MoveRepositoryNode
 - Text.MoveRepositoryNode.Target
 - Text.Preference.AI.Name
@@ -228,32 +236,35 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.71%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.71%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.71%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.IssueLinkCM.OpenInBrowser
+- Text.IssueLinkCM.CopyLink
 
 </details>
