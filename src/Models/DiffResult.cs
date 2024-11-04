@@ -674,6 +674,8 @@ namespace SourceGit.Models
     {
         public bool IsBinary { get; set; } = false;
         public bool IsLFS { get; set; } = false;
+        public string OldHash { get; set; } = string.Empty;
+        public string NewHash { get; set; } = string.Empty;
         public string OldMode { get; set; } = string.Empty;
         public string NewMode { get; set; } = string.Empty;
         public TextDiff TextDiff { get; set; } = null;

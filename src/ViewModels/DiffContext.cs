@@ -33,12 +33,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _fileModeChange, value);
         }
 
-        public bool IsLoading
-        {
-            get => _isLoading;
-            private set => SetProperty(ref _isLoading, value);
-        }
-
         public bool IsTextDiff
         {
             get => _isTextDiff;
@@ -68,6 +62,7 @@ namespace SourceGit.ViewModels
                 _content = previous._content;
                 _unifiedLines = previous._unifiedLines;
                 _ignoreWhitespace = previous._ignoreWhitespace;
+                _info = previous._info;
             }
 
             if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
@@ -109,7 +104,6 @@ namespace SourceGit.ViewModels
             {
                 Content = null;
                 IsTextDiff = false;
-                IsLoading = false;
                 return;
             }
 
@@ -119,10 +113,14 @@ namespace SourceGit.ViewModels
                 // There is no way to tell a git-diff to use "ALL lines of context",
                 // so instead we set a very high number for the "lines of context" parameter.
                 var numLines = Preference.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
-
                 var latest = new Commands.Diff(_repo, _option, numLines, _ignoreWhitespace).Result();
-                var rs = null as object;
+                var info = new Info(_option, numLines, _ignoreWhitespace, latest);
+                if (_info != null && info.IsSame(_info))
+                    return;
 
+                _info = info;
+
+                var rs = null as object;
                 if (latest.TextDiff != null)
                 {
                     var count = latest.TextDiff.Lines.Count;
@@ -219,7 +217,6 @@ namespace SourceGit.ViewModels
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = rs is Models.TextDiff;
-                    IsLoading = false;
                 });
             });
         }
@@ -252,14 +249,41 @@ namespace SourceGit.ViewModels
             ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
         };
 
+        private class Info
+        {
+            public string Argument { get; set; }
+            public int UnifiedLines { get; set; }
+            public bool IgnoreWhitespace { get; set; }
+            public string OldHash { get; set; }
+            public string NewHash { get; set; }
+
+            public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, Models.DiffResult result)
+            {
+                Argument = option.ToString();
+                UnifiedLines = unifiedLines;
+                IgnoreWhitespace = ignoreWhitespace;
+                OldHash = result.OldHash;
+                NewHash = result.NewHash;
+            }
+
+            public bool IsSame(Info other)
+            {
+                return Argument.Equals(other.Argument, StringComparison.Ordinal) &&
+                    UnifiedLines == other.UnifiedLines &&
+                    IgnoreWhitespace == other.IgnoreWhitespace &&
+                    OldHash.Equals(other.OldHash, StringComparison.Ordinal) &&
+                    NewHash.Equals(other.NewHash, StringComparison.Ordinal);
+            }
+        }
+
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
         private string _title;
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
-        private bool _isLoading = true;
         private bool _isTextDiff = false;
         private bool _ignoreWhitespace = false;
         private object _content = null;
+        private Info _info = null;
     }
 }
