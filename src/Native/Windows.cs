@@ -134,6 +134,7 @@ namespace SourceGit.Native
             finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
             finder.SublimeText(FindSublimeText);
+            finder.VisualStudio(FindVisualStudio);
             return finder.Founded;
         }
 
@@ -309,6 +310,25 @@ namespace SourceGit.Native
             {
                 var icon = sublime3.GetValue("DisplayIcon") as string;
                 return Path.Combine(Path.GetDirectoryName(icon)!, "subl.exe");
+            }
+
+            return string.Empty;
+        }
+
+        private string FindVisualStudio()
+        {
+            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64);
+
+            // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
+            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is Microsoft.Win32.RegistryKey launcher)
+            {
+                // Get actual path to the executable
+                if (launcher.GetValue(string.Empty) is string CLSID && localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv && devenv.GetValue(string.Empty) is string localServer32)
+                {
+                    return localServer32!.Trim('\"');
+                }
             }
 
             return string.Empty;

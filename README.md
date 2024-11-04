@@ -127,6 +127,7 @@ This app supports open repository in external tools listed in the table below.
 | JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
 | Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
 | Zed                           | NO      | YES   | YES   | ZED                            |
+| Visual Studio                 | YES     | YES   | YES   | VISUALSTUDIO                   |
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
