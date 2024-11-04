@@ -1241,34 +1241,6 @@ namespace SourceGit.Views
             set => SetValue(EnableChunkSelectionProperty, value);
         }
 
-        private void RefreshContent(Models.TextDiff diff, bool keepScrollOffset = true)
-        {
-            if (SelectedChunk != null)
-                SetCurrentValue(SelectedChunkProperty, null);
-
-            if (diff == null)
-            {
-                Editor.Content = null;
-                GC.Collect();
-                return;
-            }
-
-            if (UseSideBySideDiff)
-            {
-                var previousContent = Editor.Content as ViewModels.TwoSideTextDiff;
-                Editor.Content = new ViewModels.TwoSideTextDiff(diff, keepScrollOffset ? previousContent : null);
-            }
-            else
-            {
-                if (!keepScrollOffset)
-                    diff.ScrollOffset = Vector.Zero;
-                Editor.Content = diff;
-            }
-
-            IsUnstagedChange = diff.Option.IsUnstaged;
-            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
-        }
-
         static TextDiffView()
         {
             UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
@@ -1314,6 +1286,34 @@ namespace SourceGit.Views
 
             if (SelectedChunk != null)
                 SetCurrentValue(SelectedChunkProperty, null);
+        }
+
+        private void RefreshContent(Models.TextDiff diff, bool keepScrollOffset = true)
+        {
+            if (SelectedChunk != null)
+                SetCurrentValue(SelectedChunkProperty, null);
+
+            if (diff == null)
+            {
+                Editor.Content = null;
+                GC.Collect();
+                return;
+            }
+
+            if (UseSideBySideDiff)
+            {
+                var previousContent = Editor.Content as ViewModels.TwoSideTextDiff;
+                Editor.Content = new ViewModels.TwoSideTextDiff(diff, keepScrollOffset ? previousContent : null);
+            }
+            else
+            {
+                if (!keepScrollOffset)
+                    diff.ScrollOffset = Vector.Zero;
+                Editor.Content = diff;
+            }
+
+            IsUnstagedChange = diff.Option.IsUnstaged;
+            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
         }
 
         private void OnStageChunk(object _1, RoutedEventArgs _2)
