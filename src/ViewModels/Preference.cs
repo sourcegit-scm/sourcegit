@@ -186,6 +186,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showHiddenSymbolsInDiffView, value);
         }
 
+        public bool UseFullTextDiff
+        {
+            get => _useFullTextDiff;
+            set => SetProperty(ref _useFullTextDiff, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -591,6 +597,7 @@ namespace SourceGit.ViewModels
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
+        private bool _useFullTextDiff = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

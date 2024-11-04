@@ -63,7 +63,7 @@ namespace SourceGit.Models
     {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
-        public Vector SyncScrollOffset { get; set; } = Vector.Zero;
+        public Vector ScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
         public string Repo { get; set; } = null;

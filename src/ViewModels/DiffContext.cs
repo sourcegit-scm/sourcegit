@@ -78,6 +78,12 @@ namespace SourceGit.ViewModels
             LoadDiffContent();
         }
 
+        public void ToggleFullTextDiff()
+        {
+            Preference.Instance.UseFullTextDiff = !Preference.Instance.UseFullTextDiff;
+            LoadDiffContent();
+        }
+
         public void IncrUnified()
         {
             UnifiedLines = _unifiedLines + 1;
@@ -109,7 +115,12 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var latest = new Commands.Diff(_repo, _option, _unifiedLines, _ignoreWhitespace).Result();
+                // NOTE: Here we override the UnifiedLines value (if UseFullTextDiff is on).
+                // There is no way to tell a git-diff to use "ALL lines of context",
+                // so instead we set a very high number for the "lines of context" parameter.
+                var numLines = Preference.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
+
+                var latest = new Commands.Diff(_repo, _option, numLines, _ignoreWhitespace).Result();
                 var rs = null as object;
 
                 if (latest.TextDiff != null)
@@ -203,7 +214,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     if (_content is Models.TextDiff old && rs is Models.TextDiff cur && old.File == cur.File)
-                        cur.SyncScrollOffset = old.SyncScrollOffset;
+                        cur.ScrollOffset = old.ScrollOffset;
 
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
