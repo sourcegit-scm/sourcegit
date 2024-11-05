@@ -30,6 +30,8 @@ namespace SourceGit.Commands
                 start.Environment.Add("PATH", Native.OS.CustomPathEnv);
 
             var proc = new Process() { StartInfo = start };
+            var builder = new StringBuilder();
+
             proc.OutputDataReceived += (_, e) =>
             {
                 if (e.Data != null)
@@ -39,7 +41,10 @@ namespace SourceGit.Commands
             proc.ErrorDataReceived += (_, e) =>
             {
                 if (e.Data != null)
+                {
                     outputHandler?.Invoke(e.Data);
+                    builder.Append(e.Data);
+                }                    
             };
 
             try
@@ -57,7 +62,17 @@ namespace SourceGit.Commands
                 });
             }
 
+            var exitCode = proc.ExitCode;
             proc.Close();
+
+            if (exitCode != 0)
+            {
+                var errMsg = builder.ToString();
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    App.RaiseException(repo, errMsg);
+                });
+            }
         }
     }
 }
