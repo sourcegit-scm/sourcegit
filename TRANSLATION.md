@@ -37,35 +37,13 @@
 
 </details>
 
-### es_ES.axaml: 96.65%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.ChangeCM.GenerateCommitMessage
-- Text.CommitCM.CustomAction
-- Text.Configure.CustomAction
-- Text.Configure.CustomAction.Arguments
-- Text.Configure.CustomAction.Arguments.Tip
-- Text.Configure.CustomAction.Executable
-- Text.Configure.CustomAction.Name
-- Text.Configure.CustomAction.Scope
-- Text.Configure.CustomAction.Scope.Commit
-- Text.Configure.CustomAction.Scope.Repository
-- Text.Configure.Git.EnablePruneOnFetch
-- Text.Configure.OpenAI
-- Text.Configure.OpenAI.Prefered
-- Text.Configure.OpenAI.Prefered.Tip
-- Text.Diff.VisualLines.All
-- Text.ExecuteCustomAction
-- Text.ExecuteCustomAction.Name
-- Text.IssueLinkCM.OpenInBrowser
-- Text.IssueLinkCM.CopyLink
-- Text.Preference.AI.Name
-- Text.Repository.CustomActions
-- Text.Repository.CustomActions.Empty
-- Text.Stash.KeepIndex
+
 
 </details>
 
