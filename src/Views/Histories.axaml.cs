@@ -12,6 +12,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using SourceGit.ViewModels;
 
 namespace SourceGit.Views
 {
@@ -722,19 +723,38 @@ namespace SourceGit.Views
 
         private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
+            // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
             if (sender is ListBox { SelectedItems: { Count: > 0 } selected } &&
-                e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
-                var builder = new StringBuilder();
-                foreach (var item in selected)
+                // CTRL + C -> Copy selected commit SHA and subject.
+                if (e.Key == Key.C)
                 {
-                    if (item is Models.Commit commit)
-                        builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                    var builder = new StringBuilder();
+                    foreach (var item in selected)
+                    {
+                        if (item is Models.Commit commit)
+                            builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                    }
+
+                    App.CopyText(builder.ToString());
+                    e.Handled = true;
+                    return;
                 }
 
-                App.CopyText(builder.ToString());
-                e.Handled = true;
+                // CTRL + B -> shows Create Branch pop-up at selected commit.
+                if (e.Key == Key.B)
+                {
+                    if (selected.Count == 1 &&
+                        selected[0] is Models.Commit commit &&
+                        DataContext is ViewModels.Histories histories &&
+                        PopupHost.CanCreatePopup())
+                    {
+                        PopupHost.ShowPopup(new ViewModels.CreateBranch(histories.Repo, commit));
+                        e.Handled = true;
+
+                    }
+                }
             }
         }
 
