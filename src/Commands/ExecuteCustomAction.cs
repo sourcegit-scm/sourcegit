@@ -43,7 +43,7 @@ namespace SourceGit.Commands
                 if (e.Data != null)
                 {
                     outputHandler?.Invoke(e.Data);
-                    builder.Append(e.Data);
+                    builder.AppendLine(e.Data);
                 }                    
             };
 
