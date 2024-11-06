@@ -1,4 +1,4 @@
-### de_DE.axaml: 95.63%
+### de_DE.axaml: 95.22%
 
 
 <details>
@@ -25,6 +25,9 @@
 - Text.Diff.VisualLines.All
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 - Text.Preference.AI.AnalyzeDiffPrompt
@@ -37,17 +40,19 @@
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 99.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 
 </details>
 
-### fr_FR.axaml: 87.34%
+### fr_FR.axaml: 86.96%
 
 
 <details>
@@ -104,6 +109,9 @@
 - Text.Histories.Tips.Prefix
 - Text.Hotkeys.Repo.CommitWithAutoStage
 - Text.Hotkeys.Repo.DiscardSelected
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 - Text.MoveRepositoryNode
@@ -143,7 +151,7 @@
 
 </details>
 
-### pt_BR.axaml: 90.39%
+### pt_BR.axaml: 90.00%
 
 
 <details>
@@ -197,6 +205,9 @@
 - Text.FileHistory.FileContent
 - Text.FileHistory.FileChange
 - Text.GitLFS.Locks.OnlyMine
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 - Text.MoveRepositoryNode
@@ -218,34 +229,41 @@
 
 </details>
 
-### ru_RU.axaml: 99.56%
+### ru_RU.axaml: 99.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Diff.VisualLines.All
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Hotkeys.Repo.Pull
+- Text.Hotkeys.Repo.Push
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 
 </details>
