@@ -1,4 +1,4 @@
-### de_DE.axaml: 95.08%
+### de_DE.axaml: 94.94%
 
 
 <details>
@@ -22,6 +22,7 @@
 - Text.Configure.OpenAI
 - Text.Configure.OpenAI.Prefered
 - Text.Configure.OpenAI.Prefered.Tip
+- Text.Diff.SaveAsPatch
 - Text.Diff.VisualLines.All
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
@@ -41,12 +42,13 @@
 
 </details>
 
-### es_ES.axaml: 99.42%
+### es_ES.axaml: 99.28%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Diff.SaveAsPatch
 - Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
@@ -54,7 +56,7 @@
 
 </details>
 
-### fr_FR.axaml: 86.83%
+### fr_FR.axaml: 86.71%
 
 
 <details>
@@ -99,6 +101,7 @@
 - Text.ConventionalCommit.ShortDescription
 - Text.ConventionalCommit.Type
 - Text.Diff.IgnoreWhitespace
+- Text.Diff.SaveAsPatch
 - Text.Diff.VisualLines.All
 - Text.Discard.IncludeIgnored
 - Text.ExecuteCustomAction
@@ -154,7 +157,7 @@
 
 </details>
 
-### pt_BR.axaml: 89.87%
+### pt_BR.axaml: 89.74%
 
 
 <details>
@@ -201,6 +204,7 @@
 - Text.ConventionalCommit.ShortDescription
 - Text.ConventionalCommit.Type
 - Text.CopyAllText
+- Text.Diff.SaveAsPatch
 - Text.Diff.VisualLines.All
 - Text.Discard.IncludeIgnored
 - Text.ExecuteCustomAction
@@ -233,12 +237,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.99%
+### ru_RU.axaml: 98.84%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Diff.SaveAsPatch
 - Text.Diff.VisualLines.All
 - Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.Hotkeys.Repo.Fetch
