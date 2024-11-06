@@ -35,21 +35,26 @@
   
   <Grid RowDefinitions="50,*" Margin="4">
     <!-- Compare Revision Info -->
-    <Grid Grid.Row="0" Margin="48,0,48,4" ColumnDefinitions="*,48,*">
+    <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
       <!-- Base Revision -->
       <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding StartPoint}"/>
       </Border>
 
-      <!-- Swap Button -->
+      <!-- Swap Buttons -->
       <Button Grid.Column="1" Classes="icon_button" Command="{Binding Swap}" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
-        <Path Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Compare}"/>
+        <Path Width="16" Height="16" Data="{DynamicResource Icons.Compare}"/>
       </Button>
 
       <!-- Right Revision -->
       <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding EndPoint}"/>
       </Border>
+
+      <!-- Save As Patch Button -->
+      <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
+        <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+      </Button>
     </Grid>
 
     <!-- Changes View -->

@@ -9,13 +9,27 @@ namespace SourceGit.Commands
 {
     public static class SaveChangesAsPatch
     {
-        public static bool Exec(string repo, List<Models.Change> changes, bool isUnstaged, string saveTo)
+        public static bool ProcessLocalChanges(string repo, List<Models.Change> changes, bool isUnstaged, string saveTo)
         {
             using (var sw = File.Create(saveTo))
             {
                 foreach (var change in changes)
                 {
                     if (!ProcessSingleChange(repo, new Models.DiffOption(change, isUnstaged), sw))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool ProcessRevisionCompareChanges(string repo, List<Models.Change> changes, string baseRevision, string targetRevision, string saveTo)
+        {
+            using (var sw = File.Create(saveTo))
+            {
+                foreach (var change in changes)
+                {
+                    if (!ProcessSingleChange(repo, new Models.DiffOption(baseRevision, targetRevision, change), sw))
                         return false;
                 }
             }

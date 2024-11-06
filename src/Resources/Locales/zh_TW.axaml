@@ -241,6 +241,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">沒有變更或僅有換行字元差異</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一個差異</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">另存為修補檔</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>

@@ -238,6 +238,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Previous Difference</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Save as Patch</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Show hidden symbols</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Side-By-Side Diff</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</x:String>

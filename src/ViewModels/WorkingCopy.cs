@@ -539,7 +539,7 @@ namespace SourceGit.ViewModels
                         var storageFile = await storageProvider.SaveFilePickerAsync(options);
                         if (storageFile != null)
                         {
-                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                         }
@@ -858,7 +858,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -981,7 +981,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1156,7 +1156,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
