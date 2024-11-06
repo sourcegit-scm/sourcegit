@@ -1,4 +1,4 @@
-### de_DE.axaml: 95.22%
+### de_DE.axaml: 95.08%
 
 
 <details>
@@ -25,9 +25,10 @@
 - Text.Diff.VisualLines.All
 - Text.ExecuteCustomAction
 - Text.ExecuteCustomAction.Name
+- Text.Hotkeys.Repo.CreateBranchOnCommit
+- Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 - Text.Preference.AI.AnalyzeDiffPrompt
@@ -40,19 +41,20 @@
 
 </details>
 
-### es_ES.axaml: 99.57%
+### es_ES.axaml: 99.42%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Hotkeys.Repo.CreateBranchOnCommit
+- Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
 
 </details>
 
-### fr_FR.axaml: 86.96%
+### fr_FR.axaml: 86.83%
 
 
 <details>
@@ -108,10 +110,11 @@
 - Text.Histories.Tips.MacOS
 - Text.Histories.Tips.Prefix
 - Text.Hotkeys.Repo.CommitWithAutoStage
+- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.Hotkeys.Repo.DiscardSelected
+- Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 - Text.MoveRepositoryNode
@@ -151,7 +154,7 @@
 
 </details>
 
-### pt_BR.axaml: 90.00%
+### pt_BR.axaml: 89.87%
 
 
 <details>
@@ -205,9 +208,10 @@
 - Text.FileHistory.FileContent
 - Text.FileHistory.FileChange
 - Text.GitLFS.Locks.OnlyMine
+- Text.Hotkeys.Repo.CreateBranchOnCommit
+- Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 - Text.MoveRepositoryNode
@@ -229,41 +233,38 @@
 
 </details>
 
-### ru_RU.axaml: 99.13%
+### ru_RU.axaml: 98.99%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Diff.VisualLines.All
+- Text.Hotkeys.Repo.CreateBranchOnCommit
+- Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
 
 </details>
 
-### zh_CN.axaml: 99.57%
+### zh_CN.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Hotkeys.Repo.Pull
-- Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
+
 
 </details>
 
-### zh_TW.axaml: 99.57%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Hotkeys.Repo.Pull
-- Text.Hotkeys.Repo.Push
-- Text.Hotkeys.Repo.CreateBranchOnCommit
+
 
 </details>

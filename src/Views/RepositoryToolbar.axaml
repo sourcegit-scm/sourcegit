@@ -31,7 +31,7 @@
       </StackPanel>
 
       <StackPanel Grid.Column="1" Orientation="Horizontal">
-        <Button Classes="icon_button" Width="32" Click="Fetch">
+        <Button Classes="icon_button" Width="32" Click="Fetch" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}">
           <ToolTip.Tip>
             <StackPanel Orientation="Vertical">
               <TextBlock Text="{DynamicResource Text.Fetch}"/>
@@ -85,7 +85,6 @@
                    Fill="{DynamicResource Brush.Border2}"/>
 
         <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
-
           <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
         </Button>
 

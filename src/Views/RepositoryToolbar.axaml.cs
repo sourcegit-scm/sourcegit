@@ -1,3 +1,5 @@
+using System;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -45,22 +47,43 @@ namespace SourceGit.Views
         private void Fetch(object _, RoutedEventArgs e)
         {
             var launcher = this.FindAncestorOfType<Launcher>();
-            (DataContext as ViewModels.Repository)?.Fetch(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
-            e.Handled = true;
+            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            {
+                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
+                if (!startDirectly && OperatingSystem.IsMacOS())
+                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
+                
+                repo.Fetch(startDirectly);
+                e.Handled = true;
+            }
         }
 
         private void Pull(object _, RoutedEventArgs e)
         {
             var launcher = this.FindAncestorOfType<Launcher>();
-            (DataContext as ViewModels.Repository)?.Pull(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
-            e.Handled = true;
+            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            {
+                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
+                if (!startDirectly && OperatingSystem.IsMacOS())
+                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
+                
+                repo.Pull(startDirectly);
+                e.Handled = true;
+            }
         }
 
         private void Push(object _, RoutedEventArgs e)
         {
             var launcher = this.FindAncestorOfType<Launcher>();
-            (DataContext as ViewModels.Repository)?.Push(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
-            e.Handled = true;
+            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            {
+                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
+                if (!startDirectly && OperatingSystem.IsMacOS())
+                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
+                
+                repo.Push(startDirectly);
+                e.Handled = true;
+            }
         }
 
         private void StashAll(object _, RoutedEventArgs e)
