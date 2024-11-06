@@ -42,7 +42,7 @@
           <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull">
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}">
           <ToolTip.Tip>
             <StackPanel Orientation="Vertical">
               <TextBlock Text="{DynamicResource Text.Pull}"/>
@@ -53,7 +53,7 @@
           <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
         </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push">
+        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}">
           <ToolTip.Tip>
             <StackPanel Orientation="Vertical">
               <TextBlock Text="{DynamicResource Text.Push}"/>
@@ -85,6 +85,7 @@
                    Fill="{DynamicResource Brush.Border2}"/>
 
         <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
+
           <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
         </Button>
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Platform.Storage;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -544,6 +545,7 @@ namespace SourceGit.ViewModels
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
+            createBranch.HotKey = new KeyGesture(Key.B, KeyModifiers.Control);
             createBranch.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
