@@ -722,9 +722,7 @@ namespace SourceGit.Views
 
         private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            bool isSystemCmdKeyDown = (OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Meta)) ||
-                (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Control));
-            if (!isSystemCmdKeyDown)
+            if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 return;
 
             // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
