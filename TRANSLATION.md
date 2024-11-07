@@ -1,4 +1,4 @@
-### de_DE.axaml: 94.93%
+### de_DE.axaml: 94.80%
 
 
 <details>
@@ -35,6 +35,7 @@
 - Text.Preference.AI.AnalyzeDiffPrompt
 - Text.Preference.AI.GenerateSubjectPrompt
 - Text.Preference.AI.Name
+- Text.Preference.Appearance.EditorFontSize
 - Text.Repository.CustomActions
 - Text.Repository.CustomActions.Empty
 - Text.Stash.KeepIndex
@@ -42,7 +43,7 @@
 
 </details>
 
-### es_ES.axaml: 99.28%
+### es_ES.axaml: 99.13%
 
 
 <details>
@@ -53,10 +54,11 @@
 - Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
+- Text.Preference.Appearance.EditorFontSize
 
 </details>
 
-### fr_FR.axaml: 86.69%
+### fr_FR.axaml: 86.56%
 
 
 <details>
@@ -129,6 +131,7 @@
 - Text.Preference.AI.Model
 - Text.Preference.AI.Name
 - Text.Preference.AI.Server
+- Text.Preference.Appearance.EditorFontSize
 - Text.Preference.General.ShowAuthorTime
 - Text.Preference.Integration
 - Text.Preference.Shell
@@ -157,7 +160,7 @@
 
 </details>
 
-### pt_BR.axaml: 89.73%
+### pt_BR.axaml: 89.60%
 
 
 <details>
@@ -221,6 +224,7 @@
 - Text.MoveRepositoryNode
 - Text.MoveRepositoryNode.Target
 - Text.Preference.AI.Name
+- Text.Preference.Appearance.EditorFontSize
 - Text.Push.CheckSubmodules
 - Text.Repository.CustomActions
 - Text.Repository.CustomActions.Empty
@@ -237,7 +241,7 @@
 
 </details>
 
-### ru_RU.axaml: 98.84%
+### ru_RU.axaml: 98.70%
 
 
 <details>
@@ -251,6 +255,7 @@
 - Text.Hotkeys.Repo.Push
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
+- Text.Preference.Appearance.EditorFontSize
 
 </details>
 
