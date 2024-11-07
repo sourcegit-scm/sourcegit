@@ -599,7 +599,8 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            Commands.GitIgnore.Add(_repo.FullPath, Path.GetDirectoryName(change.Path) + "/");
+                            var path = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                            Commands.GitIgnore.Add(_repo.FullPath, path + "/");
                             e.Handled = true;
                         };
                         addToIgnore.Items.Add(byParentFolder);
@@ -620,7 +621,8 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, Path.GetDirectoryName(change.Path) + "/*" + extension);
+                                var path = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                                Commands.GitIgnore.Add(_repo.FullPath, path + "/*" + extension);
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtensionInSameFolder);
