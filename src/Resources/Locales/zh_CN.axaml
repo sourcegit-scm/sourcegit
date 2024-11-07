@@ -188,7 +188,6 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">类型：</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">复制全部文本</x:String>
-  <x:String x:Key="Text.CopyMessage" xml:space="preserve">复制内容</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">复制路径</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">复制文件名</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">新建分支 ...</x:String>
