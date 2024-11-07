@@ -27,7 +27,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnPopupCancelByClickMask(object sender, PointerPressedEventArgs e)
+        private void OnMaskClicked(object sender, PointerPressedEventArgs e)
         {
             OnPopupCancel(sender, e);
         }
