@@ -102,6 +102,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _defaultFontSize, value);
         }
 
+        public double EditorFontSize
+        {
+            get => _editorFontSize;
+            set => SetProperty(ref _editorFontSize, value);
+        }
+
         public LayoutInfo Layout
         {
             get => _layout;
@@ -579,6 +585,7 @@ namespace SourceGit.ViewModels
         private bool _onlyUseMonoFontInEditor = false;
         private bool _useSystemWindowFrame = false;
         private double _defaultFontSize = 13;
+        private double _editorFontSize = 13;
         private LayoutInfo _layout = new LayoutInfo();
 
         private int _maxHistoryCommits = 20000;
