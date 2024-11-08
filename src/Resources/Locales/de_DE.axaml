@@ -162,12 +162,12 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Zuletzt geöffnete Tabs beim Starten wiederherstellen</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Konventionelle Commit-Hilfe</x:String>
-  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Inkompatible Änderung:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Geschlossenes Ticket:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Änderungen im Detail:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Geltungsbereich:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Gültigkeitsbereich:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Kurzbeschreibung:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Art der Änderung:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Typ der Änderung:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Kopiere gesamten Text</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Pfad kopieren</x:String>
@@ -506,7 +506,7 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Alles löschen</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Repository Einstellungen</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Option '--reflog' einschalten</x:String>
+  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Aktiviere '--reflog' Option</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches/Tags/Submodule</x:String>
   <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">GEFILTERT:</x:String>
