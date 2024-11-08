@@ -539,7 +539,7 @@ namespace SourceGit.ViewModels
                         var storageFile = await storageProvider.SaveFilePickerAsync(options);
                         if (storageFile != null)
                         {
-                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                         }
@@ -599,7 +599,8 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            Commands.GitIgnore.Add(_repo.FullPath, Path.GetDirectoryName(change.Path) + "/");
+                            var path = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                            Commands.GitIgnore.Add(_repo.FullPath, path + "/");
                             e.Handled = true;
                         };
                         addToIgnore.Items.Add(byParentFolder);
@@ -620,7 +621,8 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, Path.GetDirectoryName(change.Path) + "/*" + extension);
+                                var path = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                                Commands.GitIgnore.Add(_repo.FullPath, path + "/*" + extension);
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtensionInSameFolder);
@@ -858,7 +860,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -981,7 +983,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1156,7 +1158,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.Exec(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }

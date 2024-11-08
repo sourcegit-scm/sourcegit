@@ -68,7 +68,7 @@ namespace SourceGit.Views
 
         private void OnOpenWebLink(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail)
+            if (DataContext is ViewModels.CommitDetail detail && sender is Control control)
             {
                 var links = WebLinks;
                 if (links.Count > 1)
@@ -88,7 +88,7 @@ namespace SourceGit.Views
                         menu.Items.Add(item);
                     }
 
-                    (sender as Control)?.OpenContextMenu(menu);
+                    menu?.Open(control);
                 }
                 else if (links.Count == 1)
                 {

@@ -125,7 +125,7 @@ namespace SourceGit.Views
                 DescriptionEditor.CaretIndex = 0;
                 e.Handled = true;
             }
-            else if (e.Key == Key.V && ((OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Meta) || (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control)))
+            else if (e.Key == Key.V && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
                 e.Handled = true;
 

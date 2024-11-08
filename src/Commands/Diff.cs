@@ -8,6 +8,10 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
         private static partial Regex REG_INDICATOR();
+
+        [GeneratedRegex(@"^index\s([0-9a-f]{6,40})\.\.([0-9a-f]{6,40})(\s[1-9]{6})?")]
+        private static partial Regex REG_HASH_CHANGE();
+
         private const string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
@@ -101,17 +105,31 @@ namespace SourceGit.Commands
 
             if (_result.TextDiff.Lines.Count == 0)
             {
-                var match = REG_INDICATOR().Match(line);
-                if (!match.Success)
+                if (line.StartsWith("Binary", StringComparison.Ordinal))
                 {
-                    if (line.StartsWith("Binary", StringComparison.Ordinal))
-                        _result.IsBinary = true;
+                    _result.IsBinary = true;
                     return;
                 }
 
-                _oldLine = int.Parse(match.Groups[1].Value);
-                _newLine = int.Parse(match.Groups[2].Value);
-                _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
+                if (string.IsNullOrEmpty(_result.OldHash))
+                {
+                    var match = REG_HASH_CHANGE().Match(line);
+                    if (!match.Success)
+                        return;
+
+                    _result.OldHash = match.Groups[1].Value;
+                    _result.NewHash = match.Groups[2].Value;
+                }
+                else
+                {
+                    var match = REG_INDICATOR().Match(line);
+                    if (!match.Success)
+                        return;
+
+                    _oldLine = int.Parse(match.Groups[1].Value);
+                    _newLine = int.Parse(match.Groups[2].Value);
+                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
+                }                
             }
             else
             {

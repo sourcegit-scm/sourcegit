@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
@@ -257,6 +258,44 @@ namespace SourceGit.ViewModels
                     multipleMenu.Items.Add(cherryPickMultiple);
                     multipleMenu.Items.Add(new MenuItem() { Header = "-" });
                 }
+
+                var saveToPatchMultiple = new MenuItem();
+                saveToPatchMultiple.Icon = App.CreateMenuIcon("Icons.Diff");
+                saveToPatchMultiple.Header = App.Text("CommitCM.SaveAsPatch");
+                saveToPatchMultiple.Click += async (_, e) =>
+                {
+                    var storageProvider = App.GetStorageProvider();
+                    if (storageProvider == null)
+                        return;
+
+                    var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+                    try
+                    {
+                        var picker = await storageProvider.OpenFolderPickerAsync(options);
+                        if (picker.Count == 1)
+                        {
+                            var saveTo = $"{picker[0].Path.LocalPath}/patches";
+                            var succ = false;
+                            foreach (var c in selected)
+                            {
+                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, c.SHA, saveTo).Exec());
+                                if (!succ)
+                                    break;
+                            }
+
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    }
+
+                    e.Handled = true;
+                };
+                multipleMenu.Items.Add(saveToPatchMultiple);
+                multipleMenu.Items.Add(new MenuItem() { Header = "-" });
 
                 var copyMultipleSHAs = new MenuItem();
                 copyMultipleSHAs.Header = App.Text("CommitCM.CopySHA");

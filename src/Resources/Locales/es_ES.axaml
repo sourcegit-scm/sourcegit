@@ -73,6 +73,7 @@
   <x:String x:Key="Text.Cancel" xml:space="preserve">CANCELAR</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Resetear a Esta Revisión</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Resetear a Revisión Padre</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generar mensaje de commit</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">CAMBIAR MODO DE VISUALIZACIÓN</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Mostrar como Lista de Archivos y Directorios</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Mostrar como Lista de Rutas</x:String>
@@ -110,7 +111,10 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Comparar con Worktree</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copiar Información</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interactivo ${0}$ hasta Aquí</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Abrir en el Navegador</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copiar Enlace</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revertir Commit</x:String>
@@ -141,12 +145,21 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">PLANTILLA DE COMMIT</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nombre de la Plantilla:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Contenido de la Plantilla:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ACCIÓN PERSONALIZADA</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumentos:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Ruta del repositorio; ${SHA} - SHA del commit seleccionado</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Archivo Ejecutable:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nombre:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Alcance:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repositorio</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Dirección de Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Dirección de email</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotos automáticamente</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto por Defecto</x:String>
+  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Habilitar --prune para fetch</x:String>
   <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Habilitar --signoff para commit</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SEGUIMIENTO DE INCIDENCIAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Añadir Regla de Ejemplo para Github</x:String>
@@ -158,6 +171,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Nombre de la Regla:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Resultante:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Por favor, use $1, $2 para acceder a los valores de los grupos regex.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Servicio Preferido:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizado por este repositorio</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre de Usuario</x:String>
@@ -174,7 +190,6 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipo de Cambio:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copiar Todo el Texto</x:String>
-  <x:String x:Key="Text.CopyMessage" xml:space="preserve">COPIAR MENSAJE</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copiar Ruta</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copiar Nombre del Archivo</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Crear Rama...</x:String>
@@ -235,6 +250,7 @@
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Resaltado de Sintaxis</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Ajuste de Línea</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Mostrar Todas las Líneas</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Disminuir Número de Líneas Visibles</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Aumentar Número de Líneas Visibles</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECCIONA ARCHIVO PARA VER CAMBIOS</x:String>
@@ -250,6 +266,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Editar Grupo Seleccionado</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Editar Repositorio Seleccionado</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Ejecutar Acción Personalizada</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Nombre de la Acción:</x:String>
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (sin checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch todos los remotos</x:String>
@@ -411,6 +429,7 @@
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">Clave API</x:String>
   <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Generar Subject Prompt</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Modelo</x:String>
+  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">Nombre</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APARIENCIA</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Fuente por defecto</x:String>
@@ -514,6 +533,8 @@
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Limpiar todo</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configurar este repositorio</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUAR</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Acciones Personalizadas</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No hay ninguna Acción Personalizada</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Habilitar Opción '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir en el Explorador</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Buscar Ramas/Etiquetas/Submódulos</x:String>
@@ -576,6 +597,7 @@
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
+  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Mantener archivos staged</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Mensaje:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Nombre de este stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Solo cambios staged</x:String>

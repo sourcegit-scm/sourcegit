@@ -141,7 +141,13 @@
                                     Message="{Binding #ThisControl.Message}"
                                     IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
                                     HorizontalAlignment="Stretch"
-                                    TextWrapping="Wrap"/>
+                                    TextWrapping="Wrap">
+            <v:CommitMessagePresenter.Styles>
+              <Style Selector="ToolTip">
+                <Setter Property="MaxWidth" Value="800"/>
+              </Style>
+            </v:CommitMessagePresenter.Styles>
+          </v:CommitMessagePresenter>
         </Grid>
       </StackPanel>
     </DataTemplate>

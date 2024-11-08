@@ -148,7 +148,6 @@
   <x:String x:Key="Text.Configure" xml:space="preserve">Configurar Repositório</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copiar Nome do Arquivo</x:String>
-  <x:String x:Key="Text.CopyMessage" xml:space="preserve">COPIAR MENSAGEM</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copiar Caminho</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Baseado Em:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checar o branch criado</x:String>
