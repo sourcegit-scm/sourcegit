@@ -1,45 +1,18 @@
-### de_DE.axaml: 94.80%
+### de_DE.axaml: 98.70%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.FetchInto
-- Text.ChangeCM.GenerateCommitMessage
-- Text.CommitCM.CustomAction
-- Text.Configure.CustomAction
-- Text.Configure.CustomAction.Arguments
-- Text.Configure.CustomAction.Arguments.Tip
-- Text.Configure.CustomAction.Executable
-- Text.Configure.CustomAction.Name
-- Text.Configure.CustomAction.Scope
-- Text.Configure.CustomAction.Scope.Commit
-- Text.Configure.CustomAction.Scope.Repository
-- Text.Configure.Git.EnablePruneOnFetch
-- Text.Configure.Git.EnableSignOff
-- Text.Configure.IssueTracker.AddSampleGitLabIssue
-- Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
-- Text.Configure.OpenAI
-- Text.Configure.OpenAI.Prefered
-- Text.Configure.OpenAI.Prefered.Tip
 - Text.Diff.SaveAsPatch
 - Text.Diff.VisualLines.All
-- Text.ExecuteCustomAction
-- Text.ExecuteCustomAction.Name
 - Text.Hotkeys.Repo.CreateBranchOnCommit
 - Text.Hotkeys.Repo.Fetch
 - Text.Hotkeys.Repo.Pull
 - Text.Hotkeys.Repo.Push
 - Text.IssueLinkCM.OpenInBrowser
 - Text.IssueLinkCM.CopyLink
-- Text.Preference.AI.AnalyzeDiffPrompt
-- Text.Preference.AI.GenerateSubjectPrompt
-- Text.Preference.AI.Name
 - Text.Preference.Appearance.EditorFontSize
-- Text.Repository.CustomActions
-- Text.Repository.CustomActions.Empty
-- Text.Stash.KeepIndex
-- Text.WorkingCopy.ConfirmCommitWithoutFiles
 
 </details>
 
