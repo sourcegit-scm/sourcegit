@@ -241,21 +241,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.70%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.SaveAsPatch
-- Text.Diff.VisualLines.All
-- Text.Hotkeys.Repo.CreateBranchOnCommit
-- Text.Hotkeys.Repo.Fetch
-- Text.Hotkeys.Repo.Pull
-- Text.Hotkeys.Repo.Push
-- Text.IssueLinkCM.OpenInBrowser
-- Text.IssueLinkCM.CopyLink
-- Text.Preference.Appearance.EditorFontSize
+
 
 </details>
 
