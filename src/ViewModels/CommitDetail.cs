@@ -123,6 +123,12 @@ namespace SourceGit.ViewModels
                         WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Gitee", url), URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Bitbucket", url), URLPrefix = $"{url}/commits/" });
+                    else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Codeberg", url), URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Gitea", url), URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("sourcehut", url), URLPrefix = $"{url}/commit/" });
                 }
             }
         }
