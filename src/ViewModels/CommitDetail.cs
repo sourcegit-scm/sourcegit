@@ -117,7 +117,7 @@ namespace SourceGit.ViewModels
                 {
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = "Github", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
+                    else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLPrefix = $"{url}/-/commit/" });
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLPrefix = $"{url}/commit/" });
