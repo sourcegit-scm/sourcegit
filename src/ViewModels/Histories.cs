@@ -365,7 +365,7 @@ namespace SourceGit.ViewModels
             if (tags.Count > 0)
             {
                 foreach (var tag in tags)
-                    FillTagMenu(menu, tag);
+                    FillTagMenu(menu, tag, current, commit.IsMerged);
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
@@ -893,7 +893,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(submenu);
         }
 
-        private void FillTagMenu(ContextMenu menu, Models.Tag tag)
+        private void FillTagMenu(ContextMenu menu, Models.Tag tag, Models.Branch current, bool merged)
         {
             var submenu = new MenuItem();
             submenu.Header = tag.Name;
@@ -911,6 +911,19 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(push);
+
+            var merge = new MenuItem();
+            merge.Header = new Views.NameHighlightedTextBlock("TagCM.Merge", tag.Name, current.Name);
+            merge.Icon = App.CreateMenuIcon("Icons.Merge");
+            merge.IsEnabled = !merged;
+            merge.Click += (_, e) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new Merge(_repo, tag.Name, current.Name));
+                e.Handled = true;
+            };
+            submenu.Items.Add(merge);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);
