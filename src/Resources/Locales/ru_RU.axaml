@@ -637,6 +637,7 @@
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение с метки</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Слить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Обновление подмодулей</x:String>

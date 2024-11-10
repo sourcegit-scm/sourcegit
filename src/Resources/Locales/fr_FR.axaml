@@ -551,6 +551,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Fusionner ${0}$ dans ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL :</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualiser les sous-modules</x:String>

@@ -636,6 +636,7 @@
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">复制标签信息</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
