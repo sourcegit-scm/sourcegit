@@ -196,7 +196,7 @@ namespace SourceGit.ViewModels
                                 var stream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
                                 var fileSize = stream.Length;
                                 var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
-                                var imageType = Path.GetExtension(file.Path).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
+                                var imageType = ext!.Substring(1).ToUpper(CultureInfo.CurrentCulture);
                                 var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
                                 Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = image);
                             }

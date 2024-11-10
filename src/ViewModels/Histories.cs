@@ -153,12 +153,9 @@ namespace SourceGit.ViewModels
             }
             else if (commits.Count == 1)
             {
-                var commit = commits[0] as Models.Commit;
-
+                var commit = (commits[0] as Models.Commit)!;
                 if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
-                {
                     _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
-                }
 
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
@@ -224,7 +221,7 @@ namespace SourceGit.ViewModels
         public ContextMenu MakeContextMenu(ListBox list)
         {
             var current = _repo.CurrentBranch;
-            if (current == null)
+            if (current == null || list.SelectedItems == null)
                 return null;
 
             if (list.SelectedItems.Count > 1)
