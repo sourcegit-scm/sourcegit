@@ -104,6 +104,14 @@ namespace SourceGit.Commands
             if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
                 MarkFirstMerged();
 
+            foreach (var commit in _commits)
+            {
+                foreach (var parent in _commits.FindAll(c => commit.Parents.Contains(c.SHA)))
+                {
+                    parent.Children.Add(commit.SHA);
+                }
+            }
+
             return _commits;
         }
 

@@ -51,7 +51,7 @@
         <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
-        <Grid RowDefinitions="24,Auto,Auto,Auto" ColumnDefinitions="96,*">
+        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
@@ -101,7 +101,7 @@
           </StackPanel>
 
           <!-- PARENTS -->
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Parents}"/>
           <ItemsControl Grid.Row="1" Grid.Column="1" Height="24" Margin="12,0,0,0" ItemsSource="{Binding Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
@@ -117,14 +117,36 @@
                            TextDecorations="Underline"
                            Cursor="Hand"
                            Margin="0,0,16,0"
-                           PointerPressed="OnParentSHAPressed"/>
+                           PointerPressed="OnSHAPressed"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <!-- CHILDREN -->
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Children}"/>
+          <ItemsControl Grid.Row="2" Grid.Column="1" Height="24" Margin="12,0,0,0" ItemsSource="{Binding Children}" IsVisible="{Binding Children.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Classes="primary"
+                           Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
+                           Foreground="DarkOrange"
+                           TextDecorations="Underline"
+                           Cursor="Hand"
+                           Margin="0,0,16,0"
+                           PointerPressed="OnSHAPressed"/>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
 
           <!-- REFS -->
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
-          <Border Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" Height="24" IsVisible="{Binding HasDecorators}">
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
+          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" Height="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter TagBackground="{DynamicResource Brush.DecoratorTag}"
                                    Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
@@ -134,8 +156,8 @@
           </Border>
 
           <!-- Messages -->
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
-          <v:CommitMessagePresenter Grid.Row="3" Grid.Column="1" 
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
+          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
                                     Margin="12,5,8,0" 
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
