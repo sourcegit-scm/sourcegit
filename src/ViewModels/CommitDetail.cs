@@ -78,6 +78,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public AvaloniaList<string> Children
+        {
+            get;
+            private set;
+        } = new AvaloniaList<string>();
+
         public string SearchChangeFilter
         {
             get => _searchChangeFilter;
@@ -515,6 +521,7 @@ namespace SourceGit.ViewModels
             VisibleChanges = null;
             SelectedChanges = null;
             ViewRevisionFileContent = null;
+            Children.Clear();
 
             if (_commit == null)
                 return;
@@ -529,6 +536,12 @@ namespace SourceGit.ViewModels
             {
                 var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile).Result();
                 Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
+            });
+
+            Task.Run(() =>
+            {
+                var children = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA).Result();
+                Dispatcher.UIThread.Invoke(() => Children.AddRange(children));
             });
 
             if (_cancelToken != null)
