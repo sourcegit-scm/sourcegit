@@ -116,13 +116,19 @@ namespace SourceGit.ViewModels
                 if (remote.TryGetVisitURL(out var url))
                 {
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Github", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLPrefix = $"{url}/-/commit/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Github", url), URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("GitLab", url), URLPrefix = $"{url}/-/commit/" });
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLPrefix = $"{url}/commit/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Gitee", url), URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Bitbucket", URLPrefix = $"{url}/commits/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Bitbucket", url), URLPrefix = $"{url}/commits/" });
+                    else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Codeberg", url), URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("Gitea", url), URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = CommitUrlTitle("sourcehut", url), URLPrefix = $"{url}/commit/" });
                 }
             }
         }
@@ -637,6 +643,18 @@ namespace SourceGit.ViewModels
 
             menu.Items.Add(lfs);
             menu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        private string CommitUrlTitle(string provider, string url)
+        {
+            try
+            {
+                return string.Format("{0} ({1})", provider, string.Join('/', url.Split('/')[3..5]));
+            }
+            catch
+            {
+                return provider;
+            }
         }
 
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
