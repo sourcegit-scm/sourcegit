@@ -113,7 +113,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnSHAPressed(object sender, PointerPressedEventArgs e)
+        private void OnParentSHAPressed(object sender, PointerPressedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
             {

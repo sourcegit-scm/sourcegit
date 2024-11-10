@@ -28,7 +28,6 @@ namespace SourceGit.Models
         public ulong CommitterTime { get; set; } = 0;
         public string Subject { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new List<string>();
-        public List<string> Children { get; set; } = new List<string>();
         public List<Decorator> Decorators { get; set; } = new List<Decorator>();
         public bool HasDecorators => Decorators.Count > 0;
 
