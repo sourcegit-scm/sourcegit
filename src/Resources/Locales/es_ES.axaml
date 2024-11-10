@@ -242,6 +242,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Siguiente Diferencia</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SIN CAMBIOS O SOLO CAMBIOS DE EOL</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Diferencia Anterior</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Guardar como Patch</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostrar símbolos ocultos</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diferencia Lado a Lado</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMÓDULO</x:String>
@@ -367,8 +368,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit cambios staged</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit y push cambios staged</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage todos los cambios y commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Crea una nueva rama basada en el commit seleccionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Descartar cambios seleccionados</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modo Dashboard (Por Defecto)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, empieza directamente</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forzar a recargar este repositorio</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage cambios seleccionados</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Modo de búsqueda de commits</x:String>
@@ -434,6 +439,7 @@
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APARIENCIA</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Fuente por defecto</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Tamaño de fuente por defecto</x:String>
+  <x:String x:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">Tamaño de fuente del editor</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Fuente Monospace</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usar solo fuente monospace en el editor de texto</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
