@@ -128,6 +128,7 @@
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本信息</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">变更列表</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">子提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">查看包含此提交的分支/标签</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">本提交已被以下分支/标签包含</x:String>
