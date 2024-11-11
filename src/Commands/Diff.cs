@@ -129,7 +129,7 @@ namespace SourceGit.Commands
                     _oldLine = int.Parse(match.Groups[1].Value);
                     _newLine = int.Parse(match.Groups[2].Value);
                     _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
-                }                
+                }
             }
             else
             {

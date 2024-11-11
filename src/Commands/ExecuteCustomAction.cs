@@ -44,7 +44,7 @@ namespace SourceGit.Commands
                 {
                     outputHandler?.Invoke(e.Data);
                     builder.AppendLine(e.Data);
-                }                    
+                }
             };
 
             try

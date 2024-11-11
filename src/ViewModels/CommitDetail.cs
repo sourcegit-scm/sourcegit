@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
                     var trimmedUrl = url;
                     if (url.EndsWith(".git"))
                         trimmedUrl = url.Substring(0, url.Length - 4);
-                    
+
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = $"Github ({trimmedUrl.Substring(19)})", URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
