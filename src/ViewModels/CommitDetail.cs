@@ -381,10 +381,13 @@ namespace SourceGit.ViewModels
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.IsEnabled = File.Exists(fullPath);
             openWith.Click += (_, ev) =>
             {
-                Native.OS.OpenWithDefaultEditor(fullPath);
+                var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
+                var fileExt = Path.GetExtension(fullPath) ?? "";
+                var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
+                Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile);
+                Native.OS.OpenWithDefaultEditor(tmpFile);
                 ev.Handled = true;
             };
 
