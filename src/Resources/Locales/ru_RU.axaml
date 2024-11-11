@@ -438,8 +438,6 @@
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">ВИД</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Шрифт по-умолчанию</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Размер шрифта по-умолчанию</x:String>
-  <x:String x:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">Размер шрифта редактора</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Моноширный шрифт</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">В текстовом редакторе используется только моноширный шрифт</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Тема</x:String>

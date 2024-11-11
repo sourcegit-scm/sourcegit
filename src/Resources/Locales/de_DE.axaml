@@ -73,7 +73,7 @@
   <x:String x:Key="Text.Cancel" xml:space="preserve">ABBRECHEN</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Auf diese Revision zurücksetzen</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Auf Vorgänger-Revision zurücksetzen</x:String>
-    <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generiere Commit-Nachricht</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generiere Commit-Nachricht</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ANZEIGE MODUS ÄNDERN</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Zeige als Datei- und Ordnerliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Zeige als Pfadliste</x:String>
@@ -429,7 +429,6 @@
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Modell</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">DARSTELLUNG</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Standardschriftart</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Standardschriftgröße</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace-Schriftart</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende die Monospace-Schriftart nur im Texteditor</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Design</x:String>

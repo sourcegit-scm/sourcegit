@@ -438,8 +438,6 @@
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APARIENCIA</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Fuente por defecto</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Tamaño de fuente por defecto</x:String>
-  <x:String x:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">Tamaño de fuente del editor</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Fuente Monospace</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usar solo fuente monospace en el editor de texto</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
