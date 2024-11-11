@@ -384,6 +384,16 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("OpenWith");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = File.Exists(fullPath);
+            openWith.Click += (_, ev) =>
+            {
+                Native.OS.OpenWithDefaultEditor(fullPath);
+                ev.Handled = true;
+            };
+
             var saveAs = new MenuItem();
             saveAs.Header = App.Text("SaveAs");
             saveAs.Icon = App.CreateMenuIcon("Icons.Save");
@@ -413,6 +423,7 @@ namespace SourceGit.ViewModels
             };
 
             menu.Items.Add(explore);
+            menu.Items.Add(openWith);
             menu.Items.Add(saveAs);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
