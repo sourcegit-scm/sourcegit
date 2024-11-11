@@ -146,15 +146,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.57%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
+
 
 </details>
 
