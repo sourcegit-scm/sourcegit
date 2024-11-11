@@ -1,10 +1,9 @@
-### de_DE.axaml: 98.56%
+### de_DE.axaml: 98.70%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
 - Text.Diff.SaveAsPatch
 - Text.Diff.VisualLines.All
 - Text.Hotkeys.Repo.CreateBranchOnCommit
@@ -17,17 +16,17 @@
 
 </details>
 
-### es_ES.axaml: 99.86%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
+
 
 </details>
 
-### fr_FR.axaml: 86.60%
+### fr_FR.axaml: 86.58%
 
 
 <details>
@@ -129,23 +128,23 @@
 
 </details>
 
-### pt_BR.axaml: 99.86%
+### pt_BR.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
+
 
 </details>
 
-### ru_RU.axaml: 99.86%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
+
 
 </details>
 

@@ -53,15 +53,6 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
-        public static readonly StyledProperty<AvaloniaList<string>> ChildrenProperty =
-            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<string>>(nameof(Children));
-
-        public AvaloniaList<string> Children
-        {
-            get => GetValue(ChildrenProperty);
-            set => SetValue(ChildrenProperty, value);
-        }
-
         public CommitBaseInfo()
         {
             InitializeComponent();
