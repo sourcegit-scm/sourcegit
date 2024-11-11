@@ -5,6 +5,7 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherPage"
              x:DataType="vm:LauncherPage">
@@ -38,103 +39,100 @@
         </ContentControl.DataTemplates>
       </ContentControl>
     </Border>
-    
-    <!-- Popup -->
-    <Grid Grid.Row="1" IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}" ClipToBounds="True">
-      <Border Background="Transparent" PointerPressed="OnPopupCancelByClickMask"/>
 
-      <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)" CornerRadius="0,0,8,8" ClipToBounds="True">                
-        <ContentControl Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:Popup">  
-              <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
-                <!-- Popup Widget -->
-                <ContentPresenter Margin="8,16,8,8"
-                                  Content="{Binding View}"
-                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
+    <!-- Floating -->
+    <Grid Grid.Row="1" ClipToBounds="True">
+      <Grid.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.Or}">
+          <Binding Path="Popup" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+          <Binding Path="Notifications.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+        </MultiBinding>
+      </Grid.IsVisible>
 
-                <!-- Options -->
-                <StackPanel Margin="8,4,8,8"
-                            Height="32"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                  <Button Classes="flat primary"
-                          Width="80" Height="28"
-                          Padding="0"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          Content="{DynamicResource Text.Sure}"
-                          Click="OnPopupSure"
-                          HotKey="Enter"/>
-                  <Button Classes="flat"
-                          Width="80" Height="28"
-                          Margin="8,0,0,0"
-                          Padding="0"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          Content="{DynamicResource Text.Cancel}"
-                          Click="OnPopupCancel"/>
+      <Border Background="Transparent"
+              PointerPressed="OnMaskClicked"
+              IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+      <Grid RowDefinitions="Auto,*" Width="512" HorizontalAlignment="Center">
+        <!-- Popup -->
+        <Border Grid.Row="0"
+                Margin="6,0"
+                Effect="drop-shadow(0 0 8 #8F000000)"
+                CornerRadius="0,0,8,8"
+                ClipToBounds="True"
+                IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+          <ContentControl Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="vm:Popup">
+                <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
+                  <!-- Popup Widget -->
+                  <ContentPresenter Margin="8,16,8,8"
+                                    Content="{Binding View}"
+                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
+
+                  <!-- Options -->
+                  <StackPanel Margin="8,4,8,8"
+                              Height="32"
+                              Orientation="Horizontal"
+                              HorizontalAlignment="Right"
+                              IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                    <Button Classes="flat primary"
+                            Width="80" Height="28"
+                            Padding="0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="{DynamicResource Text.Sure}"
+                            Click="OnPopupSure"
+                            HotKey="Enter"/>
+                    <Button Classes="flat"
+                            Width="80" Height="28"
+                            Margin="8,0,0,0"
+                            Padding="0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="{DynamicResource Text.Cancel}"
+                            Click="OnPopupCancel"/>
+                  </StackPanel>
+
+                  <!-- Running -->
+                  <v:PopupRunningStatus Margin="12,8"
+                                        Description="{Binding ProgressDescription}"
+                                        IsVisible="{Binding InProgress}"/>
                 </StackPanel>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Border>
 
-                <!-- Running -->
-                <v:PopupRunningStatus Margin="12,8"
-                                      Description="{Binding ProgressDescription}"
-                                      IsVisible="{Binding InProgress}"/>
-              </StackPanel>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
-      </Border>
-    </Grid>
-    
-    <!-- Notification -->
-    <Grid Grid.Row="1" Width="480" HorizontalAlignment="Right" VerticalAlignment="Top">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding Notifications}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="m:Notification">
-              <Border Margin="10,6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 12 #A0000000)">
-                <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
-                  <Grid RowDefinitions="26,Auto,32">
-                    <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
-                      <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
-                      <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding !IsError}">
-                      <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
-                      <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}"/>
-                    </StackPanel>
+        <!-- Notifications -->
+        <ScrollViewer Grid.Row="1" Margin="0,6,0,0" VerticalAlignment="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+          <ItemsControl ItemsSource="{Binding Notifications}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="m:Notification">
+                <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 12 #A0000000)">
+                  <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
+                    <Grid RowDefinitions="26,Auto">
+                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="8,0">
+                        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" IsVisible="{Binding IsError}"/>
+                        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green" IsVisible="{Binding !IsError}"/>
+                        <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}" IsVisible="{Binding IsError}"/>
+                        <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}" IsVisible="{Binding !IsError}"/>
+                        <Button Grid.Column="2" Classes="icon_button" Width="16" Height="16" Click="OnDismissNotification">
+                          <Path Width="10" Height="10" Data="{StaticResource Icons.Window.Close}"/>
+                        </Button> 
+                      </Grid>
 
-                    <TextBox Grid.Row="1"
-                             Classes="no_background no_border"
-                             IsReadOnly="True"
-                             TextWrapping="Wrap"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             MaxHeight="100"
-                             Margin="8" Padding="0"
-                             VerticalContentAlignment="Top"
-                             Text="{Binding Message}"/>
-
-                    <StackPanel Grid.Row="2" Margin="0,4,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
-                      <Button Classes="flat"
-                              Margin="0,0,8,0"
-                              Command="{Binding CopyMessage}"
-                              Content="{DynamicResource Text.CopyMessage}"
-                              IsVisible="{Binding IsError}"/>
-                      
-                      <Button Classes="flat primary"
-                              Margin="0,0"
-                              Content="{DynamicResource Text.Close}"
-                              Click="OnDismissNotification"/>
-                    </StackPanel>
-                  </Grid>
+                      <ScrollViewer Grid.Row="1" Margin="8" MaxHeight="100" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <SelectableTextBlock TextWrapping="Wrap" Text="{Binding Message}"/>
+                      </ScrollViewer>
+                    </Grid>
+                  </Border>
                 </Border>
-              </Border>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-      </ScrollViewer>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </Grid>
     </Grid>
   </Grid>
 </UserControl>

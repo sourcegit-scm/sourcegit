@@ -189,7 +189,7 @@ namespace SourceGit.Views
             if (sender is ListBox { SelectedItem: Models.Submodule submodule } grid && DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForSubmodule(submodule.Path);
-                grid.OpenContextMenu(menu);
+                menu?.Open(grid);
             }
 
             e.Handled = true;
@@ -210,7 +210,7 @@ namespace SourceGit.Views
             if (sender is ListBox { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
             {
                 var menu = repo.CreateContextMenuForWorktree(worktree);
-                grid.OpenContextMenu(menu);
+                menu?.Open(grid);
             }
 
             e.Handled = true;

@@ -30,7 +30,7 @@ namespace SourceGit.Models
 
         public string Arguments
         {
-            get => _arguments; 
+            get => _arguments;
             set => SetProperty(ref _arguments, value);
         }
 

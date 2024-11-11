@@ -24,6 +24,11 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _endPoint, value);
         }
 
+        public bool CanSaveAsPatch
+        {
+            get => _canSaveAsPatch;
+        }
+
         public List<Models.Change> VisibleChanges
         {
             get => _visibleChanges;
@@ -73,6 +78,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
+            _canSaveAsPatch = startPoint != null && endPoint != null;
 
             Task.Run(Refresh);
         }
@@ -103,6 +109,16 @@ namespace SourceGit.ViewModels
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
             SelectedChanges = [];
             Task.Run(Refresh);
+        }
+
+        public void SaveAsPatch(string saveTo)
+        {
+            Task.Run(() =>
+            {
+                var succ = Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+                if (succ)
+                    Dispatcher.UIThread.Invoke(() => App.SendNotification(_repo, App.Text("SaveAsPatchSuccess")));
+            });
         }
 
         public void ClearSearchFilter()
@@ -218,6 +234,7 @@ namespace SourceGit.ViewModels
         private string _repo;
         private object _startPoint = null;
         private object _endPoint = null;
+        private bool _canSaveAsPatch = false;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

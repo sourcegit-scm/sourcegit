@@ -176,7 +176,38 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    Native.OS.OpenBrowser(_lastHover.Link);
+                    var point = e.GetCurrentPoint(this);
+                    var link = _lastHover.Link;
+
+                    if (point.Properties.IsLeftButtonPressed)
+                    {
+                        Native.OS.OpenBrowser(link);
+                    }
+                    else if (point.Properties.IsRightButtonPressed)
+                    {
+                        var open = new MenuItem();
+                        open.Header = App.Text("IssueLinkCM.OpenInBrowser");
+                        open.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                        open.Click += (_, ev) =>
+                        {
+                            Native.OS.OpenBrowser(link);
+                            ev.Handled = true;
+                        };
+
+                        var copy = new MenuItem();
+                        copy.Header = App.Text("IssueLinkCM.CopyLink");
+                        copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                        copy.Click += (_, ev) =>
+                        {
+                            App.CopyText(link);
+                            ev.Handled = true;
+                        };
+
+                        var menu = new ContextMenu();
+                        menu.Items.Add(open);
+                        menu.Items.Add(copy);
+                        menu.Open(this);
+                    }
                 }
 
                 e.Handled = true;

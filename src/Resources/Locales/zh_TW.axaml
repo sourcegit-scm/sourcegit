@@ -21,8 +21,8 @@
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">選填。預設使用目標資料夾名稱。</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">追蹤分支</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">設定遠端追蹤分支</x:String>
-  <x:String x:Key="Text.AIAssistant" xml:space="preserve">OpenAI 助理</x:String>
-  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 OpenAI 產生提交訊息</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI 助理</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">錯誤</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">輸出錯誤，並中止套用修補檔</x:String>
@@ -128,6 +128,7 @@
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本資訊</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">變更列表</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">子提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">檢視包含此提交的分支或標籤</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">本提交包含於以下分支或標籤</x:String>
@@ -169,9 +170,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">規則名稱:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">為 Issue 產生的網址連結:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在網址中使用 $1、$2 等變數填入正規表達式相符的內容</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OpenAI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">偏好服務:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">設定 [偏好服務] 後，SourceGit 將於此存放庫中使用該服務，否則會顯示 OpenAI 服務列表供使用者選擇。</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">設定 [偏好服務] 後，SourceGit 將於此存放庫中使用該服務，否則會顯示 AI 服務列表供使用者選擇。</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP 代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP 網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>
@@ -188,7 +189,6 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">類型:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">複製全部內容</x:String>
-  <x:String x:Key="Text.CopyMessage" xml:space="preserve">複製內容</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">複製路徑</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">複製檔案名稱</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">新增分支...</x:String>
@@ -241,6 +241,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">沒有變更或僅有換行字元差異</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一個差異</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">另存為修補檔</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
@@ -249,6 +250,7 @@
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法上色</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自動換行</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合併工具檢視</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">顯示檔案的全部內容</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">減少可見的行數</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
@@ -365,8 +367,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暫存區變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暫存區變更並推送</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">根據選取的提交建立新的分支</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">捨棄選取的變更</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本地變更到遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">強制重新載入存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">暫存或取消暫存選取的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
@@ -390,6 +396,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">互動式重定基底</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交:</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在瀏覽器中存取網址</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">複製網址</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">發生錯誤</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合併分支</x:String>
@@ -421,7 +429,7 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">偏好設定</x:String>
-  <x:String x:Key="Text.Preference.AI" xml:space="preserve">OpenAI</x:String>
+  <x:String x:Key="Text.Preference.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">伺服器</x:String>
   <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API 金鑰</x:String>
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">模型</x:String>
@@ -431,6 +439,7 @@
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">預設字型大小</x:String>
+  <x:String x:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">程式碼字型大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等寬字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">僅在文字編輯器中使用等寬字型</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">佈景主題</x:String>
@@ -628,6 +637,7 @@
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">複製標籤訊息</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合併 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>

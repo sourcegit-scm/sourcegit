@@ -53,6 +53,15 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
+        public static readonly StyledProperty<AvaloniaList<string>> ChildrenProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<string>>(nameof(Children));
+
+        public AvaloniaList<string> Children
+        {
+            get => GetValue(ChildrenProperty);
+            set => SetValue(ChildrenProperty, value);
+        }
+
         public CommitBaseInfo()
         {
             InitializeComponent();
@@ -68,7 +77,7 @@ namespace SourceGit.Views
 
         private void OnOpenWebLink(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail)
+            if (DataContext is ViewModels.CommitDetail detail && sender is Control control)
             {
                 var links = WebLinks;
                 if (links.Count > 1)
@@ -88,7 +97,7 @@ namespace SourceGit.Views
                         menu.Items.Add(item);
                     }
 
-                    (sender as Control)?.OpenContextMenu(menu);
+                    menu?.Open(control);
                 }
                 else if (links.Count == 1)
                 {
@@ -113,7 +122,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnParentSHAPressed(object sender, PointerPressedEventArgs e)
+        private void OnSHAPressed(object sender, PointerPressedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
             {
