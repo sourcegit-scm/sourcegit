@@ -16,18 +16,13 @@
 
 </details>
 
-### es_ES.axaml: 99.13%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.SaveAsPatch
-- Text.Hotkeys.Repo.CreateBranchOnCommit
-- Text.Hotkeys.Repo.Fetch
-- Text.Hotkeys.Repo.Pull
-- Text.Hotkeys.Repo.Push
-- Text.Preference.Appearance.EditorFontSize
+
 
 </details>
 
