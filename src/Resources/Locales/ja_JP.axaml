@@ -28,12 +28,12 @@
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Raise errors and refuses to apply the patch</x:String>
   <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Error All</x:String>
   <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similar to 'error', but shows more</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch File:</x:String>
+  <x:String x:Key="Text.Apply.File" xml:space="preserve">パッチファイル:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select .patch file to apply</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignore whitespace changes</x:String>
   <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">No Warn</x:String>
   <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Turns off the trailing whitespace warning</x:String>
-  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Apply Patch</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">パッチを適用</x:String>
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Warn</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Outputs warnings for a few such errors, but applies</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
@@ -81,10 +81,10 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warning: By doing a commit checkout, your Head will be detached</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Local Changes:</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">なにもしない</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Append source to commit message</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
@@ -178,14 +178,14 @@
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">ファイル名をコピー</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">ブランチを作成...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Based On:</x:String>
-  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Check out the created branch</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Local Changes:</x:String>
+  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">作成したブランチにチェックアウト</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">New Branch Name:</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
-  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">なにもしない</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新しいブランチの名前:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">ブランチの名前を入力</x:String>
+  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">ローカルブランチを作成</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">New Tag At:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG signing</x:String>
@@ -240,7 +240,7 @@
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">マージツールで開く</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">変更を破棄</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">All local changes in working copy.</x:String>
-  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Changes:</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">変更:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Include ignored files</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} changes will be discard</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">You can't undo this action!!!</x:String>
@@ -251,8 +251,8 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edit Selected Repository</x:String>
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (without checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
-  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
-  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch without tags</x:String>
+  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">すべてのリモートをフェッチ</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">タグなしでフェッチ</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">リモートの変更をフェッチ</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Assume unchanged</x:String>
@@ -325,7 +325,7 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">履歴</x:String>
   <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
@@ -458,25 +458,25 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">ブランチ:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</x:String>
+  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">すべてのブランチをフェッチ</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch without tags</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
-  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Use rebase instead of merge</x:String>
+  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージの代わりにリベースを使用</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">プッシュ</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Make sure submodules have been pushed</x:String>
-  <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
+  <x:String x:Key="Text.Push.Force" xml:space="preserve">強制的にプッシュ</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">ローカル ブランチ:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">変更をリモートにプッシュ</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">リモート ブランチ:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</x:String>
-  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push all tags</x:String>
+  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">すべてのタグをプッシュ</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote:</x:String>
@@ -575,18 +575,18 @@
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">追跡されていないファイルを含める</x:String>
-  <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</x:String>
-  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</x:String>
+  <x:String x:Key="Text.Stash.Message" xml:space="preserve">メッセージ:</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">オプション. このスタッシュの名前を入力</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">ステージされた変更のみ</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Both staged and unstaged changes of selected file(s) will be stashed!!!</x:String>
-  <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Local Changes</x:String>
+  <x:String x:Key="Text.Stash.Title" xml:space="preserve">ローカルの変更をスタッシュ</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Apply</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Drop</x:String>
   <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Pop</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Drop:</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">スタッシュ</x:String>
-  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">CHANGES</x:String>
+  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">スタッシュ</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">統計</x:String>
   <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">COMMITS</x:String>
@@ -631,7 +631,7 @@
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">デフォルトのクローンディレクトリ内のリポジトリを再スキャン</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">リポジトリを検索...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sort</x:String>
-  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changes</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</x:String>
