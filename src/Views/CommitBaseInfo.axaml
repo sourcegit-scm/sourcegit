@@ -117,7 +117,7 @@
                            TextDecorations="Underline"
                            Cursor="Hand"
                            Margin="0,0,16,0"
-                           PointerPressed="OnParentSHAPressed"/>
+                           PointerPressed="OnSHAPressed"/>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
@@ -135,13 +135,19 @@
 
           <!-- Messages -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.Message}" VerticalAlignment="Top" Margin="0,4,0,0" />
-          <v:CommitMessagePresenter Grid.Row="3" Grid.Column="1" 
+          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
                                     Margin="12,5,8,0" 
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
                                     IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
                                     HorizontalAlignment="Stretch"
-                                    TextWrapping="Wrap"/>
+                                    TextWrapping="Wrap">
+            <v:CommitMessagePresenter.Styles>
+              <Style Selector="ToolTip">
+                <Setter Property="MaxWidth" Value="800"/>
+              </Style>
+            </v:CommitMessagePresenter.Styles>
+          </v:CommitMessagePresenter>
         </Grid>
       </StackPanel>
     </DataTemplate>

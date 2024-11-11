@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
+             xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFileContentViewer">
   <UserControl.DataTemplates>
@@ -19,7 +20,9 @@
     </DataTemplate>
 
     <DataTemplate DataType="m:RevisionTextFile">
-      <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}" Background="{DynamicResource Brush.Contents}"/>
+      <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}"
+                              FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
+                              Background="{DynamicResource Brush.Contents}"/>
     </DataTemplate>
 
     <DataTemplate DataType="m:RevisionImageFile">

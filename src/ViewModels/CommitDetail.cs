@@ -115,14 +115,24 @@ namespace SourceGit.ViewModels
             {
                 if (remote.TryGetVisitURL(out var url))
                 {
+                    var trimmedUrl = url;
+                    if (url.EndsWith(".git"))
+                        trimmedUrl = url.Substring(0, url.Length - 4);
+
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Github", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://gitlab.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "GitLab", URLPrefix = $"{url}/-/commit/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = $"Github ({trimmedUrl.Substring(19)})", URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = $"GitLab ({trimmedUrl.Substring(trimmedUrl.Substring(15).IndexOf('/') + 16)})", URLPrefix = $"{url}/-/commit/" });
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Gitee", URLPrefix = $"{url}/commit/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = $"Gitee ({trimmedUrl.Substring(18)})", URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = "Bitbucket", URLPrefix = $"{url}/commits/" });
+                        WebLinks.Add(new Models.CommitLink() { Name = $"BitBucket ({trimmedUrl.Substring(22)})", URLPrefix = $"{url}/commits/" });
+                    else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = $"Codeberg ({trimmedUrl.Substring(21)})", URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = $"Gitea ({trimmedUrl.Substring(18)})", URLPrefix = $"{url}/commit/" });
+                    else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
+                        WebLinks.Add(new Models.CommitLink() { Name = $"sourcehut ({trimmedUrl.Substring(18)})", URLPrefix = $"{url}/commit/" });
                 }
             }
         }
@@ -186,7 +196,7 @@ namespace SourceGit.ViewModels
                                 var stream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
                                 var fileSize = stream.Length;
                                 var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
-                                var imageType = Path.GetExtension(file.Path).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
+                                var imageType = ext!.Substring(1).ToUpper(CultureInfo.CurrentCulture);
                                 var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
                                 Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = image);
                             }
@@ -368,6 +378,19 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("OpenWith");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.Click += (_, ev) =>
+            {
+                var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
+                var fileExt = Path.GetExtension(fullPath) ?? "";
+                var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
+                Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile);
+                Native.OS.OpenWithDefaultEditor(tmpFile);
+                ev.Handled = true;
+            };
+
             var saveAs = new MenuItem();
             saveAs.Header = App.Text("SaveAs");
             saveAs.Icon = App.CreateMenuIcon("Icons.Save");
@@ -397,6 +420,7 @@ namespace SourceGit.ViewModels
             };
 
             menu.Items.Add(explore);
+            menu.Items.Add(openWith);
             menu.Items.Add(saveAs);
             menu.Items.Add(new MenuItem() { Header = "-" });
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
@@ -152,12 +153,9 @@ namespace SourceGit.ViewModels
             }
             else if (commits.Count == 1)
             {
-                var commit = commits[0] as Models.Commit;
-
+                var commit = (commits[0] as Models.Commit)!;
                 if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
-                {
                     _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
-                }
 
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
@@ -223,7 +221,7 @@ namespace SourceGit.ViewModels
         public ContextMenu MakeContextMenu(ListBox list)
         {
             var current = _repo.CurrentBranch;
-            if (current == null)
+            if (current == null || list.SelectedItems == null)
                 return null;
 
             if (list.SelectedItems.Count > 1)
@@ -257,6 +255,44 @@ namespace SourceGit.ViewModels
                     multipleMenu.Items.Add(cherryPickMultiple);
                     multipleMenu.Items.Add(new MenuItem() { Header = "-" });
                 }
+
+                var saveToPatchMultiple = new MenuItem();
+                saveToPatchMultiple.Icon = App.CreateMenuIcon("Icons.Diff");
+                saveToPatchMultiple.Header = App.Text("CommitCM.SaveAsPatch");
+                saveToPatchMultiple.Click += async (_, e) =>
+                {
+                    var storageProvider = App.GetStorageProvider();
+                    if (storageProvider == null)
+                        return;
+
+                    var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+                    try
+                    {
+                        var picker = await storageProvider.OpenFolderPickerAsync(options);
+                        if (picker.Count == 1)
+                        {
+                            var saveTo = $"{picker[0].Path.LocalPath}/patches";
+                            var succ = false;
+                            foreach (var c in selected)
+                            {
+                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, c.SHA, saveTo).Exec());
+                                if (!succ)
+                                    break;
+                            }
+
+                            if (succ)
+                                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    }
+
+                    e.Handled = true;
+                };
+                multipleMenu.Items.Add(saveToPatchMultiple);
+                multipleMenu.Items.Add(new MenuItem() { Header = "-" });
 
                 var copyMultipleSHAs = new MenuItem();
                 copyMultipleSHAs.Header = App.Text("CommitCM.CopySHA");
@@ -326,7 +362,7 @@ namespace SourceGit.ViewModels
             if (tags.Count > 0)
             {
                 foreach (var tag in tags)
-                    FillTagMenu(menu, tag);
+                    FillTagMenu(menu, tag, current, commit.IsMerged);
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
@@ -854,7 +890,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(submenu);
         }
 
-        private void FillTagMenu(ContextMenu menu, Models.Tag tag)
+        private void FillTagMenu(ContextMenu menu, Models.Tag tag, Models.Branch current, bool merged)
         {
             var submenu = new MenuItem();
             submenu.Header = tag.Name;
@@ -872,6 +908,19 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(push);
+
+            var merge = new MenuItem();
+            merge.Header = new Views.NameHighlightedTextBlock("TagCM.Merge", tag.Name, current.Name);
+            merge.Icon = App.CreateMenuIcon("Icons.Merge");
+            merge.IsEnabled = !merged;
+            merge.Click += (_, e) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new Merge(_repo, tag.Name, current.Name));
+                e.Handled = true;
+            };
+            submenu.Items.Add(merge);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);

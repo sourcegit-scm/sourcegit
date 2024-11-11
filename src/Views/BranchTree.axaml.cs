@@ -374,7 +374,7 @@ namespace SourceGit.Views
             if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Remote remote })
             {
                 var menu = repo.CreateContextMenuForRemote(remote);
-                this.OpenContextMenu(menu);
+                menu?.Open(this);
                 return;
             }
 
@@ -391,7 +391,7 @@ namespace SourceGit.Views
                 var menu = branch.IsLocal ?
                     repo.CreateContextMenuForLocalBranch(branch) :
                     repo.CreateContextMenuForRemoteBranch(branch);
-                this.OpenContextMenu(menu);
+                menu?.Open(this);
             }
             else if (branches.Find(x => x.IsCurrent) == null)
             {
@@ -405,7 +405,7 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(deleteMulti);
-                this.OpenContextMenu(menu);
+                menu?.Open(this);
             }
         }
 

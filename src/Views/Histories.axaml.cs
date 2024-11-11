@@ -192,35 +192,26 @@ namespace SourceGit.Views
                 if (string.IsNullOrEmpty(subject))
                     return;
 
-                var offset = 0;
                 var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
                 if (!keywordMatch.Success)
                     keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
 
-                if (keywordMatch.Success)
-                {
-                    var keyword = new Run(subject.Substring(0, keywordMatch.Length));
-                    keyword.FontWeight = FontWeight.Bold;
-                    Inlines.Add(keyword);
-
-                    offset = keywordMatch.Length;
-                    subject = subject.Substring(offset);
-                }
-
-                var rules = IssueTrackerRules;
-                if (rules == null || rules.Count == 0)
-                {
-                    Inlines.Add(new Run(subject));
-                    return;
-                }
-
+                var rules = IssueTrackerRules ?? [];
                 var matches = new List<Models.Hyperlink>();
                 foreach (var rule in rules)
                     rule.Matches(matches, subject);
 
                 if (matches.Count == 0)
                 {
-                    Inlines.Add(new Run(subject));
+                    if (keywordMatch.Success)
+                    {
+                        Inlines.Add(new Run(subject.Substring(0, keywordMatch.Length)) { FontWeight = FontWeight.Bold });
+                        Inlines.Add(new Run(subject.Substring(keywordMatch.Length)));
+                    }
+                    else
+                    {
+                        Inlines.Add(new Run(subject));
+                    }
                     return;
                 }
 
@@ -232,18 +223,44 @@ namespace SourceGit.Views
                 foreach (var match in matches)
                 {
                     if (match.Start > pos)
-                        inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
+                    {
+                        if (keywordMatch.Success && pos < keywordMatch.Length)
+                        {
+                            if (keywordMatch.Length < match.Start)
+                            {
+                                inlines.Add(new Run(subject.Substring(pos, keywordMatch.Length - pos)) { FontWeight = FontWeight.Bold });
+                                inlines.Add(new Run(subject.Substring(keywordMatch.Length, match.Start - keywordMatch.Length)));
+                            }
+                            else
+                            {
+                                inlines.Add(new Run(subject.Substring(pos, match.Start - pos)) { FontWeight = FontWeight.Bold });
+                            }
+                        }
+                        else
+                        {
+                            inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
+                        }
+                    }
 
                     var link = new Run(subject.Substring(match.Start, match.Length));
                     link.Classes.Add("issue_link");
                     inlines.Add(link);
 
                     pos = match.Start + match.Length;
-                    match.Start += offset; // Because we use this index of whole subject to detect mouse event.
                 }
 
                 if (pos < subject.Length)
-                    inlines.Add(new Run(subject.Substring(pos)));
+                {
+                    if (keywordMatch.Success && pos < keywordMatch.Length)
+                    {
+                        inlines.Add(new Run(subject.Substring(pos, keywordMatch.Length - pos)) { FontWeight = FontWeight.Bold });
+                        inlines.Add(new Run(subject.Substring(keywordMatch.Length)));
+                    }
+                    else
+                    {
+                        inlines.Add(new Run(subject.Substring(pos)));
+                    }
+                }
 
                 Inlines.AddRange(inlines);
             }
@@ -706,7 +723,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: > 0 } } list)
             {
                 var menu = histories.MakeContextMenu(list);
-                list.OpenContextMenu(menu);
+                menu?.Open(list);
             }
             e.Handled = true;
         }
@@ -722,19 +739,39 @@ namespace SourceGit.Views
 
         private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            if (sender is ListBox { SelectedItems: { Count: > 0 } selected } &&
-                e.Key == Key.C &&
-                e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                return;
+
+            // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
+            if (sender is ListBox { SelectedItems: { Count: > 0 } selected })
             {
-                var builder = new StringBuilder();
-                foreach (var item in selected)
+                // CTRL/COMMAND + C -> Copy selected commit SHA and subject.
+                if (e.Key == Key.C)
                 {
-                    if (item is Models.Commit commit)
-                        builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                    var builder = new StringBuilder();
+                    foreach (var item in selected)
+                    {
+                        if (item is Models.Commit commit)
+                            builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                    }
+
+                    App.CopyText(builder.ToString());
+                    e.Handled = true;
+                    return;
                 }
 
-                App.CopyText(builder.ToString());
-                e.Handled = true;
+                // CTRL/COMMAND + B -> shows Create Branch pop-up at selected commit.
+                if (e.Key == Key.B)
+                {
+                    if (selected.Count == 1 &&
+                        selected[0] is Models.Commit commit &&
+                        DataContext is ViewModels.Histories histories &&
+                        ViewModels.PopupHost.CanCreatePopup())
+                    {
+                        ViewModels.PopupHost.ShowPopup(new ViewModels.CreateBranch(histories.Repo, commit));
+                        e.Handled = true;
+                    }
+                }
             }
         }
 

@@ -63,7 +63,7 @@ namespace SourceGit.Models
     {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
-        public Vector SyncScrollOffset { get; set; } = Vector.Zero;
+        public Vector ScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
         public string Repo { get; set; } = null;
@@ -674,6 +674,8 @@ namespace SourceGit.Models
     {
         public bool IsBinary { get; set; } = false;
         public bool IsLFS { get; set; } = false;
+        public string OldHash { get; set; } = string.Empty;
+        public string NewHash { get; set; } = string.Empty;
         public string OldMode { get; set; } = string.Empty;
         public string NewMode { get; set; } = string.Empty;
         public TextDiff TextDiff { get; set; } = null;

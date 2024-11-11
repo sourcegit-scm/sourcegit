@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-96.05%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-97.08%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-87.72%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-90.79%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.41%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-99.57%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-86.31%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-99.57%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
@@ -119,14 +119,15 @@ For other AI service:
 
 This app supports open repository in external tools listed in the table below.
 
-| Tool                          | Windows | macOS | Linux | KEY IN `external_editors.json` |
-|-------------------------------|---------|-------|-------|--------------------------------|
-| Visual Studio Code            | YES     | YES   | YES   | VSCODE                         |
-| Visual Studio Code - Insiders | YES     | YES   | YES   | VSCODE_INSIDERS                |
-| VSCodium                      | YES     | YES   | YES   | VSCODIUM                       |
-| JetBrains Fleet               | YES     | YES   | YES   | FLEET                          |
-| Sublime Text                  | YES     | YES   | YES   | SUBLIME_TEXT                   |
-| Zed                           | NO      | YES   | YES   | ZED                            |
+| Tool                          | Windows | macOS | Linux |
+|-------------------------------|---------|-------|-------|
+| Visual Studio Code            | YES     | YES   | YES   |
+| Visual Studio Code - Insiders | YES     | YES   | YES   |
+| VSCodium                      | YES     | YES   | YES   |
+| Fleet                         | YES     | YES   | YES   |
+| Sublime Text                  | YES     | YES   | YES   |
+| Zed                           | NO      | YES   | YES   |
+| Visual Studio                 | YES     | NO    | NO    |
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
@@ -134,7 +135,7 @@ This app supports open repository in external tools listed in the table below.
 ```json
 {
     "tools": {
-        "VSCODE": "D:\\VSCode\\Code.exe"
+        "Visual Studio Code": "D:\\VSCode\\Code.exe"
     }
 }
 ```

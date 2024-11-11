@@ -15,7 +15,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.BranchCompare vm && sender is ChangeCollectionView view)
             {
                 var menu = vm.CreateChangeContextMenu();
-                view.OpenContextMenu(menu);
+                menu?.Open(view);
             }
 
             e.Handled = true;

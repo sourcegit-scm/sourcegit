@@ -28,7 +28,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.StashesPage vm && sender is Border border)
             {
                 var menu = vm.MakeContextMenu(border.DataContext as Models.Stash);
-                border.OpenContextMenu(menu);
+                menu?.Open(border);
             }
             e.Handled = true;
         }
@@ -38,7 +38,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.StashesPage vm && sender is Grid grid)
             {
                 var menu = vm.MakeContextMenuForChange(grid.DataContext as Models.Change);
-                grid.OpenContextMenu(menu);
+                menu?.Open(grid);
             }
             e.Handled = true;
         }

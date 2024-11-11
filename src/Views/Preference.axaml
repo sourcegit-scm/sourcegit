@@ -158,16 +158,37 @@
                      Text="{Binding MonospaceFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Appearance.DefaultFontSize}"
+                       Text="{DynamicResource Text.Preference.Appearance.FontSize}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <NumericUpDown Grid.Row="3" Grid.Column="1"
+            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,8,*">
+              <NumericUpDown Grid.Column="0"
                            Minimum="10" Maximum="18" Increment="0.5"
                            Height="28"
                            Padding="4"
                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
                            CornerRadius="3"
-                           Value="{Binding DefaultFontSize, Mode=TwoWay}"/>
+                           Value="{Binding DefaultFontSize, Mode=TwoWay}">
+                <NumericUpDown.InnerLeftContent>
+                  <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource Brush.Border1}">
+                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Preference.Appearance.FontSize.Default}"/>
+                  </Border>
+                </NumericUpDown.InnerLeftContent>
+              </NumericUpDown>
+              <NumericUpDown Grid.Column="2"
+                             Minimum="10" Maximum="18" Increment="0.5"
+                             Height="28"
+                             Padding="4"
+                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                             CornerRadius="3"
+                             Value="{Binding EditorFontSize, Mode=TwoWay}">
+                <NumericUpDown.InnerLeftContent>
+                  <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource Brush.Border1}">
+                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Preference.Appearance.FontSize.Editor}"/>
+                  </Border>
+                </NumericUpDown.InnerLeftContent>
+              </NumericUpDown>
+            </Grid>            
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preference.Appearance.ThemeOverrides}"

@@ -152,7 +152,6 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">Copier</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copier tout le texte</x:String>
   <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copier le nom de fichier</x:String>
-  <x:String x:Key="Text.CopyMessage" xml:space="preserve">COPIER LE MESSAGE</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copier le chemin</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Créer une branche...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basé sur :</x:String>
@@ -372,7 +371,6 @@
   <x:String x:Key="Text.Preference" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Taille de police par défaut</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Police monospace</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">N'utiliser que des polices monospace pour l'éditeur de texte</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Thème</x:String>
@@ -552,6 +550,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Fusionner ${0}$ dans ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL :</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualiser les sous-modules</x:String>

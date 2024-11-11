@@ -13,15 +13,13 @@ namespace SourceGit.Models
     public class ExternalTool
     {
         public string Name { get; private set; }
-        public string Executable { get; private set; }
-        public string OpenCmdArgs { get; private set; }
         public Bitmap IconImage { get; private set; } = null;
 
-        public ExternalTool(string name, string icon, string executable, string openCmdArgs)
+        public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null)
         {
             Name = name;
-            Executable = executable;
-            OpenCmdArgs = openCmdArgs;
+            _execFile = execFile;
+            _execArgsGenerator = execArgsGenerator ?? (repo => $"\"{repo}\"");
 
             try
             {
@@ -40,11 +38,14 @@ namespace SourceGit.Models
             Process.Start(new ProcessStartInfo()
             {
                 WorkingDirectory = repo,
-                FileName = Executable,
-                Arguments = string.Format(OpenCmdArgs, repo),
+                FileName = _execFile,
+                Arguments = _execArgsGenerator.Invoke(repo),
                 UseShellExecute = false,
             });
         }
+
+        private string _execFile = string.Empty;
+        private Func<string, string> _execArgsGenerator = null;
     }
 
     public class JetBrainsState
@@ -110,48 +111,48 @@ namespace SourceGit.Models
                 _customPaths = new ExternalToolPaths();
         }
 
-        public void TryAdd(string name, string icon, string args, string key, Func<string> finder)
+        public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null)
         {
-            if (_customPaths.Tools.TryGetValue(key, out var customPath) && File.Exists(customPath))
+            if (_customPaths.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
             {
-                Founded.Add(new ExternalTool(name, icon, customPath, args));
+                Founded.Add(new ExternalTool(name, icon, customPath, execArgsGenerator));
             }
             else
             {
                 var path = finder();
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                    Founded.Add(new ExternalTool(name, icon, path, args));
+                    Founded.Add(new ExternalTool(name, icon, path, execArgsGenerator));
             }
         }
 
         public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", "\"{0}\"", "VSCODE", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", platformFinder);
         }
 
         public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", "\"{0}\"", "VSCODE_INSIDERS", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder);
         }
 
         public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("VSCodium", "codium", "\"{0}\"", "VSCODIUM", platformFinder);
+            TryAdd("VSCodium", "codium", platformFinder);
         }
 
         public void Fleet(Func<string> platformFinder)
         {
-            TryAdd("Fleet", "fleet", "\"{0}\"", "FLEET", platformFinder);
+            TryAdd("Fleet", "fleet", platformFinder);
         }
 
         public void SublimeText(Func<string> platformFinder)
         {
-            TryAdd("Sublime Text", "sublime_text", "\"{0}\"", "SUBLIME_TEXT", platformFinder);
+            TryAdd("Sublime Text", "sublime_text", platformFinder);
         }
 
         public void Zed(Func<string> platformFinder)
         {
-            TryAdd("Zed", "zed", "\"{0}\"", "ZED", platformFinder);
+            TryAdd("Zed", "zed", platformFinder);
         }
 
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
@@ -170,8 +171,7 @@ namespace SourceGit.Models
                     Founded.Add(new ExternalTool(
                         $"{tool.DisplayName} {tool.DisplayVersion}",
                         supported_icons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
-                        Path.Combine(tool.InstallLocation, tool.LaunchCommand),
-                        "\"{0}\""));
+                        Path.Combine(tool.InstallLocation, tool.LaunchCommand)));
                 }
             }
         }
