@@ -240,6 +240,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Nächste Änderung</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">KEINE ÄNDERUNG ODER NUR ZEILEN-ENDE ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Vorherige Änderung</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Als Patch speichern</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Zeige versteckte Symbole</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Nebeneinander</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODUL</x:String>
@@ -248,6 +249,7 @@
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Hervorhebung</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Zeilenumbruch</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Öffne in Merge Tool</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Alle Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Weniger Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Mehr Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">WÄHLE EINE DATEI AUS UM ÄNDERUNGEN ANZUZEIGEN</x:String>
@@ -364,8 +366,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Gestagte Änderungen committen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Gestagte Änderungen committen und pushen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Neuen Branch basierend auf ausgewählten Commit erstellen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Ausgewählte Änderungen verwerfen</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard Modus (Standard)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, wird direkt ausgeführt</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Erzwinge Neuladen des Repositorys</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Ausgewählte Änderungen stagen/unstagen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit-Suchmodus</x:String>
@@ -389,6 +395,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interaktiver Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ziel Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Auf:</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">In Browser öffnen</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Link kopieren</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">FEHLER</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">INFO</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Branch mergen</x:String>
@@ -429,6 +437,9 @@
   <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Modell</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">DARSTELLUNG</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Standardschriftart</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize" xml:space="preserve">Schriftgröße</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Default" xml:space="preserve">Standard</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Editor" xml:space="preserve">Texteditor</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace-Schriftart</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Verwende die Monospace-Schriftart nur im Texteditor</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Design</x:String>
