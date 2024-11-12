@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -56,12 +57,20 @@ namespace SourceGit.ViewModels
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
                     {
-                        SetProgressDescription("Deleting tracking remote branch...");
+                        SetProgressDescription("Deleting remote-tracking branch...");
                         Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
                     }
                 }
-                else
+                else if(!Commands.Branch.HasRemote(_repo.FullPath, Target.Remote, Target.Name))
                 {
+                    SetProgressDescription("Remote branch not found. Deleting remote-tracking branch...");
+                    var remoteTrackingBranch = $"{Target.Remote}/{Target.Name}";
+
+                    Commands.Branch.DeleteRemoteTracking(_repo.FullPath, remoteTrackingBranch);
+                }
+                else 
+                {
+                    SetProgressDescription("Deleting remote-tracking branch...");
                     Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name);
                 }
 
