@@ -293,6 +293,10 @@ end_of_line = lf
 [*.{cmd,bat}]
 end_of_line = crlf
 
+# Package manifests
+[{*.spec,control}]
+end_of_line = lf
+
 # YAML files
 [*.{yml,yaml}]
 indent_size = 2

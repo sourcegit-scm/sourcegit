@@ -3,6 +3,8 @@
 *.png      binary
 *.ico      binary
 *.sh       text eol=lf
+*.spec     text eol=lf
+control    text eol=lf
 *.bat      text eol=crlf
 *.cmd      text eol=crlf
 *.ps1      text eol=crlf
