@@ -57,8 +57,22 @@ namespace SourceGit.ViewModels
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
                     {
-                        SetProgressDescription("Deleting remote-tracking branch...");
-                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
+
+                        if (Commands.Branch.HasRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name))
+                        {
+                            SetProgressDescription("Deleting remote-tracking branch and remote branch...");
+
+                            Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
+                        } 
+                        else
+                        {
+                            SetProgressDescription("Deleting remote-tracking branch...");
+
+                            var remoteTrackingBranch = $"{TrackingRemoteBranch.Remote}/{TrackingRemoteBranch.Name}";
+
+                            Commands.Branch.DeleteRemoteTracking(_repo.FullPath, remoteTrackingBranch);
+                        }
+
                     }
                 }
                 else if(!Commands.Branch.HasRemote(_repo.FullPath, Target.Remote, Target.Name))
