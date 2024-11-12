@@ -1,20 +1,10 @@
-### de_DE.axaml: 98.41%
+### de_DE.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.SaveAsPatch
-- Text.Diff.VisualLines.All
-- Text.Hotkeys.Repo.CreateBranchOnCommit
-- Text.Hotkeys.Repo.Fetch
-- Text.Hotkeys.Repo.Pull
-- Text.Hotkeys.Repo.Push
-- Text.IssueLinkCM.OpenInBrowser
-- Text.IssueLinkCM.CopyLink
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
+
 
 </details>
 
