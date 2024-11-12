@@ -169,6 +169,11 @@ namespace SourceGit.ViewModels
             SearchChangeFilter = string.Empty;
         }
 
+        public Models.Commit GetParent(string sha)
+        {
+            return new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
+        }
+
         public List<Models.Object> GetRevisionFilesUnderFolder(string parentFolder)
         {
             return new Commands.QueryRevisionObjects(_repo.FullPath, _commit.SHA, parentFolder).Result();
