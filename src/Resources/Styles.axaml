@@ -168,12 +168,13 @@
     <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid Effect="drop-shadow(0 0 8 #80000000)">
+        <Grid Effect="drop-shadow(0 0 8 #30000000)">
           <Border Margin="8"
                   Padding="8,6"
                   CornerRadius="4"
                   Background="{DynamicResource Brush.Popup}"
-                  BorderThickness="0"
+                  BorderBrush="{DynamicResource Brush.Border2}"
+                  BorderThickness="1"
                   MaxWidth="{TemplateBinding MaxWidth}"
                   MinHeight="{TemplateBinding MinHeight}"
                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
