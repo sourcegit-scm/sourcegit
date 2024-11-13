@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,15 +11,16 @@ namespace SourceGit.ViewModels
     public class BranchTreeNode : ObservableObject
     {
         public string Name { get; private set; } = string.Empty;
+        public string Path { get; private set; } = string.Empty;
         public object Backend { get; private set; } = null;
         public int Depth { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
 
-        public bool IsFiltered
+        public Models.FilterMode FilterMode
         {
-            get => _isFiltered;
-            set => SetProperty(ref _isFiltered, value);
+            get => _filterMode;
+            set => SetProperty(ref _filterMode, value);
         }
 
         public bool IsExpanded
@@ -51,7 +50,7 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch b ? b.FriendlyName : null;
         }
 
-        private bool _isFiltered = false;
+        private Models.FilterMode _filterMode = Models.FilterMode.None;
         private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(4);
 
@@ -60,18 +59,25 @@ namespace SourceGit.ViewModels
             public List<BranchTreeNode> Locals => _locals;
             public List<BranchTreeNode> Remotes => _remotes;
 
+            public Builder(Models.RepositorySettings settings)
+            {
+                _settings = settings;
+            }
+
             public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
             {
                 var folders = new Dictionary<string, BranchTreeNode>();
 
                 foreach (var remote in remotes)
                 {
-                    var path = $"remote/{remote.Name}";
+                    var path = $"refs/remotes/{remote.Name}";
                     var node = new BranchTreeNode()
                     {
                         Name = remote.Name,
+                        Path = path,
                         Backend = remote,
                         IsExpanded = bForceExpanded || _expanded.Contains(path),
+                        FilterMode = _settings.GetHistoriesFilterMode(path, Models.FilterType.RemoteBranchFolder)
                     };
 
                     folders.Add(path, node);
@@ -80,16 +86,15 @@ namespace SourceGit.ViewModels
 
                 foreach (var branch in branches)
                 {
-                    var isFiltered = _filters.Contains(branch.FullName);
                     if (branch.IsLocal)
                     {
-                        MakeBranchNode(branch, _locals, folders, "local", isFiltered, bForceExpanded);
+                        MakeBranchNode(branch, _locals, folders, "refs/heads", bForceExpanded);
                     }
                     else
                     {
                         var remote = _remotes.Find(x => x.Name == branch.Remote);
                         if (remote != null)
-                            MakeBranchNode(branch, remote.Children, folders, $"remote/{remote.Name}", isFiltered, bForceExpanded);
+                            MakeBranchNode(branch, remote.Children, folders, $"refs/remotes/{remote.Name}", bForceExpanded);
                     }
                 }
 
@@ -98,42 +103,36 @@ namespace SourceGit.ViewModels
                 SortNodes(_remotes);
             }
 
-            public void SetFilters(AvaloniaList<string> filters)
-            {
-                _filters.AddRange(filters);
-            }
-
-            public void CollectExpandedNodes(List<BranchTreeNode> nodes, bool isLocal)
-            {
-                CollectExpandedNodes(nodes, isLocal ? "local" : "remote");
-            }
-
-            private void CollectExpandedNodes(List<BranchTreeNode> nodes, string prefix)
+            public void CollectExpandedNodes(List<BranchTreeNode> nodes)
             {
                 foreach (var node in nodes)
                 {
                     if (node.Backend is Models.Branch)
                         continue;
 
-                    var path = prefix + "/" + node.Name;
                     if (node.IsExpanded)
-                        _expanded.Add(path);
+                        _expanded.Add(node.Path);
 
-                    CollectExpandedNodes(node.Children, path);
+                    CollectExpandedNodes(node.Children);
                 }
             }
 
-            private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool isFiltered, bool bForceExpanded)
+            private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded)
             {
+                var fullpath = $"{prefix}/{branch.Name}";
+                var branchFilterType = branch.IsLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
+                var folderFilterType = branch.IsLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
+
                 var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1 || branch.IsDetachedHead)
                 {
                     roots.Add(new BranchTreeNode()
                     {
                         Name = branch.Name,
+                        Path = fullpath,
                         Backend = branch,
                         IsExpanded = false,
-                        IsFiltered = isFiltered,
+                        FilterMode = _settings.GetHistoriesFilterMode(fullpath, branchFilterType),
                     });
                     return;
                 }
@@ -156,7 +155,9 @@ namespace SourceGit.ViewModels
                         lastFolder = new BranchTreeNode()
                         {
                             Name = name,
+                            Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
+                            FilterMode = _settings.GetHistoriesFilterMode(folder, folderFilterType),
                         };
                         roots.Add(lastFolder);
                         folders.Add(folder, lastFolder);
@@ -166,7 +167,9 @@ namespace SourceGit.ViewModels
                         var cur = new BranchTreeNode()
                         {
                             Name = name,
+                            Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
+                            FilterMode = _settings.GetHistoriesFilterMode(folder, folderFilterType),
                         };
                         lastFolder.Children.Add(cur);
                         folders.Add(folder, cur);
@@ -179,10 +182,11 @@ namespace SourceGit.ViewModels
 
                 lastFolder?.Children.Add(new BranchTreeNode()
                 {
-                    Name = Path.GetFileName(branch.Name),
+                    Name = System.IO.Path.GetFileName(branch.Name),
+                    Path = fullpath,
                     Backend = branch,
                     IsExpanded = false,
-                    IsFiltered = isFiltered,
+                    FilterMode = _settings.GetHistoriesFilterMode(fullpath, branchFilterType),
                 });
             }
 
@@ -203,10 +207,10 @@ namespace SourceGit.ViewModels
                     SortNodes(node.Children);
             }
 
+            private readonly Models.RepositorySettings _settings = null;
             private readonly List<BranchTreeNode> _locals = new List<BranchTreeNode>();
             private readonly List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
             private readonly HashSet<string> _expanded = new HashSet<string>();
-            private readonly List<string> _filters = new List<string>();
         }
     }
 }

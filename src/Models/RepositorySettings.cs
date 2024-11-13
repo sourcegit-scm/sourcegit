@@ -1,4 +1,9 @@
-﻿using Avalonia.Collections;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+using Avalonia.Collections;
+using Avalonia.Threading;
 
 namespace SourceGit.Models
 {
@@ -76,11 +81,11 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public AvaloniaList<string> Filters
+        public AvaloniaList<Filter> HistoriesFilters
         {
             get;
             set;
-        } = new AvaloniaList<string>();
+        } = new AvaloniaList<Filter>();
 
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
@@ -147,6 +152,179 @@ namespace SourceGit.Models
             get;
             set;
         } = "---";
+
+        public FilterMode GetHistoriesFilterMode(string pattern, FilterType type)
+        {
+            foreach (var filter in HistoriesFilters)
+            {
+                if (filter.Type != type)
+                    continue;
+
+                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
+                    return filter.Mode;
+            }
+
+            return FilterMode.None;
+        }
+
+        public bool UpdateHistoriesFilter(string pattern, FilterType type, FilterMode mode)
+        {
+            for (int i = 0; i < HistoriesFilters.Count; i++)
+            {
+                var filter = HistoriesFilters[i];
+                if (filter.Type != type)
+                    continue;
+
+                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
+                {
+                    if (mode == FilterMode.None)
+                    {
+                        HistoriesFilters.RemoveAt(i);
+                        return true;
+                    }
+
+                    if (mode != filter.Mode)
+                    {
+                        filter.Mode = mode;
+                        return true;
+                    }
+                }
+            }
+
+            if (mode != FilterMode.None)
+            {
+                HistoriesFilters.Add(new Filter(pattern, type, mode));
+                return true;
+            }
+
+            return false;
+        }
+
+        public string BuildHistoriesFilter()
+        {
+            var builder = new StringBuilder();
+
+            var excludedBranches = new List<string>();
+            var excludedRemotes = new List<string>();
+            var excludedTags = new List<string>();
+            var includedBranches = new List<string>();
+            var includedRemotes = new List<string>();
+            var includedTags = new List<string>();
+            foreach (var filter in HistoriesFilters)
+            {
+                if (filter.Type == FilterType.LocalBranch)
+                {
+                    var name = filter.Pattern.Substring(11);
+                    var b = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
+                    
+                    if (filter.Mode == FilterMode.Included)
+                        includedBranches.Add(b);
+                    else if (filter.Mode == FilterMode.Excluded)
+                        excludedBranches.Add(b);
+                }
+                else if (filter.Type == FilterType.LocalBranchFolder)
+                {
+                    if (filter.Mode == FilterMode.Included)
+                        includedBranches.Add($"{filter.Pattern.Substring(11)}/*");
+                    else if (filter.Mode == FilterMode.Excluded)
+                        excludedBranches.Add($"{filter.Pattern.Substring(11)}/*");
+                }
+                else if (filter.Type == FilterType.RemoteBranch)
+                {
+                    var name = filter.Pattern.Substring(13);
+                    var r = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
+
+                    if (filter.Mode == FilterMode.Included)
+                        includedRemotes.Add(r);
+                    else if (filter.Mode == FilterMode.Excluded)
+                        excludedRemotes.Add(r);
+                }
+                else if (filter.Type == FilterType.RemoteBranchFolder)
+                {
+                    if (filter.Mode == FilterMode.Included)
+                        includedRemotes.Add($"{filter.Pattern.Substring(13)}/*");
+                    else if (filter.Mode == FilterMode.Excluded)
+                        excludedRemotes.Add($"{filter.Pattern.Substring(13)}/*");
+                }
+                else if (filter.Type == FilterType.Tag)
+                {
+                    var name = filter.Pattern;
+                    var t = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
+
+                    if (filter.Mode == FilterMode.Included)
+                        includedTags.Add(t);
+                    else if (filter.Mode == FilterMode.Excluded)
+                        excludedTags.Add(t);
+                }
+            }
+
+            foreach (var b in excludedBranches)
+            {
+                builder.Append("--exclude=");
+                builder.Append(b);
+                builder.Append(' ');
+            }
+
+            if (includedBranches.Count > 0)
+            {
+                foreach (var b in includedBranches)
+                {
+                    builder.Append("--branches=");
+                    builder.Append(b);
+                    builder.Append(' ');
+                }
+            }
+            else if (excludedBranches.Count > 0 || (includedRemotes.Count == 0 && includedTags.Count == 0))
+            {
+                builder.Append("--exclude=HEA[D] ");
+                builder.Append("--branches ");
+            }
+
+            foreach (var r in excludedRemotes)
+            {
+                builder.Append("--exclude=");
+                builder.Append(r);
+                builder.Append(' ');
+            }
+
+            if (includedRemotes.Count > 0)
+            {
+                foreach (var r in includedRemotes)
+                {
+                    builder.Append("--remotes=");
+                    builder.Append(r);
+                    builder.Append(' ');
+                }
+            }
+            else if (excludedRemotes.Count > 0 || (includedBranches.Count == 0 && includedTags.Count == 0))
+            {
+                builder.Append("--exclude=origin/HEA[D] ");
+                builder.Append("--remotes ");
+            }
+
+            foreach (var t in excludedTags)
+            {
+                builder.Append("--exclude=");
+                builder.Append(t);
+                builder.Append(' ');
+            }
+
+            if (includedTags.Count > 0)
+            {
+                foreach (var t in includedTags)
+                {
+                    builder.Append("--tags=");
+                    builder.Append(t);
+                    builder.Append(' ');
+                }
+            }
+            else if (excludedTags.Count > 0 || (includedBranches.Count == 0 && includedRemotes.Count == 0))
+            {
+                builder.Append("--tags ");
+            }
+
+            return builder.ToString();
+        }
 
         public void PushCommitMessage(string message)
         {

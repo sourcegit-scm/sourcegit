@@ -292,7 +292,6 @@
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Datei Historie</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">INHALT</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">ÄNDERUNGEN</x:String>
-  <x:String x:Key="Text.Filter" xml:space="preserve">FILTER</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Development-Branch:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
@@ -544,7 +543,7 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Aktiviere '--reflog' Option</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches/Tags/Submodule</x:String>
-  <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">GEFILTERT:</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">GEFILTERT:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Aktiviere '--first-parent' Option</x:String>
