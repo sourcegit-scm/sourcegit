@@ -65,7 +65,7 @@ namespace SourceGit.Views
             }
 
             if (node.Tag != null)
-                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Tag");
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Tag");
             else if (node.IsExpanded)
                 CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
             else
@@ -245,23 +245,6 @@ namespace SourceGit.Views
                 RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
                 repo.NavigateToCommit(selectedTag.SHA);
             }
-        }
-
-        private void OnToggleFilterClicked(object sender, RoutedEventArgs e)
-        {
-            if (sender is ToggleButton toggle && DataContext is ViewModels.Repository repo)
-            {
-                var target = null as Models.Tag;
-                if (toggle.DataContext is ViewModels.TagTreeNode node)
-                    target = node.Tag;
-                else if (toggle.DataContext is Models.Tag tag)
-                    target = tag;
-
-                if (target != null)
-                    repo.UpdateFilters([target.Name], toggle.IsChecked == true);
-            }
-
-            e.Handled = true;
         }
 
         private void MakeTreeRows(List<ViewModels.TagTreeNode> rows, List<ViewModels.TagTreeNode> nodes)

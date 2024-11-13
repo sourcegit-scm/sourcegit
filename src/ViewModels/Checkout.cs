@@ -65,7 +65,7 @@ namespace SourceGit.ViewModels
                 {
                     var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
                     if (b != null)
-                        _repo.AutoAddBranchFilterPostCheckout(b);
+                        _repo.UpdateHistoriesFilterAfterCheckout(b);
 
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);

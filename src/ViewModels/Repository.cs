@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -587,18 +588,6 @@ namespace SourceGit.ViewModels
             Filter = string.Empty;
         }
 
-        public void ClearHistoriesFilter()
-        {
-            _settings.Filters.Clear();
-
-            Task.Run(() =>
-            {
-                RefreshBranches();
-                RefreshTags();
-                RefreshCommits();
-            });
-        }
-
         public void ClearSearchCommitFilter()
         {
             SearchCommitFilter = string.Empty;
@@ -696,53 +685,21 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
-        public void AutoAddBranchFilterPostCheckout(Models.Branch local)
+        public void ClearHistoriesFilter()
         {
-            if (_settings.Filters.Count == 0 || _settings.Filters.Contains(local.FullName))
-                return;
+            _settings.HistoriesFilters.Clear();
 
-            var hasLeft = false;
-            foreach (var b in _branches)
+            Task.Run(() =>
             {
-                if (!b.FullName.Equals(local.FullName, StringComparison.Ordinal) &&
-                    !b.FullName.Equals(local.Upstream, StringComparison.Ordinal) &&
-                    !_settings.Filters.Contains(b.FullName))
-                {
-                    hasLeft = true;
-                    break;
-                }
-            }
-
-            if (!hasLeft)
-                _settings.Filters.Clear();
-            else if (string.IsNullOrEmpty(local.Upstream) || _settings.Filters.Contains(local.Upstream))
-                _settings.Filters.Add(local.FullName);
-            else
-                _settings.Filters.AddRange([local.FullName, local.Upstream]);
+                RefreshBranches();
+                RefreshTags();
+                RefreshCommits();
+            });
         }
 
-        public void UpdateFilters(List<string> filters, bool toggle)
+        public void UpdateHistoriesFilterAfterCheckout(Models.Branch local)
         {
-            var changed = false;
-            if (toggle)
-            {
-                foreach (var filter in filters)
-                {
-                    if (!_settings.Filters.Contains(filter))
-                    {
-                        _settings.Filters.Add(filter);
-                        changed = true;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var filter in filters)
-                    changed |= _settings.Filters.Remove(filter);
-            }
-
-            if (changed)
-                Task.Run(RefreshCommits);
+            // TODO:
         }
 
         public void StashAll(bool autoStart)
@@ -834,7 +791,7 @@ namespace SourceGit.ViewModels
         {
             var tags = new Commands.QueryTags(_fullpath).Result();
             foreach (var tag in tags)
-                tag.IsFiltered = _settings.Filters.Contains(tag.Name);
+                tag.FilterMode = _settings.GetHistoriesFilterMode(tag.Name, Models.FilterType.Tag);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -847,49 +804,21 @@ namespace SourceGit.ViewModels
         {
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
-            var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            var builder = new StringBuilder();
+            builder.Append($"-{Preference.Instance.MaxHistoryCommits} ");
             if (_enableReflog)
-                limits += "--reflog ";
+                builder.Append("--reflog ");
             if (_enableFirstParentInHistories)
-                limits += "--first-parent ";
+                builder.Append("--first-parent ");
 
-            var validFilters = new List<string>();
-            foreach (var filter in _settings.Filters)
-            {
-                if (filter.StartsWith("refs/", StringComparison.Ordinal))
-                {
-                    if (_branches.FindIndex(x => x.FullName == filter) >= 0)
-                        validFilters.Add(filter);
-                }
-                else
-                {
-                    if (_tags.FindIndex(t => t.Name == filter) >= 0)
-                        validFilters.Add(filter);
-                }
-            }
-
-            if (validFilters.Count > 0)
-            {
-                limits += string.Join(" ", validFilters);
-
-                if (_settings.Filters.Count != validFilters.Count)
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        _settings.Filters.Clear();
-                        _settings.Filters.AddRange(validFilters);
-                    });
-                }
-            }
+            var invalidFilters = new List<Models.Filter>();
+            var filters = _settings.BuildHistoriesFilter();
+            if (string.IsNullOrEmpty(filters))
+                builder.Append("--branches --remotes --tags");
             else
-            {
-                if (_settings.Filters.Count != 0)
-                    Dispatcher.UIThread.Invoke(() => _settings.Filters.Clear());
+                builder.Append(filters);
 
-                limits += "--exclude=refs/stash --all";
-            }
-
-            var commits = new Commands.QueryCommits(_fullpath, limits).Result();
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
             var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -2061,13 +1990,11 @@ namespace SourceGit.ViewModels
 
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
         {
-            var builder = new BranchTreeNode.Builder();
-            builder.SetFilters(_settings.Filters);
-
+            var builder = new BranchTreeNode.Builder(_settings);
             if (string.IsNullOrEmpty(_filter))
             {
-                builder.CollectExpandedNodes(_localBranchTrees, true);
-                builder.CollectExpandedNodes(_remoteBranchTrees, false);
+                builder.CollectExpandedNodes(_localBranchTrees);
+                builder.CollectExpandedNodes(_remoteBranchTrees);
                 builder.Run(branches, remotes, false);
             }
             else

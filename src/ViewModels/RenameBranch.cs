@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -57,10 +58,17 @@ namespace SourceGit.ViewModels
                 var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, _name);
                 CallUIThread(() =>
                 {
-                    if (succ && _repo.Settings.Filters.Contains(oldName))
+                    if (succ)
                     {
-                        _repo.Settings.Filters.Remove(oldName);
-                        _repo.Settings.Filters.Add($"refs/heads/{_name}");
+                        foreach (var filter in _repo.Settings.HistoriesFilters)
+                        {
+                            if (filter.Type == Models.FilterType.LocalBranch &&
+                                filter.Pattern.Equals(oldName, StringComparison.Ordinal))
+                            {
+                                filter.Pattern = $"refs/heads/{_name}";
+                                break;
+                            }
+                        }
                     }
 
                     _repo.MarkBranchesDirtyManually();

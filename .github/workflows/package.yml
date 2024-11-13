@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       version:
-        description: Source Git package version
+        description: SourceGit package version
         required: true
         type: string
 jobs:

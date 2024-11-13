@@ -1,22 +1,4 @@
-### de_DE.axaml: 98.70%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- Text.Diff.SaveAsPatch
-- Text.Diff.VisualLines.All
-- Text.Hotkeys.Repo.CreateBranchOnCommit
-- Text.Hotkeys.Repo.Fetch
-- Text.Hotkeys.Repo.Pull
-- Text.Hotkeys.Repo.Push
-- Text.IssueLinkCM.OpenInBrowser
-- Text.IssueLinkCM.CopyLink
-- Text.Preference.Appearance.EditorFontSize
-
-</details>
-
-### es_ES.axaml: 100.00%
+### de_DE.axaml: 100.00%
 
 
 <details>
@@ -26,7 +8,19 @@
 
 </details>
 
-### fr_FR.axaml: 86.58%
+### es_ES.axaml: 99.57%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.Preference.Appearance.FontSize
+- Text.Preference.Appearance.FontSize.Default
+- Text.Preference.Appearance.FontSize.Editor
+
+</details>
+
+### fr_FR.axaml: 86.31%
 
 
 <details>
@@ -99,7 +93,9 @@
 - Text.Preference.AI.Model
 - Text.Preference.AI.Name
 - Text.Preference.AI.Server
-- Text.Preference.Appearance.EditorFontSize
+- Text.Preference.Appearance.FontSize
+- Text.Preference.Appearance.FontSize.Default
+- Text.Preference.Appearance.FontSize.Editor
 - Text.Preference.General.ShowAuthorTime
 - Text.Preference.Integration
 - Text.Preference.Shell
@@ -128,13 +124,15 @@
 
 </details>
 
-### pt_BR.axaml: 100.00%
+### pt_BR.axaml: 99.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Preference.Appearance.FontSize
+- Text.Preference.Appearance.FontSize.Default
+- Text.Preference.Appearance.FontSize.Editor
 
 </details>
 
