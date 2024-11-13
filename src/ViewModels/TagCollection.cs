@@ -22,16 +22,6 @@ namespace SourceGit.ViewModels
             get => Tag == null;
         }
 
-        public bool IsFiltered
-        {
-            get => Tag?.IsFiltered ?? false;
-            set
-            {
-                if (Tag != null)
-                    Tag.IsFiltered = value;
-            }
-        }
-
         public bool IsExpanded
         {
             get => _isExpanded;

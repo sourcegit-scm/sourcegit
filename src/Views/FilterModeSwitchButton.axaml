@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.FilterModeSwitchButton"
+             x:Name="ThisControl">  
+  <Button Classes="icon_button"
+          Width="12" Height="12"
+          Padding="0"
+          Background="Transparent"
+          VerticalContentAlignment="Center"
+          Click="OnChangeFilterModeButtonClicked">
+    <Grid>
+      <Path Width="12" Height="12"
+            Data="{StaticResource Icons.Eye}"
+            Fill="{DynamicResource Brush.FG2}">
+        <Path.IsVisible>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="#ThisControl.Mode" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:FilterMode.None}"/>
+            <MultiBinding Converter="{x:Static BoolConverters.Or}">
+              <Binding Path="#ThisControl.IsNoneVisible"/>
+              <Binding Path="#ThisControl.IsContextMenuOpening"/>              
+            </MultiBinding>
+          </MultiBinding>
+        </Path.IsVisible>
+      </Path>
+
+      <Path Width="12" Height="12"
+            Data="{StaticResource Icons.Filter}"
+            Fill="{DynamicResource Brush.Accent}"
+            IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+
+      <Path Width="12" Height="12"
+            Data="{StaticResource Icons.EyeClose}"
+            Fill="{DynamicResource Brush.Accent}"
+            IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+    </Grid>
+  </Button>
+</UserControl>

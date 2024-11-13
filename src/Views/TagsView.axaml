@@ -12,6 +12,10 @@
     <Style Selector="ListBoxItem">
       <Setter Property="CornerRadius" Value="4"/>
     </Style>
+
+    <Style Selector="ListBoxItem:pointerover v|FilterModeSwitchButton">
+      <Setter Property="IsNoneVisible" Value="True"/>
+    </Style>
   </UserControl.Styles>
   
   <UserControl.DataTemplates>
@@ -43,15 +47,14 @@
                          Classes="primary" 
                          Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" 
                          Margin="8,0,0,0"/>
-              
-              <ToggleButton Grid.Column="3"
-                            Classes="filter"
-                            Margin="0,0,8,0"
-                            Background="Transparent"
-                            Click="OnToggleFilterClicked"
-                            IsChecked="{Binding IsFiltered, Mode=TwoWay}"
-                            IsVisible="{Binding !IsFolder}"
-                            ToolTip.Tip="{DynamicResource Text.Filter}"/>
+
+              <ContentControl Grid.Column="3" Content="{Binding Tag}">
+                <ContentControl.DataTemplates>
+                  <DataTemplate DataType="m:Tag">
+                    <v:FilterModeSwitchButton Mode="{Binding FilterMode}"/>
+                  </DataTemplate>
+                </ContentControl.DataTemplates>
+              </ContentControl>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
@@ -66,7 +69,7 @@
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Tag">
-            <Grid ColumnDefinitions="Auto,*,Auto"
+            <Grid ColumnDefinitions="Auto,*,20"
                   Background="Transparent"
                   ContextRequested="OnRowContextRequested"
                   ToolTip.Tip="{Binding Message}">
@@ -78,15 +81,10 @@
               <TextBlock Grid.Column="1"
                          Classes="primary" 
                          Text="{Binding Name}" 
-                         Margin="8,0,0,0"/>
+                         Margin="8,0,0,0"
+                         TextTrimming="CharacterEllipsis"/>
               
-              <ToggleButton Grid.Column="2"
-                            Classes="filter"
-                            Margin="0,0,8,0"
-                            Background="Transparent"
-                            Click="OnToggleFilterClicked"
-                            IsChecked="{Binding IsFiltered, Mode=TwoWay}"
-                            ToolTip.Tip="{DynamicResource Text.Filter}"/>
+              <v:FilterModeSwitchButton Grid.Column="2" Mode="{Binding FilterMode}"/>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

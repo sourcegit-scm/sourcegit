@@ -247,23 +247,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnToggleFilterClicked(object sender, RoutedEventArgs e)
-        {
-            if (sender is ToggleButton toggle && DataContext is ViewModels.Repository repo)
-            {
-                var target = null as Models.Tag;
-                if (toggle.DataContext is ViewModels.TagTreeNode node)
-                    target = node.Tag;
-                else if (toggle.DataContext is Models.Tag tag)
-                    target = tag;
-
-                if (target != null)
-                    repo.UpdateFilters([target.Name], toggle.IsChecked == true);
-            }
-
-            e.Handled = true;
-        }
-
         private void MakeTreeRows(List<ViewModels.TagTreeNode> rows, List<ViewModels.TagTreeNode> nodes)
         {
             foreach (var node in nodes)
