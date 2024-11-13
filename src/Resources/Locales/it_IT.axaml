@@ -1,695 +1,695 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Build with </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Chart is rendered by </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor from </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Source code can be found at </x:String>
-  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
-  <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existing Branch</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Create New Branch</x:String>
-  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Location:</x:String>
-  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
-  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Branch Name:</x:String>
-  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracking remote branch</x:String>
-  <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Assistant</x:String>
-  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Raise errors and refuses to apply the patch</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Error All</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similar to 'error', but shows more</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch File:</x:String>
-  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select .patch file to apply</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignore whitespace changes</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">No Warn</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Turns off the trailing whitespace warning</x:String>
-  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Apply Patch</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Warn</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Outputs warnings for a few such errors, but applies</x:String>
-  <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
-  <x:String x:Key="Text.Archive" xml:space="preserve">Archive...</x:String>
-  <x:String x:Key="Text.Archive.File" xml:space="preserve">Save Archive To:</x:String>
-  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Select archive file path</x:String>
-  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revision:</x:String>
-  <x:String x:Key="Text.Archive.Title" xml:space="preserve">Archive</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
-  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FILES ASSUME UNCHANGED</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NO FILES ASSUMED AS UNCHANGED</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">REMOVE</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">BINARY FILE NOT SUPPORTED!!!</x:String>
-  <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
-  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">Compare with Branch</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
-  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copy Branch Name</x:String>
-  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Delete selected {0} branches</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Discard all changes</x:String>
-  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward to ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ on ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rename ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Set Tracking Branch</x:String>
-  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">Unset Upstream</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Compare</x:String>
-  <x:String x:Key="Text.Bytes" xml:space="preserve">Bytes</x:String>
-  <x:String x:Key="Text.Cancel" xml:space="preserve">CANCEL</x:String>
-  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Reset to This Revision</x:String>
-  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Reset to Parent Revision</x:String>
-  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generate commit message</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">CHANGE DISPLAY MODE</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Show as File and Dir List</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Show as Path List</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Show as Filesystem Tree</x:String>
-  <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
-  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warning: By doing a commit checkout, your Head will be detached</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
-  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Local Changes:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
-  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Append source to commit message</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
-  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit all changes</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Mainline:</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Usually you cannot cherry-pick a merge because you do not know which side of the merge should be considered the mainline. This option allows cherry-pick to replay the change relative to the specified parent.</x:String>
-  <x:String x:Key="Text.ClearStashes" xml:space="preserve">Clear Stashes</x:String>
-  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">You are trying to clear all stashes. Are you sure to continue?</x:String>
-  <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>
-  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Extra Parameters:</x:String>
-  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Additional arguments to clone repository. Optional.</x:String>
-  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Local Name:</x:String>
-  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Repository name. Optional.</x:String>
-  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Parent Folder:</x:String>
-  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
-  <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
-  <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick This Commit</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
-  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
-  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
-  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copy Info</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
-  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Custom Action</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactive Rebase ${0}$ to Here</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ to Here</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>
-  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reword</x:String>
-  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash Into Parent</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Child Commits to Here</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CHANGES</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Search Changes...</x:String>
-  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FILES</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS File</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
-  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CHANGED</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Check refs that contains this commit</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT IS CONTAINED BY</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Shows only the first 100 changes. See all changes on the CHANGES tab.</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">MESSAGE</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARENTS</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Enter commit subject</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Description</x:String>
-  <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Content:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository's path; ${SHA} - Selected commit's SHA</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Executable File:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Scope:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
-  <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
-  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
-  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
-  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
-  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Enable --prune on fetch</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Enable --signoff for commit</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Add Sample Github Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Add Sample Jira Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Add Sample GitLab Issue Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Add Sample GitLab Merge Request Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">New Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Issue Regex Expression:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Rule Name:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Result URL:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Please use $1, $2 to access regex groups values.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Prefered Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">If the 'Prefered Service' is set, SourceGit will only use it in this repository. Otherwise, if there is more than one service available, a context menu to choose one of them will be shown.</x:String>
-  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
-  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy used by this repository</x:String>
-  <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
-  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restore tabs on startup</x:String>
-  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commit Helper</x:String>
-  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Closed Issue:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Detail Changes:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Scope:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Short Description:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Type of Change:</x:String>
-  <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
-  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copy All Text</x:String>
-  <x:String x:Key="Text.CopyPath" xml:space="preserve">Copy Path</x:String>
-  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copy File Name</x:String>
-  <x:String x:Key="Text.CreateBranch" xml:space="preserve">Create Branch...</x:String>
-  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Based On:</x:String>
-  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Check out the created branch</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Local Changes:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">New Branch Name:</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
-  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
-  <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag...</x:String>
-  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">New Tag At:</x:String>
-  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG signing</x:String>
-  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Tag Message:</x:String>
-  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Tag Name:</x:String>
-  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Recommended format: v1.0.0-alpha</x:String>
-  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push to all remotes after created</x:String>
-  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Create New Tag</x:String>
-  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Kind:</x:String>
-  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotated</x:String>
-  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
-  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Hold Ctrl to start directly</x:String>
-  <x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
-  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Delete Branch</x:String>
-  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">You are about to delete a remote branch!!!</x:String>
-  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Also delete remote branch ${0}$</x:String>
-  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Delete Multiple Branches</x:String>
-  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">You are trying to delete multiple branches at one time. Be sure to double-check before taking action!</x:String>
-  <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Delete Remote</x:String>
-  <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Confirm Deleting Group</x:String>
-  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Confirm Deleting Repository</x:String>
-  <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Delete Submodule</x:String>
-  <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Submodule Path:</x:String>
-  <x:String x:Key="Text.DeleteTag" xml:space="preserve">Delete Tag</x:String>
-  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Tag:</x:String>
-  <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Delete from remote repositories</x:String>
-  <x:String x:Key="Text.Diff.Binary" xml:space="preserve">BINARY DIFF</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
-  <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copy</x:String>
-  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore Whitespace Change</x:String>
-  <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
-  <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
-  <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</x:String>
-  <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Previous Difference</x:String>
-  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Save as Patch</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Show hidden symbols</x:String>
-  <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Side-By-Side Diff</x:String>
-  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</x:String>
-  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</x:String>
-  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Swap</x:String>
-  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
-  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Line Word Wrap</x:String>
-  <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Open in Merge Tool</x:String>
-  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Show All Lines</x:String>
-  <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Decrease Number of Visible Lines</x:String>
-  <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Increase Number of Visible Lines</x:String>
-  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECT FILE TO VIEW CHANGES</x:String>
-  <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Open in Merge Tool</x:String>
-  <x:String x:Key="Text.Discard" xml:space="preserve">Discard Changes</x:String>
-  <x:String x:Key="Text.Discard.All" xml:space="preserve">All local changes in working copy.</x:String>
-  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Changes:</x:String>
-  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Include ignored files</x:String>
-  <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} changes will be discard</x:String>
-  <x:String x:Key="Text.Discard.Warning" xml:space="preserve">You can't undo this action!!!</x:String>
-  <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Bookmark:</x:String>
-  <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">New Name:</x:String>
-  <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Edit Selected Group</x:String>
-  <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edit Selected Repository</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Run Custom Action</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Action Name:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (without checkout)</x:String>
-  <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
-  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
-  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch without tags</x:String>
-  <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Remote Changes</x:String>
-  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Assume unchanged</x:String>
-  <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Discard...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Discard {0} files...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Discard Changes in Selected Line(s)</x:String>
-  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Open External Merge Tool</x:String>
-  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
-  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String>
-  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} files</x:String>
-  <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">Stage Changes in Selected Line(s)</x:String>
-  <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Stash...</x:String>
-  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Stash {0} files...</x:String>
-  <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Unstage</x:String>
-  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Unstage {0} files</x:String>
-  <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">Unstage Changes in Selected Line(s)</x:String>
-  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Use Theirs (checkout --theirs)</x:String>
-  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Use Mine (checkout --ours)</x:String>
-  <x:String x:Key="Text.FileHistory" xml:space="preserve">File History</x:String>
-  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">CONTENT</x:String>
-  <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">CHANGE</x:String>
-  <x:String x:Key="Text.Filter" xml:space="preserve">FILTER</x:String>
-  <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
-  <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Development Branch:</x:String>
-  <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
-  <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Feature Prefix:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW - Finish Feature</x:String>
-  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Finish Hotfix</x:String>
-  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Finish Release</x:String>
-  <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
-  <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix Prefix:</x:String>
-  <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Initialize Git-Flow</x:String>
-  <x:String x:Key="Text.GitFlow.KeepBranchAfterFinish" xml:space="preserve">Keep branch</x:String>
-  <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Production Branch:</x:String>
-  <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Release:</x:String>
-  <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Release Prefix:</x:String>
-  <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Start Feature...</x:String>
-  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW - Start Feature</x:String>
-  <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Start Hotfix...</x:String>
-  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW - Start Hotfix</x:String>
-  <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Enter name</x:String>
-  <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Start Release...</x:String>
-  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Start Release</x:String>
-  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Version Tag Prefix:</x:String>
-  <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
-  <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Add Track Pattern...</x:String>
-  <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">Pattern is file name</x:String>
-  <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">Custom Pattern:</x:String>
-  <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Add Track Pattern to Git LFS</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch LFS Objects</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Run `git lfs fetch` to download Git LFS objects. This does not update the working copy.</x:String>
-  <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Install Git LFS hooks</x:String>
-  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Show Locks</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">No Locked Files</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Lock</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Show only my locks</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS Locks</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Unlock</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Force Unlock</x:String>
-  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
-  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Run `git lfs prune` to delete old LFS files from local storage</x:String>
-  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</x:String>
-  <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull LFS Objects</x:String>
-  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Run `git lfs pull` to download all Git LFS files for current ref &amp; checkout</x:String>
-  <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Push</x:String>
-  <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Push LFS Objects</x:String>
-  <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Push queued large files to the Git LFS endpoint</x:String>
-  <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
-  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">Histories</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</x:String>
-  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
-  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
-  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
-  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</x:String>
-  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
-  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Holding 'Ctrl' or 'Shift' to select multiple commits.</x:String>
-  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Holding ⌘ or ⇧ to select multiple commits.</x:String>
-  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPS:</x:String>
-  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Keyboard Shortcuts Reference</x:String>
-  <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Open preference dialog</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Creates a new branch based on selected commit</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Discard selected changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, starts directly</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard mode (Default)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, starts directly</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, starts directly</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit search mode</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'Changes'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'Histories'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'Stashes'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXT EDITOR</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Close search panel</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Find next match</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Find previous match</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Open search panel</x:String>
-  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
-  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
-  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Init" xml:space="preserve">Initialize Repository</x:String>
-  <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in progress. Press 'Abort' to restore original HEAD.</x:String>
-  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress. Press 'Abort' to restore original HEAD.</x:String>
-  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress. Press 'Abort' to restore original HEAD.</x:String>
-  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress. Press 'Abort' to restore original HEAD.</x:String>
-  <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
-  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</x:String>
-  <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>
-  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Open in Browser</x:String>
-  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copy Link</x:String>
-  <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
-  <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
-  <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
-  <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
-  <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</x:String>
-  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
-  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
-  <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
-  <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git has NOT been configured. Please to go [Preference] and configure it first.</x:String>
-  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Open App Data Dir</x:String>
-  <x:String x:Key="Text.OpenWith" xml:space="preserve">Open with...</x:String>
-  <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Page</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Close Tab</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Close Other Tabs</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Close Tabs to the Right</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copy Repository Path</x:String>
-  <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</x:String>
-  <x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
-  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Just now</x:String>
-  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} minutes ago</x:String>
-  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} hours ago</x:String>
-  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</x:String>
-  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} days ago</x:String>
-  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Last month</x:String>
-  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</x:String>
-  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Last year</x:String>
-  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
-  <x:String x:Key="Text.Preference" xml:space="preserve">Preference</x:String>
-  <x:String x:Key="Text.Preference.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
-  <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API Key</x:String>
-  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
-  <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Model</x:String>
-  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">Name</x:String>
-  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Server</x:String>
-  <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPEARANCE</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Default Font Size</x:String>
-  <x:String x:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">Editor Font Size</x:String>
-  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace Font</x:String>
-  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Only use monospace font in text editor</x:String>
-  <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Theme</x:String>
-  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</x:String>
-  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
-  <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</x:String>
-  <x:String x:Key="Text.Preference.General" xml:space="preserve">GENERAL</x:String>
-  <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
-  <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Language</x:String>
-  <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
-  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Show author time intead of commit time in graph</x:String>
-  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</x:String>
-  <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Enable Auto CRLF</x:String>
-  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</x:String>
-  <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</x:String>
-  <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
-  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
-  <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
-  <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>
-  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (>= 2.23.0) is required by this app</x:String>
-  <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG SIGNING</x:String>
-  <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Commit GPG signing</x:String>
-  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Tag GPG signing</x:String>
-  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG Format</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Program Install Path</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
-  <x:String x:Key="Text.Preference.Integration" xml:space="preserve">INTEGRATION</x:String>
-  <x:String x:Key="Text.Preference.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
-  <x:String x:Key="Text.Preference.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
-  <x:String x:Key="Text.Preference.Shell.Path" xml:space="preserve">Path</x:String>
-  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
-  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
-  <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
-  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</x:String>
-  <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch without tags</x:String>
-  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
-  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Use rebase instead of merge</x:String>
-  <x:String x:Key="Text.Push" xml:space="preserve">Push</x:String>
-  <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Make sure submodules have been pushed</x:String>
-  <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
-  <x:String x:Key="Text.Push.Local" xml:space="preserve">Local Branch:</x:String>
-  <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Changes To Remote</x:String>
-  <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch:</x:String>
-  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</x:String>
-  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push all tags</x:String>
-  <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
-  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>
-  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag:</x:String>
-  <x:String x:Key="Text.Quit" xml:space="preserve">Quit</x:String>
-  <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Current Branch</x:String>
-  <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reapply local changes</x:String>
-  <x:String x:Key="Text.Rebase.On" xml:space="preserve">On:</x:String>
-  <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Refresh</x:String>
-  <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Add Remote</x:String>
-  <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Edit Remote</x:String>
-  <x:String x:Key="Text.Remote.Name" xml:space="preserve">Name:</x:String>
-  <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Remote name</x:String>
-  <x:String x:Key="Text.Remote.URL" xml:space="preserve">Repository URL:</x:String>
-  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Remote git repository URL</x:String>
-  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copy URL</x:String>
-  <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Delete...</x:String>
-  <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Edit...</x:String>
-  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
-  <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
-  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
-  <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirm to Remove Worktree</x:String>
-  <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Enable `--force` Option</x:String>
-  <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.RenameBranch" xml:space="preserve">Rename Branch</x:String>
-  <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">New Name:</x:String>
-  <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Unique name for this branch</x:String>
-  <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ABORT</x:String>
-  <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Auto fetching changes from remotes...</x:String>
-  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Cleanup(GC &amp; Prune)</x:String>
-  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Run `git gc` command for this repository.</x:String>
-  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Clear all</x:String>
-  <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
-  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
-  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Custom Actions</x:String>
-  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No Custom Actions</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Enable '--reflog' Option</x:String>
-  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open in File Browser</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</x:String>
-  <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</x:String>
-  <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</x:String>
-  <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate to HEAD</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Enable '--first-parent' Option</x:String>
-  <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Create Branch</x:String>
-  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Open in {0}</x:String>
-  <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Open in External Tools</x:String>
-  <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">Refresh</x:String>
-  <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</x:String>
-  <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ADD REMOTE</x:String>
-  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOLVE</x:String>
-  <x:String x:Key="Text.Repository.Search" xml:space="preserve">Search Commit</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
-  <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
-  <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Author &amp; Committer</x:String>
-  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
-  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
-  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</x:String>
-  <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULES</x:String>
-  <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ADD SUBMODULE</x:String>
-  <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">UPDATE SUBMODULE</x:String>
-  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAGS</x:String>
-  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NEW TAG</x:String>
-  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</x:String>
-  <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
-  <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ADD WORKTREE</x:String>
-  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>
-  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Git Repository URL</x:String>
-  <x:String x:Key="Text.Reset" xml:space="preserve">Reset Current Branch To Revision</x:String>
-  <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</x:String>
-  <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Move To:</x:String>
-  <x:String x:Key="Text.Reset.Target" xml:space="preserve">Current Branch:</x:String>
-  <x:String x:Key="Text.RevealFile" xml:space="preserve">Reveal in File Explorer</x:String>
-  <x:String x:Key="Text.Revert" xml:space="preserve">Revert Commit</x:String>
-  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
-  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revert changes</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Reword Commit Message</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
-  <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
-  <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
-  <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>
-  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch has been saved successfully!</x:String>
-  <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Scan Repositories</x:String>
-  <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Root Dir:</x:String>
-  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Check for Updates...</x:String>
-  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">New version of this software is available: </x:String>
-  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Check for updates failed!</x:String>
-  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Download</x:String>
-  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Skip This Version</x:String>
-  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
-  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">There are currently no updates available.</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">Into:</x:String>
-  <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>
-  <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
-  <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
-  <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Include untracked files</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Keep staged files</x:String>
-  <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</x:String>
-  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</x:String>
-  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Both staged and unstaged changes of selected file(s) will be stashed!!!</x:String>
-  <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Local Changes</x:String>
-  <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Apply</x:String>
-  <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Drop</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Pop</x:String>
-  <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</x:String>
-  <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Drop:</x:String>
-  <x:String x:Key="Text.Stashes" xml:space="preserve">Stashes</x:String>
-  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">CHANGES</x:String>
-  <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASHES</x:String>
-  <x:String x:Key="Text.Statistics" xml:space="preserve">Statistics</x:String>
-  <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">COMMITS</x:String>
-  <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
-  <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MONTH</x:String>
-  <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">WEEK</x:String>
-  <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
-  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHORS: </x:String>
-  <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">OVERVIEW</x:String>
-  <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
-  <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>
-  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
-  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Submodule Repository</x:String>
-  <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
-  <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relative folder to store this module.</x:String>
-  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Delete Submodule</x:String>
-  <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copy Tag Message</x:String>
-  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
-  <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursively</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
-  <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
-  <x:String x:Key="Text.Welcome" xml:space="preserve">Welcome Page</x:String>
-  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>
-  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Create Sub-Group</x:String>
-  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Clone Repository</x:String>
-  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Delete</x:String>
-  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</x:String>
-  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Edit</x:String>
-  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Move to Another Group</x:String>
-  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
-  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
-  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
-  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
-  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sort</x:String>
-  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changes</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignore files in the same folder</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignore this file only</x:String>
-  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
-  <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">You can stage this file now.</x:String>
-  <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Histories</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty)?</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">FILE CONFLICTS ARE RESOLVED</x:String>
-  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>
-  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</x:String>
-  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO COMMIT TEMPLATES</x:String>
-  <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">STAGED</x:String>
-  <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGE</x:String>
-  <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">UNSTAGE ALL</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE ALL</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VIEW ASSUME UNCHANGED</x:String>
-  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</x:String>
-  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Right-click the selected file(s), and make your choice to resolve conflicts.</x:String>
-  <x:String x:Key="Text.Workspace" xml:space="preserve">WORKSPACE: </x:String>
-  <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configura Workspaces...</x:String>
-  <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
-  <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Copia percorso</x:String>
-  <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Lock</x:String>
-  <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
-  <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
-</ResourceDictionary>
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:ResourceDictionary xmlns:ns0="https://github.com/avaloniaui" xmlns:ns1="http://schemas.microsoft.com/winfx/2006/xaml"><ns1:String ns1:Key="Text.About" xml:space="preserve">Informazioni</ns1:String>
+  <ns1:String ns1:Key="Text.About.Menu" xml:space="preserve">Informazioni su SourceGit</ns1:String>
+  <ns1:String ns1:Key="Text.About.BuildWith" xml:space="preserve">• Costruito con</ns1:String>
+  <ns1:String ns1:Key="Text.About.Chart" xml:space="preserve">• Grafico renderizzato da</ns1:String>
+  <ns1:String ns1:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</ns1:String>
+  <ns1:String ns1:Key="Text.About.Editor" xml:space="preserve">• Editor di testo da</ns1:String>
+  <ns1:String ns1:Key="Text.About.Fonts" xml:space="preserve">• Font monospazio forniti da</ns1:String>
+  <ns1:String ns1:Key="Text.About.SourceCode" xml:space="preserve">• Codice sorgente disponibile su</ns1:String>
+  <ns1:String ns1:Key="Text.About.SubTitle" xml:space="preserve">Client GUI Git opensource e gratuito</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree" xml:space="preserve">Aggiungi Worktree</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Cosa fare Checkout:</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch Esistente</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Crea Nuovo Branch</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.Location" xml:space="preserve">Percorso:</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Percorso per questa worktree. È supportato un percorso relativo.</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.Name" xml:space="preserve">Nome del Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Opzionale. Il valore predefinito è il nome della cartella di destinazione.</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.Tracking" xml:space="preserve">Traccia Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracciare il branch remoto</ns1:String>
+  <ns1:String ns1:Key="Text.AIAssistant" xml:space="preserve">Assistente AI</ns1:String>
+  <ns1:String ns1:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare un messaggio di commit</ns1:String>
+  <ns1:String ns1:Key="Text.Apply" xml:space="preserve">Applica Patch</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.Error" xml:space="preserve">Errore</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.Error.Desc" xml:space="preserve">Solleva errori e si rifiuta di applicare la patch</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.ErrorAll" xml:space="preserve">Errore Tutto</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Simile a "errore", ma mostra di più</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.File" xml:space="preserve">File Patch:</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleziona il file .patch da applicare</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignora modifiche agli spazi bianchi</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.NoWarn" xml:space="preserve">Nessun Avviso</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Disattiva l'avviso sugli spazi bianchi finali</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.Title" xml:space="preserve">Applica Patch</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.Warn" xml:space="preserve">Avvertimento</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.Warn.Desc" xml:space="preserve">Emette avvisi per alcuni errori di questo tipo, ma applica</ns1:String>
+  <ns1:String ns1:Key="Text.Apply.WS" xml:space="preserve">Spazi Bianchi:</ns1:String>
+  <ns1:String ns1:Key="Text.Archive" xml:space="preserve">Archivia...</ns1:String>
+  <ns1:String ns1:Key="Text.Archive.File" xml:space="preserve">Salva Archivio In:</ns1:String>
+  <ns1:String ns1:Key="Text.Archive.File.Placeholder" xml:space="preserve">Seleziona percorso del file di archivio</ns1:String>
+  <ns1:String ns1:Key="Text.Archive.Revision" xml:space="preserve">Revisione:</ns1:String>
+  <ns1:String ns1:Key="Text.Archive.Title" xml:space="preserve">Archivia</ns1:String>
+  <ns1:String ns1:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</ns1:String>
+  <ns1:String ns1:Key="Text.AssumeUnchanged" xml:space="preserve">FILE ASSUNTI COME INALTERATI</ns1:String>
+  <ns1:String ns1:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NESSUN FILE ASSUNTO COME INALTERATO</ns1:String>
+  <ns1:String ns1:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">RIMUOVI</ns1:String>
+  <ns1:String ns1:Key="Text.BinaryNotSupported" xml:space="preserve">FILE BINARIO NON SUPPORTATO!!!</ns1:String>
+  <ns1:String ns1:Key="Text.Blame" xml:space="preserve">Accusa</ns1:String>
+  <ns1:String ns1:Key="Text.BlameTypeNotSupported" xml:space="preserve">ACCUSE SU QUESTO FILE NON SUPPORTATE!!!</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">Confronta con Branch</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Confronta con HEAD</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.CopyName" xml:space="preserve">Copia Nome Branch</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Delete" xml:space="preserve">Elimina ${0}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Elimina {0} branch selezionati</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Scarta tutte le modifiche</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.FastForward" xml:space="preserve">Avanza rapido a ${0}$</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.FetchInto" xml:space="preserve">Recupera ${0}$ in ${1}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Completa ${0}$</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Merge" xml:space="preserve">Unisci ${0}$ in ${1}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Pull" xml:space="preserve">Estrai ${0}$</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.PullInto" xml:space="preserve">Estrai ${0}$ in ${1}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Push" xml:space="preserve">Invia ${0}$</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ su ${1}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Rename" xml:space="preserve">Rinomina ${0}$...</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.Tracking" xml:space="preserve">Imposta branch di tracciamento</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">Rimuovi upstream</ns1:String>
+  <ns1:String ns1:Key="Text.BranchCompare" xml:space="preserve">Confronta Branch</ns1:String>
+  <ns1:String ns1:Key="Text.Bytes" xml:space="preserve">Byte</ns1:String>
+  <ns1:String ns1:Key="Text.Cancel" xml:space="preserve">ANNULLA</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Ripristina a questa revisione</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Ripristina alla revisione padre</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Genera messaggio di commit</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeDisplayMode" xml:space="preserve">CAMBIA MODALITÀ DI VISUALIZZAZIONE</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Mostra come elenco file e directory</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Mostra come elenco di percorsi</ns1:String>
+  <ns1:String ns1:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Mostra come struttura del filesystem</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout" xml:space="preserve">Passa al branch</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.Commit" xml:space="preserve">Passa al commit</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Attenzione: facendo il checkout del commit, il tuo HEAD sarà staccato</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.Target" xml:space="preserve">Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.LocalChanges" xml:space="preserve">Modifiche locali:</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Scarta</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Non fare nulla</ns1:String>
+  <ns1:String ns1:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash e riapplica</ns1:String>
+  <ns1:String ns1:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</ns1:String>
+  <ns1:String ns1:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Aggiungi sorgente al messaggio di commit</ns1:String>
+  <ns1:String ns1:Key="Text.CherryPick.Commit" xml:space="preserve">Commit:</ns1:String>
+  <ns1:String ns1:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit tutte le modifiche</ns1:String>
+  <ns1:String ns1:Key="Text.CherryPick.Mainline" xml:space="preserve">Linea principale:</ns1:String>
+  <ns1:String ns1:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Di solito non è possibile cherry-pick di una fusione, poiché non è chiaro quale lato considerare come linea principale. Questa opzione consente di riprodurre il cambiamento rispetto al genitore specificato.</ns1:String>
+  <ns1:String ns1:Key="Text.ClearStashes" xml:space="preserve">Pulisci gli stash</ns1:String>
+  <ns1:String ns1:Key="Text.ClearStashes.Message" xml:space="preserve">Stai cercando di rimuovere tutti gli stash. Vuoi continuare?</ns1:String>
+  <ns1:String ns1:Key="Text.Clone" xml:space="preserve">Clona Repository Remoto</ns1:String>
+  <ns1:String ns1:Key="Text.Clone.AdditionalParam" xml:space="preserve">Parametri Aggiuntivi:</ns1:String>
+  <ns1:String ns1:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Argomenti addizionali per clonare il repository. Facoltativo.</ns1:String>
+  <ns1:String ns1:Key="Text.Clone.LocalName" xml:space="preserve">Nome Locale:</ns1:String>
+  <ns1:String ns1:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nome del repository. Facoltativo.</ns1:String>
+  <ns1:String ns1:Key="Text.Clone.ParentFolder" xml:space="preserve">Cartella Padre:</ns1:String>
+  <ns1:String ns1:Key="Text.Clone.RemoteURL" xml:space="preserve">URL del Repository:</ns1:String>
+  <ns1:String ns1:Key="Text.Close" xml:space="preserve">CHIUDI</ns1:String>
+  <ns1:String ns1:Key="Text.CodeEditor" xml:space="preserve">Editor</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick questo commit</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick...</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Confronta con HEAD</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copia informazioni</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copia SHA</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.CustomAction" xml:space="preserve">Azione Personalizzata</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interattivo ${0}$ qui</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ qui</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ qui</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.Reword" xml:space="preserve">Rinominare</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Salva come Patch...</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.Squash" xml:space="preserve">Squash nel Padre</ns1:String>
+  <ns1:String ns1:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Commit Figli fino a qui</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Changes" xml:space="preserve">MODIFICHE</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Cerca Modifiche...</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Files" xml:space="preserve">FILE</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">File LFS</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Sottomodulo</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMAZIONI</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTORE</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">MODIFICATO</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Controlla i riferimenti che contengono questo commit</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">IL COMMIT È CONTENUTO IN</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Mostra solo i primi 100 cambiamenti. Vedi tutti i cambiamenti nella scheda MODIFICHE.</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.Message" xml:space="preserve">MESSAGGIO</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">GENITORI</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">RIFERIMENTI</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</ns1:String>
+  <ns1:String ns1:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Apri nel Browser</ns1:String>
+  <ns1:String ns1:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Inserisci l'oggetto del commit</ns1:String>
+  <ns1:String ns1:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Descrizione</ns1:String>
+  <ns1:String ns1:Key="Text.Configure" xml:space="preserve">Configura Repository</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">TEMPLATE DEL COMMIT</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nome Template:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Contenuto del Template:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction" xml:space="preserve">AZIONE PERSONALIZZATA</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argomenti:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Percorso del repository; ${SHA} - SHA del commit selezionato</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">File Eseguibile:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nome:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Ambito:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Email" xml:space="preserve">Indirizzo Email</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Indirizzo email</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Git" xml:space="preserve">GIT</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Recupera i remoti automaticamente</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto/i</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto Predefinito</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Abilita --prune durante il fetch</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Abilita --signoff per il commit</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker" xml:space="preserve">GESTORE DI ISSUE</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Aggiungi Regola di Esempio per Github</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Aggiungi Regola di Esempio per Jira</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Aggiungi Regola di Esempio per Issue GitLab</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Aggiungi Regola di Esempio per Merge Request GitLab</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Nuova Regola</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Espressione Regex per Issue:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Nome Regola:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Risultato:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Si prega di utilizzare $1, $2 per accedere ai valori dei gruppi regex.</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.OpenAI" xml:space="preserve">AI</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Servizio preferito:</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Se il “Servizio preferito” è impostato, SourceGit lo utilizzerà solo in questo repository. Altrimenti, se sono disponibili più servizi, verrà visualizzato un menu contestuale per sceglierne uno.</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizzato da questo repository</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.User" xml:space="preserve">Nome utente</ns1:String>
+  <ns1:String ns1:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nome utente per questo repository</ns1:String>
+  <ns1:String ns1:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</ns1:String>
+  <ns1:String ns1:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Colore</ns1:String>
+  <ns1:String ns1:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Ripristina i tab all’avvio</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit" xml:space="preserve">Assistente per Commit Convenzionali</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Issue Chiuse:</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Dettagli modifiche:</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Scope:</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Descrizione breve:</ns1:String>
+  <ns1:String ns1:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipo modifica:</ns1:String>
+  <ns1:String ns1:Key="Text.Copy" xml:space="preserve">Copia</ns1:String>
+  <ns1:String ns1:Key="Text.CopyAllText" xml:space="preserve">Copia tutto il testo</ns1:String>
+  <ns1:String ns1:Key="Text.CopyPath" xml:space="preserve">Copia Path</ns1:String>
+  <ns1:String ns1:Key="Text.CopyFileName" xml:space="preserve">Copia File Name</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch" xml:space="preserve">Crea Branch...</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basato su:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.Checkout" xml:space="preserve">Passa alla branch creata</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Modifiche locali:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Discard</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Non fare nulla</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.Name" xml:space="preserve">Nuovo nome Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Inserisci nome branch.</ns1:String>
+  <ns1:String ns1:Key="Text.CreateBranch.Title" xml:space="preserve">Crea Branch locale</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag" xml:space="preserve">Crea Tag...</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.BasedOn" xml:space="preserve">Nuovo Tag At:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG signing</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Message" xml:space="preserve">Messaggio Tag:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Name" xml:space="preserve">Nome Tag:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Raccomandato formato: v1.0.0-alpha</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push tutti dopo la creazione</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Title" xml:space="preserve">Crea Nuovo Tag</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Type" xml:space="preserve">Tipologia:</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotato</ns1:String>
+  <ns1:String ns1:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</ns1:String>
+  <ns1:String ns1:Key="Text.CtrlClickTip" xml:space="preserve">Tieni premuto Ctrl per avviare direttamente</ns1:String>
+  <ns1:String ns1:Key="Text.Cut" xml:space="preserve">Taglia</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteBranch" xml:space="preserve">Elimina Branch</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Sei sicuro di eliminare questo branch remoto!!!</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Elimina anche il branch remoto ${0}$</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteMultiBranch" xml:space="preserve">Elimina Branches multiplo</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Stai cercando di eliminare più branch contemporaneamente. Assicurati di ricontrollare prima di procedere!</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteRemote" xml:space="preserve">Rimuovi Remote</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote:</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Target:</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Conferma rimozione Group</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Conferma rimozione Repository</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteSubmodule" xml:space="preserve">Elimina Submodule</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Submodule Path:</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteTag" xml:space="preserve">Elimina Tag</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteTag.Tag" xml:space="preserve">Tag:</ns1:String>
+  <ns1:String ns1:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Elimina da repositories remoto</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Binary" xml:space="preserve">BINARY DIFF</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Copy" xml:space="preserve">Copia</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora modifiche a Whitespace</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Next" xml:space="preserve">Next Difference</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Prev" xml:space="preserve">Previous Difference</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Save as Patch</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Show hidden symbols</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.SideBySide" xml:space="preserve">Side-By-Side Diff</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.SwapCommits" xml:space="preserve">Swap</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Line Word Wrap</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.UseMerger" xml:space="preserve">Open in Merge Tool</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.VisualLines.All" xml:space="preserve">Show All Lines</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Decrease Number of Visible Lines</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Increase Number of Visible Lines</ns1:String>
+  <ns1:String ns1:Key="Text.Diff.Welcome" xml:space="preserve">SELECT FILE TO VIEW CHANGES</ns1:String>
+  <ns1:String ns1:Key="Text.DiffWithMerger" xml:space="preserve">Open in Merge Tool</ns1:String>
+  <ns1:String ns1:Key="Text.Discard" xml:space="preserve">Discard Changes</ns1:String>
+  <ns1:String ns1:Key="Text.Discard.All" xml:space="preserve">All local changes in working copy.</ns1:String>
+  <ns1:String ns1:Key="Text.Discard.Changes" xml:space="preserve">Changes:</ns1:String>
+  <ns1:String ns1:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Include ignored files</ns1:String>
+  <ns1:String ns1:Key="Text.Discard.Total" xml:space="preserve">Total {0} changes will be discard</ns1:String>
+  <ns1:String ns1:Key="Text.Discard.Warning" xml:space="preserve">You can't undo this action!!!</ns1:String>
+  <ns1:String ns1:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Bookmark:</ns1:String>
+  <ns1:String ns1:Key="Text.EditRepositoryNode.Name" xml:space="preserve">New Name:</ns1:String>
+  <ns1:String ns1:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</ns1:String>
+  <ns1:String ns1:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Edit Selected Group</ns1:String>
+  <ns1:String ns1:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edit Selected Repository</ns1:String>
+  <ns1:String ns1:Key="Text.ExecuteCustomAction" xml:space="preserve">Run Custom Action</ns1:String>
+  <ns1:String ns1:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Action Name:</ns1:String>
+  <ns1:String ns1:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (without checkout)</ns1:String>
+  <ns1:String ns1:Key="Text.Fetch" xml:space="preserve">Fetch</ns1:String>
+  <ns1:String ns1:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</ns1:String>
+  <ns1:String ns1:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch without tags</ns1:String>
+  <ns1:String ns1:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</ns1:String>
+  <ns1:String ns1:Key="Text.Fetch.Title" xml:space="preserve">Fetch Remote Changes</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Assume unchanged</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.Discard" xml:space="preserve">Discard...</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Discard {0} files...</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Discard Changes in Selected Line(s)</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Open External Merge Tool</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Save as Patch...</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.Stage" xml:space="preserve">Stage</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} files</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">Stage Changes in Selected Line(s)</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.Stash" xml:space="preserve">Stash...</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.StashMulti" xml:space="preserve">Stash {0} files...</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.Unstage" xml:space="preserve">Unstage</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Unstage {0} files</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">Unstage Changes in Selected Line(s)</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.UseTheirs" xml:space="preserve">Use Theirs (checkout --theirs)</ns1:String>
+  <ns1:String ns1:Key="Text.FileCM.UseMine" xml:space="preserve">Use Mine (checkout --ours)</ns1:String>
+  <ns1:String ns1:Key="Text.FileHistory" xml:space="preserve">File History</ns1:String>
+  <ns1:String ns1:Key="Text.FileHistory.FileContent" xml:space="preserve">CONTENT</ns1:String>
+  <ns1:String ns1:Key="Text.FileHistory.FileChange" xml:space="preserve">CHANGE</ns1:String>
+  <ns1:String ns1:Key="Text.Filter" xml:space="preserve">FILTER</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow" xml:space="preserve">Git-Flow</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Development Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Feature Prefix:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW - Finish Feature</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Finish Hotfix</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Finish Release</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Target:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix Prefix:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.Init" xml:space="preserve">Initialize Git-Flow</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.KeepBranchAfterFinish" xml:space="preserve">Keep branch</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Production Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.Release" xml:space="preserve">Release:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Release Prefix:</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartFeature" xml:space="preserve">Start Feature...</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW - Start Feature</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Start Hotfix...</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW - Start Hotfix</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Enter name</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartRelease" xml:space="preserve">Start Release...</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Start Release</ns1:String>
+  <ns1:String ns1:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Versione Tag Prefix:</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS" xml:space="preserve">Git LFS</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Add Track Pattern...</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">Pattern is file name</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">Custom Pattern:</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Add Track Pattern to Git LFS</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch LFS Objects</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Run `git lfs fetch` to download Git LFS objects. This does not update the working copy.</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Install" xml:space="preserve">Install Git LFS hooks</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks" xml:space="preserve">Show Locks</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">No Locked Files</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Lock</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Show only my locks</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS Locks</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Unlock</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Force Unlock</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Run `git lfs prune` to delete old LFS files from local storage</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull LFS Objects</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Run `git lfs pull` to download all Git LFS files for current ref &amp; checkout</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Push" xml:space="preserve">Push</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Push.Title" xml:space="preserve">Push LFS Objects</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Push queued large files to the Git LFS endpoint</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</ns1:String>
+  <ns1:String ns1:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</ns1:String>
+  <ns1:String ns1:Key="Text.Histories" xml:space="preserve">Histories</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.DisplayMode" xml:space="preserve">Switch Horizontal/Vertical Layout</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Tips" xml:space="preserve">Holding 'Ctrl' or 'Shift' to select multiple commits.</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Holding ⌘ or ⇧ to select multiple commits.</ns1:String>
+  <ns1:String ns1:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPS:</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys" xml:space="preserve">Keyboard Shortcuts Reference</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous page</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next page</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new page</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Open preference dialog</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Creates a new branch based on selected commit</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Discard selected changes</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, starts directly</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard mode (Default)</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, starts directly</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, starts directly</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit search mode</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'Changes'</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'Histories'</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'Stashes'</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXT EDITOR</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Close search panel</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Find next match</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Find previous match</ns1:String>
+  <ns1:String ns1:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Open search panel</ns1:String>
+  <ns1:String ns1:Key="Text.Hunk.Stage" xml:space="preserve">Stage</ns1:String>
+  <ns1:String ns1:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</ns1:String>
+  <ns1:String ns1:Key="Text.Hunk.Discard" xml:space="preserve">Discard</ns1:String>
+  <ns1:String ns1:Key="Text.Init" xml:space="preserve">Initialize Repository</ns1:String>
+  <ns1:String ns1:Key="Text.Init.Path" xml:space="preserve">Path:</ns1:String>
+  <ns1:String ns1:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in progress. Press 'Abort' to restore original HEAD.</ns1:String>
+  <ns1:String ns1:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress. Press 'Abort' to restore original HEAD.</ns1:String>
+  <ns1:String ns1:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress. Press 'Abort' to restore original HEAD.</ns1:String>
+  <ns1:String ns1:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress. Press 'Abort' to restore original HEAD.</ns1:String>
+  <ns1:String ns1:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</ns1:String>
+  <ns1:String ns1:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</ns1:String>
+  <ns1:String ns1:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Open in Browser</ns1:String>
+  <ns1:String ns1:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copy Link</ns1:String>
+  <ns1:String ns1:Key="Text.Launcher.Error" xml:space="preserve">ERROR</ns1:String>
+  <ns1:String ns1:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</ns1:String>
+  <ns1:String ns1:Key="Text.Merge" xml:space="preserve">Merge Branch</ns1:String>
+  <ns1:String ns1:Key="Text.Merge.Into" xml:space="preserve">Into:</ns1:String>
+  <ns1:String ns1:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</ns1:String>
+  <ns1:String ns1:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</ns1:String>
+  <ns1:String ns1:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</ns1:String>
+  <ns1:String ns1:Key="Text.Name" xml:space="preserve">Name:</ns1:String>
+  <ns1:String ns1:Key="Text.NotConfigured" xml:space="preserve">Git has NOT been configured. Please to go [Preference] and configure it first.</ns1:String>
+  <ns1:String ns1:Key="Text.OpenAppDataDir" xml:space="preserve">Open App Data Dir</ns1:String>
+  <ns1:String ns1:Key="Text.OpenWith" xml:space="preserve">Open with...</ns1:String>
+  <ns1:String ns1:Key="Text.Optional" xml:space="preserve">Optional.</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.New" xml:space="preserve">Create New Page</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Close Tab</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Close Other Tabs</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Close Tabs to the Right</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copy Repository Path</ns1:String>
+  <ns1:String ns1:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</ns1:String>
+  <ns1:String ns1:Key="Text.Paste" xml:space="preserve">Paste</ns1:String>
+  <ns1:String ns1:Key="Text.Period.JustNow" xml:space="preserve">Just now</ns1:String>
+  <ns1:String ns1:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} minutes ago</ns1:String>
+  <ns1:String ns1:Key="Text.Period.HoursAgo" xml:space="preserve">{0} hours ago</ns1:String>
+  <ns1:String ns1:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</ns1:String>
+  <ns1:String ns1:Key="Text.Period.DaysAgo" xml:space="preserve">{0} days ago</ns1:String>
+  <ns1:String ns1:Key="Text.Period.LastMonth" xml:space="preserve">Last month</ns1:String>
+  <ns1:String ns1:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</ns1:String>
+  <ns1:String ns1:Key="Text.Period.LastYear" xml:space="preserve">Last year</ns1:String>
+  <ns1:String ns1:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</ns1:String>
+  <ns1:String ns1:Key="Text.Preference" xml:space="preserve">Preference</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI" xml:space="preserve">AI</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI.ApiKey" xml:space="preserve">API Key</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI.Model" xml:space="preserve">Model</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI.Name" xml:space="preserve">Name</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.AI.Server" xml:space="preserve">Server</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance" xml:space="preserve">APPEARANCE</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Default Font</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Default Font Size</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">Editor Font Size</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Monospace Font</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Only use monospace font in text editor</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Theme</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Tool</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.General" xml:space="preserve">GENERAL</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.General.Locale" xml:space="preserve">Language</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">History Commits</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Show author time intead of commit time in graph</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git" xml:space="preserve">GIT</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.CRLF" xml:space="preserve">Enable Auto CRLF</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Global git user email</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.User" xml:space="preserve">User Name</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) is required by this app</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG" xml:space="preserve">GPG SIGNING</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Commit GPG signing</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Tag GPG signing</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.Format" xml:space="preserve">GPG Format</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.Path" xml:space="preserve">Program Install Path</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Input path for installed gpg program</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.UserKey" xml:space="preserve">User Signing Key</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Integration" xml:space="preserve">INTEGRATION</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Shell" xml:space="preserve">SHELL/TERMINAL</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Shell.Type" xml:space="preserve">Shell/Terminal</ns1:String>
+  <ns1:String ns1:Key="Text.Preference.Shell.Path" xml:space="preserve">Path</ns1:String>
+  <ns1:String ns1:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</ns1:String>
+  <ns1:String ns1:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</ns1:String>
+  <ns1:String ns1:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</ns1:String>
+  <ns1:String ns1:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</ns1:String>
+  <ns1:String ns1:Key="Text.Pull" xml:space="preserve">Pull</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.Branch" xml:space="preserve">Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.Into" xml:space="preserve">Into:</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Discard</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.NoTags" xml:space="preserve">Fetch without tags</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.Remote" xml:space="preserve">Remote:</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</ns1:String>
+  <ns1:String ns1:Key="Text.Pull.UseRebase" xml:space="preserve">Use rebase instead of merge</ns1:String>
+  <ns1:String ns1:Key="Text.Push" xml:space="preserve">Push</ns1:String>
+  <ns1:String ns1:Key="Text.Push.CheckSubmodules" xml:space="preserve">Make sure submodules have been pushed</ns1:String>
+  <ns1:String ns1:Key="Text.Push.Force" xml:space="preserve">Force push</ns1:String>
+  <ns1:String ns1:Key="Text.Push.Local" xml:space="preserve">Local Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.Push.Remote" xml:space="preserve">Remote:</ns1:String>
+  <ns1:String ns1:Key="Text.Push.Title" xml:space="preserve">Push Changes To Remote</ns1:String>
+  <ns1:String ns1:Key="Text.Push.To" xml:space="preserve">Remote Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</ns1:String>
+  <ns1:String ns1:Key="Text.Push.WithAllTags" xml:space="preserve">Push all tags</ns1:String>
+  <ns1:String ns1:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</ns1:String>
+  <ns1:String ns1:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</ns1:String>
+  <ns1:String ns1:Key="Text.PushTag.Remote" xml:space="preserve">Remote:</ns1:String>
+  <ns1:String ns1:Key="Text.PushTag.Tag" xml:space="preserve">Tag:</ns1:String>
+  <ns1:String ns1:Key="Text.Quit" xml:space="preserve">Quit</ns1:String>
+  <ns1:String ns1:Key="Text.Rebase" xml:space="preserve">Rebase Current Branch</ns1:String>
+  <ns1:String ns1:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reapply local changes</ns1:String>
+  <ns1:String ns1:Key="Text.Rebase.On" xml:space="preserve">On:</ns1:String>
+  <ns1:String ns1:Key="Text.Rebase.Target" xml:space="preserve">Rebase:</ns1:String>
+  <ns1:String ns1:Key="Text.RefetchAvatar" xml:space="preserve">Refresh</ns1:String>
+  <ns1:String ns1:Key="Text.Remote.AddTitle" xml:space="preserve">Add Remote</ns1:String>
+  <ns1:String ns1:Key="Text.Remote.EditTitle" xml:space="preserve">Edit Remote</ns1:String>
+  <ns1:String ns1:Key="Text.Remote.Name" xml:space="preserve">Name:</ns1:String>
+  <ns1:String ns1:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Remote name</ns1:String>
+  <ns1:String ns1:Key="Text.Remote.URL" xml:space="preserve">Repository URL:</ns1:String>
+  <ns1:String ns1:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Remote git repository URL</ns1:String>
+  <ns1:String ns1:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copy URL</ns1:String>
+  <ns1:String ns1:Key="Text.RemoteCM.Delete" xml:space="preserve">Delete...</ns1:String>
+  <ns1:String ns1:Key="Text.RemoteCM.Edit" xml:space="preserve">Edit...</ns1:String>
+  <ns1:String ns1:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</ns1:String>
+  <ns1:String ns1:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</ns1:String>
+  <ns1:String ns1:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</ns1:String>
+  <ns1:String ns1:Key="Text.RemoveWorktree" xml:space="preserve">Confirm to Remove Worktree</ns1:String>
+  <ns1:String ns1:Key="Text.RemoveWorktree.Force" xml:space="preserve">Enable `--force` Option</ns1:String>
+  <ns1:String ns1:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</ns1:String>
+  <ns1:String ns1:Key="Text.RenameBranch" xml:space="preserve">Rename Branch</ns1:String>
+  <ns1:String ns1:Key="Text.RenameBranch.Name" xml:space="preserve">New Name:</ns1:String>
+  <ns1:String ns1:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Unique name for this branch</ns1:String>
+  <ns1:String ns1:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Abort" xml:space="preserve">ABORT</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.AutoFetching" xml:space="preserve">Auto fetching changes from remotes...</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Clean" xml:space="preserve">Cleanup(GC &amp; Prune)</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.CleanTips" xml:space="preserve">Run `git gc` command for this repository.</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Clear all</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.CustomActions" xml:space="preserve">Custom Actions</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No Custom Actions</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.EnableReflog" xml:space="preserve">Enable '--reflog' Option</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Explore" xml:space="preserve">Open in File Browser</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTERED BY:</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.LocalBranches" xml:space="preserve">LOCAL BRANCHES</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate to HEAD</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Enable '--first-parent' Option</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.NewBranch" xml:space="preserve">Create Branch</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.OpenIn" xml:space="preserve">Open in {0}</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Open in External Tools</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Refresh" xml:space="preserve">Refresh</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Remotes.Add" xml:space="preserve">ADD REMOTE</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Resolve" xml:space="preserve">RESOLVE</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Search" xml:space="preserve">Search Commit</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Search.ByUser" xml:space="preserve">Author &amp; Committer</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULES</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Submodules.Add" xml:space="preserve">ADD SUBMODULE</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Submodules.Update" xml:space="preserve">UPDATE SUBMODULE</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Tags" xml:space="preserve">TAGS</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Tags.Add" xml:space="preserve">NEW TAG</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ADD WORKTREE</ns1:String>
+  <ns1:String ns1:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</ns1:String>
+  <ns1:String ns1:Key="Text.RepositoryURL" xml:space="preserve">Git Repository URL</ns1:String>
+  <ns1:String ns1:Key="Text.Reset" xml:space="preserve">Reset Current Branch To Revision</ns1:String>
+  <ns1:String ns1:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</ns1:String>
+  <ns1:String ns1:Key="Text.Reset.MoveTo" xml:space="preserve">Move To:</ns1:String>
+  <ns1:String ns1:Key="Text.Reset.Target" xml:space="preserve">Current Branch:</ns1:String>
+  <ns1:String ns1:Key="Text.RevealFile" xml:space="preserve">Reveal in File Explorer</ns1:String>
+  <ns1:String ns1:Key="Text.Revert" xml:space="preserve">Revert Commit</ns1:String>
+  <ns1:String ns1:Key="Text.Revert.Commit" xml:space="preserve">Commit:</ns1:String>
+  <ns1:String ns1:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revert changes</ns1:String>
+  <ns1:String ns1:Key="Text.Reword" xml:space="preserve">Reword Commit Message</ns1:String>
+  <ns1:String ns1:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</ns1:String>
+  <ns1:String ns1:Key="Text.Running" xml:space="preserve">Running. Please wait...</ns1:String>
+  <ns1:String ns1:Key="Text.Save" xml:space="preserve">SAVE</ns1:String>
+  <ns1:String ns1:Key="Text.SaveAs" xml:space="preserve">Save As...</ns1:String>
+  <ns1:String ns1:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch has been saved successfully!</ns1:String>
+  <ns1:String ns1:Key="Text.ScanRepositories" xml:space="preserve">Scan Repositories</ns1:String>
+  <ns1:String ns1:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Root Dir:</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate" xml:space="preserve">Check for Updates...</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate.Available" xml:space="preserve">New version of this software is available:</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate.Error" xml:space="preserve">Check for updates failed!</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Download</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Skip This Versione</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</ns1:String>
+  <ns1:String ns1:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">There are currently no updates available.</ns1:String>
+  <ns1:String ns1:Key="Text.Squash" xml:space="preserve">Squash Commits</ns1:String>
+  <ns1:String ns1:Key="Text.Squash.Into" xml:space="preserve">Into:</ns1:String>
+  <ns1:String ns1:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</ns1:String>
+  <ns1:String ns1:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</ns1:String>
+  <ns1:String ns1:Key="Text.Start" xml:space="preserve">START</ns1:String>
+  <ns1:String ns1:Key="Text.Stash" xml:space="preserve">Stash</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Include untracked files</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.KeepIndex" xml:space="preserve">Keep staged files</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.Message" xml:space="preserve">Message:</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Both staged and unstaged changes of selected file(s) will be stashed!!!</ns1:String>
+  <ns1:String ns1:Key="Text.Stash.Title" xml:space="preserve">Stash Local Changes</ns1:String>
+  <ns1:String ns1:Key="Text.StashCM.Apply" xml:space="preserve">Apply</ns1:String>
+  <ns1:String ns1:Key="Text.StashCM.Drop" xml:space="preserve">Drop</ns1:String>
+  <ns1:String ns1:Key="Text.StashCM.Pop" xml:space="preserve">Pop</ns1:String>
+  <ns1:String ns1:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</ns1:String>
+  <ns1:String ns1:Key="Text.StashDropConfirm.Label" xml:space="preserve">Drop:</ns1:String>
+  <ns1:String ns1:Key="Text.Stashes" xml:space="preserve">Stashes</ns1:String>
+  <ns1:String ns1:Key="Text.Stashes.Changes" xml:space="preserve">CHANGES</ns1:String>
+  <ns1:String ns1:Key="Text.Stashes.Stashes" xml:space="preserve">STASHES</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics" xml:space="preserve">Statistics</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.CommitAmount" xml:space="preserve">COMMITS</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.ThisMonth" xml:space="preserve">MONTH</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.ThisWeek" xml:space="preserve">WEEK</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS:</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHORS:</ns1:String>
+  <ns1:String ns1:Key="Text.Statistics.Overview" xml:space="preserve">OVERVIEW</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule" xml:space="preserve">SUBMODULES</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.Open" xml:space="preserve">Open Submodule Repository</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relative folder to store this module.</ns1:String>
+  <ns1:String ns1:Key="Text.Submodule.Remove" xml:space="preserve">Delete Submodule</ns1:String>
+  <ns1:String ns1:Key="Text.Sure" xml:space="preserve">OK</ns1:String>
+  <ns1:String ns1:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</ns1:String>
+  <ns1:String ns1:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copy Tag Message</ns1:String>
+  <ns1:String ns1:Key="Text.TagCM.Delete" xml:space="preserve">Delete ${0}$...</ns1:String>
+  <ns1:String ns1:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</ns1:String>
+  <ns1:String ns1:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</ns1:String>
+  <ns1:String ns1:Key="Text.URL" xml:space="preserve">URL:</ns1:String>
+  <ns1:String ns1:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</ns1:String>
+  <ns1:String ns1:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</ns1:String>
+  <ns1:String ns1:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</ns1:String>
+  <ns1:String ns1:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursively</ns1:String>
+  <ns1:String ns1:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</ns1:String>
+  <ns1:String ns1:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</ns1:String>
+  <ns1:String ns1:Key="Text.Warn" xml:space="preserve">Warning</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome" xml:space="preserve">Welcome Page</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Create Sub-Group</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.Clone" xml:space="preserve">Clone Repository</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.Delete" xml:space="preserve">Delete</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.Edit" xml:space="preserve">Edit</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.Move" xml:space="preserve">Move to Another Group</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</ns1:String>
+  <ns1:String ns1:Key="Text.Welcome.Sort" xml:space="preserve">Sort</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy" xml:space="preserve">Changes</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignore files in the same folder</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignore this file only</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">You can stage this file now.</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Histories</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty)?</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">FILE CONFLICTS ARE RESOLVED</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO COMMIT TEMPLATES</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Staged" xml:space="preserve">STAGED</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGE</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">UNSTAGE ALL</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE ALL</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VIEW ASSUME UNCHANGED</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</ns1:String>
+  <ns1:String ns1:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Right-click the selected file(s), and make your choice to resolve conflicts.</ns1:String>
+  <ns1:String ns1:Key="Text.Workspace" xml:space="preserve">WORKSPACE:</ns1:String>
+  <ns1:String ns1:Key="Text.Workspace.Configure" xml:space="preserve">Configura Workspaces...</ns1:String>
+  <ns1:String ns1:Key="Text.Worktree" xml:space="preserve">WORKTREE</ns1:String>
+  <ns1:String ns1:Key="Text.Worktree.CopyPath" xml:space="preserve">Copia percorso</ns1:String>
+  <ns1:String ns1:Key="Text.Worktree.Lock" xml:space="preserve">Lock</ns1:String>
+  <ns1:String ns1:Key="Text.Worktree.Remove" xml:space="preserve">Remove</ns1:String>
+  <ns1:String ns1:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</ns1:String>
+</ns0:ResourceDictionary>
