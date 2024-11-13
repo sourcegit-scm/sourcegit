@@ -167,3 +167,13 @@
 
 
 </details>
+
+### it_IT.axaml: 0.00%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- all
+
+</details>
