@@ -117,7 +117,28 @@
                            TextDecorations="Underline"
                            Cursor="Hand"
                            Margin="0,0,16,0"
-                           PointerPressed="OnSHAPressed"/>
+                           PointerEntered="OnSHAPointerEntered"
+                           PointerPressed="OnSHAPressed">
+                  <TextBlock.Styles>
+                    <Style Selector="ToolTip">
+                      <Setter Property="MaxWidth" Value="600"/>
+                    </Style>
+                  </TextBlock.Styles>
+
+                  <TextBlock.DataTemplates>
+                    <DataTemplate DataType="m:Commit">
+                      <StackPanel MinWidth="400" Orientation="Vertical">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                          <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                        </Grid>
+
+                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </TextBlock.DataTemplates>
+                 </TextBlock>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>

@@ -371,7 +371,6 @@
   <x:String x:Key="Text.Preference" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">Taille de police par défaut</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Police monospace</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">N'utiliser que des polices monospace pour l'éditeur de texte</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Thème</x:String>

@@ -48,8 +48,18 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            cmd.Args = $"push {remote} --delete {name}";
+
+            bool exists = new Remote(repo).HasBranch(remote, name);
+            if (exists)
+            {
+                cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+                cmd.Args = $"push {remote} --delete {name}";
+            }
+            else
+            {
+                cmd.Args = $"branch -D -r {remote}/{name}";
+            }
+
             return cmd.Exec();
         }
     }

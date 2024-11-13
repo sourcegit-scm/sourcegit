@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
                     var trimmedUrl = url;
                     if (url.EndsWith(".git"))
                         trimmedUrl = url.Substring(0, url.Length - 4);
-                    
+
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
                         WebLinks.Add(new Models.CommitLink() { Name = $"Github ({trimmedUrl.Substring(19)})", URLPrefix = $"{url}/commit/" });
                     else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
@@ -167,6 +167,11 @@ namespace SourceGit.ViewModels
         public void ClearSearchChangeFilter()
         {
             SearchChangeFilter = string.Empty;
+        }
+
+        public Models.Commit GetParent(string sha)
+        {
+            return new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
         }
 
         public List<Models.Object> GetRevisionFilesUnderFolder(string parentFolder)
@@ -381,10 +386,13 @@ namespace SourceGit.ViewModels
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.IsEnabled = File.Exists(fullPath);
             openWith.Click += (_, ev) =>
             {
-                Native.OS.OpenWithDefaultEditor(fullPath);
+                var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
+                var fileExt = Path.GetExtension(fullPath) ?? "";
+                var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
+                Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile);
+                Native.OS.OpenWithDefaultEditor(tmpFile);
                 ev.Handled = true;
             };
 

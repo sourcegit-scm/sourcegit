@@ -24,6 +24,10 @@
       <Style Selector="ListBoxItem" x:DataType="vm:BranchTreeNode">
         <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
       </Style>
+
+      <Style Selector="ListBoxItem:pointerover v|FilterModeSwitchButton">
+        <Setter Property="IsNoneVisible" Value="True"/>
+      </Style>
     </ListBox.Styles>
 
     <ListBox.ItemTemplate>
@@ -44,7 +48,7 @@
           <!-- Content Area (allows double-click) -->
           <Grid Grid.Column="1"
                 Background="Transparent"
-                ColumnDefinitions="18,*,Auto,Auto"
+                ColumnDefinitions="18,*,Auto,20"
                 DoubleTapped="OnDoubleTappedBranchNode">
 
             <!-- Icon -->
@@ -67,15 +71,8 @@
                                                   Foreground="{DynamicResource Brush.BadgeFG}"
                                                   Background="{DynamicResource Brush.Badge}"/>
 
-            <!-- Filter Toggle Button -->
-            <ToggleButton Grid.Column="3"
-                          Classes="filter"
-                          Margin="0,0,8,0"
-                          Background="Transparent"
-                          IsVisible="{Binding IsBranch}"
-                          IsChecked="{Binding IsFiltered}"
-                          Click="OnToggleFilterClicked"
-                          ToolTip.Tip="{DynamicResource Text.Filter}"/>
+            <!-- Filter Mode Switcher -->
+            <v:FilterModeSwitchButton Grid.Column="3" Mode="{Binding FilterMode}"/>
           </Grid>
         </Grid>
       </DataTemplate>

@@ -127,7 +127,7 @@ namespace SourceGit.ViewModels
                 {
                     if (CheckoutAfterCreated)
                     {
-                        _repo.AutoAddBranchFilterPostCheckout(new Models.Branch()
+                        _repo.UpdateHistoriesFilterAfterCheckout(new Models.Branch()
                         {
                             FullName = $"refs/heads/{_name}",
                             Upstream = BasedOn is Models.Branch { IsLocal: false } remoteBranch ? remoteBranch.FullName : string.Empty,
