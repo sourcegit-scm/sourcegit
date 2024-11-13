@@ -65,7 +65,7 @@ namespace SourceGit.Views
             }
 
             if (node.Tag != null)
-                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Tag");
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Tag");
             else if (node.IsExpanded)
                 CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
             else
