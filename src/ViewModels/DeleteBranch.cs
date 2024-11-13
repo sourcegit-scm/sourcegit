@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -57,34 +56,12 @@ namespace SourceGit.ViewModels
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
                     {
-
-                        if (Commands.Branch.HasRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name))
-                        {
-                            SetProgressDescription("Deleting remote-tracking branch and remote branch...");
-
-                            Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
-                        } 
-                        else
-                        {
-                            SetProgressDescription("Deleting remote-tracking branch...");
-
-                            var remoteTrackingBranch = $"{TrackingRemoteBranch.Remote}/{TrackingRemoteBranch.Name}";
-
-                            Commands.Branch.DeleteRemoteTracking(_repo.FullPath, remoteTrackingBranch);
-                        }
-
+                        SetProgressDescription("Deleting remote-tracking branch...");
+                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
                     }
                 }
-                else if(!Commands.Branch.HasRemote(_repo.FullPath, Target.Remote, Target.Name))
+                else
                 {
-                    SetProgressDescription("Remote branch not found. Deleting remote-tracking branch...");
-                    var remoteTrackingBranch = $"{Target.Remote}/{Target.Name}";
-
-                    Commands.Branch.DeleteRemoteTracking(_repo.FullPath, remoteTrackingBranch);
-                }
-                else 
-                {
-                    SetProgressDescription("Deleting remote-tracking branch...");
                     Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name);
                 }
 

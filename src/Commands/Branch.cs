@@ -48,31 +48,19 @@
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            cmd.Args = $"push {remote} --delete {name}";
-            return cmd.Exec();
-        }
 
-        public static bool DeleteRemoteTracking(string repo, string name)
-        {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.Args = $"branch -D -r {name}";
-            return cmd.Exec();
-        }
+            bool exists = new Remote(repo).HasBranch(remote, name);
+            if (exists)
+            {
+                cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+                cmd.Args = $"push {remote} --delete {name}";
+            }
+            else
+            {
+                cmd.Args = $"branch -D -r {remote}/{name}";
+            }
 
-        public static bool HasRemote(string repo, string remote, string name)
-        {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            cmd.Args = $"ls-remote {remote} {name}";
-            
-            var rs = cmd.ReadToEnd();
-            
-            return rs.StdOut.Length > 0;
+            return cmd.Exec();
         }
     }
 }
