@@ -20,12 +20,20 @@
 
 </details>
 
-### fr_FR.axaml: 86.31%
+### fr_FR.axaml: 98.85%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CherryPick.AppendSourceToMessage
+- Text.CherryPick.Mainline.Tips
+- Text.CommitCM.CherryPickMultiple
+- Text.Preference.Appearance.FontSize
+- Text.Preference.Appearance.FontSize.Default
+- Text.Preference.Appearance.FontSize.Editor
+- Text.Repository.CustomActions
+- Text.ScanRepositories
 
 </details>
 
