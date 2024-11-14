@@ -547,7 +547,6 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">未指定（默认行为）</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">在提交列表中隐藏</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">使用其对提交列表过滤</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">过滤规则 ：</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">启用 --first-parent 过滤选项</x:String>

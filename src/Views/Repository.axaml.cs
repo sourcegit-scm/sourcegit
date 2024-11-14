@@ -395,5 +395,40 @@ namespace SourceGit.Views
             }
             e.Handled = true;
         }
+
+        private void OnHistoriesFiltersLayoutUpdated(object sender, EventArgs e)
+        {
+            var repo = DataContext as ViewModels.Repository;
+            if (repo == null)
+                return;
+
+            var filters = repo.Settings.HistoriesFilters;
+            if (filters.Count == 0)
+                return;
+
+            var mode = filters[0].Mode;
+            if (mode == _lastFilterMode)
+                return;
+
+            _lastFilterMode = mode;
+
+            var icon = null as StreamGeometry;
+            switch (mode)
+            {
+                case Models.FilterMode.Included:
+                    icon = this.FindResource("Icons.Filter") as StreamGeometry;
+                    break;
+                case Models.FilterMode.Excluded:
+                    icon = this.FindResource("Icons.EyeClose") as StreamGeometry;
+                    break;
+                default:
+                    break;
+            }
+
+            if (icon != null)
+                HistoriesFilterModeIcon.Data = icon;
+        }
+
+        private Models.FilterMode _lastFilterMode = Models.FilterMode.None;
     }
 }
