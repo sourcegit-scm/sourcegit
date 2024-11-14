@@ -159,7 +159,7 @@ namespace SourceGit.Models
                 if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
                     client.DefaultRequestHeaders.Add("api-key", ApiKey);
                 else
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");                
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
             }
 
             var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest), Encoding.UTF8, "application/json");

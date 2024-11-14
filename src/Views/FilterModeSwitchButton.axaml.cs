@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -89,7 +88,7 @@ namespace SourceGit.Views
 
                     menu.Items.Add(unset);
                     menu.Items.Add(new MenuItem() { Header = "-" });
-                }                
+                }
 
                 var include = new MenuItem();
                 include.Icon = App.CreateMenuIcon("Icons.Filter");
