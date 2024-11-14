@@ -20,19 +20,19 @@ namespace SourceGit.Models
 
     public class Filter : ObservableObject
     {
-        public string Pattern 
+        public string Pattern
         {
             get => _pattern;
             set => SetProperty(ref _pattern, value);
         }
 
-        public FilterType Type 
+        public FilterType Type
         {
             get;
             set;
         } = FilterType.LocalBranch;
 
-        public FilterMode Mode 
+        public FilterMode Mode
         {
             get => _mode;
             set => SetProperty(ref _mode, value);

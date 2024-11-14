@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -71,19 +70,25 @@ namespace SourceGit.Views
             if (button == null)
                 return;
 
+            var menu = new ContextMenu();
+            var mode = Models.FilterMode.None;
             if (DataContext is Models.Tag tag)
             {
-                var mode = tag.FilterMode;
+                mode = tag.FilterMode;
 
-                var none = new MenuItem();
-                none.Icon = App.CreateMenuIcon("Icons.Eye");
-                none.Header = App.Text("Repository.FilterCommits.Default");
-                none.IsEnabled = mode != Models.FilterMode.None;
-                none.Click += (_, ev) =>
+                if (mode != Models.FilterMode.None)
                 {
-                    UpdateTagFilterMode(repo, tag, Models.FilterMode.None);
-                    ev.Handled = true;
-                };
+                    var unset = new MenuItem();
+                    unset.Header = App.Text("Repository.FilterCommits.Default");
+                    unset.Click += (_, ev) =>
+                    {
+                        UpdateTagFilterMode(repo, tag, Models.FilterMode.None);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(unset);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
 
                 var include = new MenuItem();
                 include.Icon = App.CreateMenuIcon("Icons.Filter");
@@ -105,32 +110,26 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
-                var menu = new ContextMenu();
-                menu.Items.Add(none);
                 menu.Items.Add(include);
                 menu.Items.Add(exclude);
-
-                if (mode == Models.FilterMode.None)
-                {
-                    IsContextMenuOpening = true;
-                    menu.Closed += (_, _) => IsContextMenuOpening = false;
-                }
-
-                menu.Open(button);
             }
             else if (DataContext is ViewModels.BranchTreeNode node)
             {
-                var mode = node.FilterMode;
+                mode = node.FilterMode;
 
-                var none = new MenuItem();
-                none.Icon = App.CreateMenuIcon("Icons.Eye");
-                none.Header = App.Text("Repository.FilterCommits.Default");
-                none.IsEnabled = mode != Models.FilterMode.None;
-                none.Click += (_, ev) =>
+                if (mode != Models.FilterMode.None)
                 {
-                    UpdateBranchFilterMode(repo, node, Models.FilterMode.None);
-                    ev.Handled = true;
-                };
+                    var unset = new MenuItem();
+                    unset.Header = App.Text("Repository.FilterCommits.Default");
+                    unset.Click += (_, ev) =>
+                    {
+                        UpdateBranchFilterMode(repo, node, Models.FilterMode.None);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(unset);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
 
                 var include = new MenuItem();
                 include.Icon = App.CreateMenuIcon("Icons.Filter");
@@ -152,20 +151,17 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
-                var menu = new ContextMenu();
-                menu.Items.Add(none);
                 menu.Items.Add(include);
                 menu.Items.Add(exclude);
-
-                if (mode == Models.FilterMode.None)
-                {
-                    IsContextMenuOpening = true;
-                    menu.Closed += (_, _) => IsContextMenuOpening = false;
-                }
-
-                menu.Open(button);
             }
 
+            if (mode == Models.FilterMode.None)
+            {
+                IsContextMenuOpening = true;
+                menu.Closed += (_, _) => IsContextMenuOpening = false;
+            }
+
+            menu.Open(button);
             e.Handled = true;
         }
 

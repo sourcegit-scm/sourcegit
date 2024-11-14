@@ -541,7 +541,6 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Habilitar Opción '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir en el Explorador</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Buscar Ramas/Etiquetas/Submódulos</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">FILTRAR POR:</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">RAMAS LOCALES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar a HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Habilitar Opción '--first-parent'</x:String>

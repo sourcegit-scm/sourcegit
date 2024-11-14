@@ -234,7 +234,7 @@ namespace SourceGit.Models
                 {
                     var name = filter.Pattern.Substring(11);
                     var b = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
-                    
+
                     if (filter.Mode == FilterMode.Included)
                         includedBranches.Add(b);
                     else if (filter.Mode == FilterMode.Excluded)

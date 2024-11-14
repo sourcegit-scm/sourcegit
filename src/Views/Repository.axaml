@@ -574,9 +574,13 @@
         </Border.IsVisible>
 
         <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
-          <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="table_header" Text="{DynamicResource Text.Repository.FilterCommits.Prefix}"/>
-
-          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.HistoriesFilters}">
+          <Path Grid.Column="0"
+                x:Name="HistoriesFilterModeIcon"
+                Margin="8,0,0,0"
+                Width="14" Height="14"
+                Fill="{DynamicResource Brush.FG2}"/>
+          
+          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.HistoriesFilters}" LayoutUpdated="OnHistoriesFiltersLayoutUpdated">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>

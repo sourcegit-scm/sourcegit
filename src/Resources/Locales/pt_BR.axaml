@@ -565,7 +565,6 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Habilitar opção '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir no Navegador de Arquivos</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Pesquisar Branches/Tags/Submódulos</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">FILTRADO POR:</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Habilitar opção '--first-parent'</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar para HEAD</x:String>

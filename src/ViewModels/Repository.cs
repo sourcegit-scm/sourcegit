@@ -701,7 +701,7 @@ namespace SourceGit.ViewModels
                     if (local.FullName.StartsWith(filter.Pattern, StringComparison.Ordinal))
                         return;
 
-                    hasIncludedBranch |= filter.Mode == Models.FilterMode.Included; 
+                    hasIncludedBranch |= filter.Mode == Models.FilterMode.Included;
                 }
                 else if (filter.Type == Models.FilterType.RemoteBranch || filter.Type == Models.FilterType.RemoteBranchFolder)
                 {
@@ -2035,7 +2035,7 @@ namespace SourceGit.ViewModels
                 {
                     node.FilterMode = _settings.GetHistoriesFilterMode(node.Path, isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder);
                     UpdateBranchTreeFilterMode(node.Children, isLocal);
-                }                
+                }
             }
         }
 
