@@ -336,14 +336,7 @@ namespace SourceGit.ViewModels
 
         public InProgressContext InProgressContext
         {
-            get => _inProgressContext;
-            private set => SetProperty(ref _inProgressContext, value);
-        }
-
-        public bool HasUnsolvedConflicts
-        {
-            get => _hasUnsolvedConflicts;
-            private set => SetProperty(ref _hasUnsolvedConflicts, value);
+            get => _workingCopy?.InProgressContext;
         }
 
         public Models.Commit SearchResultSelectedCommit
@@ -395,8 +388,6 @@ namespace SourceGit.ViewModels
             _stashesPage = new StashesPage(this);
             _selectedView = _histories;
             _selectedViewIndex = 0;
-            _inProgressContext = null;
-            _hasUnsolvedConflicts = false;
 
             _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
             RefreshAll();
@@ -429,7 +420,6 @@ namespace SourceGit.ViewModels
             _histories = null;
             _workingCopy = null;
             _stashesPage = null;
-            _inProgressContext = null;
 
             _localChangesCount = 0;
             _stashesCount = 0;
@@ -732,40 +722,9 @@ namespace SourceGit.ViewModels
                 SelectedViewIndex = 1;
         }
 
-        public async void ContinueMerge()
+        public void AbortMerge()
         {
-            if (_inProgressContext != null)
-            {
-                SetWatcherEnabled(false);
-                var succ = await Task.Run(_inProgressContext.Continue);
-                if (succ && _workingCopy != null)
-                {
-                    _workingCopy.CommitMessage = string.Empty;
-                }
-                SetWatcherEnabled(true);
-            }
-            else
-            {
-                MarkWorkingCopyDirtyManually();
-            }
-        }
-
-        public async void AbortMerge()
-        {
-            if (_inProgressContext != null)
-            {
-                SetWatcherEnabled(false);
-                var succ = await Task.Run(_inProgressContext.Abort);
-                if (succ && _workingCopy != null)
-                {
-                    _workingCopy.CommitMessage = string.Empty;
-                }
-                SetWatcherEnabled(true);
-            }
-            else
-            {
-                MarkWorkingCopyDirtyManually();
-            }
+            _workingCopy?.AbortMerge();
         }
 
         public void RefreshBranches()
@@ -869,23 +828,12 @@ namespace SourceGit.ViewModels
             if (_workingCopy == null)
                 return;
 
-            var hasUnsolvedConflict = _workingCopy.SetData(changes);
-            var inProgress = null as InProgressContext;
-
-            if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
-                inProgress = new CherryPickInProgress(_fullpath);
-            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_gitDir, "rebase-merge")))
-                inProgress = new RebaseInProgress(this);
-            else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
-                inProgress = new RevertInProgress(_fullpath);
-            else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
-                inProgress = new MergeInProgress(_fullpath);
+            _workingCopy.SetData(changes);
 
             Dispatcher.UIThread.Invoke(() =>
             {
-                InProgressContext = inProgress;
-                HasUnsolvedConflicts = hasUnsolvedConflict;
                 LocalChangesCount = changes.Count;
+                OnPropertyChanged(nameof(InProgressContext));
             });
         }
 
@@ -2173,10 +2121,7 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
         private bool _includeUntracked = true;
-        private InProgressContext _inProgressContext = null;
-        private bool _hasUnsolvedConflicts = false;
         private Models.Commit _searchResultSelectedCommit = null;
-
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
     }

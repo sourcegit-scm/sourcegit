@@ -56,6 +56,18 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool HasUnsolvedConflicts
+        {
+            get => _hasUnsolvedConflicts;
+            set => SetProperty(ref _hasUnsolvedConflicts, value);
+        }
+
+        public InProgressContext InProgressContext
+        {
+            get => _inProgressContext;
+            private set => SetProperty(ref _inProgressContext, value);
+        }
+
         public bool IsStaging
         {
             get => _isStaging;
@@ -191,6 +203,7 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
+            _inProgressContext = null;
 
             _selectedUnstaged.Clear();
             OnPropertyChanged(nameof(SelectedUnstaged));
@@ -208,7 +221,7 @@ namespace SourceGit.ViewModels
             _commitMessage = string.Empty;
         }
 
-        public bool SetData(List<Models.Change> changes)
+        public void SetData(List<Models.Change> changes)
         {
             if (!IsChanged(_cached, changes))
             {
@@ -221,9 +234,22 @@ namespace SourceGit.ViewModels
                         SetDetail(_selectedStaged[0], false);
                     else
                         SetDetail(null, false);
+
+                    var inProgress = null as InProgressContext;
+                    if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
+                        inProgress = new CherryPickInProgress(_repo.FullPath);
+                    else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
+                        inProgress = new RebaseInProgress(_repo);
+                    else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
+                        inProgress = new RevertInProgress(_repo.FullPath);
+                    else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
+                        inProgress = new MergeInProgress(_repo.FullPath);
+
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflit) != null;
+                    InProgressContext = inProgress;
                 });
 
-                return _cached.Find(x => x.IsConflit) != null;
+                return;
             }
 
             _cached = changes;
@@ -268,6 +294,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() =>
             {
                 _isLoadingData = true;
+                HasUnsolvedConflicts = hasConflict;
                 Unstaged = unstaged;
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
@@ -281,6 +308,18 @@ namespace SourceGit.ViewModels
                 else
                     SetDetail(null, false);
 
+                var inProgress = null as InProgressContext;
+                if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
+                    inProgress = new CherryPickInProgress(_repo.FullPath);
+                else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
+                    inProgress = new RebaseInProgress(_repo);
+                else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
+                    inProgress = new RevertInProgress(_repo.FullPath);
+                else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
+                    inProgress = new MergeInProgress(_repo.FullPath);
+
+                InProgressContext = inProgress;
+
                 // Try to load merge message from MERGE_MSG
                 if (string.IsNullOrEmpty(_commitMessage))
                 {
@@ -289,8 +328,6 @@ namespace SourceGit.ViewModels
                         CommitMessage = File.ReadAllText(mergeMsgFile);
                 }
             });
-
-            return hasConflict;
         }
 
         public void OpenAssumeUnchanged()
@@ -400,6 +437,52 @@ namespace SourceGit.ViewModels
                     PopupHost.ShowPopup(new Discard(_repo));
                 else
                     PopupHost.ShowPopup(new Discard(_repo, changes));
+            }
+        }
+
+        public void ContinueMerge()
+        {
+            if (_inProgressContext != null)
+            {
+                _repo.SetWatcherEnabled(false);
+                Task.Run(() =>
+                {
+                    var succ = _inProgressContext.Continue();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (succ)
+                            CommitMessage = string.Empty;
+
+                        _repo.SetWatcherEnabled(true);
+                    });
+                });
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+            }
+        }
+
+        public void AbortMerge()
+        {
+            if (_inProgressContext != null)
+            {
+                _repo.SetWatcherEnabled(false);
+                Task.Run(() =>
+                {
+                    var succ = _inProgressContext.Abort();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (succ)
+                            CommitMessage = string.Empty;
+
+                        _repo.SetWatcherEnabled(true);
+                    });
+                });
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
             }
         }
 
@@ -1475,5 +1558,8 @@ namespace SourceGit.ViewModels
         private int _count = 0;
         private object _detailContext = null;
         private string _commitMessage = string.Empty;
+
+        private bool _hasUnsolvedConflicts = false;
+        private InProgressContext _inProgressContext = null;
     }
 }
