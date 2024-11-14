@@ -150,8 +150,11 @@ namespace SourceGit.ViewModels
             {
                 _repo.SearchResultSelectedCommit = null;
                 DetailContext = null;
+
+                return;
             }
-            else if (commits.Count == 1)
+            
+            if (commits.Count == 1)
             {
                 var commit = (commits[0] as Models.Commit)!;
                 if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
@@ -170,20 +173,23 @@ namespace SourceGit.ViewModels
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
+
+                return;
             }
-            else if (commits.Count == 2)
+            
+            if (commits.Count == 2)
             {
                 _repo.SearchResultSelectedCommit = null;
 
                 var end = commits[0] as Models.Commit;
                 var start = commits[1] as Models.Commit;
                 DetailContext = new RevisionCompare(_repo.FullPath, start, end);
+
+                return;
             }
-            else
-            {
-                _repo.SearchResultSelectedCommit = null;
-                DetailContext = commits.Count;
-            }
+
+            _repo.SearchResultSelectedCommit = null;
+            DetailContext = commits.Count;
         }
 
         public void DoubleTapped(Models.Commit commit)
