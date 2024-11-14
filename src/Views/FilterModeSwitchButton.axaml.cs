@@ -172,11 +172,7 @@ namespace SourceGit.Views
         private void UpdateTagFilterMode(ViewModels.Repository repo, Models.Tag tag, Models.FilterMode mode)
         {
             var changed = repo.Settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
-            if (changed)
-            {
-                tag.FilterMode = mode;
-                Task.Run(repo.RefreshCommits);
-            }
+            repo.MarkHistoriesFilterDirty();
         }
 
         private void UpdateBranchFilterMode(ViewModels.Repository repo, ViewModels.BranchTreeNode node, Models.FilterMode mode)
@@ -191,38 +187,28 @@ namespace SourceGit.Views
                 if (!changed)
                     return;
 
-                node.FilterMode = mode;
-
                 // Try to update its upstream.
                 if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && mode != Models.FilterMode.Excluded)
                 {
                     var upstream = branch.Upstream;
-                    var upstreamNode = FindBranchNode(repo.RemoteBranchTrees, upstream);
-                    if (upstreamNode != null)
+                    var canUpdateUpstream = true;
+                    foreach (var filter in repo.Settings.HistoriesFilters)
                     {
-                        var canUpdateUpstream = true;
-                        foreach (var filter in repo.Settings.HistoriesFilters)
-                        {
-                            bool matched = false;
-                            if (filter.Type == Models.FilterType.RemoteBranch)
-                                matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
-                            else if (filter.Type == Models.FilterType.RemoteBranchFolder)
-                                matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
+                        bool matched = false;
+                        if (filter.Type == Models.FilterType.RemoteBranch)
+                            matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
+                        else if (filter.Type == Models.FilterType.RemoteBranchFolder)
+                            matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
 
-                            if (matched && filter.Mode == Models.FilterMode.Excluded)
-                            {
-                                canUpdateUpstream = false;
-                                break;
-                            }
-                        }
-
-                        if (canUpdateUpstream)
+                        if (matched && filter.Mode == Models.FilterMode.Excluded)
                         {
-                            changed = repo.Settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
-                            if (changed)
-                                upstreamNode.FilterMode = mode;
+                            canUpdateUpstream = false;
+                            break;
                         }
                     }
+
+                    if (canUpdateUpstream)
+                        repo.Settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
                 }
             }
             else
@@ -231,7 +217,6 @@ namespace SourceGit.Views
                 if (!changed)
                     return;
 
-                node.FilterMode = mode;
                 ResetChildrenBranchNodeFilterMode(repo, node, isLocal);
             }
 
@@ -249,19 +234,16 @@ namespace SourceGit.Views
                     break;
 
                 repo.Settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
-                parent.FilterMode = Models.FilterMode.None;
                 cur = parent;
             } while (true);
 
-            Task.Run(repo.RefreshCommits);
+            repo.MarkHistoriesFilterDirty();
         }
 
         private void ResetChildrenBranchNodeFilterMode(ViewModels.Repository repo, ViewModels.BranchTreeNode node, bool isLocal)
         {
             foreach (var child in node.Children)
             {
-                child.FilterMode = Models.FilterMode.None;
-
                 if (child.IsBranch)
                 {
                     var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;

@@ -670,13 +670,17 @@ namespace SourceGit.ViewModels
         public void ClearHistoriesFilter()
         {
             _settings.HistoriesFilters.Clear();
+            ResetBranchTreeFilterMode(LocalBranchTrees);
+            ResetBranchTreeFilterMode(RemoteBranchTrees);
+            ResetTagFilterMode();
+            Task.Run(RefreshCommits);
+        }
 
-            var builder = BuildBranchTree(_branches, _remotes);
-            LocalBranchTrees = builder.Locals;
-            RemoteBranchTrees = builder.Remotes;
-            foreach (var tag in VisibleTags)
-                tag.FilterMode = Models.FilterMode.None;
-
+        public void MarkHistoriesFilterDirty()
+        {
+            UpdateBranchTreeFilterMode(LocalBranchTrees, true);
+            UpdateBranchTreeFilterMode(RemoteBranchTrees, false);
+            UpdateTagFilterMode();
             Task.Run(RefreshCommits);
         }
 
@@ -1957,7 +1961,7 @@ namespace SourceGit.ViewModels
 
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
         {
-            var builder = new BranchTreeNode.Builder(_settings);
+            var builder = new BranchTreeNode.Builder();
             if (string.IsNullOrEmpty(_filter))
             {
                 builder.CollectExpandedNodes(_localBranchTrees);
@@ -1976,6 +1980,8 @@ namespace SourceGit.ViewModels
                 builder.Run(visibles, remotes, true);
             }
 
+            UpdateBranchTreeFilterMode(builder.Locals, true);
+            UpdateBranchTreeFilterMode(builder.Remotes, false);
             return builder;
         }
 
@@ -1995,6 +2001,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            UpdateTagFilterMode();
             return visible;
         }
 
@@ -2014,6 +2021,44 @@ namespace SourceGit.ViewModels
                 }
             }
             return visible;
+        }
+
+        private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, bool isLocal)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.IsBranch)
+                {
+                    node.FilterMode = _settings.GetHistoriesFilterMode(node.Path, isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch);
+                }
+                else
+                {
+                    node.FilterMode = _settings.GetHistoriesFilterMode(node.Path, isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder);
+                    UpdateBranchTreeFilterMode(node.Children, isLocal);
+                }                
+            }
+        }
+
+        private void UpdateTagFilterMode()
+        {
+            foreach (var tag in _tags)
+                tag.FilterMode = _settings.GetHistoriesFilterMode(tag.Name, Models.FilterType.Tag);
+        }
+
+        private void ResetBranchTreeFilterMode(List<BranchTreeNode> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                node.FilterMode = Models.FilterMode.None;
+                if (!node.IsBranch)
+                    ResetBranchTreeFilterMode(node.Children);
+            }
+        }
+
+        private void ResetTagFilterMode()
+        {
+            foreach (var tag in _tags)
+                tag.FilterMode = Models.FilterMode.None;
         }
 
         private void UpdateCurrentRevisionFilesForSearchSuggestion()

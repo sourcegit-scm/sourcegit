@@ -59,11 +59,6 @@ namespace SourceGit.ViewModels
             public List<BranchTreeNode> Locals => _locals;
             public List<BranchTreeNode> Remotes => _remotes;
 
-            public Builder(Models.RepositorySettings settings)
-            {
-                _settings = settings;
-            }
-
             public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
             {
                 var folders = new Dictionary<string, BranchTreeNode>();
@@ -77,7 +72,6 @@ namespace SourceGit.ViewModels
                         Path = path,
                         Backend = remote,
                         IsExpanded = bForceExpanded || _expanded.Contains(path),
-                        FilterMode = _settings.GetHistoriesFilterMode(path, Models.FilterType.RemoteBranchFolder)
                     };
 
                     folders.Add(path, node);
@@ -120,9 +114,6 @@ namespace SourceGit.ViewModels
             private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded)
             {
                 var fullpath = $"{prefix}/{branch.Name}";
-                var branchFilterType = branch.IsLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
-                var folderFilterType = branch.IsLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
-
                 var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1 || branch.IsDetachedHead)
                 {
@@ -132,7 +123,6 @@ namespace SourceGit.ViewModels
                         Path = fullpath,
                         Backend = branch,
                         IsExpanded = false,
-                        FilterMode = _settings.GetHistoriesFilterMode(fullpath, branchFilterType),
                     });
                     return;
                 }
@@ -157,7 +147,6 @@ namespace SourceGit.ViewModels
                             Name = name,
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
-                            FilterMode = _settings.GetHistoriesFilterMode(folder, folderFilterType),
                         };
                         roots.Add(lastFolder);
                         folders.Add(folder, lastFolder);
@@ -169,7 +158,6 @@ namespace SourceGit.ViewModels
                             Name = name,
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
-                            FilterMode = _settings.GetHistoriesFilterMode(folder, folderFilterType),
                         };
                         lastFolder.Children.Add(cur);
                         folders.Add(folder, cur);
@@ -186,7 +174,6 @@ namespace SourceGit.ViewModels
                     Path = fullpath,
                     Backend = branch,
                     IsExpanded = false,
-                    FilterMode = _settings.GetHistoriesFilterMode(fullpath, branchFilterType),
                 });
             }
 
@@ -207,7 +194,6 @@ namespace SourceGit.ViewModels
                     SortNodes(node.Children);
             }
 
-            private readonly Models.RepositorySettings _settings = null;
             private readonly List<BranchTreeNode> _locals = new List<BranchTreeNode>();
             private readonly List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
             private readonly HashSet<string> _expanded = new HashSet<string>();

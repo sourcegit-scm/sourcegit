@@ -169,6 +169,41 @@ namespace SourceGit.Models
 
         public bool UpdateHistoriesFilter(string pattern, FilterType type, FilterMode mode)
         {
+            // Clear all filters when there's a filter that has different mode.
+            if (mode != FilterMode.None)
+            {
+                var clear = false;
+                foreach (var filter in HistoriesFilters)
+                {
+                    if (filter.Mode != mode)
+                    {
+                        clear = true;
+                        break;
+                    }
+                }
+
+                if (clear)
+                {
+                    HistoriesFilters.Clear();
+                    HistoriesFilters.Add(new Filter(pattern, type, mode));
+                    return true;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < HistoriesFilters.Count; i++)
+                {
+                    var filter = HistoriesFilters[i];
+                    if (filter.Type == type && filter.Pattern.Equals(pattern, StringComparison.Ordinal))
+                    {
+                        HistoriesFilters.RemoveAt(i);
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
             for (int i = 0; i < HistoriesFilters.Count; i++)
             {
                 var filter = HistoriesFilters[i];
@@ -176,28 +211,11 @@ namespace SourceGit.Models
                     continue;
 
                 if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
-                {
-                    if (mode == FilterMode.None)
-                    {
-                        HistoriesFilters.RemoveAt(i);
-                        return true;
-                    }
-
-                    if (mode != filter.Mode)
-                    {
-                        filter.Mode = mode;
-                        return true;
-                    }
-                }
+                    return false;
             }
 
-            if (mode != FilterMode.None)
-            {
-                HistoriesFilters.Add(new Filter(pattern, type, mode));
-                return true;
-            }
-
-            return false;
+            HistoriesFilters.Add(new Filter(pattern, type, mode));
+            return true;
         }
 
         public string BuildHistoriesFilter()
