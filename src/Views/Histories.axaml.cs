@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -730,7 +731,16 @@ namespace SourceGit.Views
 
         private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: 1 } selected })
+            // Retrieve the PropertyInfo for the "Name" property
+            var nameProperty = e.Source.GetType().GetProperty("Name");
+
+            // Get the value of the "Name" property, or null if it doesn't exist
+            string nameValue = nameProperty?.GetValue(e.Source) as string;
+
+            // Check if has clicked the Background of the ListBox
+            bool isInvalidUiPressed = nameValue == "PART_ContentPresenter";
+
+            if (DataContext is ViewModels.Histories histories && !isInvalidUiPressed && sender is ListBox { SelectedItems: { Count: 1 } selected })
             {
                 histories.DoubleTapped(selected[0] as Models.Commit);
             }
