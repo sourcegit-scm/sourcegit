@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 using Avalonia.Collections;
-using Avalonia.Threading;
 
 namespace SourceGit.Models
 {
@@ -218,10 +217,26 @@ namespace SourceGit.Models
             return true;
         }
 
+        public void RemoveChildrenBranchFilters(string pattern)
+        {
+            var dirty = new List<Filter>();
+            var prefix = $"{pattern}/";
+
+            foreach (var filter in HistoriesFilters)
+            {
+                if (filter.Type == FilterType.Tag)
+                    continue;
+
+                if (filter.Pattern.StartsWith(prefix, StringComparison.Ordinal))
+                    dirty.Add(filter);
+            }
+
+            foreach (var filter in dirty)
+                HistoriesFilters.Remove(filter);
+        }
+
         public string BuildHistoriesFilter()
         {
-            var builder = new StringBuilder();
-
             var excludedBranches = new List<string>();
             var excludedRemotes = new List<string>();
             var excludedTags = new List<string>();
@@ -276,14 +291,11 @@ namespace SourceGit.Models
                 }
             }
 
-            foreach (var b in excludedBranches)
-            {
-                builder.Append("--exclude=");
-                builder.Append(b);
-                builder.Append(' ');
-            }
+            bool hasIncluded = includedBranches.Count > 0 || includedRemotes.Count > 0 || includedTags.Count > 0;
+            bool hasExcluded = excludedBranches.Count > 0 || excludedRemotes.Count > 0 || excludedTags.Count > 0;
 
-            if (includedBranches.Count > 0)
+            var builder = new StringBuilder();
+            if (hasIncluded)
             {
                 foreach (var b in includedBranches)
                 {
@@ -291,44 +303,14 @@ namespace SourceGit.Models
                     builder.Append(b);
                     builder.Append(' ');
                 }
-            }
-            else if (excludedBranches.Count > 0 || (includedRemotes.Count == 0 && includedTags.Count == 0))
-            {
-                builder.Append("--exclude=HEA[D] ");
-                builder.Append("--branches ");
-            }
 
-            foreach (var r in excludedRemotes)
-            {
-                builder.Append("--exclude=");
-                builder.Append(r);
-                builder.Append(' ');
-            }
-
-            if (includedRemotes.Count > 0)
-            {
                 foreach (var r in includedRemotes)
                 {
                     builder.Append("--remotes=");
                     builder.Append(r);
                     builder.Append(' ');
                 }
-            }
-            else if (excludedRemotes.Count > 0 || (includedBranches.Count == 0 && includedTags.Count == 0))
-            {
-                builder.Append("--exclude=origin/HEA[D] ");
-                builder.Append("--remotes ");
-            }
 
-            foreach (var t in excludedTags)
-            {
-                builder.Append("--exclude=");
-                builder.Append(t);
-                builder.Append(' ');
-            }
-
-            if (includedTags.Count > 0)
-            {
                 foreach (var t in includedTags)
                 {
                     builder.Append("--tags=");
@@ -336,8 +318,42 @@ namespace SourceGit.Models
                     builder.Append(' ');
                 }
             }
-            else if (excludedTags.Count > 0 || (includedBranches.Count == 0 && includedRemotes.Count == 0))
+            else if (hasExcluded)
             {
+                if (excludedBranches.Count > 0)
+                {
+                    foreach (var b in excludedBranches)
+                    {
+                        builder.Append("--exclude=");
+                        builder.Append(b);
+                        builder.Append(' ');
+                    }
+                }
+
+                builder.Append("--exclude=HEA[D] --branches ");
+
+                if (excludedRemotes.Count > 0)
+                {
+                    foreach (var r in excludedRemotes)
+                    {
+                        builder.Append("--exclude=");
+                        builder.Append(r);
+                        builder.Append(' ');
+                    }
+                }
+
+                builder.Append("--exclude=origin/HEA[D] --remotes ");
+
+                if (excludedTags.Count > 0)
+                {
+                    foreach (var t in excludedTags)
+                    {
+                        builder.Append("--exclude=");
+                        builder.Append(t);
+                        builder.Append(' ');
+                    }
+                }
+
                 builder.Append("--tags ");
             }
 

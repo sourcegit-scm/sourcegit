@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -82,7 +79,7 @@ namespace SourceGit.Views
                     unset.Header = App.Text("Repository.FilterCommits.Default");
                     unset.Click += (_, ev) =>
                     {
-                        UpdateTagFilterMode(repo, tag, Models.FilterMode.None);
+                        repo.SetTagFilterMode(tag, Models.FilterMode.None);
                         ev.Handled = true;
                     };
 
@@ -96,7 +93,7 @@ namespace SourceGit.Views
                 include.IsEnabled = mode != Models.FilterMode.Included;
                 include.Click += (_, ev) =>
                 {
-                    UpdateTagFilterMode(repo, tag, Models.FilterMode.Included);
+                    repo.SetTagFilterMode(tag, Models.FilterMode.Included);
                     ev.Handled = true;
                 };
 
@@ -106,7 +103,7 @@ namespace SourceGit.Views
                 exclude.IsEnabled = mode != Models.FilterMode.Excluded;
                 exclude.Click += (_, ev) =>
                 {
-                    UpdateTagFilterMode(repo, tag, Models.FilterMode.Excluded);
+                    repo.SetTagFilterMode(tag, Models.FilterMode.Excluded);
                     ev.Handled = true;
                 };
 
@@ -123,7 +120,7 @@ namespace SourceGit.Views
                     unset.Header = App.Text("Repository.FilterCommits.Default");
                     unset.Click += (_, ev) =>
                     {
-                        UpdateBranchFilterMode(repo, node, Models.FilterMode.None);
+                        repo.SetBranchFilterMode(node, Models.FilterMode.None);
                         ev.Handled = true;
                     };
 
@@ -137,7 +134,7 @@ namespace SourceGit.Views
                 include.IsEnabled = mode != Models.FilterMode.Included;
                 include.Click += (_, ev) =>
                 {
-                    UpdateBranchFilterMode(repo, node, Models.FilterMode.Included);
+                    repo.SetBranchFilterMode(node, Models.FilterMode.Included);
                     ev.Handled = true;
                 };
 
@@ -147,7 +144,7 @@ namespace SourceGit.Views
                 exclude.IsEnabled = mode != Models.FilterMode.Excluded;
                 exclude.Click += (_, ev) =>
                 {
-                    UpdateBranchFilterMode(repo, node, Models.FilterMode.Excluded);
+                    repo.SetBranchFilterMode(node, Models.FilterMode.Excluded);
                     ev.Handled = true;
                 };
 
@@ -163,113 +160,6 @@ namespace SourceGit.Views
 
             menu.Open(button);
             e.Handled = true;
-        }
-
-        private void UpdateTagFilterMode(ViewModels.Repository repo, Models.Tag tag, Models.FilterMode mode)
-        {
-            var changed = repo.Settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
-            repo.MarkHistoriesFilterDirty();
-        }
-
-        private void UpdateBranchFilterMode(ViewModels.Repository repo, ViewModels.BranchTreeNode node, Models.FilterMode mode)
-        {
-            var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
-            var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
-            var tree = isLocal ? repo.LocalBranchTrees : repo.RemoteBranchTrees;
-
-            if (node.Backend is Models.Branch branch)
-            {
-                var changed = repo.Settings.UpdateHistoriesFilter(node.Path, type, mode);
-                if (!changed)
-                    return;
-
-                // Try to update its upstream.
-                if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && mode != Models.FilterMode.Excluded)
-                {
-                    var upstream = branch.Upstream;
-                    var canUpdateUpstream = true;
-                    foreach (var filter in repo.Settings.HistoriesFilters)
-                    {
-                        bool matched = false;
-                        if (filter.Type == Models.FilterType.RemoteBranch)
-                            matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
-                        else if (filter.Type == Models.FilterType.RemoteBranchFolder)
-                            matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
-
-                        if (matched && filter.Mode == Models.FilterMode.Excluded)
-                        {
-                            canUpdateUpstream = false;
-                            break;
-                        }
-                    }
-
-                    if (canUpdateUpstream)
-                        repo.Settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
-                }
-            }
-            else
-            {
-                var changed = repo.Settings.UpdateHistoriesFilter(node.Path, isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder, mode);
-                if (!changed)
-                    return;
-
-                ResetChildrenBranchNodeFilterMode(repo, node, isLocal);
-            }
-
-            var parentType = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
-            var cur = node;
-            do
-            {
-                var lastSepIdx = cur.Path.LastIndexOf('/');
-                if (lastSepIdx <= 0)
-                    break;
-
-                var parentPath = cur.Path.Substring(0, lastSepIdx);
-                var parent = FindBranchNode(tree, parentPath);
-                if (parent == null)
-                    break;
-
-                repo.Settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
-                cur = parent;
-            } while (true);
-
-            repo.MarkHistoriesFilterDirty();
-        }
-
-        private void ResetChildrenBranchNodeFilterMode(ViewModels.Repository repo, ViewModels.BranchTreeNode node, bool isLocal)
-        {
-            foreach (var child in node.Children)
-            {
-                if (child.IsBranch)
-                {
-                    var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
-                    repo.Settings.UpdateHistoriesFilter(child.Path, type, Models.FilterMode.None);
-                }
-                else
-                {
-                    var type = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
-                    repo.Settings.UpdateHistoriesFilter(child.Path, type, Models.FilterMode.None);
-                    ResetChildrenBranchNodeFilterMode(repo, child, isLocal);
-                }
-            }
-        }
-
-        private ViewModels.BranchTreeNode FindBranchNode(List<ViewModels.BranchTreeNode> nodes, string path)
-        {
-            foreach (var node in nodes)
-            {
-                if (node.Path.Equals(path, StringComparison.Ordinal))
-                    return node;
-
-                if (path.StartsWith(node.Path, StringComparison.Ordinal))
-                {
-                    var founded = FindBranchNode(node.Children, path);
-                    if (founded != null)
-                        return founded;
-                }
-            }
-
-            return null;
         }
     }
 }

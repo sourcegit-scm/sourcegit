@@ -46,6 +46,12 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public Models.FilterMode HistoriesFilterMode
+        {
+            get => _historiesFilterMode;
+            private set => SetProperty(ref _historiesFilterMode, value);
+        }
+
         public bool HasAllowedSignersFile
         {
             get => _hasAllowedSignersFile;
@@ -383,6 +389,11 @@ namespace SourceGit.ViewModels
                 App.RaiseException(string.Empty, $"Failed to start watcher for repository: '{_fullpath}'. You may need to press 'F5' to refresh repository manually!\n\nReason: {ex.Message}");
             }
 
+            if (_settings.HistoriesFilters.Count > 0)
+                _historiesFilterMode = _settings.HistoriesFilters[0].Mode;
+            else
+                _historiesFilterMode = Models.FilterMode.None;
+
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this);
             _stashesPage = new StashesPage(this);
@@ -407,6 +418,7 @@ namespace SourceGit.ViewModels
                 // Ignore
             }
             _settings = null;
+            _historiesFilterMode = Models.FilterMode.None;
 
             _autoFetchTimer.Dispose();
             _autoFetchTimer = null;
@@ -670,49 +682,92 @@ namespace SourceGit.ViewModels
         public void ClearHistoriesFilter()
         {
             _settings.HistoriesFilters.Clear();
+            HistoriesFilterMode = Models.FilterMode.None;
+
             ResetBranchTreeFilterMode(LocalBranchTrees);
             ResetBranchTreeFilterMode(RemoteBranchTrees);
             ResetTagFilterMode();
             Task.Run(RefreshCommits);
         }
 
-        public void MarkHistoriesFilterDirty()
+        public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
-            UpdateBranchTreeFilterMode(LocalBranchTrees, true);
-            UpdateBranchTreeFilterMode(RemoteBranchTrees, false);
-            UpdateTagFilterMode();
-            Task.Run(RefreshCommits);
+            var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
+            if (changed)
+            {
+                if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
+                    HistoriesFilterMode = mode;
+
+                RefreshHistoriesFilters();
+            }
         }
 
-        public void UpdateHistoriesFilterAfterCheckout(Models.Branch local)
+        public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode)
         {
-            var hasIncludedBranch = false;
-            foreach (var filter in _settings.HistoriesFilters)
+            var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
+            var tree = isLocal ? _localBranchTrees : _remoteBranchTrees;
+
+            if (node.Backend is Models.Branch branch)
             {
-                if (filter.Type == Models.FilterType.LocalBranch)
-                {
-                    if (filter.Pattern.Equals(local.FullName, StringComparison.Ordinal))
-                        return;
+                var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
+                var changed = _settings.UpdateHistoriesFilter(node.Path, type, mode);
+                if (!changed)
+                    return;
 
-                    hasIncludedBranch |= filter.Mode == Models.FilterMode.Included;
-                }
-                else if (filter.Type == Models.FilterType.LocalBranchFolder)
+                if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && mode != Models.FilterMode.Excluded)
                 {
-                    if (local.FullName.StartsWith(filter.Pattern, StringComparison.Ordinal))
-                        return;
+                    var upstream = branch.Upstream;
+                    var canUpdateUpstream = true;
+                    foreach (var filter in _settings.HistoriesFilters)
+                    {
+                        bool matched = false;
+                        if (filter.Type == Models.FilterType.RemoteBranch)
+                            matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
+                        else if (filter.Type == Models.FilterType.RemoteBranchFolder)
+                            matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
 
-                    hasIncludedBranch |= filter.Mode == Models.FilterMode.Included;
-                }
-                else if (filter.Type == Models.FilterType.RemoteBranch || filter.Type == Models.FilterType.RemoteBranchFolder)
-                {
-                    hasIncludedBranch |= filter.Mode == Models.FilterMode.Included;
+                        if (matched && filter.Mode == Models.FilterMode.Excluded)
+                        {
+                            canUpdateUpstream = false;
+                            break;
+                        }
+                    }
+
+                    if (canUpdateUpstream)
+                        _settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
                 }
             }
+            else
+            {
+                var type = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
+                var changed = _settings.UpdateHistoriesFilter(node.Path, type, mode);
+                if (!changed)
+                    return;
 
-            if (!hasIncludedBranch)
-                return;
+                _settings.RemoveChildrenBranchFilters(node.Path);
+            }
 
-            _settings.UpdateHistoriesFilter(local.FullName, Models.FilterType.LocalBranch, Models.FilterMode.Included);
+            var parentType = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
+            var cur = node;
+            do
+            {
+                var lastSepIdx = cur.Path.LastIndexOf('/');
+                if (lastSepIdx <= 0)
+                    break;
+
+                var parentPath = cur.Path.Substring(0, lastSepIdx);
+                var parent = FindBranchNode(tree, parentPath);
+                if (parent == null)
+                    break;
+
+                _settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
+                cur = parent;
+            } while (true);
+
+            if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
+                HistoriesFilterMode = mode;
+
+            RefreshHistoriesFilters();
         }
 
         public void StashAll(bool autoStart)
@@ -2023,6 +2078,14 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
+        private void RefreshHistoriesFilters()
+        {
+            UpdateBranchTreeFilterMode(LocalBranchTrees, true);
+            UpdateBranchTreeFilterMode(RemoteBranchTrees, false);
+            UpdateTagFilterMode();
+            Task.Run(RefreshCommits);
+        }
+
         private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, bool isLocal)
         {
             foreach (var node in nodes)
@@ -2059,6 +2122,24 @@ namespace SourceGit.ViewModels
         {
             foreach (var tag in _tags)
                 tag.FilterMode = Models.FilterMode.None;
+        }
+
+        private BranchTreeNode FindBranchNode(List<BranchTreeNode> nodes, string path)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.Path.Equals(path, StringComparison.Ordinal))
+                    return node;
+
+                if (path.StartsWith(node.Path, StringComparison.Ordinal))
+                {
+                    var founded = FindBranchNode(node.Children, path);
+                    if (founded != null)
+                        return founded;
+                }
+            }
+
+            return null;
         }
 
         private void UpdateCurrentRevisionFilesForSearchSuggestion()
@@ -2124,6 +2205,7 @@ namespace SourceGit.ViewModels
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
+        private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
 
         private Models.Watcher _watcher = null;
