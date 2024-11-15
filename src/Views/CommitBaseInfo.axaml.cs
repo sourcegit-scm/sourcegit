@@ -130,7 +130,7 @@ namespace SourceGit.Views
                     if (c != null)
                     {
                         ToolTip.SetTip(ctl, c);
-                        ToolTip.SetIsOpen(ctl, true);
+                        ToolTip.SetIsOpen(ctl, ctl.IsPointerOver);
                     }
                 }
             }
