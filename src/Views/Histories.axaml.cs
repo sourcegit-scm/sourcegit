@@ -730,7 +730,7 @@ namespace SourceGit.Views
 
         private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: 1 } } listBox)
+            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: 1 } })
             {
                 var source = e.Source as Control;
                 var item = source.FindAncestorOfType<ListBoxItem>();
