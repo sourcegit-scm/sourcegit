@@ -611,8 +611,8 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           
-          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}">
-            <TextBlock Margin="16,0,8,0" Text="{DynamicResource Text.Repository.ClearAllCommitsFilter}" Foreground="{DynamicResource Brush.Accent}"/>
+          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
+            <Path Width="14" Height="14" Margin="16,0,8,0" Data="{StaticResource Icons.RemoveAll}"/>
           </Button>
         </Grid>
       </Border>
