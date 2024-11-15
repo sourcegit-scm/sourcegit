@@ -60,15 +60,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.57%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
+
 
 </details>
 
