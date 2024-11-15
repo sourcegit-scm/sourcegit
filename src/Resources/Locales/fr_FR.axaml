@@ -82,12 +82,11 @@
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout ce commit</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit :</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Avertissement: un checkout vers un commit aboutiera vers un HEAD détaché</x:String>
-  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branche:</x:String>
+  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branche :</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Annuler</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Ne rien faire</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
-  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branche :</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick de ce commit</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit :</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit tous les changements</x:String>
@@ -102,7 +101,6 @@
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nom de dépôt. Optionnel.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Dossier parent :</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL du dépôt :</x:String>
-  <x:String x:Key="Text.Clone" xml:space="preserve">Cloner le dépôt distant</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">FERMER</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Éditeur</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Changer de commit</x:String>
@@ -536,8 +534,7 @@
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Lancer `git gc` pour ce repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Tout effacer</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configurer ce repository</x:String>
-  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUER</x:String>
-  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur Windows</x:String>
+  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUER</x:String>>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Pas d'actions personnalisées</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Activer l'option '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur de fichiers</x:String>
@@ -584,7 +581,6 @@
   <x:String x:Key="Text.Save" xml:space="preserve">SAUVEGARDER</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Sauvegarder en tant que...</x:String>
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Le patch a été sauvegardé !</x:String>
-  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Vérifier les mises à jour...</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Dossier racine :</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Rechercher des mises à jour...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Une nouvelle version du logiciel est disponible :</x:String>
