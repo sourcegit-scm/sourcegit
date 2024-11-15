@@ -534,7 +534,7 @@
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Lancer `git gc` pour ce repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Tout effacer</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configurer ce repository</x:String>
-  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUER</x:String>>
+  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUER</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Pas d'actions personnalisées</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Activer l'option '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur de fichiers</x:String>
