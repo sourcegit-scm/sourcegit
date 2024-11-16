@@ -1146,6 +1146,8 @@ namespace SourceGit.Views
 
         public void ForceSyncScrollOffset()
         {
+            if (_scrollViewer == null)
+                return;
             if (DataContext is ViewModels.TwoSideTextDiff diff)
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
@@ -1585,11 +1587,13 @@ namespace SourceGit.Views
 
             CurrentChangeBlockIdxProperty.Changed.AddClassHandler<TextDiffView>((v, e) =>
             {
-                if (v.Editor.Presenter != null)
+                if ((int)e.NewValue >= 0 && v.Editor.Presenter != null)
                 {
                     foreach (var p in v.Editor.Presenter.GetVisualDescendants().OfType<ThemedTextDiffPresenter>())
                     {
                         p.JumpToChangeBlock((int)e.NewValue);
+                        if (p is SingleSideTextDiffPresenter ssp)
+                            ssp.ForceSyncScrollOffset();
                     }
                 }
             });
