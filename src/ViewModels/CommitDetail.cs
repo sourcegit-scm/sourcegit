@@ -293,7 +293,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path, _commit.SHA) };
                 window.Show();
                 ev.Handled = true;
             };
@@ -434,7 +434,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path, _commit.SHA) };
                 window.Show();
                 ev.Handled = true;
             };
