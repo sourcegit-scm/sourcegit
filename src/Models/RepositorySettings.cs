@@ -152,18 +152,12 @@ namespace SourceGit.Models
             set;
         } = "---";
 
-        public FilterMode GetHistoriesFilterMode(string pattern, FilterType type)
+        public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
+            var map = new Dictionary<string, FilterMode>();
             foreach (var filter in HistoriesFilters)
-            {
-                if (filter.Type != type)
-                    continue;
-
-                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
-                    return filter.Mode;
-            }
-
-            return FilterMode.None;
+                map.Add(filter.Pattern, filter.Mode);
+            return map;
         }
 
         public bool UpdateHistoriesFilter(string pattern, FilterType type, FilterMode mode)

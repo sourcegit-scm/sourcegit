@@ -827,9 +827,6 @@ namespace SourceGit.ViewModels
         public void RefreshTags()
         {
             var tags = new Commands.QueryTags(_fullpath).Result();
-            foreach (var tag in tags)
-                tag.FilterMode = _settings.GetHistoriesFilterMode(tag.Name, Models.FilterType.Tag);
-
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
@@ -2035,8 +2032,9 @@ namespace SourceGit.ViewModels
                 builder.Run(visibles, remotes, true);
             }
 
-            UpdateBranchTreeFilterMode(builder.Locals, true);
-            UpdateBranchTreeFilterMode(builder.Remotes, false);
+            var historiesFilters = _settings.CollectHistoriesFilters();
+            UpdateBranchTreeFilterMode(builder.Locals, historiesFilters);
+            UpdateBranchTreeFilterMode(builder.Remotes, historiesFilters);
             return builder;
         }
 
@@ -2056,7 +2054,8 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            UpdateTagFilterMode();
+            var historiesFilters = _settings.CollectHistoriesFilters();
+            UpdateTagFilterMode(historiesFilters);
             return visible;
         }
 
@@ -2080,32 +2079,36 @@ namespace SourceGit.ViewModels
 
         private void RefreshHistoriesFilters()
         {
-            UpdateBranchTreeFilterMode(LocalBranchTrees, true);
-            UpdateBranchTreeFilterMode(RemoteBranchTrees, false);
-            UpdateTagFilterMode();
+            var filters = _settings.CollectHistoriesFilters();
+            UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
+            UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
+            UpdateTagFilterMode(filters);
             Task.Run(RefreshCommits);
         }
 
-        private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, bool isLocal)
+        private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, Dictionary<string, Models.FilterMode> filters)
         {
             foreach (var node in nodes)
             {
-                if (node.IsBranch)
-                {
-                    node.FilterMode = _settings.GetHistoriesFilterMode(node.Path, isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch);
-                }
+                if (filters.TryGetValue(node.Path, out var value))
+                    node.FilterMode = value;
                 else
-                {
-                    node.FilterMode = _settings.GetHistoriesFilterMode(node.Path, isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder);
-                    UpdateBranchTreeFilterMode(node.Children, isLocal);
-                }
+                    node.FilterMode = Models.FilterMode.None;
+
+                if (!node.IsBranch)
+                    UpdateBranchTreeFilterMode(node.Children, filters);
             }
         }
 
-        private void UpdateTagFilterMode()
+        private void UpdateTagFilterMode(Dictionary<string, Models.FilterMode> filters)
         {
             foreach (var tag in _tags)
-                tag.FilterMode = _settings.GetHistoriesFilterMode(tag.Name, Models.FilterType.Tag);
+            {
+                if (filters.TryGetValue(tag.Name, out var value))
+                    tag.FilterMode = value;
+                else
+                    tag.FilterMode = Models.FilterMode.None;
+            }
         }
 
         private void ResetBranchTreeFilterMode(List<BranchTreeNode> nodes)
