@@ -516,11 +516,16 @@ namespace SourceGit.Views
                     firstLineIdx = index;
             }
 
+            if (firstLineIdx <= 1)
+                return;
+
             var firstLineType = lines[firstLineIdx].Type;
+            var prevLineType = lines[firstLineIdx - 1].Type;
             var isChangeFirstLine = firstLineType != Models.TextDiffLineType.Normal && firstLineType != Models.TextDiffLineType.Indicator;
-            if (isChangeFirstLine)
+            var isChangePrevLine = prevLineType != Models.TextDiffLineType.Normal && prevLineType != Models.TextDiffLineType.Indicator;
+            if (isChangeFirstLine && isChangePrevLine)
             {
-                for (var i = firstLineIdx - 1; i >= 0; i--)
+                for (var i = firstLineIdx - 2; i >= 0; i--)
                 {
                     var prevType = lines[i].Type;
                     if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
@@ -530,32 +535,22 @@ namespace SourceGit.Views
                     }
                 }
             }
-            else
+
+            var findChange = false;
+            for (var i = firstLineIdx - 1; i >= 0; i--)
             {
-                var prevChangeEnd = -1;
-                for (var i = firstLineIdx - 1; i >= 0; i--)
+                var prevType = lines[i].Type;
+                if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
                 {
-                    var prevType = lines[i].Type;
-                    if (prevType == Models.TextDiffLineType.None ||
-                        prevType == Models.TextDiffLineType.Added ||
-                        prevType == Models.TextDiffLineType.Deleted)
-                    {
-                        prevChangeEnd = i;
-                        break;
-                    }
-                }
-
-                if (prevChangeEnd <= 0)
-                    return;
-
-                for (var i = prevChangeEnd - 1; i >= 0; i--)
-                {
-                    var prevType = lines[i].Type;
-                    if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
+                    if (findChange)
                     {
                         ScrollToLine(i + 2);
                         return;
                     }
+                }
+                else if (!findChange)
+                {
+                    findChange = true;
                 }
             }
         }
@@ -577,6 +572,9 @@ namespace SourceGit.Views
                 if (lastLineIdx < index)
                     lastLineIdx = index;
             }
+
+            if (lastLineIdx >= lines.Count - 1)
+                return;
 
             var lastLineType = lines[lastLineIdx].Type;
             var findNormalLine = lastLineType == Models.TextDiffLineType.Normal || lastLineType == Models.TextDiffLineType.Indicator;
