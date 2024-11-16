@@ -58,7 +58,7 @@
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Lösche alle ausgewählten {0} Branches</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward zu ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetche ${0}$ nach ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetche ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Abschließen ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
@@ -162,8 +162,8 @@
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TICKETSYSTEM</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Beispiel für Github-Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Beispiel für Jira-Regel hinzufügen</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Beispiel für eine Gitlab Issue Regel einfügen</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Beispiel für einen Gitlab Merge Request einfügen</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Beispiel für Gitlab Issue Regel einfügen</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Beispiel für Gitlab Merge Request einfügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Neue Regel</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Ticketnummer Regex-Ausdruck:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Name:</x:String>
@@ -171,7 +171,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Verwende bitte $1, $2 um auf Regex-Gruppenwerte zuzugreifen.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Bevorzugter Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Wenn der 'Bevorzugte Service' aktiviert ist, wird SourceGit nur dieses Repository nutzen. Ansonsten wird, wenn mehrere Services verfügbar sind, eine Kontextmenü zur Auswahl angezeigt.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Der ausgewählte 'Bevorzugte Service' wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Servies verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP Proxy für dieses Repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>
@@ -265,7 +265,7 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Ausgewählte Gruppe bearbeiten</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Ausgewähltes Repository bearbeiten</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Führe benutzerte Aktion aus</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Führe benutzerdefinierte Aktion aus</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Name der Aktion:</x:String>
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (ohne Auschecken)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
@@ -535,7 +535,7 @@
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Änderungen automatisch von Remote fetchen...</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Aufräumen (GC &amp; Prune)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Führt `git gc` auf diesem Repository aus.</x:String>
-  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Alles löschen</x:String>
+  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Filter aufheben</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Repository Einstellungen</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Benutzerdefinierte Aktionen</x:String>
@@ -604,7 +604,7 @@
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inklusive nicht-verfolgter Dateien</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Behalte Dateien des Stages</x:String>
+  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Behalte gestagte Dateien</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name dieses Stashes</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur gestagte Änderungen</x:String>
