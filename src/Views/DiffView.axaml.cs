@@ -13,28 +13,44 @@ namespace SourceGit.Views
 
         private void OnGotoPrevChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (textDiff == null)
-                return;
+            if (ViewModels.Preference.Instance.EnableChangeBlocks)
+            {
+                if (DataContext is ViewModels.DiffContext diffCtx)
+                    diffCtx.PrevChange();
+            }
+            else
+            {
+                var textDiff = this.FindDescendantOfType<ThemedTextDiffPresenter>();
+                if (textDiff == null)
+                    return;
 
-            textDiff.GotoPrevChange();
-            if (textDiff is SingleSideTextDiffPresenter presenter)
-                presenter.ForceSyncScrollOffset();
+                textDiff.GotoPrevChange();
+                if (textDiff is SingleSideTextDiffPresenter presenter)
+                    presenter.ForceSyncScrollOffset();
 
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
 
         private void OnGotoNextChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (textDiff == null)
-                return;
+            if (ViewModels.Preference.Instance.EnableChangeBlocks)
+            {
+                if (DataContext is ViewModels.DiffContext diffCtx)
+                    diffCtx.NextChange();
+            }
+            else
+            {
+                var textDiff = this.FindDescendantOfType<ThemedTextDiffPresenter>();
+                if (textDiff == null)
+                    return;
 
-            textDiff.GotoNextChange();
-            if (textDiff is SingleSideTextDiffPresenter presenter)
-                presenter.ForceSyncScrollOffset();
+                textDiff.GotoNextChange();
+                if (textDiff is SingleSideTextDiffPresenter presenter)
+                    presenter.ForceSyncScrollOffset();
 
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
     }
 }

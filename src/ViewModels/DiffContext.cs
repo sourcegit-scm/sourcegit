@@ -133,6 +133,14 @@ namespace SourceGit.ViewModels
             LoadDiffContent();
         }
 
+        public void ToggleHighlightedDiffNavigation()
+        {
+            Preference.Instance.EnableChangeBlocks = !Preference.Instance.EnableChangeBlocks;
+            if (_content is Models.TextDiff textDiff)
+                textDiff.CurrentChangeBlockIdx = -1;
+            RefreshChangeBlockIndicator();
+        }
+
         public void IncrUnified()
         {
             UnifiedLines = _unifiedLines + 1;
@@ -143,6 +151,12 @@ namespace SourceGit.ViewModels
         {
             UnifiedLines = Math.Max(4, _unifiedLines - 1);
             LoadDiffContent();
+        }
+
+        public void ToggleTwoSideDiff()
+        {
+            Preference.Instance.UseSideBySideDiff = !Preference.Instance.UseSideBySideDiff;
+            RefreshChangeBlockIndicator();
         }
 
         public void OpenExternalMergeTool()

@@ -635,6 +635,7 @@ namespace SourceGit.Views
                 //TextArea.Caret.BringCaretToView(); // NOTE: Brings caret line (barely) into view.
                 ScrollToLine(changeBlock.StartLine); // NOTE: Brings specified line into center of view.
             }
+            TextArea.TextView.Redraw();
         }
 
         public override void Render(DrawingContext context)
@@ -709,6 +710,10 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
             else if (change.Property == SelectedChunkProperty)
+            {
+                InvalidateVisual();
+            }
+            else if (change.Property == CurrentChangeBlockIdxProperty)
             {
                 InvalidateVisual();
             }
@@ -1587,7 +1592,7 @@ namespace SourceGit.Views
 
             CurrentChangeBlockIdxProperty.Changed.AddClassHandler<TextDiffView>((v, e) =>
             {
-                if ((int)e.NewValue >= 0 && v.Editor.Presenter != null)
+                if (v.Editor.Presenter != null)
                 {
                     foreach (var p in v.Editor.Presenter.GetVisualDescendants().OfType<ThemedTextDiffPresenter>())
                     {
