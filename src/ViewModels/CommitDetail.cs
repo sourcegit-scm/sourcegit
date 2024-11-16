@@ -540,7 +540,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var children = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA).Result();
+                var children = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, _repo.Settings.BuildHistoriesFilter()).Result();
                 Dispatcher.UIThread.Invoke(() => Children.AddRange(children));
             });
 

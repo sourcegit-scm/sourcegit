@@ -5,12 +5,14 @@ namespace SourceGit.Commands
 {
     public class QueryCommitChildren : Command
     {
-        public QueryCommitChildren(string repo, string commit)
+        public QueryCommitChildren(string repo, string commit, string filters)
         {
             WorkingDirectory = repo;
             Context = repo;
             _commit = commit;
-            Args = $"rev-list --parents --all ^{commit}";
+            if (string.IsNullOrEmpty(filters))
+                filters = "--all";
+            Args = $"rev-list --parents {filters} ^{commit}";
         }
 
         public IEnumerable<string> Result()
