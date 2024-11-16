@@ -498,6 +498,108 @@ namespace SourceGit.Views
         {
         }
 
+        public void GotoPrevChange()
+        {
+            var view = TextArea.TextView;
+            var lines = GetLines();
+            var firstLineIdx = lines.Count;
+            foreach (var line in view.VisualLines)
+            {
+                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                    continue;
+
+                var index = line.FirstDocumentLine.LineNumber - 1;
+                if (index >= lines.Count)
+                    continue;
+
+                if (firstLineIdx > index)
+                    firstLineIdx = index;
+            }
+
+            var firstLineType = lines[firstLineIdx].Type;
+            var isChangeFirstLine = firstLineType != Models.TextDiffLineType.Normal && firstLineType != Models.TextDiffLineType.Indicator;
+            if (isChangeFirstLine)
+            {
+                for (var i = firstLineIdx - 1; i >= 0; i--)
+                {
+                    var prevType = lines[i].Type;
+                    if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
+                    {
+                        ScrollToLine(i + 2);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                var prevChangeEnd = -1;
+                for (var i = firstLineIdx - 1; i >= 0; i--)
+                {
+                    var prevType = lines[i].Type;
+                    if (prevType == Models.TextDiffLineType.None ||
+                        prevType == Models.TextDiffLineType.Added ||
+                        prevType == Models.TextDiffLineType.Deleted)
+                    {
+                        prevChangeEnd = i;
+                        break;
+                    }
+                }
+
+                if (prevChangeEnd <= 0)
+                    return;
+
+                for (var i = prevChangeEnd - 1; i >= 0; i--)
+                {
+                    var prevType = lines[i].Type;
+                    if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
+                    {
+                        ScrollToLine(i + 2);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void GotoNextChange()
+        {
+            var view = TextArea.TextView;
+            var lines = GetLines();
+            var lastLineIdx = -1;
+            foreach (var line in view.VisualLines)
+            {
+                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                    continue;
+
+                var index = line.FirstDocumentLine.LineNumber - 1;
+                if (index >= lines.Count)
+                    continue;
+
+                if (lastLineIdx < index)
+                    lastLineIdx = index;
+            }
+
+            var lastLineType = lines[lastLineIdx].Type;
+            var findNormalLine = lastLineType == Models.TextDiffLineType.Normal || lastLineType == Models.TextDiffLineType.Indicator;
+            for (var idx = lastLineIdx + 1; idx < lines.Count; idx++)
+            {
+                var nextType = lines[idx].Type;
+                if (nextType == Models.TextDiffLineType.None ||
+                    nextType == Models.TextDiffLineType.Added ||
+                    nextType == Models.TextDiffLineType.Deleted)
+                {
+                    if (findNormalLine)
+                    {
+                        ScrollToLine(idx + 1);
+                        return;
+                    }
+                }
+                else if (!findNormalLine)
+                {
+                    findNormalLine = true;
+                }
+            }
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -966,6 +1068,12 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineNumberMargin(true, false));
             TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
+        }
+
+        public void ForceSyncScrollOffset()
+        {
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+                diff.SyncScrollOffset = _scrollViewer.Offset;
         }
 
         public override List<Models.TextDiffLine> GetLines()
