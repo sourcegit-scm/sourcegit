@@ -1,4 +1,5 @@
 ﻿using System;
+using SourceGit.ViewModels;
 
 namespace SourceGit.Commands
 {
@@ -8,7 +9,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --branches --remotes -40000 --pretty=format:\"%ct$%aN\"";
+            Args = $"log --date-order --branches --remotes -{Preference.Instance.MaxHistoryCommits} --pretty=format:\"%ct$%aN\"";
         }
 
         public Models.Statistics Result()
