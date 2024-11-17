@@ -13,27 +13,39 @@
     <ContentControl x:Name="Editor">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:TextDiff">
-          <v:CombinedTextDiffPresenter FileName="{Binding File}"
-                                       Foreground="{DynamicResource Brush.FG1}"
-                                       LineBrush="{DynamicResource Brush.Border2}"
-                                       EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                       AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                       DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                       AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                       IndicatorForeground="{DynamicResource Brush.FG2}"
-                                       FontFamily="{DynamicResource Fonts.Monospace}"
-                                       FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
-                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                       EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
-                                       SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+          <Grid ColumnDefinitions="*,1,8">
+            <v:CombinedTextDiffPresenter Grid.Column="0" 
+                                         x:Name="CombinedPresenter"
+                                         FileName="{Binding File}"
+                                         Foreground="{DynamicResource Brush.FG1}"
+                                         LineBrush="{DynamicResource Brush.Border2}"
+                                         EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                         AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                         DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                         AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                         DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                         IndicatorForeground="{DynamicResource Brush.FG2}"
+                                         FontFamily="{DynamicResource Fonts.Monospace}"
+                                         FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
+                                         UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
+                                         WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                         ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
+                                         EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
+                                         SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+            
+            <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+            <v:TextDiffViewMinimap Grid.Column="2"
+                                   DisplayRange="{Binding #CombinedPresenter.DisplayRange}"
+                                   AddedLineBrush="{DynamicResource Brush.Diff.AddedBG}"
+                                   DeletedLineBrush="{DynamicResource Brush.Diff.DeletedBG}"/>
+          </Grid>
         </DataTemplate>
 
         <DataTemplate DataType="vm:TwoSideTextDiff">
-          <Grid ColumnDefinitions="*,1,*">
+          <Grid ColumnDefinitions="*,1,*,1,12">
             <v:SingleSideTextDiffPresenter Grid.Column="0"
+                                           x:Name="LeftSidePresenter"
                                            IsOld="True"
                                            FileName="{Binding File}"
                                            Foreground="{DynamicResource Brush.FG1}"
@@ -72,6 +84,13 @@
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
                                            SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+            
+            <Rectangle Grid.Column="3" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+            <v:TextDiffViewMinimap Grid.Column="4"
+                                   DisplayRange="{Binding #LeftSidePresenter.DisplayRange}"
+                                   AddedLineBrush="{DynamicResource Brush.Diff.AddedBG}"
+                                   DeletedLineBrush="{DynamicResource Brush.Diff.DeletedBG}"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>
