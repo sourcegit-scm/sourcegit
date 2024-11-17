@@ -538,16 +538,19 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
             });
 
-            Task.Run(() =>
-            {
-                var children = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, _repo.Settings.BuildHistoriesFilter()).Result();
-                Dispatcher.UIThread.Invoke(() => Children.AddRange(children));
-            });
-
             if (_cancelToken != null)
                 _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
+
+            Task.Run(() =>
+            {
+                var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, _repo.Settings.BuildHistoriesFilter()) { Cancel = _cancelToken };
+                var children = cmdChildren.Result();
+                if (!cmdChildren.Cancel.Requested)
+                    Dispatcher.UIThread.Post(() => Children.AddRange(children));
+            });
+
             Task.Run(() =>
             {
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];

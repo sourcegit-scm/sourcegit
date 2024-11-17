@@ -15,19 +15,19 @@ namespace SourceGit.Commands
             Args = $"rev-list --parents {filters} ^{commit}";
         }
 
+        protected override void OnReadline(string line)
+        {
+            if (line.Contains(_commit))
+                _lines.Add(line);
+        }
+
         public IEnumerable<string> Result()
         {
-            var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                yield break;
-
-            foreach (string s in rs.StdOut.Split('\n', StringSplitOptions.None))
-            {
-                if (s.Contains(_commit))
-                    yield return s.Substring(0, 40);
-            }
+            Exec();
+            return _lines;
         }
 
         private string _commit;
+        private List<string> _lines = new List<string>();
     }
 }
