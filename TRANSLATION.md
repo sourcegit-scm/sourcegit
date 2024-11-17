@@ -1,12 +1,10 @@
-### de_DE.axaml: 99.57%
+### de_DE.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
+
 
 </details>
 
