@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SourceGit.ViewModels;
 
 namespace SourceGit.Commands
 {
@@ -12,7 +13,7 @@ namespace SourceGit.Commands
             _commit = commit;
             if (string.IsNullOrEmpty(filters))
                 filters = "--all";
-            Args = $"rev-list --parents {filters} ^{commit}";
+            Args = $"rev-list -{Preference.Instance.MaxHistoryCommits}  --parents {filters} ^{commit}";
         }
 
         protected override void OnReadline(string line)
