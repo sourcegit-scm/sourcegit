@@ -294,6 +294,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _statisticsSampleColor, value);
         }
 
+        public bool ShowChildren
+        {
+            get => _showChildren;
+            set => SetProperty(ref _showChildren, value);
+        }
+
         public List<RepositoryNode> RepositoryNodes
         {
             get;
@@ -617,5 +623,7 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolPath = string.Empty;
 
         private uint _statisticsSampleColor = 0xFF00FF00;
+
+        private bool _showChildren = false;
     }
 }

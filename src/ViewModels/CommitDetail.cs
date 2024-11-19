@@ -543,13 +543,16 @@ namespace SourceGit.ViewModels
 
             _cancelToken = new Commands.Command.CancelToken();
 
-            Task.Run(() =>
+            if (Preference.Instance.ShowChildren)
             {
-                var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, _repo.Settings.BuildHistoriesFilter()) { Cancel = _cancelToken };
-                var children = cmdChildren.Result();
-                if (!cmdChildren.Cancel.Requested)
-                    Dispatcher.UIThread.Post(() => Children.AddRange(children));
-            });
+                Task.Run(() =>
+                {
+                    var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, _repo.Settings.BuildHistoriesFilter()) { Cancel = _cancelToken };
+                    var children = cmdChildren.Result();
+                    if (!cmdChildren.Cancel.Requested)
+                        Dispatcher.UIThread.Post(() => Children.AddRange(children));
+                });
+            }
 
             Task.Run(() =>
             {
