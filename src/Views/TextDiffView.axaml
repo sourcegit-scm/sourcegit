@@ -97,9 +97,29 @@
     </ContentControl>
 
     <StackPanel x:Name="Popup" IsVisible="False" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Effect="drop-shadow(0 0 8 #80000000)">
-      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Stage}" Click="OnStageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>
-      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Unstage}" Click="OnUnstageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}"/>
-      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Discard}" Margin="8,0,0,0" Click="OnDiscardChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>
+      <Button Classes="flat" Click="OnStageChunk" HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}" IsVisible="{Binding #ThisControl.IsUnstagedChange}">
+        <TextBlock>
+          <Run Text="{DynamicResource Text.Hunk.Stage}"/>
+          <Run Text=" "/>
+          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+S, macOS=⌘+S}"/>
+        </TextBlock>
+      </Button>
+      
+      <Button Classes="flat" Click="OnUnstageChunk" HotKey="{OnPlatform Ctrl+U, macOS=⌘+U}" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}">
+        <TextBlock>
+          <Run Text="{DynamicResource Text.Hunk.Unstage}"/>
+          <Run Text=" "/>
+          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+U, macOS=⌘+U}"/>
+        </TextBlock>
+      </Button>
+      
+      <Button Classes="flat" Margin="8,0,0,0" HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}" Click="OnDiscardChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}">
+        <TextBlock>
+          <Run Text="{DynamicResource Text.Hunk.Discard}"/>
+          <Run Text=" "/>
+          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+D, macOS=⌘+D}"/>
+        </TextBlock>
+      </Button>
     </StackPanel>
   </Grid>
 </UserControl>
