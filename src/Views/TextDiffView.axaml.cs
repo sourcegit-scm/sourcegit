@@ -1426,7 +1426,7 @@ namespace SourceGit.Views
             {
                 var brush = type == Models.TextDiffLineType.Added ? AddedLineBrush : DeletedLineBrush;
                 var y = start / (total * 1.0) * Bounds.Height;
-                var h = count / (total * 1.0) * Bounds.Height;
+                var h = Math.Max(0.5, count / (total * 1.0) * Bounds.Height);
                 context.DrawRectangle(brush, null, new Rect(x, y, width, h));
             }
         }
