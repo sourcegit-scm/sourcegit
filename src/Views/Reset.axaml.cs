@@ -1,8 +1,6 @@
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using SourceGit.Models;
 
 namespace SourceGit.Views
 {
@@ -13,27 +11,28 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void InputElement_OnKeyDown(object sender, KeyEventArgs e)
+        protected override void OnLoaded(RoutedEventArgs e)
         {
-            var key = e.Key.ToString().ToLower();
-            foreach (var item in ResetMode.ItemsSource)
-            {
-                if (item.GetType() == typeof(ResetMode))
-                {
-                    var resetMode = (ResetMode)item;
-                    if (resetMode.Key.ToString().ToLower() == key)
-                    {
-                        ResetMode.SelectedValue = resetMode;
-                        return;
-                    }
-                        
-                }
-            }
+            base.OnLoaded(e);
+
+            ResetMode.Focus();
         }
 
-        private void Control_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnResetModeKeyDown(object sender, KeyEventArgs e)
         {
-            ResetMode.Focus();
+            if (sender is ComboBox comboBox)
+            {
+                var key = e.Key.ToString();
+                for (int i = 0; i < Models.ResetMode.Supported.Length; i++)
+                {
+                    if (key.Equals(Models.ResetMode.Supported[i].Key, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        comboBox.SelectedIndex = i;
+                        e.Handled = true;
+                        return;
+                    }
+                }
+            }
         }
     }
 }

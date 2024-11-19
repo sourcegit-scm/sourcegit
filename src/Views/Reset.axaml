@@ -7,7 +7,6 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Reset"
-             Loaded="Control_OnLoaded"
              x:DataType="vm:Reset">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
@@ -37,12 +36,13 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Reset.Mode}"/>
-      <ComboBox x:Name="ResetMode" Grid.Row="2" Grid.Column="1"
+      <ComboBox Grid.Row="2" Grid.Column="1"
+                x:Name="ResetMode"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                KeyDown="InputElement_OnKeyDown"
                 ItemsSource="{Binding Source={x:Static m:ResetMode.Supported}}"
-                SelectedItem="{Binding SelectedMode, Mode=TwoWay}">
+                SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
+                KeyDown="OnResetModeKeyDown">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ResetMode">
             <Grid ColumnDefinitions="16,60,*">
