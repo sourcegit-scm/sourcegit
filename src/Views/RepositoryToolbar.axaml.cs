@@ -52,7 +52,7 @@ namespace SourceGit.Views
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
                 if (!startDirectly && OperatingSystem.IsMacOS())
                     startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-                
+
                 repo.Fetch(startDirectly);
                 e.Handled = true;
             }
@@ -66,7 +66,7 @@ namespace SourceGit.Views
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
                 if (!startDirectly && OperatingSystem.IsMacOS())
                     startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-                
+
                 repo.Pull(startDirectly);
                 e.Handled = true;
             }
@@ -80,7 +80,7 @@ namespace SourceGit.Views
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
                 if (!startDirectly && OperatingSystem.IsMacOS())
                     startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-                
+
                 repo.Push(startDirectly);
                 e.Handled = true;
             }

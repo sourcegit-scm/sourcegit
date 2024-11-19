@@ -428,28 +428,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnToggleFilterClicked(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo &&
-                sender is ToggleButton toggle &&
-                toggle.DataContext is ViewModels.BranchTreeNode { Backend: Models.Branch branch } node)
-            {
-                bool filtered = toggle.IsChecked == true;
-                List<string> filters = [branch.FullName];
-                if (branch.IsLocal && !string.IsNullOrEmpty(branch.Upstream))
-                {
-                    filters.Add(branch.Upstream);
-
-                    node.IsFiltered = filtered;
-                    UpdateUpstreamFilterState(repo.RemoteBranchTrees, branch.Upstream, filtered);
-                }
-
-                repo.UpdateFilters(filters, filtered);
-            }
-
-            e.Handled = true;
-        }
-
         private void MakeRows(List<ViewModels.BranchTreeNode> rows, List<ViewModels.BranchTreeNode> nodes, int depth)
         {
             foreach (var node in nodes)
@@ -475,23 +453,6 @@ namespace SourceGit.Views
 
             foreach (var sub in node.Children)
                 CollectBranchesInNode(outs, sub);
-        }
-
-        private bool UpdateUpstreamFilterState(List<ViewModels.BranchTreeNode> collection, string upstream, bool isFiltered)
-        {
-            foreach (var node in collection)
-            {
-                if (node.Backend is Models.Branch b && b.FullName == upstream)
-                {
-                    node.IsFiltered = isFiltered;
-                    return true;
-                }
-
-                if (node.Backend is Models.Remote r && upstream.StartsWith($"refs/remotes/{r.Name}/", StringComparison.Ordinal))
-                    return UpdateUpstreamFilterState(node.Children, upstream, isFiltered);
-            }
-
-            return false;
         }
 
         private bool _disableSelectionChangingEvent = false;

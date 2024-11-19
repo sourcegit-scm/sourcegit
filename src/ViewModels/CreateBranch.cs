@@ -125,14 +125,8 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    if (CheckoutAfterCreated)
-                    {
-                        _repo.AutoAddBranchFilterPostCheckout(new Models.Branch()
-                        {
-                            FullName = $"refs/heads/{_name}",
-                            Upstream = BasedOn is Models.Branch { IsLocal: false } remoteBranch ? remoteBranch.FullName : string.Empty,
-                        });
-                    }
+                    if (CheckoutAfterCreated && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                        _repo.Settings.UpdateHistoriesFilter($"refs/heads/{_name}", Models.FilterType.LocalBranch, Models.FilterMode.Included);
 
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);

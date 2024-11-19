@@ -478,17 +478,20 @@ namespace SourceGit
             if (args.Length <= 1 || !args[0].Equals("--rebase-message-editor", StringComparison.Ordinal))
                 return false;
 
+            exitCode = 0;
+
             var file = args[1];
             var filename = Path.GetFileName(file);
             if (!filename.Equals("COMMIT_EDITMSG", StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            var jobsFile = Path.Combine(Path.GetDirectoryName(file)!, "sourcegit_rebase_jobs.json");
+            var gitDir = Path.GetDirectoryName(file)!;
+            var jobsFile = Path.Combine(gitDir, "sourcegit_rebase_jobs.json");
             if (!File.Exists(jobsFile))
                 return true;
 
             var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
-            var doneFile = Path.Combine(Path.GetDirectoryName(file)!, "rebase-merge", "done");
+            var doneFile = Path.Combine(gitDir, "rebase-merge", "done");
             if (!File.Exists(doneFile))
                 return true;
 
@@ -499,7 +502,6 @@ namespace SourceGit
             var job = collection.Jobs[done.Length - 1];
             File.WriteAllText(file, job.Message);
 
-            exitCode = 0;
             return true;
         }
 

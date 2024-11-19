@@ -292,7 +292,6 @@
   <x:String x:Key="Text.FileHistory" xml:space="preserve">文件历史</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">文件内容</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">文件变更</x:String>
-  <x:String x:Key="Text.Filter" xml:space="preserve">过滤</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">GIT工作流</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">开发分支 ：</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">特性分支 ：</x:String>
@@ -437,7 +436,9 @@
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">默认字体大小</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize" xml:space="preserve">字体大小</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Default" xml:space="preserve">默认</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Editor" xml:space="preserve">代码编辑器</x:String>
   <x:String x:Key="Text.Preference.Appearance.EditorFontSize" xml:space="preserve">代码字体大小</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等宽字体</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">仅在文本编辑器中使用等宽字体</x:String>
@@ -543,7 +544,9 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">启用 --reflog 选项</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支/标签/子模块</x:String>
-  <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">过滤规则 ：</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">不指定</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">在提交列表中隐藏</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">使用其对提交列表过滤</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">启用 --first-parent 过滤选项</x:String>

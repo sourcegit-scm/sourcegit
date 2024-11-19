@@ -38,7 +38,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<IBrush> BackgroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(Background), null);
+            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(Background), Brushes.Transparent);
 
         public IBrush Background
         {
@@ -56,7 +56,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> UseGraphColorProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseGraphColor), false);
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseGraphColor));
 
         public bool UseGraphColor
         {
@@ -96,7 +96,6 @@ namespace SourceGit.Views
             var x = 1.0;
             foreach (var item in _items)
             {
-                var iconRect = new RoundedRect(new Rect(x, 0, 16, 16), new CornerRadius(2, 0, 0, 2));
                 var entireRect = new RoundedRect(new Rect(x, 0, item.Width, 16), new CornerRadius(2));
 
                 if (item.IsHead)

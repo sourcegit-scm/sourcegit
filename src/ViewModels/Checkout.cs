@@ -64,8 +64,8 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
-                    if (b != null)
-                        _repo.AutoAddBranchFilterPostCheckout(b);
+                    if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                        _repo.Settings.UpdateHistoriesFilter(b.FullName, Models.FilterType.LocalBranch, Models.FilterMode.Included);
 
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);

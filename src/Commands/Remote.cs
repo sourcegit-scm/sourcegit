@@ -45,5 +45,14 @@
             Args = "remote set-url" + (isPush ? " --push " : " ") + $"{name} {url}";
             return Exec();
         }
+
+        public bool HasBranch(string remote, string branch)
+        {
+            SSHKey = new Config(WorkingDirectory).Get($"remote.{remote}.sshkey");
+            Args = $"ls-remote {remote} {branch}";
+
+            var rs = ReadToEnd();
+            return rs.IsSuccess && rs.StdOut.Trim().Length > 0;
+        }
     }
 }

@@ -168,12 +168,13 @@
     <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid Effect="drop-shadow(0 0 8 #80000000)">
+        <Grid Effect="drop-shadow(0 0 8 #30000000)">
           <Border Margin="8"
                   Padding="8,6"
                   CornerRadius="4"
                   Background="{DynamicResource Brush.Popup}"
-                  BorderThickness="0"
+                  BorderBrush="{DynamicResource Brush.Border2}"
+                  BorderThickness="1"
                   MaxWidth="{TemplateBinding MaxWidth}"
                   MinHeight="{TemplateBinding MinHeight}"
                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
@@ -510,6 +511,12 @@
   </Style>
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+  </Style>
+  <Style Selector="Button.flat:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Button.flat:disabled">
+    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.Background}"/>
   </Style>
 
   <Style Selector="aes|SearchPanel">
@@ -1037,35 +1044,6 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
 
-  <Style Selector="ToggleButton.filter">
-    <Setter Property="Margin" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-    <Setter Property="VerticalAlignment" Value="Stretch"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="Transparent">
-          <Path x:Name="PART_IndicatorIcon"
-                Width="12"
-                Data="{StaticResource Icons.Filter}"
-                Fill="Transparent"
-                StrokeThickness="1"
-                Stroke="{DynamicResource Brush.FG2}"
-                HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ToggleButton.filter:pressed">
-    <Setter Property="RenderTransform" Value="scale(1)"/>
-  </Style>
-  <Style Selector="ToggleButton.filter:checked /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
-  </Style>
-  <Style Selector="ToggleButton.filter:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
-  </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
     <Setter Property="Width" Value="9" />

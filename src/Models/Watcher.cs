@@ -113,22 +113,11 @@ namespace SourceGit.Models
                 if (_updateTags > 0)
                 {
                     _updateTags = 0;
-                    Task.Run(() =>
-                    {
-                        _repo.RefreshTags();
-                        _repo.RefreshBranches();
-                        _repo.RefreshCommits();
-                    });
-                }
-                else
-                {
-                    Task.Run(() =>
-                    {
-                        _repo.RefreshBranches();
-                        _repo.RefreshCommits();
-                    });
+                    Task.Run(_repo.RefreshTags);
                 }
 
+                Task.Run(_repo.RefreshBranches);
+                Task.Run(_repo.RefreshCommits);
                 Task.Run(_repo.RefreshWorkingCopyChanges);
                 Task.Run(_repo.RefreshWorktrees);
             }

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -108,6 +110,29 @@ namespace SourceGit.Views
                 var flyout = new Flyout();
                 flyout.Content = tracking;
                 flyout.ShowAt(button);
+            }
+
+            e.Handled = true;
+        }
+
+        private async void OnSHAPointerEntered(object sender, PointerEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha } ctl)
+            {
+                var tooltip = ToolTip.GetTip(ctl);
+                if (tooltip is Models.Commit commit && commit.SHA == sha)
+                {
+                    ToolTip.SetIsOpen(ctl, true);
+                }
+                else
+                {
+                    var c = await Task.Run(() => detail.GetParent(sha));
+                    if (c != null)
+                    {
+                        ToolTip.SetTip(ctl, c);
+                        ToolTip.SetIsOpen(ctl, ctl.IsPointerOver);
+                    }
+                }
             }
 
             e.Handled = true;

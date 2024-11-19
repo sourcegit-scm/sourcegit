@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +44,12 @@ namespace SourceGit.ViewModels
         public Models.RepositorySettings Settings
         {
             get => _settings;
+        }
+
+        public Models.FilterMode HistoriesFilterMode
+        {
+            get => _historiesFilterMode;
+            private set => SetProperty(ref _historiesFilterMode, value);
         }
 
         public bool HasAllowedSignersFile
@@ -335,14 +342,7 @@ namespace SourceGit.ViewModels
 
         public InProgressContext InProgressContext
         {
-            get => _inProgressContext;
-            private set => SetProperty(ref _inProgressContext, value);
-        }
-
-        public bool HasUnsolvedConflicts
-        {
-            get => _hasUnsolvedConflicts;
-            private set => SetProperty(ref _hasUnsolvedConflicts, value);
+            get => _workingCopy?.InProgressContext;
         }
 
         public Models.Commit SearchResultSelectedCommit
@@ -389,13 +389,16 @@ namespace SourceGit.ViewModels
                 App.RaiseException(string.Empty, $"Failed to start watcher for repository: '{_fullpath}'. You may need to press 'F5' to refresh repository manually!\n\nReason: {ex.Message}");
             }
 
+            if (_settings.HistoriesFilters.Count > 0)
+                _historiesFilterMode = _settings.HistoriesFilters[0].Mode;
+            else
+                _historiesFilterMode = Models.FilterMode.None;
+
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this);
             _stashesPage = new StashesPage(this);
             _selectedView = _histories;
             _selectedViewIndex = 0;
-            _inProgressContext = null;
-            _hasUnsolvedConflicts = false;
 
             _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
             RefreshAll();
@@ -415,6 +418,7 @@ namespace SourceGit.ViewModels
                 // Ignore
             }
             _settings = null;
+            _historiesFilterMode = Models.FilterMode.None;
 
             _autoFetchTimer.Dispose();
             _autoFetchTimer = null;
@@ -428,7 +432,6 @@ namespace SourceGit.ViewModels
             _histories = null;
             _workingCopy = null;
             _stashesPage = null;
-            _inProgressContext = null;
 
             _localChangesCount = 0;
             _stashesCount = 0;
@@ -455,13 +458,9 @@ namespace SourceGit.ViewModels
                 _hasAllowedSignersFile = !string.IsNullOrEmpty(allowedSignersFile);
             });
 
-            Task.Run(() =>
-            {
-                RefreshBranches();
-                RefreshTags();
-                RefreshCommits();
-            });
-
+            Task.Run(RefreshBranches);
+            Task.Run(RefreshTags);
+            Task.Run(RefreshCommits);
             Task.Run(RefreshSubmodules);
             Task.Run(RefreshWorktrees);
             Task.Run(RefreshWorkingCopyChanges);
@@ -587,18 +586,6 @@ namespace SourceGit.ViewModels
             Filter = string.Empty;
         }
 
-        public void ClearHistoriesFilter()
-        {
-            _settings.Filters.Clear();
-
-            Task.Run(() =>
-            {
-                RefreshBranches();
-                RefreshTags();
-                RefreshCommits();
-            });
-        }
-
         public void ClearSearchCommitFilter()
         {
             SearchCommitFilter = string.Empty;
@@ -653,12 +640,8 @@ namespace SourceGit.ViewModels
         {
             if (_watcher == null)
             {
-                Task.Run(() =>
-                {
-                    RefreshBranches();
-                    RefreshCommits();
-                });
-
+                Task.Run(RefreshBranches);
+                Task.Run(RefreshCommits);
                 Task.Run(RefreshWorkingCopyChanges);
                 Task.Run(RefreshWorktrees);
             }
@@ -696,53 +679,95 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
-        public void AutoAddBranchFilterPostCheckout(Models.Branch local)
+        public void ClearHistoriesFilter()
         {
-            if (_settings.Filters.Count == 0 || _settings.Filters.Contains(local.FullName))
-                return;
+            _settings.HistoriesFilters.Clear();
+            HistoriesFilterMode = Models.FilterMode.None;
 
-            var hasLeft = false;
-            foreach (var b in _branches)
-            {
-                if (!b.FullName.Equals(local.FullName, StringComparison.Ordinal) &&
-                    !b.FullName.Equals(local.Upstream, StringComparison.Ordinal) &&
-                    !_settings.Filters.Contains(b.FullName))
-                {
-                    hasLeft = true;
-                    break;
-                }
-            }
-
-            if (!hasLeft)
-                _settings.Filters.Clear();
-            else if (string.IsNullOrEmpty(local.Upstream) || _settings.Filters.Contains(local.Upstream))
-                _settings.Filters.Add(local.FullName);
-            else
-                _settings.Filters.AddRange([local.FullName, local.Upstream]);
+            ResetBranchTreeFilterMode(LocalBranchTrees);
+            ResetBranchTreeFilterMode(RemoteBranchTrees);
+            ResetTagFilterMode();
+            Task.Run(RefreshCommits);
         }
 
-        public void UpdateFilters(List<string> filters, bool toggle)
+        public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
-            var changed = false;
-            if (toggle)
+            var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
+            if (changed)
             {
-                foreach (var filter in filters)
+                if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
+                    HistoriesFilterMode = mode;
+
+                RefreshHistoriesFilters();
+            }
+        }
+
+        public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode)
+        {
+            var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
+            var tree = isLocal ? _localBranchTrees : _remoteBranchTrees;
+
+            if (node.Backend is Models.Branch branch)
+            {
+                var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
+                var changed = _settings.UpdateHistoriesFilter(node.Path, type, mode);
+                if (!changed)
+                    return;
+
+                if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && mode != Models.FilterMode.Excluded)
                 {
-                    if (!_settings.Filters.Contains(filter))
+                    var upstream = branch.Upstream;
+                    var canUpdateUpstream = true;
+                    foreach (var filter in _settings.HistoriesFilters)
                     {
-                        _settings.Filters.Add(filter);
-                        changed = true;
+                        bool matched = false;
+                        if (filter.Type == Models.FilterType.RemoteBranch)
+                            matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
+                        else if (filter.Type == Models.FilterType.RemoteBranchFolder)
+                            matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
+
+                        if (matched && filter.Mode == Models.FilterMode.Excluded)
+                        {
+                            canUpdateUpstream = false;
+                            break;
+                        }
                     }
+
+                    if (canUpdateUpstream)
+                        _settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
                 }
             }
             else
             {
-                foreach (var filter in filters)
-                    changed |= _settings.Filters.Remove(filter);
+                var type = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
+                var changed = _settings.UpdateHistoriesFilter(node.Path, type, mode);
+                if (!changed)
+                    return;
+
+                _settings.RemoveChildrenBranchFilters(node.Path);
             }
 
-            if (changed)
-                Task.Run(RefreshCommits);
+            var parentType = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
+            var cur = node;
+            do
+            {
+                var lastSepIdx = cur.Path.LastIndexOf('/');
+                if (lastSepIdx <= 0)
+                    break;
+
+                var parentPath = cur.Path.Substring(0, lastSepIdx);
+                var parent = FindBranchNode(tree, parentPath);
+                if (parent == null)
+                    break;
+
+                _settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
+                cur = parent;
+            } while (true);
+
+            if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
+                HistoriesFilterMode = mode;
+
+            RefreshHistoriesFilters();
         }
 
         public void StashAll(bool autoStart)
@@ -756,40 +781,9 @@ namespace SourceGit.ViewModels
                 SelectedViewIndex = 1;
         }
 
-        public async void ContinueMerge()
+        public void AbortMerge()
         {
-            if (_inProgressContext != null)
-            {
-                SetWatcherEnabled(false);
-                var succ = await Task.Run(_inProgressContext.Continue);
-                if (succ && _workingCopy != null)
-                {
-                    _workingCopy.CommitMessage = string.Empty;
-                }
-                SetWatcherEnabled(true);
-            }
-            else
-            {
-                MarkWorkingCopyDirtyManually();
-            }
-        }
-
-        public async void AbortMerge()
-        {
-            if (_inProgressContext != null)
-            {
-                SetWatcherEnabled(false);
-                var succ = await Task.Run(_inProgressContext.Abort);
-                if (succ && _workingCopy != null)
-                {
-                    _workingCopy.CommitMessage = string.Empty;
-                }
-                SetWatcherEnabled(true);
-            }
-            else
-            {
-                MarkWorkingCopyDirtyManually();
-            }
+            _workingCopy?.AbortMerge();
         }
 
         public void RefreshBranches()
@@ -833,9 +827,6 @@ namespace SourceGit.ViewModels
         public void RefreshTags()
         {
             var tags = new Commands.QueryTags(_fullpath).Result();
-            foreach (var tag in tags)
-                tag.IsFiltered = _settings.Filters.Contains(tag.Name);
-
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
@@ -847,49 +838,21 @@ namespace SourceGit.ViewModels
         {
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
-            var limits = $"-{Preference.Instance.MaxHistoryCommits} ";
+            var builder = new StringBuilder();
+            builder.Append($"-{Preference.Instance.MaxHistoryCommits} ");
             if (_enableReflog)
-                limits += "--reflog ";
+                builder.Append("--reflog ");
             if (_enableFirstParentInHistories)
-                limits += "--first-parent ";
+                builder.Append("--first-parent ");
 
-            var validFilters = new List<string>();
-            foreach (var filter in _settings.Filters)
-            {
-                if (filter.StartsWith("refs/", StringComparison.Ordinal))
-                {
-                    if (_branches.FindIndex(x => x.FullName == filter) >= 0)
-                        validFilters.Add(filter);
-                }
-                else
-                {
-                    if (_tags.FindIndex(t => t.Name == filter) >= 0)
-                        validFilters.Add(filter);
-                }
-            }
-
-            if (validFilters.Count > 0)
-            {
-                limits += string.Join(" ", validFilters);
-
-                if (_settings.Filters.Count != validFilters.Count)
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        _settings.Filters.Clear();
-                        _settings.Filters.AddRange(validFilters);
-                    });
-                }
-            }
+            var invalidFilters = new List<Models.Filter>();
+            var filters = _settings.BuildHistoriesFilter();
+            if (string.IsNullOrEmpty(filters))
+                builder.Append("--branches --remotes --tags");
             else
-            {
-                if (_settings.Filters.Count != 0)
-                    Dispatcher.UIThread.Invoke(() => _settings.Filters.Clear());
+                builder.Append(filters);
 
-                limits += "--exclude=refs/stash --all";
-            }
-
-            var commits = new Commands.QueryCommits(_fullpath, limits).Result();
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
             var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -921,23 +884,12 @@ namespace SourceGit.ViewModels
             if (_workingCopy == null)
                 return;
 
-            var hasUnsolvedConflict = _workingCopy.SetData(changes);
-            var inProgress = null as InProgressContext;
-
-            if (File.Exists(Path.Combine(_gitDir, "CHERRY_PICK_HEAD")))
-                inProgress = new CherryPickInProgress(_fullpath);
-            else if (File.Exists(Path.Combine(_gitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_gitDir, "rebase-merge")))
-                inProgress = new RebaseInProgress(this);
-            else if (File.Exists(Path.Combine(_gitDir, "REVERT_HEAD")))
-                inProgress = new RevertInProgress(_fullpath);
-            else if (File.Exists(Path.Combine(_gitDir, "MERGE_HEAD")))
-                inProgress = new MergeInProgress(_fullpath);
+            _workingCopy.SetData(changes);
 
             Dispatcher.UIThread.Invoke(() =>
             {
-                InProgressContext = inProgress;
-                HasUnsolvedConflicts = hasUnsolvedConflict;
                 LocalChangesCount = changes.Count;
+                OnPropertyChanged(nameof(InProgressContext));
             });
         }
 
@@ -2062,12 +2014,10 @@ namespace SourceGit.ViewModels
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
         {
             var builder = new BranchTreeNode.Builder();
-            builder.SetFilters(_settings.Filters);
-
             if (string.IsNullOrEmpty(_filter))
             {
-                builder.CollectExpandedNodes(_localBranchTrees, true);
-                builder.CollectExpandedNodes(_remoteBranchTrees, false);
+                builder.CollectExpandedNodes(_localBranchTrees);
+                builder.CollectExpandedNodes(_remoteBranchTrees);
                 builder.Run(branches, remotes, false);
             }
             else
@@ -2082,6 +2032,9 @@ namespace SourceGit.ViewModels
                 builder.Run(visibles, remotes, true);
             }
 
+            var historiesFilters = _settings.CollectHistoriesFilters();
+            UpdateBranchTreeFilterMode(builder.Locals, historiesFilters);
+            UpdateBranchTreeFilterMode(builder.Remotes, historiesFilters);
             return builder;
         }
 
@@ -2101,6 +2054,8 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            var historiesFilters = _settings.CollectHistoriesFilters();
+            UpdateTagFilterMode(historiesFilters);
             return visible;
         }
 
@@ -2120,6 +2075,74 @@ namespace SourceGit.ViewModels
                 }
             }
             return visible;
+        }
+
+        private void RefreshHistoriesFilters()
+        {
+            var filters = _settings.CollectHistoriesFilters();
+            UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
+            UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
+            UpdateTagFilterMode(filters);
+            Task.Run(RefreshCommits);
+        }
+
+        private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, Dictionary<string, Models.FilterMode> filters)
+        {
+            foreach (var node in nodes)
+            {
+                if (filters.TryGetValue(node.Path, out var value))
+                    node.FilterMode = value;
+                else
+                    node.FilterMode = Models.FilterMode.None;
+
+                if (!node.IsBranch)
+                    UpdateBranchTreeFilterMode(node.Children, filters);
+            }
+        }
+
+        private void UpdateTagFilterMode(Dictionary<string, Models.FilterMode> filters)
+        {
+            foreach (var tag in _tags)
+            {
+                if (filters.TryGetValue(tag.Name, out var value))
+                    tag.FilterMode = value;
+                else
+                    tag.FilterMode = Models.FilterMode.None;
+            }
+        }
+
+        private void ResetBranchTreeFilterMode(List<BranchTreeNode> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                node.FilterMode = Models.FilterMode.None;
+                if (!node.IsBranch)
+                    ResetBranchTreeFilterMode(node.Children);
+            }
+        }
+
+        private void ResetTagFilterMode()
+        {
+            foreach (var tag in _tags)
+                tag.FilterMode = Models.FilterMode.None;
+        }
+
+        private BranchTreeNode FindBranchNode(List<BranchTreeNode> nodes, string path)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.Path.Equals(path, StringComparison.Ordinal))
+                    return node;
+
+                if (path.StartsWith(node.Path, StringComparison.Ordinal))
+                {
+                    var founded = FindBranchNode(node.Children, path);
+                    if (founded != null)
+                        return founded;
+                }
+            }
+
+            return null;
         }
 
         private void UpdateCurrentRevisionFilesForSearchSuggestion()
@@ -2185,6 +2208,7 @@ namespace SourceGit.ViewModels
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
+        private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
 
         private Models.Watcher _watcher = null;
@@ -2227,10 +2251,7 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
         private bool _includeUntracked = true;
-        private InProgressContext _inProgressContext = null;
-        private bool _hasUnsolvedConflicts = false;
         private Models.Commit _searchResultSelectedCommit = null;
-
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
     }

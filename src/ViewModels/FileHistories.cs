@@ -57,14 +57,14 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistories(Repository repo, string file)
+        public FileHistories(Repository repo, string file, string commit = null)
         {
             _repo = repo;
             _file = file;
 
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommits(_repo.FullPath, $"-n 10000 -- \"{file}\"", false).Result();
+                var commits = new Commands.QueryCommits(_repo.FullPath, $"-n 10000 {commit} -- \"{file}\"", false).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     IsLoading = false;

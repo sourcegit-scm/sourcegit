@@ -28,9 +28,9 @@ namespace SourceGit.Commands
             Context = repo;
 
             if (ignoreWhitespace)
-                Args = $"diff --patch --ignore-cr-at-eol --ignore-all-space --unified={unified} {opt}";
+                Args = $"diff --no-ext-diff --patch --ignore-cr-at-eol --ignore-all-space --unified={unified} {opt}";
             else
-                Args = $"diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
+                Args = $"diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
         }
 
         public Models.DiffResult Result()
@@ -129,7 +129,7 @@ namespace SourceGit.Commands
                     _oldLine = int.Parse(match.Groups[1].Value);
                     _newLine = int.Parse(match.Groups[2].Value);
                     _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
-                }                
+                }
             }
             else
             {

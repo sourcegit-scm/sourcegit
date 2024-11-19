@@ -256,7 +256,7 @@
           <ListBox Grid.Row="7"
                    x:Name="SubmoduleList"
                    Height="0"
-                   Margin="8,0,4,0"
+                   Margin="12,0,4,0"
                    Classes="repo_left_content_list"
                    ItemsSource="{Binding VisibleSubmodules}"
                    SelectionMode="Single"
@@ -312,7 +312,7 @@
           <ListBox Grid.Row="9"
                    x:Name="WorktreeList"
                    Height="0"
-                   Margin="8,0,4,0"
+                   Margin="12,0,4,0"
                    Classes="repo_left_content_list"
                    ItemsSource="{Binding Worktrees}"
                    SelectionMode="Single"
@@ -524,7 +524,7 @@
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*"> 
-      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:CherryPickInProgress">
@@ -557,14 +557,6 @@
           </Button.IsVisible>
         </Button>
         <Button Grid.Column="2" 
-                Classes="flat primary" 
-                FontWeight="Regular"
-                BorderThickness="0"
-                Content="{DynamicResource Text.Repository.Continue}" 
-                Padding="8,0" Margin="4,0" 
-                Command="{Binding ContinueMerge}" 
-                IsVisible="{Binding !HasUnsolvedConflicts}"/>
-        <Button Grid.Column="3" 
                 Classes="flat" 
                 FontWeight="Regular"
                 BorderThickness="0"
@@ -577,14 +569,25 @@
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-            <Binding Path="Settings.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            <Binding Path="Settings.HistoriesFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
           </MultiBinding>
         </Border.IsVisible>
 
         <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
-          <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="table_header" Text="{DynamicResource Text.Repository.FilterCommitPrefix}"/>
-
-          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.Filters}">
+          <Path Grid.Column="0"
+                Margin="8,0,0,0"
+                Width="12" Height="12"
+                Data="{StaticResource Icons.Filter}"
+                Fill="{DynamicResource Brush.FG2}"
+                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+          <Path Grid.Column="0"
+                Margin="8,0,0,0"
+                Width="12" Height="12"
+                Data="{StaticResource Icons.EyeClose}"
+                Fill="{DynamicResource Brush.FG2}"
+                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+          
+          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.HistoriesFilters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
@@ -592,16 +595,24 @@
             </ItemsControl.ItemsPanel>
             
             <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Border Height="20" Margin="0,0,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
-                  <TextBlock Classes="primary" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
+              <DataTemplate DataType="m:Filter">
+                <Border Height="20"
+                        Margin="0,0,6,0"
+                        CornerRadius="12"
+                        BorderThickness="1"
+                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}">
+                  <StackPanel Orientation="Horizontal" Margin="8,0">
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
+                    <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,0,0"/>
+                  </StackPanel>
                 </Border>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           
-          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}">
-            <TextBlock Margin="16,0,8,0" Text="{DynamicResource Text.Repository.ClearAllCommitsFilter}" Foreground="{DynamicResource Brush.Accent}"/>
+          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
+            <Path Width="14" Height="14" Margin="16,0,8,0" Data="{StaticResource Icons.RemoveAll}"/>
           </Button>
         </Grid>
       </Border>

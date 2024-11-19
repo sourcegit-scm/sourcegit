@@ -16,7 +16,7 @@ namespace SourceGit.Commands
             if (noTags)
                 Args += "--no-tags ";
             else
-                Args += "--force ";
+                Args += "--tags ";
 
             if (prune)
                 Args += "--prune ";
