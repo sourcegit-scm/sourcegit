@@ -106,6 +106,16 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool EnableTopoOrderInHistories
+        {
+            get => _enableTopoOrderInHistories;
+            set
+            {
+                if (SetProperty(ref _enableTopoOrderInHistories, value))
+                    Task.Run(RefreshCommits);
+            }
+        }
+
         public string Filter
         {
             get => _filter;
@@ -852,7 +862,7 @@ namespace SourceGit.ViewModels
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
+            var commits = new Commands.QueryCommits(_fullpath, _enableTopoOrderInHistories, builder.ToString()).Result();
             var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -2228,6 +2238,7 @@ namespace SourceGit.ViewModels
         private bool _onlySearchCommitsInCurrentBranch = false;
         private bool _enableReflog = false;
         private bool _enableFirstParentInHistories = false;
+        private bool _enableTopoOrderInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private List<string> _revisionFiles = new List<string>();

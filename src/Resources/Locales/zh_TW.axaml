@@ -546,6 +546,9 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">不指定</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">在提交清單中隱藏</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">使用其來篩選提交清單</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">切換排序方式</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">按提交时间排序 (--date-order)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">按拓扑排序 (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本機分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">回到 HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">啟用 [--first-parent] 選項</x:String>
