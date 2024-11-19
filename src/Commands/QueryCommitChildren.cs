@@ -19,7 +19,7 @@ namespace SourceGit.Commands
         protected override void OnReadline(string line)
         {
             if (line.Contains(_commit))
-                _lines.Add(line);
+                _lines.Add(line.Substring(0, 40));
         }
 
         public IEnumerable<string> Result()
