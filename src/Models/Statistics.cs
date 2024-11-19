@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
@@ -138,7 +139,8 @@ namespace SourceGit.Models
         public Statistics()
         {
             _today = DateTime.Now.ToLocalTime().Date;
-            _thisWeekStart = _today.AddDays(((int)_today.DayOfWeek + (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) % 7 - 7);
+            var weekOffset = (7 + (int)_today.DayOfWeek - (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) % 7;
+            _thisWeekStart = _today.AddDays(-weekOffset);
             _thisMonthStart = _today.AddDays(1 - _today.Day);
 
             All = new StatisticsReport(StaticsticsMode.All, DateTime.MinValue);
