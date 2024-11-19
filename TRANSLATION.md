@@ -1,14 +1,16 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 99.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
 
 </details>
 
-### es_ES.axaml: 99.14%
+### es_ES.axaml: 98.71%
 
 
 <details>
@@ -20,10 +22,13 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
 
 </details>
 
-### fr_FR.axaml: 98.42%
+### fr_FR.axaml: 97.99%
 
 
 <details>
@@ -39,11 +44,14 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
 - Text.ScanRepositories
 
 </details>
 
-### pt_BR.axaml: 99.14%
+### pt_BR.axaml: 98.71%
 
 
 <details>
@@ -55,16 +63,21 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
 
 </details>
 
