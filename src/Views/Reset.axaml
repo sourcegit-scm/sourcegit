@@ -7,6 +7,7 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Reset"
+             Loaded="Control_OnLoaded"
              x:DataType="vm:Reset">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
@@ -36,17 +37,19 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Reset.Mode}"/>
-      <ComboBox Grid.Row="2" Grid.Column="1"
+      <ComboBox x:Name="ResetMode" Grid.Row="2" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                KeyDown="InputElement_OnKeyDown"
                 ItemsSource="{Binding Source={x:Static m:ResetMode.Supported}}"
                 SelectedItem="{Binding SelectedMode, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ResetMode">
             <Grid ColumnDefinitions="16,60,*">
               <Ellipse Grid.Column="0" Width="12" Height="12" Fill="{Binding Color}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4,0,0,0"/>
-              <TextBlock Grid.Column="2" Text="{Binding Desc}" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="2,0,0,0"/>
+              <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="2,0,16,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="3" Text="{Binding Key}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
             </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
