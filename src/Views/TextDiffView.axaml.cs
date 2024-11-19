@@ -1089,7 +1089,7 @@ namespace SourceGit.Views
         public void ForceSyncScrollOffset()
         {
             if (DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer.Offset;
+                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
         public override List<Models.TextDiffLine> GetLines()
@@ -1302,7 +1302,7 @@ namespace SourceGit.Views
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer.Offset;
+                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
