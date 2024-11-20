@@ -704,12 +704,7 @@ namespace SourceGit.ViewModels
         {
             var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
             if (changed)
-            {
-                if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
-                    HistoriesFilterMode = mode;
-
                 RefreshHistoriesFilters();
-            }
         }
 
         public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode)
@@ -753,9 +748,6 @@ namespace SourceGit.ViewModels
                 _settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
                 cur = parent;
             } while (true);
-
-            if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
-                HistoriesFilterMode = mode;
 
             RefreshHistoriesFilters();
         }
@@ -2073,6 +2065,12 @@ namespace SourceGit.ViewModels
             UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
             UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
             UpdateTagFilterMode(filters);
+
+            if (_settings.HistoriesFilters.Count > 0)
+                HistoriesFilterMode = _settings.HistoriesFilters[0].Mode;
+            else
+                HistoriesFilterMode = Models.FilterMode.None;
+
             Task.Run(RefreshCommits);
         }
 
