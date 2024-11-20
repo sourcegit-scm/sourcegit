@@ -169,11 +169,14 @@ namespace SourceGit.Models
                 task.Wait(cancellation);
 
                 var rsp = task.Result;
-                if (!rsp.IsSuccessStatusCode)
-                    throw new Exception($"AI service returns error code {rsp.StatusCode}");
-
                 var reader = rsp.Content.ReadAsStringAsync(cancellation);
                 reader.Wait(cancellation);
+
+                var body = reader.Result;
+                if (!rsp.IsSuccessStatusCode)
+                {
+                    throw new Exception($"AI service returns error code {rsp.StatusCode}. Body: {body??string.Empty}");
+                }
 
                 return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
             }
