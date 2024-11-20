@@ -51,21 +51,13 @@
 
 </details>
 
-### pt_BR.axaml: 98.71%
+### pt_BR.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
+
 
 </details>
 
