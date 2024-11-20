@@ -81,24 +81,22 @@
 
 </details>
 
-### zh_CN.axaml: 99.71%
+### zh_CN.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
 - Text.Preference.General.ShowChildren
 
 </details>
 
-### zh_TW.axaml: 99.71%
+### zh_TW.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
 - Text.Preference.General.ShowChildren
 
 </details>
