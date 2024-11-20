@@ -1,24 +1,28 @@
-### de_DE.axaml: 99.57%
+### de_DE.axaml: 99.29%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Info.Children
+- Text.Preference.General.ShowChildren
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 
 </details>
 
-### es_ES.axaml: 98.71%
+### es_ES.axaml: 98.43%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Info.Children
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
+- Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
@@ -28,7 +32,7 @@
 
 </details>
 
-### fr_FR.axaml: 97.99%
+### fr_FR.axaml: 97.86%
 
 
 <details>
@@ -40,6 +44,7 @@
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
+- Text.Preference.General.ShowChildren
 - Text.Repository.CustomActions
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
@@ -51,44 +56,49 @@
 
 </details>
 
-### pt_BR.axaml: 100.00%
+### pt_BR.axaml: 99.71%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CommitDetail.Info.Children
+- Text.Preference.General.ShowChildren
 
 </details>
 
-### ru_RU.axaml: 99.57%
+### ru_RU.axaml: 99.29%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Info.Children
+- Text.Preference.General.ShowChildren
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.71%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CommitDetail.Info.Children
+- Text.Preference.General.ShowChildren
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.71%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CommitDetail.Info.Children
+- Text.Preference.General.ShowChildren
 
 </details>
