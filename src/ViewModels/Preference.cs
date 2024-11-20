@@ -144,6 +144,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showAuthorTimeInGraph, value);
         }
 
+        public bool ShowChildren
+        {
+            get => _showChildren;
+            set => SetProperty(ref _showChildren, value);
+        }
+
         public string IgnoreUpdateTag
         {
             get => _ignoreUpdateTag;
@@ -292,12 +298,6 @@ namespace SourceGit.ViewModels
         {
             get => _statisticsSampleColor;
             set => SetProperty(ref _statisticsSampleColor, value);
-        }
-
-        public bool ShowChildren
-        {
-            get => _showChildren;
-            set => SetProperty(ref _showChildren, value);
         }
 
         public List<RepositoryNode> RepositoryNodes
@@ -598,6 +598,7 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _showAuthorTimeInGraph = false;
+        private bool _showChildren = false;
 
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;
@@ -623,7 +624,5 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolPath = string.Empty;
 
         private uint _statisticsSampleColor = 0xFF00FF00;
-
-        private bool _showChildren = false;
     }
 }
