@@ -155,7 +155,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CommitMessageTemplate}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="250" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="284" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -227,7 +227,7 @@
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
-                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="100" Text="{Binding Content, Mode=TwoWay}"/>
+                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="150" Text="{Binding Content, Mode=TwoWay}"/>
                   <TextBlock Margin="0,2,0,0"
                              Text="You can use ${files_num}, ${branch_name}, ${files} and ${files:N} where N is the max number of file paths to output."
                              Foreground="{DynamicResource Brush.FG2}"
