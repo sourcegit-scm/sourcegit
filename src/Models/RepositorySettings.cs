@@ -320,6 +320,8 @@ namespace SourceGit.Models
                     {
                         builder.Append("--exclude=");
                         builder.Append(b);
+                        builder.Append(" --decorate-refs-exclude=refs/heads/");
+                        builder.Append(b);
                         builder.Append(' ');
                     }
                 }
@@ -332,6 +334,8 @@ namespace SourceGit.Models
                     {
                         builder.Append("--exclude=");
                         builder.Append(r);
+                        builder.Append(" --decorate-refs-exclude=refs/remotes/");
+                        builder.Append(r);
                         builder.Append(' ');
                     }
                 }
@@ -343,6 +347,8 @@ namespace SourceGit.Models
                     foreach (var t in excludedTags)
                     {
                         builder.Append("--exclude=");
+                        builder.Append(t);
+                        builder.Append(" --decorate-refs-exclude=refs/tags/");
                         builder.Append(t);
                         builder.Append(' ');
                     }

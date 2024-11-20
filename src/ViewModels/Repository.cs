@@ -724,28 +724,8 @@ namespace SourceGit.ViewModels
                 if (!changed)
                     return;
 
-                if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && mode != Models.FilterMode.Excluded)
-                {
-                    var upstream = branch.Upstream;
-                    var canUpdateUpstream = true;
-                    foreach (var filter in _settings.HistoriesFilters)
-                    {
-                        bool matched = false;
-                        if (filter.Type == Models.FilterType.RemoteBranch)
-                            matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
-                        else if (filter.Type == Models.FilterType.RemoteBranchFolder)
-                            matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
-
-                        if (matched && filter.Mode == Models.FilterMode.Excluded)
-                        {
-                            canUpdateUpstream = false;
-                            break;
-                        }
-                    }
-
-                    if (canUpdateUpstream)
-                        _settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
-                }
+                if (isLocal && !string.IsNullOrEmpty(branch.Upstream))
+                    _settings.UpdateHistoriesFilter(branch.Upstream, Models.FilterType.RemoteBranch, mode);
             }
             else
             {
