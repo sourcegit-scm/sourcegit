@@ -24,6 +24,7 @@
                             SignInfo="{Binding SignInfo}"
                             SupportsContainsIn="True"
                             WebLinks="{Binding WebLinks}"
+                            Children="{Binding Children}"
                             IssueTrackerRules="{Binding IssueTrackerRules}"/>
 
           <!-- Line -->

@@ -126,6 +126,7 @@
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATIONS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTEUR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CHANGÉ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ENFANTS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Vérifier les références contenant ce commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">LE COMMIT EST CONTENU PAR</x:String>
