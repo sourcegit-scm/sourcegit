@@ -707,6 +707,13 @@ namespace SourceGit.ViewModels
                 RefreshHistoriesFilters();
         }
 
+        public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode)
+        {
+            var node = FindBranchNode(branch.IsLocal ? _localBranchTrees : _remoteBranchTrees, branch.FullName);
+            if (node != null)
+                SetBranchFilterMode(node, mode);
+        }
+
         public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode)
         {
             var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);

@@ -703,11 +703,116 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private Models.FilterMode GetFilterMode(string pattern)
+        {
+            foreach (var filter in _repo.Settings.HistoriesFilters)
+            {
+                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
+                    return filter.Mode;
+            }
+
+            return Models.FilterMode.None;
+        }
+
+        private void FillBranchVisibilityMenu(MenuItem submenu, Models.Branch branch)
+        {
+            var visibility = new MenuItem();
+            visibility.Icon = App.CreateMenuIcon("Icons.Eye");
+            visibility.Header = App.Text("Repository.FilterCommits");
+
+            var exclude = new MenuItem();
+            exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
+            exclude.Header = App.Text("Repository.FilterCommits.Exclude");
+            exclude.Click += (_, e) =>
+            {
+                _repo.SetBranchFilterMode(branch, Models.FilterMode.Excluded);
+                e.Handled = true;
+            };
+
+            var filterMode = GetFilterMode(branch.FullName);
+            if (filterMode == Models.FilterMode.None)
+            {
+                var include = new MenuItem();
+                include.Icon = App.CreateMenuIcon("Icons.Filter");
+                include.Header = App.Text("Repository.FilterCommits.Include");
+                include.Click += (_, e) =>
+                {
+                    _repo.SetBranchFilterMode(branch, Models.FilterMode.Included);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(include);
+                visibility.Items.Add(exclude);
+            }
+            else
+            {
+                var unset = new MenuItem();
+                unset.Header = App.Text("Repository.FilterCommits.Default");
+                unset.Click += (_, e) =>
+                {
+                    _repo.SetBranchFilterMode(branch, Models.FilterMode.None);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(exclude);
+                visibility.Items.Add(unset);
+            }
+
+            submenu.Items.Add(visibility);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        private void FillTagVisibilityMenu(MenuItem submenu, Models.Tag tag)
+        {
+            var visibility = new MenuItem();
+            visibility.Icon = App.CreateMenuIcon("Icons.Eye");
+            visibility.Header = App.Text("Repository.FilterCommits");
+
+            var exclude = new MenuItem();
+            exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
+            exclude.Header = App.Text("Repository.FilterCommits.Exclude");
+            exclude.Click += (_, e) =>
+            {
+                _repo.SetTagFilterMode(tag, Models.FilterMode.Excluded);
+                e.Handled = true;
+            };
+
+            var filterMode = GetFilterMode(tag.Name);
+            if (filterMode == Models.FilterMode.None)
+            {
+                var include = new MenuItem();
+                include.Icon = App.CreateMenuIcon("Icons.Filter");
+                include.Header = App.Text("Repository.FilterCommits.Include");
+                include.Click += (_, e) =>
+                {
+                    _repo.SetTagFilterMode(tag, Models.FilterMode.Included);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(include);
+                visibility.Items.Add(exclude);
+            }
+            else
+            {
+                var unset = new MenuItem();
+                unset.Header = App.Text("Repository.FilterCommits.Default");
+                unset.Click += (_, e) =>
+                {
+                    _repo.SetTagFilterMode(tag, Models.FilterMode.None);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(exclude);
+                visibility.Items.Add(unset);
+            }
+
+            submenu.Items.Add(visibility);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current)
         {
             var submenu = new MenuItem();
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = current.Name;
+
+            FillBranchVisibilityMenu(submenu, current);
 
             if (!string.IsNullOrEmpty(current.Upstream))
             {
@@ -786,6 +891,8 @@ namespace SourceGit.ViewModels
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = branch.Name;
 
+            FillBranchVisibilityMenu(submenu, branch);
+
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
@@ -858,6 +965,8 @@ namespace SourceGit.ViewModels
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = name;
 
+            FillBranchVisibilityMenu(submenu, branch);
+
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
@@ -902,6 +1011,8 @@ namespace SourceGit.ViewModels
             submenu.Header = tag.Name;
             submenu.Icon = App.CreateMenuIcon("Icons.Tag");
             submenu.MinWidth = 200;
+
+            FillTagVisibilityMenu(submenu, tag);
 
             var push = new MenuItem();
             push.Header = new Views.NameHighlightedTextBlock("TagCM.Push", tag.Name);
