@@ -90,6 +90,13 @@ namespace SourceGit.ViewModels
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
             {
+                if (subdir.Name.Equals("node_modules", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".svn", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".vs", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".vscode", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".idea", StringComparison.Ordinal))
+                    continue;
+
                 SetProgressDescription($"Scanning {subdir.FullName}...");
 
                 var normalizedSelf = subdir.FullName.Replace("\\", "/");
@@ -110,7 +117,7 @@ namespace SourceGit.ViewModels
                     continue;
                 }
 
-                if (depth < 8)
+                if (depth < 5)
                     GetUnmanagedRepositories(subdir, outs, opts, depth + 1);
             }
         }
