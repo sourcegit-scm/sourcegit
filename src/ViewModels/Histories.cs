@@ -243,6 +243,12 @@ namespace SourceGit.ViewModels
 
                 if (canCherryPick)
                 {
+                    // Sort selected commits in order.
+                    selected.Sort((l, r) =>
+                    {
+                        return _commits.IndexOf(r) - _commits.IndexOf(l);
+                    });
+
                     var cherryPickMultiple = new MenuItem();
                     cherryPickMultiple.Header = App.Text("CommitCM.CherryPickMultiple");
                     cherryPickMultiple.Icon = App.CreateMenuIcon("Icons.CherryPick");
