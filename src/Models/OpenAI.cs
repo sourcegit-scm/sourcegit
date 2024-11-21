@@ -150,7 +150,7 @@ namespace SourceGit.Models
         public OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
         {
             var chat = new OpenAIChatRequest() { Model = Model };
-            chat.AddMessage("system", prompt);
+            chat.AddMessage("user", prompt);
             chat.AddMessage("user", question);
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
