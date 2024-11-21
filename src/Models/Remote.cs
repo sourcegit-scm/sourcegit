@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
@@ -49,7 +50,7 @@ namespace SourceGit.Models
                     return true;
             }
 
-            return false;
+            return Directory.Exists(url);
         }
 
         public bool TryGetVisitURL(out string url)
