@@ -103,11 +103,11 @@ namespace SourceGit.ViewModels
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
                         var normalized = test.StdOut.Trim().Replace("\\", "/");
-                        if (!_managed.Contains(normalizedSelf))
+                        if (!_managed.Contains(normalized))
                             outs.Add(normalized);
-
-                        continue;
                     }
+
+                    continue;
                 }
 
                 if (depth < 8)
