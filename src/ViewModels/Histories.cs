@@ -812,8 +812,6 @@ namespace SourceGit.ViewModels
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = current.Name;
 
-            FillBranchVisibilityMenu(submenu, current);
-
             if (!string.IsNullOrEmpty(current.Upstream))
             {
                 var upstream = current.Upstream.Substring(13);
@@ -871,6 +869,8 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            FillBranchVisibilityMenu(submenu, current);
+
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", current.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
@@ -890,8 +890,6 @@ namespace SourceGit.ViewModels
             var submenu = new MenuItem();
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = branch.Name;
-
-            FillBranchVisibilityMenu(submenu, branch);
 
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
@@ -932,6 +930,8 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            FillBranchVisibilityMenu(submenu, branch);
+
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
@@ -965,8 +965,6 @@ namespace SourceGit.ViewModels
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = name;
 
-            FillBranchVisibilityMenu(submenu, branch);
-
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
@@ -991,6 +989,8 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(merge);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
+            FillBranchVisibilityMenu(submenu, branch);
+
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -1011,8 +1011,6 @@ namespace SourceGit.ViewModels
             submenu.Header = tag.Name;
             submenu.Icon = App.CreateMenuIcon("Icons.Tag");
             submenu.MinWidth = 200;
-
-            FillTagVisibilityMenu(submenu, tag);
 
             var push = new MenuItem();
             push.Header = new Views.NameHighlightedTextBlock("TagCM.Push", tag.Name);
@@ -1038,6 +1036,8 @@ namespace SourceGit.ViewModels
             };
             submenu.Items.Add(merge);
             submenu.Items.Add(new MenuItem() { Header = "-" });
+
+            FillTagVisibilityMenu(submenu, tag);
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);
