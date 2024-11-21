@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.29%
+### de_DE.axaml: 99.14%
 
 
 <details>
@@ -6,13 +6,14 @@
 
 - Text.CommitDetail.Info.Children
 - Text.Preference.General.ShowChildren
+- Text.Repository.FilterCommits
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 
 </details>
 
-### es_ES.axaml: 98.43%
+### es_ES.axaml: 98.29%
 
 
 <details>
@@ -23,6 +24,7 @@
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
 - Text.Preference.General.ShowChildren
+- Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
@@ -32,7 +34,7 @@
 
 </details>
 
-### fr_FR.axaml: 97.86%
+### fr_FR.axaml: 97.72%
 
 
 <details>
@@ -46,6 +48,7 @@
 - Text.Preference.Appearance.FontSize.Editor
 - Text.Preference.General.ShowChildren
 - Text.Repository.CustomActions
+- Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
@@ -56,7 +59,7 @@
 
 </details>
 
-### pt_BR.axaml: 99.71%
+### pt_BR.axaml: 99.57%
 
 
 <details>
@@ -64,10 +67,11 @@
 
 - Text.CommitDetail.Info.Children
 - Text.Preference.General.ShowChildren
+- Text.Repository.FilterCommits
 
 </details>
 
-### ru_RU.axaml: 99.29%
+### ru_RU.axaml: 99.14%
 
 
 <details>
@@ -75,6 +79,7 @@
 
 - Text.CommitDetail.Info.Children
 - Text.Preference.General.ShowChildren
+- Text.Repository.FilterCommits
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
