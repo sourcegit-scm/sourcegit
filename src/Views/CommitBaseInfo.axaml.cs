@@ -136,10 +136,12 @@ namespace SourceGit.Views
                 else
                 {
                     var c = await Task.Run(() => detail.GetParent(sha));
-                    if (c != null)
+                    if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
                     {
                         ToolTip.SetTip(ctl, c);
-                        ToolTip.SetIsOpen(ctl, ctl.IsPointerOver);
+
+                        if (ctl.IsPointerOver)
+                            ToolTip.SetIsOpen(ctl, true);
                     }
                 }
             }
