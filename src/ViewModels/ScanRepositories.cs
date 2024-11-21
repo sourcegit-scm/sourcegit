@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+
 using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
@@ -28,8 +30,8 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                // If it is too fast, the panel will disappear very quickly, then we'll have a bad experience.
-                Task.Delay(500).Wait();
+                var watch = new Stopwatch();
+                watch.Start();
 
                 var rootDir = new DirectoryInfo(RootDir);
                 var founded = new List<string>();
@@ -61,6 +63,12 @@ namespace SourceGit.ViewModels
                     Preference.Instance.AutoRemoveInvalidNode();
                     Welcome.Instance.Refresh();
                 });
+
+                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
+                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
+                watch.Stop();
+                if (remain > 0)
+                    Task.Delay(remain).Wait();
 
                 return true;
             });
