@@ -1,10 +1,11 @@
-### de_DE.axaml: 99.14%
+### de_DE.axaml: 99.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Info.Children
+- Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.Repository.HistoriesOrder
@@ -13,13 +14,14 @@
 
 </details>
 
-### es_ES.axaml: 98.29%
+### es_ES.axaml: 98.15%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Info.Children
+- Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
@@ -34,7 +36,7 @@
 
 </details>
 
-### fr_FR.axaml: 97.72%
+### fr_FR.axaml: 97.58%
 
 
 <details>
@@ -43,6 +45,7 @@
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
@@ -59,25 +62,27 @@
 
 </details>
 
-### pt_BR.axaml: 99.57%
+### pt_BR.axaml: 99.43%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Info.Children
+- Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 
 </details>
 
-### ru_RU.axaml: 99.14%
+### ru_RU.axaml: 99.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Info.Children
+- Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.Repository.HistoriesOrder
