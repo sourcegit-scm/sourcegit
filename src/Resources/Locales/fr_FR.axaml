@@ -169,8 +169,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL résultant:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Veuillez utiliser $1, $2 pour accéder aux valeurs des groupes regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">IA</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Service préféré:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Si le 'Service préféré' est défini, SourceGit l'utilisera seulement dans ce repository. Sinon, si plus d'un service est disponible, un menu contextuel permettant de choisir l'un d'eux sera affiché.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Service préféré:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si le 'Service préféré' est défini, SourceGit l'utilisera seulement dans ce repository. Sinon, si plus d'un service est disponible, un menu contextuel permettant de choisir l'un d'eux sera affiché.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilisé par ce dépôt</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nom d'utilisateur</x:String>

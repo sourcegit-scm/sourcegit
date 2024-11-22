@@ -170,8 +170,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Ergebnis-URL:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Verwende bitte $1, $2 um auf Regex-Gruppenwerte zuzugreifen.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Bevorzugter Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Der ausgewählte 'Bevorzugte Service' wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Servies verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Bevorzugter Service:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Der ausgewählte 'Bevorzugte Service' wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Servies verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP Proxy für dieses Repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>

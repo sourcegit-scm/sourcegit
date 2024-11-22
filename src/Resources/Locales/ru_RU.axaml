@@ -170,8 +170,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Адрес результата:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Пожалуйста, используйте $1, $2 для доступа к значениям групп регулярных выражений.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Предпочитаемый сервис:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Если «Предпочитаемый сервис» установлен, SourceGit будет использовать только этот хранилище. В противном случае, если доступно более одной услуги, будет отображено контекстное меню для выбора одной из них.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Предпочитаемый сервис:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Если «Предпочитаемый сервис» установлен, SourceGit будет использовать только этот хранилище. В противном случае, если доступно более одной услуги, будет отображено контекстное меню для выбора одной из них.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP-прокси</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP-прокси, используемый этим хранилищем</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Имя пользователя</x:String>

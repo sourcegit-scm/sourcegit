@@ -171,8 +171,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">為 Issue 產生的網址連結:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在網址中使用 $1、$2 等變數填入正規表達式相符的內容</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">偏好服務:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">設定 [偏好服務] 後，SourceGit 將於此存放庫中使用該服務，否則會顯示 AI 服務列表供使用者選擇。</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">偏好服務:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">設定 [偏好服務] 後，SourceGit 將於此存放庫中使用該服務，否則會顯示 AI 服務列表供使用者選擇。</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP 代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP 網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>

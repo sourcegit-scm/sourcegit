@@ -458,7 +458,7 @@
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
-                     Text="{DynamicResource Text.Configure.OpenAI.Prefered}"/>
+                     Text="{DynamicResource Text.Configure.OpenAI.Preferred}"/>
           <ComboBox Grid.Row="0" Grid.Column="1"
                     Height="28" Padding="8,0"
                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
@@ -476,7 +476,7 @@
 
           <TextBlock Grid.Row="1" Grid.Column="1"
                      Margin="0,6,0,0"
-                     Text="{DynamicResource Text.Configure.OpenAI.Prefered.Tip}"
+                     Text="{DynamicResource Text.Configure.OpenAI.Preferred.Tip}"
                      TextWrapping="Wrap"
                      Foreground="{DynamicResource Brush.FG2}"/>
         </Grid>
