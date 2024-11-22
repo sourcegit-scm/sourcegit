@@ -42,7 +42,12 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkBranchesDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
+
                 return true;
             });
         }
