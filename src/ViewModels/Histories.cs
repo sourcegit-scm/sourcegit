@@ -239,16 +239,16 @@ namespace SourceGit.ViewModels
                     }
                 }
 
+                // Sort selected commits in order.
+                selected.Sort((l, r) =>
+                {
+                    return _commits.IndexOf(r) - _commits.IndexOf(l);
+                });
+
                 var multipleMenu = new ContextMenu();
 
                 if (canCherryPick)
                 {
-                    // Sort selected commits in order.
-                    selected.Sort((l, r) =>
-                    {
-                        return _commits.IndexOf(r) - _commits.IndexOf(l);
-                    });
-
                     var cherryPickMultiple = new MenuItem();
                     cherryPickMultiple.Header = App.Text("CommitCM.CherryPickMultiple");
                     cherryPickMultiple.Icon = App.CreateMenuIcon("Icons.CherryPick");
@@ -277,11 +277,11 @@ namespace SourceGit.ViewModels
                         var picker = await storageProvider.OpenFolderPickerAsync(options);
                         if (picker.Count == 1)
                         {
-                            var saveTo = $"{picker[0].Path.LocalPath}/patches";
                             var succ = false;
-                            foreach (var c in selected)
+                            for (var i = 0; i < selected.Count; i++)
                             {
-                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, c.SHA, saveTo).Exec());
+                                var saveTo = GetPatchFileName(picker[0].Path.LocalPath, selected[i], i);
+                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Exec());
                                 if (!succ)
                                     break;
                             }
@@ -621,7 +621,8 @@ namespace SourceGit.ViewModels
                     var selected = await storageProvider.OpenFolderPickerAsync(options);
                     if (selected.Count == 1)
                     {
-                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, selected[0].Path.LocalPath).Exec();
+                        var saveTo = GetPatchFileName(selected[0].Path.LocalPath, commit);
+                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Exec();
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1051,6 +1052,35 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(delete);
 
             menu.Items.Add(submenu);
+        }
+
+        private string GetPatchFileName(string dir, Models.Commit commit, int index = 0)
+        {
+            var ignore_chars = new HashSet<char> { '/', '\\', ':', ',', '*', '?', '\"', '<', '>', '|', '`', '$', '^', '%', '[', ']', '+', '-' };
+            var builder = new StringBuilder();
+            builder.Append(index.ToString("D4"));
+            builder.Append('-');
+
+            var chars = commit.Subject.ToCharArray();
+            var len = 0;
+            foreach (var c in chars)
+            {
+                if (!ignore_chars.Contains(c))
+                {
+                    if (c == ' ' || c == '\t')
+                        builder.Append('-');
+                    else
+                        builder.Append(c);
+
+                    len++;
+
+                    if (len >= 48)
+                        break;
+                }
+            }
+            builder.Append(".patch");
+
+            return System.IO.Path.Combine(dir, builder.ToString());
         }
 
         private Repository _repo = null;
