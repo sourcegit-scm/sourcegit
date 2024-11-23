@@ -592,6 +592,8 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Исправление успешно сохранено!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Сканирование хранилищ</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Корневой каталог:</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Перейти</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Проверка для обновления...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Доступна новая версия этого программного обеспечения: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Не удалось проверить наличие обновлений!</x:String>

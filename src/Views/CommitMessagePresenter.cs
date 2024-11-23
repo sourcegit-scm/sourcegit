@@ -172,7 +172,40 @@ namespace SourceGit.Views
                 {
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
-                        detail.NavigateTo(_lastHover.Link);
+                    {
+                        var point = e.GetCurrentPoint(this);
+                        var link = _lastHover.Link;
+
+                        if (point.Properties.IsLeftButtonPressed)
+                        {
+                            detail.NavigateTo(_lastHover.Link);
+                        }
+                        else if (point.Properties.IsRightButtonPressed)
+                        {
+                            var open = new MenuItem();
+                            open.Header = App.Text("SHALinkCM.NavigateTo");
+                            open.Icon = App.CreateMenuIcon("Icons.Commit");
+                            open.Click += (_, ev) =>
+                            {
+                                detail.NavigateTo(_lastHover.Link);
+                                ev.Handled = true;
+                            };
+
+                            var copy = new MenuItem();
+                            copy.Header = App.Text("SHALinkCM.CopySHA");
+                            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                            copy.Click += (_, ev) =>
+                            {
+                                App.CopyText(link);
+                                ev.Handled = true;
+                            };
+
+                            var menu = new ContextMenu();
+                            menu.Items.Add(open);
+                            menu.Items.Add(copy);
+                            menu.Open(this);
+                        }
+                    }
                 }
                 else
                 {
