@@ -834,7 +834,6 @@ namespace SourceGit.ViewModels
             if (_enableFirstParentInHistories)
                 builder.Append("--first-parent ");
 
-            var invalidFilters = new List<Models.Filter>();
             var filters = _settings.BuildHistoriesFilter();
             if (string.IsNullOrEmpty(filters))
                 builder.Append("--branches --remotes --tags");
@@ -2129,7 +2128,7 @@ namespace SourceGit.ViewModels
                 if (node.Path.Equals(path, StringComparison.Ordinal))
                     return node;
 
-                if (path.StartsWith(node.Path, StringComparison.Ordinal))
+                if (path!.StartsWith(node.Path, StringComparison.Ordinal))
                 {
                     var founded = FindBranchNode(node.Children, path);
                     if (founded != null)
