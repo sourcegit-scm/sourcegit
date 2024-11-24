@@ -550,7 +550,7 @@
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Im Graph ausblenden</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Im Graph filtern</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Sortierungsmodus wechseln</x:String>
-  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Commit Zeitpunkt (--date-order)</x:StrinQg>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Commit Zeitpunkt (--date-order)</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologie (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
