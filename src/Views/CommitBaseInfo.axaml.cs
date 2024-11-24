@@ -99,7 +99,7 @@ namespace SourceGit.Views
                         menu.Items.Add(item);
                     }
 
-                    menu?.Open(control);
+                    menu.Open(control);
                 }
                 else if (links.Count == 1)
                 {

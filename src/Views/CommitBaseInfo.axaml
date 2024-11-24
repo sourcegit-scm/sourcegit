@@ -199,7 +199,7 @@
 
           <!-- Messages -->
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
-          <v:CommitMessagePresenter Grid.Row="5" Grid.Column="1" 
+          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
                                     Margin="12,5,8,0" 
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
