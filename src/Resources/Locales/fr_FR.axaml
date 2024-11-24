@@ -590,6 +590,7 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Passer cette version</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Mise à jour du logiciel</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Il n'y a pas de mise à jour pour le moment.</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copier le SHA</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>
