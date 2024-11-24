@@ -195,7 +195,7 @@ namespace SourceGit.Views
                             open.Icon = App.CreateMenuIcon("Icons.Commit");
                             open.Click += (_, ev) =>
                             {
-                                detail.NavigateTo(_lastHover.Link);
+                                detail.NavigateTo(link);
                                 ev.Handled = true;
                             };
 
