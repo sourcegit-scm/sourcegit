@@ -128,6 +128,7 @@
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">ИНФОРМАЦИЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">ИЗМЕНЁННЫЙ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ДОЧЕРНИЙ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">ИСПОЛНИТЕЛЬ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Проверить ссылки, содержащие эту фиксацию</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ФИКСАЦИЯ СОДЕРЖИТСЯ В</x:String>
@@ -271,6 +272,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Быстрая перемотка вперёд (без проверки)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Извлечь все внешние хранилища</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Разрешить опцию '--force'</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Извлечь без меток</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Извлечь внешние изменения</x:String>
@@ -455,6 +457,7 @@
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Язык</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">История фиксаций</x:String>
   <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени фиксации на графике</x:String>
+  <x:String x:Key="Text.Preference.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Длина темы фиксации</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Включить автозавершение CRLF</x:String>
@@ -544,10 +547,14 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Разрешить опцию --reflog</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Открыть в файловом менеджере</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, меток и подмодулей</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Видимость на графике</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Не установлен (По-умолчанию)</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Скрыть в графе фиксации</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фильтр в графе фиксации</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">ОТФИЛЬТРОВАНО:</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Переключить режим запроса</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Дата фиксации (--date-order)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Топологически (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ЛОКАЛЬНЫЕ ВЕТКИ</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Навигация по заголовку</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Включить опцию --first-parent</x:String>
