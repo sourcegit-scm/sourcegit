@@ -605,6 +605,7 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">軟體更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">目前已是最新版本。</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">導覽到提交</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">壓縮為單個提交</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">合併入:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH 金鑰:</x:String>

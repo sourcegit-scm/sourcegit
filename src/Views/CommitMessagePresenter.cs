@@ -7,7 +7,6 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
-using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -115,7 +114,7 @@ namespace SourceGit.Views
         {
             base.OnPointerMoved(e);
 
-            if (e.Pointer.Captured == this)
+            if (Equals(e.Pointer.Captured, this))
             {
                 var relativeSelfY = e.GetPosition(this).Y;
                 if (relativeSelfY <= 0 || relativeSelfY > Bounds.Height)
@@ -153,11 +152,6 @@ namespace SourceGit.Views
                     if (!match.IsCommitSHA)
                     {
                         ToolTip.SetTip(this, match.Link);
-                        ToolTip.SetIsOpen(this, true);
-                    }
-                    else if (this.FindAncestorOfType<CommitBaseInfo>() is { DataContext: ViewModels.CommitDetail detail } && detail.GetParent(match.Link) is Models.Commit c)
-                    {
-                        ToolTip.SetTip(this, c);
                         ToolTip.SetIsOpen(this, true);
                     }
 
