@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.00%
+### de_DE.axaml: 98.86%
 
 
 <details>
@@ -11,10 +11,11 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.SHALinkCM.NavigateTo
 
 </details>
 
-### es_ES.axaml: 98.15%
+### es_ES.axaml: 98.01%
 
 
 <details>
@@ -33,10 +34,11 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.SHALinkCM.NavigateTo
 
 </details>
 
-### fr_FR.axaml: 97.58%
+### fr_FR.axaml: 97.44%
 
 
 <details>
@@ -59,10 +61,11 @@
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 - Text.ScanRepositories
+- Text.SHALinkCM.NavigateTo
 
 </details>
 
-### pt_BR.axaml: 99.43%
+### pt_BR.axaml: 99.29%
 
 
 <details>
@@ -72,10 +75,11 @@
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
+- Text.SHALinkCM.NavigateTo
 
 </details>
 
-### ru_RU.axaml: 99.00%
+### ru_RU.axaml: 99.01%
 
 
 <details>
@@ -91,22 +95,22 @@
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.SHALinkCM.NavigateTo
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.SHALinkCM.NavigateTo
 
 </details>
