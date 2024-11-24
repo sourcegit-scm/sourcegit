@@ -175,7 +175,7 @@ namespace SourceGit.Models
                 var body = reader.Result;
                 if (!rsp.IsSuccessStatusCode)
                 {
-                    throw new Exception($"AI service returns error code {rsp.StatusCode}. Body: {body??string.Empty}");
+                    throw new Exception($"AI service returns error code {rsp.StatusCode}. Body: {body ?? string.Empty}");
                 }
 
                 return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
