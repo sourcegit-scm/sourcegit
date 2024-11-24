@@ -299,7 +299,7 @@ namespace SourceGit.Views
                             _inlineCommits.Add(sha, c);
 
                             // Make sure user still hovers the target SHA.
-                            if (_lastHover == link)
+                            if (_lastHover == link && c != null)
                             {
                                 ToolTip.SetTip(this, c);
                                 ToolTip.SetIsOpen(this, true);
