@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+
 using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
@@ -28,8 +30,8 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                // If it is too fast, the panel will disappear very quickly, then we'll have a bad experience.
-                Task.Delay(500).Wait();
+                var watch = new Stopwatch();
+                watch.Start();
 
                 var rootDir = new DirectoryInfo(RootDir);
                 var founded = new List<string>();
@@ -62,6 +64,12 @@ namespace SourceGit.ViewModels
                     Welcome.Instance.Refresh();
                 });
 
+                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
+                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
+                watch.Stop();
+                if (remain > 0)
+                    Task.Delay(remain).Wait();
+
                 return true;
             });
         }
@@ -82,6 +90,13 @@ namespace SourceGit.ViewModels
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
             {
+                if (subdir.Name.Equals("node_modules", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".svn", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".vs", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".vscode", StringComparison.Ordinal) ||
+                    subdir.Name.Equals(".idea", StringComparison.Ordinal))
+                    continue;
+
                 SetProgressDescription($"Scanning {subdir.FullName}...");
 
                 var normalizedSelf = subdir.FullName.Replace("\\", "/");
@@ -95,14 +110,14 @@ namespace SourceGit.ViewModels
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
                         var normalized = test.StdOut.Trim().Replace("\\", "/");
-                        if (!_managed.Contains(normalizedSelf))
+                        if (!_managed.Contains(normalized))
                             outs.Add(normalized);
-
-                        continue;
                     }
+
+                    continue;
                 }
 
-                if (depth < 8)
+                if (depth < 5)
                     GetUnmanagedRepositories(subdir, outs, opts, depth + 1);
             }
         }

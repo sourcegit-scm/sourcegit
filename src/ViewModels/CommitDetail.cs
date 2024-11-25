@@ -78,6 +78,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public AvaloniaList<string> Children
+        {
+            get;
+            private set;
+        } = new AvaloniaList<string>();
+
         public string SearchChangeFilter
         {
             get => _searchChangeFilter;
@@ -309,12 +315,40 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var patch = new MenuItem();
+            patch.Header = App.Text("FileCM.SaveAsPatch");
+            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = App.GetStorageProvider();
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("FileCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                var baseRevision = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
+                var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                if (storageFile != null)
+                {
+                    var saveTo = storageFile.Path.LocalPath;
+                    var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo.FullPath, [change], baseRevision, _commit.SHA, saveTo));
+                    if (succ)
+                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                }
+
+                e.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(diffWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(history);
             menu.Items.Add(blame);
+            menu.Items.Add(patch);
             menu.Items.Add(new MenuItem { Header = "-" });
 
             var resetToThisRevision = new MenuItem();
@@ -515,6 +549,7 @@ namespace SourceGit.ViewModels
             VisibleChanges = null;
             SelectedChanges = null;
             ViewRevisionFileContent = null;
+            Children.Clear();
 
             if (_commit == null)
                 return;
@@ -535,6 +570,20 @@ namespace SourceGit.ViewModels
                 _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
+
+            if (Preference.Instance.ShowChildren)
+            {
+                Task.Run(() =>
+                {
+                    var max = Preference.Instance.MaxHistoryCommits;
+                    var filter = _repo.Settings.BuildHistoriesFilter();
+                    var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max, filter) { Cancel = _cancelToken };
+                    var children = cmdChildren.Result();
+                    if (!cmdChildren.Cancel.Requested)
+                        Dispatcher.UIThread.Post(() => Children.AddRange(children));
+                });
+            }
+
             Task.Run(() =>
             {
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];

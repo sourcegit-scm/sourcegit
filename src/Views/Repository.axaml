@@ -67,7 +67,7 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto,Auto,Auto">
                   <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Histories}"/>
                   <ToggleButton Grid.Column="2"
@@ -91,6 +91,13 @@
                                 ToolTip.Tip="{DynamicResource Text.Repository.FirstParentFilterToggle}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.FirstParentFilter}"/>
                   </ToggleButton>
+                  <Button Grid.Column="5"
+                          Classes="icon_button"
+                          Width="28" Height="26"
+                          Click="OnSwitchHistoriesOrderClicked"
+                          ToolTip.Tip="{DynamicResource Text.Repository.HistoriesOrder}">
+                    <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Order}"/>
+                  </Button>
                 </Grid>
               </ListBoxItem>
 

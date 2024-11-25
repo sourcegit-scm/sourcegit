@@ -239,6 +239,12 @@ namespace SourceGit.ViewModels
                     }
                 }
 
+                // Sort selected commits in order.
+                selected.Sort((l, r) =>
+                {
+                    return _commits.IndexOf(r) - _commits.IndexOf(l);
+                });
+
                 var multipleMenu = new ContextMenu();
 
                 if (canCherryPick)
@@ -271,11 +277,11 @@ namespace SourceGit.ViewModels
                         var picker = await storageProvider.OpenFolderPickerAsync(options);
                         if (picker.Count == 1)
                         {
-                            var saveTo = $"{picker[0].Path.LocalPath}/patches";
                             var succ = false;
-                            foreach (var c in selected)
+                            for (var i = 0; i < selected.Count; i++)
                             {
-                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, c.SHA, saveTo).Exec());
+                                var saveTo = GetPatchFileName(picker[0].Path.LocalPath, selected[i], i);
+                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Exec());
                                 if (!succ)
                                     break;
                             }
@@ -615,7 +621,8 @@ namespace SourceGit.ViewModels
                     var selected = await storageProvider.OpenFolderPickerAsync(options);
                     if (selected.Count == 1)
                     {
-                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, selected[0].Path.LocalPath).Exec();
+                        var saveTo = GetPatchFileName(selected[0].Path.LocalPath, commit);
+                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Exec();
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -697,6 +704,109 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private Models.FilterMode GetFilterMode(string pattern)
+        {
+            foreach (var filter in _repo.Settings.HistoriesFilters)
+            {
+                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
+                    return filter.Mode;
+            }
+
+            return Models.FilterMode.None;
+        }
+
+        private void FillBranchVisibilityMenu(MenuItem submenu, Models.Branch branch)
+        {
+            var visibility = new MenuItem();
+            visibility.Icon = App.CreateMenuIcon("Icons.Eye");
+            visibility.Header = App.Text("Repository.FilterCommits");
+
+            var exclude = new MenuItem();
+            exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
+            exclude.Header = App.Text("Repository.FilterCommits.Exclude");
+            exclude.Click += (_, e) =>
+            {
+                _repo.SetBranchFilterMode(branch, Models.FilterMode.Excluded);
+                e.Handled = true;
+            };
+
+            var filterMode = GetFilterMode(branch.FullName);
+            if (filterMode == Models.FilterMode.None)
+            {
+                var include = new MenuItem();
+                include.Icon = App.CreateMenuIcon("Icons.Filter");
+                include.Header = App.Text("Repository.FilterCommits.Include");
+                include.Click += (_, e) =>
+                {
+                    _repo.SetBranchFilterMode(branch, Models.FilterMode.Included);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(include);
+                visibility.Items.Add(exclude);
+            }
+            else
+            {
+                var unset = new MenuItem();
+                unset.Header = App.Text("Repository.FilterCommits.Default");
+                unset.Click += (_, e) =>
+                {
+                    _repo.SetBranchFilterMode(branch, Models.FilterMode.None);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(exclude);
+                visibility.Items.Add(unset);
+            }
+
+            submenu.Items.Add(visibility);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        private void FillTagVisibilityMenu(MenuItem submenu, Models.Tag tag)
+        {
+            var visibility = new MenuItem();
+            visibility.Icon = App.CreateMenuIcon("Icons.Eye");
+            visibility.Header = App.Text("Repository.FilterCommits");
+
+            var exclude = new MenuItem();
+            exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
+            exclude.Header = App.Text("Repository.FilterCommits.Exclude");
+            exclude.Click += (_, e) =>
+            {
+                _repo.SetTagFilterMode(tag, Models.FilterMode.Excluded);
+                e.Handled = true;
+            };
+
+            var filterMode = GetFilterMode(tag.Name);
+            if (filterMode == Models.FilterMode.None)
+            {
+                var include = new MenuItem();
+                include.Icon = App.CreateMenuIcon("Icons.Filter");
+                include.Header = App.Text("Repository.FilterCommits.Include");
+                include.Click += (_, e) =>
+                {
+                    _repo.SetTagFilterMode(tag, Models.FilterMode.Included);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(include);
+                visibility.Items.Add(exclude);
+            }
+            else
+            {
+                var unset = new MenuItem();
+                unset.Header = App.Text("Repository.FilterCommits.Default");
+                unset.Click += (_, e) =>
+                {
+                    _repo.SetTagFilterMode(tag, Models.FilterMode.None);
+                    e.Handled = true;
+                };
+                visibility.Items.Add(exclude);
+                visibility.Items.Add(unset);
+            }
+
+            submenu.Items.Add(visibility);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current)
         {
             var submenu = new MenuItem();
@@ -760,6 +870,8 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            FillBranchVisibilityMenu(submenu, current);
+
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", current.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
@@ -819,6 +931,8 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            FillBranchVisibilityMenu(submenu, branch);
+
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
@@ -876,6 +990,8 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(merge);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
+            FillBranchVisibilityMenu(submenu, branch);
+
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -922,6 +1038,8 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(merge);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
+            FillTagVisibilityMenu(submenu, tag);
+
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -934,6 +1052,35 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(delete);
 
             menu.Items.Add(submenu);
+        }
+
+        private string GetPatchFileName(string dir, Models.Commit commit, int index = 0)
+        {
+            var ignore_chars = new HashSet<char> { '/', '\\', ':', ',', '*', '?', '\"', '<', '>', '|', '`', '$', '^', '%', '[', ']', '+', '-' };
+            var builder = new StringBuilder();
+            builder.Append(index.ToString("D4"));
+            builder.Append('-');
+
+            var chars = commit.Subject.ToCharArray();
+            var len = 0;
+            foreach (var c in chars)
+            {
+                if (!ignore_chars.Contains(c))
+                {
+                    if (c == ' ' || c == '\t')
+                        builder.Append('-');
+                    else
+                        builder.Append(c);
+
+                    len++;
+
+                    if (len >= 48)
+                        break;
+                }
+            }
+            builder.Append(".patch");
+
+            return System.IO.Path.Combine(dir, builder.ToString());
         }
 
         private Repository _repo = null;

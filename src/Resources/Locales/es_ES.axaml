@@ -172,8 +172,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Resultante:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Por favor, use $1, $2 para acceder a los valores de los grupos regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Servicio Preferido:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Servicio Preferido:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizado por este repositorio</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre de Usuario</x:String>
@@ -592,6 +592,7 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Omitir Esta Versión</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Actualización de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Actualmente no hay actualizaciones disponibles.</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Clave Privada SSH:</x:String>

@@ -106,6 +106,16 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool EnableTopoOrderInHistories
+        {
+            get => _enableTopoOrderInHistories;
+            set
+            {
+                if (SetProperty(ref _enableTopoOrderInHistories, value))
+                    Task.Run(RefreshCommits);
+            }
+        }
+
         public string Filter
         {
             get => _filter;
@@ -694,12 +704,14 @@ namespace SourceGit.ViewModels
         {
             var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
             if (changed)
-            {
-                if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
-                    HistoriesFilterMode = mode;
-
                 RefreshHistoriesFilters();
-            }
+        }
+
+        public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode)
+        {
+            var node = FindBranchNode(branch.IsLocal ? _localBranchTrees : _remoteBranchTrees, branch.FullName);
+            if (node != null)
+                SetBranchFilterMode(node, mode);
         }
 
         public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode)
@@ -714,28 +726,8 @@ namespace SourceGit.ViewModels
                 if (!changed)
                     return;
 
-                if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && mode != Models.FilterMode.Excluded)
-                {
-                    var upstream = branch.Upstream;
-                    var canUpdateUpstream = true;
-                    foreach (var filter in _settings.HistoriesFilters)
-                    {
-                        bool matched = false;
-                        if (filter.Type == Models.FilterType.RemoteBranch)
-                            matched = filter.Pattern.Equals(upstream, StringComparison.Ordinal);
-                        else if (filter.Type == Models.FilterType.RemoteBranchFolder)
-                            matched = upstream.StartsWith(filter.Pattern, StringComparison.Ordinal);
-
-                        if (matched && filter.Mode == Models.FilterMode.Excluded)
-                        {
-                            canUpdateUpstream = false;
-                            break;
-                        }
-                    }
-
-                    if (canUpdateUpstream)
-                        _settings.UpdateHistoriesFilter(upstream, Models.FilterType.RemoteBranch, mode);
-                }
+                if (isLocal && !string.IsNullOrEmpty(branch.Upstream))
+                    _settings.UpdateHistoriesFilter(branch.Upstream, Models.FilterType.RemoteBranch, mode);
             }
             else
             {
@@ -763,9 +755,6 @@ namespace SourceGit.ViewModels
                 _settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
                 cur = parent;
             } while (true);
-
-            if (mode != Models.FilterMode.None || _settings.HistoriesFilters.Count == 0)
-                HistoriesFilterMode = mode;
 
             RefreshHistoriesFilters();
         }
@@ -845,14 +834,13 @@ namespace SourceGit.ViewModels
             if (_enableFirstParentInHistories)
                 builder.Append("--first-parent ");
 
-            var invalidFilters = new List<Models.Filter>();
             var filters = _settings.BuildHistoriesFilter();
             if (string.IsNullOrEmpty(filters))
                 builder.Append("--branches --remotes --tags");
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
+            var commits = new Commands.QueryCommits(_fullpath, _enableTopoOrderInHistories, builder.ToString()).Result();
             var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -2083,6 +2071,12 @@ namespace SourceGit.ViewModels
             UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
             UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
             UpdateTagFilterMode(filters);
+
+            if (_settings.HistoriesFilters.Count > 0)
+                HistoriesFilterMode = _settings.HistoriesFilters[0].Mode;
+            else
+                HistoriesFilterMode = Models.FilterMode.None;
+
             Task.Run(RefreshCommits);
         }
 
@@ -2134,7 +2128,7 @@ namespace SourceGit.ViewModels
                 if (node.Path.Equals(path, StringComparison.Ordinal))
                     return node;
 
-                if (path.StartsWith(node.Path, StringComparison.Ordinal))
+                if (path!.StartsWith(node.Path, StringComparison.Ordinal))
                 {
                     var founded = FindBranchNode(node.Children, path);
                     if (founded != null)
@@ -2199,7 +2193,7 @@ namespace SourceGit.ViewModels
 
             IsAutoFetching = true;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
-            new Commands.Fetch(_fullpath, "--all", false, _settings.EnablePruneOnFetch, null) { RaiseError = false }.Exec();
+            new Commands.Fetch(_fullpath, "--all", false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             IsAutoFetching = false;
             Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
@@ -2228,6 +2222,7 @@ namespace SourceGit.ViewModels
         private bool _onlySearchCommitsInCurrentBranch = false;
         private bool _enableReflog = false;
         private bool _enableFirstParentInHistories = false;
+        private bool _enableTopoOrderInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private List<string> _revisionFiles = new List<string>();

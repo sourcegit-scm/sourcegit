@@ -55,6 +55,15 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
+        public static readonly StyledProperty<AvaloniaList<string>> ChildrenProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<string>>(nameof(Children));
+
+        public AvaloniaList<string> Children
+        {
+            get => GetValue(ChildrenProperty);
+            set => SetValue(ChildrenProperty, value);
+        }
+
         public CommitBaseInfo()
         {
             InitializeComponent();
@@ -90,7 +99,7 @@ namespace SourceGit.Views
                         menu.Items.Add(item);
                     }
 
-                    menu?.Open(control);
+                    menu.Open(control);
                 }
                 else if (links.Count == 1)
                 {
@@ -127,10 +136,12 @@ namespace SourceGit.Views
                 else
                 {
                     var c = await Task.Run(() => detail.GetParent(sha));
-                    if (c != null)
+                    if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
                     {
                         ToolTip.SetTip(ctl, c);
-                        ToolTip.SetIsOpen(ctl, ctl.IsPointerOver);
+
+                        if (ctl.IsPointerOver)
+                            ToolTip.SetIsOpen(ctl, true);
                     }
                 }
             }

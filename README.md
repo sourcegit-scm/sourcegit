@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-100.00%25-brightgreen)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-99.14%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-98.42%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-99.14%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-99.86%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-98.01%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-97.44%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-99.29%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
@@ -101,6 +101,7 @@ For **Linux** users:
 * `xdg-open` must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
+* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`. 
 
 ## OpenAI
 

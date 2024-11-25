@@ -476,7 +476,7 @@ namespace SourceGit.Views
             get => GetValue(SelectedChunkProperty);
             set => SetValue(SelectedChunkProperty, value);
         }
-        
+
         public static readonly StyledProperty<TextDiffViewRange> DisplayRangeProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, TextDiffViewRange>(nameof(DisplayRange), new TextDiffViewRange(0, 0));
 
@@ -523,7 +523,7 @@ namespace SourceGit.Views
             var firstLineIdx = DisplayRange.StartIdx;
             if (firstLineIdx <= 1)
                 return;
-            
+
             var lines = GetLines();
             var firstLineType = lines[firstLineIdx].Type;
             var prevLineType = lines[firstLineIdx - 1].Type;
@@ -761,7 +761,7 @@ namespace SourceGit.Views
                 if (start > index)
                     start = index;
             }
-            
+
             SetCurrentValue(DisplayRangeProperty, new TextDiffViewRange(start, start + count));
         }
 
@@ -1089,7 +1089,7 @@ namespace SourceGit.Views
         public void ForceSyncScrollOffset()
         {
             if (DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer.Offset;
+                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
         public override List<Models.TextDiffLine> GetLines()
@@ -1302,7 +1302,7 @@ namespace SourceGit.Views
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer.Offset;
+                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
         private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
@@ -1313,9 +1313,9 @@ namespace SourceGit.Views
 
         private ScrollViewer _scrollViewer = null;
     }
-    
+
     public class TextDiffViewMinimap : Control
-    {   
+    {
         public static readonly StyledProperty<IBrush> AddedLineBrushProperty =
             AvaloniaProperty.Register<TextDiffViewMinimap, IBrush>(nameof(AddedLineBrush), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
 
@@ -1333,7 +1333,7 @@ namespace SourceGit.Views
             get => GetValue(DeletedLineBrushProperty);
             set => SetValue(DeletedLineBrushProperty, value);
         }
-        
+
         public static readonly StyledProperty<TextDiffViewRange> DisplayRangeProperty =
             AvaloniaProperty.Register<TextDiffViewMinimap, TextDiffViewRange>(nameof(DisplayRange), new TextDiffViewRange(0, 0));
 
@@ -1342,7 +1342,7 @@ namespace SourceGit.Views
             get => GetValue(DisplayRangeProperty);
             set => SetValue(DisplayRangeProperty, value);
         }
-        
+
         public static readonly StyledProperty<Color> DisplayRangeColorProperty =
             AvaloniaProperty.Register<TextDiffViewMinimap, Color>(nameof(DisplayRangeColor), Colors.RoyalBlue);
 
@@ -1376,7 +1376,7 @@ namespace SourceGit.Views
                 total = diff.Lines.Count;
                 RenderSingleSide(context, diff.Lines, 0, Bounds.Width);
             }
-            
+
             var range = DisplayRange;
             if (range.EndIdx == 0)
                 return;
@@ -1416,7 +1416,7 @@ namespace SourceGit.Views
                     lastLineTypeStart = i;
                 }
             }
-            
+
             RenderBlock(context, lastLineType, lastLineTypeStart, total - lastLineTypeStart, total, x, width);
         }
 
@@ -1426,12 +1426,12 @@ namespace SourceGit.Views
             {
                 var brush = type == Models.TextDiffLineType.Added ? AddedLineBrush : DeletedLineBrush;
                 var y = start / (total * 1.0) * Bounds.Height;
-                var h = count / (total * 1.0) * Bounds.Height;
+                var h = Math.Max(0.5, count / (total * 1.0) * Bounds.Height);
                 context.DrawRectangle(brush, null, new Rect(x, y, width, h));
             }
         }
     }
-    
+
     public partial class TextDiffView : UserControl
     {
         public static readonly StyledProperty<bool> UseSideBySideDiffProperty =

@@ -126,6 +126,7 @@
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATIONS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTEUR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CHANGÉ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ENFANTS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Vérifier les références contenant ce commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">LE COMMIT EST CONTENU PAR</x:String>
@@ -168,8 +169,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL résultant:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Veuillez utiliser $1, $2 pour accéder aux valeurs des groupes regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">IA</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Service préféré:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Si le 'Service préféré' est défini, SourceGit l'utilisera seulement dans ce repository. Sinon, si plus d'un service est disponible, un menu contextuel permettant de choisir l'un d'eux sera affiché.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Service préféré:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si le 'Service préféré' est défini, SourceGit l'utilisera seulement dans ce repository. Sinon, si plus d'un service est disponible, un menu contextuel permettant de choisir l'un d'eux sera affiché.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilisé par ce dépôt</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nom d'utilisateur</x:String>
@@ -589,6 +590,7 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Passer cette version</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Mise à jour du logiciel</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Il n'y a pas de mise à jour pour le moment.</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copier le SHA</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>

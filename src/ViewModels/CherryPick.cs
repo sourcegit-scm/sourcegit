@@ -85,13 +85,9 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var builder = new StringBuilder();
-                    for (int i = Targets.Count - 1; i >= 0; i--)
-                        builder.Append($"{Targets[i].SHA} ");
-
                     succ = new Commands.CherryPick(
                         _repo.FullPath,
-                        builder.ToString(),
+                        string.Join(' ', Targets.ConvertAll(c => c.SHA)),
                         !AutoCommit,
                         AppendSourceToMessage,
                         string.Empty).Exec();
