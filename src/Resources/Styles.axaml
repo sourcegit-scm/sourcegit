@@ -164,6 +164,7 @@
   <Style Selector="ToolTip">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
+    <Setter Property="MaxWidth" Value="800"/>
     <Setter Property="VerticalOffset" Value="-8"/>
     <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
