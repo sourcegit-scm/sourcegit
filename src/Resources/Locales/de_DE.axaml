@@ -128,6 +128,7 @@
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">GEÄNDERT</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">NACHFOLGER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Prüfe Refs, die diesen Commit enthalten</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT ENTHALTEN IN</x:String>
@@ -270,6 +271,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (ohne Auschecken)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Alle Remotes fetchen</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Aktiviere '--force' Option</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Ohne Tags fetchen</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Remote-Änderungen fetchen</x:String>
@@ -454,6 +456,7 @@
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Sprache</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>
   <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Zeige Autor Zeitpunkt anstatt Commit Zeitpunkt</x:String>
+  <x:String x:Key="Text.Preference.General.ShowChildren" xml:space="preserve">Zeige Nachfolger in den Commit Details</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Längenvorgabe für Commit-Nachrichten</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Aktiviere Auto-CRLF</x:String>
@@ -546,6 +549,9 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Aufheben</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Im Graph ausblenden</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Im Graph filtern</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Sortierungsmodus wechseln</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Commit Zeitpunkt (--date-order)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologie (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Aktiviere '--first-parent' Option</x:String>
@@ -598,6 +604,7 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Es sind momentan kein Updates verfügbar.</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Zum Commit wechseln</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH privater Schlüssel:</x:String>
