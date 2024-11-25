@@ -72,19 +72,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.01%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
-- Text.Fetch.Force
-- Text.Preference.General.ShowChildren
-- Text.Repository.FilterCommits
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
+
 
 </details>
 
