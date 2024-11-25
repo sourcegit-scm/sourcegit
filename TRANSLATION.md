@@ -1,17 +1,10 @@
-### de_DE.axaml: 98.86%
+### de_DE.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Info.Children
-- Text.Fetch.Force
-- Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
-- Text.SHALinkCM.NavigateTo
 
 </details>
 
