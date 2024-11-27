@@ -48,7 +48,7 @@
           <!-- Content Area (allows double-click) -->
           <Grid Grid.Column="1"
                 Background="Transparent"
-                ColumnDefinitions="18,*,Auto,20"
+                ColumnDefinitions="18,*,Auto,Auto"
                 DoubleTapped="OnDoubleTappedBranchNode">
 
             <!-- Icon -->
@@ -72,7 +72,9 @@
                                                   Background="{DynamicResource Brush.Badge}"/>
 
             <!-- Filter Mode Switcher -->
-            <v:FilterModeSwitchButton Grid.Column="3" Mode="{Binding FilterMode}"/>
+            <v:FilterModeSwitchButton Grid.Column="3"
+                                      Margin="0,0,8,0"
+                                      Mode="{Binding FilterMode}"/>
           </Grid>
         </Grid>
       </DataTemplate>

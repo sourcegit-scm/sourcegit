@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -40,7 +36,21 @@ namespace SourceGit.Views
 
         public FilterModeSwitchButton()
         {
+            IsVisible = false;
             InitializeComponent();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ModeProperty ||
+                change.Property == IsNoneVisibleProperty ||
+                change.Property == IsContextMenuOpeningProperty)
+            {
+                var visible = (Mode != Models.FilterMode.None || IsNoneVisible || IsContextMenuOpening);
+                SetCurrentValue(IsVisibleProperty, visible);
+            }
         }
 
         private void OnChangeFilterModeButtonClicked(object sender, RoutedEventArgs e)
@@ -57,198 +67,99 @@ namespace SourceGit.Views
             if (button == null)
                 return;
 
+            var menu = new ContextMenu();
+            var mode = Models.FilterMode.None;
             if (DataContext is Models.Tag tag)
             {
-                var mode = tag.FilterMode;
+                mode = tag.FilterMode;
 
-                var none = new MenuItem();
-                none.Icon = App.CreateMenuIcon("Icons.Eye");
-                none.Header = "Default";
-                none.IsEnabled = mode != Models.FilterMode.None;
-                none.Click += (_, ev) =>
+                if (mode != Models.FilterMode.None)
                 {
-                    UpdateTagFilterMode(repo, tag, Models.FilterMode.None);
-                    ev.Handled = true;
-                };
+                    var unset = new MenuItem();
+                    unset.Header = App.Text("Repository.FilterCommits.Default");
+                    unset.Click += (_, ev) =>
+                    {
+                        repo.SetTagFilterMode(tag, Models.FilterMode.None);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(unset);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
 
                 var include = new MenuItem();
                 include.Icon = App.CreateMenuIcon("Icons.Filter");
-                include.Header = "Filter";
+                include.Header = App.Text("Repository.FilterCommits.Include");
                 include.IsEnabled = mode != Models.FilterMode.Included;
                 include.Click += (_, ev) =>
                 {
-                    UpdateTagFilterMode(repo, tag, Models.FilterMode.Included);
+                    repo.SetTagFilterMode(tag, Models.FilterMode.Included);
                     ev.Handled = true;
                 };
 
                 var exclude = new MenuItem();
                 exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
-                exclude.Header = "Hide";
+                exclude.Header = App.Text("Repository.FilterCommits.Exclude");
                 exclude.IsEnabled = mode != Models.FilterMode.Excluded;
                 exclude.Click += (_, ev) =>
                 {
-                    UpdateTagFilterMode(repo, tag, Models.FilterMode.Excluded);
+                    repo.SetTagFilterMode(tag, Models.FilterMode.Excluded);
                     ev.Handled = true;
                 };
 
-                var menu = new ContextMenu();
-                menu.Items.Add(none);
                 menu.Items.Add(include);
                 menu.Items.Add(exclude);
-
-                if (mode == Models.FilterMode.None)
-                {
-                    IsContextMenuOpening = true;
-                    menu.Closed += (_, _) => IsContextMenuOpening = false;
-                }
-
-                menu.Open(button);
             }
             else if (DataContext is ViewModels.BranchTreeNode node)
             {
-                var mode = node.FilterMode;
+                mode = node.FilterMode;
 
-                var none = new MenuItem();
-                none.Icon = App.CreateMenuIcon("Icons.Eye");
-                none.Header = "Default";
-                none.IsEnabled = mode != Models.FilterMode.None;
-                none.Click += (_, ev) =>
+                if (mode != Models.FilterMode.None)
                 {
-                    UpdateBranchFilterMode(repo, node, Models.FilterMode.None);
-                    ev.Handled = true;
-                };
+                    var unset = new MenuItem();
+                    unset.Header = App.Text("Repository.FilterCommits.Default");
+                    unset.Click += (_, ev) =>
+                    {
+                        repo.SetBranchFilterMode(node, Models.FilterMode.None);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(unset);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
 
                 var include = new MenuItem();
                 include.Icon = App.CreateMenuIcon("Icons.Filter");
-                include.Header = "Filter";
+                include.Header = App.Text("Repository.FilterCommits.Include");
                 include.IsEnabled = mode != Models.FilterMode.Included;
                 include.Click += (_, ev) =>
                 {
-                    UpdateBranchFilterMode(repo, node, Models.FilterMode.Included);
+                    repo.SetBranchFilterMode(node, Models.FilterMode.Included);
                     ev.Handled = true;
                 };
 
                 var exclude = new MenuItem();
                 exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
-                exclude.Header = "Hide";
+                exclude.Header = App.Text("Repository.FilterCommits.Exclude");
                 exclude.IsEnabled = mode != Models.FilterMode.Excluded;
                 exclude.Click += (_, ev) =>
                 {
-                    UpdateBranchFilterMode(repo, node, Models.FilterMode.Excluded);
+                    repo.SetBranchFilterMode(node, Models.FilterMode.Excluded);
                     ev.Handled = true;
                 };
 
-                var menu = new ContextMenu();
-                menu.Items.Add(none);
                 menu.Items.Add(include);
                 menu.Items.Add(exclude);
-
-                if (mode == Models.FilterMode.None)
-                {
-                    IsContextMenuOpening = true;
-                    menu.Closed += (_, _) => IsContextMenuOpening = false;
-                }
-
-                menu.Open(button);
             }
 
+            if (mode == Models.FilterMode.None)
+            {
+                IsContextMenuOpening = true;
+                menu.Closed += (_, _) => IsContextMenuOpening = false;
+            }
+
+            menu.Open(button);
             e.Handled = true;
-        }
-
-        private void UpdateTagFilterMode(ViewModels.Repository repo, Models.Tag tag, Models.FilterMode mode)
-        {
-            var changed = repo.Settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
-            if (changed)
-            {
-                tag.FilterMode = mode;
-                Task.Run(repo.RefreshCommits);
-            }
-        }
-
-        private void UpdateBranchFilterMode(ViewModels.Repository repo, ViewModels.BranchTreeNode node, Models.FilterMode mode)
-        {
-            var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
-            var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
-            var tree = isLocal ? repo.LocalBranchTrees : repo.RemoteBranchTrees;
-
-            if (node.Backend is Models.Branch branch)
-            {
-                var changed = repo.Settings.UpdateHistoriesFilter(node.Path, type, mode);
-                if (!changed)
-                    return;
-
-                node.FilterMode = mode;
-            }
-            else
-            {
-                var changed = repo.Settings.UpdateHistoriesFilter(node.Path, isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder, mode);
-                if (!changed)
-                    return;
-
-                node.FilterMode = mode;
-                ResetChildrenBranchNodeFilterMode(repo, node, isLocal);
-            }
-
-            var parentType = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
-            var cur = node;
-            do
-            {
-                var lastSepIdx = cur.Path.LastIndexOf('/');
-                if (lastSepIdx <= 0)
-                    break;
-
-                var parentPath = cur.Path.Substring(0, lastSepIdx);
-                var parent = FindParentNode(tree, parentPath);
-                if (parent == null)
-                    break;
-
-                repo.Settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
-                parent.FilterMode = Models.FilterMode.None;
-                cur = parent;
-            } while (true);
-
-            Task.Run(repo.RefreshCommits);
-        }
-
-        private void ResetChildrenBranchNodeFilterMode(ViewModels.Repository repo, ViewModels.BranchTreeNode node, bool isLocal)
-        {
-            foreach (var child in node.Children)
-            {
-                child.FilterMode = Models.FilterMode.None;
-
-                if (child.IsBranch)
-                {
-                    var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
-                    repo.Settings.UpdateHistoriesFilter(child.Path, type, Models.FilterMode.None);
-                }
-                else
-                {
-                    var type = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
-                    repo.Settings.UpdateHistoriesFilter(child.Path, type, Models.FilterMode.None);
-                    ResetChildrenBranchNodeFilterMode(repo, child, isLocal);
-                }
-            }
-        }
-
-        private ViewModels.BranchTreeNode FindParentNode(List<ViewModels.BranchTreeNode> nodes, string parent)
-        {
-            foreach (var node in nodes)
-            {
-                if (node.IsBranch)
-                    continue;
-
-                if (node.Path.Equals(parent, StringComparison.Ordinal))
-                    return node;
-
-                if (parent.StartsWith(node.Path, StringComparison.Ordinal))
-                {
-                    var founded = FindParentNode(node.Children, parent);
-                    if (founded != null)
-                        return founded;
-                }
-            }
-
-            return null;
         }
     }
 }

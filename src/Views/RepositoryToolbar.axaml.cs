@@ -53,7 +53,6 @@ namespace SourceGit.Views
                 if (!startDirectly && OperatingSystem.IsMacOS())
                     startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
 
-                launcher.ClearKeyModifier();
                 repo.Fetch(startDirectly);
                 e.Handled = true;
             }
@@ -68,7 +67,6 @@ namespace SourceGit.Views
                 if (!startDirectly && OperatingSystem.IsMacOS())
                     startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
 
-                launcher.ClearKeyModifier();
                 repo.Pull(startDirectly);
                 e.Handled = true;
             }
@@ -83,7 +81,6 @@ namespace SourceGit.Views
                 if (!startDirectly && OperatingSystem.IsMacOS())
                     startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
 
-                launcher.ClearKeyModifier();
                 repo.Push(startDirectly);
                 e.Handled = true;
             }
@@ -92,16 +89,8 @@ namespace SourceGit.Views
         private void StashAll(object _, RoutedEventArgs e)
         {
             var launcher = this.FindAncestorOfType<Launcher>();
-            if (launcher is not null && DataContext is ViewModels.Repository repo)
-            {
-                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                if (!startDirectly && OperatingSystem.IsMacOS())
-                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-
-                launcher.ClearKeyModifier();
-                repo.StashAll(startDirectly);
-                e.Handled = true;
-            }
+            (DataContext as ViewModels.Repository)?.StashAll(launcher?.HasKeyModifier(KeyModifiers.Control) ?? false);
+            e.Handled = true;
         }
 
         private void OpenGitFlowMenu(object sender, RoutedEventArgs e)

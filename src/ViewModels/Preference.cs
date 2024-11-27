@@ -65,8 +65,7 @@ namespace SourceGit.ViewModels
             get => _defaultFontFamily;
             set
             {
-                var trimmed = value.Trim();
-                if (SetProperty(ref _defaultFontFamily, trimmed) && !_isLoading)
+                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -76,8 +75,7 @@ namespace SourceGit.ViewModels
             get => _monospaceFontFamily;
             set
             {
-                var trimmed = value.Trim();
-                if (SetProperty(ref _monospaceFontFamily, trimmed) && !_isLoading)
+                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }

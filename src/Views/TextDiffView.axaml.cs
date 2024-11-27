@@ -619,7 +619,6 @@ namespace SourceGit.Views
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
 
             UpdateTextMate();
-            OnTextViewVisualLinesChanged(null, null);
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)

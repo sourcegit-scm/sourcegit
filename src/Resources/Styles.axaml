@@ -164,7 +164,6 @@
   <Style Selector="ToolTip">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
-    <Setter Property="MaxWidth" Value="800"/>
     <Setter Property="VerticalOffset" Value="-8"/>
     <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
@@ -1182,7 +1181,7 @@
           <Path x:Name="PART_IndicatorIcon"
                 Margin="{TemplateBinding Padding}"
                 Stretch="Fill"
-                Width="14" Height="14"
+                Width="14" Height="10"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG1}"
                 Opacity=".8"/>

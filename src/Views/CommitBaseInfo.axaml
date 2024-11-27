@@ -73,6 +73,12 @@
             </Button>
 
             <ContentControl Content="{Binding #ThisControl.SignInfo}">
+              <ContentControl.Styles>
+                <Style Selector="ToolTip">
+                  <Setter Property="MaxWidth" Value="800"/>
+                </Style>
+              </ContentControl.Styles>
+
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="m:CommitSignInfo">
                   <Border Width="24" Background="Transparent">
@@ -113,6 +119,12 @@
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed">
+                  <TextBlock.Styles>
+                    <Style Selector="ToolTip">
+                      <Setter Property="MaxWidth" Value="600"/>
+                    </Style>
+                  </TextBlock.Styles>
+
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -150,6 +162,12 @@
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed">
+                  <TextBlock.Styles>
+                    <Style Selector="ToolTip">
+                      <Setter Property="MaxWidth" Value="600"/>
+                    </Style>
+                  </TextBlock.Styles>
+
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -187,7 +205,13 @@
                                     Message="{Binding #ThisControl.Message}"
                                     IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
                                     HorizontalAlignment="Stretch"
-                                    TextWrapping="Wrap">            
+                                    TextWrapping="Wrap">
+            <v:CommitMessagePresenter.Styles>
+              <Style Selector="ToolTip">
+                <Setter Property="MaxWidth" Value="800"/>
+              </Style>
+            </v:CommitMessagePresenter.Styles>
+            
             <v:CommitMessagePresenter.DataTemplates>
               <DataTemplate DataType="m:Commit">
                 <StackPanel MinWidth="400" Orientation="Vertical">
