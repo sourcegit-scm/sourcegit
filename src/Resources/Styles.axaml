@@ -1082,7 +1082,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
-                Data="{StaticResource Icons.Calender}"
+                Data="{StaticResource Icons.Calendar}"
                 Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
