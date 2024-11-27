@@ -42,6 +42,16 @@
           <Border CornerRadius="6" ClipToBounds="True">
             <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
               <ListBox.Styles>
+                <Style Selector="Path.icon">
+                  <Setter Property="Width" Value="12"/>
+                  <Setter Property="Height" Value="12"/>
+                  <Setter Property="Margin" Value="8,0,6,0"/>
+                  <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+                </Style>
+                <Style Selector="TextBlock.header">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+                  <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
                 <Style Selector="ListBoxItem">
                   <Setter Property="Height" Value="28"/>
                   <Setter Property="Margin" Value="0"/>
@@ -58,6 +68,12 @@
                 <Style Selector="ListBoxItem:selected Grid.view_mode">
                   <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
                 </Style>
+                <Style Selector="ListBoxItem:selected TextBlock.header">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+                </Style>
+                <Style Selector="ListBoxItem:selected Path.icon">
+                  <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+                </Style>
               </ListBox.Styles>
 
               <ListBox.ItemsPanel>
@@ -67,9 +83,9 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto,Auto,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Histories}"/>
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
+                  <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
                   <ToggleButton Grid.Column="2"
                                 Classes="layout_direction"
                                 Width="28" Height="26"
@@ -102,9 +118,9 @@
               </ListBoxItem>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
+                  <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <v:CounterPresenter Grid.Column="2"
                                       Margin="6,0"
                                       VerticalAlignment="Center"
@@ -117,9 +133,9 @@
               </ListBoxItem>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Stashes}"/>
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
+                  <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
                   <v:CounterPresenter Grid.Column="2"
                                       Margin="6,0"
                                       VerticalAlignment="Center"
