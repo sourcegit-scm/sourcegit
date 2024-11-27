@@ -109,7 +109,7 @@
           <ItemsControl ItemsSource="{Binding Notifications}">
             <ItemsControl.ItemTemplate>
               <DataTemplate DataType="m:Notification">
-                <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 12 #A0000000)">
+                <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)">
                   <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
                     <Grid RowDefinitions="26,Auto">
                       <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="8,0">

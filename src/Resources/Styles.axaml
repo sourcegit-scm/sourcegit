@@ -164,6 +164,7 @@
   <Style Selector="ToolTip">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
+    <Setter Property="MaxWidth" Value="800"/>
     <Setter Property="VerticalOffset" Value="-8"/>
     <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
@@ -511,6 +512,12 @@
   </Style>
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+  </Style>
+  <Style Selector="Button.flat:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Button.flat:disabled">
+    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.Background}"/>
   </Style>
 
   <Style Selector="aes|SearchPanel">
@@ -1175,7 +1182,7 @@
           <Path x:Name="PART_IndicatorIcon"
                 Margin="{TemplateBinding Padding}"
                 Stretch="Fill"
-                Width="14" Height="10"
+                Width="14" Height="14"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG1}"
                 Opacity=".8"/>

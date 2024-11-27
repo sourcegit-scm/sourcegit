@@ -65,7 +65,8 @@ namespace SourceGit.ViewModels
             get => _defaultFontFamily;
             set
             {
-                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
+                var trimmed = value.Trim();
+                if (SetProperty(ref _defaultFontFamily, trimmed) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -75,7 +76,8 @@ namespace SourceGit.ViewModels
             get => _monospaceFontFamily;
             set
             {
-                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
+                var trimmed = value.Trim();
+                if (SetProperty(ref _monospaceFontFamily, trimmed) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -142,6 +144,12 @@ namespace SourceGit.ViewModels
         {
             get => _showAuthorTimeInGraph;
             set => SetProperty(ref _showAuthorTimeInGraph, value);
+        }
+
+        public bool ShowChildren
+        {
+            get => _showChildren;
+            set => SetProperty(ref _showChildren, value);
         }
 
         public string IgnoreUpdateTag
@@ -592,6 +600,7 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _showAuthorTimeInGraph = false;
+        private bool _showChildren = false;
 
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;

@@ -72,6 +72,11 @@ namespace SourceGit.Views
             return _unhandledModifiers.HasFlag(modifier);
         }
 
+        public void ClearKeyModifier()
+        {
+            _unhandledModifiers = KeyModifiers.None;
+        }
+
         protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);

@@ -4,11 +4,11 @@ namespace SourceGit.Commands
 {
     public class Statistics : Command
     {
-        public Statistics(string repo)
+        public Statistics(string repo, int max)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --branches --remotes -40000 --pretty=format:\"%ct$%aN\"";
+            Args = $"log --date-order --branches --remotes -{max} --pretty=format:\"%ct$%aN\"";
         }
 
         public Models.Statistics Result()

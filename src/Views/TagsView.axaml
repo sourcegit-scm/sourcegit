@@ -63,7 +63,7 @@
 
     <DataTemplate DataType="vm:TagCollectionAsList">
       <ListBox Classes="repo_left_content_list"
-               Margin="12,0,0,0"
+               Margin="8,0,0,0"
                ItemsSource="{Binding Tags}"
                SelectionMode="Single" 
                SelectionChanged="OnRowSelectionChanged">
@@ -74,7 +74,7 @@
                   ContextRequested="OnRowContextRequested"
                   ToolTip.Tip="{Binding Message}">
               <Path Grid.Column="0" 
-                    Margin="4,0,0,0"
+                    Margin="8,0,0,0"
                     Width="12" Height="12"
                     Data="{StaticResource Icons.Tag}"/>
 

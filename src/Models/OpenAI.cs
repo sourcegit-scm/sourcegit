@@ -150,12 +150,17 @@ namespace SourceGit.Models
         public OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
         {
             var chat = new OpenAIChatRequest() { Model = Model };
-            chat.AddMessage("system", prompt);
+            chat.AddMessage("user", prompt);
             chat.AddMessage("user", question);
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
             if (!string.IsNullOrEmpty(ApiKey))
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
+            {
+                if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
+                    client.DefaultRequestHeaders.Add("api-key", ApiKey);
+                else
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
+            }
 
             var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest), Encoding.UTF8, "application/json");
             try
@@ -164,11 +169,14 @@ namespace SourceGit.Models
                 task.Wait(cancellation);
 
                 var rsp = task.Result;
-                if (!rsp.IsSuccessStatusCode)
-                    throw new Exception($"AI service returns error code {rsp.StatusCode}");
-
                 var reader = rsp.Content.ReadAsStringAsync(cancellation);
                 reader.Wait(cancellation);
+
+                var body = reader.Result;
+                if (!rsp.IsSuccessStatusCode)
+                {
+                    throw new Exception($"AI service returns error code {rsp.StatusCode}. Body: {body ?? string.Empty}");
+                }
 
                 return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
             }

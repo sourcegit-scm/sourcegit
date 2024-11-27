@@ -239,9 +239,20 @@
                   Margin="8,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding UseAmend, Mode=TwoWay}"
+                  IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
                   Content="{DynamicResource Text.WorkingCopy.Amend}"/>
 
         <v:LoadingIcon Grid.Column="5" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
+
+        <Button Grid.Column="6"
+                Classes="flat primary"
+                Content="{DynamicResource Text.Repository.Continue}"
+                Height="28"
+                Margin="8,0,0,0"
+                Padding="8,0"
+                Command="{Binding ContinueMerge}"
+                IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"
+                IsEnabled="{Binding !HasUnsolvedConflicts}"/>
 
         <Button Grid.Column="6"
                 Classes="flat primary"
@@ -251,6 +262,7 @@
                 Padding="8,0"
                 Command="{Binding Commit}"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
+                IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <ToolTip.Tip>

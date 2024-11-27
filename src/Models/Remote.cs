@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
 {
     public partial class Remote
     {
-        [GeneratedRegex(@"^http[s]?://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
+        [GeneratedRegex(@"^https?://([-a-zA-Z0-9:%._\+~#=]+@)?[-a-zA-Z0-9:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(:[0-9]{1,5})?\b(/[-a-zA-Z0-9()@:%_\+.~#?&=]*)*(\.git)?$")]
         private static partial Regex REG_HTTPS();
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
         private static partial Regex REG_SSH1();
@@ -49,7 +50,7 @@ namespace SourceGit.Models
                     return true;
             }
 
-            return false;
+            return url.EndsWith(".git", StringComparison.Ordinal) && Directory.Exists(url);
         }
 
         public bool TryGetVisitURL(out string url)

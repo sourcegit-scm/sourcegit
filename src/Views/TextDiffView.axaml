@@ -13,27 +13,39 @@
     <ContentControl x:Name="Editor">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:TextDiff">
-          <v:CombinedTextDiffPresenter FileName="{Binding File}"
-                                       Foreground="{DynamicResource Brush.FG1}"
-                                       LineBrush="{DynamicResource Brush.Border2}"
-                                       EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                       AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                       DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                       AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                       IndicatorForeground="{DynamicResource Brush.FG2}"
-                                       FontFamily="{DynamicResource Fonts.Monospace}"
-                                       FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
-                                       UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
-                                       WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
-                                       ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                       EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
-                                       SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+          <Grid ColumnDefinitions="*,1,8">
+            <v:CombinedTextDiffPresenter Grid.Column="0" 
+                                         x:Name="CombinedPresenter"
+                                         FileName="{Binding File}"
+                                         Foreground="{DynamicResource Brush.FG1}"
+                                         LineBrush="{DynamicResource Brush.Border2}"
+                                         EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                         AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                         DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                         AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                         DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                         IndicatorForeground="{DynamicResource Brush.FG2}"
+                                         FontFamily="{DynamicResource Fonts.Monospace}"
+                                         FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
+                                         UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
+                                         WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
+                                         ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
+                                         EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
+                                         SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+            
+            <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+            <v:TextDiffViewMinimap Grid.Column="2"
+                                   DisplayRange="{Binding #CombinedPresenter.DisplayRange}"
+                                   AddedLineBrush="{DynamicResource Brush.Diff.AddedBG}"
+                                   DeletedLineBrush="{DynamicResource Brush.Diff.DeletedBG}"/>
+          </Grid>
         </DataTemplate>
 
         <DataTemplate DataType="vm:TwoSideTextDiff">
-          <Grid ColumnDefinitions="*,1,*">
+          <Grid ColumnDefinitions="*,1,*,1,12">
             <v:SingleSideTextDiffPresenter Grid.Column="0"
+                                           x:Name="LeftSidePresenter"
                                            IsOld="True"
                                            FileName="{Binding File}"
                                            Foreground="{DynamicResource Brush.FG1}"
@@ -72,15 +84,42 @@
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
                                            SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+            
+            <Rectangle Grid.Column="3" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+            <v:TextDiffViewMinimap Grid.Column="4"
+                                   DisplayRange="{Binding #LeftSidePresenter.DisplayRange}"
+                                   AddedLineBrush="{DynamicResource Brush.Diff.AddedBG}"
+                                   DeletedLineBrush="{DynamicResource Brush.Diff.DeletedBG}"/>
           </Grid>
         </DataTemplate>
       </ContentControl.DataTemplates>
     </ContentControl>
 
     <StackPanel x:Name="Popup" IsVisible="False" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Effect="drop-shadow(0 0 8 #80000000)">
-      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Stage}" Click="OnStageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>
-      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Unstage}" Click="OnUnstageChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}"/>
-      <Button Classes="flat" Content="{DynamicResource Text.Hunk.Discard}" Margin="8,0,0,0" Click="OnDiscardChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}"/>
+      <Button Classes="flat" Click="OnStageChunk" HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}" IsVisible="{Binding #ThisControl.IsUnstagedChange}">
+        <TextBlock>
+          <Run Text="{DynamicResource Text.Hunk.Stage}"/>
+          <Run Text=" "/>
+          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+S, macOS=⌘+S}"/>
+        </TextBlock>
+      </Button>
+      
+      <Button Classes="flat" Click="OnUnstageChunk" HotKey="{OnPlatform Ctrl+U, macOS=⌘+U}" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}">
+        <TextBlock>
+          <Run Text="{DynamicResource Text.Hunk.Unstage}"/>
+          <Run Text=" "/>
+          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+U, macOS=⌘+U}"/>
+        </TextBlock>
+      </Button>
+      
+      <Button Classes="flat" Margin="8,0,0,0" HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}" Click="OnDiscardChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}">
+        <TextBlock>
+          <Run Text="{DynamicResource Text.Hunk.Discard}"/>
+          <Run Text=" "/>
+          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+D, macOS=⌘+D}"/>
+        </TextBlock>
+      </Button>
     </StackPanel>
   </Grid>
 </UserControl>

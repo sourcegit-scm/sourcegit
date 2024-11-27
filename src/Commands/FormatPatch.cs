@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"format-patch {commit} -1 -o \"{saveTo}\"";
+            Args = $"format-patch {commit} -1 --output=\"{saveTo}\"";
         }
     }
 }

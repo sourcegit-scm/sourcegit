@@ -13,10 +13,7 @@ namespace SourceGit.Native
     {
         public void SetupApp(AppBuilder builder)
         {
-            builder.With(new X11PlatformOptions()
-            {
-                EnableIme = true,
-            });
+            builder.With(new X11PlatformOptions() { EnableIme = true });
         }
 
         public string FindGitExecutable()
