@@ -4,14 +4,12 @@ namespace SourceGit.Commands
 {
     public class QueryCommitChildren : Command
     {
-        public QueryCommitChildren(string repo, string commit, int max, string filters)
+        public QueryCommitChildren(string repo, string commit, int max)
         {
             WorkingDirectory = repo;
             Context = repo;
             _commit = commit;
-            if (string.IsNullOrEmpty(filters))
-                filters = "--branches --remotes --tags";
-            Args = $"rev-list -{max}  --parents {filters} ^{commit}";
+            Args = $"rev-list -{max} --parents --branches --remotes ^{commit}";
         }
 
         public IEnumerable<string> Result()
