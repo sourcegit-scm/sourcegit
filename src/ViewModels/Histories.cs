@@ -681,25 +681,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
-            var copySHA = new MenuItem();
-            copySHA.Header = App.Text("CommitCM.CopySHA");
-            copySHA.Icon = App.CreateMenuIcon("Icons.Copy");
-            copySHA.Click += (_, e) =>
-            {
-                App.CopyText(commit.SHA);
-                e.Handled = true;
-            };
-            menu.Items.Add(copySHA);
-
-            var copyInfo = new MenuItem();
-            copyInfo.Header = App.Text("CommitCM.CopyInfo");
-            copyInfo.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyInfo.Click += (_, e) =>
-            {
-                App.CopyText($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
-                e.Handled = true;
-            };
-            menu.Items.Add(copyInfo);
+            FillCopyToClipboardMenu(menu, commit);
 
             return menu;
         }
@@ -1054,6 +1036,148 @@ namespace SourceGit.ViewModels
             menu.Items.Add(submenu);
         }
 
+        private void FillCopyToClipboardMenu(ContextMenu menu, Models.Commit commit){
+            var clipboardInfo = GetClipboardInfo(commit);
+
+            var submenu = new MenuItem();
+            submenu.Icon = App.CreateMenuIcon("Icons.Copy");
+            submenu.Header = "Copy to Clipboard";
+            submenu.MinWidth = 350;
+
+            var copyAll = new MenuItem();
+            copyAll.Header = App.Text("CommitCM.CopyAll");
+            copyAll.Icon = App.CreateMenuIcon("Icons.CopyAll");
+            copyAll.Click += (_, e) =>
+            {
+                App.CopyText(clipboardInfo.CommitCompleteInfo);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copyAll);
+
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+
+            if( clipboardInfo.branches.Count > 0 ){
+                for( var i = 0; i < clipboardInfo.branches.Count; i++ ){
+                    var localIndex = i;
+                    var branchItem = new MenuItem();
+
+                    branchItem.Header = $"{localIndex}: {clipboardInfo.branches[localIndex]}";
+                    branchItem.Icon = App.CreateMenuIcon("Icons.Branch");
+                    branchItem.Click += (_, e) =>
+                    {
+                        App.CopyText(clipboardInfo.branches[localIndex]);
+                        e.Handled = true;
+                    };
+
+                    submenu.Items.Add(branchItem);
+                }
+
+                submenu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
+            if( clipboardInfo.tags.Count > 0 ){
+                for( var i = 0; i < clipboardInfo.tags.Count; i++ ){
+                    var localIndex = i;
+                    var tagItem = new MenuItem();
+
+                    tagItem.Header = $"{localIndex}: {clipboardInfo.tags[localIndex]}";
+                    tagItem.Icon = App.CreateMenuIcon("Icons.Tag");
+                    tagItem.Click += (_, e) =>
+                    {
+                        App.CopyText(clipboardInfo.tags[localIndex]);
+                        e.Handled = true;
+                    };
+                    
+                    submenu.Items.Add(tagItem);
+                }
+
+                submenu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
+            var copySHA = new MenuItem();
+            copySHA.Header = App.Text("CommitCM.SHA", clipboardInfo.CommitSHA);
+            copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
+            copySHA.Click += (_, e) =>
+            {
+                App.CopyText(clipboardInfo.CommitSHA);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copySHA);
+
+            var copyMessage = new MenuItem();
+            var paddedMessage = clipboardInfo.CommitSubject.Length <= 45 ? clipboardInfo.CommitSubject : $"{clipboardInfo.CommitSubject.Substring(0,45)}...";
+            copyMessage.Header = App.Text("CommitCM.Message", paddedMessage);
+            copyMessage.Icon = App.CreateMenuIcon("Icons.Message");
+            copyMessage.Click += (_, e) =>
+            {
+                App.CopyText(clipboardInfo.CommitSubject);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copyMessage);
+
+            var copyAuthor = new MenuItem();
+            var paddedAuthor = clipboardInfo.CommitFormattedAuthor.Length <= 45 ? clipboardInfo.CommitFormattedAuthor : $"{clipboardInfo.CommitFormattedAuthor.Substring(0,45)}...";
+            copyAuthor.Header = App.Text("CommitCM.Author", paddedAuthor);
+            copyAuthor.Icon = App.CreateMenuIcon("Icons.Person");
+            copyAuthor.Click += (_, e) =>
+            {
+                App.CopyText(clipboardInfo.CommitFormattedAuthor);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copyAuthor);
+
+            var copyDate = new MenuItem();
+            copyDate.Header = App.Text("CommitCM.Date", clipboardInfo.CommitAuthorTime);
+            copyDate.Icon = App.CreateMenuIcon("Icons.Calendar");
+            copyDate.Click += (_, e) =>
+            {
+                App.CopyText(clipboardInfo.CommitAuthorTime);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copyDate);
+
+            menu.Items.Add(submenu);
+        }
+
+        private ClipboardInfo GetClipboardInfo(Models.Commit commit){
+            var sb = new StringBuilder();
+            var clipboardInfo = new ClipboardInfo();
+
+            var commitSHA = commit.SHA;
+            var commitSubject = commit.Subject;
+            var commitFormattedAuthor = $"{commit.Author.Name} <{commit.Author.Email}>";
+            var commitAuthorTime = commit.AuthorTimeStr;
+
+            // ! Decorators (Tags & Branches)
+            if( commit.Decorators.Count > 0 ){
+                foreach( var d in commit.Decorators ){
+                    if( d.Type == Models.DecoratorType.Tag ) {
+                        clipboardInfo.tags.Add(d.Name);
+                        sb.AppendLine($"{App.Text("PushTag.Tag")} {d.Name}");
+                    } else {
+                        clipboardInfo.branches.Add(d.Name);
+                        sb.AppendLine($"{App.Text("Pull.Branch")} {d.Name}");
+                    }
+                }
+            }
+            
+            // ! General Info
+            sb.AppendLine($"{App.Text("CommitCM.SHA")} {commitSHA}");
+            sb.AppendLine($"{App.Text("CommitCM.Message")} {commitSubject}");
+            sb.AppendLine($"{App.Text("CommitCM.Author")} {commitFormattedAuthor}");
+            sb.AppendLine($"{App.Text("CommitCM.Date")} {commitAuthorTime}");
+
+            var commitCompleteInfo = sb.ToString();
+
+            clipboardInfo.CommitSHA = commitSHA;
+            clipboardInfo.CommitSubject = commitSubject;
+            clipboardInfo.CommitFormattedAuthor = commitFormattedAuthor;
+            clipboardInfo.CommitAuthorTime = commitAuthorTime;
+            clipboardInfo.CommitCompleteInfo = commitCompleteInfo;
+
+            return clipboardInfo;
+        }
+
         private string GetPatchFileName(string dir, Models.Commit commit, int index = 0)
         {
             var ignore_chars = new HashSet<char> { '/', '\\', ':', ',', '*', '?', '\"', '<', '>', '|', '`', '$', '^', '%', '[', ']', '+', '-' };
@@ -1081,6 +1205,17 @@ namespace SourceGit.ViewModels
             builder.Append(".patch");
 
             return System.IO.Path.Combine(dir, builder.ToString());
+        }
+
+        private sealed class ClipboardInfo
+        {
+            public List<string> branches { get; set; } = new List<string>();
+            public List<string> tags { get; set; } = new List<string>();
+            public string CommitSHA { get; set; }
+            public string CommitSubject { get; set; }
+            public string CommitFormattedAuthor { get; set; }
+            public string CommitAuthorTime { get; set; }
+            public string CommitCompleteInfo { get; set; }
         }
 
         private Repository _repo = null;
