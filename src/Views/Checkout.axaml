@@ -32,22 +32,21 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.LocalChanges}"/>
-      <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <WrapPanel.Resources>
-          <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-        </WrapPanel.Resources>
-        
+      <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">        
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
+                     x:Name="RadioDoNothing"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
+                     x:Name="RadioStashAndReply"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
+                     x:Name="RadioDiscard"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
       </WrapPanel>
     </Grid>
   </StackPanel>
