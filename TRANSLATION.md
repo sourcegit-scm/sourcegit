@@ -124,6 +124,16 @@
 
 </details>
 
+### it_IT.axaml: 99.86%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
+
+</details>
+
 ### pt_BR.axaml: 99.57%
 
 
@@ -163,15 +173,5 @@
 <summary>Missing Keys</summary>
 
 
-
-</details>
-
-### it_IT.axaml: 0.00%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- all
 
 </details>
