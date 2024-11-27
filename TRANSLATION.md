@@ -58,17 +58,31 @@
 
 </details>
 
-### it_IT.axaml: 99.86%
+### it_IT.axaml: 97.87%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Info.Children
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
+- Text.Configure.OpenAI.Preferred
+- Text.Configure.OpenAI.Preferred.Tip
+- Text.Fetch.Force
+- Text.Preference.General.ShowChildren
+- Text.Repository.FilterCommits
+- Text.Repository.FilterCommits.Default
+- Text.Repository.FilterCommits.Exclude
+- Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
+- Text.SHALinkCM.CopySHA
+- Text.SHALinkCM.NavigateTo
 
 </details>
 
-### pt_BR.axaml: 99.57%
+### pt_BR.axaml: 99.29%
 
 
 <details>
