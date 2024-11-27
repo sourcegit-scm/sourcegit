@@ -1182,7 +1182,7 @@
           <Path x:Name="PART_IndicatorIcon"
                 Margin="{TemplateBinding Padding}"
                 Stretch="Fill"
-                Width="14" Height="10"
+                Width="14" Height="14"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG1}"
                 Opacity=".8"/>
