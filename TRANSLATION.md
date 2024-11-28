@@ -58,8 +58,8 @@
 
 </details>
 
-
 ### it_IT.axaml: 97.87%
+
 
 <details>
 <summary>Missing Keys</summary>
