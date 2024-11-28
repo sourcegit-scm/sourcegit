@@ -58,6 +58,15 @@
 
 </details>
 
+### it_IT.axaml: 100.0%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+
+</details>
+
 ### pt_BR.axaml: 99.29%
 
 
