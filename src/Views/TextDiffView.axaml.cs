@@ -279,7 +279,7 @@ namespace SourceGit.Views
                         var highlightBG = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
                         var processingIdxStart = 0;
                         var processingIdxEnd = 0;
-                        var nextHightlight = 0;
+                        var nextHighlight = 0;
 
                         foreach (var tl in line.TextLines)
                         {
@@ -288,9 +288,9 @@ namespace SourceGit.Views
                             var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
                             var h = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
 
-                            while (nextHightlight < info.Highlights.Count)
+                            while (nextHighlight < info.Highlights.Count)
                             {
-                                var highlight = info.Highlights[nextHightlight];
+                                var highlight = info.Highlights[nextHighlight];
                                 if (highlight.Start >= processingIdxEnd)
                                     break;
 
@@ -305,7 +305,7 @@ namespace SourceGit.Views
                                 if (highlight.End >= processingIdxEnd)
                                     break;
 
-                                nextHightlight++;
+                                nextHighlight++;
                             }
 
                             processingIdxStart = processingIdxEnd;
