@@ -73,6 +73,40 @@ namespace SourceGit.ViewModels
             LoadDiffContent();
         }
 
+        public void PrevChange()
+        {
+            if (_content is Models.TextDiff textDiff)
+            {
+                if (textDiff.CurrentChangeBlockIdx > 0)
+                {
+                    textDiff.CurrentChangeBlockIdx--;
+                }
+                else if (textDiff.ChangeBlocks.Count > 0)
+                {
+                    // Force property value change and (re-)jump to first change block
+                    textDiff.CurrentChangeBlockIdx = -1;
+                    textDiff.CurrentChangeBlockIdx = 0;
+                }
+            }
+        }
+
+        public void NextChange()
+        {
+            if (_content is Models.TextDiff textDiff)
+            {
+                if (textDiff.CurrentChangeBlockIdx < textDiff.ChangeBlocks.Count - 1)
+                {
+                    textDiff.CurrentChangeBlockIdx++;
+                }
+                else if (textDiff.ChangeBlocks.Count > 0)
+                {
+                    // Force property value change and (re-)jump to last change block
+                    textDiff.CurrentChangeBlockIdx = -1;
+                    textDiff.CurrentChangeBlockIdx = textDiff.ChangeBlocks.Count - 1;
+                }
+            }
+        }
+
         public void ToggleFullTextDiff()
         {
             Preference.Instance.UseFullTextDiff = !Preference.Instance.UseFullTextDiff;

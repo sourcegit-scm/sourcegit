@@ -51,6 +51,9 @@ namespace SourceGit.Commands
                     _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
             }
 
+            if (_result.TextDiff != null)
+                _result.TextDiff.ProcessChangeBlocks();
+
             return _result;
         }
 

@@ -241,7 +241,8 @@
           <DataTemplate DataType="m:TextDiff">
             <v:TextDiffView 
               UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"
-              UseFullTextDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFullTextDiff, Mode=OneWay}"/>
+              UseFullTextDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFullTextDiff, Mode=OneWay}"
+              CurrentChangeBlockIdx="{Binding CurrentChangeBlockIdx, Mode=OneWay}"/>
           </DataTemplate>
 
           <!-- Empty or only EOL changes -->
