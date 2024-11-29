@@ -233,6 +233,7 @@
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copy</x:String>
+  <x:String x:Key="Text.Diff.HighlightedDiffNavigation" xml:space="preserve">Highlighted Diff Navigation</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore Whitespace Change</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
