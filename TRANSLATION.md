@@ -1,14 +1,14 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### es_ES.axaml: 98.01%
+### es_ES.axaml: 97.87%
 
 
 <details>
@@ -28,10 +28,11 @@
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### fr_FR.axaml: 97.44%
+### fr_FR.axaml: 97.30%
 
 
 <details>
@@ -55,10 +56,11 @@
 - Text.Repository.HistoriesOrder.Topo
 - Text.ScanRepositories
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### it_IT.axaml: 97.87%
+### it_IT.axaml: 97.73%
 
 
 <details>
@@ -79,10 +81,11 @@
 - Text.Repository.HistoriesOrder.Topo
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### pt_BR.axaml: 99.29%
+### pt_BR.axaml: 99.15%
 
 
 <details>
@@ -93,16 +96,17 @@
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
