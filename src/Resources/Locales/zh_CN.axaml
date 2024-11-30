@@ -684,6 +684,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交并推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">历史输入/模板</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">触发点击事件</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交（修改原始提交）</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自动暂存所有变更并提交</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)？</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">检测到冲突</x:String>
