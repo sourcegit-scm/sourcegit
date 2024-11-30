@@ -50,9 +50,6 @@ namespace SourceGit.Views
             if (launcher is not null && DataContext is ViewModels.Repository repo)
             {
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                if (!startDirectly && OperatingSystem.IsMacOS())
-                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-
                 launcher.ClearKeyModifier();
                 repo.Fetch(startDirectly);
                 e.Handled = true;
@@ -65,9 +62,6 @@ namespace SourceGit.Views
             if (launcher is not null && DataContext is ViewModels.Repository repo)
             {
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                if (!startDirectly && OperatingSystem.IsMacOS())
-                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-
                 launcher.ClearKeyModifier();
                 repo.Pull(startDirectly);
                 e.Handled = true;
@@ -80,9 +74,6 @@ namespace SourceGit.Views
             if (launcher is not null && DataContext is ViewModels.Repository repo)
             {
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                if (!startDirectly && OperatingSystem.IsMacOS())
-                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-
                 launcher.ClearKeyModifier();
                 repo.Push(startDirectly);
                 e.Handled = true;
@@ -95,9 +86,6 @@ namespace SourceGit.Views
             if (launcher is not null && DataContext is ViewModels.Repository repo)
             {
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                if (!startDirectly && OperatingSystem.IsMacOS())
-                    startDirectly = launcher.HasKeyModifier(KeyModifiers.Meta);
-
                 launcher.ClearKeyModifier();
                 repo.StashAll(startDirectly);
                 e.Handled = true;

@@ -1,10 +1,10 @@
-### de_DE.axaml: 99.86%
+### de_DE.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.FilterCommits
+
 
 </details>
 
@@ -54,6 +54,30 @@
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 - Text.ScanRepositories
+- Text.SHALinkCM.NavigateTo
+
+</details>
+
+### it_IT.axaml: 97.87%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.CommitDetail.Info.Children
+- Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
+- Text.Configure.OpenAI.Preferred
+- Text.Configure.OpenAI.Preferred.Tip
+- Text.Fetch.Force
+- Text.Preference.General.ShowChildren
+- Text.Repository.FilterCommits
+- Text.Repository.FilterCommits.Default
+- Text.Repository.FilterCommits.Exclude
+- Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesOrder.ByDate
+- Text.Repository.HistoriesOrder.Topo
+- Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
 
 </details>
