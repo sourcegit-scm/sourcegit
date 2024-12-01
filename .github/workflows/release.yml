@@ -24,6 +24,14 @@ jobs:
     uses: ./.github/workflows/package.yml
     with:
       version: ${{ needs.version.outputs.version }}
+  publish-packages:
+    needs: [package, version]
+    name: Publish Packages
+    uses: ./.github/workflows/publish-packages.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+    secrets:
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
   release:
     needs: [package, version]
     name: Release

@@ -1,0 +1,39 @@
+name: Publish to PackageCloud
+on:
+ workflow_call:
+   inputs:
+     version:
+       description: SourceGit package version
+       required: true
+       type: string
+   secrets:
+     PACKAGECLOUD_TOKEN:
+       required: true
+jobs:
+ publish:
+   name: Publish to PackageCloud
+   runs-on: ubuntu-latest
+   strategy:
+     matrix:
+       runtime: [linux-x64, linux-arm64]
+   steps:
+     - name: Install package_cloud
+       run: gem install package_cloud
+
+     - name: Download package artifacts
+       uses: actions/download-artifact@v4
+       with:
+         name: package.${{ matrix.runtime }}
+         path: packages
+
+     - name: Publish DEB package
+       env:
+         PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+       run: |
+         package_cloud push your-username/sourcegit/debian/any packages/*.deb
+
+     - name: Publish RPM package
+       env:
+         PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+       run: |
+         package_cloud push your-username/sourcegit/rpm_any/rpm_any packages/*.rpm
