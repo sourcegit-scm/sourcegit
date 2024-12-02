@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFiles"
              x:DataType="vm:CommitDetail">
@@ -14,17 +15,96 @@
       <ColumnDefinition Width="*" MinWidth="100"/>
     </Grid.ColumnDefinitions>
 
-    <!-- File Tree -->
-    <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-      <v:RevisionFileTreeView Revision="{Binding Commit.SHA}"/>
-    </Border>
+    <!-- Left -->
+    <Grid Grid.Column="0" RowDefinitions="26,*">
+      <Grid Grid.Row="0" Height="26">
+        <TextBox Grid.Row="0"
+                 x:Name="TxtSearchRevisionFiles"
+                 Height="26"
+                 BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                 Background="Transparent"
+                 CornerRadius="4"
+                 Watermark="{DynamicResource Text.CommitDetail.Files.Search}"
+                 Text="{Binding RevisionFileSearchFilter, Mode=TwoWay}"
+                 KeyDown="OnSearchBoxKeyDown"
+                 TextChanged="OnSearchBoxTextChanged">
+          <TextBox.InnerLeftContent>
+            <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+          </TextBox.InnerLeftContent>
+
+          <TextBox.InnerRightContent>
+            <Button Classes="icon_button"
+                    IsVisible="{Binding RevisionFileSearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Command="{Binding ClearRevisionFileSearchFilter}">
+              <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+            </Button>
+          </TextBox.InnerRightContent>
+        </TextBox>
+
+        <Popup PlacementTarget="{Binding #TxtSearchRevisionFiles}"
+               Placement="BottomEdgeAlignedLeft"
+               HorizontalOffset="-8" VerticalAlignment="-8"
+               IsOpen="{Binding IsRevisionFileSearchSuggestionOpen}">
+          <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
+            <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
+              <ListBox x:Name="SearchSuggestionBox"
+                       Background="Transparent"
+                       SelectionMode="Single"
+                       ItemsSource="{Binding RevisionFileSearchSuggestion}"
+                       MaxHeight="400"
+                       Focusable="True"
+                       KeyDown="OnSearchSuggestionBoxKeyDown">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="MinHeight" Value="26"/>
+                    <Setter Property="CornerRadius" Value="4"/>
+                  </Style>
+
+                  <Style Selector="ListBox">
+                    <Setter Property="FocusAdorner">
+                      <FocusAdornerTemplate>
+                        <Grid/>
+                      </FocusAdornerTemplate>
+                    </Setter>
+                  </Style>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="x:String">
+                    <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
+                      <StackPanel Orientation="Horizontal">
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                        <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                      </StackPanel>
+                      <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </Border>
+          </Border>
+        </Popup>
+      </Grid>
+
+      <!-- File Tree -->
+      <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
+        <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA}"/>
+      </Border>
+    </Grid>
 
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"/>
 
-    <!-- File Content Viewer -->
+    <!-- Right: File Content Viewer -->
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <v:RevisionFileContentViewer Content="{Binding ViewRevisionFileContent}"/>

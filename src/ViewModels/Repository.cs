@@ -2147,7 +2147,7 @@ namespace SourceGit.ViewModels
             {
                 Task.Run(() =>
                 {
-                    var files = new Commands.QueryCurrentRevisionFiles(_fullpath).Result();
+                    var files = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
                     Dispatcher.UIThread.Invoke(() =>
                     {
                         if (_searchCommitFilterType != 3)

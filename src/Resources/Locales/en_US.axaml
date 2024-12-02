@@ -121,6 +121,7 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Search Changes...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FILES</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS File</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Search Files...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>

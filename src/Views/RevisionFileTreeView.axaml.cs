@@ -144,6 +144,68 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        public void SetSearchResult(string file)
+        {
+            _rows.Clear();
+            _searchResult.Clear();
+
+            var rows = new List<ViewModels.RevisionFileTreeNode>();
+            if (string.IsNullOrEmpty(file))
+            {
+                MakeRows(rows, _tree, 0);
+            }
+            else
+            {
+                var vm = DataContext as ViewModels.CommitDetail;
+                if (vm == null || vm.Commit == null)
+                    return;
+
+                var objects = vm.GetRevisionFilesUnderFolder(file);
+                if (objects == null || objects.Count != 1)
+                    return;
+
+                var routes = file.Split('/', StringSplitOptions.None);
+                if (routes.Length == 1)
+                {
+                    _searchResult.Add(new ViewModels.RevisionFileTreeNode
+                    {
+                        Backend = objects[0]
+                    });
+                }
+                else
+                {
+                    var last = _searchResult;
+                    var prefix = string.Empty;
+                    for (var i = 0; i < routes.Length - 1; i++)
+                    {
+                        var folder = new ViewModels.RevisionFileTreeNode
+                        {
+                            Backend = new Models.Object
+                            {
+                                Type = Models.ObjectType.Tree,
+                                Path = prefix + routes[i],
+                            },
+                            IsExpanded = true,
+                        };
+
+                        last.Add(folder);
+                        last = folder.Children;
+                        prefix = folder.Backend + "/";
+                    }
+
+                    last.Add(new ViewModels.RevisionFileTreeNode
+                    {
+                        Backend = objects[0]
+                    });
+                }
+
+                MakeRows(rows, _searchResult, 0);
+            }
+
+            _rows.AddRange(rows);
+            GC.Collect();
+        }
+
         public void ToggleNodeIsExpanded(ViewModels.RevisionFileTreeNode node)
         {
             _disableSelectionChangingEvent = true;
@@ -189,6 +251,7 @@ namespace SourceGit.Views
             {
                 _tree.Clear();
                 _rows.Clear();
+                _searchResult.Clear();
 
                 var vm = DataContext as ViewModels.CommitDetail;
                 if (vm == null || vm.Commit == null)
@@ -308,5 +371,6 @@ namespace SourceGit.Views
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
         private AvaloniaList<ViewModels.RevisionFileTreeNode> _rows = [];
         private bool _disableSelectionChangingEvent = false;
+        private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
     }
 }
