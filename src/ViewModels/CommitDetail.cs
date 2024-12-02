@@ -137,7 +137,9 @@ namespace SourceGit.ViewModels
                                     {
                                         _revisionFiles.Clear();
                                         _revisionFiles.AddRange(files);
-                                        UpdateRevisionFileSearchSuggestion();
+
+                                        if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+                                            UpdateRevisionFileSearchSuggestion();
                                     }
                                 });
                             });
