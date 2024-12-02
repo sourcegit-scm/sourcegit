@@ -1,19 +1,21 @@
-### de_DE.axaml: 99.86%
+### de_DE.axaml: 99.72%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Files.Search
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### es_ES.axaml: 97.87%
+### es_ES.axaml: 97.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
@@ -32,7 +34,7 @@
 
 </details>
 
-### fr_FR.axaml: 97.30%
+### fr_FR.axaml: 97.17%
 
 
 <details>
@@ -41,6 +43,7 @@
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.CommitDetail.Files.Search
 - Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
@@ -60,12 +63,13 @@
 
 </details>
 
-### it_IT.axaml: 97.73%
+### it_IT.axaml: 97.59%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
@@ -85,12 +89,13 @@
 
 </details>
 
-### pt_BR.axaml: 99.15%
+### pt_BR.axaml: 99.01%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
@@ -100,13 +105,13 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CommitDetail.Files.Search
 
 </details>
 
