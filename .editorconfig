@@ -206,6 +206,9 @@ dotnet_diagnostic.CA1854.severity = warning
 #CA2211:Non-constant fields should not be visible
 dotnet_diagnostic.CA2211.severity = error
 
+# IDE0005: remove used namespace using
+dotnet_diagnostic.IDE0005.severity = error
+
 # Wrapping preferences
 csharp_wrap_before_ternary_opsigns = false
 

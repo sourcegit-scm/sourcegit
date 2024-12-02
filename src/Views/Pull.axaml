@@ -77,21 +77,20 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Pull.LocalChanges}"/>
       <WrapPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <WrapPanel.Resources>
-          <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-        </WrapPanel.Resources>
-
         <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.DoNothing}"
+                     x:Name="RadioDoNothing"
                      Margin="0,0,8,0"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
         <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.StashAndReply}"
+                     x:Name="RadioStashAndReply"
                      Margin="0,0,8,0"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
         <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.Discard}"
+                     x:Name="RadioDiscard"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
       </WrapPanel>
       
       <CheckBox Grid.Row="4" Grid.Column="1"

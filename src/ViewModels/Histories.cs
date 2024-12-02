@@ -813,6 +813,8 @@ namespace SourceGit.ViewModels
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = current.Name;
 
+            FillBranchVisibilityMenu(submenu, current);
+
             if (!string.IsNullOrEmpty(current.Upstream))
             {
                 var upstream = current.Upstream.Substring(13);
@@ -852,6 +854,17 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(push);
+
+            var rename = new MenuItem();
+            rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", current.Name);
+            rename.Icon = App.CreateMenuIcon("Icons.Rename");
+            rename.Click += (_, e) =>
+            {
+                if (PopupHost.CanCreatePopup())
+                    PopupHost.ShowPopup(new RenameBranch(_repo, current));
+                e.Handled = true;
+            };
+            submenu.Items.Add(rename);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
             var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, current.Name);
@@ -870,18 +883,15 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(new MenuItem() { Header = "-" });
             }
 
-            FillBranchVisibilityMenu(submenu, current);
-
-            var rename = new MenuItem();
-            rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", current.Name);
-            rename.Icon = App.CreateMenuIcon("Icons.Rename");
-            rename.Click += (_, e) =>
+            var copy = new MenuItem();
+            copy.Header = App.Text("BranchCM.CopyName");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new RenameBranch(_repo, current));
+                App.CopyText(current.Name);
                 e.Handled = true;
             };
-            submenu.Items.Add(rename);
+            submenu.Items.Add(copy);
 
             menu.Items.Add(submenu);
         }
@@ -891,6 +901,8 @@ namespace SourceGit.ViewModels
             var submenu = new MenuItem();
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = branch.Name;
+
+            FillBranchVisibilityMenu(submenu, branch);
 
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
@@ -913,25 +925,6 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(merge);
-            submenu.Items.Add(new MenuItem() { Header = "-" });
-
-            var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, branch.Name);
-            if (detect.IsGitFlowBranch)
-            {
-                var finish = new MenuItem();
-                finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
-                finish.Click += (_, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
-                    e.Handled = true;
-                };
-                submenu.Items.Add(finish);
-                submenu.Items.Add(new MenuItem() { Header = "-" });
-            }
-
-            FillBranchVisibilityMenu(submenu, branch);
 
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
@@ -954,6 +947,33 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(delete);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+
+            var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, branch.Name);
+            if (detect.IsGitFlowBranch)
+            {
+                var finish = new MenuItem();
+                finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
+                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
+                finish.Click += (_, e) =>
+                {
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
+                    e.Handled = true;
+                };
+                submenu.Items.Add(finish);
+                submenu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("BranchCM.CopyName");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, e) =>
+            {
+                App.CopyText(branch.Name);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copy);
 
             menu.Items.Add(submenu);
         }
@@ -965,6 +985,8 @@ namespace SourceGit.ViewModels
             var submenu = new MenuItem();
             submenu.Icon = App.CreateMenuIcon("Icons.Branch");
             submenu.Header = name;
+
+            FillBranchVisibilityMenu(submenu, branch);
 
             var checkout = new MenuItem();
             checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
@@ -988,9 +1010,6 @@ namespace SourceGit.ViewModels
             };
 
             submenu.Items.Add(merge);
-            submenu.Items.Add(new MenuItem() { Header = "-" });
-
-            FillBranchVisibilityMenu(submenu, branch);
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
@@ -1002,6 +1021,17 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(delete);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("BranchCM.CopyName");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, e) =>
+            {
+                App.CopyText(name);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copy);
 
             menu.Items.Add(submenu);
         }
@@ -1012,6 +1042,8 @@ namespace SourceGit.ViewModels
             submenu.Header = tag.Name;
             submenu.Icon = App.CreateMenuIcon("Icons.Tag");
             submenu.MinWidth = 200;
+
+            FillTagVisibilityMenu(submenu, tag);
 
             var push = new MenuItem();
             push.Header = new Views.NameHighlightedTextBlock("TagCM.Push", tag.Name);
@@ -1036,9 +1068,6 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(merge);
-            submenu.Items.Add(new MenuItem() { Header = "-" });
-
-            FillTagVisibilityMenu(submenu, tag);
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);
@@ -1050,6 +1079,17 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
             submenu.Items.Add(delete);
+            submenu.Items.Add(new MenuItem() { Header = "-" });
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("TagCM.Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, e) =>
+            {
+                App.CopyText(tag.Name);
+                e.Handled = true;
+            };
+            submenu.Items.Add(copy);
 
             menu.Items.Add(submenu);
         }
