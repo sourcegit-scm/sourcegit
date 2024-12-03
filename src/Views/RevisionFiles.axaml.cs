@@ -155,11 +155,7 @@ namespace SourceGit.Views
 
         private void OnSearchBoxTextChanged(object _, TextChangedEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
-                return;
-
-            if (string.IsNullOrEmpty(vm.RevisionFileSearchFilter))
+            if (string.IsNullOrEmpty(TxtSearchRevisionFiles.Text))
                 FileTree.SetSearchResult(null);
         }
 
