@@ -1,4 +1,4 @@
-name: Publish to PackageCloud
+name: Publish to Buildkite
 on:
  workflow_call:
    inputs:
@@ -7,11 +7,11 @@ on:
        required: true
        type: string
    secrets:
-     PACKAGECLOUD_TOKEN:
+     BUILDKITE_TOKEN:
        required: true
 jobs:
  publish:
-   name: Publish to PackageCloud
+   name: Publish to Buildkite
    runs-on: ubuntu-latest
    strategy:
      matrix:

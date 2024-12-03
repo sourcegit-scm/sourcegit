@@ -31,7 +31,7 @@ jobs:
     with:
       version: ${{ needs.version.outputs.version }}
     secrets:
-      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
   release:
     needs: [package, version]
     name: Release
