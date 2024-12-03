@@ -17,8 +17,16 @@ jobs:
      matrix:
        runtime: [linux-x64, linux-arm64]
    steps:
-     - name: Install package_cloud
-       run: gem install package_cloud
+     - name: Download and unpack buildkite CLI # ugly, but the only way for now
+       run: |
+         curl -s https://api.github.com/repos/buildkite/cli/releases/latest \
+         | grep "browser_download_url.*amd64.tar.gz" \
+         | cut -d : -f 2,3 \
+         | tr -d \" \
+         | wget -i - -O - \
+         | tar -xz \
+         && mv bk_*/bk . \
+         && rm bk_* -rfd
 
      - name: Download package artifacts
        uses: actions/download-artifact@v4
@@ -30,10 +38,12 @@ jobs:
        env:
          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
        run: |
-         package_cloud push your-username/sourcegit/debian/any packages/*.deb
+         curl -X POST https://api.buildkite.com/v2/packages/organizations/stone-w4tch3r/registries/sourcegit-fork-test-deb/packages \
+           -H "Authorization: Bearer $PACKAGECLOUD_TOKEN" \
+           -F "file=build/sourcegit-0.0.1-1.x86_64.rpm"
 
      - name: Publish RPM package
        env:
          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
        run: |
-         package_cloud push your-username/sourcegit/rpm_any/rpm_any packages/*.rpm
+         package_cloud push stone-w4tch3r/sourcegit-fork-test-rpm/rpm_any/rpm_any packages/*.rpm
