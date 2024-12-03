@@ -164,7 +164,12 @@ namespace SourceGit
                     var resDic = new ResourceDictionary();
                     var overrides = JsonSerializer.Deserialize(File.ReadAllText(themeOverridesFile), JsonCodeGen.Default.ThemeOverrides);
                     foreach (var kv in overrides.BasicColors)
-                        resDic[$"Color.{kv.Key}"] = kv.Value;
+                    {
+                        if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
+                            resDic["SystemAccentColor"] = kv.Value;
+                        else
+                            resDic[$"Color.{kv.Key}"] = kv.Value;
+                    }
 
                     if (overrides.GraphColors.Count > 0)
                         Models.CommitGraph.SetPens(overrides.GraphColors, overrides.GraphPenThickness);
