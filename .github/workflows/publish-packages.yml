@@ -27,7 +27,7 @@ jobs:
        env:
          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
        run: |
-         FILE=$(echo *.deb)
+         FILE=$(echo packages/*.deb)
          echo $FILE
          curl -X POST https://api.buildkite.com/v2/packages/organizations/stone-w4tch3r/registries/sourcegit-fork-test-deb/packages \
            -H "Authorization: Bearer $BUILDKITE_TOKEN" \
@@ -37,7 +37,7 @@ jobs:
        env:
          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
        run: |
-         FILE=$(echo *.rpm)
+         FILE=$(echo packages/*.rpm)
          curl -X POST https://api.buildkite.com/v2/packages/organizations/stone-w4tch3r/registries/sourcegit-fork-test-rpm/packages \
            -H "Authorization: Bearer $BUILDKITE_TOKEN" \
            -F "file=@$FILE"
