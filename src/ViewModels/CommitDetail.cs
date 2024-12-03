@@ -623,6 +623,8 @@ namespace SourceGit.ViewModels
             RevisionFileSearchFilter = string.Empty;
             IsRevisionFileSearchSuggestionOpen = false;
 
+            GC.Collect();
+
             if (_commit == null)
                 return;
 
