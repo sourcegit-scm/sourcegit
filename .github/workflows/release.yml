@@ -28,8 +28,6 @@ jobs:
     needs: [package, version]
     name: Publish Packages
     uses: ./.github/workflows/publish-packages.yml
-    with:
-      version: ${{ needs.version.outputs.version }}
     secrets:
       BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
   release:

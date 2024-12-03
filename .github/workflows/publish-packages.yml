@@ -1,11 +1,6 @@
 name: Publish to Buildkite
 on:
  workflow_call:
-   inputs:
-     version:
-       description: SourceGit package version
-       required: true
-       type: string
    secrets:
      BUILDKITE_TOKEN:
        required: true
