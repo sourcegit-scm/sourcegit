@@ -401,7 +401,7 @@ namespace SourceGit.Views
                 deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
                 deleteMulti.Click += (_, ev) =>
                 {
-                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal, false);
                     ev.Handled = true;
                 };
                 menu.Items.Add(deleteMulti);

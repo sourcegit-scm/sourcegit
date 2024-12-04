@@ -50,6 +50,10 @@
         </ListBox.ItemTemplate>
       </ListBox>
     </Border>
+    
+    <Border Height="32">
+      <CheckBox Margin="6,0,0,0" Content="{Binding DeleteNotMergedTip}" IsChecked="{Binding DeleteNotMerged, Mode=TwoWay}"/>
+    </Border>
 
     <TextBlock Margin="4,8,0,0"
                Text="{DynamicResource Text.DeleteMultiBranch.Tip}"

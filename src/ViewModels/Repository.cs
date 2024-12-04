@@ -944,10 +944,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
+        public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal, bool deleteNotMerged)
         {
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new DeleteMultipleBranches(this, branches, isLocal));
+                PopupHost.ShowPopup(new DeleteMultipleBranches(this, branches, isLocal, deleteNotMerged));
         }
 
         public void CreateNewTag()
