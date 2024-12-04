@@ -22,11 +22,11 @@
                 VerticalAlignment="Center"
                 CornerRadius="9"
                 Background="{DynamicResource Brush.Badge}"
-                IsVisible="{Binding TrackStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                IsVisible="{Binding Target.TrackStatus.IsVisible}">
           <TextBlock Foreground="{DynamicResource Brush.BadgeFG}"
                      FontFamily="{DynamicResource Fonts.Monospace}"
                      FontSize="10"
-                     Text="{Binding TrackStatus}"/>
+                     Text="{Binding Target.TrackStatus}"/>
         </Border>
       </StackPanel>
 

@@ -10,12 +10,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public string TrackStatus
-        {
-            get;
-            private set;
-        }
-
         public Models.Branch TrackingRemoteBranch
         {
             get;
@@ -38,7 +32,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Target = branch;
-            TrackStatus = branch.TrackStatus.ToString();
 
             if (branch.IsLocal && !string.IsNullOrEmpty(branch.Upstream))
             {
