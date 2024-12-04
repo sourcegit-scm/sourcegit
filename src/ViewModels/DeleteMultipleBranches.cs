@@ -10,11 +10,25 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public DeleteMultipleBranches(Repository repo, List<Models.Branch> branches, bool isLocal)
+        public object DeleteNotMergedTip
+        {
+            get;
+            private set;
+        }
+        
+        public bool DeleteNotMerged
+        {
+            get => _deleteNotMerged;
+            set => SetProperty(ref _deleteNotMerged, value);
+        }
+
+        public DeleteMultipleBranches(Repository repo, List<Models.Branch> branches, bool isLocal, bool deleteNotMerged)
         {
             _repo = repo;
             _isLocal = isLocal;
+            _deleteNotMerged = deleteNotMerged;
             Targets = branches;
+            DeleteNotMergedTip = new Views.NameHighlightedTextBlock("DeleteBranch.NotMerged");
             View = new Views.DeleteMultipleBranches() { DataContext = this };
         }
 
@@ -30,7 +44,7 @@ namespace SourceGit.ViewModels
                     foreach (var target in Targets)
                     {
                         SetProgressDescription($"Deleting local branch : {target.Name}");
-                        Commands.Branch.DeleteLocal(_repo.FullPath, target.Name);
+                        Commands.Branch.DeleteLocal(_repo.FullPath, target.Name, _deleteNotMerged);
                     }
                 }
                 else
@@ -54,5 +68,6 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private bool _isLocal = false;
+        private bool _deleteNotMerged = false;
     }
 }
