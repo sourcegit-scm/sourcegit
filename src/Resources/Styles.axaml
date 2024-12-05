@@ -856,12 +856,7 @@
                 </Border.Effect>
               </Border>
 
-              <Border BorderThickness="0"
-                      Margin="8,4"
-                      MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                      MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-                      HorizontalAlignment="Stretch"
-                      CornerRadius="{DynamicResource OverlayCornerRadius}">
+              <Border BorderThickness="0" Margin="8,4" MaxHeight="400">
                 <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
                   <ItemsPresenter Name="PART_ItemsPresenter"
                                   Margin="{DynamicResource MenuFlyoutScrollerMargin}"
