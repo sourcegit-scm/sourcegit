@@ -9,28 +9,13 @@
 
 </details>
 
-### es_ES.axaml: 97.73%
+### es_ES.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Files.Search
-- Text.CommitDetail.Info.Children
-- Text.Fetch.Force
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
 - Text.Preference.General.ShowChildren
-- Text.Repository.FilterCommits
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
-- Text.SHALinkCM.NavigateTo
-- Text.WorkingCopy.CommitToEdit
 
 </details>
 
