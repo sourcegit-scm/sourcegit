@@ -9,13 +9,13 @@
 
 </details>
 
-### es_ES.axaml: 99.86%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference.General.ShowChildren
+
 
 </details>
 
