@@ -126,10 +126,12 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Cambios...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARCHIVOS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Archivo LFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Buscar Archivos...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submódulo</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMACIÓN</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CAMBIADO</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">HIJOS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Ver refs que contienen este commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT ESTÁ CONTENIDO EN</x:String>
@@ -272,6 +274,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (sin checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch todos los remotos</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Utilizar opción '--force'</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch sin etiquetas</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Cambios Remotos</x:String>
@@ -437,6 +440,9 @@
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APARIENCIA</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Fuente por defecto</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize" xml:space="preserve">Tamaño de fuente</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Default" xml:space="preserve">Por defecto</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Fuente Monospace</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usar solo fuente monospace en el editor de texto</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
@@ -541,6 +547,13 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Habilitar Opción '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir en el Explorador</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Buscar Ramas/Etiquetas/Submódulos</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilidad en el Gráfico</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Desestablecer</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Ocultar en el Gráfico de Commits</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filtrar en el Gráfico de Commits</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Cambiar Modo de Ordenación</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Fecha de Commit (--date-order)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topológicamente (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">RAMAS LOCALES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar a HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Habilitar Opción '--first-parent'</x:String>
@@ -593,6 +606,7 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Actualización de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Actualmente no hay actualizaciones disponibles.</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Ir a</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Clave Privada SSH:</x:String>
@@ -670,6 +684,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Plantilla/Historias</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Activar evento de clic</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Editar)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stagear todos los cambios y commit</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTOS DETECTADOS</x:String>
