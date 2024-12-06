@@ -151,7 +151,9 @@ namespace SourceGit.Views
 
         private void OnSHAPressed(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
+            var point = e.GetCurrentPoint(this);
+
+            if (point.Properties.IsLeftButtonPressed && DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
             {
                 detail.NavigateTo(sha);
             }

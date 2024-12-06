@@ -239,20 +239,24 @@
                   Margin="8,0,0,0"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding UseAmend, Mode=TwoWay}"
-                  IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
                   Content="{DynamicResource Text.WorkingCopy.Amend}"/>
 
         <v:LoadingIcon Grid.Column="5" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
-
-        <Button Grid.Column="6"
-                Classes="flat primary"
-                Content="{DynamicResource Text.Repository.Continue}"
-                Height="28"
-                Margin="8,0,0,0"
-                Padding="8,0"
-                Command="{Binding ContinueMerge}"
-                IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"
-                IsEnabled="{Binding !HasUnsolvedConflicts}"/>
+        
+        <SplitButton Grid.Column="6"
+                     Content="{DynamicResource Text.Repository.Continue}"
+                     Height="28"
+                     Margin="8,0,0,0"
+                     Padding="8,0"
+                     Command="{Binding ContinueMerge}"
+                     IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"
+                     IsEnabled="{Binding !HasUnsolvedConflicts}">
+          <SplitButton.Flyout>
+            <MenuFlyout>
+              <MenuItem Header="{DynamicResource Text.WorkingCopy.CommitToEdit}" Command="{Binding Commit}"/>
+            </MenuFlyout>
+          </SplitButton.Flyout>
+        </SplitButton>
 
         <Button Grid.Column="6"
                 Classes="flat primary"

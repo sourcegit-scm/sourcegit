@@ -1,4 +1,15 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 99.72%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.CommitDetail.Files.Search
+- Text.WorkingCopy.CommitToEdit
+
+</details>
+
+### es_ES.axaml: 100.00%
 
 
 <details>
@@ -8,30 +19,7 @@
 
 </details>
 
-### es_ES.axaml: 98.01%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- Text.CommitDetail.Info.Children
-- Text.Fetch.Force
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
-- Text.Preference.General.ShowChildren
-- Text.Repository.FilterCommits
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
-- Text.SHALinkCM.NavigateTo
-
-</details>
-
-### fr_FR.axaml: 97.44%
+### fr_FR.axaml: 97.17%
 
 
 <details>
@@ -40,6 +28,7 @@
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.CommitDetail.Files.Search
 - Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
@@ -55,15 +44,17 @@
 - Text.Repository.HistoriesOrder.Topo
 - Text.ScanRepositories
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### it_IT.axaml: 97.87%
+### it_IT.axaml: 97.59%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
@@ -79,30 +70,33 @@
 - Text.Repository.HistoriesOrder.Topo
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### pt_BR.axaml: 99.29%
+### pt_BR.axaml: 99.01%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.SHALinkCM.NavigateTo
+- Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CommitDetail.Files.Search
 
 </details>
 
