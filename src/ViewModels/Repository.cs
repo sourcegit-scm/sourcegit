@@ -427,11 +427,11 @@ namespace SourceGit.ViewModels
             {
                 // Ignore
             }
-            _settings = null;
-            _historiesFilterMode = Models.FilterMode.None;
-
             _autoFetchTimer.Dispose();
             _autoFetchTimer = null;
+
+            _settings = null;
+            _historiesFilterMode = Models.FilterMode.None;
 
             _watcher?.Dispose();
             _histories.Cleanup();
