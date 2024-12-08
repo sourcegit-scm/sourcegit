@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Avalonia;
@@ -254,6 +255,10 @@ namespace SourceGit.Views
                 if (_presenter.Document == null || !textView.VisualLinesValid)
                     return;
 
+                var changeBlock = _presenter.GetCurrentChangeBlock();
+                Brush changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
+                Pen changeBlockFG = new Pen(Brushes.Gray, 1);
+
                 var lines = _presenter.GetLines();
                 var width = textView.Bounds.Width;
                 foreach (var line in textView.VisualLines)
@@ -266,50 +271,62 @@ namespace SourceGit.Views
                         break;
 
                     var info = lines[index - 1];
-                    var bg = GetBrushByLineType(info.Type);
-                    if (bg == null)
-                        continue;
 
                     var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                     var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
-                    drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
 
-                    if (info.Highlights.Count > 0)
+                    var bg = GetBrushByLineType(info.Type);
+                    if (bg != null)
                     {
-                        var highlightBG = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
-                        var processingIdxStart = 0;
-                        var processingIdxEnd = 0;
-                        var nextHightlight = 0;
+                        if (bg != null)
+                            drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
 
-                        foreach (var tl in line.TextLines)
+                        if (info.Highlights.Count > 0)
                         {
-                            processingIdxEnd += tl.Length;
+                            var highlightBG = info.Type == Models.TextDiffLineType.Added ? _presenter.AddedHighlightBrush : _presenter.DeletedHighlightBrush;
+                            var processingIdxStart = 0;
+                            var processingIdxEnd = 0;
+                            var nextHighlight = 0;
 
-                            var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
-                            var h = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
-
-                            while (nextHightlight < info.Highlights.Count)
+                            foreach (var tl in line.TextLines)
                             {
-                                var highlight = info.Highlights[nextHightlight];
-                                if (highlight.Start >= processingIdxEnd)
-                                    break;
+                                processingIdxEnd += tl.Length;
 
-                                var start = line.GetVisualColumn(highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start);
-                                var end = line.GetVisualColumn(highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1);
+                                var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
+                                var h = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
 
-                                var x = line.GetTextLineVisualXPosition(tl, start) - textView.HorizontalOffset;
-                                var w = line.GetTextLineVisualXPosition(tl, end) - textView.HorizontalOffset - x;
-                                var rect = new Rect(x, y, w, h);
-                                drawingContext.DrawRectangle(highlightBG, null, rect);
+                                while (nextHighlight < info.Highlights.Count)
+                                {
+                                    var highlight = info.Highlights[nextHighlight];
+                                    if (highlight.Start >= processingIdxEnd)
+                                        break;
 
-                                if (highlight.End >= processingIdxEnd)
-                                    break;
+                                    var start = line.GetVisualColumn(highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start);
+                                    var end = line.GetVisualColumn(highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1);
 
-                                nextHightlight++;
+                                    var x = line.GetTextLineVisualXPosition(tl, start) - textView.HorizontalOffset;
+                                    var w = line.GetTextLineVisualXPosition(tl, end) - textView.HorizontalOffset - x;
+                                    var rect = new Rect(x, y, w, h);
+                                    drawingContext.DrawRectangle(highlightBG, null, rect);
+
+                                    if (highlight.End >= processingIdxEnd)
+                                        break;
+
+                                    nextHighlight++;
+                                }
+
+                                processingIdxStart = processingIdxEnd;
                             }
-
-                            processingIdxStart = processingIdxEnd;
                         }
+                    }
+
+                    if (changeBlock != null && changeBlock.IsInRange(index))
+                    {
+                        drawingContext.DrawRectangle(changeBlockBG, null, new Rect(0, startY, width, endY - startY));
+                        if (index == changeBlock.StartLine)
+                            drawingContext.DrawLine(changeBlockFG, new Point(0, startY), new Point(width, startY));
+                        if (index == changeBlock.EndLine)
+                            drawingContext.DrawLine(changeBlockFG, new Point(0, endY), new Point(width, endY));
                     }
                 }
             }
@@ -486,6 +503,15 @@ namespace SourceGit.Views
             set => SetValue(DisplayRangeProperty, value);
         }
 
+        public static readonly StyledProperty<int> CurrentChangeBlockIdxProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, int>(nameof(CurrentChangeBlockIdx));
+
+        public int CurrentChangeBlockIdx
+        {
+            get => GetValue(CurrentChangeBlockIdxProperty);
+            set => SetValue(CurrentChangeBlockIdxProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public ThemedTextDiffPresenter(TextArea area, TextDocument doc) : base(area, doc)
@@ -590,6 +616,28 @@ namespace SourceGit.Views
             }
         }
 
+        public Models.TextDiffChangeBlock GetCurrentChangeBlock()
+        {
+            return GetChangeBlock(CurrentChangeBlockIdx);
+        }
+
+        public virtual Models.TextDiffChangeBlock GetChangeBlock(int changeBlockIdx)
+        {
+            return null;
+        }
+
+        public void JumpToChangeBlock(int changeBlockIdx)
+        {
+            var changeBlock = GetChangeBlock(changeBlockIdx);
+            if (changeBlock != null)
+            {
+                TextArea.Caret.Line = changeBlock.StartLine;
+                //TextArea.Caret.BringCaretToView(); // NOTE: Brings caret line (barely) into view.
+                ScrollToLine(changeBlock.StartLine); // NOTE: Brings specified line into center of view.
+            }
+            TextArea.TextView.Redraw();
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -662,6 +710,10 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
             else if (change.Property == SelectedChunkProperty)
+            {
+                InvalidateVisual();
+            }
+            else if (change.Property == CurrentChangeBlockIdxProperty)
             {
                 InvalidateVisual();
             }
@@ -1018,6 +1070,16 @@ namespace SourceGit.Views
             }
         }
 
+        public override Models.TextDiffChangeBlock GetChangeBlock(int changeBlockIdx)
+        {
+            if (DataContext is Models.TextDiff diff)
+            {
+                if (changeBlockIdx >= 0 && changeBlockIdx < diff.ChangeBlocks.Count)
+                    return diff.ChangeBlocks[changeBlockIdx];
+            }
+            return null;
+        }
+
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
@@ -1089,6 +1151,8 @@ namespace SourceGit.Views
 
         public void ForceSyncScrollOffset()
         {
+            if (_scrollViewer == null)
+                return;
             if (DataContext is ViewModels.TwoSideTextDiff diff)
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
@@ -1232,6 +1296,16 @@ namespace SourceGit.Views
                     IsOldSide = false,
                 });
             }
+        }
+
+        public override Models.TextDiffChangeBlock GetChangeBlock(int changeBlockIdx)
+        {
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+            {
+                if (changeBlockIdx >= 0 && changeBlockIdx < diff.ChangeBlocks.Count)
+                    return diff.ChangeBlocks[changeBlockIdx];
+            }
+            return null;
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -1480,6 +1554,15 @@ namespace SourceGit.Views
             set => SetValue(EnableChunkSelectionProperty, value);
         }
 
+        public static readonly StyledProperty<int> CurrentChangeBlockIdxProperty =
+            AvaloniaProperty.Register<TextDiffView, int>(nameof(CurrentChangeBlockIdx));
+
+        public int CurrentChangeBlockIdx
+        {
+            get => GetValue(CurrentChangeBlockIdxProperty);
+            set => SetValue(CurrentChangeBlockIdxProperty, value);
+        }
+
         static TextDiffView()
         {
             UseSideBySideDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
@@ -1505,6 +1588,19 @@ namespace SourceGit.Views
                 var right = (chunk.Combined || !chunk.IsOldSide) ? 16 : v.Bounds.Width * 0.5f + 16;
                 v.Popup.Margin = new Thickness(0, top, right, 0);
                 v.Popup.IsVisible = true;
+            });
+
+            CurrentChangeBlockIdxProperty.Changed.AddClassHandler<TextDiffView>((v, e) =>
+            {
+                if (v.Editor.Presenter != null)
+                {
+                    foreach (var p in v.Editor.Presenter.GetVisualDescendants().OfType<ThemedTextDiffPresenter>())
+                    {
+                        p.JumpToChangeBlock((int)e.NewValue);
+                        if (p is SingleSideTextDiffPresenter ssp)
+                            ssp.ForceSyncScrollOffset();
+                    }
+                }
             });
         }
 
@@ -1553,6 +1649,8 @@ namespace SourceGit.Views
 
             IsUnstagedChange = diff.Option.IsUnstaged;
             EnableChunkSelection = diff.Option.WorkingCopyChange != null;
+
+            diff.CurrentChangeBlockIdx = -1; // Unset current change block.
         }
 
         private void OnStageChunk(object _1, RoutedEventArgs _2)

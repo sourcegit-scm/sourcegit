@@ -45,8 +45,41 @@ namespace SourceGit.ViewModels
 
             FillEmptyLines();
 
+            ProcessChangeBlocks();
+
             if (previous != null && previous.File == File)
                 _syncScrollOffset = previous._syncScrollOffset;
+        }
+
+        public List<Models.TextDiffChangeBlock> ChangeBlocks { get; set; } = [];
+
+        public void ProcessChangeBlocks()
+        {
+            ChangeBlocks.Clear();
+            int lineIdx = 0, blockStartIdx = 0;
+            bool isNewBlock = true;
+            foreach (var line in Old) // NOTE: Same block size in both Old and New lines.
+            {
+                lineIdx++;
+                if (line.Type == Models.TextDiffLineType.Added ||
+                    line.Type == Models.TextDiffLineType.Deleted ||
+                    line.Type == Models.TextDiffLineType.None) // Empty
+                {
+                    if (isNewBlock)
+                    {
+                        isNewBlock = false;
+                        blockStartIdx = lineIdx;
+                    }
+                }
+                else
+                {
+                    if (!isNewBlock)
+                    {
+                        ChangeBlocks.Add(new Models.TextDiffChangeBlock(blockStartIdx, lineIdx - 1));
+                        isNewBlock = true;
+                    }
+                }
+            }
         }
 
         public void ConvertsToCombinedRange(Models.TextDiff combined, ref int startLine, ref int endLine, bool isOldSide)

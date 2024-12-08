@@ -51,6 +51,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _unifiedLines, value);
         }
 
+        public string ChangeBlockIndicator
+        {
+            get => _changeBlockIndicator;
+            private set => SetProperty(ref _changeBlockIndicator, value);
+        }
+
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -73,10 +79,66 @@ namespace SourceGit.ViewModels
             LoadDiffContent();
         }
 
+        public void PrevChange()
+        {
+            if (_content is Models.TextDiff textDiff)
+            {
+                if (textDiff.CurrentChangeBlockIdx > 0)
+                {
+                    textDiff.CurrentChangeBlockIdx--;
+                }
+                else if (textDiff.ChangeBlocks.Count > 0)
+                {
+                    // Force property value change and (re-)jump to first change block
+                    textDiff.CurrentChangeBlockIdx = -1;
+                    textDiff.CurrentChangeBlockIdx = 0;
+                }
+            }
+            RefreshChangeBlockIndicator();
+        }
+
+        public void NextChange()
+        {
+            if (_content is Models.TextDiff textDiff)
+            {
+                if (textDiff.CurrentChangeBlockIdx < textDiff.ChangeBlocks.Count - 1)
+                {
+                    textDiff.CurrentChangeBlockIdx++;
+                }
+                else if (textDiff.ChangeBlocks.Count > 0)
+                {
+                    // Force property value change and (re-)jump to last change block
+                    textDiff.CurrentChangeBlockIdx = -1;
+                    textDiff.CurrentChangeBlockIdx = textDiff.ChangeBlocks.Count - 1;
+                }
+                RefreshChangeBlockIndicator();
+            }
+        }
+
+        public void RefreshChangeBlockIndicator()
+        {
+            string curr = "-", tot = "-";
+            if (_content is Models.TextDiff textDiff)
+            {
+                if (textDiff.CurrentChangeBlockIdx >= 0)
+                    curr = (textDiff.CurrentChangeBlockIdx + 1).ToString();
+                tot = (textDiff.ChangeBlocks.Count).ToString();
+            }
+            ChangeBlockIndicator = curr + "/" + tot;
+        }
+
         public void ToggleFullTextDiff()
         {
             Preference.Instance.UseFullTextDiff = !Preference.Instance.UseFullTextDiff;
             LoadDiffContent();
+        }
+
+        public void ToggleHighlightedDiffNavigation()
+        {
+            Preference.Instance.EnableChangeBlocks = !Preference.Instance.EnableChangeBlocks;
+            if (_content is Models.TextDiff textDiff)
+                textDiff.CurrentChangeBlockIdx = -1;
+            RefreshChangeBlockIndicator();
         }
 
         public void IncrUnified()
@@ -89,6 +151,12 @@ namespace SourceGit.ViewModels
         {
             UnifiedLines = Math.Max(4, _unifiedLines - 1);
             LoadDiffContent();
+        }
+
+        public void ToggleTwoSideDiff()
+        {
+            Preference.Instance.UseSideBySideDiff = !Preference.Instance.UseSideBySideDiff;
+            RefreshChangeBlockIndicator();
         }
 
         public void OpenExternalMergeTool()
@@ -217,7 +285,9 @@ namespace SourceGit.ViewModels
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
                     IsTextDiff = rs is Models.TextDiff;
-                });
+
+                    RefreshChangeBlockIndicator();
+                 });
             });
         }
 
@@ -281,6 +351,7 @@ namespace SourceGit.ViewModels
         private string _title;
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
+        private string _changeBlockIndicator = "-/-";
         private bool _isTextDiff = false;
         private bool _ignoreWhitespace = false;
         private object _content = null;
