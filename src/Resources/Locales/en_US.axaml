@@ -233,7 +233,6 @@
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copy</x:String>
-  <x:String x:Key="Text.Diff.HighlightedDiffNavigation" xml:space="preserve">Highlighted Diff Navigation</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore Whitespace Change</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
@@ -248,6 +247,7 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Swap</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Line Word Wrap</x:String>
+  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Enable Block-Navigation</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Open in Merge Tool</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Show All Lines</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Decrease Number of Visible Lines</x:String>

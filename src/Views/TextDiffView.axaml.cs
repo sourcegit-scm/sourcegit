@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 using Avalonia;
@@ -255,9 +255,9 @@ namespace SourceGit.Views
                 if (_presenter.Document == null || !textView.VisualLinesValid)
                     return;
 
-                var changeBlock = _presenter.GetCurrentChangeBlock();
+                var changeBlock = _presenter.BlockNavigation?.GetCurrentBlock();
                 Brush changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
-                Pen changeBlockFG = new Pen(Brushes.Gray, 1);
+                Pen changeBlockFG = new Pen(Brushes.Gray);
 
                 var lines = _presenter.GetLines();
                 var width = textView.Bounds.Width;
@@ -278,8 +278,7 @@ namespace SourceGit.Views
                     var bg = GetBrushByLineType(info.Type);
                     if (bg != null)
                     {
-                        if (bg != null)
-                            drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
+                        drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
 
                         if (info.Highlights.Count > 0)
                         {
@@ -323,9 +322,9 @@ namespace SourceGit.Views
                     if (changeBlock != null && changeBlock.IsInRange(index))
                     {
                         drawingContext.DrawRectangle(changeBlockBG, null, new Rect(0, startY, width, endY - startY));
-                        if (index == changeBlock.StartLine)
+                        if (index == changeBlock.Start)
                             drawingContext.DrawLine(changeBlockFG, new Point(0, startY), new Point(width, startY));
-                        if (index == changeBlock.EndLine)
+                        if (index == changeBlock.End)
                             drawingContext.DrawLine(changeBlockFG, new Point(0, endY), new Point(width, endY));
                     }
                 }
@@ -503,13 +502,13 @@ namespace SourceGit.Views
             set => SetValue(DisplayRangeProperty, value);
         }
 
-        public static readonly StyledProperty<int> CurrentChangeBlockIdxProperty =
-            AvaloniaProperty.Register<ThemedTextDiffPresenter, int>(nameof(CurrentChangeBlockIdx));
+        public static readonly StyledProperty<ViewModels.BlockNavigation> BlockNavigationProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, ViewModels.BlockNavigation>(nameof(BlockNavigation));
 
-        public int CurrentChangeBlockIdx
+        public ViewModels.BlockNavigation BlockNavigation
         {
-            get => GetValue(CurrentChangeBlockIdxProperty);
-            set => SetValue(CurrentChangeBlockIdxProperty, value);
+            get => GetValue(BlockNavigationProperty);
+            set => SetValue(BlockNavigationProperty, value);
         }
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
@@ -546,6 +545,19 @@ namespace SourceGit.Views
 
         public void GotoPrevChange()
         {
+            var blockNavigation = BlockNavigation;
+            if (blockNavigation != null)
+            {
+                var prev = blockNavigation.GotoPrev();
+                if (prev != null)
+                {
+                    TextArea.Caret.Line = prev.Start;
+                    ScrollToLine(prev.Start);
+                }
+
+                return;
+            }
+            
             var firstLineIdx = DisplayRange.StartIdx;
             if (firstLineIdx <= 1)
                 return;
@@ -588,7 +600,20 @@ namespace SourceGit.Views
         }
 
         public void GotoNextChange()
-        {
+        {   
+            var blockNavigation = BlockNavigation;
+            if (blockNavigation != null)
+            {
+                var next = blockNavigation.GotoNext();
+                if (next != null)
+                {
+                    TextArea.Caret.Line = next.Start;
+                    ScrollToLine(next.Start);
+                }
+
+                return;
+            }
+            
             var lines = GetLines();
             var lastLineIdx = DisplayRange.EndIdx;
             if (lastLineIdx >= lines.Count - 1)
@@ -614,28 +639,6 @@ namespace SourceGit.Views
                     findNormalLine = true;
                 }
             }
-        }
-
-        public Models.TextDiffChangeBlock GetCurrentChangeBlock()
-        {
-            return GetChangeBlock(CurrentChangeBlockIdx);
-        }
-
-        public virtual Models.TextDiffChangeBlock GetChangeBlock(int changeBlockIdx)
-        {
-            return null;
-        }
-
-        public void JumpToChangeBlock(int changeBlockIdx)
-        {
-            var changeBlock = GetChangeBlock(changeBlockIdx);
-            if (changeBlock != null)
-            {
-                TextArea.Caret.Line = changeBlock.StartLine;
-                //TextArea.Caret.BringCaretToView(); // NOTE: Brings caret line (barely) into view.
-                ScrollToLine(changeBlock.StartLine); // NOTE: Brings specified line into center of view.
-            }
-            TextArea.TextView.Redraw();
         }
 
         public override void Render(DrawingContext context)
@@ -713,10 +716,22 @@ namespace SourceGit.Views
             {
                 InvalidateVisual();
             }
-            else if (change.Property == CurrentChangeBlockIdxProperty)
+            else if (change.Property == BlockNavigationProperty)
             {
+                var oldValue = change.OldValue as ViewModels.BlockNavigation;
+                var newValue = change.NewValue as ViewModels.BlockNavigation;
+                if (oldValue != null)
+                    oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
+                if (newValue != null)
+                    newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
+                
                 InvalidateVisual();
             }
+        }
+
+        private void OnBlockNavigationPropertyChanged(object _1, PropertyChangedEventArgs _2)
+        {
+            TextArea.TextView.Redraw();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -1070,16 +1085,6 @@ namespace SourceGit.Views
             }
         }
 
-        public override Models.TextDiffChangeBlock GetChangeBlock(int changeBlockIdx)
-        {
-            if (DataContext is Models.TextDiff diff)
-            {
-                if (changeBlockIdx >= 0 && changeBlockIdx < diff.ChangeBlocks.Count)
-                    return diff.ChangeBlocks[changeBlockIdx];
-            }
-            return null;
-        }
-
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
@@ -1298,16 +1303,6 @@ namespace SourceGit.Views
             }
         }
 
-        public override Models.TextDiffChangeBlock GetChangeBlock(int changeBlockIdx)
-        {
-            if (DataContext is ViewModels.TwoSideTextDiff diff)
-            {
-                if (changeBlockIdx >= 0 && changeBlockIdx < diff.ChangeBlocks.Count)
-                    return diff.ChangeBlocks[changeBlockIdx];
-            }
-            return null;
-        }
-
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
@@ -1518,15 +1513,6 @@ namespace SourceGit.Views
             set => SetValue(UseSideBySideDiffProperty, value);
         }
 
-        public static readonly StyledProperty<bool> UseFullTextDiffProperty =
-            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseFullTextDiff));
-
-        public bool UseFullTextDiff
-        {
-            get => GetValue(UseFullTextDiffProperty);
-            set => SetValue(UseFullTextDiffProperty, value);
-        }
-
         public static readonly StyledProperty<TextDiffViewChunk> SelectedChunkProperty =
             AvaloniaProperty.Register<TextDiffView, TextDiffViewChunk>(nameof(SelectedChunk));
 
@@ -1554,13 +1540,31 @@ namespace SourceGit.Views
             set => SetValue(EnableChunkSelectionProperty, value);
         }
 
-        public static readonly StyledProperty<int> CurrentChangeBlockIdxProperty =
-            AvaloniaProperty.Register<TextDiffView, int>(nameof(CurrentChangeBlockIdx));
+        public static readonly StyledProperty<bool> UseBlockNavigationProperty =
+            AvaloniaProperty.Register<TextDiffView, bool>(nameof(UseBlockNavigation));
 
-        public int CurrentChangeBlockIdx
+        public bool UseBlockNavigation
         {
-            get => GetValue(CurrentChangeBlockIdxProperty);
-            set => SetValue(CurrentChangeBlockIdxProperty, value);
+            get => GetValue(UseBlockNavigationProperty);
+            set => SetValue(UseBlockNavigationProperty, value);
+        }
+
+        public static readonly StyledProperty<ViewModels.BlockNavigation> BlockNavigationProperty =
+            AvaloniaProperty.Register<TextDiffView, ViewModels.BlockNavigation>(nameof(BlockNavigation));
+
+        public ViewModels.BlockNavigation BlockNavigation
+        {
+            get => GetValue(BlockNavigationProperty);
+            set => SetValue(BlockNavigationProperty, value);
+        }
+        
+        public static readonly StyledProperty<string> BlockNavigationIndicatorProperty =
+            AvaloniaProperty.Register<TextDiffView, string>(nameof(BlockNavigationIndicator));
+
+        public string BlockNavigationIndicator
+        {
+            get => GetValue(BlockNavigationIndicatorProperty);
+            set => SetValue(BlockNavigationIndicatorProperty, value);
         }
 
         static TextDiffView()
@@ -1570,7 +1574,7 @@ namespace SourceGit.Views
                 v.RefreshContent(v.DataContext as Models.TextDiff, false);
             });
 
-            UseFullTextDiffProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
+            UseBlockNavigationProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
                 v.RefreshContent(v.DataContext as Models.TextDiff, false);
             });
@@ -1589,24 +1593,37 @@ namespace SourceGit.Views
                 v.Popup.Margin = new Thickness(0, top, right, 0);
                 v.Popup.IsVisible = true;
             });
-
-            CurrentChangeBlockIdxProperty.Changed.AddClassHandler<TextDiffView>((v, e) =>
-            {
-                if (v.Editor.Presenter != null)
-                {
-                    foreach (var p in v.Editor.Presenter.GetVisualDescendants().OfType<ThemedTextDiffPresenter>())
-                    {
-                        p.JumpToChangeBlock((int)e.NewValue);
-                        if (p is SingleSideTextDiffPresenter ssp)
-                            ssp.ForceSyncScrollOffset();
-                    }
-                }
-            });
         }
 
         public TextDiffView()
         {
             InitializeComponent();
+        }
+        
+        public void GotoPrevChange()
+        {
+            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
+            if (presenter == null)
+                return;
+
+            presenter.GotoPrevChange();
+            if (presenter is SingleSideTextDiffPresenter singleSide)
+                singleSide.ForceSyncScrollOffset();
+            
+            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+        }
+
+        public void GotoNextChange()
+        {
+            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
+            if (presenter == null)
+                return;
+
+            presenter.GotoNextChange();
+            if (presenter is SingleSideTextDiffPresenter singleSide)
+                singleSide.ForceSyncScrollOffset();
+            
+            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -1647,10 +1664,19 @@ namespace SourceGit.Views
                 Editor.Content = diff;
             }
 
+            if (UseBlockNavigation)
+            {
+                BlockNavigation = new ViewModels.BlockNavigation(Editor.Content);
+                BlockNavigationIndicator = BlockNavigation.Indicator;
+            }
+            else
+            {
+                BlockNavigation = null;
+                BlockNavigationIndicator = "-/-";
+            }
+
             IsUnstagedChange = diff.Option.IsUnstaged;
             EnableChunkSelection = diff.Option.WorkingCopyChange != null;
-
-            diff.CurrentChangeBlockIdx = -1; // Unset current change block.
         }
 
         private void OnStageChunk(object _1, RoutedEventArgs _2)

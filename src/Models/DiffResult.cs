@@ -2,8 +2,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
 using Avalonia;
 using Avalonia.Media.Imaging;
 
@@ -61,69 +59,15 @@ namespace SourceGit.Models
         }
     }
 
-    public class TextDiffChangeBlock
-    {
-        public TextDiffChangeBlock(int startLine, int endLine)
-        {
-            StartLine = startLine;
-            EndLine = endLine;
-        }
-
-        public int StartLine { get; set; } = 0;
-        public int EndLine { get; set; } = 0;
-
-        public bool IsInRange(int line)
-        {
-            return line >= StartLine && line <= EndLine;
-        }
-    }
-
-    public partial class TextDiff : ObservableObject
+    public partial class TextDiff
     {
         public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public Vector ScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
-        public int CurrentChangeBlockIdx
-        {
-            get => _currentChangeBlockIdx;
-            set => SetProperty(ref _currentChangeBlockIdx, value);
-        }
-
         public string Repo { get; set; } = null;
         public DiffOption Option { get; set; } = null;
-
-        public List<TextDiffChangeBlock> ChangeBlocks { get; set; } = [];
-
-        public void ProcessChangeBlocks()
-        {
-            ChangeBlocks.Clear();
-            int lineIdx = 0, blockStartIdx = 0;
-            bool isNewBlock = true;
-            foreach (var line in Lines)
-            {
-                lineIdx++;
-                if (line.Type == Models.TextDiffLineType.Added ||
-                    line.Type == Models.TextDiffLineType.Deleted ||
-                    line.Type == Models.TextDiffLineType.None) // Empty
-                {
-                    if (isNewBlock)
-                    {
-                        isNewBlock = false;
-                        blockStartIdx = lineIdx;
-                    }
-                }
-                else
-                {
-                    if (!isNewBlock)
-                    {
-                        ChangeBlocks.Add(new TextDiffChangeBlock(blockStartIdx, lineIdx - 1));
-                        isNewBlock = true;
-                    }
-                }
-            }
-        }
 
         public TextDiffSelection MakeSelection(int startLine, int endLine, bool isCombined, bool isOldSide)
         {
@@ -681,8 +625,6 @@ namespace SourceGit.Models
             builder.Append($"\n@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
             return true;
         }
-
-        private int _currentChangeBlockIdx = -1; // NOTE: Use -1 as "not set".
 
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
         private static partial Regex REG_INDICATOR();

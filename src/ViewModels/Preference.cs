@@ -206,10 +206,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useFullTextDiff, value);
         }
 
-        public bool EnableChangeBlocks
+        public bool UseBlockNavigationInDiffView
         {
-            get => _enableChangeBlocks;
-            set => SetProperty(ref _enableChangeBlocks, value);
+            get => _useBlockNavigationInDiffView;
+            set => SetProperty(ref _useBlockNavigationInDiffView, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -620,7 +620,7 @@ namespace SourceGit.ViewModels
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
-        private bool _enableChangeBlocks = false;
+        private bool _useBlockNavigationInDiffView = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

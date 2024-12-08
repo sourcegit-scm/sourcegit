@@ -30,9 +30,9 @@
                                          UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                          WordWrap="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap}"
                                          ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                         CurrentChangeBlockIdx="{Binding #ThisControl.CurrentChangeBlockIdx}"
                                          EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
-                                         SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+                                         SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"
+                                         BlockNavigation="{Binding #ThisControl.BlockNavigation, Mode=TwoWay}"/>
             
             <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
@@ -62,9 +62,9 @@
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                            WordWrap="False"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                           CurrentChangeBlockIdx="{Binding #ThisControl.CurrentChangeBlockIdx}"
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
-                                           SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+                                           SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"
+                                           BlockNavigation="{Binding #ThisControl.BlockNavigation, Mode=TwoWay}"/>
 
             <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
@@ -84,9 +84,9 @@
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting}"
                                            WordWrap="False"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                           CurrentChangeBlockIdx="{Binding #ThisControl.CurrentChangeBlockIdx}"
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
-                                           SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"/>
+                                           SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"
+                                           BlockNavigation="{Binding #ThisControl.BlockNavigation, Mode=TwoWay}"/>
             
             <Rectangle Grid.Column="3" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
