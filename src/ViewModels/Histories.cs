@@ -228,22 +228,28 @@ namespace SourceGit.ViewModels
             {
                 var selected = new List<Models.Commit>();
                 var canCherryPick = true;
+                var canMerge = true;
+
                 foreach (var item in list.SelectedItems)
                 {
                     if (item is Models.Commit c)
                     {
                         selected.Add(c);
 
-                        if (c.IsMerged || c.Parents.Count > 1)
+                        if (c.IsMerged)
+                        {
+                            canMerge = false;
                             canCherryPick = false;
+                        }
+                        else if (c.Parents.Count > 1)
+                        {
+                            canCherryPick = false;
+                        }
                     }
                 }
 
                 // Sort selected commits in order.
-                selected.Sort((l, r) =>
-                {
-                    return _commits.IndexOf(r) - _commits.IndexOf(l);
-                });
+                selected.Sort((l, r) => _commits.IndexOf(r) - _commits.IndexOf(l));
 
                 var multipleMenu = new ContextMenu();
 
@@ -259,8 +265,24 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     multipleMenu.Items.Add(cherryPickMultiple);
-                    multipleMenu.Items.Add(new MenuItem() { Header = "-" });
                 }
+
+                if (canMerge)
+                {
+                    var mergeMultiple = new MenuItem();
+                    mergeMultiple.Header = App.Text("CommitCM.MergeMultiple");
+                    mergeMultiple.Icon = App.CreateMenuIcon("Icons.Merge");
+                    mergeMultiple.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new MergeMultiple(_repo, selected));
+                        e.Handled = true;
+                    };
+                    multipleMenu.Items.Add(mergeMultiple);
+                }
+
+                if (canCherryPick || canMerge)
+                    multipleMenu.Items.Add(new MenuItem() { Header = "-" });
 
                 var saveToPatchMultiple = new MenuItem();
                 saveToPatchMultiple.Icon = App.CreateMenuIcon("Icons.Diff");

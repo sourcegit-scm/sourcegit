@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Merge(_repo.FullPath, Source, SelectedMode.Arg, SetProgressDescription).Exec();
+                var succ = new Commands.Merge(_repo.FullPath, Source, SelectedMode.Arg, null, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

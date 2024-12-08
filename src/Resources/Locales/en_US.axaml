@@ -110,6 +110,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactive Rebase ${0}$ to Here</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
@@ -403,6 +404,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge commits</x:String>
+  <x:String x:Key="Text.MergeMultiple.Commit" xml:space="preserve">Commit(s):</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit all changes</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategy:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
