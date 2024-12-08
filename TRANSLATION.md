@@ -5,7 +5,7 @@
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Files.Search
-- Text.Diff.HighlightedDiffNavigation
+- Text.Diff.UseBlockNavigation
 - Text.WorkingCopy.CommitToEdit
 
 </details>
@@ -16,7 +16,7 @@
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.HighlightedDiffNavigation
+- Text.Diff.UseBlockNavigation
 
 </details>
 
@@ -30,7 +30,7 @@
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
 - Text.CommitDetail.Files.Search
-- Text.Diff.HighlightedDiffNavigation
+- Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
@@ -61,7 +61,7 @@
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
 - Text.Configure.OpenAI.Preferred.Tip
-- Text.Diff.HighlightedDiffNavigation
+- Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
@@ -85,7 +85,7 @@
 
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
-- Text.Diff.HighlightedDiffNavigation
+- Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
@@ -101,26 +101,26 @@
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Files.Search
-- Text.Diff.HighlightedDiffNavigation
+- Text.Diff.UseBlockNavigation
 
 </details>
 
-### zh_CN.axaml: 99.86%
+### zh_CN.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.HighlightedDiffNavigation
+
 
 </details>
 
-### zh_TW.axaml: 99.86%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.HighlightedDiffNavigation
+
 
 </details>
