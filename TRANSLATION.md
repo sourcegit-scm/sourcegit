@@ -1,25 +1,26 @@
-### de_DE.axaml: 99.72%
+### de_DE.axaml: 99.58%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Files.Search
+- Text.Diff.HighlightedDiffNavigation
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.HighlightedDiffNavigation
 
 </details>
 
-### fr_FR.axaml: 97.17%
+### fr_FR.axaml: 97.03%
 
 
 <details>
@@ -29,6 +30,7 @@
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
 - Text.CommitDetail.Files.Search
+- Text.Diff.HighlightedDiffNavigation
 - Text.Fetch.Force
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
@@ -48,7 +50,7 @@
 
 </details>
 
-### it_IT.axaml: 97.59%
+### it_IT.axaml: 97.45%
 
 
 <details>
@@ -59,6 +61,7 @@
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
 - Text.Configure.OpenAI.Preferred.Tip
+- Text.Diff.HighlightedDiffNavigation
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
@@ -74,7 +77,7 @@
 
 </details>
 
-### pt_BR.axaml: 99.01%
+### pt_BR.axaml: 98.87%
 
 
 <details>
@@ -82,6 +85,7 @@
 
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
+- Text.Diff.HighlightedDiffNavigation
 - Text.Fetch.Force
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
@@ -90,32 +94,33 @@
 
 </details>
 
-### ru_RU.axaml: 99.86%
+### ru_RU.axaml: 99.72%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CommitDetail.Files.Search
+- Text.Diff.HighlightedDiffNavigation
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.HighlightedDiffNavigation
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.HighlightedDiffNavigation
 
 </details>
