@@ -405,6 +405,17 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(deleteMulti);
+
+                var mergeMulti = new MenuItem();
+                mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
+                mergeMulti.Icon = App.CreateMenuIcon("Icons.Merge");
+                mergeMulti.Click += (_, ev) =>
+                {
+                    repo.MergeMultipleBranches(branches);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(mergeMulti);
+
                 menu?.Open(this);
             }
         }

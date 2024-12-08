@@ -4,13 +4,15 @@ namespace SourceGit.Commands
 {
     public class Merge : Command
     {
-        public Merge(string repo, string source, string mode, Action<string> outputHandler)
+        public Merge(string repo, string source, string mode, string strategy, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
-            Args = $"merge --progress {source} {mode}";
+            if (strategy != null)
+                strategy = string.Concat("--strategy=", strategy);
+            Args = $"merge --progress {strategy} {source} {mode}";
         }
 
         protected override void OnReadline(string line)
