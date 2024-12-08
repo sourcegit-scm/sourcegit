@@ -357,6 +357,7 @@
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Riferimento Scorciatoie da Tastiera</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBALE</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Annulla il popup corrente</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clona una nuova repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Chiudi la pagina corrente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Vai alla pagina precedente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Vai alla pagina successiva</x:String>

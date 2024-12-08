@@ -136,6 +136,22 @@ namespace SourceGit.Views
                     return;
                 }
 
+                if (e.Key == Key.N)
+                {
+                    if (vm.ActivePage.Data is not ViewModels.Welcome)
+                    {
+                        vm.AddNewTab();
+                    }
+                    
+                    if (vm.ActivePage.Data is ViewModels.Welcome welcome)
+                    {
+                        welcome.Clone();
+                    }
+                    
+                    e.Handled = true;
+                    return;
+                }
+
                 if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
                     (!OperatingSystem.IsMacOS() && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
