@@ -40,19 +40,19 @@ namespace SourceGit.ViewModels
             {
                 if (Blocks.Count == 0)
                     return "-/-";
-                
+
                 if (_current >= 0 && _current < Blocks.Count)
-                    return $"{_current+1}/{Blocks.Count}";
+                    return $"{_current + 1}/{Blocks.Count}";
 
                 return $"-/{Blocks.Count}";
             }
         }
-        
+
         public BlockNavigation(object context)
         {
             Blocks.Clear();
             Current = -1;
-            
+
             var lines = new List<Models.TextDiffLine>();
             if (context is Models.TextDiff combined)
                 lines = combined.Lines;
@@ -61,12 +61,12 @@ namespace SourceGit.ViewModels
 
             if (lines.Count == 0)
                 return;
-            
+
             var lineIdx = 0;
             var blockStartIdx = 0;
             var isNewBlock = true;
             var blocks = new List<Block>();
-                
+
             foreach (var line in lines)
             {
                 lineIdx++;
@@ -89,7 +89,7 @@ namespace SourceGit.ViewModels
                     }
                 }
             }
-            
+
             if (!isNewBlock)
                 blocks.Add(new Block(blockStartIdx, lines.Count - 1));
 
@@ -103,16 +103,18 @@ namespace SourceGit.ViewModels
 
         public Block GotoNext()
         {
-            if (Blocks.Count == 0) return null;
-            
+            if (Blocks.Count == 0)
+                return null;
+
             Current = (_current + 1) % Blocks.Count;
             return Blocks[_current];
         }
 
         public Block GotoPrev()
         {
-            if (Blocks.Count == 0) return null;
-            
+            if (Blocks.Count == 0)
+                return null;
+
             Current = _current == -1 ? Blocks.Count - 1 : (_current - 1 + Blocks.Count) % Blocks.Count;
             return Blocks[_current];
         }

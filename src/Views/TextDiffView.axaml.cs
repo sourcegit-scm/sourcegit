@@ -557,7 +557,7 @@ namespace SourceGit.Views
 
                 return;
             }
-            
+
             var firstLineIdx = DisplayRange.StartIdx;
             if (firstLineIdx <= 1)
                 return;
@@ -600,7 +600,7 @@ namespace SourceGit.Views
         }
 
         public void GotoNextChange()
-        {   
+        {
             var blockNavigation = BlockNavigation;
             if (blockNavigation != null)
             {
@@ -613,7 +613,7 @@ namespace SourceGit.Views
 
                 return;
             }
-            
+
             var lines = GetLines();
             var lastLineIdx = DisplayRange.EndIdx;
             if (lastLineIdx >= lines.Count - 1)
@@ -724,7 +724,7 @@ namespace SourceGit.Views
                     oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
                 if (newValue != null)
                     newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
-                
+
                 InvalidateVisual();
             }
         }
@@ -1557,7 +1557,7 @@ namespace SourceGit.Views
             get => GetValue(BlockNavigationProperty);
             set => SetValue(BlockNavigationProperty, value);
         }
-        
+
         public static readonly StyledProperty<string> BlockNavigationIndicatorProperty =
             AvaloniaProperty.Register<TextDiffView, string>(nameof(BlockNavigationIndicator));
 
@@ -1599,7 +1599,7 @@ namespace SourceGit.Views
         {
             InitializeComponent();
         }
-        
+
         public void GotoPrevChange()
         {
             var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
@@ -1609,7 +1609,7 @@ namespace SourceGit.Views
             presenter.GotoPrevChange();
             if (presenter is SingleSideTextDiffPresenter singleSide)
                 singleSide.ForceSyncScrollOffset();
-            
+
             BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
         }
 
@@ -1622,7 +1622,7 @@ namespace SourceGit.Views
             presenter.GotoNextChange();
             if (presenter is SingleSideTextDiffPresenter singleSide)
                 singleSide.ForceSyncScrollOffset();
-            
+
             BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
         }
 

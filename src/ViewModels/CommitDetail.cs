@@ -121,7 +121,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _revisionFileSearchFilter, value))
                 {
                     RevisionFileSearchSuggestion.Clear();
-                    
+
                     if (!string.IsNullOrEmpty(value))
                     {
                         if (_revisionFiles.Count == 0)
@@ -132,7 +132,8 @@ namespace SourceGit.ViewModels
                             {
                                 var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
 
-                                Dispatcher.UIThread.Invoke(() => {
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
                                     if (sha == Commit.SHA)
                                     {
                                         _revisionFiles.Clear();
@@ -795,7 +796,7 @@ namespace SourceGit.ViewModels
             var suggestion = new List<string>();
             foreach (var file in _revisionFiles)
             {
-                if (file.Contains(_revisionFileSearchFilter, StringComparison.OrdinalIgnoreCase) && 
+                if (file.Contains(_revisionFileSearchFilter, StringComparison.OrdinalIgnoreCase) &&
                     file.Length != _revisionFileSearchFilter.Length)
                     suggestion.Add(file);
 
