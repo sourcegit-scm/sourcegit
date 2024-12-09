@@ -15,8 +15,8 @@
     
     <Grid Margin="0,16,0,0" RowDefinitions="Auto,32,32" ColumnDefinitions="100,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top"
+                 Margin="0,6,8,0"
                  Text="{DynamicResource Text.MergeMultiple.Targets}"/>
       <ListBox Grid.Row="0" Grid.Column="1"
                MinHeight="32" MaxHeight="100" Margin="0,0,0,4"
