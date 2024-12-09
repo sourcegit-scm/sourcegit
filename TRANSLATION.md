@@ -10,9 +10,9 @@
 - Text.Diff.UseBlockNavigation
 - Text.Hotkeys.Global.Clone
 - Text.MergeMultiple
-- Text.MergeMultiple.Commit
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
+- Text.MergeMultiple.Targets
 - Text.WorkingCopy.CommitToEdit
 
 </details>
@@ -28,9 +28,9 @@
 - Text.Diff.UseBlockNavigation
 - Text.Hotkeys.Global.Clone
 - Text.MergeMultiple
-- Text.MergeMultiple.Commit
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
+- Text.MergeMultiple.Targets
 
 </details>
 
@@ -50,9 +50,9 @@
 - Text.Fetch.Force
 - Text.Hotkeys.Global.Clone
 - Text.MergeMultiple
-- Text.MergeMultiple.Commit
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
+- Text.MergeMultiple.Targets
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
@@ -87,9 +87,9 @@
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.MergeMultiple
-- Text.MergeMultiple.Commit
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
+- Text.MergeMultiple.Targets
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
@@ -118,9 +118,9 @@
 - Text.Fetch.Force
 - Text.Hotkeys.Global.Clone
 - Text.MergeMultiple
-- Text.MergeMultiple.Commit
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
+- Text.MergeMultiple.Targets
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.SHALinkCM.NavigateTo
@@ -138,38 +138,28 @@
 - Text.CommitCM.MergeMultiple
 - Text.Hotkeys.Global.Clone
 - Text.MergeMultiple
-- Text.MergeMultiple.Commit
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
+- Text.MergeMultiple.Targets
 
 </details>
 
-### zh_CN.axaml: 99.16%
+### zh_CN.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.MergeMultiple
-- Text.MergeMultiple
-- Text.MergeMultiple.Commit
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
+
 
 </details>
 
-### zh_TW.axaml: 99.16%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.MergeMultiple
-- Text.MergeMultiple
-- Text.MergeMultiple.Commit
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
+
 
 </details>
