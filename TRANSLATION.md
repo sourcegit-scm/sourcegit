@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.58%
+### de_DE.axaml: 99.44%
 
 
 <details>
@@ -6,21 +6,23 @@
 
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
+- Text.Hotkeys.Global.Clone
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### es_ES.axaml: 99.86%
+### es_ES.axaml: 99.72%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Diff.UseBlockNavigation
+- Text.Hotkeys.Global.Clone
 
 </details>
 
-### fr_FR.axaml: 97.03%
+### fr_FR.axaml: 96.89%
 
 
 <details>
@@ -32,6 +34,7 @@
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.Hotkeys.Global.Clone
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
@@ -50,7 +53,7 @@
 
 </details>
 
-### it_IT.axaml: 97.45%
+### it_IT.axaml: 97.46%
 
 
 <details>
@@ -77,7 +80,7 @@
 
 </details>
 
-### pt_BR.axaml: 98.87%
+### pt_BR.axaml: 98.73%
 
 
 <details>
@@ -87,6 +90,7 @@
 - Text.CommitDetail.Info.Children
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.Hotkeys.Global.Clone
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.SHALinkCM.NavigateTo
@@ -94,32 +98,32 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Hotkeys.Global.Clone
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Hotkeys.Global.Clone
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Hotkeys.Global.Clone
 
 </details>
