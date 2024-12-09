@@ -12,7 +12,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree {sha}";
+            Args = $"ls-tree -z {sha}";
 
             if (!string.IsNullOrEmpty(parentFolder))
                 Args += $" -- \"{parentFolder}\"";
@@ -20,11 +20,27 @@ namespace SourceGit.Commands
 
         public List<Models.Object> Result()
         {
-            Exec();
+            var rs = ReadToEnd();
+            if (rs.IsSuccess)
+            {
+                var start = 0;
+                var end = rs.StdOut.IndexOf('\0', start);
+                while (end > 0)
+                {
+                    var line = rs.StdOut.Substring(start, end - start);
+                    Parse(line);
+                    start = end + 1;
+                    end = rs.StdOut.IndexOf('\0', start);
+                }
+
+                if (start < rs.StdOut.Length)
+                    Parse(rs.StdOut.Substring(start));
+            }
+
             return _objects;
         }
 
-        protected override void OnReadline(string line)
+        private void Parse(string line)
         {
             var match = REG_FORMAT().Match(line);
             if (!match.Success)

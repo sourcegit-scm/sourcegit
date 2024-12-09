@@ -430,31 +430,43 @@ namespace SourceGit.Views
             if (ShowAsDateTime)
                 return DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
 
-            var today = DateTime.Today;
+            var now = DateTime.Now;
             var localTime = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
+            var span = now - localTime;
+            if (span.TotalMinutes < 1)
+                return App.Text("Period.JustNow");
 
-            if (localTime >= today)
+            if (span.TotalHours < 1)
+                return App.Text("Period.MinutesAgo", (int)span.TotalMinutes);
+
+            if (span.TotalDays < 1)
+                return App.Text("Period.HoursAgo", (int)span.TotalHours);
+
+            var lastDay = now.AddDays(-1).Date;
+            if (localTime >= lastDay)
+                return App.Text("Period.Yesterday");
+
+            if ((localTime.Year == now.Year && localTime.Month == now.Month) || span.TotalDays < 28)
             {
-                var now = DateTime.Now;
-                var timespan = now - localTime;
-                if (timespan.TotalHours > 1)
-                    return App.Text("Period.HoursAgo", (int)timespan.TotalHours);
-
-                return timespan.TotalMinutes < 1 ? App.Text("Period.JustNow") : App.Text("Period.MinutesAgo", (int)timespan.TotalMinutes);
+                var diffDay = now.Date - localTime.Date;
+                return App.Text("Period.DaysAgo", (int)diffDay.TotalDays);
             }
 
-            var diffYear = today.Year - localTime.Year;
-            if (diffYear == 0)
-            {
-                var diffMonth = today.Month - localTime.Month;
-                if (diffMonth > 0)
-                    return diffMonth == 1 ? App.Text("Period.LastMonth") : App.Text("Period.MonthsAgo", diffMonth);
+            var lastMonth = now.AddMonths(-1).Date;
+            if (localTime.Year == lastMonth.Year && localTime.Month == lastMonth.Month)
+                return App.Text("Period.LastMonth");
 
-                var diffDay = today.Day - localTime.Day;
-                return diffDay == 1 ? App.Text("Period.Yesterday") : App.Text("Period.DaysAgo", diffDay);
+            if (localTime.Year == now.Year || localTime > now.AddMonths(-11))
+            {
+                var diffMonth = (12 + now.Month - localTime.Month) % 12;
+                return App.Text("Period.MonthsAgo", diffMonth);
             }
 
-            return diffYear == 1 ? App.Text("Period.LastYear") : App.Text("Period.YearsAgo", diffYear);
+            var diffYear = now.Year - localTime.Year;
+            if (diffYear == 1)
+                return App.Text("Period.LastYear");
+
+            return App.Text("Period.YearsAgo", diffYear);
         }
 
         private IDisposable _refreshTimer = null;

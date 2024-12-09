@@ -41,6 +41,17 @@
                     ToolTip.Tip="{DynamicResource Text.Diff.Prev}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
             </Button>
+            
+            <Border>
+              <Border.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="IsTextDiff"/>
+                  <Binding Source="{x:Static vm:Preference.Instance}" Path="UseBlockNavigationInDiffView" Mode="OneWay"/>
+                </MultiBinding>
+              </Border.IsVisible>
+              
+              <TextBlock x:Name="BlockNavigationIndicator" Classes="primary" Margin="0,0,0,0" FontSize="11" Text="-/-"/>
+            </Border>
 
             <Button Classes="icon_button"
                     Width="28"
@@ -49,6 +60,14 @@
                     ToolTip.Tip="{DynamicResource Text.Diff.Next}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
             </Button>
+            
+            <ToggleButton Classes="line_path"
+                          Width="28"
+                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseBlockNavigationInDiffView, Mode=TwoWay}"
+                          IsVisible="{Binding IsTextDiff}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.UseBlockNavigation}">
+              <Path Width="13" Height="13" Data="{StaticResource Icons.CodeBlock}" Margin="0,3,0,0"/>
+            </ToggleButton>
             
             <Button Classes="icon_button" 
                     Width="28"
@@ -239,9 +258,10 @@
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView 
+            <v:TextDiffView
               UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"
-              UseFullTextDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFullTextDiff, Mode=OneWay}"/>
+              UseBlockNavigation="{Binding Source={x:Static vm:Preference.Instance}, Path=UseBlockNavigationInDiffView, Mode=OneWay}"
+              BlockNavigationIndicator="{Binding #BlockNavigationIndicator.Text, Mode=OneWayToSource}"/>
           </DataTemplate>
 
           <!-- Empty or only EOL changes -->

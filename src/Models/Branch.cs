@@ -7,6 +7,8 @@ namespace SourceGit.Models
         public List<string> Ahead { get; set; } = new List<string>();
         public List<string> Behind { get; set; } = new List<string>();
 
+        public bool IsVisible => Ahead.Count > 0 || Behind.Count > 0;
+
         public override string ToString()
         {
             if (Ahead.Count == 0 && Behind.Count == 0)

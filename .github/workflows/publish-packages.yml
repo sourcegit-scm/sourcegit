@@ -1,0 +1,39 @@
+name: Publish to Buildkite
+on:
+ workflow_call:
+   secrets:
+     BUILDKITE_TOKEN:
+       required: true
+jobs:
+ publish:
+   name: Publish to Buildkite
+   runs-on: ubuntu-latest
+   strategy:
+     matrix:
+       runtime: [linux-x64, linux-arm64]
+   steps:
+     - name: Download package artifacts
+       uses: actions/download-artifact@v4
+       with:
+         name: package.${{ matrix.runtime }}
+         path: packages
+
+     - name: Publish DEB package
+       env:
+         BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+       run: |
+         FILE=$(echo packages/*.deb)
+         curl -X POST https://api.buildkite.com/v2/packages/organizations/sourcegit/registries/sourcegit-deb/packages \
+           -H "Authorization: Bearer $BUILDKITE_TOKEN" \
+           -F "file=@$FILE" \
+           --fail
+
+     - name: Publish RPM package
+       env:
+         BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+       run: |
+         FILE=$(echo packages/*.rpm)
+         curl -X POST https://api.buildkite.com/v2/packages/organizations/sourcegit/registries/sourcegit-rpm/packages \
+           -H "Authorization: Bearer $BUILDKITE_TOKEN" \
+           -F "file=@$FILE" \
+           --fail

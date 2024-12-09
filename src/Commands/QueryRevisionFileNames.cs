@@ -1,19 +1,19 @@
 ﻿namespace SourceGit.Commands
 {
-    public class QueryCurrentRevisionFiles : Command
+    public class QueryRevisionFileNames : Command
     {
-        public QueryCurrentRevisionFiles(string repo)
+        public QueryRevisionFileNames(string repo, string revision)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "ls-tree -r --name-only HEAD";
+            Args = $"ls-tree -r -z --name-only {revision}";
         }
 
         public string[] Result()
         {
             var rs = ReadToEnd();
             if (rs.IsSuccess)
-                return rs.StdOut.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
+                return rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
 
             return [];
         }

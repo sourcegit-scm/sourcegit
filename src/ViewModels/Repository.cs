@@ -427,11 +427,11 @@ namespace SourceGit.ViewModels
             {
                 // Ignore
             }
-            _settings = null;
-            _historiesFilterMode = Models.FilterMode.None;
-
             _autoFetchTimer.Dispose();
             _autoFetchTimer = null;
+
+            _settings = null;
+            _historiesFilterMode = Models.FilterMode.None;
 
             _watcher?.Dispose();
             _histories.Cleanup();
@@ -2147,7 +2147,7 @@ namespace SourceGit.ViewModels
             {
                 Task.Run(() =>
                 {
-                    var files = new Commands.QueryCurrentRevisionFiles(_fullpath).Result();
+                    var files = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
                     Dispatcher.UIThread.Invoke(() =>
                     {
                         if (_searchCommitFilterType != 3)

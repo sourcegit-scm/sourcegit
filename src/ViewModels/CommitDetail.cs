@@ -82,7 +82,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = new AvaloniaList<string>();
+        } = [];
 
         public string SearchChangeFilter
         {
@@ -106,11 +106,69 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = new AvaloniaList<Models.CommitLink>();
+        } = [];
 
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
             get => _repo.Settings?.IssueTrackerRules;
+        }
+
+        public string RevisionFileSearchFilter
+        {
+            get => _revisionFileSearchFilter;
+            set
+            {
+                if (SetProperty(ref _revisionFileSearchFilter, value))
+                {
+                    RevisionFileSearchSuggestion.Clear();
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_revisionFiles.Count == 0)
+                        {
+                            var sha = Commit.SHA;
+
+                            Task.Run(() =>
+                            {
+                                var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
+
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    if (sha == Commit.SHA)
+                                    {
+                                        _revisionFiles.Clear();
+                                        _revisionFiles.AddRange(files);
+
+                                        if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+                                            UpdateRevisionFileSearchSuggestion();
+                                    }
+                                });
+                            });
+                        }
+                        else
+                        {
+                            UpdateRevisionFileSearchSuggestion();
+                        }
+                    }
+                    else
+                    {
+                        IsRevisionFileSearchSuggestionOpen = false;
+                        GC.Collect();
+                    }
+                }
+            }
+        }
+
+        public AvaloniaList<string> RevisionFileSearchSuggestion
+        {
+            get;
+            private set;
+        } = [];
+
+        public bool IsRevisionFileSearchSuggestionOpen
+        {
+            get => _isRevisionFileSearchSuggestionOpen;
+            set => SetProperty(ref _isRevisionFileSearchSuggestionOpen, value);
         }
 
         public CommitDetail(Repository repo)
@@ -147,17 +205,23 @@ namespace SourceGit.ViewModels
         {
             _repo = null;
             _commit = null;
+
             if (_changes != null)
                 _changes.Clear();
             if (_visibleChanges != null)
                 _visibleChanges.Clear();
             if (_selectedChanges != null)
                 _selectedChanges.Clear();
+
             _signInfo = null;
             _searchChangeFilter = null;
             _diffContext = null;
             _viewRevisionFileContent = null;
             _cancelToken = null;
+
+            WebLinks.Clear();
+            _revisionFiles.Clear();
+            RevisionFileSearchSuggestion.Clear();
         }
 
         public void NavigateTo(string commitSHA)
@@ -173,6 +237,11 @@ namespace SourceGit.ViewModels
         public void ClearSearchChangeFilter()
         {
             SearchChangeFilter = string.Empty;
+        }
+
+        public void ClearRevisionFileSearchFilter()
+        {
+            RevisionFileSearchFilter = string.Empty;
         }
 
         public Models.Commit GetParent(string sha)
@@ -543,6 +612,8 @@ namespace SourceGit.ViewModels
         private void Refresh()
         {
             _changes = null;
+            _revisionFiles.Clear();
+
             FullMessage = string.Empty;
             SignInfo = null;
             Changes = [];
@@ -550,6 +621,10 @@ namespace SourceGit.ViewModels
             SelectedChanges = null;
             ViewRevisionFileContent = null;
             Children.Clear();
+            RevisionFileSearchFilter = string.Empty;
+            IsRevisionFileSearchSuggestionOpen = false;
+
+            GC.Collect();
 
             if (_commit == null)
                 return;
@@ -716,6 +791,24 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
+        private void UpdateRevisionFileSearchSuggestion()
+        {
+            var suggestion = new List<string>();
+            foreach (var file in _revisionFiles)
+            {
+                if (file.Contains(_revisionFileSearchFilter, StringComparison.OrdinalIgnoreCase) &&
+                    file.Length != _revisionFileSearchFilter.Length)
+                    suggestion.Add(file);
+
+                if (suggestion.Count >= 100)
+                    break;
+            }
+
+            RevisionFileSearchSuggestion.Clear();
+            RevisionFileSearchSuggestion.AddRange(suggestion);
+            IsRevisionFileSearchSuggestionOpen = suggestion.Count > 0;
+        }
+
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
         private static partial Regex REG_LFS_FORMAT();
 
@@ -736,5 +829,8 @@ namespace SourceGit.ViewModels
         private DiffContext _diffContext = null;
         private object _viewRevisionFileContent = null;
         private Commands.Command.CancelToken _cancelToken = null;
+        private List<string> _revisionFiles = [];
+        private string _revisionFileSearchFilter = string.Empty;
+        private bool _isRevisionFileSearchSuggestionOpen = false;
     }
 }

@@ -13,27 +13,15 @@ namespace SourceGit.Views
 
         private void OnGotoPrevChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (textDiff == null)
-                return;
-
-            textDiff.GotoPrevChange();
-            if (textDiff is SingleSideTextDiffPresenter presenter)
-                presenter.ForceSyncScrollOffset();
-
+            var textDiff = this.FindDescendantOfType<TextDiffView>();
+            textDiff?.GotoPrevChange();
             e.Handled = true;
         }
 
         private void OnGotoNextChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (textDiff == null)
-                return;
-
-            textDiff.GotoNextChange();
-            if (textDiff is SingleSideTextDiffPresenter presenter)
-                presenter.ForceSyncScrollOffset();
-
+            var textDiff = this.FindDescendantOfType<TextDiffView>();
+            textDiff?.GotoNextChange();
             e.Handled = true;
         }
     }

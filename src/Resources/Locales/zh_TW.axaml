@@ -124,6 +124,7 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">搜尋變更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">檔案列表</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS 檔案</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">搜尋檔案...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本資訊</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">作者</x:String>
@@ -249,6 +250,7 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法上色</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自動換行</x:String>
+  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">啟用基於變更區塊的導航</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合併工具檢視</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">顯示檔案的全部內容</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">減少可見的行數</x:String>
