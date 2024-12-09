@@ -58,7 +58,7 @@
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Merge selected {0} branches</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Merge selected {0} branches into current</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
@@ -406,10 +406,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source Branch:</x:String>
-  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge commits</x:String>
-  <x:String x:Key="Text.MergeMultiple.Commit" xml:space="preserve">Commit(s):</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (Multiple)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit all changes</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategy:</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Targets:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>

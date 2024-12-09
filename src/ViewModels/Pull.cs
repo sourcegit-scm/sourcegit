@@ -172,7 +172,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         SetProgressDescription($"Merge {_selectedBranch.FriendlyName} into {_current.Name} ...");
-                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "", null, SetProgressDescription).Exec();
+                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "", SetProgressDescription).Exec();
                     }
                 }
                 else

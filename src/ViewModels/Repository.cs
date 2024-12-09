@@ -13,7 +13,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -954,7 +953,7 @@ namespace SourceGit.ViewModels
         public void MergeMultipleBranches(List<Models.Branch> branches)
         {
             if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new MergeMultiple(this, branches.ConvertAll(b => _histories?.Commits?.Find(c => c.SHA == b.Head))));
+                PopupHost.ShowPopup(new MergeMultiple(this, branches));
         }
 
         public void CreateNewTag()

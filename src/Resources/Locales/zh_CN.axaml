@@ -61,6 +61,7 @@
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">拉取(fetch) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成 ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">合并 {0} 个分支到当前分支</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull) ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">拉回(pull) ${0}$ 内容至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push)${0}$</x:String>
@@ -113,6 +114,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i) ${0}$ 到此处</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合并(merge)...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滚此提交</x:String>
@@ -407,6 +409,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并分支 ：</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">合并（多目标）</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">提交变化</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">合并策略 ：</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">目标列表 ：</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">调整仓库分组</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">请选择目标分组：</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名称 ：</x:String>
