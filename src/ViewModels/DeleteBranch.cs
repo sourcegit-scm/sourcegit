@@ -21,11 +21,23 @@ namespace SourceGit.ViewModels
             get;
             private set;
         }
+        
+        public object DeleteNotMergedTip
+        {
+            get;
+            private set;
+        }
 
         public bool AlsoDeleteTrackingRemote
         {
             get => _alsoDeleteTrackingRemote;
             set => SetProperty(ref _alsoDeleteTrackingRemote, value);
+        }
+        
+        public bool DeleteNotMerged
+        {
+            get => _deleteNotMerged;
+            set => SetProperty(ref _deleteNotMerged, value);
         }
 
         public DeleteBranch(Repository repo, Models.Branch branch)
@@ -39,6 +51,7 @@ namespace SourceGit.ViewModels
                 if (TrackingRemoteBranch != null)
                     DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
             }
+            DeleteNotMergedTip = new Views.NameHighlightedTextBlock("DeleteBranch.NotMerged");
 
             View = new Views.DeleteBranch() { DataContext = this };
         }
@@ -52,7 +65,7 @@ namespace SourceGit.ViewModels
             {
                 if (Target.IsLocal)
                 {
-                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name);
+                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name, _deleteNotMerged);
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
                     {
@@ -76,5 +89,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private bool _alsoDeleteTrackingRemote = false;
+        private bool _deleteNotMerged = false;
     }
 }

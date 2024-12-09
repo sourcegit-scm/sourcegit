@@ -34,12 +34,20 @@
             return cmd.Exec();
         }
 
-        public static bool DeleteLocal(string repo, string name)
+        public static bool DeleteLocal(string repo, string name, bool deleteNotMerged)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"branch -D {name}";
+            if (deleteNotMerged)
+            {
+                cmd.Args = $"branch -D {name}";
+            }
+            else
+            {
+                cmd.Args = $"branch -d {name}";
+            }
+
             return cmd.Exec();
         }
 
