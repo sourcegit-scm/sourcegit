@@ -98,6 +98,32 @@ For **macOS** users:
 
 For **Linux** users:
 
+* For Debian/Ubuntu based distributions, you can add the `sourcegit` repository by following:
+  You may need to install curl and/or gpg first, if you're on a very minimal host:
+  ```shell
+  apt update && apt install curl gpg -y
+  ```
+  Install the registry signing key:
+  ```shell
+  curl -fsSL "https://packages.buildkite.com/sourcegit/sourcegit-deb/gpgkey" | gpg --dearmor -o /etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg
+  ```
+  Configure the source:
+  ```shell
+  echo -e "deb [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main\ndeb-src [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main" > /etc/apt/sources.list.d/buildkite-sourcegit-sourcegit-deb.list
+  ```
+  Update your local repository and install the package:
+  ```shell
+  apt update && apt install sourcegit
+  ```
+* For RHEL/Fedora based distributions, you can add the `sourcegit` repository by following:
+  Configure the source:
+  ```shell
+  sudo sh -c 'echo -e "[sourcegit-rpm]\nname=sourcegit-rpm\nbaseurl=https://packages.buildkite.com/sourcegit/sourcegit-rpm/rpm_any/rpm_any/\$basearch\nenabled=1\nrepo_gpgcheck=1\ngpgcheck=0\ngpgkey=https://packages.buildkite.com/sourcegit/sourcegit-rpm/gpgkey\npriority=1"' > /etc/yum.repos.d/sourcegit-rpm.repo
+  ```
+  Install the package with this command:
+  ```shell
+  sudo dnf install -y sourcegit
+  ```
 * `DEB` or `RPM` packages are available at [buildkite](https://buildkite.com/organizations/sourcegit/packages).
 * `xdg-open` must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
