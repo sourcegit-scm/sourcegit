@@ -360,6 +360,7 @@
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">快速鍵參考</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全域快速鍵</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消彈出面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">複製 (clone) 遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">關閉目前頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切換到上一個頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切換到下一個頁面</x:String>

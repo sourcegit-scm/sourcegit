@@ -139,15 +139,9 @@ namespace SourceGit.Views
                 if (e.Key == Key.N)
                 {
                     if (vm.ActivePage.Data is not ViewModels.Welcome)
-                    {
                         vm.AddNewTab();
-                    }
-                    
-                    if (vm.ActivePage.Data is ViewModels.Welcome welcome)
-                    {
-                        welcome.Clone();
-                    }
-                    
+
+                    ViewModels.Welcome.Instance.Clone();                    
                     e.Handled = true;
                     return;
                 }
