@@ -94,14 +94,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.72%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.CommitDetail.Files.Search
-- Text.Diff.UseBlockNavigation
+
 
 </details>
 
