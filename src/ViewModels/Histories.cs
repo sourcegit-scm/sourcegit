@@ -847,8 +847,13 @@ namespace SourceGit.ViewModels
                 fastForward.IsEnabled = current.TrackStatus.Ahead.Count == 0;
                 fastForward.Click += (_, e) =>
                 {
+                    var b = _repo.Branches.Find(x => x.FriendlyName == upstream);
+                    if (b == null)
+                        return;
+
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowAndStartPopup(new Merge(_repo, upstream, current.Name));
+                        PopupHost.ShowAndStartPopup(new Merge(_repo, b, current.Name));
+
                     e.Handled = true;
                 };
                 submenu.Items.Add(fastForward);
@@ -943,7 +948,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, branch.Name, current.Name));
+                    PopupHost.ShowPopup(new Merge(_repo, branch, current.Name));
                 e.Handled = true;
             };
             submenu.Items.Add(merge);
@@ -1027,7 +1032,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, name, current.Name));
+                    PopupHost.ShowPopup(new Merge(_repo, branch, current.Name));
                 e.Handled = true;
             };
 
@@ -1086,7 +1091,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, tag.Name, current.Name));
+                    PopupHost.ShowPopup(new Merge(_repo, tag, current.Name));
                 e.Handled = true;
             };
             submenu.Items.Add(merge);

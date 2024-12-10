@@ -406,7 +406,6 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Слить ветку</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Исходная ветка:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Переместить узел хранилища</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Выбрать родительский узел для:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Имя:</x:String>

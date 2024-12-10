@@ -400,7 +400,6 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Merger la branche </x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Option de merge:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Branche source :</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Déplacer le noeud du repository</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Sélectionnier le noeud parent pour :</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nom :</x:String>

@@ -16,10 +16,23 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Merge.Source}"/>
-      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Text="{Binding Source}"/>
-      </StackPanel>
+      <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding Source}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:Branch">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="m:Tag">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

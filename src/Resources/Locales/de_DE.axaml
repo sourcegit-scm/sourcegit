@@ -403,7 +403,6 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Branch mergen</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Quell-Branch:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Bewege Repository Knoten</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Wähle Vorgänger-Knoten für:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>

@@ -1311,8 +1311,13 @@ namespace SourceGit.ViewModels
                     fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
                     fastForward.Click += (_, e) =>
                     {
+                        var b = _branches.Find(x => x.FriendlyName == upstream);
+                        if (b == null)
+                            return;
+
                         if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new Merge(this, upstream, branch.Name));
+                            PopupHost.ShowAndStartPopup(new Merge(this, b, branch.Name));
+
                         e.Handled = true;
                     };
 
@@ -1391,7 +1396,7 @@ namespace SourceGit.ViewModels
                 merge.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, branch.Name, _currentBranch.Name));
+                        PopupHost.ShowPopup(new Merge(this, branch, _currentBranch.Name));
                     e.Handled = true;
                 };
 
@@ -1687,7 +1692,7 @@ namespace SourceGit.ViewModels
                 merge.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, name, _currentBranch.Name));
+                        PopupHost.ShowPopup(new Merge(this, branch, _currentBranch.Name));
                     e.Handled = true;
                 };
 
