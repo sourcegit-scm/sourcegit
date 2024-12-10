@@ -62,6 +62,19 @@ namespace SourceGit.ViewModels
                 Args = $"{Cmd} --continue",
             }.Exec();
         }
+
+        protected string GetFriendlyNameOfCommit(Models.Commit commit)
+        {
+            var branchDecorator = commit.Decorators.Find(x => x.Type == Models.DecoratorType.LocalBranchHead || x.Type == Models.DecoratorType.RemoteBranchHead);
+            if (branchDecorator != null)
+                return branchDecorator.Name;
+
+            var tagDecorator = commit.Decorators.Find(x => x.Type == Models.DecoratorType.Tag);
+            if (tagDecorator != null)
+                return tagDecorator.Name;
+
+            return commit.SHA.Substring(0, 10);
+        }
     }
 
     public class CherryPickInProgress : InProgressContext
@@ -70,6 +83,11 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
+        }
+
+        public string HeadName
+        {
+            get => GetFriendlyNameOfCommit(Head);
         }
 
         public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick", true) 
@@ -87,7 +105,18 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public string BaseName
+        {
+            get => GetFriendlyNameOfCommit(Onto);
+        }
+
         public Models.Commit StoppedAt
+        {
+            get;
+            private set;
+        }
+
+        public Models.Commit Onto
         {
             get;
             private set;
@@ -98,7 +127,10 @@ namespace SourceGit.ViewModels
             _gitDir = repo.GitDir;
 
             var stoppedSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha")).Trim();
-            StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result();
+            StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
+
+            var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
+            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
 
             HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
             if (HeadName.StartsWith("refs/heads/"))
@@ -150,16 +182,15 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public string SourceName
+        public Models.Commit Source
         {
             get;
             private set;
         }
 
-        public Models.Commit Source
+        public string SourceName
         {
-            get;
-            private set;
+            get => GetFriendlyNameOfCommit(Source);
         }
 
         public MergeInProgress(Repository repo) : base(repo.FullPath, "merge", false)
@@ -167,24 +198,7 @@ namespace SourceGit.ViewModels
             Current = Commands.Branch.ShowCurrent(repo.FullPath);
 
             var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
-            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result();
-            if (Source == null)
-                return;
-
-            var branchDecorator = Source.Decorators.Find(x => x.Type == Models.DecoratorType.LocalBranchHead || x.Type == Models.DecoratorType.RemoteBranchHead);
-            if (branchDecorator != null)
-            {
-                SourceName = branchDecorator.Name;
-                return;
-            }
-
-            var tagDecorator = Source.Decorators.Find(x => x.Type == Models.DecoratorType.Tag);
-            if (tagDecorator != null)
-            {
-                SourceName = tagDecorator.Name;
-            }
-
-            SourceName = Source.SHA.Substring(0, 10);
+            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result() ?? new Models.Commit() { SHA = sourceSHA };
         }
     }
 }
