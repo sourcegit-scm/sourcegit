@@ -124,7 +124,6 @@ For **Linux** users:
   ```shell
   sudo dnf install -y sourcegit
   ```
-* `DEB` or `RPM` packages are available at [buildkite](https://buildkite.com/organizations/sourcegit/packages).
 * `Appimage` files can be found on [AppimageHub](https://appimage.github.io/SourceGit/)
 * `xdg-open` must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
