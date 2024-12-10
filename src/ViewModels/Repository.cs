@@ -764,12 +764,6 @@ namespace SourceGit.ViewModels
             _workingCopy?.StashAll(autoStart);
         }
 
-        public void GotoResolve()
-        {
-            if (_workingCopy != null)
-                SelectedViewIndex = 1;
-        }
-
         public void AbortMerge()
         {
             _workingCopy?.AbortMerge();
