@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.05%
+### de_DE.axaml: 97.91%
 
 
 <details>
@@ -12,6 +12,7 @@
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -21,7 +22,7 @@
 
 </details>
 
-### es_ES.axaml: 98.33%
+### es_ES.axaml: 98.19%
 
 
 <details>
@@ -34,6 +35,7 @@
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -42,7 +44,7 @@
 
 </details>
 
-### fr_FR.axaml: 95.54%
+### fr_FR.axaml: 95.40%
 
 
 <details>
@@ -60,6 +62,7 @@
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -83,7 +86,7 @@
 
 </details>
 
-### it_IT.axaml: 96.09%
+### it_IT.axaml: 95.96%
 
 
 <details>
@@ -101,6 +104,7 @@
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -120,7 +124,7 @@
 
 </details>
 
-### pt_BR.axaml: 97.35%
+### pt_BR.axaml: 97.21%
 
 
 <details>
@@ -136,6 +140,7 @@
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -148,7 +153,7 @@
 
 </details>
 
-### ru_RU.axaml: 98.47%
+### ru_RU.axaml: 98.33%
 
 
 <details>
@@ -160,6 +165,7 @@
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
