@@ -129,11 +129,52 @@ namespace SourceGit.ViewModels
 
     public class RevertInProgress : InProgressContext
     {
-        public RevertInProgress(string repo) : base(repo, "revert", false) { }
+        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert", false) { }
     }
 
     public class MergeInProgress : InProgressContext
     {
-        public MergeInProgress(string repo) : base(repo, "merge", false) { }
+        public string Current
+        {
+            get;
+            private set;
+        }
+
+        public string SourceName
+        {
+            get;
+            private set;
+        }
+
+        public Models.Commit Source
+        {
+            get;
+            private set;
+        }
+
+        public MergeInProgress(Repository repo) : base(repo.FullPath, "merge", false)
+        {
+            Current = Commands.Branch.ShowCurrent(repo.FullPath);
+
+            var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
+            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result();
+            if (Source == null)
+                return;
+
+            var branchDecorator = Source.Decorators.Find(x => x.Type == Models.DecoratorType.LocalBranchHead || x.Type == Models.DecoratorType.RemoteBranchHead);
+            if (branchDecorator != null)
+            {
+                SourceName = branchDecorator.Name;
+                return;
+            }
+
+            var tagDecorator = Source.Decorators.Find(x => x.Type == Models.DecoratorType.Tag);
+            if (tagDecorator != null)
+            {
+                SourceName = tagDecorator.Name;
+            }
+
+            SourceName = Source.SHA.Substring(0, 10);
+        }
     }
 }

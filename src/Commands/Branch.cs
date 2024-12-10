@@ -2,6 +2,15 @@
 {
     public static class Branch
     {
+        public static string ShowCurrent(string repo)
+        {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"branch --show-current";
+            return cmd.ReadToEnd().StdOut.Trim();
+        }
+
         public static bool Create(string repo, string name, string basedOn)
         {
             var cmd = new Command();

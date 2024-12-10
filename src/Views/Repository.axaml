@@ -583,7 +583,13 @@
             </DataTemplate>
 
             <DataTemplate DataType="vm:MergeInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge.Operating}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Accent}" Text="{Binding SourceName}" ToolTip.Tip="{Binding Source}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="→"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Accent}" Text="{Binding Current}"/>
+              </StackPanel>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>

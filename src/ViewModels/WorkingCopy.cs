@@ -241,9 +241,9 @@ namespace SourceGit.ViewModels
                     else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
                         inProgress = new RebaseInProgress(_repo);
                     else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-                        inProgress = new RevertInProgress(_repo.FullPath);
+                        inProgress = new RevertInProgress(_repo);
                     else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-                        inProgress = new MergeInProgress(_repo.FullPath);
+                        inProgress = new MergeInProgress(_repo);
 
                     HasUnsolvedConflicts = _cached.Find(x => x.IsConflit) != null;
                     InProgressContext = inProgress;
@@ -314,9 +314,9 @@ namespace SourceGit.ViewModels
                 else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
                     inProgress = new RebaseInProgress(_repo);
                 else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-                    inProgress = new RevertInProgress(_repo.FullPath);
+                    inProgress = new RevertInProgress(_repo);
                 else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-                    inProgress = new MergeInProgress(_repo.FullPath);
+                    inProgress = new MergeInProgress(_repo);
 
                 InProgressContext = inProgress;
 
