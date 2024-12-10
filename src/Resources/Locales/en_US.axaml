@@ -281,7 +281,7 @@
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Discard {0} files...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Discard Changes in Selected Line(s)</x:String>
   <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Open External Merge Tool</x:String>
-  <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Resolve Using '{0}'</x:String>
+  <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Resolve Using ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} files</x:String>
