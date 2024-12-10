@@ -394,10 +394,12 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丢弃</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">初始化新仓库</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">路径 ：</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">挑选（Cherry-Pick）操作进行中。点击【终止】回滚到操作前的状态。</x:String>
-  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">合并操作进行中。点击【终止】回滚到操作前的状态。</x:String>
-  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">变基（Rebase）操作进行中。点击【终止】回滚到操作前的状态。</x:String>
-  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">回滚提交操作进行中。点击【终止】回滚到操作前的状态。</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">挑选（Cherry-Pick）操作进行中。</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">当前提交</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">合并操作进行中。</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">变基（Rebase）操作进行中。</x:String>
+  <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">当前停止于</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">回滚提交操作进行中。</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">交互式变基</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交 ：</x:String>
@@ -572,7 +574,6 @@
   <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">远程列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
-  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">文件</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
@@ -580,6 +581,7 @@
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">仅在当前分支中查找</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
+  <x:String x:Key="Text.Repository.Skip" xml:space="preserve">跳过此提交</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">子模块列表</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">添加子模块</x:String>

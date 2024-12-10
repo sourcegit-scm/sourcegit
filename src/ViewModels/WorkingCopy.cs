@@ -237,7 +237,7 @@ namespace SourceGit.ViewModels
 
                     var inProgress = null as InProgressContext;
                     if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-                        inProgress = new CherryPickInProgress(_repo.FullPath);
+                        inProgress = new CherryPickInProgress(_repo);
                     else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
                         inProgress = new RebaseInProgress(_repo);
                     else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
@@ -310,7 +310,7 @@ namespace SourceGit.ViewModels
 
                 var inProgress = null as InProgressContext;
                 if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-                    inProgress = new CherryPickInProgress(_repo.FullPath);
+                    inProgress = new CherryPickInProgress(_repo);
                 else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
                     inProgress = new RebaseInProgress(_repo);
                 else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))

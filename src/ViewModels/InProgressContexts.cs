@@ -16,10 +16,17 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public InProgressContext(string repo, string cmd)
+        public bool CanSkip
+        {
+            get;
+            protected set;
+        }
+
+        public InProgressContext(string repo, string cmd, bool canSkip)
         {
             Repository = repo;
             Cmd = cmd;
+            CanSkip = canSkip;
         }
 
         public bool Abort()
@@ -29,6 +36,19 @@ namespace SourceGit.ViewModels
                 WorkingDirectory = Repository,
                 Context = Repository,
                 Args = $"{Cmd} --abort",
+            }.Exec();
+        }
+
+        public bool Skip()
+        {
+            if (!CanSkip)
+                return true;
+
+            return new Commands.Command()
+            {
+                WorkingDirectory = Repository,
+                Context = Repository,
+                Args = $"{Cmd} --skip",
             }.Exec();
         }
 
@@ -46,14 +66,33 @@ namespace SourceGit.ViewModels
 
     public class CherryPickInProgress : InProgressContext
     {
-        public CherryPickInProgress(string repo) : base(repo, "cherry-pick") { }
+        public Models.Commit Head
+        {
+            get;
+            private set;
+        }
+
+        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick", true) 
+        {
+            var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result();
+        }
     }
 
     public class RebaseInProgress : InProgressContext
     {
-        public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
+        public Models.Commit StoppedAt
+        {
+            get;
+            private set;
+        }
+
+        public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase", true)
         {
             _gitDir = repo.GitDir;
+
+            var stoppedSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha")).Trim();
+            StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result();
         }
 
         public override bool Continue()
@@ -90,11 +129,11 @@ namespace SourceGit.ViewModels
 
     public class RevertInProgress : InProgressContext
     {
-        public RevertInProgress(string repo) : base(repo, "revert") { }
+        public RevertInProgress(string repo) : base(repo, "revert", false) { }
     }
 
     public class MergeInProgress : InProgressContext
     {
-        public MergeInProgress(string repo) : base(repo, "merge") { }
+        public MergeInProgress(string repo) : base(repo, "merge", false) { }
     }
 }

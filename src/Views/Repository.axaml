@@ -550,12 +550,32 @@
       <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Commit">
+              <StackPanel MinWidth="400" Orientation="Vertical">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                </Grid>
+
+                <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+              </StackPanel>
+            </DataTemplate>
+            
             <DataTemplate DataType="vm:CherryPickInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick.Head}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Accent}" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
+              </StackPanel>
             </DataTemplate>
 
             <DataTemplate DataType="vm:RebaseInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase.StoppedAt}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Accent}" Text="{Binding StoppedAt.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding StoppedAt}"/>
+              </StackPanel>
             </DataTemplate>
 
             <DataTemplate DataType="vm:RevertInProgress">
@@ -568,23 +588,30 @@
           </ContentControl.DataTemplates>
         </ContentControl>
 
-        <Button Grid.Column="1" 
-                Classes="flat" 
+        <ContentControl Grid.Column="1" Margin="4,0" Content="{Binding InProgressContext}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:CherryPickInProgress">
+              <Button Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Command="{Binding Skip}"/>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:RebaseInProgress">
+              <Button Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Command="{Binding Skip}"/>
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:RevertInProgress">
+            </DataTemplate>
+
+            <DataTemplate DataType="vm:MergeInProgress">
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+        
+        <Button Grid.Column="2"
+                Classes="flat"
                 FontWeight="Regular"
                 BorderThickness="0"
-                Content="{DynamicResource Text.Repository.Resolve}" 
-                Padding="8,0" Margin="4,0" 
-                Command="{Binding GotoResolve}">
-          <Button.IsVisible>
-            <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsNotOne}"/>
-          </Button.IsVisible>
-        </Button>
-        <Button Grid.Column="2" 
-                Classes="flat" 
-                FontWeight="Regular"
-                BorderThickness="0"
-                Content="{DynamicResource Text.Repository.Abort}" 
-                Padding="8,0" Margin="4,0" 
+                Content="{DynamicResource Text.Repository.Abort}"
+                Padding="8,2" Margin="4,0"
                 Command="{Binding AbortMerge}"/>
       </Grid>
 
