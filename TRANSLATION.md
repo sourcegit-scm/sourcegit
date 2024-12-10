@@ -1,4 +1,4 @@
-### de_DE.axaml: 97.91%
+### de_DE.axaml: 97.77%
 
 
 <details>
@@ -8,6 +8,7 @@
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
@@ -22,7 +23,7 @@
 
 </details>
 
-### es_ES.axaml: 98.19%
+### es_ES.axaml: 98.05%
 
 
 <details>
@@ -31,6 +32,7 @@
 - Text.BranchCM.MergeMultiBranches
 - Text.CommitCM.MergeMultiple
 - Text.Diff.UseBlockNavigation
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
@@ -44,7 +46,7 @@
 
 </details>
 
-### fr_FR.axaml: 95.40%
+### fr_FR.axaml: 95.26%
 
 
 <details>
@@ -58,6 +60,7 @@
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
@@ -86,7 +89,7 @@
 
 </details>
 
-### it_IT.axaml: 95.96%
+### it_IT.axaml: 95.82%
 
 
 <details>
@@ -101,6 +104,7 @@
 - Text.Configure.OpenAI.Preferred.Tip
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.FileCM.ResolveUsing
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -124,7 +128,7 @@
 
 </details>
 
-### pt_BR.axaml: 97.21%
+### pt_BR.axaml: 97.08%
 
 
 <details>
@@ -136,6 +140,7 @@
 - Text.CommitDetail.Info.Children
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
@@ -153,7 +158,7 @@
 
 </details>
 
-### ru_RU.axaml: 98.33%
+### ru_RU.axaml: 98.19%
 
 
 <details>
@@ -161,6 +166,7 @@
 
 - Text.BranchCM.MergeMultiBranches
 - Text.CommitCM.MergeMultiple
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
