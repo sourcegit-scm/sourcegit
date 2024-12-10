@@ -93,7 +93,7 @@ namespace SourceGit.ViewModels
         public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick", true) 
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result();
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
         }
     }
 
@@ -171,7 +171,17 @@ namespace SourceGit.ViewModels
 
     public class RevertInProgress : InProgressContext
     {
-        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert", false) { }
+        public Models.Commit Head
+        {
+            get;
+            private set;
+        }
+
+        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert", false)
+        {
+            var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "REVERT_HEAD")).Trim();
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+        }
     }
 
     public class MergeInProgress : InProgressContext

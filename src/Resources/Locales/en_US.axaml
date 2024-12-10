@@ -399,6 +399,7 @@
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress.</x:String>
   <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Stopped at</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress.</x:String>
+  <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Reverting commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>

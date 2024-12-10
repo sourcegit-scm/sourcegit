@@ -569,14 +569,19 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    if (_inProgressContext is RebaseInProgress rebase)
+                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if(_inProgressContext is RebaseInProgress rebase)
                     {
                         useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
                     }
-                    else if (_inProgressContext is CherryPickInProgress cherryPick)
+                    else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -909,14 +914,19 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    if (_inProgressContext is RebaseInProgress rebase)
+                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if (_inProgressContext is RebaseInProgress rebase)
                     {
                         useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
                     }
-                    else if (_inProgressContext is CherryPickInProgress cherryPick)
+                    else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0,10) + " (revert)");
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)

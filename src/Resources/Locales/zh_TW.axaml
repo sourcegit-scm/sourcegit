@@ -402,6 +402,7 @@
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">重定基底 (rebase) 操作進行中。</x:String>
   <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">当前停止于</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">復原提交操作進行中。</x:String>
+  <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">正在復原提交</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">互動式重定基底</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交:</x:String>

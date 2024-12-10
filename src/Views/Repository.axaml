@@ -579,7 +579,11 @@
             </DataTemplate>
 
             <DataTemplate DataType="vm:RevertInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert.Head}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
+              </StackPanel>
             </DataTemplate>
 
             <DataTemplate DataType="vm:MergeInProgress">
