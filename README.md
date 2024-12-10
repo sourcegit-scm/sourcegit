@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.18%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-98.46%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-95.67%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-96.23%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-97.49%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-98.60%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.05%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-98.33%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-95.54%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-96.09%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-97.35%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-98.47%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
