@@ -81,6 +81,12 @@ namespace SourceGit.ViewModels
 
     public class RebaseInProgress : InProgressContext
     {
+        public string HeadName
+        {
+            get;
+            private set;
+        }
+
         public Models.Commit StoppedAt
         {
             get;
@@ -93,6 +99,10 @@ namespace SourceGit.ViewModels
 
             var stoppedSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha")).Trim();
             StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result();
+
+            HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
+            if (HeadName.StartsWith("refs/heads/"))
+                HeadName = HeadName.Substring(11);
         }
 
         public override bool Continue()

@@ -569,6 +569,22 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
+                    if (_inProgressContext is RebaseInProgress rebase)
+                    {
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.StoppedAt.SHA.Substring(0, 10));
+                    }
+                    else if (_inProgressContext is CherryPickInProgress cherryPick)
+                    {
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.Head.SHA.Substring(0, 10));
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if (_inProgressContext is MergeInProgress merge)
+                    {
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
                     menu.Items.Add(openMerger);
@@ -891,6 +907,22 @@ namespace SourceGit.ViewModels
                         UseMine(_selectedUnstaged);
                         e.Handled = true;
                     };
+
+                    if (_inProgressContext is RebaseInProgress rebase)
+                    {
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.StoppedAt.SHA.Substring(0, 10));
+                    }
+                    else if (_inProgressContext is CherryPickInProgress cherryPick)
+                    {
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.Head.SHA.Substring(0, 10));
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if (_inProgressContext is MergeInProgress merge)
+                    {
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
 
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
