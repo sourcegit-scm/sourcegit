@@ -355,8 +355,15 @@
                 HotKey="Alt+Enter"
                 ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
                 ToolTip.Placement="Top"
-                ToolTip.VerticalOffset="0"
-                IsVisible="{Binding IsCommitWithPushVisible}"/>
+                ToolTip.VerticalOffset="0">
+          <Button.IsVisible>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="UseAmend" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="CanCommitWithPush"/>
+              <Binding Path="InProgressContext" Converter="{x:Static ObjectConverters.IsNull}"/>
+            </MultiBinding>
+          </Button.IsVisible>  
+        </Button>
       </Grid>
     </Grid>
   </Grid>

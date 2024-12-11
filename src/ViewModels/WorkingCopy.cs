@@ -29,11 +29,7 @@ namespace SourceGit.ViewModels
         public bool CanCommitWithPush
         {
             get => _canCommitWithPush;
-            set
-            {
-                if (SetProperty(ref _canCommitWithPush, value))
-                    OnPropertyChanged(nameof(IsCommitWithPushVisible));
-            }
+            set => SetProperty(ref _canCommitWithPush, value);
         }
 
         public bool HasUnsolvedConflicts
@@ -89,14 +85,8 @@ namespace SourceGit.ViewModels
 
                     Staged = GetStagedChanges();
                     SelectedStaged = [];
-                    OnPropertyChanged(nameof(IsCommitWithPushVisible));
                 }
             }
-        }
-
-        public bool IsCommitWithPushVisible
-        {
-            get => !UseAmend && CanCommitWithPush;
         }
 
         public List<Models.Change> Unstaged
