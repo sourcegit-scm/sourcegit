@@ -4,51 +4,29 @@ namespace SourceGit.ViewModels
 {
     public abstract class InProgressContext
     {
-        public string Repository
+        public InProgressContext(string repo, string cmd)
         {
-            get;
-            set;
-        }
-
-        public string Cmd
-        {
-            get;
-            set;
-        }
-
-        public bool CanSkip
-        {
-            get;
-            protected set;
-        }
-
-        public InProgressContext(string repo, string cmd, bool canSkip)
-        {
-            Repository = repo;
-            Cmd = cmd;
-            CanSkip = canSkip;
+            _repo = repo;
+            _cmd = cmd;
         }
 
         public bool Abort()
         {
             return new Commands.Command()
             {
-                WorkingDirectory = Repository,
-                Context = Repository,
-                Args = $"{Cmd} --abort",
+                WorkingDirectory = _repo,
+                Context = _repo,
+                Args = $"{_cmd} --abort",
             }.Exec();
         }
 
-        public bool Skip()
+        public virtual bool Skip()
         {
-            if (!CanSkip)
-                return true;
-
             return new Commands.Command()
             {
-                WorkingDirectory = Repository,
-                Context = Repository,
-                Args = $"{Cmd} --skip",
+                WorkingDirectory = _repo,
+                Context = _repo,
+                Args = $"{_cmd} --skip",
             }.Exec();
         }
 
@@ -56,10 +34,10 @@ namespace SourceGit.ViewModels
         {
             return new Commands.Command()
             {
-                WorkingDirectory = Repository,
-                Context = Repository,
+                WorkingDirectory = _repo,
+                Context = _repo,
                 Editor = Commands.Command.EditorType.None,
-                Args = $"{Cmd} --continue",
+                Args = $"{_cmd} --continue",
             }.Exec();
         }
 
@@ -75,6 +53,9 @@ namespace SourceGit.ViewModels
 
             return commit.SHA.Substring(0, 10);
         }
+
+        protected string _repo = string.Empty;
+        protected string _cmd = string.Empty;
     }
 
     public class CherryPickInProgress : InProgressContext
@@ -90,7 +71,7 @@ namespace SourceGit.ViewModels
             get => GetFriendlyNameOfCommit(Head);
         }
 
-        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick", true) 
+        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick") 
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
             Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
@@ -122,7 +103,7 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase", true)
+        public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
         {
             _gitDir = repo.GitDir;
 
@@ -141,8 +122,8 @@ namespace SourceGit.ViewModels
         {
             var succ = new Commands.Command()
             {
-                WorkingDirectory = Repository,
-                Context = Repository,
+                WorkingDirectory = _repo,
+                Context = _repo,
                 Editor = Commands.Command.EditorType.RebaseEditor,
                 Args = $"rebase --continue",
             }.Exec();
@@ -177,7 +158,7 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert", false)
+        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert")
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "REVERT_HEAD")).Trim();
             Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
@@ -203,12 +184,17 @@ namespace SourceGit.ViewModels
             get => GetFriendlyNameOfCommit(Source);
         }
 
-        public MergeInProgress(Repository repo) : base(repo.FullPath, "merge", false)
+        public MergeInProgress(Repository repo) : base(repo.FullPath, "merge")
         {
             Current = Commands.Branch.ShowCurrent(repo.FullPath);
 
             var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
             Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result() ?? new Models.Commit() { SHA = sourceSHA };
+        }
+
+        public override bool Skip()
+        {
+            return true;
         }
     }
 }

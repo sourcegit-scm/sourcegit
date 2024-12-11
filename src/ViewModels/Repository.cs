@@ -764,6 +764,11 @@ namespace SourceGit.ViewModels
             _workingCopy?.StashAll(autoStart);
         }
 
+        public void SkipMerge()
+        {
+            _workingCopy?.SkipMerge();
+        }
+
         public void AbortMerge()
         {
             _workingCopy?.AbortMerge();

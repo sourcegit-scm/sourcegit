@@ -491,6 +491,29 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void SkipMerge()
+        {
+            if (_inProgressContext != null)
+            {
+                _repo.SetWatcherEnabled(false);
+                Task.Run(() =>
+                {
+                    var succ = _inProgressContext.Skip();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (succ)
+                            CommitMessage = string.Empty;
+
+                        _repo.SetWatcherEnabled(true);
+                    });
+                });
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+            }
+        }
+
         public void AbortMerge()
         {
             if (_inProgressContext != null)
