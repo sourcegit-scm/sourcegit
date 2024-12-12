@@ -115,8 +115,8 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ на ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ на ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ на ${1}$</x:String>
-  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Вернуть фиксацию</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Переформулировать</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Отменить коммит</x:String>
+  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Отредактировать комментарий</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как исправление...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Втиснуть в родительскую</x:String>
   <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Сжать (squash) все коммиты до {0}</x:String>
