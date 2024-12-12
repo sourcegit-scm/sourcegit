@@ -114,6 +114,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i) ${0}$ 到此處</x:String>
+  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合併 (merge) 此提交到 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合併 (merge)...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重設 (reset) ${0}$ 到此處</x:String>

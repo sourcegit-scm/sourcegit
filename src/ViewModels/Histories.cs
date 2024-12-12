@@ -513,6 +513,21 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);
+
+                if (!commit.HasDecorators)
+                {
+                    var merge = new MenuItem();
+                    merge.Header = new Views.NameHighlightedTextBlock("CommitCM.Merge", current.Name);
+                    merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                    merge.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new Merge(_repo, commit, current.Name));
+
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(merge);
+                }
             }
             else
             {

@@ -77,7 +77,7 @@
                               HorizontalAlignment="Right"
                               IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
                     <Button Classes="flat primary"
-                            Width="80" Height="28"
+                            Width="100" Height="28"
                             Padding="0"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -85,7 +85,7 @@
                             Click="OnPopupSure"
                             HotKey="Enter"/>
                     <Button Classes="flat"
-                            Width="80" Height="28"
+                            Width="100" Height="28"
                             Margin="8,0,0,0"
                             Padding="0"
                             HorizontalContentAlignment="Center"

@@ -32,6 +32,17 @@ namespace SourceGit.ViewModels
             View = new Views.Merge() { DataContext = this };
         }
 
+        public Merge(Repository repo, Models.Commit source, string into)
+        {
+            _repo = repo;
+            _sourceName = source.SHA;
+
+            Source = source;
+            Into = into;
+            SelectedMode = AutoSelectMergeMode();
+            View = new Views.Merge() { DataContext = this };
+        }
+
         public Merge(Repository repo, Models.Tag source, string into)
         {
             _repo = repo;
