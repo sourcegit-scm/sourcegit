@@ -71,6 +71,9 @@ namespace SourceGit.Commands
                 end = rs.StdOut.IndexOf('\n', start);
             }
 
+            if (_current != null)
+                _current.Message = _current.Message.Trim();
+
             return _commits;
         }
 
