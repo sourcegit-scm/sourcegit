@@ -119,9 +119,9 @@ namespace SourceGit.ViewModels
         {
             var defaultCloneDir = Preference.Instance.GitDefaultCloneDir;
             if (string.IsNullOrEmpty(defaultCloneDir))
-                App.RaiseException(PopupHost.Active.GetId(), "The default clone dir haven't been configured!");
+                App.RaiseException(PopupHost.Active.GetId(), "The default clone dir hasn't been configured!");
             else if (!Directory.Exists(defaultCloneDir))
-                App.RaiseException(PopupHost.Active.GetId(), $"The default clone dir '{defaultCloneDir}' is not exists!");
+                App.RaiseException(PopupHost.Active.GetId(), $"The default clone dir '{defaultCloneDir}' does not exist!");
             else if (PopupHost.CanCreatePopup())
                 PopupHost.ShowAndStartPopup(new ScanRepositories(defaultCloneDir));
         }
