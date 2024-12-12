@@ -53,9 +53,15 @@ namespace SourceGit.Commands
                         break;
                     default:
                         if (line.Equals(_boundary, StringComparison.Ordinal))
+                        {
                             nextPartIdx = -1;
+                            _current.Message = _current.Message.Trim();
+                        }
                         else
-                            _current.Message += line;
+                        {
+                            _current.Message = _current.Message + "\n" + line;
+                        }
+
                         break;
                 }
 
