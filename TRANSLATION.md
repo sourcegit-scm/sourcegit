@@ -1,10 +1,11 @@
-### de_DE.axaml: 97.64%
+### de_DE.axaml: 97.50%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
@@ -24,13 +25,14 @@
 
 </details>
 
-### es_ES.axaml: 97.91%
+### es_ES.axaml: 97.78%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.Diff.UseBlockNavigation
 - Text.FileCM.ResolveUsing
@@ -48,7 +50,7 @@
 
 </details>
 
-### fr_FR.axaml: 95.13%
+### fr_FR.axaml: 95.00%
 
 
 <details>
@@ -58,6 +60,7 @@
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
@@ -92,13 +95,14 @@
 
 </details>
 
-### it_IT.axaml: 95.69%
+### it_IT.axaml: 95.56%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
@@ -132,13 +136,14 @@
 
 </details>
 
-### pt_BR.axaml: 96.94%
+### pt_BR.axaml: 96.81%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
@@ -163,13 +168,14 @@
 
 </details>
 
-### ru_RU.axaml: 98.05%
+### ru_RU.axaml: 97.92%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
