@@ -397,7 +397,7 @@ namespace SourceGit.ViewModels
             if (current.Head != commit.SHA)
             {
                 var reset = new MenuItem();
-                reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name);
+                reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name, commit.ShortSHA);
                 reset.Icon = App.CreateMenuIcon("Icons.Reset");
                 reset.Click += (_, e) =>
                 {
@@ -408,7 +408,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(reset);
 
                 var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
+                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis", commit.ShortSHA);
                 squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                 squash.IsVisible = commit.IsMerged;
                 squash.Click += (_, e) =>
@@ -472,7 +472,7 @@ namespace SourceGit.ViewModels
             if (!commit.IsMerged)
             {
                 var rebase = new MenuItem();
-                rebase.Header = new Views.NameHighlightedTextBlock("CommitCM.Rebase", current.Name);
+                rebase.Header = new Views.NameHighlightedTextBlock("CommitCM.Rebase", current.Name, commit.ShortSHA);
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (_, e) =>
                 {
@@ -543,7 +543,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(revert);
 
                 var interactiveRebase = new MenuItem();
-                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
+                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name, commit.ShortSHA);
                 interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                 interactiveRebase.IsVisible = current.Head != commit.SHA;
                 interactiveRebase.Click += (_, e) =>

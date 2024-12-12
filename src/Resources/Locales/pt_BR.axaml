@@ -137,14 +137,14 @@
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copiar Informações</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Ação customizada</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interativo ${0}$ até Aqui</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ até Aqui</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Resetar ${0}$ até Aqui</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interativo ${0}$ até ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ até ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Resetar ${0}$ até ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Reverter Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Modificar Mensagem</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Salvar como Patch...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Mesclar ao Commit Pai</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Mesclar commits filhos para este</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Mesclar commits filhos para {0}</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ALTERAÇÕES</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Alterações...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARQUIVOS</x:String>

@@ -113,16 +113,16 @@
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">复制简要信息</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i) ${0}$ 到此处</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i) ${0}$ 到此处 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合并(merge)此提交至 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合并(merge)...</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到此处</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此处</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到此处 ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此处 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滚此提交</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">编辑提交信息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合并此提交到上一个提交</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">合并之后的提交到此处</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">合并之后的提交到此处 {0}</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">变更对比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">文件列表</x:String>

@@ -112,14 +112,14 @@
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Info kopieren</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactives Rebase von ${0}$ auf diesen Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase von ${0}$ auf diesen Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ auf diesen Commit</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactives Rebase von ${0}$ auf diesen ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase von ${0}$ auf diesen ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ auf diesen ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Umformulieren</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Als Patch speichern...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash in den Vorgänger</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Nachfolger Commits bis hier</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Nachfolger Commits bis {0}</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">DATEIEN</x:String>

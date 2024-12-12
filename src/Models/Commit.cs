@@ -22,6 +22,7 @@ namespace SourceGit.Models
         } = 0.65;
 
         public string SHA { get; set; } = string.Empty;
+        public string ShortSHA { get {return SHA.Substring(0, 7);} }
         public User Author { get; set; } = User.Invalid;
         public ulong AuthorTime { get; set; } = 0;
         public User Committer { get; set; } = User.Invalid;

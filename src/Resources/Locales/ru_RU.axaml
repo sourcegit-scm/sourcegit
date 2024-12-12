@@ -112,14 +112,14 @@
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Копировать информацию</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение ${0}$ сюда</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ сюда</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ сюда</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ на ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ на ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ на ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Вернуть фиксацию</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Переформулировать</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как исправление...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Втиснуть в родительскую</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Втиснуть дочерную фиксацию сюда</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Сжать (squash) все коммиты до {0}</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Найти изменения....</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ФАЙЛЫ</x:String>
