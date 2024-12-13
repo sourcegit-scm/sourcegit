@@ -482,6 +482,21 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(rebase);
 
+                if (!commit.HasDecorators)
+                {
+                    var merge = new MenuItem();
+                    merge.Header = new Views.NameHighlightedTextBlock("CommitCM.Merge", current.Name);
+                    merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                    merge.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new Merge(_repo, commit, current.Name));
+
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(merge);
+                }
+
                 var cherryPick = new MenuItem();
                 cherryPick.Header = App.Text("CommitCM.CherryPick");
                 cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
@@ -513,21 +528,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);
-
-                if (!commit.HasDecorators)
-                {
-                    var merge = new MenuItem();
-                    merge.Header = new Views.NameHighlightedTextBlock("CommitCM.Merge", current.Name);
-                    merge.Icon = App.CreateMenuIcon("Icons.Merge");
-                    merge.Click += (_, e) =>
-                    {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Merge(_repo, commit, current.Name));
-
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(merge);
-                }
             }
             else
             {
@@ -541,27 +541,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(revert);
-
-                var interactiveRebase = new MenuItem();
-                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
-                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
-                interactiveRebase.IsVisible = current.Head != commit.SHA;
-                interactiveRebase.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    App.OpenDialog(new Views.InteractiveRebase()
-                    {
-                        DataContext = new InteractiveRebase(_repo, current, commit)
-                    });
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(interactiveRebase);
             }
 
             if (current.Head != commit.SHA)
@@ -579,6 +558,30 @@ namespace SourceGit.ViewModels
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (commit.IsMerged && current.Head != commit.SHA)
+            {
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
+                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.Click += (_, e) =>
+                {
+                    if (_repo.LocalChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
+                    App.OpenDialog(new Views.InteractiveRebase()
+                    {
+                        DataContext = new InteractiveRebase(_repo, current, commit)
+                    });
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(interactiveRebase);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
 
             if (current.Head != commit.SHA)
             {
