@@ -104,12 +104,8 @@ namespace SourceGit.Commands
             catch (Exception e)
             {
                 if (RaiseError)
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(Context, e.Message);
-                    });
-                }
+                    Dispatcher.UIThread.Post(() => App.RaiseException(Context, e.Message));
+
                 return false;
             }
 
@@ -120,15 +116,15 @@ namespace SourceGit.Commands
             int exitCode = proc.ExitCode;
             proc.Close();
 
-            if (!isCancelled && exitCode != 0 && errs.Count > 0)
+            if (!isCancelled && exitCode != 0)
             {
                 if (RaiseError)
                 {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(Context, string.Join("\n", errs));
-                    });
+                    var errMsg = string.Join("\n", errs);
+                    if (!string.IsNullOrWhiteSpace(errMsg))
+                        Dispatcher.UIThread.Post(() => App.RaiseException(Context, errMsg));
                 }
+
                 return false;
             }
 
