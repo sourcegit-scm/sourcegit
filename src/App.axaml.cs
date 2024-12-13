@@ -203,7 +203,7 @@ namespace SourceGit
                     new TrayIcon {
                         Icon = new WindowIcon(new Bitmap(AssetLoader.Open(new Uri("avares://SourceGit/App.ico")))),
                         Menu = [
-                            new NativeMenuItem(Text("Open")),
+                            new NativeMenuItem(Text("Open")) {Command = Unminimize},
                             new NativeMenuItem(Text("Preference")) {Command = OpenPreferenceCommand},
                             new NativeMenuItemSeparator(),
                             new NativeMenuItem(Text("Quit")) {Command = QuitCommand},
@@ -214,7 +214,15 @@ namespace SourceGit
                 TrayIcon.SetIcons(Current, icons);
             }
         }
-
+        private static void ShowWindow()
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
+                desktop.MainWindow.WindowState = WindowState.Normal;
+                desktop.MainWindow.Show();
+                desktop.MainWindow.BringIntoView();
+                desktop.MainWindow.Focus();
+            }
+        }
         public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
         {
             var app = Current as App;
