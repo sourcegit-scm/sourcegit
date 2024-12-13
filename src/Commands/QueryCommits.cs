@@ -6,11 +6,13 @@ namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        public QueryCommits(string repo, string limits, bool needFindHead = true)
+        public QueryCommits(string repo, bool useTopoOrder, string limits, bool needFindHead = true)
         {
+            var order = useTopoOrder ? "--topo-order" : "--date-order";
+
             WorkingDirectory = repo;
             Context = repo;
-            Args = "log --date-order --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + limits;
+            Args = $"log {order} --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s {limits}";
             _findFirstMerged = needFindHead;
         }
 

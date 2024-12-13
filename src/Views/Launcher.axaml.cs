@@ -72,6 +72,11 @@ namespace SourceGit.Views
             return _unhandledModifiers.HasFlag(modifier);
         }
 
+        public void ClearKeyModifier()
+        {
+            _unhandledModifiers = KeyModifiers.None;
+        }
+
         protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
@@ -127,6 +132,16 @@ namespace SourceGit.Views
                 if (e.Key == Key.T)
                 {
                     vm.AddNewTab();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.N)
+                {
+                    if (vm.ActivePage.Data is not ViewModels.Welcome)
+                        vm.AddNewTab();
+
+                    ViewModels.Welcome.Instance.Clone();                    
                     e.Handled = true;
                     return;
                 }

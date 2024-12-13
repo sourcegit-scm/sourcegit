@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -43,7 +45,9 @@ namespace SourceGit.Views
             if (change.Property == MessageProperty || change.Property == IssueTrackerRulesProperty)
             {
                 Inlines!.Clear();
+                _inlineCommits.Clear();
                 _matches = null;
+                _lastHover = null;
                 ClearHoveredIssueLink();
 
                 var message = Message;
@@ -114,7 +118,7 @@ namespace SourceGit.Views
         {
             base.OnPointerMoved(e);
 
-            if (e.Pointer.Captured == this)
+            if (Equals(e.Pointer.Captured, this))
             {
                 var relativeSelfY = e.GetPosition(this).Y;
                 if (relativeSelfY <= 0 || relativeSelfY > Bounds.Height)
@@ -149,10 +153,14 @@ namespace SourceGit.Views
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
 
                     _lastHover = match;
-                    if (!_lastHover.IsCommitSHA)
+                    if (!match.IsCommitSHA)
                     {
                         ToolTip.SetTip(this, match.Link);
                         ToolTip.SetIsOpen(this, true);
+                    }
+                    else
+                    {
+                        ProcessHoverCommitLink(match);
                     }
 
                     return;
@@ -172,7 +180,40 @@ namespace SourceGit.Views
                 {
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
-                        detail.NavigateTo(_lastHover.Link);
+                    {
+                        var point = e.GetCurrentPoint(this);
+                        var link = _lastHover.Link;
+
+                        if (point.Properties.IsLeftButtonPressed)
+                        {
+                            detail.NavigateTo(_lastHover.Link);
+                        }
+                        else if (point.Properties.IsRightButtonPressed)
+                        {
+                            var open = new MenuItem();
+                            open.Header = App.Text("SHALinkCM.NavigateTo");
+                            open.Icon = App.CreateMenuIcon("Icons.Commit");
+                            open.Click += (_, ev) =>
+                            {
+                                detail.NavigateTo(link);
+                                ev.Handled = true;
+                            };
+
+                            var copy = new MenuItem();
+                            copy.Header = App.Text("SHALinkCM.CopySHA");
+                            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                            copy.Click += (_, ev) =>
+                            {
+                                App.CopyText(link);
+                                ev.Handled = true;
+                            };
+
+                            var menu = new ContextMenu();
+                            menu.Items.Add(open);
+                            menu.Items.Add(copy);
+                            menu.Open(this);
+                        }
+                    }
                 }
                 else
                 {
@@ -223,6 +264,53 @@ namespace SourceGit.Views
             ClearHoveredIssueLink();
         }
 
+        private void ProcessHoverCommitLink(Models.Hyperlink link)
+        {
+            var sha = link.Link;
+
+            // If we have already queried this SHA, just use it.
+            if (_inlineCommits.TryGetValue(sha, out var exist))
+            {
+                if (exist != null)
+                {
+                    ToolTip.SetTip(this, exist);
+                    ToolTip.SetIsOpen(this, true);
+                }
+
+                return;
+            }
+
+            var parentView = this.FindAncestorOfType<CommitBaseInfo>();
+            if (parentView is { DataContext: ViewModels.CommitDetail detail })
+            {
+                // Record the SHA of current viewing commit in the CommitDetail panel to determine if it is changed after
+                // asynchronous queries.
+                var lastDetailCommit = detail.Commit.SHA;
+                Task.Run(() =>
+                {
+                    var c = detail.GetParent(sha);
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        // Make sure the DataContext of CommitBaseInfo is not changed.
+                        var currentParent = this.FindAncestorOfType<CommitBaseInfo>();
+                        if (currentParent is { DataContext: ViewModels.CommitDetail currentDetail } &&
+                            currentDetail.Commit.SHA == lastDetailCommit)
+                        {
+                            if (!_inlineCommits.ContainsKey(sha))
+                                _inlineCommits.Add(sha, c);
+
+                            // Make sure user still hovers the target SHA.
+                            if (_lastHover == link && c != null)
+                            {
+                                ToolTip.SetTip(this, c);
+                                ToolTip.SetIsOpen(this, true);
+                            }
+                        }
+                    });
+                });
+            }
+        }
+
         private void ClearHoveredIssueLink()
         {
             if (_lastHover != null)
@@ -235,5 +323,6 @@ namespace SourceGit.Views
 
         private List<Models.Hyperlink> _matches = null;
         private Models.Hyperlink _lastHover = null;
+        private Dictionary<string, Models.Commit> _inlineCommits = new();
     }
 }

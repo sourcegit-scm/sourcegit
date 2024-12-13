@@ -395,5 +395,46 @@ namespace SourceGit.Views
             }
             e.Handled = true;
         }
+
+        private void OnSwitchHistoriesOrderClicked(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            {
+                var checkIcon = App.CreateMenuIcon("Icons.Check");
+
+                var dateOrder = new MenuItem();
+                dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
+                dateOrder.Icon = repo.EnableTopoOrderInHistories ? null : checkIcon;
+                dateOrder.Click += (_, ev) =>
+                {
+                    repo.EnableTopoOrderInHistories = false;
+                    ev.Handled = true;
+                };
+
+                var topoOrder = new MenuItem();
+                topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
+                topoOrder.Icon = repo.EnableTopoOrderInHistories ? checkIcon : null;
+                topoOrder.Click += (_, ev) =>
+                {
+                    repo.EnableTopoOrderInHistories = true;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(dateOrder);
+                menu.Items.Add(topoOrder);
+                menu.Open(button);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnSkipInProgress(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                repo.SkipMerge();
+
+            e.Handled = true;
+        }
     }
 }

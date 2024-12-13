@@ -11,7 +11,7 @@
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* Deutsch/English/Español/Français/Português/Русский/简体中文/繁體中文
+* Deutsch/English/Español/Français/Italiano/Português/Русский/简体中文/繁體中文
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.41%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-99.57%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-86.31%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-99.57%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-97.50%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-97.78%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-95.00%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-95.56%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-96.81%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-97.92%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
@@ -98,9 +98,37 @@ For **macOS** users:
 
 For **Linux** users:
 
+* For Debian/Ubuntu based distributions, you can add the `sourcegit` repository by following:
+  You may need to install curl and/or gpg first, if you're on a very minimal host:
+  ```shell
+  apt update && apt install curl gpg -y
+  ```
+  Install the registry signing key:
+  ```shell
+  curl -fsSL "https://packages.buildkite.com/sourcegit/sourcegit-deb/gpgkey" | gpg --dearmor -o /etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg
+  ```
+  Configure the source:
+  ```shell
+  echo -e "deb [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main\ndeb-src [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main" > /etc/apt/sources.list.d/buildkite-sourcegit-sourcegit-deb.list
+  ```
+  Update your local repository and install the package:
+  ```shell
+  apt update && apt install sourcegit
+  ```
+* For RHEL/Fedora based distributions, you can add the `sourcegit` repository by following:
+  Configure the source:
+  ```shell
+  sudo sh -c 'echo -e "[sourcegit-rpm]\nname=sourcegit-rpm\nbaseurl=https://packages.buildkite.com/sourcegit/sourcegit-rpm/rpm_any/rpm_any/\$basearch\nenabled=1\nrepo_gpgcheck=1\ngpgcheck=0\ngpgkey=https://packages.buildkite.com/sourcegit/sourcegit-rpm/gpgkey\npriority=1"' > /etc/yum.repos.d/sourcegit-rpm.repo
+  ```
+  Install the package with this command:
+  ```shell
+  sudo dnf install -y sourcegit
+  ```
+* `Appimage` files can be found on [AppimageHub](https://appimage.github.io/SourceGit/)
 * `xdg-open` must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
+* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`. 
 
 ## OpenAI
 

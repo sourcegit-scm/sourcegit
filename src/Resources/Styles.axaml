@@ -164,16 +164,18 @@
   <Style Selector="ToolTip">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
+    <Setter Property="MaxWidth" Value="800"/>
     <Setter Property="VerticalOffset" Value="-8"/>
     <Setter Property="TextBlock.TextDecorations" Value=""/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid Effect="drop-shadow(0 0 8 #80000000)">
+        <Grid Effect="drop-shadow(0 0 8 #30000000)">
           <Border Margin="8"
                   Padding="8,6"
                   CornerRadius="4"
                   Background="{DynamicResource Brush.Popup}"
-                  BorderThickness="0"
+                  BorderBrush="{DynamicResource Brush.Border2}"
+                  BorderThickness="1"
                   MaxWidth="{TemplateBinding MaxWidth}"
                   MinHeight="{TemplateBinding MinHeight}"
                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
@@ -511,6 +513,72 @@
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
   </Style>
+  <Style Selector="Button.flat:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Button.flat:disabled">
+    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.Background}"/>
+  </Style>
+  
+  <Style Selector="SplitButton">
+    <Setter Property="MinHeight" Value="24"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <Button x:Name="PART_PrimaryButton"
+                  Grid.Column="0"
+                  Classes="flat primary"
+                  MinWidth="32"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Content="{TemplateBinding Content}"
+                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                  Command="{TemplateBinding Command}"
+                  CommandParameter="{TemplateBinding CommandParameter}"
+                  CornerRadius="3,0,0,3"
+                  Padding="{TemplateBinding Padding}"
+                  Focusable="False"
+                  KeyboardNavigation.IsTabStop="False" />
+
+          <Button x:Name="PART_SecondaryButton"
+                  Grid.Column="2"
+                  Classes="flat primary"
+                  Width="32"
+                  CornerRadius="0,3,3,0"
+                  Padding="0"
+                  Focusable="False"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  KeyboardNavigation.IsTabStop="False">
+            <Path Height="12" Width="12"
+                  Margin="0,4,0,0"
+                  Fill="{DynamicResource AccentButtonForeground}"
+                  Data="{DynamicResource Icons.Down}"/>
+          </Button>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+    
+    <Style Selector="^:disabled /template/ Button">
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    
+    <Style Selector="^:disabled TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+    </Style>
+    
+    <Style Selector="^:disabled Path">
+      <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+    </Style>
+  </Style>
 
   <Style Selector="aes|SearchPanel">
     <Setter Property="Template">
@@ -788,12 +856,7 @@
                 </Border.Effect>
               </Border>
 
-              <Border BorderThickness="0"
-                      Margin="8,4"
-                      MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                      MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-                      HorizontalAlignment="Stretch"
-                      CornerRadius="{DynamicResource OverlayCornerRadius}">
+              <Border BorderThickness="0" Margin="8,4" MaxHeight="400">
                 <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
                   <ItemsPresenter Name="PART_ItemsPresenter"
                                   Margin="{DynamicResource MenuFlyoutScrollerMargin}"
@@ -1037,35 +1100,6 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
 
-  <Style Selector="ToggleButton.filter">
-    <Setter Property="Margin" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-    <Setter Property="VerticalAlignment" Value="Stretch"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="Transparent">
-          <Path x:Name="PART_IndicatorIcon"
-                Width="12"
-                Data="{StaticResource Icons.Filter}"
-                Fill="Transparent"
-                StrokeThickness="1"
-                Stroke="{DynamicResource Brush.FG2}"
-                HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ToggleButton.filter:pressed">
-    <Setter Property="RenderTransform" Value="scale(1)"/>
-  </Style>
-  <Style Selector="ToggleButton.filter:checked /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
-  </Style>
-  <Style Selector="ToggleButton.filter:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
-  </Style>
   <Style Selector="ToggleButton.tree_expander">
     <Setter Property="Margin" Value="0" />
     <Setter Property="Width" Value="9" />
@@ -1203,7 +1237,7 @@
           <Path x:Name="PART_IndicatorIcon"
                 Margin="{TemplateBinding Padding}"
                 Stretch="Fill"
-                Width="14" Height="10"
+                Width="14" Height="14"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG1}"
                 Opacity=".8"/>

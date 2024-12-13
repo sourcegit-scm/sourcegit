@@ -11,26 +11,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class ConflictContext : ObservableObject
-    {
-        public bool IsResolved
-        {
-            get => _isResolved;
-            set => SetProperty(ref _isResolved, value);
-        }
-
-        public ConflictContext(string repo, Models.Change change)
-        {
-            Task.Run(() =>
-            {
-                var result = new Commands.IsConflictResolved(repo, change).ReadToEnd().IsSuccess;
-                Dispatcher.UIThread.Post(() => IsResolved = result);
-            });
-        }
-
-        private bool _isResolved = false;
-    }
-
     public class WorkingCopy : ObservableObject
     {
         public bool IncludeUntracked
@@ -49,11 +29,19 @@ namespace SourceGit.ViewModels
         public bool CanCommitWithPush
         {
             get => _canCommitWithPush;
-            set
-            {
-                if (SetProperty(ref _canCommitWithPush, value))
-                    OnPropertyChanged(nameof(IsCommitWithPushVisible));
-            }
+            set => SetProperty(ref _canCommitWithPush, value);
+        }
+
+        public bool HasUnsolvedConflicts
+        {
+            get => _hasUnsolvedConflicts;
+            set => SetProperty(ref _hasUnsolvedConflicts, value);
+        }
+
+        public InProgressContext InProgressContext
+        {
+            get => _inProgressContext;
+            private set => SetProperty(ref _inProgressContext, value);
         }
 
         public bool IsStaging
@@ -97,14 +85,8 @@ namespace SourceGit.ViewModels
 
                     Staged = GetStagedChanges();
                     SelectedStaged = [];
-                    OnPropertyChanged(nameof(IsCommitWithPushVisible));
                 }
             }
-        }
-
-        public bool IsCommitWithPushVisible
-        {
-            get => !UseAmend && CanCommitWithPush;
         }
 
         public List<Models.Change> Unstaged
@@ -191,6 +173,7 @@ namespace SourceGit.ViewModels
         public void Cleanup()
         {
             _repo = null;
+            _inProgressContext = null;
 
             _selectedUnstaged.Clear();
             OnPropertyChanged(nameof(SelectedUnstaged));
@@ -208,7 +191,7 @@ namespace SourceGit.ViewModels
             _commitMessage = string.Empty;
         }
 
-        public bool SetData(List<Models.Change> changes)
+        public void SetData(List<Models.Change> changes)
         {
             if (!IsChanged(_cached, changes))
             {
@@ -221,9 +204,22 @@ namespace SourceGit.ViewModels
                         SetDetail(_selectedStaged[0], false);
                     else
                         SetDetail(null, false);
+
+                    var inProgress = null as InProgressContext;
+                    if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
+                        inProgress = new CherryPickInProgress(_repo);
+                    else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
+                        inProgress = new RebaseInProgress(_repo);
+                    else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
+                        inProgress = new RevertInProgress(_repo);
+                    else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
+                        inProgress = new MergeInProgress(_repo);
+
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflit) != null;
+                    InProgressContext = inProgress;
                 });
 
-                return _cached.Find(x => x.IsConflit) != null;
+                return;
             }
 
             _cached = changes;
@@ -268,6 +264,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() =>
             {
                 _isLoadingData = true;
+                HasUnsolvedConflicts = hasConflict;
                 Unstaged = unstaged;
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
@@ -281,6 +278,18 @@ namespace SourceGit.ViewModels
                 else
                     SetDetail(null, false);
 
+                var inProgress = null as InProgressContext;
+                if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
+                    inProgress = new CherryPickInProgress(_repo);
+                else if (File.Exists(Path.Combine(_repo.GitDir, "REBASE_HEAD")) && Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
+                    inProgress = new RebaseInProgress(_repo);
+                else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
+                    inProgress = new RevertInProgress(_repo);
+                else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
+                    inProgress = new MergeInProgress(_repo);
+
+                InProgressContext = inProgress;
+
                 // Try to load merge message from MERGE_MSG
                 if (string.IsNullOrEmpty(_commitMessage))
                 {
@@ -289,8 +298,6 @@ namespace SourceGit.ViewModels
                         CommitMessage = File.ReadAllText(mergeMsgFile);
                 }
             });
-
-            return hasConflict;
         }
 
         public void OpenAssumeUnchanged()
@@ -403,6 +410,123 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public async void UseTheirs(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var change in changes)
+            {
+                if (change.IsConflit)
+                    files.Add(change.Path);
+            }
+
+            _repo.SetWatcherEnabled(false);
+            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
+            if (succ)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
+        }
+
+        public async void UseMine(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var change in changes)
+            {
+                if (change.IsConflit)
+                    files.Add(change.Path);
+            }
+
+            _repo.SetWatcherEnabled(false);
+            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
+            if (succ)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
+        }
+
+        public async void UseExternalMergeTool(Models.Change change)
+        {
+            var toolType = Preference.Instance.ExternalMergeToolType;
+            var toolPath = Preference.Instance.ExternalMergeToolPath;
+
+            _repo.SetWatcherEnabled(false);
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
+            _repo.SetWatcherEnabled(true);
+        }
+
+        public void ContinueMerge()
+        {
+            if (_inProgressContext != null)
+            {
+                _repo.SetWatcherEnabled(false);
+                Task.Run(() =>
+                {
+                    var succ = _inProgressContext.Continue();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (succ)
+                            CommitMessage = string.Empty;
+
+                        _repo.SetWatcherEnabled(true);
+                    });
+                });
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+            }
+        }
+
+        public void SkipMerge()
+        {
+            if (_inProgressContext != null)
+            {
+                _repo.SetWatcherEnabled(false);
+                Task.Run(() =>
+                {
+                    var succ = _inProgressContext.Skip();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (succ)
+                            CommitMessage = string.Empty;
+
+                        _repo.SetWatcherEnabled(true);
+                    });
+                });
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+            }
+        }
+
+        public void AbortMerge()
+        {
+            if (_inProgressContext != null)
+            {
+                _repo.SetWatcherEnabled(false);
+                Task.Run(() =>
+                {
+                    var succ = _inProgressContext.Abort();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (succ)
+                            CommitMessage = string.Empty;
+
+                        _repo.SetWatcherEnabled(true);
+                    });
+                });
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+            }
+        }
+
         public void Commit()
         {
             DoCommit(false, false, false);
@@ -486,8 +610,30 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
+                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if(_inProgressContext is RebaseInProgress rebase)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
+                    }
+                    else if (_inProgressContext is RevertInProgress revert)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if (_inProgressContext is MergeInProgress merge)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(openMerger);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
@@ -808,6 +954,27 @@ namespace SourceGit.ViewModels
                         UseMine(_selectedUnstaged);
                         e.Handled = true;
                     };
+
+                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if (_inProgressContext is RebaseInProgress rebase)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
+                    }
+                    else if (_inProgressContext is RevertInProgress revert)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0,10) + " (revert)");
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
+                    else if (_inProgressContext is MergeInProgress merge)
+                    {
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                    }
 
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
@@ -1312,57 +1479,9 @@ namespace SourceGit.ViewModels
             if (change == null)
                 DetailContext = null;
             else if (change.IsConflit && isUnstaged)
-                DetailContext = new ConflictContext(_repo.FullPath, change);
+                DetailContext = new Conflict(_repo, this, change);
             else
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
-        }
-
-        private async void UseTheirs(List<Models.Change> changes)
-        {
-            var files = new List<string>();
-            foreach (var change in changes)
-            {
-                if (change.IsConflit)
-                    files.Add(change.Path);
-            }
-
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
-            if (succ)
-            {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
-        }
-
-        private async void UseMine(List<Models.Change> changes)
-        {
-            var files = new List<string>();
-            foreach (var change in changes)
-            {
-                if (change.IsConflit)
-                    files.Add(change.Path);
-            }
-
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
-            if (succ)
-            {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
-        }
-
-        private async void UseExternalMergeTool(Models.Change change)
-        {
-            var toolType = Preference.Instance.ExternalMergeToolType;
-            var toolPath = Preference.Instance.ExternalMergeToolPath;
-
-            _repo.SetWatcherEnabled(false);
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
-            _repo.SetWatcherEnabled(true);
         }
 
         private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
@@ -1475,5 +1594,8 @@ namespace SourceGit.ViewModels
         private int _count = 0;
         private object _detailContext = null;
         private string _commitMessage = string.Empty;
+
+        private bool _hasUnsolvedConflicts = false;
+        private InProgressContext _inProgressContext = null;
     }
 }

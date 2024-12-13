@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -73,10 +72,9 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = false;
                 if (IsMergeCommit)
                 {
-                    succ = new Commands.CherryPick(
+                    new Commands.CherryPick(
                         _repo.FullPath,
                         Targets[0].SHA,
                         !AutoCommit,
@@ -85,20 +83,16 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var builder = new StringBuilder();
-                    for (int i = Targets.Count - 1; i >= 0; i--)
-                        builder.Append($"{Targets[i].SHA} ");
-
-                    succ = new Commands.CherryPick(
+                    new Commands.CherryPick(
                         _repo.FullPath,
-                        builder.ToString(),
+                        string.Join(' ', Targets.ConvertAll(c => c.SHA)),
                         !AutoCommit,
                         AppendSourceToMessage,
                         string.Empty).Exec();
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return true;
             });
         }
 

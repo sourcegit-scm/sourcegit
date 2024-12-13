@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Merge"
              x:DataType="vm:Merge">
@@ -11,15 +12,36 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Merge}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="130,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Merge.Source}"/>
-      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Text="{Binding Source}"/>
-      </StackPanel>
+      <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding Source}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:Branch">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="m:Commit">
+            <Grid ColumnDefinitions="Auto,Auto,*">
+              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+          </DataTemplate>
+
+          <DataTemplate DataType="m:Tag">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

@@ -78,6 +78,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public AvaloniaList<string> Children
+        {
+            get;
+            private set;
+        } = [];
+
         public string SearchChangeFilter
         {
             get => _searchChangeFilter;
@@ -100,11 +106,69 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = new AvaloniaList<Models.CommitLink>();
+        } = [];
 
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
             get => _repo.Settings?.IssueTrackerRules;
+        }
+
+        public string RevisionFileSearchFilter
+        {
+            get => _revisionFileSearchFilter;
+            set
+            {
+                if (SetProperty(ref _revisionFileSearchFilter, value))
+                {
+                    RevisionFileSearchSuggestion.Clear();
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_revisionFiles.Count == 0)
+                        {
+                            var sha = Commit.SHA;
+
+                            Task.Run(() =>
+                            {
+                                var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
+
+                                Dispatcher.UIThread.Invoke(() =>
+                                {
+                                    if (sha == Commit.SHA)
+                                    {
+                                        _revisionFiles.Clear();
+                                        _revisionFiles.AddRange(files);
+
+                                        if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+                                            UpdateRevisionFileSearchSuggestion();
+                                    }
+                                });
+                            });
+                        }
+                        else
+                        {
+                            UpdateRevisionFileSearchSuggestion();
+                        }
+                    }
+                    else
+                    {
+                        IsRevisionFileSearchSuggestionOpen = false;
+                        GC.Collect();
+                    }
+                }
+            }
+        }
+
+        public AvaloniaList<string> RevisionFileSearchSuggestion
+        {
+            get;
+            private set;
+        } = [];
+
+        public bool IsRevisionFileSearchSuggestionOpen
+        {
+            get => _isRevisionFileSearchSuggestionOpen;
+            set => SetProperty(ref _isRevisionFileSearchSuggestionOpen, value);
         }
 
         public CommitDetail(Repository repo)
@@ -141,17 +205,23 @@ namespace SourceGit.ViewModels
         {
             _repo = null;
             _commit = null;
+
             if (_changes != null)
                 _changes.Clear();
             if (_visibleChanges != null)
                 _visibleChanges.Clear();
             if (_selectedChanges != null)
                 _selectedChanges.Clear();
+
             _signInfo = null;
             _searchChangeFilter = null;
             _diffContext = null;
             _viewRevisionFileContent = null;
             _cancelToken = null;
+
+            WebLinks.Clear();
+            _revisionFiles.Clear();
+            RevisionFileSearchSuggestion.Clear();
         }
 
         public void NavigateTo(string commitSHA)
@@ -167,6 +237,16 @@ namespace SourceGit.ViewModels
         public void ClearSearchChangeFilter()
         {
             SearchChangeFilter = string.Empty;
+        }
+
+        public void ClearRevisionFileSearchFilter()
+        {
+            RevisionFileSearchFilter = string.Empty;
+        }
+
+        public Models.Commit GetParent(string sha)
+        {
+            return new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
         }
 
         public List<Models.Object> GetRevisionFilesUnderFolder(string parentFolder)
@@ -288,7 +368,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path, _commit.SHA) };
                 window.Show();
                 ev.Handled = true;
             };
@@ -304,12 +384,40 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var patch = new MenuItem();
+            patch.Header = App.Text("FileCM.SaveAsPatch");
+            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = App.GetStorageProvider();
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("FileCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                var baseRevision = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
+                var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                if (storageFile != null)
+                {
+                    var saveTo = storageFile.Path.LocalPath;
+                    var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo.FullPath, [change], baseRevision, _commit.SHA, saveTo));
+                    if (succ)
+                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                }
+
+                e.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(diffWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(history);
             menu.Items.Add(blame);
+            menu.Items.Add(patch);
             menu.Items.Add(new MenuItem { Header = "-" });
 
             var resetToThisRevision = new MenuItem();
@@ -429,7 +537,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path) };
+                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path, _commit.SHA) };
                 window.Show();
                 ev.Handled = true;
             };
@@ -504,12 +612,19 @@ namespace SourceGit.ViewModels
         private void Refresh()
         {
             _changes = null;
+            _revisionFiles.Clear();
+
             FullMessage = string.Empty;
             SignInfo = null;
             Changes = [];
             VisibleChanges = null;
             SelectedChanges = null;
             ViewRevisionFileContent = null;
+            Children.Clear();
+            RevisionFileSearchFilter = string.Empty;
+            IsRevisionFileSearchSuggestionOpen = false;
+
+            GC.Collect();
 
             if (_commit == null)
                 return;
@@ -530,6 +645,19 @@ namespace SourceGit.ViewModels
                 _cancelToken.Requested = true;
 
             _cancelToken = new Commands.Command.CancelToken();
+
+            if (Preference.Instance.ShowChildren)
+            {
+                Task.Run(() =>
+                {
+                    var max = Preference.Instance.MaxHistoryCommits;
+                    var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { Cancel = _cancelToken };
+                    var children = cmdChildren.Result();
+                    if (!cmdChildren.Cancel.Requested)
+                        Dispatcher.UIThread.Post(() => Children.AddRange(children));
+                });
+            }
+
             Task.Run(() =>
             {
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
@@ -663,6 +791,24 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
+        private void UpdateRevisionFileSearchSuggestion()
+        {
+            var suggestion = new List<string>();
+            foreach (var file in _revisionFiles)
+            {
+                if (file.Contains(_revisionFileSearchFilter, StringComparison.OrdinalIgnoreCase) &&
+                    file.Length != _revisionFileSearchFilter.Length)
+                    suggestion.Add(file);
+
+                if (suggestion.Count >= 100)
+                    break;
+            }
+
+            RevisionFileSearchSuggestion.Clear();
+            RevisionFileSearchSuggestion.AddRange(suggestion);
+            IsRevisionFileSearchSuggestionOpen = suggestion.Count > 0;
+        }
+
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
         private static partial Regex REG_LFS_FORMAT();
 
@@ -683,5 +829,8 @@ namespace SourceGit.ViewModels
         private DiffContext _diffContext = null;
         private object _viewRevisionFileContent = null;
         private Commands.Command.CancelToken _cancelToken = null;
+        private List<string> _revisionFiles = [];
+        private string _revisionFileSearchFilter = string.Empty;
+        private bool _isRevisionFileSearchSuggestionOpen = false;
     }
 }

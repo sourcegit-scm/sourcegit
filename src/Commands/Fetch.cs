@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool noTags, bool prune, Action<string> outputHandler)
+        public Fetch(string repo, string remote, bool noTags, bool prune, bool force, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
@@ -16,6 +16,9 @@ namespace SourceGit.Commands
             if (noTags)
                 Args += "--no-tags ";
             else
+                Args += "--tags ";
+
+            if (force)
                 Args += "--force ";
 
             if (prune)

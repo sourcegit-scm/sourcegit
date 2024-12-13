@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Avalonia.Collections;
@@ -65,7 +66,8 @@ namespace SourceGit.ViewModels
             get => _defaultFontFamily;
             set
             {
-                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
+                var name = FixFontFamilyName(value);
+                if (SetProperty(ref _defaultFontFamily, name) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -75,7 +77,8 @@ namespace SourceGit.ViewModels
             get => _monospaceFontFamily;
             set
             {
-                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
+                var name = FixFontFamilyName(value);
+                if (SetProperty(ref _monospaceFontFamily, name) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -144,6 +147,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showAuthorTimeInGraph, value);
         }
 
+        public bool ShowChildren
+        {
+            get => _showChildren;
+            set => SetProperty(ref _showChildren, value);
+        }
+
         public string IgnoreUpdateTag
         {
             get => _ignoreUpdateTag;
@@ -196,6 +205,12 @@ namespace SourceGit.ViewModels
         {
             get => _useFullTextDiff;
             set => SetProperty(ref _useFullTextDiff, value);
+        }
+
+        public bool UseBlockNavigationInDiffView
+        {
+            get => _useBlockNavigationInDiffView;
+            set => SetProperty(ref _useBlockNavigationInDiffView, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -574,6 +589,35 @@ namespace SourceGit.ViewModels
             return changed;
         }
 
+        private string FixFontFamilyName(string name)
+        {
+            var trimmed = name.Trim();
+            if (string.IsNullOrEmpty(trimmed))
+                return string.Empty;
+
+            var builder = new StringBuilder();
+            var lastIsSpace = false;
+            for (int i = 0; i < trimmed.Length; i++)
+            {
+                var c = trimmed[i];
+                if (char.IsWhiteSpace(c))
+                {
+                    if (lastIsSpace)
+                        continue;
+
+                    lastIsSpace = true;
+                }
+                else
+                {
+                    lastIsSpace = false;
+                }
+
+                builder.Append(c);
+            }
+
+            return builder.ToString();
+        }
+
         private static Preference _instance = null;
         private static bool _isLoading = false;
 
@@ -592,6 +636,7 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _showAuthorTimeInGraph = false;
+        private bool _showChildren = false;
 
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;
@@ -605,6 +650,7 @@ namespace SourceGit.ViewModels
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
+        private bool _useBlockNavigationInDiffView = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

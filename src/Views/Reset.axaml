@@ -27,7 +27,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Reset.MoveTo}"/>
       <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
-        <Path Grid.Column="0" Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+        <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
         <TextBlock Grid.Column="1" Classes="primary" Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
         <TextBlock Grid.Column="2" Text="{Binding To.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
       </Grid>
@@ -37,16 +37,19 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Reset.Mode}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
+                x:Name="ResetMode"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:ResetMode.Supported}}"
-                SelectedItem="{Binding SelectedMode, Mode=TwoWay}">
+                SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
+                KeyDown="OnResetModeKeyDown">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ResetMode">
             <Grid ColumnDefinitions="16,60,*">
               <Ellipse Grid.Column="0" Width="12" Height="12" Fill="{Binding Color}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4,0,0,0"/>
-              <TextBlock Grid.Column="2" Text="{Binding Desc}" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="2,0,0,0"/>
+              <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="2,0,16,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="3" Text="{Binding Key}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
             </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>

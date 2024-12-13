@@ -152,6 +152,7 @@ namespace SourceGit.ViewModels
                         _selectedRemote.Name,
                         NoTags,
                         _repo.Settings.EnablePruneOnFetch,
+                        false,
                         SetProgressDescription).Exec();
 
                     if (!rs)

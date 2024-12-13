@@ -126,10 +126,12 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Cambios...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARCHIVOS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Archivo LFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Buscar Archivos...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submódulo</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMACIÓN</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CAMBIADO</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">HIJOS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Ver refs que contienen este commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT ESTÁ CONTENIDO EN</x:String>
@@ -172,8 +174,8 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Resultante:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Por favor, use $1, $2 para acceder a los valores de los grupos regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered" xml:space="preserve">Servicio Preferido:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Prefered.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Servicio Preferido:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizado por este repositorio</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre de Usuario</x:String>
@@ -272,6 +274,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (sin checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch todos los remotos</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Utilizar opción '--force'</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch sin etiquetas</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Cambios Remotos</x:String>
@@ -294,7 +297,6 @@
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Historial de Archivos</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">CONTENIDO</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">CAMBIO</x:String>
-  <x:String x:Key="Text.Filter" xml:space="preserve">FILTRO</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Rama de Desarrollo:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
@@ -390,10 +392,10 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descartar</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Inicializar Repositorio</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Ruta:</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick en progreso. Presiona 'Abort' para restaurar el HEAD original.</x:String>
-  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge en progreso. Presiona 'Abort' para restaurar el HEAD original.</x:String>
-  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase en progreso. Presiona 'Abort' para restaurar el HEAD original.</x:String>
-  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert en progreso. Presiona 'Abort' para restaurar el HEAD original.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick en progreso.</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge en progreso.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase en progreso.</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert en progreso.</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interactivo</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Rama Objetivo:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">En:</x:String>
@@ -402,7 +404,6 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Rama</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opción de Merge:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Rama Fuente:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Mover Nodo del Repositorio</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleccionar nodo padre para:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nombre:</x:String>
@@ -438,6 +439,9 @@
   <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">APARIENCIA</x:String>
   <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Fuente por defecto</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize" xml:space="preserve">Tamaño de fuente</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Default" xml:space="preserve">Por defecto</x:String>
+  <x:String x:Key="Text.Preference.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Fuente Monospace</x:String>
   <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usar solo fuente monospace en el editor de texto</x:String>
   <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
@@ -453,6 +457,7 @@
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Commits en el historial</x:String>
   <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Mostrar hora del autor en lugar de la hora del commit en el gráfico</x:String>
+  <x:String x:Key="Text.Preference.General.ShowChildren" xml:space="preserve">Mostrar hijos en los detalles de commit</x:String>
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Longitud de la guía del asunto</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>
@@ -542,7 +547,13 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Habilitar Opción '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir en el Explorador</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Buscar Ramas/Etiquetas/Submódulos</x:String>
-  <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTRAR POR:</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilidad en el Gráfico</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Desestablecer</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Ocultar en el Gráfico de Commits</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filtrar en el Gráfico de Commits</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Cambiar Modo de Ordenación</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Fecha de Commit (--date-order)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topológicamente (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">RAMAS LOCALES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar a HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Habilitar Opción '--first-parent'</x:String>
@@ -552,7 +563,6 @@
   <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">Refrescar</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTOS</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">AÑADIR REMOTO</x:String>
-  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOLVER</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Buscar Commit</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">Archivo</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Mensaje</x:String>
@@ -594,6 +604,8 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Omitir Esta Versión</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Actualización de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Actualmente no hay actualizaciones disponibles.</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Ir a</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Clave Privada SSH:</x:String>
@@ -671,6 +683,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Plantilla/Historias</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Activar evento de clic</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Editar)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stagear todos los cambios y commit</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTOS DETECTADOS</x:String>

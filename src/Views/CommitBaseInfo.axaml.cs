@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -53,6 +55,15 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
+        public static readonly StyledProperty<AvaloniaList<string>> ChildrenProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<string>>(nameof(Children));
+
+        public AvaloniaList<string> Children
+        {
+            get => GetValue(ChildrenProperty);
+            set => SetValue(ChildrenProperty, value);
+        }
+
         public CommitBaseInfo()
         {
             InitializeComponent();
@@ -88,7 +99,7 @@ namespace SourceGit.Views
                         menu.Items.Add(item);
                     }
 
-                    menu?.Open(control);
+                    menu.Open(control);
                 }
                 else if (links.Count == 1)
                 {
@@ -113,9 +124,32 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnSHAPointerEntered(object sender, PointerEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha } ctl)
+            {
+                var tooltip = ToolTip.GetTip(ctl);
+                if (tooltip is Models.Commit commit && commit.SHA == sha)
+                    return;
+
+                var c = await Task.Run(() => detail.GetParent(sha));
+                if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
+                {
+                    ToolTip.SetTip(ctl, c);
+
+                    if (ctl.IsPointerOver)
+                        ToolTip.SetIsOpen(ctl, true);
+                }
+            }
+
+            e.Handled = true;
+        }
+
         private void OnSHAPressed(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
+            var point = e.GetCurrentPoint(this);
+
+            if (point.Properties.IsLeftButtonPressed && DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
             {
                 detail.NavigateTo(sha);
             }

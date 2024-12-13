@@ -34,8 +34,43 @@
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Classes="icon_button"
+                    Width="28"
+                    Click="OnGotoPrevChange"
+                    IsVisible="{Binding IsTextDiff}"
+                    ToolTip.Tip="{DynamicResource Text.Diff.Prev}">
+              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+            </Button>
+            
+            <Border>
+              <Border.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="IsTextDiff"/>
+                  <Binding Source="{x:Static vm:Preference.Instance}" Path="UseBlockNavigationInDiffView" Mode="OneWay"/>
+                </MultiBinding>
+              </Border.IsVisible>
+              
+              <TextBlock x:Name="BlockNavigationIndicator" Classes="primary" Margin="0,0,0,0" FontSize="11" Text="-/-"/>
+            </Border>
+
+            <Button Classes="icon_button"
+                    Width="28"
+                    Click="OnGotoNextChange"
+                    IsVisible="{Binding IsTextDiff}"
+                    ToolTip.Tip="{DynamicResource Text.Diff.Next}">
+              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+            </Button>
+            
+            <ToggleButton Classes="line_path"
+                          Width="28"
+                          IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseBlockNavigationInDiffView, Mode=TwoWay}"
+                          IsVisible="{Binding IsTextDiff}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.UseBlockNavigation}">
+              <Path Width="13" Height="13" Data="{StaticResource Icons.CodeBlock}" Margin="0,3,0,0"/>
+            </ToggleButton>
+            
             <Button Classes="icon_button" 
-                    Width="32" 
+                    Width="28"
                     Command="{Binding IncrUnified}" 
                     IsVisible="{Binding IsTextDiff}"
                     ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
@@ -46,7 +81,7 @@
             </Button>
 
             <Button Classes="icon_button" 
-                    Width="32" 
+                    Width="28" 
                     Command="{Binding DecrUnified}" 
                     IsVisible="{Binding IsTextDiff}" 
                     ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Decr}">
@@ -60,9 +95,7 @@
             </Button>
             
             <ToggleButton Classes="line_path"
-                          Width="32" Height="18"
-                          Background="Transparent"
-                          Padding="9,6"
+                          Width="28"
                           Command="{Binding ToggleFullTextDiff}"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFullTextDiff, Mode=OneWay}"
                           IsVisible="{Binding IsTextDiff}"
@@ -71,9 +104,8 @@
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
-                          Width="32" Height="18"
+                          Width="28"
                           Background="Transparent"
-                          Padding="9,6"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
@@ -81,9 +113,7 @@
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
-                          Width="32" Height="18"
-                          Background="Transparent"
-                          Padding="9,6"
+                          Width="28"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=EnableDiffViewWordWrap, Mode=TwoWay}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ToggleWordWrap}">
               <ToggleButton.IsVisible>
@@ -97,14 +127,14 @@
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
-                          Width="32"
+                          Width="28"
                           IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
                           ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}">
               <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
-                          Width="32"
+                          Width="28"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowHiddenSymbolsInDiffView, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">
@@ -112,16 +142,14 @@
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
-                          Width="32" Height="18"
-                          Background="Transparent"
-                          Padding="9,6"
+                          Width="28" Height="18"
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.LayoutHorizontal}" Margin="0,2,0,0"/>
             </ToggleButton>
 
-            <Button Classes="icon_button" Width="32" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">
+            <Button Classes="icon_button" Width="28" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">
               <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
             </Button>
           </StackPanel>
@@ -230,9 +258,10 @@
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView 
+            <v:TextDiffView
               UseSideBySideDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"
-              UseFullTextDiff="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFullTextDiff, Mode=OneWay}"/>
+              UseBlockNavigation="{Binding Source={x:Static vm:Preference.Instance}, Path=UseBlockNavigationInDiffView, Mode=OneWay}"
+              BlockNavigationIndicator="{Binding #BlockNavigationIndicator.Text, Mode=OneWayToSource}"/>
           </DataTemplate>
 
           <!-- Empty or only EOL changes -->

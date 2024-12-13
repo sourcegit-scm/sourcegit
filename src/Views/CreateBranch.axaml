@@ -37,7 +37,7 @@
 
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
-              <Path Grid.Column="0" Width="14" Height="14" Margin="0,8,0,0" Data="{StaticResource Icons.Commit}"/>
+              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
               <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
             </Grid>
@@ -69,21 +69,20 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateBranch.LocalChanges}"/>
       <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <WrapPanel.Resources>
-          <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-        </WrapPanel.Resources>
-
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
+                     x:Name="RadioDoNothing"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.DoNothing}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
+                     x:Name="RadioStashAndReply"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.StashAndReaply}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
         <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
+                     x:Name="RadioDiscard"
                      GroupName="LocalChanges"
-                     IsChecked="{Binding PreAction, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:DealWithLocalChanges.Discard}}"/>
+                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
       </WrapPanel>
       
       <CheckBox Grid.Row="3" Grid.Column="1"

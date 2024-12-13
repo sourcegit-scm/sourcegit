@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
         {
             Task.Run(() =>
             {
-                var result = new Commands.Statistics(repo).Result();
+                var result = new Commands.Statistics(repo, Preference.Instance.MaxHistoryCommits).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     _data = result;

@@ -42,6 +42,16 @@
           <Border CornerRadius="6" ClipToBounds="True">
             <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
               <ListBox.Styles>
+                <Style Selector="Path.icon">
+                  <Setter Property="Width" Value="12"/>
+                  <Setter Property="Height" Value="12"/>
+                  <Setter Property="Margin" Value="8,0,6,0"/>
+                  <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+                </Style>
+                <Style Selector="TextBlock.header">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+                  <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
                 <Style Selector="ListBoxItem">
                   <Setter Property="Height" Value="28"/>
                   <Setter Property="Margin" Value="0"/>
@@ -58,6 +68,12 @@
                 <Style Selector="ListBoxItem:selected Grid.view_mode">
                   <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
                 </Style>
+                <Style Selector="ListBoxItem:selected TextBlock.header">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+                </Style>
+                <Style Selector="ListBoxItem:selected Path.icon">
+                  <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+                </Style>
               </ListBox.Styles>
 
               <ListBox.ItemsPanel>
@@ -67,9 +83,9 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Histories}"/>
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
+                  <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
                   <ToggleButton Grid.Column="2"
                                 Classes="layout_direction"
                                 Width="28" Height="26"
@@ -91,13 +107,20 @@
                                 ToolTip.Tip="{DynamicResource Text.Repository.FirstParentFilterToggle}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.FirstParentFilter}"/>
                   </ToggleButton>
+                  <Button Grid.Column="5"
+                          Classes="icon_button"
+                          Width="28" Height="26"
+                          Click="OnSwitchHistoriesOrderClicked"
+                          ToolTip.Tip="{DynamicResource Text.Repository.HistoriesOrder}">
+                    <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Order}"/>
+                  </Button>
                 </Grid>
               </ListBoxItem>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
+                  <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <v:CounterPresenter Grid.Column="2"
                                       Margin="6,0"
                                       VerticalAlignment="Center"
@@ -110,9 +133,9 @@
               </ListBoxItem>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Stashes}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Stashes}"/>
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
+                  <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
                   <v:CounterPresenter Grid.Column="2"
                                       Margin="6,0"
                                       VerticalAlignment="Center"
@@ -129,7 +152,7 @@
         
         <!-- Filter Branches/Tags/Submodules -->
         <TextBox Grid.Row="1"
-                 Height="24"
+                 Height="26"
                  Margin="8,6,4,0"
                  BorderThickness="1"
                  CornerRadius="4"
@@ -256,7 +279,7 @@
           <ListBox Grid.Row="7"
                    x:Name="SubmoduleList"
                    Height="0"
-                   Margin="8,0,4,0"
+                   Margin="12,0,4,0"
                    Classes="repo_left_content_list"
                    ItemsSource="{Binding VisibleSubmodules}"
                    SelectionMode="Single"
@@ -312,7 +335,7 @@
           <ListBox Grid.Row="9"
                    x:Name="WorktreeList"
                    Height="0"
-                   Margin="8,0,4,0"
+                   Margin="12,0,4,0"
                    Classes="repo_left_content_list"
                    ItemsSource="{Binding Worktrees}"
                    SelectionMode="Single"
@@ -523,53 +546,76 @@
                   BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*"> 
-      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*">
+      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Commit">
+              <StackPanel MinWidth="400" Orientation="Vertical">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                </Grid>
+
+                <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+              </StackPanel>
+            </DataTemplate>
+            
             <DataTemplate DataType="vm:CherryPickInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick.Head}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
+                </StackPanel>
+
+                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"/>
+              </Grid>
             </DataTemplate>
 
             <DataTemplate DataType="vm:RebaseInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase.StoppedAt}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding StoppedAt.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding StoppedAt}"/>
+                </StackPanel>
+
+                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"/>
+              </Grid>
             </DataTemplate>
 
             <DataTemplate DataType="vm:RevertInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert.Head}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
+                </StackPanel>
+
+                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"/>
+              </Grid>
             </DataTemplate>
 
             <DataTemplate DataType="vm:MergeInProgress">
-              <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge.Operating}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding SourceName}" ToolTip.Tip="{Binding Source}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="→"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Current}"/>
+              </StackPanel>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
-
-        <Button Grid.Column="1" 
-                Classes="flat" 
+        
+        <Button Grid.Column="1"
+                Classes="flat"
                 FontWeight="Regular"
                 BorderThickness="0"
-                Content="{DynamicResource Text.Repository.Resolve}" 
-                Padding="8,0" Margin="4,0" 
-                Command="{Binding GotoResolve}">
-          <Button.IsVisible>
-            <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsNotOne}"/>
-          </Button.IsVisible>
-        </Button>
-        <Button Grid.Column="2" 
-                Classes="flat primary" 
-                FontWeight="Regular"
-                BorderThickness="0"
-                Content="{DynamicResource Text.Repository.Continue}" 
-                Padding="8,0" Margin="4,0" 
-                Command="{Binding ContinueMerge}" 
-                IsVisible="{Binding !HasUnsolvedConflicts}"/>
-        <Button Grid.Column="3" 
-                Classes="flat" 
-                FontWeight="Regular"
-                BorderThickness="0"
-                Content="{DynamicResource Text.Repository.Abort}" 
-                Padding="8,0" Margin="4,0" 
+                Content="{DynamicResource Text.Repository.Abort}"
+                Padding="8,2" Margin="0,0,8,0"
                 Command="{Binding AbortMerge}"/>
       </Grid>
 
@@ -577,14 +623,25 @@
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-            <Binding Path="Settings.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            <Binding Path="Settings.HistoriesFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
           </MultiBinding>
         </Border.IsVisible>
 
         <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
-          <TextBlock Grid.Column="0" Margin="8,0,0,0" Classes="table_header" Text="{DynamicResource Text.Repository.FilterCommitPrefix}"/>
-
-          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.Filters}">
+          <Path Grid.Column="0"
+                Margin="8,0,0,0"
+                Width="12" Height="12"
+                Data="{StaticResource Icons.Filter}"
+                Fill="{DynamicResource Brush.FG2}"
+                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+          <Path Grid.Column="0"
+                Margin="8,0,0,0"
+                Width="12" Height="12"
+                Data="{StaticResource Icons.EyeClose}"
+                Fill="{DynamicResource Brush.FG2}"
+                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+          
+          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.HistoriesFilters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
@@ -592,16 +649,24 @@
             </ItemsControl.ItemsPanel>
             
             <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Border Height="20" Margin="0,0,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
-                  <TextBlock Classes="primary" Text="{Binding Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="8,0"/>
+              <DataTemplate DataType="m:Filter">
+                <Border Height="20"
+                        Margin="0,0,6,0"
+                        CornerRadius="12"
+                        BorderThickness="1"
+                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}">
+                  <StackPanel Orientation="Horizontal" Margin="8,0">
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
+                    <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,0,0"/>
+                  </StackPanel>
                 </Border>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           
-          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}">
-            <TextBlock Margin="16,0,8,0" Text="{DynamicResource Text.Repository.ClearAllCommitsFilter}" Foreground="{DynamicResource Brush.Accent}"/>
+          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
+            <Path Width="14" Height="14" Margin="16,0,8,0" Data="{StaticResource Icons.RemoveAll}"/>
           </Button>
         </Grid>
       </Border>

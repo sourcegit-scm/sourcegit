@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>App.manifest</ApplicationManifest>
     <ApplicationIcon>App.ico</ApplicationIcon>
@@ -37,17 +37,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.1.4" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.2" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc3.3" />
-    <PackageReference Include="TextMateSharp" Version="1.0.63" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.63" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc4.5" />
+    <PackageReference Include="TextMateSharp" Version="1.0.64" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.64" />
   </ItemGroup>
 
   <ItemGroup>
