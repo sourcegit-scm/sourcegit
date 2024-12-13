@@ -74,7 +74,11 @@ namespace SourceGit.Commands
                 }
 
                 if (string.IsNullOrEmpty(e.Data))
+                {
+                    errs.Add(string.Empty);
                     return;
+                }
+
                 if (TraitErrorAsOutput)
                     OnReadline(e.Data);
 
@@ -89,6 +93,7 @@ namespace SourceGit.Commands
                     return;
                 if (REG_PROGRESS().IsMatch(e.Data))
                     return;
+
                 errs.Add(e.Data);
             };
 
