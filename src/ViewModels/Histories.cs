@@ -407,24 +407,26 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(reset);
 
-                var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
-                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                squash.IsVisible = commit.IsMerged;
-                squash.Click += (_, e) =>
+                if (commit.IsMerged)
                 {
-                    if (_repo.LocalChangesCount > 0)
+                    var squash = new MenuItem();
+                    squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
+                    squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                    squash.Click += (_, e) =>
                     {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
+                        if (_repo.LocalChangesCount > 0)
+                        {
+                            App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                            return;
+                        }
 
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
 
-                    e.Handled = true;
-                };
-                menu.Items.Add(squash);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(squash);
+                }
             }
             else
             {
