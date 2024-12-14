@@ -26,7 +26,7 @@
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
-            <Grid ColumnDefinitions="16,Auto,*,Auto"
+            <Grid ColumnDefinitions="16,Auto,*,20"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
                   ContextRequested="OnRowContextRequested"
