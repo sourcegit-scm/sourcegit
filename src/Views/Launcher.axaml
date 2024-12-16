@@ -10,7 +10,7 @@
                     x:DataType="vm:Launcher"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="SourceGit"
+                    Title="{Binding Title}"
                     MinWidth="1024" MinHeight="600"
                     WindowStartupLocation="CenterScreen"> 
   <Grid>
