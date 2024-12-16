@@ -72,10 +72,9 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = false;
                 if (IsMergeCommit)
                 {
-                    succ = new Commands.CherryPick(
+                    new Commands.CherryPick(
                         _repo.FullPath,
                         Targets[0].SHA,
                         !AutoCommit,
@@ -84,7 +83,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    succ = new Commands.CherryPick(
+                    new Commands.CherryPick(
                         _repo.FullPath,
                         string.Join(' ', Targets.ConvertAll(c => c.SHA)),
                         !AutoCommit,
@@ -93,7 +92,7 @@ namespace SourceGit.ViewModels
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return true;
             });
         }
 

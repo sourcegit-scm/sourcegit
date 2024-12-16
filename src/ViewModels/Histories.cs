@@ -228,22 +228,28 @@ namespace SourceGit.ViewModels
             {
                 var selected = new List<Models.Commit>();
                 var canCherryPick = true;
+                var canMerge = true;
+
                 foreach (var item in list.SelectedItems)
                 {
                     if (item is Models.Commit c)
                     {
                         selected.Add(c);
 
-                        if (c.IsMerged || c.Parents.Count > 1)
+                        if (c.IsMerged)
+                        {
+                            canMerge = false;
                             canCherryPick = false;
+                        }
+                        else if (c.Parents.Count > 1)
+                        {
+                            canCherryPick = false;
+                        }
                     }
                 }
 
                 // Sort selected commits in order.
-                selected.Sort((l, r) =>
-                {
-                    return _commits.IndexOf(r) - _commits.IndexOf(l);
-                });
+                selected.Sort((l, r) => _commits.IndexOf(r) - _commits.IndexOf(l));
 
                 var multipleMenu = new ContextMenu();
 
@@ -259,8 +265,24 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     multipleMenu.Items.Add(cherryPickMultiple);
-                    multipleMenu.Items.Add(new MenuItem() { Header = "-" });
                 }
+
+                if (canMerge)
+                {
+                    var mergeMultiple = new MenuItem();
+                    mergeMultiple.Header = App.Text("CommitCM.MergeMultiple");
+                    mergeMultiple.Icon = App.CreateMenuIcon("Icons.Merge");
+                    mergeMultiple.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new MergeMultiple(_repo, selected));
+                        e.Handled = true;
+                    };
+                    multipleMenu.Items.Add(mergeMultiple);
+                }
+
+                if (canCherryPick || canMerge)
+                    multipleMenu.Items.Add(new MenuItem() { Header = "-" });
 
                 var saveToPatchMultiple = new MenuItem();
                 saveToPatchMultiple.Icon = App.CreateMenuIcon("Icons.Diff");
@@ -385,24 +407,26 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(reset);
 
-                var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
-                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                squash.IsVisible = commit.IsMerged;
-                squash.Click += (_, e) =>
+                if (commit.IsMerged)
                 {
-                    if (_repo.LocalChangesCount > 0)
+                    var squash = new MenuItem();
+                    squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
+                    squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                    squash.Click += (_, e) =>
                     {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
+                        if (_repo.LocalChangesCount > 0)
+                        {
+                            App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                            return;
+                        }
 
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
 
-                    e.Handled = true;
-                };
-                menu.Items.Add(squash);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(squash);
+                }
             }
             else
             {
@@ -460,6 +484,21 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(rebase);
 
+                if (!commit.HasDecorators)
+                {
+                    var merge = new MenuItem();
+                    merge.Header = new Views.NameHighlightedTextBlock("CommitCM.Merge", current.Name);
+                    merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                    merge.Click += (_, e) =>
+                    {
+                        if (PopupHost.CanCreatePopup())
+                            PopupHost.ShowPopup(new Merge(_repo, commit, current.Name));
+
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(merge);
+                }
+
                 var cherryPick = new MenuItem();
                 cherryPick.Header = App.Text("CommitCM.CherryPick");
                 cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
@@ -504,27 +543,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(revert);
-
-                var interactiveRebase = new MenuItem();
-                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
-                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
-                interactiveRebase.IsVisible = current.Head != commit.SHA;
-                interactiveRebase.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    App.OpenDialog(new Views.InteractiveRebase()
-                    {
-                        DataContext = new InteractiveRebase(_repo, current, commit)
-                    });
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(interactiveRebase);
             }
 
             if (current.Head != commit.SHA)
@@ -542,6 +560,30 @@ namespace SourceGit.ViewModels
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (commit.IsMerged && current.Head != commit.SHA)
+            {
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
+                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.Click += (_, e) =>
+                {
+                    if (_repo.LocalChangesCount > 0)
+                    {
+                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
+                        return;
+                    }
+
+                    App.OpenDialog(new Views.InteractiveRebase()
+                    {
+                        DataContext = new InteractiveRebase(_repo, current, commit)
+                    });
+
+                    e.Handled = true;
+                };
+                menu.Items.Add(interactiveRebase);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
 
             if (current.Head != commit.SHA)
             {
@@ -825,8 +867,13 @@ namespace SourceGit.ViewModels
                 fastForward.IsEnabled = current.TrackStatus.Ahead.Count == 0;
                 fastForward.Click += (_, e) =>
                 {
+                    var b = _repo.Branches.Find(x => x.FriendlyName == upstream);
+                    if (b == null)
+                        return;
+
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowAndStartPopup(new Merge(_repo, upstream, current.Name));
+                        PopupHost.ShowAndStartPopup(new Merge(_repo, b, current.Name));
+
                     e.Handled = true;
                 };
                 submenu.Items.Add(fastForward);
@@ -921,7 +968,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, branch.Name, current.Name));
+                    PopupHost.ShowPopup(new Merge(_repo, branch, current.Name));
                 e.Handled = true;
             };
             submenu.Items.Add(merge);
@@ -1005,7 +1052,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, name, current.Name));
+                    PopupHost.ShowPopup(new Merge(_repo, branch, current.Name));
                 e.Handled = true;
             };
 
@@ -1064,7 +1111,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, tag.Name, current.Name));
+                    PopupHost.ShowPopup(new Merge(_repo, tag, current.Name));
                 e.Handled = true;
             };
             submenu.Items.Add(merge);

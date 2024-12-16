@@ -44,7 +44,7 @@
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="14,Auto,*">
-              <Path Grid.Column="0" Width="14" Height="14" Margin="0,8,0,0" Data="{StaticResource Icons.Commit}"/>
+              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
               <TextBlock Grid.Column="1" FontFamily="{DynamicResource Fonts.Monospace}" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="6,0,4,0"/>
               <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" TextTrimming="CharacterEllipsis"/>
             </Grid>

@@ -764,10 +764,9 @@ namespace SourceGit.ViewModels
             _workingCopy?.StashAll(autoStart);
         }
 
-        public void GotoResolve()
+        public void SkipMerge()
         {
-            if (_workingCopy != null)
-                SelectedViewIndex = 1;
+            _workingCopy?.SkipMerge();
         }
 
         public void AbortMerge()
@@ -948,6 +947,12 @@ namespace SourceGit.ViewModels
         {
             if (PopupHost.CanCreatePopup())
                 PopupHost.ShowPopup(new DeleteMultipleBranches(this, branches, isLocal));
+        }
+
+        public void MergeMultipleBranches(List<Models.Branch> branches)
+        {
+            if (PopupHost.CanCreatePopup())
+                PopupHost.ShowPopup(new MergeMultiple(this, branches));
         }
 
         public void CreateNewTag()
@@ -1305,8 +1310,13 @@ namespace SourceGit.ViewModels
                     fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
                     fastForward.Click += (_, e) =>
                     {
+                        var b = _branches.Find(x => x.FriendlyName == upstream);
+                        if (b == null)
+                            return;
+
                         if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new Merge(this, upstream, branch.Name));
+                            PopupHost.ShowAndStartPopup(new Merge(this, b, branch.Name));
+
                         e.Handled = true;
                     };
 
@@ -1385,7 +1395,7 @@ namespace SourceGit.ViewModels
                 merge.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, branch.Name, _currentBranch.Name));
+                        PopupHost.ShowPopup(new Merge(this, branch, _currentBranch.Name));
                     e.Handled = true;
                 };
 
@@ -1681,7 +1691,7 @@ namespace SourceGit.ViewModels
                 merge.Click += (_, e) =>
                 {
                     if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Merge(this, name, _currentBranch.Name));
+                        PopupHost.ShowPopup(new Merge(this, branch, _currentBranch.Name));
                     e.Handled = true;
                 };
 

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
@@ -169,13 +170,67 @@
 
         <ContentControl Content="{Binding DetailContext}">
           <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:ConflictContext">
+            <DataTemplate DataType="vm:Conflict">
               <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid VerticalAlignment="Center">
                   <StackPanel Orientation="Vertical" IsVisible="{Binding !IsResolved}">
-                    <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}"/>
-                    <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{DynamicResource Text.WorkingCopy.ResolveTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    <StackPanel.DataTemplates>
+                      <DataTemplate DataType="m:Branch">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding FriendlyName}"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding Head, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+                        </StackPanel>
+                      </DataTemplate>
+
+                      <DataTemplate DataType="m:Commit">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Width="12" Height="12" Data="{StaticResource Icons.Commit}"/>
+                          <v:CommitRefsPresenter Margin="8,0,0,0"
+                                                 TagBackground="{DynamicResource Brush.DecoratorTag}"
+                                                 Foreground="{DynamicResource Brush.FG1}"
+                                                 FontFamily="{DynamicResource Fonts.Primary}"
+                                                 FontSize="11"
+                                                 VerticalAlignment="Center"
+                                                 UseGraphColor="False"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding Subject}"/>
+                        </StackPanel>
+                      </DataTemplate>
+
+                      <DataTemplate DataType="m:Tag">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Width="12" Height="12" Data="{StaticResource Icons.Tag}"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding Name}"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+                        </StackPanel>
+                      </DataTemplate>
+                    </StackPanel.DataTemplates>
+                    
+                    <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    <TextBlock Margin="0,16" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+
+                    <Border Margin="16,0" Padding="8" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+                      <Border.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                          <Binding Path="Theirs" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                          <Binding Path="Mine" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                        </MultiBinding>
+                      </Border.IsVisible>
+
+                      <Grid Margin="8,0,0,0" RowDefinitions="32,32" ColumnDefinitions="Auto,*">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="THEIRS"/>
+                        <ContentControl Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Theirs}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="MINE"/>
+                        <ContentControl Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Mine}"/>
+                      </Grid>
+                    </Border>
+
+                    <StackPanel Margin="0,8,0,0"  Orientation="Horizontal" HorizontalAlignment="Center">
+                      <Button Classes="flat" Content="USE THEIRS" Command="{Binding UseTheirs}"/>
+                      <Button Classes="flat" Margin="8,0,0,0" Content="USE MINE" Command="{Binding UseMine}"/>
+                      <Button Classes="flat" Margin="8,0,0,0" Content="OPEN EXTERNAL MERGETOOL" Command="{Binding OpenExternalMergeTool}"/>
+                    </StackPanel>
                   </StackPanel>
 
                   <StackPanel Orientation="Vertical" IsVisible="{Binding IsResolved}">
@@ -300,8 +355,15 @@
                 HotKey="Alt+Enter"
                 ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
                 ToolTip.Placement="Top"
-                ToolTip.VerticalOffset="0"
-                IsVisible="{Binding IsCommitWithPushVisible}"/>
+                ToolTip.VerticalOffset="0">
+          <Button.IsVisible>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="UseAmend" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="CanCommitWithPush"/>
+              <Binding Path="InProgressContext" Converter="{x:Static ObjectConverters.IsNull}"/>
+            </MultiBinding>
+          </Button.IsVisible>  
+        </Button>
       </Grid>
     </Grid>
   </Grid>

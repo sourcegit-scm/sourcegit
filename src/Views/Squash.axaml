@@ -17,7 +17,7 @@
       <TextBlock Grid.Column="0"
                  Text="{DynamicResource Text.Squash.Into}"/>
       <Path Grid.Column="1"
-            Margin="8,6,8,0"
+            Margin="8,0"
             Width="14" Height="14"
             Fill="{DynamicResource Brush.FG1}"
             Data="{StaticResource Icons.Commit}"/>

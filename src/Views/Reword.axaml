@@ -14,7 +14,7 @@
                Text="{DynamicResource Text.Reword}"/>
 
     <StackPanel Margin="8,16,8,0" Orientation="Horizontal" HorizontalAlignment="Right">
-      <Path Margin="0,6,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+      <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
       <TextBlock Classes="primary" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
     </StackPanel>
     

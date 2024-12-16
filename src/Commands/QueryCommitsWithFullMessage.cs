@@ -52,16 +52,28 @@ namespace SourceGit.Commands
                         _current.Commit.CommitterTime = ulong.Parse(line);
                         break;
                     default:
-                        if (line.Equals(_boundary, StringComparison.Ordinal))
-                            nextPartIdx = -1;
+                        var boundary = rs.StdOut.IndexOf(_boundary, end + 1);
+                        if (boundary > end)
+                        {
+                            _current.Message = rs.StdOut.Substring(start, boundary - start - 1);
+                            end = boundary + _boundary.Length;
+                        }
                         else
-                            _current.Message += line;
+                        {
+                            _current.Message = rs.StdOut.Substring(start);
+                            end = rs.StdOut.Length - 2;
+                        }
+
+                        nextPartIdx = -1;
                         break;
                 }
 
                 nextPartIdx++;
 
                 start = end + 1;
+                if (start >= rs.StdOut.Length - 1)
+                    break;
+
                 end = rs.StdOut.IndexOf('\n', start);
             }
 

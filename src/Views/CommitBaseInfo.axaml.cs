@@ -130,19 +130,15 @@ namespace SourceGit.Views
             {
                 var tooltip = ToolTip.GetTip(ctl);
                 if (tooltip is Models.Commit commit && commit.SHA == sha)
-                {
-                    ToolTip.SetIsOpen(ctl, true);
-                }
-                else
-                {
-                    var c = await Task.Run(() => detail.GetParent(sha));
-                    if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
-                    {
-                        ToolTip.SetTip(ctl, c);
+                    return;
 
-                        if (ctl.IsPointerOver)
-                            ToolTip.SetIsOpen(ctl, true);
-                    }
+                var c = await Task.Run(() => detail.GetParent(sha));
+                if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
+                {
+                    ToolTip.SetTip(ctl, c);
+
+                    if (ctl.IsPointerOver)
+                        ToolTip.SetIsOpen(ctl, true);
                 }
             }
 

@@ -25,6 +25,7 @@ jobs:
     with:
       version: ${{ needs.version.outputs.version }}
   publish-packages:
+    needs: [package, version]
     name: Publish Packages
     uses: ./.github/workflows/publish-packages.yml
     secrets:

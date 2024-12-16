@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Avalonia.Collections;
@@ -65,8 +66,8 @@ namespace SourceGit.ViewModels
             get => _defaultFontFamily;
             set
             {
-                var trimmed = value.Trim();
-                if (SetProperty(ref _defaultFontFamily, trimmed) && !_isLoading)
+                var name = FixFontFamilyName(value);
+                if (SetProperty(ref _defaultFontFamily, name) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -76,8 +77,8 @@ namespace SourceGit.ViewModels
             get => _monospaceFontFamily;
             set
             {
-                var trimmed = value.Trim();
-                if (SetProperty(ref _monospaceFontFamily, trimmed) && !_isLoading)
+                var name = FixFontFamilyName(value);
+                if (SetProperty(ref _monospaceFontFamily, name) && !_isLoading)
                     App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
@@ -586,6 +587,35 @@ namespace SourceGit.ViewModels
             }
 
             return changed;
+        }
+
+        private string FixFontFamilyName(string name)
+        {
+            var trimmed = name.Trim();
+            if (string.IsNullOrEmpty(trimmed))
+                return string.Empty;
+
+            var builder = new StringBuilder();
+            var lastIsSpace = false;
+            for (int i = 0; i < trimmed.Length; i++)
+            {
+                var c = trimmed[i];
+                if (char.IsWhiteSpace(c))
+                {
+                    if (lastIsSpace)
+                        continue;
+
+                    lastIsSpace = true;
+                }
+                else
+                {
+                    lastIsSpace = false;
+                }
+
+                builder.Append(c);
+            }
+
+            return builder.ToString();
         }
 
         private static Preference _instance = null;

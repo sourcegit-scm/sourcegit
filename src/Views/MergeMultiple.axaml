@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.MergeMultiple"
+             x:DataType="vm:MergeMultiple">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.MergeMultiple}"/>
+    
+    <Grid Margin="0,16,0,0" RowDefinitions="Auto,32,32" ColumnDefinitions="100,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top"
+                 Margin="0,6,8,0"
+                 Text="{DynamicResource Text.MergeMultiple.Targets}"/>
+      <ListBox Grid.Row="0" Grid.Column="1"
+               MinHeight="32" MaxHeight="100" Margin="0,0,0,4"
+               ItemsSource="{Binding Targets}"
+               Background="{DynamicResource Brush.Contents}"
+               BorderThickness="1"
+               BorderBrush="{DynamicResource Brush.Border2}"
+               Padding="4"
+               CornerRadius="4"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+               ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="4,0"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="CornerRadius" Value="4"/>
+          </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <ContentControl Content="{Binding}">
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="m:Commit">
+                  <Grid ColumnDefinitions="14,Auto,*">
+                    <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+                    <TextBlock Grid.Column="1" FontFamily="{DynamicResource Fonts.Monospace}" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="6,0,4,0"/>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" TextTrimming="CharacterEllipsis"/>
+                  </Grid>
+                </DataTemplate>
+
+                <DataTemplate DataType="m:Branch">
+                  <StackPanel Orientation="Horizontal">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
+          </DataTemplate>          
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.MergeMultiple.Strategy}"/>
+      <ComboBox Grid.Row="1" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Source={x:Static m:MergeStrategy.ForMultiple}}"
+                SelectedItem="{Binding Strategy, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="m:MergeStrategy">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Name}"/>
+              <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      
+      <CheckBox Grid.Row="2" Grid.Column="1"
+                Content="{DynamicResource Text.MergeMultiple.CommitChanges}"
+                IsChecked="{Binding AutoCommit, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

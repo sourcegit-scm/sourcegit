@@ -357,6 +357,7 @@
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Riferimento Scorciatoie da Tastiera</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBALE</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Annulla il popup corrente</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clona una nuova repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Chiudi la pagina corrente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Vai alla pagina precedente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Vai alla pagina successiva</x:String>
@@ -388,10 +389,10 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Scarta</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Inizializza Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Percorso:</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in corso. Premi 'Annulla' per ripristinare l'HEAD originale.</x:String>
-  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Richiesta di merge in corso. Premi 'Annulla' per ripristinare l'HEAD originale.</x:String>
-  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in corso. Premi 'Annulla' per ripristinare l'HEAD originale.</x:String>
-  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in corso. Premi 'Annulla' per ripristinare l'HEAD originale.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in corso.</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Richiesta di merge in corso.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in corso.</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in corso.</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interattivo</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Branch di destinazione:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Su:</x:String>
@@ -402,7 +403,6 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Unisci Branch</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opzione di Merge:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Branch Sorgente:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Sposta Nodo Repository</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleziona nodo padre per:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nome:</x:String>
@@ -554,7 +554,6 @@
   <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">Aggiorna</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTI</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">AGGIUNGI REMOTO</x:String>
-  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RISOLVI</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Cerca Commit</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Messaggio</x:String>

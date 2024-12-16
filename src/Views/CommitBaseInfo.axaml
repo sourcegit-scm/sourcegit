@@ -112,7 +112,8 @@
                            Cursor="Hand"
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
-                           PointerPressed="OnSHAPressed">
+                           PointerPressed="OnSHAPressed"
+                           ToolTip.ShowDelay="0">
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -149,7 +150,8 @@
                            Cursor="Hand"
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
-                           PointerPressed="OnSHAPressed">
+                           PointerPressed="OnSHAPressed"
+                           ToolTip.ShowDelay="0">
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
