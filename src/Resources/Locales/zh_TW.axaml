@@ -276,7 +276,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快進 (fast-forward，無需 checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
-  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">啟用 [--force] 選項</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">覆寫 REFs 檢查</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不提取遠端標籤</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">提取遠端存放庫內容</x:String>
