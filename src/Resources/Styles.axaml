@@ -4,6 +4,7 @@
         xmlns:vm="using:SourceGit.ViewModels"
         xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
+        xmlns:aee="using:AvaloniaEdit.Editing"
         xmlns:aes="using:AvaloniaEdit.Search">
   <Design.PreviewWith>
     <StackPanel Orientation="Vertical">
@@ -578,6 +579,19 @@
     <Style Selector="^:disabled Path">
       <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
     </Style>
+  </Style>
+
+  <Style Selector="aee|TextArea">
+    <Setter Property="SelectionBorder">
+      <Setter.Value>
+        <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
+      </Setter.Value>
+    </Setter>
+    <Setter Property="SelectionBrush">
+      <Setter.Value>
+        <SolidColorBrush Opacity="0.5" Color="{DynamicResource SystemAccentColor}" />
+      </Setter.Value>
+    </Setter>
   </Style>
 
   <Style Selector="aes|SearchPanel">
