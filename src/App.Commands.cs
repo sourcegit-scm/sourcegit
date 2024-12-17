@@ -25,6 +25,18 @@ namespace SourceGit
             private Action<object> _action = null;
         }
 
+        public static bool IsCheckForUpdateCommandVisible
+        {
+            get
+            {
+            #if DISABLE_UPDATE_DETECTION
+                return false;
+            #else
+                return true;
+            #endif
+            }
+        }
+
         public static readonly Command OpenPreferenceCommand = new Command(_ => OpenDialog(new Views.Preference()));
         public static readonly Command OpenHotkeysCommand = new Command(_ => OpenDialog(new Views.Hotkeys()));
         public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));

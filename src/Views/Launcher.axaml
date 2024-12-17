@@ -51,12 +51,12 @@
               </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="-"/>
-            <MenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}">
+            <MenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}" IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.SoftwareUpdate}"/>
               </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="-"/>
+            <MenuItem Header="-" IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"/>
             <MenuItem Header="{DynamicResource Text.About}" Command="{x:Static s:App.OpenAboutCommand}">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
