@@ -15,7 +15,7 @@ namespace SourceGit.Views
 {
     public partial class CommitMessagePresenter : SelectableTextBlock
     {
-        [GeneratedRegex(@"\b([0-9a-fA-F]{8,40})\b")]
+        [GeneratedRegex(@"\b([0-9a-fA-F]{10,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
 
         public static readonly StyledProperty<string> MessageProperty =
