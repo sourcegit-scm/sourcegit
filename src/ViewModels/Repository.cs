@@ -206,11 +206,15 @@ namespace SourceGit.ViewModels
 
         public bool IncludeUntracked
         {
-            get => _includeUntracked;
+            get => _settings.IncludeUntrackedInLocalChanges;
             set
             {
-                if (SetProperty(ref _includeUntracked, value))
+                if (value != _settings.IncludeUntrackedInLocalChanges)
+                {
+                    _settings.IncludeUntrackedInLocalChanges = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshWorkingCopyChanges);
+                }
             }
         }
 
@@ -918,7 +922,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshWorkingCopyChanges()
         {
-            var changes = new Commands.QueryLocalChanges(_fullpath, _includeUntracked).Result();
+            var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).Result();
             if (_workingCopy == null)
                 return;
 
@@ -2299,7 +2303,6 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
         private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
-        private bool _includeUntracked = true;
         private Models.Commit _searchResultSelectedCommit = null;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;

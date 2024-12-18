@@ -14,6 +14,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool IncludeUntrackedInLocalChanges
+        {
+            get;
+            set;
+        } = true;
+
         public DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
         {
             get;
