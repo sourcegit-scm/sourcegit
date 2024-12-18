@@ -151,11 +151,12 @@
 
 </details>
 
-### ru_RU.axaml: 100%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
+
 
 
 </details>
