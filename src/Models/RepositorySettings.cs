@@ -26,6 +26,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool EnableForceOnFetch
+        {
+            get;
+            set;
+        } = false;
+
         public bool FetchWithoutTags
         {
             get;

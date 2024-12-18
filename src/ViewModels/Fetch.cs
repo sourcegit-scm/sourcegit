@@ -30,15 +30,14 @@ namespace SourceGit.ViewModels
 
         public bool Force
         {
-            get;
-            set;
+            get => _repo.Settings.EnableForceOnFetch;
+            set => _repo.Settings.EnableForceOnFetch = value;
         }
 
         public Fetch(Repository repo, Models.Remote preferedRemote = null)
         {
             _repo = repo;
             _fetchAllRemotes = preferedRemote == null;
-            Force = false;
             SelectedRemote = preferedRemote != null ? preferedRemote : _repo.Remotes[0];
             View = new Views.Fetch() { DataContext = this };
         }
@@ -49,7 +48,7 @@ namespace SourceGit.ViewModels
 
             var notags = _repo.Settings.FetchWithoutTags;
             var prune = _repo.Settings.EnablePruneOnFetch;
-            var force = Force;
+            var force = _repo.Settings.EnableForceOnFetch;
             return Task.Run(() =>
             {
                 if (FetchAllRemotes)
