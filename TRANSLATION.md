@@ -151,27 +151,12 @@
 
 </details>
 
-### ru_RU.axaml: 97.92%
+### ru_RU.axaml: 100%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Repository.Skip
 
 </details>
 
