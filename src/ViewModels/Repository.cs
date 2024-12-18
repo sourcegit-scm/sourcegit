@@ -88,31 +88,43 @@ namespace SourceGit.ViewModels
 
         public bool EnableReflog
         {
-            get => _enableReflog;
+            get => _settings.EnableReflog;
             set
             {
-                if (SetProperty(ref _enableReflog, value))
+                if (value != _settings.EnableReflog)
+                {
+                    _settings.EnableReflog = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshCommits);
+                }
             }
         }
 
         public bool EnableFirstParentInHistories
         {
-            get => _enableFirstParentInHistories;
+            get => _settings.EnableFirstParentInHistories;
             set
             {
-                if (SetProperty(ref _enableFirstParentInHistories, value))
+                if (value != _settings.EnableFirstParentInHistories)
+                {
+                    _settings.EnableFirstParentInHistories = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshCommits);
+                }
             }
         }
 
         public bool EnableTopoOrderInHistories
         {
-            get => _enableTopoOrderInHistories;
+            get => _settings.EnableTopoOrderInHistories;
             set
             {
-                if (SetProperty(ref _enableTopoOrderInHistories, value))
+                if (value != _settings.EnableTopoOrderInHistories)
+                {
+                    _settings.EnableTopoOrderInHistories = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshCommits);
+                }
             }
         }
 
@@ -251,8 +263,7 @@ namespace SourceGit.ViewModels
             get => _onlySearchCommitsInCurrentBranch;
             set
             {
-                if (SetProperty(ref _onlySearchCommitsInCurrentBranch, value) &&
-                    !string.IsNullOrEmpty(_searchCommitFilter))
+                if (SetProperty(ref _onlySearchCommitsInCurrentBranch, value) && !string.IsNullOrEmpty(_searchCommitFilter))
                     StartSearchCommits();
             }
         }
@@ -406,8 +417,8 @@ namespace SourceGit.ViewModels
 
         public bool IsAutoFetching
         {
-            get;
-            private set;
+            get => _isAutoFetching;
+            private set => SetProperty(ref _isAutoFetching, value);
         }
 
         public void Open()
@@ -883,9 +894,15 @@ namespace SourceGit.ViewModels
 
             var builder = new StringBuilder();
             builder.Append($"-{Preference.Instance.MaxHistoryCommits} ");
-            if (_enableReflog)
+
+            if (_settings.EnableTopoOrderInHistories)
+                builder.Append("--topo-order ");
+            else
+                builder.Append("--date-order ");
+
+            if (_settings.EnableReflog)
                 builder.Append("--reflog ");
-            if (_enableFirstParentInHistories)
+            if (_settings.EnableFirstParentInHistories)
                 builder.Append("--first-parent ");
 
             var filters = _settings.BuildHistoriesFilter();
@@ -894,8 +911,8 @@ namespace SourceGit.ViewModels
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, _enableTopoOrderInHistories, builder.ToString()).Result();
-            var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
+            var graph = Models.CommitGraph.Parse(commits, _settings.EnableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -2243,7 +2260,7 @@ namespace SourceGit.ViewModels
 
         private void AutoFetchImpl(object sender)
         {
-            if (!_settings.EnableAutoFetch || IsAutoFetching)
+            if (!_settings.EnableAutoFetch || _isAutoFetching)
                 return;
 
             var lockFile = Path.Combine(_gitDir, "index.lock");
@@ -2255,12 +2272,10 @@ namespace SourceGit.ViewModels
             if (desire > now)
                 return;
 
-            IsAutoFetching = true;
-            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+            Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
             new Commands.Fetch(_fullpath, "--all", false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
-            IsAutoFetching = false;
-            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+            Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }
 
         private string _fullpath = string.Empty;
@@ -2284,11 +2299,9 @@ namespace SourceGit.ViewModels
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 2;
         private bool _onlySearchCommitsInCurrentBranch = false;
-        private bool _enableReflog = false;
-        private bool _enableFirstParentInHistories = false;
-        private bool _enableTopoOrderInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
+        private Models.Commit _searchResultSelectedCommit = null;
         private List<string> _revisionFiles = new List<string>();
 
         private string _filter = string.Empty;
@@ -2303,7 +2316,7 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
         private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
-        private Models.Commit _searchResultSelectedCommit = null;
+        private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
     }

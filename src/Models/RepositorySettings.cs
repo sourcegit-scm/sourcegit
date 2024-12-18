@@ -14,6 +14,24 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool EnableReflog
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableFirstParentInHistories
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableTopoOrderInHistories
+        {
+            get;
+            set;
+        } = false;
+
         public bool IncludeUntrackedInLocalChanges
         {
             get;
