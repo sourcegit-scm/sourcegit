@@ -275,6 +275,9 @@ namespace SourceGit.Views
                 rows.RemoveRange(idx + 1, removeCount);
             }
 
+            var repo = DataContext as ViewModels.Repository;
+            repo?.UpdateBranchNodeIsExpanded(node);
+
             RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             _disableSelectionChangingEvent = false;
         }

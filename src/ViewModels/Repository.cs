@@ -322,32 +322,67 @@ namespace SourceGit.ViewModels
 
         public bool IsLocalBranchGroupExpanded
         {
-            get => _isLocalBranchGroupExpanded;
-            set => SetProperty(ref _isLocalBranchGroupExpanded, value);
+            get => _settings.IsLocalBranchesExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsLocalBranchesExpandedInSideBar)
+                {
+                    _settings.IsLocalBranchesExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsRemoteGroupExpanded
         {
-            get => _isRemoteGroupExpanded;
-            set => SetProperty(ref _isRemoteGroupExpanded, value);
+            get => _settings.IsRemotesExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsRemotesExpandedInSideBar)
+                {
+                    _settings.IsRemotesExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsTagGroupExpanded
         {
-            get => _isTagGroupExpanded;
-            set => SetProperty(ref _isTagGroupExpanded, value);
+            get => _settings.IsTagsExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsTagsExpandedInSideBar)
+                {
+                    _settings.IsTagsExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsSubmoduleGroupExpanded
         {
-            get => _isSubmoduleGroupExpanded;
-            set => SetProperty(ref _isSubmoduleGroupExpanded, value);
+            get => _settings.IsSubmodulesExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsSubmodulesExpandedInSideBar)
+                {
+                    _settings.IsSubmodulesExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsWorktreeGroupExpanded
         {
-            get => _isWorktreeGroupExpanded;
-            set => SetProperty(ref _isWorktreeGroupExpanded, value);
+            get => _settings.IsWorktreeExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsWorktreeExpandedInSideBar)
+                {
+                    _settings.IsWorktreeExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public InProgressContext InProgressContext
@@ -698,6 +733,22 @@ namespace SourceGit.ViewModels
             ResetBranchTreeFilterMode(RemoteBranchTrees);
             ResetTagFilterMode();
             Task.Run(RefreshCommits);
+        }
+
+        public void UpdateBranchNodeIsExpanded(BranchTreeNode node)
+        {
+            if (_settings == null || !string.IsNullOrWhiteSpace(_filter))
+                return;
+
+            if (node.IsExpanded)
+            {
+                if (!_settings.ExpandedBranchNodesInSideBar.Contains(node.Path))
+                    _settings.ExpandedBranchNodesInSideBar.Add(node.Path);
+            }
+            else
+            {
+                _settings.ExpandedBranchNodesInSideBar.Remove(node.Path);
+            }
         }
 
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
@@ -2014,8 +2065,7 @@ namespace SourceGit.ViewModels
             var builder = new BranchTreeNode.Builder();
             if (string.IsNullOrEmpty(_filter))
             {
-                builder.CollectExpandedNodes(_localBranchTrees);
-                builder.CollectExpandedNodes(_remoteBranchTrees);
+                builder.SetExpandedNodes(_settings.ExpandedBranchNodesInSideBar);
                 builder.Run(branches, remotes, false);
             }
             else
@@ -2236,12 +2286,6 @@ namespace SourceGit.ViewModels
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private List<string> _revisionFiles = new List<string>();
-
-        private bool _isLocalBranchGroupExpanded = true;
-        private bool _isRemoteGroupExpanded = false;
-        private bool _isTagGroupExpanded = false;
-        private bool _isSubmoduleGroupExpanded = false;
-        private bool _isWorktreeGroupExpanded = false;
 
         private string _filter = string.Empty;
         private List<Models.Remote> _remotes = new List<Models.Remote>();
