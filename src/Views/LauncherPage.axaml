@@ -126,8 +126,8 @@
                       </Grid>
 
                       <Border Grid.Row="1" Margin="8" Background="Transparent">
-                        <ScrollViewer MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                          <TextBlock Margin="4,2" TextWrapping="NoWrap" Text="{Binding Message}"/>
+                        <ScrollViewer MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                          <TextBlock Margin="4,2" TextWrapping="Wrap" Text="{Binding Message}"/>
                         </ScrollViewer>
                       </Border>
                     </Grid>
