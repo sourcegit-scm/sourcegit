@@ -125,11 +125,9 @@
                         </Button> 
                       </Grid>
 
-                      <Border Grid.Row="1" Margin="8" Background="Transparent">
-                        <ScrollViewer MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                          <TextBlock Margin="4,2" TextWrapping="Wrap" Text="{Binding Message}"/>
-                        </ScrollViewer>
-                      </Border>
+                      <ScrollViewer Grid.Row="1" Margin="8" MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Margin="4,2" TextWrapping="Wrap" Text="{Binding Message}"/>
+                      </ScrollViewer>
                     </Grid>
                   </Border>
                 </Border>

@@ -120,8 +120,8 @@ namespace SourceGit.Commands
             {
                 if (RaiseError)
                 {
-                    var errMsg = string.Join("\n", errs);
-                    if (!string.IsNullOrWhiteSpace(errMsg))
+                    var errMsg = string.Join("\n", errs).Trim();
+                    if (!string.IsNullOrEmpty(errMsg))
                         Dispatcher.UIThread.Post(() => App.RaiseException(Context, errMsg));
                 }
 
