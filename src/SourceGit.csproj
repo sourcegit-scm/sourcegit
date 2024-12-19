@@ -50,8 +50,8 @@
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc4.5" />
-    <PackageReference Include="TextMateSharp" Version="1.0.64" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.64" />
+    <PackageReference Include="TextMateSharp" Version="1.0.65" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.65" />
   </ItemGroup>
 
   <ItemGroup>
