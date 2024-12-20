@@ -155,7 +155,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CommitMessageTemplate}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="284" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="300" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
