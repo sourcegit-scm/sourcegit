@@ -399,15 +399,6 @@ namespace SourceGit.Views
             else if (branches.Find(x => x.IsCurrent) == null)
             {
                 var menu = new ContextMenu();
-                var deleteMulti = new MenuItem();
-                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
-                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
-                deleteMulti.Click += (_, ev) =>
-                {
-                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(deleteMulti);
 
                 var mergeMulti = new MenuItem();
                 mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
@@ -418,6 +409,17 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(mergeMulti);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var deleteMulti = new MenuItem();
+                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteMulti.Click += (_, ev) =>
+                {
+                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(deleteMulti);
 
                 menu?.Open(this);
             }
