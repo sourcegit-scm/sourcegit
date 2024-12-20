@@ -41,6 +41,7 @@ namespace SourceGit.Models
                 {
                     new ShellOrTerminal("mac-terminal", "Terminal", ""),
                     new ShellOrTerminal("iterm2", "iTerm", ""),
+                    new ShellOrTerminal("warp", "Warp", ""),
                 };
             }
             else

@@ -36,6 +36,8 @@ namespace SourceGit.Native
                     return "Terminal";
                 case "iterm2":
                     return "iTerm";
+                case "warp":
+                    return "Warp";
             }
 
             return string.Empty;
