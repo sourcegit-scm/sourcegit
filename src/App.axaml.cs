@@ -14,6 +14,8 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -85,6 +87,7 @@ namespace SourceGit
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
             SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
+            SetupTrayIcon(pref.SystemTrayIcon);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -189,6 +192,26 @@ namespace SourceGit
             else
             {
                 Models.CommitGraph.SetDefaultPens();
+            }
+        }
+
+        public static void SetupTrayIcon(bool enable)
+        {
+            if (enable)
+            {
+                var icons = new TrayIcons {
+                    new TrayIcon {
+                        Icon = new WindowIcon(new Bitmap(AssetLoader.Open(new Uri("avares://SourceGit/App.ico")))),
+                        Menu = [
+                            new NativeMenuItem(Text("Open")),
+                            new NativeMenuItem(Text("Preference")) {Command = OpenPreferenceCommand},
+                            new NativeMenuItemSeparator(),
+                            new NativeMenuItem(Text("Quit")) {Command = QuitCommand},
+                        ]
+                    }
+                };
+
+                TrayIcon.SetIcons(Current, icons);
             }
         }
 

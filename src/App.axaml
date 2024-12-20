@@ -41,4 +41,5 @@
       <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" Gesture="⌘+Q"/>
     </NativeMenu>
   </NativeMenu.Menu>
+
 </Application>

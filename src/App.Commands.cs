@@ -37,7 +37,7 @@ namespace SourceGit
             }
         }
 
-        public static readonly Command OpenPreferenceCommand = new Command(_ => OpenDialog(new Views.Preference()));
+        public static readonly Command OpenPreferenceCommand = new Command(_ => { OpenDialog(new Views.Preference()); });
         public static readonly Command OpenHotkeysCommand = new Command(_ => OpenDialog(new Views.Hotkeys()));
         public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
         public static readonly Command OpenAboutCommand = new Command(_ => OpenDialog(new Views.About()));
