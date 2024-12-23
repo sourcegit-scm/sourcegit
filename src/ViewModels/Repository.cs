@@ -2088,6 +2088,9 @@ namespace SourceGit.ViewModels
             {
                 builder.SetExpandedNodes(_settings.ExpandedBranchNodesInSideBar);
                 builder.Run(branches, remotes, false);
+
+                foreach (var invalid in builder.InvalidExpandedNodes)
+                    _settings.ExpandedBranchNodesInSideBar.Remove(invalid);
             }
             else
             {
