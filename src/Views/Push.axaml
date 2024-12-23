@@ -83,21 +83,25 @@
                 Height="32"
                 Content="{DynamicResource Text.Push.Tracking}"
                 IsChecked="{Binding Tracking, Mode=TwoWay}"
-                IsVisible="{Binding IsSetTrackOptionVisible}"/>
+                IsVisible="{Binding IsSetTrackOptionVisible}"
+                ToolTip.Tip="-u"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Height="32"
                 Content="{DynamicResource Text.Push.CheckSubmodules}"
                 IsChecked="{Binding CheckSubmodules, Mode=TwoWay}"
-                IsVisible="{Binding IsCheckSubmodulesVisible}"/>
+                IsVisible="{Binding IsCheckSubmodulesVisible}"
+                ToolTip.Tip="--recurse-submodules=check"/>
 
       <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Push.WithAllTags}"
-                IsChecked="{Binding PushAllTags, Mode=TwoWay}"/>
+                IsChecked="{Binding PushAllTags, Mode=TwoWay}"
+                ToolTip.Tip="--tags"/>
 
       <CheckBox Grid.Row="6" Grid.Column="1"
                 Content="{DynamicResource Text.Push.Force}"
-                IsChecked="{Binding ForcePush, Mode=TwoWay}"/>
+                IsChecked="{Binding ForcePush, Mode=TwoWay}"
+                ToolTip.Tip="--force-with-lease"/>
     </Grid>
   </StackPanel>
 </UserControl>

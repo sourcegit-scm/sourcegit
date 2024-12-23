@@ -61,6 +61,7 @@
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetche ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Abschließen ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ in ${1}$ hinein...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Merge ausgewählte {0} Branches in aktuellen hinein</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
@@ -113,6 +114,8 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactives Rebase von ${0}$ auf diesen Commit</x:String>
+  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge in ${0}$ hinein</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase von ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
@@ -124,6 +127,7 @@
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">DATEIEN</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS DATEI</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Dateien durchsuchen...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTOR</x:String>
@@ -249,6 +253,7 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Seiten wechseln</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Hervorhebung</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Zeilenumbruch</x:String>
+  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Aktiviere Block-Navigation</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Öffne in Merge Tool</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Alle Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Weniger Zeilen anzeigen</x:String>
@@ -280,6 +285,7 @@
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Verwerfe {0} Dateien...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Verwerfe Änderungen in ausgewählten Zeilen</x:String>
   <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Öffne externes Merge Tool</x:String>
+  <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Löse mit ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Als Patch speichern...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stagen</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">{0} Dateien stagen</x:String>
@@ -358,6 +364,7 @@
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Tastaturkürzel Referenz</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Aktuelles Popup schließen</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Klone neues Repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Aktuellen Tab schließen</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Zum vorherigen Tab wechseln</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Zum nächsten Tab wechseln</x:String>
@@ -390,9 +397,13 @@
   <x:String x:Key="Text.Init" xml:space="preserve">Initialisiere Repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Pfad:</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick wird durchgeführt.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Verarbeite commit</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request wird durchgeführt.</x:String>
+  <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">Verarbeite</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase wird durchgeführt.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Angehalten bei</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert wird durchgeführt.</x:String>
+  <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Reverte commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interaktiver Rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ziel Branch:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Auf:</x:String>
@@ -403,6 +414,11 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Branch mergen</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
+  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Quelle:</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (mehrere)</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Alle Änderungen committen</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategie:</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Ziele:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Bewege Repository Knoten</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Wähle Vorgänger-Knoten für:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
@@ -459,7 +475,7 @@
   <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Längenvorgabe für Commit-Nachrichten</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Aktiviere Auto-CRLF</x:String>
-  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Clone Standardordner</x:String>
+  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Klon Standardordner</x:String>
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">Benutzer Email</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Globale Git Benutzer Email</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Installationspfad</x:String>
@@ -568,6 +584,7 @@
   <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">Autor &amp; Committer</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Aktueller Branch</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Zeige Tags als Baum</x:String>
+  <x:String x:Key="Text.Repository.Skip" xml:space="preserve">ÜBERSPRINGEN</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistiken</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">SUBMODUL HINZUFÜGEN</x:String>
@@ -666,7 +683,7 @@
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Öffne alle Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Öffne Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Öffne Terminal</x:String>
-  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Clone Standardordner erneut nach Repositories durchsuchen</x:String>  
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Klon Standardordner erneut nach Repositories durchsuchen</x:String>  
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Suche Repositories...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sortieren</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Änderungen</x:String>
@@ -681,6 +698,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Historie</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Klick-Ereignis auslösen</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Bearbeitung)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Leerer Commit erkannt! Fortfahren (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIKTE ERKANNT</x:String>

@@ -59,6 +59,12 @@ namespace SourceGit.ViewModels
             public List<BranchTreeNode> Locals => _locals;
             public List<BranchTreeNode> Remotes => _remotes;
 
+            public void SetExpandedNodes(List<string> expanded)
+            {
+                foreach (var node in expanded)
+                    _expanded.Add(node);
+            }
+
             public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
             {
                 var folders = new Dictionary<string, BranchTreeNode>();
@@ -95,20 +101,6 @@ namespace SourceGit.ViewModels
                 folders.Clear();
                 SortNodes(_locals);
                 SortNodes(_remotes);
-            }
-
-            public void CollectExpandedNodes(List<BranchTreeNode> nodes)
-            {
-                foreach (var node in nodes)
-                {
-                    if (node.Backend is Models.Branch)
-                        continue;
-
-                    if (node.IsExpanded)
-                        _expanded.Add(node.Path);
-
-                    CollectExpandedNodes(node.Children);
-                }
             }
 
             private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded)

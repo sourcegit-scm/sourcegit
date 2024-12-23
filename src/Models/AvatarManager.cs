@@ -35,7 +35,7 @@ namespace SourceGit.Models
 
         private static AvatarManager _instance = null;
 
-        [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@users\.noreply\.github\.com$")]
+        [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@.+\.github\.com$")]
         private static partial Regex REG_GITHUB_USER_EMAIL();
 
         private object _synclock = new object();
@@ -43,6 +43,7 @@ namespace SourceGit.Models
         private List<IAvatarHost> _avatars = new List<IAvatarHost>();
         private Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
         private HashSet<string> _requesting = new HashSet<string>();
+        private HashSet<string> _defaultAvatars = new HashSet<string>();
 
         public void Start()
         {
@@ -50,8 +51,8 @@ namespace SourceGit.Models
             if (!Directory.Exists(_storePath))
                 Directory.CreateDirectory(_storePath);
 
-            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/github.png", UriKind.RelativeOrAbsolute));
-            _resources.Add("noreply@github.com", new Bitmap(icon));
+            LoadDefaultAvatar("noreply@github.com", "github.png");
+            LoadDefaultAvatar("unrealbot@epicgames.com", "unreal.png");
 
             Task.Run(() =>
             {
@@ -140,7 +141,7 @@ namespace SourceGit.Models
         {
             if (forceRefetch)
             {
-                if (email.Equals("noreply@github.com", StringComparison.Ordinal))
+                if (_defaultAvatars.Contains(email))
                     return null;
 
                 if (_resources.ContainsKey(email))
@@ -183,6 +184,13 @@ namespace SourceGit.Models
             }
 
             return null;
+        }
+
+        private void LoadDefaultAvatar(string key, string img)
+        {
+            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/{img}", UriKind.RelativeOrAbsolute));
+            _resources.Add(key, new Bitmap(icon));
+            _defaultAvatars.Add(key);
         }
 
         private string GetEmailHash(string email)

@@ -11,6 +11,12 @@ namespace SourceGit.ViewModels
 {
     public class Launcher : ObservableObject
     {
+        public string Title
+        {
+            get => _title;
+            private set => SetProperty(ref _title, value);
+        }
+
         public AvaloniaList<LauncherPage> Pages
         {
             get;
@@ -31,9 +37,10 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _activePage, value))
                 {
                     PopupHost.Active = value;
+                    UpdateTitle();
 
                     if (!_ignoreIndexChange && value is { Data: Repository repo })
-                        ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(repo.FullPath);
+                        _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
                 }
             }
         }
@@ -105,6 +112,9 @@ namespace SourceGit.ViewModels
             }
 
             _ignoreIndexChange = false;
+
+            if (string.IsNullOrEmpty(_title))
+                UpdateTitle();
         }
 
         public void Quit(double width, double height)
@@ -185,6 +195,7 @@ namespace SourceGit.ViewModels
                     last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
                     last.Data = Welcome.Instance;
                     last.Popup = null;
+                    UpdateTitle();
 
                     GC.Collect();
                 }
@@ -193,7 +204,6 @@ namespace SourceGit.ViewModels
                     App.Quit(0);
                 }
 
-                _ignoreIndexChange = false;
                 return;
             }
 
@@ -308,7 +318,10 @@ namespace SourceGit.ViewModels
                 page.Data = repo;
             }
 
-            ActivePage = page;
+            if (page != _activePage)
+                ActivePage = page;
+            else
+                UpdateTitle();
 
             ActiveWorkspace.Repositories.Clear();
             foreach (var p in Pages)
@@ -530,8 +543,37 @@ namespace SourceGit.ViewModels
             page.Data = null;
         }
 
+        private void UpdateTitle()
+        {
+            if (_activeWorkspace == null)
+                return;
+
+            var workspace = _activeWorkspace.Name;
+            if (_activePage is { Data: Repository repo })
+            {
+                var node = _activePage.Node;
+                var name = node.Name;
+                var path = node.Id;
+
+                if (!OperatingSystem.IsWindows())
+                {
+                    var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+                    if (path.StartsWith(home, StringComparison.Ordinal))
+                        path = "~" + path.Substring(prefixLen);
+                }
+
+                Title = $"[{workspace}] {name} ({path})";
+            }
+            else
+            {
+                Title = $"[{workspace}] Repositories";
+            }
+        }
+
         private Workspace _activeWorkspace = null;
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
+        private string _title = string.Empty;
     }
 }

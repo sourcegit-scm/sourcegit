@@ -5,6 +5,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -124,7 +125,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnSHAPointerEntered(object sender, PointerEventArgs e)
+        private void OnSHAPointerEntered(object sender, PointerEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha } ctl)
             {
@@ -132,14 +133,22 @@ namespace SourceGit.Views
                 if (tooltip is Models.Commit commit && commit.SHA == sha)
                     return;
 
-                var c = await Task.Run(() => detail.GetParent(sha));
-                if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
+                Task.Run(() =>
                 {
-                    ToolTip.SetTip(ctl, c);
+                    var c = detail.GetParent(sha);
+                    if (c == null) return;
 
-                    if (ctl.IsPointerOver)
-                        ToolTip.SetIsOpen(ctl, true);
-                }
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (ctl.IsEffectivelyVisible && ctl.DataContext is string newSHA && newSHA == sha)
+                        {
+                            ToolTip.SetTip(ctl, c);
+
+                            if (ctl.IsPointerOver)
+                                ToolTip.SetIsOpen(ctl, true);
+                        }
+                    });
+                });
             }
 
             e.Handled = true;

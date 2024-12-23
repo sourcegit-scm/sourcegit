@@ -73,6 +73,15 @@ namespace SourceGit.Views
             set => SetValue(TagBackgroundProperty, value);
         }
 
+        public static readonly StyledProperty<bool> AllowWrapProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(AllowWrap));
+
+        public bool AllowWrap
+        {
+            get => GetValue(AllowWrapProperty);
+            set => SetValue(AllowWrapProperty, value);
+        }
+
         static CommitRefsPresenter()
         {
             AffectsMeasure<CommitRefsPresenter>(
@@ -93,10 +102,19 @@ namespace SourceGit.Views
             var useGraphColor = UseGraphColor;
             var fg = Foreground;
             var bg = Background;
+            var allowWrap = AllowWrap;
             var x = 1.0;
+            var y = 0.0;
+
             foreach (var item in _items)
             {
-                var entireRect = new RoundedRect(new Rect(x, 0, item.Width, 16), new CornerRadius(2));
+                if (allowWrap && x > 1.0 && x + item.Width > Bounds.Width)
+                {
+                    x = 1.0;
+                    y += 20.0;
+                }
+
+                var entireRect = new RoundedRect(new Rect(x, y, item.Width, 16), new CornerRadius(2));
 
                 if (item.IsHead)
                 {
@@ -109,24 +127,24 @@ namespace SourceGit.Views
                             context.DrawRectangle(item.Brush, null, entireRect);
                     }
 
-                    context.DrawText(item.Label, new Point(x + 16, 8.0 - item.Label.Height * 0.5));
+                    context.DrawText(item.Label, new Point(x + 16, y + 8.0 - item.Label.Height * 0.5));
                 }
                 else
                 {
                     if (bg != null)
                         context.DrawRectangle(bg, null, entireRect);
 
-                    var labelRect = new RoundedRect(new Rect(x + 16, 0, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
+                    var labelRect = new RoundedRect(new Rect(x + 16, y, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
                     using (context.PushOpacity(.2))
                         context.DrawRectangle(item.Brush, null, labelRect);
 
-                    context.DrawLine(new Pen(item.Brush), new Point(x + 16, 0), new Point(x + 16, 16));
-                    context.DrawText(item.Label, new Point(x + 20, 8.0 - item.Label.Height * 0.5));
+                    context.DrawLine(new Pen(item.Brush), new Point(x + 16, y), new Point(x + 16, y + 16));
+                    context.DrawText(item.Label, new Point(x + 20, y + 8.0 - item.Label.Height * 0.5));
                 }
 
                 context.DrawRectangle(null, new Pen(item.Brush), entireRect);
 
-                using (context.PushTransform(Matrix.CreateTranslation(x + 3, 3)))
+                using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
                     context.DrawGeometry(fg, null, item.Icon);
 
                 x += item.Width + 4;
@@ -157,6 +175,9 @@ namespace SourceGit.Views
                 var tagBG = TagBackground;
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
+                var requiredHeight = 16.0;
+                var x = 0.0;
+                var allowWrap = AllowWrap;
 
                 foreach (var decorator in refs)
                 {
@@ -211,11 +232,24 @@ namespace SourceGit.Views
                     item.Width = 16 + (isHead ? 0 : 4) + label.Width + 4;
                     _items.Add(item);
 
-                    requiredWidth += item.Width + 4;
+                    x += item.Width + 4;
+                    if (allowWrap)
+                    {
+                        if (x > availableSize.Width)
+                        {
+                            requiredHeight += 20.0;
+                            x = item.Width;
+                        }
+                    }
                 }
 
+                if (allowWrap && requiredHeight > 16.0)
+                    requiredWidth = availableSize.Width;
+                else
+                    requiredWidth = x + 2;
+
                 InvalidateVisual();
-                return new Size(requiredWidth + 2, 16);
+                return new Size(requiredWidth, requiredHeight);
             }
 
             InvalidateVisual();

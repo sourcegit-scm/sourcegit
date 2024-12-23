@@ -54,7 +54,8 @@
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.Apply.IgnoreWS}"
-                IsChecked="{Binding IgnoreWhiteSpace, Mode=TwoWay}"/>
+                IsChecked="{Binding IgnoreWhiteSpace, Mode=TwoWay}"
+                ToolTip.Tip="--ignore-whitespace"/>
     </Grid>
   </StackPanel>
 </UserControl>

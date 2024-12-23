@@ -88,31 +88,43 @@ namespace SourceGit.ViewModels
 
         public bool EnableReflog
         {
-            get => _enableReflog;
+            get => _settings.EnableReflog;
             set
             {
-                if (SetProperty(ref _enableReflog, value))
+                if (value != _settings.EnableReflog)
+                {
+                    _settings.EnableReflog = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshCommits);
+                }
             }
         }
 
         public bool EnableFirstParentInHistories
         {
-            get => _enableFirstParentInHistories;
+            get => _settings.EnableFirstParentInHistories;
             set
             {
-                if (SetProperty(ref _enableFirstParentInHistories, value))
+                if (value != _settings.EnableFirstParentInHistories)
+                {
+                    _settings.EnableFirstParentInHistories = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshCommits);
+                }
             }
         }
 
         public bool EnableTopoOrderInHistories
         {
-            get => _enableTopoOrderInHistories;
+            get => _settings.EnableTopoOrderInHistories;
             set
             {
-                if (SetProperty(ref _enableTopoOrderInHistories, value))
+                if (value != _settings.EnableTopoOrderInHistories)
+                {
+                    _settings.EnableTopoOrderInHistories = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshCommits);
+                }
             }
         }
 
@@ -206,11 +218,15 @@ namespace SourceGit.ViewModels
 
         public bool IncludeUntracked
         {
-            get => _includeUntracked;
+            get => _settings.IncludeUntrackedInLocalChanges;
             set
             {
-                if (SetProperty(ref _includeUntracked, value))
+                if (value != _settings.IncludeUntrackedInLocalChanges)
+                {
+                    _settings.IncludeUntrackedInLocalChanges = value;
+                    OnPropertyChanged();
                     Task.Run(RefreshWorkingCopyChanges);
+                }
             }
         }
 
@@ -247,8 +263,7 @@ namespace SourceGit.ViewModels
             get => _onlySearchCommitsInCurrentBranch;
             set
             {
-                if (SetProperty(ref _onlySearchCommitsInCurrentBranch, value) &&
-                    !string.IsNullOrEmpty(_searchCommitFilter))
+                if (SetProperty(ref _onlySearchCommitsInCurrentBranch, value) && !string.IsNullOrEmpty(_searchCommitFilter))
                     StartSearchCommits();
             }
         }
@@ -322,32 +337,67 @@ namespace SourceGit.ViewModels
 
         public bool IsLocalBranchGroupExpanded
         {
-            get => _isLocalBranchGroupExpanded;
-            set => SetProperty(ref _isLocalBranchGroupExpanded, value);
+            get => _settings.IsLocalBranchesExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsLocalBranchesExpandedInSideBar)
+                {
+                    _settings.IsLocalBranchesExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsRemoteGroupExpanded
         {
-            get => _isRemoteGroupExpanded;
-            set => SetProperty(ref _isRemoteGroupExpanded, value);
+            get => _settings.IsRemotesExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsRemotesExpandedInSideBar)
+                {
+                    _settings.IsRemotesExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsTagGroupExpanded
         {
-            get => _isTagGroupExpanded;
-            set => SetProperty(ref _isTagGroupExpanded, value);
+            get => _settings.IsTagsExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsTagsExpandedInSideBar)
+                {
+                    _settings.IsTagsExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsSubmoduleGroupExpanded
         {
-            get => _isSubmoduleGroupExpanded;
-            set => SetProperty(ref _isSubmoduleGroupExpanded, value);
+            get => _settings.IsSubmodulesExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsSubmodulesExpandedInSideBar)
+                {
+                    _settings.IsSubmodulesExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsWorktreeGroupExpanded
         {
-            get => _isWorktreeGroupExpanded;
-            set => SetProperty(ref _isWorktreeGroupExpanded, value);
+            get => _settings.IsWorktreeExpandedInSideBar;
+            set
+            {
+                if (value != _settings.IsWorktreeExpandedInSideBar)
+                {
+                    _settings.IsWorktreeExpandedInSideBar = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public InProgressContext InProgressContext
@@ -367,8 +417,8 @@ namespace SourceGit.ViewModels
 
         public bool IsAutoFetching
         {
-            get;
-            private set;
+            get => _isAutoFetching;
+            private set => SetProperty(ref _isAutoFetching, value);
         }
 
         public void Open()
@@ -700,6 +750,22 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshCommits);
         }
 
+        public void UpdateBranchNodeIsExpanded(BranchTreeNode node)
+        {
+            if (_settings == null || !string.IsNullOrWhiteSpace(_filter))
+                return;
+
+            if (node.IsExpanded)
+            {
+                if (!_settings.ExpandedBranchNodesInSideBar.Contains(node.Path))
+                    _settings.ExpandedBranchNodesInSideBar.Add(node.Path);
+            }
+            else
+            {
+                _settings.ExpandedBranchNodesInSideBar.Remove(node.Path);
+            }
+        }
+
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
             var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
@@ -828,9 +894,15 @@ namespace SourceGit.ViewModels
 
             var builder = new StringBuilder();
             builder.Append($"-{Preference.Instance.MaxHistoryCommits} ");
-            if (_enableReflog)
+
+            if (_settings.EnableTopoOrderInHistories)
+                builder.Append("--topo-order ");
+            else
+                builder.Append("--date-order ");
+
+            if (_settings.EnableReflog)
                 builder.Append("--reflog ");
-            if (_enableFirstParentInHistories)
+            if (_settings.EnableFirstParentInHistories)
                 builder.Append("--first-parent ");
 
             var filters = _settings.BuildHistoriesFilter();
@@ -839,8 +911,8 @@ namespace SourceGit.ViewModels
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, _enableTopoOrderInHistories, builder.ToString()).Result();
-            var graph = Models.CommitGraph.Parse(commits, _enableFirstParentInHistories);
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
+            var graph = Models.CommitGraph.Parse(commits, _settings.EnableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -867,7 +939,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshWorkingCopyChanges()
         {
-            var changes = new Commands.QueryLocalChanges(_fullpath, _includeUntracked).Result();
+            var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).Result();
             if (_workingCopy == null)
                 return;
 
@@ -2014,8 +2086,7 @@ namespace SourceGit.ViewModels
             var builder = new BranchTreeNode.Builder();
             if (string.IsNullOrEmpty(_filter))
             {
-                builder.CollectExpandedNodes(_localBranchTrees);
-                builder.CollectExpandedNodes(_remoteBranchTrees);
+                builder.SetExpandedNodes(_settings.ExpandedBranchNodesInSideBar);
                 builder.Run(branches, remotes, false);
             }
             else
@@ -2189,7 +2260,7 @@ namespace SourceGit.ViewModels
 
         private void AutoFetchImpl(object sender)
         {
-            if (!_settings.EnableAutoFetch || IsAutoFetching)
+            if (!_settings.EnableAutoFetch || _isAutoFetching)
                 return;
 
             var lockFile = Path.Combine(_gitDir, "index.lock");
@@ -2201,12 +2272,10 @@ namespace SourceGit.ViewModels
             if (desire > now)
                 return;
 
-            IsAutoFetching = true;
-            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+            Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
             new Commands.Fetch(_fullpath, "--all", false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
-            IsAutoFetching = false;
-            Dispatcher.UIThread.Invoke(() => OnPropertyChanged(nameof(IsAutoFetching)));
+            Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }
 
         private string _fullpath = string.Empty;
@@ -2230,18 +2299,10 @@ namespace SourceGit.ViewModels
         private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 2;
         private bool _onlySearchCommitsInCurrentBranch = false;
-        private bool _enableReflog = false;
-        private bool _enableFirstParentInHistories = false;
-        private bool _enableTopoOrderInHistories = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
+        private Models.Commit _searchResultSelectedCommit = null;
         private List<string> _revisionFiles = new List<string>();
-
-        private bool _isLocalBranchGroupExpanded = true;
-        private bool _isRemoteGroupExpanded = false;
-        private bool _isTagGroupExpanded = false;
-        private bool _isSubmoduleGroupExpanded = false;
-        private bool _isWorktreeGroupExpanded = false;
 
         private string _filter = string.Empty;
         private List<Models.Remote> _remotes = new List<Models.Remote>();
@@ -2255,8 +2316,7 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
         private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
-        private bool _includeUntracked = true;
-        private Models.Commit _searchResultSelectedCommit = null;
+        private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
     }

@@ -99,11 +99,13 @@
 
       <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.NoTags}"
-                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
+                IsChecked="{Binding NoTags, Mode=TwoWay}"
+                ToolTip.Tip="--no-tags"/>
 
       <CheckBox Grid.Row="6" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.UseRebase}"
-                IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
+                IsChecked="{Binding UseRebase, Mode=TwoWay}"
+                ToolTip.Tip="--rebase"/>
     </Grid>
   </StackPanel>
 </UserControl>
