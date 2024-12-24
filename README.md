@@ -64,7 +64,7 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
 > [!TIP]
-> You can open the app data dir from the main menu.
+> You can open this data storage directory from the main menu.
 
 For **Windows** users:
 
@@ -80,7 +80,8 @@ For **Windows** users:
   scoop bucket add extras
   scoop install sourcegit
   ```
-* Portable versions can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
+* Pre-built binaries can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
+* You can run `dotnet publish -c Release -r win-x64 -p:EnablePortable=true -o $YOUR_PUBLISH_DIR .\src\SourceGit.csproj` to build a portable version.
 
 For **macOS** users:
 
@@ -159,7 +160,7 @@ This app supports open repository in external tools listed in the table below.
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
-> To solve this problem you can add a file named `external_editors.json` in app data dir and provide the path directly. For example:
+> To solve this problem you can add a file named `external_editors.json` in app data storage directory and provide the path directly. For example:
 ```json
 {
     "tools": {
