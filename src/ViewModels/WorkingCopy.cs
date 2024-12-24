@@ -1068,7 +1068,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
 
             var ai = null as MenuItem;
-            var services = GetPreferedOpenAIServices();
+            var services = _repo.GetPreferedOpenAIServices();
             if (services.Count > 0)
             {
                 ai = new MenuItem();
@@ -1079,7 +1079,7 @@ namespace SourceGit.ViewModels
                 {
                     ai.Click += (_, e) =>
                     {
-                        var dialog = new Views.AIAssistant(services[0], _repo.FullPath, _selectedStaged, generated => CommitMessage = generated);
+                        var dialog = new Views.AIAssistant(services[0], _repo.FullPath, this, _selectedStaged);
                         App.OpenDialog(dialog);
                         e.Handled = true;
                     };
@@ -1094,7 +1094,7 @@ namespace SourceGit.ViewModels
                         item.Header = service.Name;
                         item.Click += (_, e) =>
                         {
-                            var dialog = new Views.AIAssistant(dup, _repo.FullPath, _selectedStaged, generated => CommitMessage = generated);
+                            var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _selectedStaged);
                             App.OpenDialog(dialog);
                             e.Handled = true;
                         };
@@ -1459,7 +1459,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            var services = GetPreferedOpenAIServices();
+            var services = _repo.GetPreferedOpenAIServices();
             if (services.Count == 0)
             {
                 App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
@@ -1468,7 +1468,7 @@ namespace SourceGit.ViewModels
 
             if (services.Count == 1)
             {
-                var dialog = new Views.AIAssistant(services[0], _repo.FullPath, _staged, generated => CommitMessage = generated);
+                var dialog = new Views.AIAssistant(services[0], _repo.FullPath, this, _staged);
                 App.OpenDialog(dialog);
                 return null;
             }
@@ -1484,7 +1484,7 @@ namespace SourceGit.ViewModels
                     item.Header = service.Name;
                     item.Click += (_, e) =>
                     {
-                        var dialog = new Views.AIAssistant(dup, _repo.FullPath, _staged, generated => CommitMessage = generated);
+                        var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _staged);
                         App.OpenDialog(dialog);
                         e.Handled = true;
                     };
@@ -1598,25 +1598,6 @@ namespace SourceGit.ViewModels
             }
 
             return false;
-        }
-
-        private IList<Models.OpenAIService> GetPreferedOpenAIServices()
-        {
-            var services = Preferences.Instance.OpenAIServices;
-            if (services == null || services.Count == 0)
-                return [];
-
-            if (services.Count == 1)
-                return services;
-
-            var prefered = _repo.Settings.PreferedOpenAIService;
-            foreach (var service in services)
-            {
-                if (service.Name.Equals(prefered, StringComparison.Ordinal))
-                    return [service];
-            }
-
-            return services;
         }
 
         private Repository _repo = null;

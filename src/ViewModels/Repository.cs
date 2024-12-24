@@ -1199,6 +1199,25 @@ namespace SourceGit.ViewModels
             App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
+        public AvaloniaList<Models.OpenAIService> GetPreferedOpenAIServices()
+        {
+            var services = Preferences.Instance.OpenAIServices;
+            if (services == null || services.Count == 0)
+                return [];
+
+            if (services.Count == 1)
+                return services;
+
+            var prefered = _settings.PreferedOpenAIService;
+            foreach (var service in services)
+            {
+                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                    return [service];
+            }
+
+            return services;
+        }
+
         public ContextMenu CreateContextMenuForGitFlow()
         {
             var menu = new ContextMenu();

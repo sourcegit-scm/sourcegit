@@ -19,7 +19,9 @@
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracking remote branch</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Assistant</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERATE</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLY AS COMMIT MESSAGE</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Raise errors and refuses to apply the patch</x:String>
