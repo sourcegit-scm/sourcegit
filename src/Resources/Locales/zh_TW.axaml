@@ -22,7 +22,9 @@
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">追蹤分支</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">設定遠端追蹤分支</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI 助理</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新產生</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">套用為提交訊息</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">錯誤</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">輸出錯誤，並中止套用修補檔</x:String>
