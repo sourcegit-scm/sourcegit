@@ -210,7 +210,7 @@ namespace SourceGit
                         ]
                     }
                 };
-
+                icons[0].Clicked += (_, _) => ShowWindow();
                 TrayIcon.SetIcons(Current, icons);
             }
         }
@@ -576,11 +576,15 @@ namespace SourceGit
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
                 startupRepo = desktop.Args[0];
 
+            var pref = ViewModels.Preference.Instance;
+            if (pref.SystemTrayIcon) {
+                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            }
+
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
         #if !DISABLE_UPDATE_DETECTION
-            var pref = ViewModels.Preference.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
         #endif

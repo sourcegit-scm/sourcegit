@@ -255,7 +255,13 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
+            var pref = ViewModels.Preference.Instance;
+            if (pref.SystemTrayIcon) {
+                e.Cancel = true;
+                Hide();
+            } else {
+                (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
+            }
             base.OnClosing(e);
         }
 
