@@ -60,8 +60,8 @@
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Перемотать вперёд к ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Извлечь ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Поток Git - Завершение ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Влить {0} выделенных веток в текущую</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Слить ${0}$ в ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Слить {0} выделенных веток в текущую</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Забрать ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Забрать ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Выложить ${0}$</x:String>
@@ -105,28 +105,28 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Адрес хранилища:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">ЗАКРЫТЬ</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Редактор</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Применить этот коммит (cherry-pick)</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Применить несколько коммитов ...</x:String>
-  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Переключиться на этот коммит</x:String>
-  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Сравнить c HEAD</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Применить эту фиксацию (частичная-выборка)</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Применить несколько фиксаций ...</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Переключиться на эту фиксацию</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Сравнить c ГОЛОВНЫМ</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Копировать информацию</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ сюда</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>
-  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Влить ветки...</x:String>
+  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Слить в ${0}$</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Слить ветки...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ сюда</x:String>
-  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Отменить коммит</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Отменить фиксацию</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Изменить комментарий</x:String>
-  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как patch-файл...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Объединить с предыдущим коммитом</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Объединить все следующие коммиты с этим</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как файл исправлений...</x:String>
+  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Объединить с предыдущей фиксацией</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Объединить все следующие фиксации с этим</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Найти изменения....</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ФАЙЛЫ</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Файл LFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Файл ХБФ</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Поиск файлов...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Подмодуль</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">ИНФОРМАЦИЯ</x:String>
@@ -134,8 +134,8 @@
   <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">ИЗМЕНЁННЫЙ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ДОЧЕРНИЙ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">ИСПОЛНИТЕЛЬ</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Найти все ветки с этим коммитом</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ВЕТКИ С ЭТИМ КОММИТОМ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Найти все ветки с этой фиксацией</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ВЕТКИ С ЭТОЙ ФИКСАЦИЕЙ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Отображаются только первые 100 изменений. Смотрите все изменения на вкладке ИЗМЕНЕНИЯ.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">СООБЩЕНИЕ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">РОДИТЕЛИ</x:String>
@@ -145,23 +145,23 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Введите тему фиксации</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Описание</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Настройка хранилища</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН КОММИТА</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН ФИКСАЦИИ</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Название:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Cодержание:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ПОЛЬЗОВАТЕЛЬСКОЕ ДЕЙСТВИЕ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Аргументы:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Путь к репозиторию; ${SHA} - SHA коммитов</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Путь к хранилищу; ${SHA} - SHA фиксаций</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Исполняемый файл:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Диапазон:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Коммит</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Репозиторий</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Фиксация</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Хранилище</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Адрес электронной почты</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Адрес электронной почты</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автоматическое скачивание изменений</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Разрешить --signoff  для коммита</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Разрешить --signoff  для фиксация</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Удалённое хранилище по-умолчанию</x:String>
   <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Разрешить --prune при скачивании</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
@@ -230,7 +230,7 @@
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Цель:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Подтвердите удаление группы</x:String>
-  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Подтвердите удаление репозитория</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Подтвердите удаление хранилища</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Путь подмодуля:</x:String>
   <x:String x:Key="Text.DeleteTag" xml:space="preserve">Удалить метку</x:String>
@@ -365,7 +365,7 @@
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Ссылка на сочетания клавиш</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ОБЩЕЕ</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Закрыть окно</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Клонировать репозиторий</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Клонировать хранилище</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Закрыть вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Перейти на предыдущую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Перейти на следующую вкладку</x:String>
@@ -397,13 +397,13 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Отклонить</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Инициализировать хранилище</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Путь:</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Выполняется частичный перенос коммитов (cherry-pick).</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Обрабтка коммита.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Выполняется частичный перенос фиксаций (частичная выборка).</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Обрабтка фиксации.</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Выполняется слияние.</x:String>
   <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">Обработка</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Выполняется перенос.</x:String>
   <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Остановлен на</x:String>
-  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Выполняется отмена коммита.</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Выполняется отмена фиксации.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Выполняется отмена</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Интерактивное перемещение</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Целевая ветка:</x:String>
@@ -412,15 +412,15 @@
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Копировать ссылку</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ОШИБКА</x:String>  
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
-  <x:String x:Key="Text.Merge" xml:space="preserve">Влить ветку</x:String>
+  <x:String x:Key="Text.Merge" xml:space="preserve">Слить ветку</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Источник:</x:String>
-  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Влить несколько веток</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Слить несколько веток</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Зафиксировать все изменения</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Стратегия:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Цели:</x:String>
-  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Переместить репозиторий в другую группу</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Переместить хранилище в другую группу</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Выбрать группу для:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git НЕ был настроен. Пожалуйста, перейдите в [Настройки] и сначала настройте его.</x:String>
@@ -471,9 +471,9 @@
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Проверить обновления при старте</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Язык</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Максимальная длина истории</x:String>
-  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени коммита на графике</x:String>
+  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени фиксации на графике</x:String>
   <x:String x:Key="Text.Preference.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>
-  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Длина темы коммита</x:String>
+  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Длина темы фиксации</x:String>
   <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Включить автозавершение CRLF</x:String>
   <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Каталог клонирования по-умолчанию</x:String>
@@ -597,16 +597,16 @@
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ КАТАЛОГИ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОБАВИТЬ РАБОЧИЙ КАТАЛОГ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ОБРЕЗАТЬ</x:String>
-  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Адрес репозитория Git</x:String>
+  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">Адрес хранилища Git</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">Сбросить текущую втеку до версии</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Режим сброса:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Переместить в:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">Текущая ветка:</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">Открыть в файловом менеджере</x:String>
-  <x:String x:Key="Text.Revert" xml:space="preserve">Отменить коммит</x:String>
-  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Коммит:</x:String>
-  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Отмена коммита</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Переформулировать сообщение коммита</x:String>
+  <x:String x:Key="Text.Revert" xml:space="preserve">Отменить фиксацию</x:String>
+  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Фиксация:</x:String>
+  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Отмена фиксации</x:String>
+  <x:String x:Key="Text.Reword" xml:space="preserve">Переформулировать сообщение фиксации</x:String>
   <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Использовать «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки OK</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Запуск. Подождите пожалуйста...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">СОХРАНИТЬ</x:String>
@@ -694,7 +694,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Игнорировать *{0} файлы в том же каталоге</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Игнорировать файлы в том же каталоге</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Игнорировать только эти файлы</x:String>
-  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Дополнить предыдущий коммит</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Дополнить предыдущую фиксацию</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Теперь вы можете отправить файл в индекс.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">ЗАФИКСИРОВАТЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">ЗАФИКСИРОВАТЬ и ОТПРАВИТЬ</x:String>
