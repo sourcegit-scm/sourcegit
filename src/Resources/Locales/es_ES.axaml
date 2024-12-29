@@ -61,6 +61,7 @@
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finalizar ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ en ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Hacer merge de las ramas {0} seleccionadas hacia la rama actual</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
@@ -115,6 +116,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interactivo ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Abrir en el Navegador</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copiar Enlace</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Hacer merge ...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revertir Commit</x:String>
@@ -252,6 +254,7 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Intercambiar</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Resaltado de Sintaxis</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Ajuste de Línea</x:String>
+  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Habilitar navegación en bloque</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Mostrar Todas las Líneas</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Disminuir Número de Líneas Visibles</x:String>
@@ -361,6 +364,7 @@
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Referencia de Atajos de Teclado</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancelar popup actual</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clonar repositorio nuevo</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Cerrar página actual</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Ir a la página anterior</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Ir a la siguiente página</x:String>
@@ -405,6 +409,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opción de Merge:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Rama Fuente:</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (Multiplo)</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit todos los cambios</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Estrategia:</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Mover Nodo del Repositorio</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleccionar nodo padre para:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nombre:</x:String>
