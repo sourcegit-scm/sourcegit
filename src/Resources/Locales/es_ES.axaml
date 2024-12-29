@@ -116,8 +116,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interactivo ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge a ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
-  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Abrir en el Navegador</x:String>
-  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copiar Enlace</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revertir Commit</x:String>
@@ -409,6 +407,8 @@
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interactivo</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Rama Objetivo:</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">En:</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Abrir en el Navegador</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copiar Enlace</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVISO</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Rama</x:String>
