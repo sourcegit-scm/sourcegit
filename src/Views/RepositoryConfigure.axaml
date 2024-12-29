@@ -155,7 +155,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CommitMessageTemplate}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="284" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="300" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -270,7 +270,10 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="m:IssueTrackerRule">
-                    <TextBlock Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                    <Grid ColumnDefinitions="Auto,*">
+                      <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Issue}"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
               </ListBox>
@@ -311,7 +314,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Fill="{DynamicResource Brush.FG2}"
-                        Data="{StaticResource Icons.Issue}"/>
+                        Data="{StaticResource Icons.Empty}"/>
                 </Binding.TargetNullValue>
               </Binding>
             </ContentControl.Content>

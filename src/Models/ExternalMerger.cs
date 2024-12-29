@@ -39,7 +39,7 @@ namespace SourceGit.Models
                     new ExternalMerger(4, "tortoise_merge", "Tortoise Merge", "TortoiseMerge.exe;TortoiseGitMerge.exe", "-base:\"$BASE\" -theirs:\"$REMOTE\" -mine:\"$LOCAL\" -merged:\"$MERGED\"", "-base:\"$LOCAL\" -theirs:\"$REMOTE\""),
                     new ExternalMerger(5, "kdiff3", "KDiff3", "kdiff3.exe", "\"$REMOTE\" -b \"$BASE\" \"$LOCAL\" -o \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(6, "beyond_compare", "Beyond Compare", "BComp.exe", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
-                    new ExternalMerger(7, "win_merge", "WinMerge", "WinMergeU.exe", "\"$MERGED\"", "-u -e \"$LOCAL\" \"$REMOTE\""),
+                    new ExternalMerger(7, "win_merge", "WinMerge", "WinMergeU.exe", "\"$MERGED\"", "-u -e -sw \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(8, "codium", "VSCodium", "VSCodium.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(9, "p4merge", "P4Merge", "p4merge.exe", "-tw 4 \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"", "-tw 4 \"$LOCAL\" \"$REMOTE\""),
                 };

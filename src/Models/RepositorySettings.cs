@@ -14,6 +14,30 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool EnableReflog
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableFirstParentInHistories
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableTopoOrderInHistories
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IncludeUntrackedInLocalChanges
+        {
+            get;
+            set;
+        } = true;
+
         public DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
         {
             get;
@@ -21,6 +45,12 @@ namespace SourceGit.Models
         } = DealWithLocalChanges.DoNothing;
 
         public bool EnablePruneOnFetch
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableForceOnFetch
         {
             get;
             set;
@@ -84,31 +114,31 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = new AvaloniaList<Filter>();
+        } = [];
 
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
             get;
             set;
-        } = new AvaloniaList<CommitTemplate>();
+        } = [];
 
         public AvaloniaList<string> CommitMessages
         {
             get;
             set;
-        } = new AvaloniaList<string>();
+        } = [];
 
         public AvaloniaList<IssueTrackerRule> IssueTrackerRules
         {
             get;
             set;
-        } = new AvaloniaList<IssueTrackerRule>();
+        } = [];
 
         public AvaloniaList<CustomAction> CustomActions
         {
             get;
             set;
-        } = new AvaloniaList<CustomAction>();
+        } = [];
 
         public bool EnableAutoFetch
         {
@@ -151,6 +181,42 @@ namespace SourceGit.Models
             get;
             set;
         } = "---";
+
+        public bool IsLocalBranchesExpandedInSideBar
+        {
+            get;
+            set;
+        } = true;
+
+        public bool IsRemotesExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsTagsExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsSubmodulesExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsWorktreeExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public List<string> ExpandedBranchNodesInSideBar
+        {
+            get;
+            set;
+        } = [];
 
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {

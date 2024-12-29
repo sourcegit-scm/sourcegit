@@ -1,40 +1,39 @@
-### de_DE.axaml: 98.60%
+### de_DE.axaml: 100.00%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+
+
+</details>
+
+### es_ES.axaml: 97.78%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
-- Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
+- Text.InProgress.CherryPick.Head
+- Text.InProgress.Merge.Operating
+- Text.InProgress.Rebase.StoppedAt
+- Text.InProgress.Revert.Head
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
-- Text.WorkingCopy.CommitToEdit
+- Text.Repository.Skip
 
 </details>
 
-### es_ES.axaml: 98.88%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.MergeMultiple
-- Text.Diff.UseBlockNavigation
-- Text.Hotkeys.Global.Clone
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-
-</details>
-
-### fr_FR.axaml: 96.08%
+### fr_FR.axaml: 95.00%
 
 
 <details>
@@ -44,11 +43,18 @@
 - Text.CherryPick.AppendSourceToMessage
 - Text.CherryPick.Mainline.Tips
 - Text.CommitCM.CherryPickMultiple
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
+- Text.InProgress.CherryPick.Head
+- Text.InProgress.Merge.Operating
+- Text.InProgress.Rebase.StoppedAt
+- Text.InProgress.Revert.Head
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -65,19 +71,21 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.Repository.Skip
 - Text.ScanRepositories
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### it_IT.axaml: 96.64%
+### it_IT.axaml: 95.56%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
@@ -86,6 +94,12 @@
 - Text.Configure.OpenAI.Preferred.Tip
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.FileCM.ResolveUsing
+- Text.InProgress.CherryPick.Head
+- Text.InProgress.Merge.Operating
+- Text.InProgress.Rebase.StoppedAt
+- Text.InProgress.Revert.Head
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -98,49 +112,52 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.Repository.Skip
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### pt_BR.axaml: 97.90%
+### pt_BR.axaml: 96.81%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
+- Text.FileCM.ResolveUsing
 - Text.Hotkeys.Global.Clone
+- Text.InProgress.CherryPick.Head
+- Text.InProgress.Merge.Operating
+- Text.InProgress.Rebase.StoppedAt
+- Text.InProgress.Revert.Head
+- Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
+- Text.Repository.Skip
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### ru_RU.axaml: 99.02%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.MergeMultiple
-- Text.Hotkeys.Global.Clone
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
+
 
 </details>
 

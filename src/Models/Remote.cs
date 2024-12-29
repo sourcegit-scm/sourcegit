@@ -6,7 +6,7 @@ namespace SourceGit.Models
 {
     public partial class Remote
     {
-        [GeneratedRegex(@"^https?://([-a-zA-Z0-9:%._\+~#=]+@)?[-a-zA-Z0-9:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(:[0-9]{1,5})?\b(/[-a-zA-Z0-9()@:%_\+.~#?&=]*)*(\.git)?$")]
+        [GeneratedRegex(@"^https?://([-a-zA-Z0-9:%._\+~#=]+@)?[-a-zA-Z0-9:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?(:[0-9]{1,5})?\b(/[-a-zA-Z0-9()@:%_\+.~#?&=]+)+(\.git)?$")]
         private static partial Regex REG_HTTPS();
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
         private static partial Regex REG_SSH1();

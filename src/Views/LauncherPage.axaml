@@ -77,7 +77,7 @@
                               HorizontalAlignment="Right"
                               IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
                     <Button Classes="flat primary"
-                            Width="80" Height="28"
+                            Width="100" Height="28"
                             Padding="0"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -85,7 +85,7 @@
                             Click="OnPopupSure"
                             HotKey="Enter"/>
                     <Button Classes="flat"
-                            Width="80" Height="28"
+                            Width="100" Height="28"
                             Margin="8,0,0,0"
                             Padding="0"
                             HorizontalContentAlignment="Center"
@@ -112,18 +112,21 @@
                 <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)">
                   <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
                     <Grid RowDefinitions="26,Auto">
-                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="8,0">
+                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" Margin="8,0">
                         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" IsVisible="{Binding IsError}"/>
                         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green" IsVisible="{Binding !IsError}"/>
                         <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}" IsVisible="{Binding IsError}"/>
                         <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}" IsVisible="{Binding !IsError}"/>
-                        <Button Grid.Column="2" Classes="icon_button" Width="16" Height="16" Click="OnDismissNotification">
+                        <Button Grid.Column="2" Classes="icon_button" Width="16" Height="16" Click="OnCopyNotification">
+                          <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
+                        </Button>
+                        <Button Grid.Column="3" Classes="icon_button" Width="16" Height="16" Margin="8,0,0,0" Click="OnDismissNotification">
                           <Path Width="10" Height="10" Data="{StaticResource Icons.Window.Close}"/>
                         </Button> 
                       </Grid>
 
-                      <ScrollViewer Grid.Row="1" Margin="8" MaxHeight="100" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                        <SelectableTextBlock TextWrapping="Wrap" Text="{Binding Message}"/>
+                      <ScrollViewer Grid.Row="1" Margin="8" MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Margin="4,2" TextWrapping="Wrap" Text="{Binding Message}"/>
                       </ScrollViewer>
                     </Grid>
                   </Border>

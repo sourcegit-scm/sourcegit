@@ -112,7 +112,8 @@
                            Cursor="Hand"
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
-                           PointerPressed="OnSHAPressed">
+                           PointerPressed="OnSHAPressed"
+                           ToolTip.ShowDelay="0">
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -149,7 +150,8 @@
                            Cursor="Hand"
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
-                           PointerPressed="OnSHAPressed">
+                           PointerPressed="OnSHAPressed"
+                           ToolTip.ShowDelay="0">
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -170,19 +172,20 @@
 
           <!-- REFS -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
-          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" Height="24" IsVisible="{Binding HasDecorators}">
+          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter TagBackground="{DynamicResource Brush.DecoratorTag}"
                                    Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
                                    FontSize="11"
-                                   VerticalAlignment="Center"
+                                   AllowWrap="True"
+                                   Margin="0,4,0,0"
                                    UseGraphColor="False"/>
           </Border>
 
           <!-- Messages -->
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
           <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
-                                    Margin="12,5,8,0" 
+                                    Margin="12,4,8,0" 
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"
                                     IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"

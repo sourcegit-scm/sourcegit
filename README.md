@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.60%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-98.88%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-96.08%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-96.64%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-97.90%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-99.02%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-100.00%25-brightgreen)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-97.78%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-95.00%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-95.56%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-96.81%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 ## How to Use
 
@@ -64,7 +64,7 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
 > [!TIP]
-> You can open the app data dir from the main menu.
+> You can open this data storage directory from the main menu.
 
 For **Windows** users:
 
@@ -80,7 +80,8 @@ For **Windows** users:
   scoop bucket add extras
   scoop install sourcegit
   ```
-* Portable versions can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
+* Pre-built binaries can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
+* You can run `dotnet publish -c Release -r win-x64 -p:EnablePortable=true -o $YOUR_PUBLISH_DIR .\src\SourceGit.csproj` to build a portable version.
 
 For **macOS** users:
 
@@ -98,7 +99,33 @@ For **macOS** users:
 
 For **Linux** users:
 
-* `DEB` or `RPM` packages are available at [buildkite](https://buildkite.com/organizations/sourcegit/packages).
+* For Debian/Ubuntu based distributions, you can add the `sourcegit` repository by following:
+  You may need to install curl and/or gpg first, if you're on a very minimal host:
+  ```shell
+  apt update && apt install curl gpg -y
+  ```
+  Install the registry signing key:
+  ```shell
+  curl -fsSL "https://packages.buildkite.com/sourcegit/sourcegit-deb/gpgkey" | gpg --dearmor -o /etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg
+  ```
+  Configure the source:
+  ```shell
+  echo -e "deb [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main\ndeb-src [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main" > /etc/apt/sources.list.d/buildkite-sourcegit-sourcegit-deb.list
+  ```
+  Update your local repository and install the package:
+  ```shell
+  apt update && apt install sourcegit
+  ```
+* For RHEL/Fedora based distributions, you can add the `sourcegit` repository by following:
+  Configure the source:
+  ```shell
+  sudo sh -c 'echo -e "[sourcegit-rpm]\nname=sourcegit-rpm\nbaseurl=https://packages.buildkite.com/sourcegit/sourcegit-rpm/rpm_any/rpm_any/\$basearch\nenabled=1\nrepo_gpgcheck=1\ngpgcheck=0\ngpgkey=https://packages.buildkite.com/sourcegit/sourcegit-rpm/gpgkey\npriority=1"' > /etc/yum.repos.d/sourcegit-rpm.repo
+  ```
+  Install the package with this command:
+  ```shell
+  sudo dnf install -y sourcegit
+  ```
+* `Appimage` files can be found on [AppimageHub](https://appimage.github.io/SourceGit/)
 * `xdg-open` must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
@@ -133,7 +160,7 @@ This app supports open repository in external tools listed in the table below.
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
-> To solve this problem you can add a file named `external_editors.json` in app data dir and provide the path directly. For example:
+> To solve this problem you can add a file named `external_editors.json` in app data storage directory and provide the path directly. For example:
 ```json
 {
     "tools": {

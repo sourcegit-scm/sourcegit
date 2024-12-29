@@ -95,7 +95,7 @@ namespace SourceGit.Views
             if (change.Property == TextProperty && _changingWay == TextChangeWay.None)
             {
                 _changingWay = TextChangeWay.FromSource;
-                var normalized = Text.ReplaceLineEndings("\n").Trim();
+                var normalized = Text.ReplaceLineEndings("\n");
                 var subjectEnd = normalized.IndexOf("\n\n", StringComparison.Ordinal);
                 if (subjectEnd == -1)
                 {

@@ -719,19 +719,22 @@ namespace SourceGit.Views
             else if (change.Property == BlockNavigationProperty)
             {
                 var oldValue = change.OldValue as ViewModels.BlockNavigation;
-                var newValue = change.NewValue as ViewModels.BlockNavigation;
                 if (oldValue != null)
+                {
                     oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
+                    if (oldValue.Current != -1)
+                        TextArea?.TextView?.Redraw();
+                }
+
+                var newValue = change.NewValue as ViewModels.BlockNavigation;
                 if (newValue != null)
                     newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
-
-                InvalidateVisual();
             }
         }
 
         private void OnBlockNavigationPropertyChanged(object _1, PropertyChangedEventArgs _2)
         {
-            TextArea.TextView.Redraw();
+            TextArea?.TextView?.Redraw();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -1576,7 +1579,7 @@ namespace SourceGit.Views
 
             UseBlockNavigationProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
             {
-                v.RefreshContent(v.DataContext as Models.TextDiff, false);
+                v.RefreshBlockNavigation();
             });
 
             SelectedChunkProperty.Changed.AddClassHandler<TextDiffView>((v, _) =>
@@ -1664,6 +1667,14 @@ namespace SourceGit.Views
                 Editor.Content = diff;
             }
 
+            RefreshBlockNavigation();
+
+            IsUnstagedChange = diff.Option.IsUnstaged;
+            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
+        }
+
+        private void RefreshBlockNavigation()
+        {
             if (UseBlockNavigation)
             {
                 BlockNavigation = new ViewModels.BlockNavigation(Editor.Content);
@@ -1674,9 +1685,6 @@ namespace SourceGit.Views
                 BlockNavigation = null;
                 BlockNavigationIndicator = "-/-";
             }
-
-            IsUnstagedChange = diff.Option.IsUnstaged;
-            EnableChunkSelection = diff.Option.WorkingCopyChange != null;
         }
 
         private void OnStageChunk(object _1, RoutedEventArgs _2)

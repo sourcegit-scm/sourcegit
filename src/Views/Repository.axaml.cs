@@ -428,5 +428,13 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private void OnSkipInProgress(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                repo.SkipMerge();
+
+            e.Handled = true;
+        }
     }
 }

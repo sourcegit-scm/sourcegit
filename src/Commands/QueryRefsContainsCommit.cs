@@ -23,6 +23,9 @@ namespace SourceGit.Commands
             var lines = output.StdOut.Split('\n');
             foreach (var line in lines)
             {
+                if (line.EndsWith("/HEAD", StringComparison.Ordinal))
+                    continue;
+
                 if (line.StartsWith("refs/heads/", StringComparison.Ordinal))
                     rs.Add(new() { Name = line.Substring("refs/heads/".Length), Type = Models.DecoratorType.LocalBranchHead });
                 else if (line.StartsWith("refs/remotes/", StringComparison.Ordinal))

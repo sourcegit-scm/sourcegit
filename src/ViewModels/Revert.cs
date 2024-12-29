@@ -31,9 +31,9 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Exec();
+                new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return true;
             });
         }
 

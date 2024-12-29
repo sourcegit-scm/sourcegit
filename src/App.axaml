@@ -33,7 +33,7 @@
     <NativeMenu>
       <NativeMenuItem Header="{DynamicResource Text.About.Menu}" Command="{x:Static s:App.OpenAboutCommand}"/>
       <NativeMenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}"/>
-      <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}" IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" Gesture="⌘+,"/>
       <NativeMenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}"/>

@@ -5,7 +5,7 @@ namespace SourceGit.ViewModels
 {
     public class Merge : Popup
     {
-        public string Source
+        public object Source
         {
             get;
         }
@@ -21,9 +21,33 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public Merge(Repository repo, string source, string into)
+        public Merge(Repository repo, Models.Branch source, string into)
         {
             _repo = repo;
+            _sourceName = source.FriendlyName;
+
+            Source = source;
+            Into = into;
+            SelectedMode = AutoSelectMergeMode();
+            View = new Views.Merge() { DataContext = this };
+        }
+
+        public Merge(Repository repo, Models.Commit source, string into)
+        {
+            _repo = repo;
+            _sourceName = source.SHA;
+
+            Source = source;
+            Into = into;
+            SelectedMode = AutoSelectMergeMode();
+            View = new Views.Merge() { DataContext = this };
+        }
+
+        public Merge(Repository repo, Models.Tag source, string into)
+        {
+            _repo = repo;
+            _sourceName = source.Name;
+
             Source = source;
             Into = into;
             SelectedMode = AutoSelectMergeMode();
@@ -33,11 +57,11 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Merging '{Source}' into '{Into}' ...";
+            ProgressDescription = $"Merging '{_sourceName}' into '{Into}' ...";
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Merge(_repo.FullPath, Source, SelectedMode.Arg, SetProgressDescription).Exec();
+                var succ = new Commands.Merge(_repo.FullPath, _sourceName, SelectedMode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
@@ -59,5 +83,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
+        private readonly string _sourceName = string.Empty;
     }
 }

@@ -74,7 +74,11 @@ namespace SourceGit.Commands
                 }
 
                 if (string.IsNullOrEmpty(e.Data))
+                {
+                    errs.Add(string.Empty);
                     return;
+                }
+
                 if (TraitErrorAsOutput)
                     OnReadline(e.Data);
 
@@ -89,6 +93,7 @@ namespace SourceGit.Commands
                     return;
                 if (REG_PROGRESS().IsMatch(e.Data))
                     return;
+
                 errs.Add(e.Data);
             };
 
@@ -99,12 +104,8 @@ namespace SourceGit.Commands
             catch (Exception e)
             {
                 if (RaiseError)
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(Context, e.Message);
-                    });
-                }
+                    Dispatcher.UIThread.Post(() => App.RaiseException(Context, e.Message));
+
                 return false;
             }
 
@@ -115,15 +116,15 @@ namespace SourceGit.Commands
             int exitCode = proc.ExitCode;
             proc.Close();
 
-            if (!isCancelled && exitCode != 0 && errs.Count > 0)
+            if (!isCancelled && exitCode != 0)
             {
                 if (RaiseError)
                 {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(Context, string.Join("\n", errs));
-                    });
+                    var errMsg = string.Join("\n", errs).Trim();
+                    if (!string.IsNullOrEmpty(errMsg))
+                        Dispatcher.UIThread.Post(() => App.RaiseException(Context, errMsg));
                 }
+
                 return false;
             }
 

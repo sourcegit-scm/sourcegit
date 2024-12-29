@@ -386,10 +386,10 @@
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Initialiser le repository</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Chemin :</x:String>
-  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick en cours. Appuyer sur 'Abort' pour restaurer le HEAD d'origine.</x:String>
-  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress. Appuyer sur 'Abort' pour restaurer le HEAD d'origine.</x:String>
-  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress. Appuyer sur 'Abort' pour restaurer le HEAD d'origine.</x:String>
-  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress. Appuyer sur 'Abort' pour restaurer le HEAD d'origine.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick en cours.</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress.</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress.</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase interactif</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Branche cible :</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Sur :</x:String>
@@ -400,7 +400,6 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Merger la branche </x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Option de merge:</x:String>
-  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Branche source :</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Déplacer le noeud du repository</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Sélectionnier le noeud parent pour :</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nom :</x:String>
@@ -549,7 +548,6 @@
   <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">Rafraîchir</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">DEPOTS DISTANTS</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">AJOUTER DEPOT DISTANT</x:String>
-  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOUDRE</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Rechercher un commit</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">Fichier</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
