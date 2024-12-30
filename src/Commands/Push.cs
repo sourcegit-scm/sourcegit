@@ -12,7 +12,7 @@ namespace SourceGit.Commands
             Context = repo;
             TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = $"-c remote.{remote}.mirror=false push --progress --verbose ";
+            Args = "push --progress --verbose ";
 
             if (withTags)
                 Args += "--tags ";
