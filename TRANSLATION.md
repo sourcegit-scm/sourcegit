@@ -1,24 +1,24 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Preference.General.DateFormat
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Preference.General.DateFormat
 
 </details>
 
-### fr_FR.axaml: 95.00%
+### fr_FR.axaml: 94.87%
 
 
 <details>
@@ -47,6 +47,7 @@
 - Text.Preference.Appearance.FontSize
 - Text.Preference.Appearance.FontSize.Default
 - Text.Preference.Appearance.FontSize.Editor
+- Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
 - Text.Repository.CustomActions
 - Text.Repository.FilterCommits
@@ -63,7 +64,7 @@
 
 </details>
 
-### it_IT.axaml: 95.56%
+### it_IT.axaml: 95.42%
 
 
 <details>
@@ -89,6 +90,7 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
+- Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
@@ -104,7 +106,7 @@
 
 </details>
 
-### pt_BR.axaml: 96.81%
+### pt_BR.axaml: 96.67%
 
 
 <details>
@@ -128,6 +130,7 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
+- Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
 - Text.Repository.Skip
@@ -136,13 +139,13 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Preference.General.DateFormat
 
 </details>
 
