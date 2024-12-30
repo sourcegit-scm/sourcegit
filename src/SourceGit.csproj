@@ -30,10 +30,6 @@
     <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(EnablePortable)' == 'true'">
-    <DefineConstants>$(DefineConstants);ENABLE_PORTABLE</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />

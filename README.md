@@ -64,7 +64,8 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
 > [!TIP]
-> You can open this data storage directory from the main menu.
+> * You can open this data storage directory from the main menu `Open Data Storage Directory`.
+> * You can create a `data` folder next to the `SourceGit` executable to force this app to store data (user settings, downloaded avatars and crash logs) into it (Portable-Mode). Only works on Windows.
 
 For **Windows** users:
 
@@ -81,7 +82,6 @@ For **Windows** users:
   scoop install sourcegit
   ```
 * Pre-built binaries can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
-* You can run `dotnet publish -c Release -r win-x64 -p:EnablePortable=true -o $YOUR_PUBLISH_DIR .\src\SourceGit.csproj` to build a portable version.
 
 For **macOS** users:
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if ENABLE_PORTABLE
 using System.Diagnostics;
-#endif
 using System.IO;
 
 using Avalonia;
@@ -58,16 +56,17 @@ namespace SourceGit.Native
 
         public static void SetupDataDir()
         {
-#if ENABLE_PORTABLE
             if (OperatingSystem.IsWindows())
             {
                 var execFile = Process.GetCurrentProcess().MainModule!.FileName;
-                DataDir = Path.Combine(Path.GetDirectoryName(execFile), "data");
-                if (!Directory.Exists(DataDir))
-                    Directory.CreateDirectory(DataDir);
-                return;
+                var portableDir = Path.Combine(Path.GetDirectoryName(execFile), "data");
+                if (Directory.Exists(portableDir))
+                {
+                    DataDir = portableDir;
+                    return;
+                }
             }
-#endif
+
             var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             if (string.IsNullOrEmpty(osAppDataDir))
                 DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".sourcegit");
