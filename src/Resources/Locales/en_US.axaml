@@ -355,8 +355,8 @@
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT TIME</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
-  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Holding 'Ctrl' or 'Shift' to select multiple commits.</x:String>
-  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Holding ⌘ or ⇧ to select multiple commits.</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Hold 'Ctrl' or 'Shift' to select multiple commits.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Hold ⌘ or ⇧ to select multiple commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPS:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Keyboard Shortcuts Reference</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
@@ -395,8 +395,8 @@
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Path:</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in progress.</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Processing commit</x:String>
-  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge request in progress.</x:String>
-  <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">Operating</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge in progress.</x:String>
+  <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">Merging</x:String>
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase in progress.</x:String>
   <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Stopped at</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress.</x:String>

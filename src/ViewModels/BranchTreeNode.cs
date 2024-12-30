@@ -58,6 +58,7 @@ namespace SourceGit.ViewModels
         {
             public List<BranchTreeNode> Locals => _locals;
             public List<BranchTreeNode> Remotes => _remotes;
+            public List<string> InvalidExpandedNodes => _invalidExpandedNodes;
 
             public void SetExpandedNodes(List<string> expanded)
             {
@@ -96,6 +97,12 @@ namespace SourceGit.ViewModels
                         if (remote != null)
                             MakeBranchNode(branch, remote.Children, folders, $"refs/remotes/{remote.Name}", bForceExpanded);
                     }
+                }
+
+                foreach (var path in _expanded)
+                {
+                    if (!folders.ContainsKey(path))
+                        _invalidExpandedNodes.Add(path);
                 }
 
                 folders.Clear();
@@ -188,6 +195,7 @@ namespace SourceGit.ViewModels
 
             private readonly List<BranchTreeNode> _locals = new List<BranchTreeNode>();
             private readonly List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
+            private readonly List<string> _invalidExpandedNodes = new List<string>();
             private readonly HashSet<string> _expanded = new HashSet<string>();
         }
     }

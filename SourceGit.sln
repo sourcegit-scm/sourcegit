@@ -81,7 +81,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C54D
 		build\scripts\localization-check.js = build\scripts\localization-check.js
 		build\scripts\package.linux.sh = build\scripts\package.linux.sh
 		build\scripts\package.osx-app.sh = build\scripts\package.osx-app.sh
-		build\scripts\package.windows-portable.sh = build\scripts\package.windows-portable.sh
+		build\scripts\package.windows.sh = build\scripts\package.windows.sh
 	EndProjectSection
 EndProject
 Global
