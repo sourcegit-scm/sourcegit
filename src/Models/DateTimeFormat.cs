@@ -38,8 +38,8 @@ namespace SourceGit.Models
             new DateTimeFormat("31.01.2025 08:00:00", "dd.MM.yyyy", "dd.MM.yyyy HH:mm:ss"),
             new DateTimeFormat("31-01-2025 08:00:00", "dd-MM-yyyy", "dd-MM-yyyy HH:mm:ss"),
 
-            new DateTimeFormat("Jun 31 2025 08:00:00", "MMM d yyyy", "MMM d yyyy HH:mm:ss"),
-            new DateTimeFormat("31 Jun 2025 08:00:00", "d MMM yyyy", "d MMM yyyy HH:mm:ss"),
+            new DateTimeFormat("Jan 31 2025 08:00:00", "MMM d yyyy", "MMM d yyyy HH:mm:ss"),
+            new DateTimeFormat("31 Jan 2025 08:00:00", "d MMM yyyy", "d MMM yyyy HH:mm:ss"),
         };
     }
 }
