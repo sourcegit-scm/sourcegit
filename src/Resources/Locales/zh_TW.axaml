@@ -468,6 +468,7 @@
   <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">工具</x:String>
   <x:String x:Key="Text.Preference.General" xml:space="preserve">一般設定</x:String>
   <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢查軟體更新</x:String>
+  <x:String x:Key="Text.Preference.General.DateFormat" xml:space="preserve">日期時間格式</x:String>
   <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">顯示語言</x:String>
   <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
   <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">在提交路線圖中顯示修改時間而非提交時間</x:String>

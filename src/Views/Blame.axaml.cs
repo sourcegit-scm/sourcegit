@@ -37,6 +37,7 @@ namespace SourceGit.Views
                 {
                     var typeface = view.CreateTypeface();
                     var underlinePen = new Pen(Brushes.DarkOrange);
+                    var width = Bounds.Width;
 
                     foreach (var line in view.VisualLines)
                     {
@@ -64,16 +65,6 @@ namespace SourceGit.Views
                         context.DrawLine(underlinePen, new Point(x, y + shaLink.Baseline + 2), new Point(x + shaLink.Width, y + shaLink.Baseline + 2));
                         x += shaLink.Width + 8;
 
-                        var time = new FormattedText(
-                            info.Time,
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            _editor.Foreground);
-                        context.DrawText(time, new Point(x, y));
-                        x += time.Width + 8;
-
                         var author = new FormattedText(
                             info.Author,
                             CultureInfo.CurrentCulture,
@@ -82,6 +73,15 @@ namespace SourceGit.Views
                             _editor.FontSize,
                             _editor.Foreground);
                         context.DrawText(author, new Point(x, y));
+
+                        var time = new FormattedText(
+                            info.Time,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            _editor.FontSize,
+                            _editor.Foreground);
+                        context.DrawText(time, new Point(width - time.Width, y));
                     }
                 }
             }
@@ -116,15 +116,6 @@ namespace SourceGit.Views
                             Brushes.DarkOrange);
                         x += shaLink.Width + 8;
 
-                        var time = new FormattedText(
-                            info.Time,
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            _editor.Foreground);
-                        x += time.Width + 8;
-
                         var author = new FormattedText(
                             info.Author,
                             CultureInfo.CurrentCulture,
@@ -132,7 +123,16 @@ namespace SourceGit.Views
                             typeface,
                             _editor.FontSize,
                             _editor.Foreground);
-                        x += author.Width;
+                        x += author.Width + 8;
+
+                        var time = new FormattedText(
+                            info.Time,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            typeface,
+                            _editor.FontSize,
+                            _editor.Foreground);
+                        x += time.Width;
 
                         if (maxWidth < x)
                             maxWidth = x;

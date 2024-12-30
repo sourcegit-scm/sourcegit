@@ -65,7 +65,7 @@ namespace SourceGit.Commands
             var commit = match.Groups[1].Value;
             var author = match.Groups[2].Value;
             var timestamp = int.Parse(match.Groups[3].Value);
-            var when = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString("yyyy/MM/dd");
+            var when = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString(_dateFormat);
 
             var info = new Models.BlameLineInfo()
             {
@@ -87,6 +87,7 @@ namespace SourceGit.Commands
 
         private readonly Models.BlameData _result = new Models.BlameData();
         private readonly StringBuilder _content = new StringBuilder();
+        private readonly string _dateFormat = Models.DateTimeFormat.Actived.DateOnly;
         private string _lastSHA = string.Empty;
         private bool _needUnifyCommitSHA = false;
         private int _minSHALen = 64;
