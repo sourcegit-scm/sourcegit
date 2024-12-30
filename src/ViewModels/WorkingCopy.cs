@@ -1351,8 +1351,9 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
+            var gitTemplate = new Commands.Config(_repo.FullPath).Get("commit.template");
             var templateCount = _repo.Settings.CommitTemplates.Count;
-            if (templateCount == 0)
+            if (templateCount == 0 && string.IsNullOrEmpty(gitTemplate))
             {
                 menu.Items.Add(new MenuItem()
                 {
@@ -1375,6 +1376,29 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     menu.Items.Add(item);
+                }
+
+                if (!string.IsNullOrEmpty(gitTemplate))
+                {
+                    var friendlyName = gitTemplate;
+                    if (!OperatingSystem.IsWindows())
+                    {
+                        var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                        var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+                        if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
+                            friendlyName = "~" + gitTemplate.Substring(prefixLen);
+                    }
+
+                    var gitTemplateItem = new MenuItem();
+                    gitTemplateItem.Header = new Views.NameHighlightedTextBlock("WorkingCopy.UseCommitTemplate", friendlyName);
+                    gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
+                    gitTemplateItem.Click += (_, e) =>
+                    {
+                        if (File.Exists(gitTemplate))
+                            CommitMessage = File.ReadAllText(gitTemplate);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(gitTemplateItem);
                 }
             }
 
