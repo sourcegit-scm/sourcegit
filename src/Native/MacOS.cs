@@ -25,7 +25,12 @@ namespace SourceGit.Native
 
         public string FindGitExecutable()
         {
-            return File.Exists("/usr/bin/git") ? "/usr/bin/git" : string.Empty;
+            var gitPathVariants = new List<string>() {
+                 "/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git", "/opt/homebrew/opt/git/bin/git" 
+            };
+            foreach (var path in gitPathVariants)
+                if (File.Exists(path)) return path;
+            return string.Empty;
         }
 
         public string FindTerminal(Models.ShellOrTerminal shell)
