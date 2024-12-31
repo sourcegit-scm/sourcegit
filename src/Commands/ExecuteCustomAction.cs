@@ -53,6 +53,16 @@ namespace SourceGit.Commands
                 proc.BeginOutputReadLine();
                 proc.BeginErrorReadLine();
                 proc.WaitForExit();
+
+                var exitCode = proc.ExitCode;
+                if (exitCode != 0)
+                {
+                    var errMsg = builder.ToString();
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        App.RaiseException(repo, errMsg);
+                    });
+                }
             }
             catch (Exception e)
             {
@@ -62,17 +72,7 @@ namespace SourceGit.Commands
                 });
             }
 
-            var exitCode = proc.ExitCode;
             proc.Close();
-
-            if (exitCode != 0)
-            {
-                var errMsg = builder.ToString();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, errMsg);
-                });
-            }
         }
     }
 }
