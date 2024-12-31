@@ -343,6 +343,15 @@ namespace SourceGit.Views
             set => SetValue(ShowAsDateTimeProperty, value);
         }
 
+        public static readonly StyledProperty<int> DateTimeFormatProperty =
+            AvaloniaProperty.Register<CommitTimeTextBlock, int>(nameof(DateTimeFormat), 0);
+
+        public int DateTimeFormat
+        {
+            get => GetValue(DateTimeFormatProperty);
+            set => SetValue(DateTimeFormatProperty, value);
+        }
+
         public static readonly StyledProperty<bool> UseAuthorTimeProperty =
             AvaloniaProperty.Register<CommitTimeTextBlock, bool>(nameof(UseAuthorTime), true);
 
@@ -370,6 +379,11 @@ namespace SourceGit.Views
                     StopTimer();
                 else
                     StartTimer();
+            }
+            else if (change.Property == DateTimeFormatProperty)
+            {
+                if (ShowAsDateTime)
+                    SetCurrentValue(TextProperty, GetDisplayText());
             }
         }
 
@@ -426,10 +440,10 @@ namespace SourceGit.Views
             if (commit == null)
                 return string.Empty;
 
-            var timestamp = UseAuthorTime ? commit.AuthorTime : commit.CommitterTime;
             if (ShowAsDateTime)
-                return DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString(Models.DateTimeFormat.Actived.DateTime);
+                return UseAuthorTime ? commit.AuthorTimeStr : commit.CommitterTimeStr;
 
+            var timestamp = UseAuthorTime ? commit.AuthorTime : commit.CommitterTime;
             var now = DateTime.Now;
             var localTime = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             var span = now - localTime;

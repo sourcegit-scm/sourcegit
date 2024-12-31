@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
     public class DateTimeFormat
     {
-        public string DisplayText { get; set; }
         public string DateOnly { get; set; }
         public string DateTime { get; set; }
 
-        public DateTimeFormat(string displayText, string dateOnly, string dateTime)
+        public string Example
         {
-            DisplayText = displayText;
+            get => _example.ToString(DateTime);
+        }
+
+        public DateTimeFormat(string dateOnly, string dateTime)
+        {
             DateOnly = dateOnly;
             DateTime = dateTime;
         }
@@ -28,18 +32,19 @@ namespace SourceGit.Models
 
         public static readonly List<DateTimeFormat> Supported = new List<DateTimeFormat>
         {
-            new DateTimeFormat("2025/01/31 08:00:00", "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss"),
-            new DateTimeFormat("2025.01.31 08:00:00", "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss"),
-            new DateTimeFormat("2025-01-31 08:00:00", "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss"),
-            new DateTimeFormat("01/31/2025 08:00:00", "MM/dd/yyyy", "MM/dd/yyyy HH:mm:ss"),
-            new DateTimeFormat("01.31.2025 08:00:00", "MM.dd.yyyy", "MM.dd.yyyy HH:mm:ss"),
-            new DateTimeFormat("01-31-2025 08:00:00", "MM-dd-yyyy", "MM-dd-yyyy HH:mm:ss"),
-            new DateTimeFormat("31/01/2025 08:00:00", "dd/MM/yyyy", "dd/MM/yyyy HH:mm:ss"),
-            new DateTimeFormat("31.01.2025 08:00:00", "dd.MM.yyyy", "dd.MM.yyyy HH:mm:ss"),
-            new DateTimeFormat("31-01-2025 08:00:00", "dd-MM-yyyy", "dd-MM-yyyy HH:mm:ss"),
-
-            new DateTimeFormat("Jan 31 2025 08:00:00", "MMM d yyyy", "MMM d yyyy HH:mm:ss"),
-            new DateTimeFormat("31 Jan 2025 08:00:00", "d MMM yyyy", "d MMM yyyy HH:mm:ss"),
+            new DateTimeFormat("yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss"),
+            new DateTimeFormat("yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss"),
+            new DateTimeFormat("yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss"),
+            new DateTimeFormat("MM/dd/yyyy", "MM/dd/yyyy HH:mm:ss"),
+            new DateTimeFormat("MM.dd.yyyy", "MM.dd.yyyy HH:mm:ss"),
+            new DateTimeFormat("MM-dd-yyyy", "MM-dd-yyyy HH:mm:ss"),
+            new DateTimeFormat("dd/MM/yyyy", "dd/MM/yyyy HH:mm:ss"),
+            new DateTimeFormat("dd.MM.yyyy", "dd.MM.yyyy HH:mm:ss"),
+            new DateTimeFormat("dd-MM-yyyy", "dd-MM-yyyy HH:mm:ss"),
+            new DateTimeFormat("MMM d yyyy", "MMM d yyyy HH:mm:ss"),
+            new DateTimeFormat("d MMM yyyy", "d MMM yyyy HH:mm:ss"),
         };
+
+        private static readonly DateTime _example = new DateTime(2025, 1, 31, 8, 0, 0, DateTimeKind.Local);
     }
 }

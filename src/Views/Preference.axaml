@@ -72,7 +72,7 @@
               <ComboBox.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type m:DateTimeFormat}">
                   <Grid ColumnDefinitions="*,8,*">
-                    <TextBlock Grid.Column="0" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding DisplayText}"/>
+                    <TextBlock Grid.Column="0" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding Example}"/>
                     <TextBlock Grid.Column="2" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding DateTime}" Foreground="{DynamicResource Brush.FG2}"/>
                   </Grid>
                 </DataTemplate>
