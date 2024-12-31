@@ -23,7 +23,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _revision = branch.Head;
-            _saveFile = $"archive-{Path.GetFileNameWithoutExtension(branch.Name)}.zip";
+            _saveFile = $"archive-{Path.GetFileName(branch.Name)}.zip";
             BasedOn = branch;
             View = new Views.Archive() { DataContext = this };
         }
@@ -41,7 +41,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _revision = tag.SHA;
-            _saveFile = $"archive-{tag.Name}.zip";
+            _saveFile = $"archive-{Path.GetFileName(tag.Name)}.zip";
             BasedOn = tag;
             View = new Views.Archive() { DataContext = this };
         }
