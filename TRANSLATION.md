@@ -139,13 +139,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.86%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preference.General.DateFormat
+
 
 </details>
 
