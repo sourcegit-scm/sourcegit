@@ -65,7 +65,13 @@ namespace SourceGit.ViewModels
                 {
                     var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
                     if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                    {
+                        _repo.Settings.HistoriesFilters.Clear();
                         _repo.Settings.UpdateHistoriesFilter(b.FullName, Models.FilterType.LocalBranch, Models.FilterMode.Included);
+
+                        if (!string.IsNullOrEmpty(b.Upstream))
+                            _repo.Settings.UpdateHistoriesFilter(b.Upstream, Models.FilterType.LocalBranch, Models.FilterMode.Included);
+                    }
 
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
