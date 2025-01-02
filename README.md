@@ -190,6 +190,15 @@ This app supports open repository in external tools listed in the table below.
 
 Everyone is welcome to submit a PR. Please make sure your PR is based on the latest `develop` branch and the target branch of PR is `develop`.
 
+In short, here are the commands to get started once [.NET tools are installed](https://dotnet.microsoft.com/en-us/download):
+
+```sh
+dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+dotnet restore
+dotnet build
+dotnet run --project src/SourceGit.csproj
+```
+
 Thanks to all the people who contribute.
 
 [![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
