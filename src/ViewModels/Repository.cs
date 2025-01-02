@@ -770,20 +770,26 @@ namespace SourceGit.ViewModels
         {
             var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
             if (changed)
-                RefreshHistoriesFilters();
+                RefreshHistoriesFilters(true);
         }
 
-        public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode)
+        public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode, bool clearExists, bool refresh)
         {
             var node = FindBranchNode(branch.IsLocal ? _localBranchTrees : _remoteBranchTrees, branch.FullName);
             if (node != null)
-                SetBranchFilterMode(node, mode);
+                SetBranchFilterMode(node, mode, clearExists, refresh);
         }
 
-        public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode)
+        public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode, bool clearExists, bool refresh)
         {
             var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
             var tree = isLocal ? _localBranchTrees : _remoteBranchTrees;
+
+            if (clearExists)
+            {
+                _settings.HistoriesFilters.Clear();
+                HistoriesFilterMode = Models.FilterMode.None;
+            }
 
             if (node.Backend is Models.Branch branch)
             {
@@ -822,7 +828,7 @@ namespace SourceGit.ViewModels
                 cur = parent;
             } while (true);
 
-            RefreshHistoriesFilters();
+            RefreshHistoriesFilters(refresh);
         }
 
         public void StashAll(bool autoStart)
@@ -2149,17 +2155,20 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
-        private void RefreshHistoriesFilters()
+        private void RefreshHistoriesFilters(bool refresh)
         {
-            var filters = _settings.CollectHistoriesFilters();
-            UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
-            UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
-            UpdateTagFilterMode(filters);
-
             if (_settings.HistoriesFilters.Count > 0)
                 HistoriesFilterMode = _settings.HistoriesFilters[0].Mode;
             else
                 HistoriesFilterMode = Models.FilterMode.None;
+
+            if (!refresh)
+                return;
+
+            var filters = _settings.CollectHistoriesFilters();
+            UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
+            UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
+            UpdateTagFilterMode(filters);
 
             Task.Run(RefreshCommits);
         }

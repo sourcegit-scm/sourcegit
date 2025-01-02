@@ -128,11 +128,11 @@ namespace SourceGit.ViewModels
                 {
                     if (succ && CheckoutAfterCreated && _repo.HistoriesFilterMode == Models.FilterMode.Included)
                     {
-                        _repo.Settings.HistoriesFilters.Clear();
-                        _repo.Settings.UpdateHistoriesFilter($"refs/heads/{_name}", Models.FilterType.LocalBranch, Models.FilterMode.Included);
+                        var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
+                        if (BasedOn is Models.Branch based && !based.IsLocal)
+                            fake.Upstream = based.FullName;
 
-                        if (BasedOn is Models.Branch b && !b.IsLocal)
-                            _repo.Settings.UpdateHistoriesFilter(b.FullName, Models.FilterType.LocalBranch, Models.FilterMode.Included);
+                        _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
                     }
 
                     _repo.MarkBranchesDirtyManually();
