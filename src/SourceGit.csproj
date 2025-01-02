@@ -20,7 +20,7 @@
     <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(DisableAOT)' != 'true'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(DisableAOT)' != 'true'">
     <PublishAot>true</PublishAot>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>
