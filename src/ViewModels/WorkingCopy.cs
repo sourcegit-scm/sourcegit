@@ -82,6 +82,10 @@ namespace SourceGit.ViewModels
 
                         CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).Result();
                     }
+                    else
+                    {
+                        CommitMessage = string.Empty;
+                    }
 
                     Staged = GetStagedChanges();
                     SelectedStaged = [];
