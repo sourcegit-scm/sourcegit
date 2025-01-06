@@ -1,12 +1,14 @@
-### de_DE.axaml: 98.76%
+### de_DE.axaml: 98.49%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Preference.General.DateFormat
+- Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOrder
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Tags.OrderByCreatorDate
 - Text.Repository.Tags.OrderByNameAsc
@@ -16,15 +18,17 @@
 
 </details>
 
-### es_ES.axaml: 98.76%
+### es_ES.axaml: 98.49%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Preference.General.DateFormat
+- Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOrder
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Tags.OrderByCreatorDate
 - Text.Repository.Tags.OrderByNameAsc
@@ -34,7 +38,7 @@
 
 </details>
 
-### fr_FR.axaml: 93.95%
+### fr_FR.axaml: 93.69%
 
 
 <details>
@@ -70,8 +74,10 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
@@ -87,7 +93,7 @@
 
 </details>
 
-### it_IT.axaml: 94.50%
+### it_IT.axaml: 94.24%
 
 
 <details>
@@ -119,8 +125,10 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
@@ -136,7 +144,7 @@
 
 </details>
 
-### pt_BR.axaml: 95.60%
+### pt_BR.axaml: 95.34%
 
 
 <details>
@@ -163,8 +171,10 @@
 - Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
+- Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOrder
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
@@ -177,13 +187,14 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesLayout
+- Text.Repository.HistoriesOrder
 
 </details>
 
