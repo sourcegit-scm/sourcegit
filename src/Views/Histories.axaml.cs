@@ -554,7 +554,7 @@ namespace SourceGit.Views
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
         {
-            var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
+            var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
             var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
             if (onlyHighlightCurrentBranch)
