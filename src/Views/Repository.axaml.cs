@@ -400,6 +400,10 @@ namespace SourceGit.Views
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
+                var layout = new MenuItem();
+                layout.Header = App.Text("Repository.HistoriesLayout");
+                layout.IsEnabled = false;
+
                 var isHorizontal = ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories;
                 var horizontal = new MenuItem();
                 horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
@@ -420,6 +424,10 @@ namespace SourceGit.Views
                     ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories = false;
                     ev.Handled = true;
                 };
+
+                var order = new MenuItem();
+                order.Header = App.Text("Repository.HistoriesOrder");
+                order.IsEnabled = false;
 
                 var dateOrder = new MenuItem();
                 dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
@@ -442,9 +450,11 @@ namespace SourceGit.Views
                 };
 
                 var menu = new ContextMenu();
+                menu.Items.Add(layout);
                 menu.Items.Add(horizontal);
                 menu.Items.Add(vertical);
                 menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(order);
                 menu.Items.Add(dateOrder);
                 menu.Items.Add(topoOrder);
                 menu.Open(button);
