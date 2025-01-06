@@ -31,9 +31,9 @@ namespace SourceGit.Models
         public List<Decorator> Decorators { get; set; } = new List<Decorator>();
         public bool HasDecorators => Decorators.Count > 0;
 
-        public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
-        public string CommitterTimeStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
-        public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString("yyyy/MM/dd");
+        public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Actived.DateTime);
+        public string CommitterTimeStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Actived.DateTime);
+        public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Actived.DateOnly);
 
         public bool IsMerged { get; set; } = false;
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;

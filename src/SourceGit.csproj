@@ -20,7 +20,7 @@
     <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(DisableAOT)' != 'true'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(DisableAOT)' != 'true'">
     <PublishAot>true</PublishAot>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>
@@ -28,10 +28,6 @@
 
   <PropertyGroup Condition="'$(DisableUpdateDetection)' == 'true'">
     <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(EnablePortable)' == 'true'">
-    <DefineConstants>$(DefineConstants);ENABLE_PORTABLE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

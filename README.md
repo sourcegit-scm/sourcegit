@@ -47,7 +47,10 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-100.00%25-brightgreen)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-100.00%25-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-95.00%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-95.56%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-96.81%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-99.86%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-99.86%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-94.87%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-95.42%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-96.67%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+
+> [!NOTE]
+> You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
 
 ## How to Use
 
@@ -64,7 +67,8 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
 > [!TIP]
-> You can open this data storage directory from the main menu.
+> * You can open this data storage directory from the main menu `Open Data Storage Directory`.
+> * You can create a `data` folder next to the `SourceGit` executable to force this app to store data (user settings, downloaded avatars and crash logs) into it (Portable-Mode). Only works on Windows.
 
 For **Windows** users:
 
@@ -81,7 +85,6 @@ For **Windows** users:
   scoop install sourcegit
   ```
 * Pre-built binaries can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
-* You can run `dotnet publish -c Release -r win-x64 -p:EnablePortable=true -o $YOUR_PUBLISH_DIR .\src\SourceGit.csproj` to build a portable version.
 
 For **macOS** users:
 
@@ -189,6 +192,15 @@ This app supports open repository in external tools listed in the table below.
 ## Contributing
 
 Everyone is welcome to submit a PR. Please make sure your PR is based on the latest `develop` branch and the target branch of PR is `develop`.
+
+In short, here are the commands to get started once [.NET tools are installed](https://dotnet.microsoft.com/en-us/download):
+
+```sh
+dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+dotnet restore
+dotnet build
+dotnet run --project src/SourceGit.csproj
+```
 
 Thanks to all the people who contribute.
 

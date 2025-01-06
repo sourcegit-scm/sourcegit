@@ -52,13 +52,13 @@
                 </Border>
               </StackPanel>
 
-              <TextBox IsReadOnly="True"
-                       TextWrapping="Wrap"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                       MaxWidth="500" MaxHeight="400"
-                       Margin="0,8" Padding="0"
-                       VerticalContentAlignment="Top"
-                       Text="{Binding Body}"/>
+              <Border Width="500" MaxHeight="400"
+                      Margin="0,8"
+                      Background="{DynamicResource Brush.Contents}"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource Brush.Border2}">
+                <v:UpdateInfoView/>
+              </Border>
 
               <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Classes="flat primary"

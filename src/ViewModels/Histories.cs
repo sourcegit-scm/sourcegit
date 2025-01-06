@@ -768,7 +768,7 @@ namespace SourceGit.ViewModels
             exclude.Header = App.Text("Repository.FilterCommits.Exclude");
             exclude.Click += (_, e) =>
             {
-                _repo.SetBranchFilterMode(branch, Models.FilterMode.Excluded);
+                _repo.SetBranchFilterMode(branch, Models.FilterMode.Excluded, false, true);
                 e.Handled = true;
             };
 
@@ -780,7 +780,7 @@ namespace SourceGit.ViewModels
                 include.Header = App.Text("Repository.FilterCommits.Include");
                 include.Click += (_, e) =>
                 {
-                    _repo.SetBranchFilterMode(branch, Models.FilterMode.Included);
+                    _repo.SetBranchFilterMode(branch, Models.FilterMode.Included, false, true);
                     e.Handled = true;
                 };
                 visibility.Items.Add(include);
@@ -792,7 +792,7 @@ namespace SourceGit.ViewModels
                 unset.Header = App.Text("Repository.FilterCommits.Default");
                 unset.Click += (_, e) =>
                 {
-                    _repo.SetBranchFilterMode(branch, Models.FilterMode.None);
+                    _repo.SetBranchFilterMode(branch, Models.FilterMode.None, false, true);
                     e.Handled = true;
                 };
                 visibility.Items.Add(exclude);

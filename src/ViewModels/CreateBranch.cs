@@ -83,6 +83,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             return Task.Run(() =>
             {
+                var succ = false;
                 if (CheckoutAfterCreated)
                 {
                     var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
@@ -92,7 +93,7 @@ namespace SourceGit.ViewModels
                         if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
                         {
                             SetProgressDescription("Stash local changes");
-                            var succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
+                            succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
                             if (!succ)
                             {
                                 CallUIThread(() => _repo.SetWatcherEnabled(true));
@@ -109,7 +110,7 @@ namespace SourceGit.ViewModels
                     }
 
                     SetProgressDescription($"Create new branch '{_name}'");
-                    new Commands.Checkout(_repo.FullPath).Branch(_name, _baseOnRevision, SetProgressDescription);
+                    succ = new Commands.Checkout(_repo.FullPath).Branch(_name, _baseOnRevision, SetProgressDescription);
 
                     if (needPopStash)
                     {
@@ -120,17 +121,24 @@ namespace SourceGit.ViewModels
                 else
                 {
                     SetProgressDescription($"Create new branch '{_name}'");
-                    Commands.Branch.Create(_repo.FullPath, _name, _baseOnRevision);
+                    succ = Commands.Branch.Create(_repo.FullPath, _name, _baseOnRevision);
                 }
 
                 CallUIThread(() =>
                 {
-                    if (CheckoutAfterCreated && _repo.HistoriesFilterMode == Models.FilterMode.Included)
-                        _repo.Settings.UpdateHistoriesFilter($"refs/heads/{_name}", Models.FilterType.LocalBranch, Models.FilterMode.Included);
+                    if (succ && CheckoutAfterCreated && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                    {
+                        var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
+                        if (BasedOn is Models.Branch based && !based.IsLocal)
+                            fake.Upstream = based.FullName;
+
+                        _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
+                    }
 
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
+
                 return true;
             });
         }

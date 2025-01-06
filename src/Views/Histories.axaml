@@ -191,7 +191,8 @@
                                            FontWeight="{Binding FontWeight}"
                                            Opacity="{Binding Opacity}"
                                            UseAuthorTime="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
-                                           ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"/>
+                                           ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
+                                           DateTimeFormat="{Binding Source={x:Static vm:Preference.Instance}, Path=DateTimeFormat}"/>
                   </Border>
                 </Grid>
               </DataTemplate>

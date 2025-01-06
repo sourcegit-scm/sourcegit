@@ -129,6 +129,21 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _subjectGuideLength, value);
         }
 
+        public int DateTimeFormat
+        {
+            get => Models.DateTimeFormat.ActiveIndex;
+            set
+            {
+                if (value != Models.DateTimeFormat.ActiveIndex &&
+                    value >= 0 &&
+                    value < Models.DateTimeFormat.Supported.Count)
+                {
+                    Models.DateTimeFormat.ActiveIndex = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool UseFixedTabWidth
         {
             get => _useFixedTabWidth;

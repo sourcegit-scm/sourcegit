@@ -77,7 +77,7 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:InteractiveRebaseItem">
-              <Grid ColumnDefinitions="16,110,*,456" Margin="8,0" ClipToBounds="True">
+              <Grid ColumnDefinitions="16,110,*,Auto" Margin="8,0" ClipToBounds="True">
                 <!-- Drag & Drop Anchor -->
                 <Border Grid.Column="0" Background="Transparent"
                         Loaded="OnSetupRowHeaderDragDrop"
@@ -188,7 +188,7 @@
                   <TextBlock Grid.Column="1" Classes="primary" Margin="0,0,4,0" Text="{Binding Subject}"/>
                 </Grid>
 
-                <Grid Grid.Column="3" ColumnDefinitions="32,108,96,156,32,32" IsHitTestVisible="False" ClipToBounds="True">
+                <Grid Grid.Column="3" ColumnDefinitions="32,108,96,Auto,32,32" IsHitTestVisible="False" ClipToBounds="True">
                   <!-- Author Avatar -->
                   <v:Avatar Grid.Column="0"
                             Width="16" Height="16"
