@@ -38,6 +38,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public TagSortMode TagSortMode
+        {
+            get;
+            set;
+        } = TagSortMode.CreatorDate;
+
         public bool IncludeUntrackedInLocalChanges
         {
             get;

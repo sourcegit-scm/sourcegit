@@ -453,6 +453,50 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnOpenSortTagMenu(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            {
+                var byCreatorDate = new MenuItem();
+                byCreatorDate.Header = App.Text("Repository.Tags.OrderByCreatorDate");
+                if (repo.TagSortMode == Models.TagSortMode.CreatorDate)
+                    byCreatorDate.Icon = App.CreateMenuIcon("Icons.Check");
+                byCreatorDate.Click += (_, ev) =>
+                {
+                    repo.TagSortMode = Models.TagSortMode.CreatorDate;
+                    ev.Handled = true;
+                };
+
+                var byNameAsc = new MenuItem();
+                byNameAsc.Header = App.Text("Repository.Tags.OrderByNameAsc");
+                if (repo.TagSortMode == Models.TagSortMode.NameInAscending)
+                    byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
+                byNameAsc.Click += (_, ev) =>
+                {
+                    repo.TagSortMode = Models.TagSortMode.NameInAscending;
+                    ev.Handled = true;
+                };
+
+                var byNameDes = new MenuItem();
+                byNameDes.Header = App.Text("Repository.Tags.OrderByNameDes");
+                if (repo.TagSortMode == Models.TagSortMode.NameInDescending)
+                    byNameDes.Icon = App.CreateMenuIcon("Icons.Check");
+                byNameDes.Click += (_, ev) =>
+                {
+                    repo.TagSortMode = Models.TagSortMode.NameInDescending;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(byCreatorDate);
+                menu.Items.Add(byNameAsc);
+                menu.Items.Add(byNameDes);
+                menu.Open(button);
+            }
+
+            e.Handled = true;
+        }
+
         private void OnSkipInProgress(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

@@ -141,6 +141,20 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Models.TagSortMode TagSortMode
+        {
+            get => _settings.TagSortMode;
+            set
+            {
+                if (value != _settings.TagSortMode)
+                {
+                    _settings.TagSortMode = value;
+                    OnPropertyChanged();
+                    VisibleTags = BuildVisibleTags();
+                }
+            }
+        }
+
         public string Filter
         {
             get => _filter;
@@ -2131,6 +2145,19 @@ namespace SourceGit.ViewModels
 
         private List<Models.Tag> BuildVisibleTags()
         {
+            switch (_settings.TagSortMode)
+            {
+                case Models.TagSortMode.CreatorDate:
+                    _tags.Sort((l, r) => r.CreatorDate.CompareTo(l.CreatorDate));
+                    break;
+                case Models.TagSortMode.NameInAscending:
+                    _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
+                    break;
+                default:
+                    _tags.Sort((l, r) => Models.NumericSort.Compare(r.Name, l.Name));
+                    break;
+            }
+
             var visible = new List<Models.Tag>();
             if (string.IsNullOrEmpty(_filter))
             {
