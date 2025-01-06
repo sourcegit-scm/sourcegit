@@ -1,24 +1,32 @@
-### de_DE.axaml: 99.86%
+### de_DE.axaml: 99.31%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Preference.General.DateFormat
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
+- Text.Repository.UseRelativeTimeInHistories
 
 </details>
 
-### es_ES.axaml: 99.86%
+### es_ES.axaml: 99.31%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Preference.General.DateFormat
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
+- Text.Repository.UseRelativeTimeInHistories
 
 </details>
 
-### fr_FR.axaml: 94.87%
+### fr_FR.axaml: 94.47%
 
 
 <details>
@@ -54,17 +62,20 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
+- Text.Repository.UseRelativeTimeInHistories
 - Text.ScanRepositories
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### it_IT.axaml: 95.42%
+### it_IT.axaml: 95.02%
 
 
 <details>
@@ -96,17 +107,20 @@
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
 - Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesOrder
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
+- Text.Repository.UseRelativeTimeInHistories
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### pt_BR.axaml: 96.67%
+### pt_BR.axaml: 96.13%
 
 
 <details>
@@ -133,19 +147,26 @@
 - Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
 - Text.Repository.FilterCommits
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
+- Text.Repository.UseRelativeTimeInHistories
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.45%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
+- Text.Repository.UseRelativeTimeInHistories
 
 </details>
 
