@@ -1139,36 +1139,6 @@
       <Setter Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
     </Style>
   </Style>
-
-  <Style Selector="ToggleButton.time_display_mode">
-    <Setter Property="Margin" Value="0" />
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="Transparent"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-          <Path x:Name="ChevronPath"
-                Data="{StaticResource Icons.Calender}"
-                Fill="{DynamicResource Brush.FG1}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Opacity="0.65"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-
-    <Style Selector="^:checked /template/ Path#ChevronPath">
-      <Setter Property="Data" Value="{StaticResource Icons.Stopwatch}" />
-    </Style>
-
-    <Style Selector="^:pointerover /template/ Path#ChevronPath">
-      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-  </Style>
   
   <Style Selector="ToggleButton.folder">
     <Setter Property="Margin" Value="0" />
@@ -1194,32 +1164,6 @@
     <Style Selector="^:checked /template/ Path#ChevronPath">
       <Setter Property="Data" Value="{StaticResource Icons.Folder.Open}" />
     </Style>
-  </Style>
-  
-  <Style Selector="ToggleButton.layout_direction">
-    <Setter Property="Margin" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-    <Setter Property="VerticalAlignment" Value="Stretch"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="Transparent">
-          <Path x:Name="PART_IndicatorIcon"
-                Width="14" Height="14"
-                Stretch="Uniform"
-                Data="{StaticResource Icons.LayoutVertical}"
-                Fill="{DynamicResource Brush.FG1}"
-                Opacity=".8"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ToggleButton.layout_direction:checked /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Data" Value="{StaticResource Icons.LayoutHorizontal}"/>
-  </Style>
-  <Style Selector="ToggleButton.layout_direction:pointerover /template/ Path#PART_IndicatorIcon">
-    <Setter Property="Opacity" Value="1"/>
   </Style>
 
   <Style Selector="ToggleButton.line_path">

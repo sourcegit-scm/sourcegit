@@ -146,7 +146,7 @@
                           IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSideBySideDiff, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.LayoutHorizontal}" Margin="0,2,0,0"/>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Layout}" Margin="0,2,0,0"/>
             </ToggleButton>
 
             <Button Classes="icon_button" Width="28" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">

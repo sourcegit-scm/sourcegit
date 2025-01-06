@@ -352,7 +352,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Отслеживать файлы с именем «{0}»</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все *{0} файлов</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Истории</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Переключение горизонтального/вертикального расположения</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
@@ -568,7 +567,6 @@
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Скрыть в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фильтр в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">ОТФИЛЬТРОВАНО:</x:String>
-  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Переключить режим запроса</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Дата ревизии (--date-order)</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Топологически (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ЛОКАЛЬНЫЕ ВЕТКИ</x:String>

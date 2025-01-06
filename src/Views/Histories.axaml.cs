@@ -506,9 +506,18 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
+        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
+            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlightCurrentBranch), true);
+
+        public bool OnlyHighlightCurrentBranch
+        {
+            get => GetValue(OnlyHighlightCurrentBranchProperty);
+            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
+        }
+
         static CommitGraph()
         {
-            AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty);
+            AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty, OnlyHighlightCurrentBranchProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -545,6 +554,31 @@ namespace SourceGit.Views
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
         {
+            var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
+            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
+
+            if (onlyHighlightCurrentBranch)
+            {
+                foreach (var link in graph.Links)
+                {
+                    if (link.IsMerged)
+                        continue;
+                    if (link.End.Y < top)
+                        continue;
+                    if (link.Start.Y > bottom)
+                        break;
+
+                    var geo = new StreamGeometry();
+                    using (var ctx = geo.Open())
+                    {
+                        ctx.BeginFigure(link.Start, false);
+                        ctx.QuadraticBezierTo(link.Control, link.End);
+                    }
+
+                    context.DrawGeometry(null, grayedPen, geo);
+                }
+            }
+
             foreach (var line in graph.Paths)
             {
                 var last = line.Points[0];
@@ -610,11 +644,16 @@ namespace SourceGit.Views
                     }
                 }
 
-                context.DrawGeometry(null, pen, geo);
+                if (!line.IsMerged && onlyHighlightCurrentBranch)
+                    context.DrawGeometry(null, grayedPen, geo);
+                else
+                    context.DrawGeometry(null, pen, geo);
             }
 
             foreach (var link in graph.Links)
             {
+                if (onlyHighlightCurrentBranch && !link.IsMerged)
+                    continue;
                 if (link.End.Y < top)
                     continue;
                 if (link.Start.Y > bottom)
@@ -633,8 +672,10 @@ namespace SourceGit.Views
 
         private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
         {
-            IBrush dotFill = DotBrush;
-            Pen dotFillPen = new Pen(dotFill, 2);
+            var dotFill = DotBrush;
+            var dotFillPen = new Pen(dotFill, 2);
+            var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
+            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
             foreach (var dot in graph.Dots)
             {
@@ -644,6 +685,9 @@ namespace SourceGit.Views
                     break;
 
                 var pen = Models.CommitGraph.Pens[dot.Color];
+                if (!dot.IsMerged && onlyHighlightCurrentBranch)
+                    pen = grayedPen;
+
                 switch (dot.Type)
                 {
                     case Models.CommitGraph.DotType.Head:
@@ -690,6 +734,15 @@ namespace SourceGit.Views
         {
             get => GetValue(IssueTrackerRulesProperty);
             set => SetValue(IssueTrackerRulesProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
+            AvaloniaProperty.Register<Histories, bool>(nameof(OnlyHighlightCurrentBranch), true);
+
+        public bool OnlyHighlightCurrentBranch
+        {
+            get => GetValue(OnlyHighlightCurrentBranchProperty);
+            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
         }
 
         public static readonly StyledProperty<long> NavigationIdProperty =

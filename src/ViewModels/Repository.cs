@@ -128,6 +128,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool OnlyHighlightCurrentBranchInHistories
+        {
+            get => _settings.OnlyHighlighCurrentBranchInHistories;
+            set
+            {
+                if (value != _settings.OnlyHighlighCurrentBranchInHistories)
+                {
+                    _settings.OnlyHighlighCurrentBranchInHistories = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string Filter
         {
             get => _filter;

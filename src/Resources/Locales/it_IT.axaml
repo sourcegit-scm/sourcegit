@@ -344,7 +344,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Traccia file con nome '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Traccia tutti i file *{0}</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Storico</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Passa Layout Orizzontale/Verticale</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTORE</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ORA AUTORE</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAFICO &amp; OGGETTO</x:String>

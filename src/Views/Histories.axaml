@@ -48,9 +48,6 @@
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </Border>
             <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Center">
-              <ToggleButton Classes="time_display_mode"
-                            Width="10" Height="10"
-                            IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
               <TextBlock Classes="table_header"
                          Margin="6,0,0,0"
                          Text="{DynamicResource Text.Histories.Header.Time}"
@@ -143,8 +140,14 @@
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
                                              FontSize="11"
-                                             VerticalAlignment="Center"
-                                             UseGraphColor="True"/>
+                                             VerticalAlignment="Center">
+                        <v:CommitRefsPresenter.UseGraphColor>
+                          <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                            <Binding Path="IsMerged"/>
+                            <Binding Path="$parent[v:Histories].OnlyHighlightCurrentBranch" Converter="{x:Static BoolConverters.Not}"/>
+                          </MultiBinding>
+                        </v:CommitRefsPresenter.UseGraphColor>
+                      </v:CommitRefsPresenter>
 
                       <v:CommitSubjectPresenter Grid.Column="2"
                                                 Classes="primary"
@@ -202,6 +205,7 @@
           <v:CommitGraph x:Name="CommitGraph"
                          Graph="{Binding Graph}"
                          DotBrush="{DynamicResource Brush.Contents}"
+                         OnlyHighlightCurrentBranch="{Binding $parent[v:Histories].OnlyHighlightCurrentBranch}"
                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                          IsHitTestVisible="False"
                          ClipToBounds="True"/>

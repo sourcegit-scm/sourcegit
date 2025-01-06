@@ -396,15 +396,35 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnSwitchHistoriesOrderClicked(object sender, RoutedEventArgs e)
+        private void OnOpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var checkIcon = App.CreateMenuIcon("Icons.Check");
+                var isHorizontal = ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories;
+                var horizontal = new MenuItem();
+                horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
+                if (isHorizontal)
+                    horizontal.Icon = App.CreateMenuIcon("Icons.Check");
+                horizontal.Click += (_, ev) =>
+                {
+                    ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories = true;
+                    ev.Handled = true;
+                };
+
+                var vertical = new MenuItem();
+                vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
+                if (!isHorizontal)
+                    vertical.Icon = App.CreateMenuIcon("Icons.Check");
+                vertical.Click += (_, ev) =>
+                {
+                    ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories = false;
+                    ev.Handled = true;
+                };
 
                 var dateOrder = new MenuItem();
                 dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
-                dateOrder.Icon = repo.EnableTopoOrderInHistories ? null : checkIcon;
+                if (!repo.EnableTopoOrderInHistories)
+                    dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 dateOrder.Click += (_, ev) =>
                 {
                     repo.EnableTopoOrderInHistories = false;
@@ -413,7 +433,8 @@ namespace SourceGit.Views
 
                 var topoOrder = new MenuItem();
                 topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
-                topoOrder.Icon = repo.EnableTopoOrderInHistories ? checkIcon : null;
+                if (repo.EnableTopoOrderInHistories)
+                    topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 topoOrder.Click += (_, ev) =>
                 {
                     repo.EnableTopoOrderInHistories = true;
@@ -421,6 +442,9 @@ namespace SourceGit.Views
                 };
 
                 var menu = new ContextMenu();
+                menu.Items.Add(horizontal);
+                menu.Items.Add(vertical);
+                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(dateOrder);
                 menu.Items.Add(topoOrder);
                 menu.Open(button);

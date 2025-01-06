@@ -368,7 +368,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Rastrear arquivos nomeados '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Rastrear todos os arquivos *{0}</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Históricos</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Alternar Layout Horizontal/Vertical</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">DATA DO AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO &amp; ASSUNTO</x:String>
@@ -570,7 +569,6 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Desfazer</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Esconder no gráfico de commit</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Incluir no gráfico de commit</x:String>
-  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Alternar Modo de Ordenação</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Data do Commit (--date-order)</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologicamente (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>

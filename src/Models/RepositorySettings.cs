@@ -32,6 +32,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool OnlyHighlighCurrentBranchInHistories
+        {
+            get;
+            set;
+        } = false;
+
         public bool IncludeUntrackedInLocalChanges
         {
             get;

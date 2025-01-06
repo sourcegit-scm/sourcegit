@@ -83,15 +83,11 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
+                  
                   <ToggleButton Grid.Column="2"
-                                Classes="layout_direction"
-                                Width="28" Height="26"
-                                IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
-                  <ToggleButton Grid.Column="3"
                                 Classes="line_path"
                                 Width="28" Height="26"
                                 Background="Transparent"
@@ -99,7 +95,7 @@
                                 ToolTip.Tip="{DynamicResource Text.Repository.EnableReflog}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Reference}"/>
                   </ToggleButton>
-                  <ToggleButton Grid.Column="4"
+                  <ToggleButton Grid.Column="3"
                                 Classes="line_path"
                                 Width="28" Height="26"
                                 Background="Transparent"
@@ -107,12 +103,27 @@
                                 ToolTip.Tip="{DynamicResource Text.Repository.FirstParentFilterToggle}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.FirstParentFilter}"/>
                   </ToggleButton>
-                  <Button Grid.Column="5"
+                  <ToggleButton Grid.Column="4"
+                                Classes="line_path"
+                                Width="28" Height="26"
+                                Background="Transparent"
+                                IsChecked="{Binding OnlyHighlightCurrentBranchInHistories, Mode=TwoWay}"
+                                ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInHistories}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
+                  </ToggleButton>
+                  <ToggleButton Grid.Column="5"
+                                Classes="line_path"
+                                Width="28" Height="26"
+                                Background="Transparent"
+                                IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
+                                ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInHistories}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
+                  </ToggleButton>
+                  <Button Grid.Column="6"
                           Classes="icon_button"
                           Width="28" Height="26"
-                          Click="OnSwitchHistoriesOrderClicked"
-                          ToolTip.Tip="{DynamicResource Text.Repository.HistoriesOrder}">
-                    <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Order}"/>
+                          Click="OnOpenAdvancedHistoriesOption">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
                   </Button>
                 </Grid>
               </ListBoxItem>
@@ -677,6 +688,7 @@
             <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
                          AuthorNameColumnWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
                          IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
+                         OnlyHighlightCurrentBranch="{Binding Repo.OnlyHighlightCurrentBranchInHistories}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 
