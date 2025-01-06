@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.31%
+### de_DE.axaml: 98.76%
 
 
 <details>
@@ -8,11 +8,15 @@
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 
 </details>
 
-### es_ES.axaml: 99.31%
+### es_ES.axaml: 98.76%
 
 
 <details>
@@ -22,11 +26,15 @@
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 
 </details>
 
-### fr_FR.axaml: 94.47%
+### fr_FR.axaml: 93.95%
 
 
 <details>
@@ -68,6 +76,10 @@
 - Text.Repository.HistoriesOrder.Topo
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 - Text.ScanRepositories
 - Text.SHALinkCM.NavigateTo
@@ -75,7 +87,7 @@
 
 </details>
 
-### it_IT.axaml: 95.02%
+### it_IT.axaml: 94.50%
 
 
 <details>
@@ -113,6 +125,10 @@
 - Text.Repository.HistoriesOrder.Topo
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
@@ -120,7 +136,7 @@
 
 </details>
 
-### pt_BR.axaml: 96.13%
+### pt_BR.axaml: 95.60%
 
 
 <details>
@@ -151,13 +167,17 @@
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### ru_RU.axaml: 99.45%
+### ru_RU.axaml: 98.90%
 
 
 <details>
@@ -166,6 +186,10 @@
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 
 </details>
