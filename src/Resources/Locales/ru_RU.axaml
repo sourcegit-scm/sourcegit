@@ -79,8 +79,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Показывать в виде списка файлов и каталогов</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Показывать в виде списка путей</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Показывать в виде дерева файловой системы</x:String>
-  <x:String x:Key="Text.Checkout" xml:space="preserve">Проверить ветку</x:String>
-  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Проверить ревизию</x:String>
+  <x:String x:Key="Text.Checkout" xml:space="preserve">Переключить ветку</x:String>
+  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Переключение ревизии</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Предупреждение: После переключения ревизии ваша Голова (HEAD) будет отсоединена</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
@@ -91,9 +91,9 @@
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для ревизии сообщения</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Ревизия(и):</x:String>
-  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Фиксировать все изменения.</x:String>
+  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Ревизия всех изменений.</x:String>
   <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Основной:</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Обычно вы не можете выделить слияние, потому что не знаете, какую сторону слияния следует считать основной. Эта опция позволяет отобразить изменение относительно указанного родительского элемента.</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Обычно вы не можете выделить слияние, потому что не знаете, какую сторону слияния следует считать основной. Эта опция позволяет отобразить изменения относительно указанного родительского элемента.</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Очистить отложенные</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Вы пытаетесь очистить все отложенные. Вы уверены, что хотите продолжить?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Клонировать внешний репозиторий</x:String>
@@ -204,7 +204,7 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Имя новой ветки:</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Ввести имя ветки.</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Введите имя ветки.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Создать локальную ветку</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Создать метку...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Новая метка у:</x:String>
@@ -377,7 +377,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Создать новую ветку на основе выбранной ветки</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Отклонить выбранные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Извлечение, запускается сразу</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по-умолчанию)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по умолчанию)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Принудительно перезагрузить репозиторий</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Забрать, запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Выложить, запускается сразу</x:String>
@@ -441,7 +441,7 @@
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} дней назад</x:String>
   <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Последний месяц</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев назад</x:String>
-  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В пролому году</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В прошлом году</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Preference" xml:space="preserve">Параметры</x:String>
   <x:String x:Key="Text.Preference.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
@@ -613,8 +613,8 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Отменить ревизию</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Отмена ревизии</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Переформулировать сообщение ревизии</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Использовать «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки OK</x:String>
+  <x:String x:Key="Text.Reword" xml:space="preserve">Изменить комментарий ревизии</x:String>
+  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Запуск. Подождите пожалуйста...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">СОХРАНИТЬ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Сохранить как...</x:String>
