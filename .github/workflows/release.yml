@@ -44,7 +44,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
           VERSION: ${{ needs.version.outputs.version }}
-        run: gh release create "$TAG" -t "Release $VERSION" --notes-from-tag
+        run: gh release create "$TAG" -t "$VERSION" --notes-from-tag
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
