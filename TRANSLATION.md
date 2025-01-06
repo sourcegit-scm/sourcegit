@@ -177,20 +177,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.90%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.HistoriesLayout.Horizontal
-- Text.Repository.HistoriesLayout.Vertical
-- Text.Repository.OnlyHighlightCurrentBranchInHistories
-- Text.Repository.Tags.OrderByCreatorDate
-- Text.Repository.Tags.OrderByNameAsc
-- Text.Repository.Tags.OrderByNameDes
-- Text.Repository.Tags.Sort
-- Text.Repository.UseRelativeTimeInHistories
+
 
 </details>
 
