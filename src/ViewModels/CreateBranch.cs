@@ -126,13 +126,18 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    if (succ && CheckoutAfterCreated && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                    if (succ && CheckoutAfterCreated)
                     {
                         var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
                         if (BasedOn is Models.Branch based && !based.IsLocal)
                             fake.Upstream = based.FullName;
 
-                        _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
+                        var folderEndIdx = fake.FullName.LastIndexOf('/');
+                        if (folderEndIdx > 10)
+                            _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));                            
+
+                        if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
+                            _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
                     }
 
                     _repo.MarkBranchesDirtyManually();
