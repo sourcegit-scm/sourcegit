@@ -475,6 +475,7 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">User Email</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preference.Git.SSLVerify" xml:space="preserve">Enable HTTP SSL Verify</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Global git user name</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Git version</x:String>

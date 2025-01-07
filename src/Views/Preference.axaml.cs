@@ -73,6 +73,12 @@ namespace SourceGit.Views
             set;
         }
 
+        public bool EnableHTTPSSLVerify
+        {
+            get;
+            set;
+        } = false;
+
         public static readonly StyledProperty<Models.OpenAIService> SelectedOpenAIServiceProperty =
             AvaloniaProperty.Register<Preference, Models.OpenAIService>(nameof(SelectedOpenAIService));
 
@@ -112,6 +118,11 @@ namespace SourceGit.Views
                 else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
                     GPGExecutableFile = gpgProgram;
 
+                if (config.TryGetValue("http.sslverify", out var sslVerify))
+                    EnableHTTPSSLVerify = sslVerify == "true";
+                else
+                    EnableHTTPSSLVerify = true;
+
                 ver = new Commands.Version().Query();
             }
 
@@ -142,6 +153,7 @@ namespace SourceGit.Views
             SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null, null);
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");
+            SetIfChanged(config, "http.sslverify", EnableHTTPSSLVerify ? "" : "false", "");
             SetIfChanged(config, "gpg.format", GPGFormat.Value, "openpgp");
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
