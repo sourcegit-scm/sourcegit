@@ -248,6 +248,9 @@ namespace SourceGit.Views
                 return;
 
             var leftHeight = LeftSidebarGroups.Bounds.Height - 28.0 * 5 - 4;
+            if (leftHeight <= 0)
+                return;
+
             var localBranchRows = vm.IsLocalBranchGroupExpanded ? LocalBranchTree.Rows.Count : 0;
             var remoteBranchRows = vm.IsRemoteGroupExpanded ? RemoteBranchTree.Rows.Count : 0;
             var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
@@ -307,7 +310,7 @@ namespace SourceGit.Views
                 WorktreeList.Height = height;
             }
 
-            if (desiredBranches > leftHeight)
+            if (leftHeight > 0 && desiredBranches > leftHeight)
             {
                 var local = localBranchRows * 24.0;
                 var remote = remoteBranchRows * 24.0;
