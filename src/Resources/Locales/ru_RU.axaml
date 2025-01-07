@@ -67,8 +67,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Выложить ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Переместить ${0}$ на ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Переименовать ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Отслеживать ветку</x:String>
-  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">Отключить основной поток</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Отслеживать ветку...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Сравнение веток</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">Байты</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ОТМЕНА</x:String>

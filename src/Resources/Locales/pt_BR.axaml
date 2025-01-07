@@ -91,8 +91,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Subir ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ em ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Renomear ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Definir Branch de Rastreamento</x:String>
-  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">Remover Upstream</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Definir Branch de Rastreamento...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Comparação de Branches</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">Bytes</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">CANCELAR</x:String>

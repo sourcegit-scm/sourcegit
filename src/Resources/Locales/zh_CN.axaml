@@ -67,8 +67,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push)${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 分支至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名 ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支</x:String>
-  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">取消追踪</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">字节</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
@@ -629,6 +628,10 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">忽略此版本</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">软件更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">当前已是最新版本。</x:String>
+  <x:String x:Key="Text.SetUpstream" xml:space="preserve">切换上游分支</x:String>
+  <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">本地分支 ：</x:String>
+  <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">取消追踪</x:String>
+  <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上游分支 ：</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">跳转到提交</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">压缩为单个提交</x:String>

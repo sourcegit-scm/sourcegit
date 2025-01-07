@@ -1624,38 +1624,12 @@ namespace SourceGit.ViewModels
                 var tracking = new MenuItem();
                 tracking.Header = App.Text("BranchCM.Tracking");
                 tracking.Icon = App.CreateMenuIcon("Icons.Track");
-
-                foreach (var b in remoteBranches)
+                tracking.Click += (_, e) =>
                 {
-                    var upstream = b.FullName.Replace("refs/remotes/", "");
-                    var target = new MenuItem();
-                    target.Header = upstream;
-                    if (branch.Upstream == b.FullName)
-                        target.Icon = App.CreateMenuIcon("Icons.Check");
-
-                    target.Click += (_, e) =>
-                    {
-                        if (Commands.Branch.SetUpstream(_fullpath, branch.Name, upstream))
-                            Task.Run(RefreshBranches);
-
-                        e.Handled = true;
-                    };
-
-                    tracking.Items.Add(target);
-                }
-
-                var unsetUpstream = new MenuItem();
-                unsetUpstream.Header = App.Text("BranchCM.UnsetUpstream");
-                unsetUpstream.Click += (_, e) =>
-                {
-                    if (Commands.Branch.SetUpstream(_fullpath, branch.Name, string.Empty))
-                        Task.Run(RefreshBranches);
-
+                    if (PopupHost.CanCreatePopup())
+                        PopupHost.ShowPopup(new SetUpstream(this, branch, remoteBranches));
                     e.Handled = true;
                 };
-                tracking.Items.Add(new MenuItem() { Header = "-" });
-                tracking.Items.Add(unsetUpstream);
-
                 menu.Items.Add(tracking);
             }
 

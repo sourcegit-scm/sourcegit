@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             x:Class="SourceGit.Views.SetUpstream"
+             x:DataType="vm:SetUpstream">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.SetUpstream}"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.SetUpstream.Local}"/>
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+        <Path Margin="2,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+        <TextBlock Text="{Binding Local.Name}"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.SetUpstream.Upstream}"/>
+      <ComboBox Grid.Row="1" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding RemoteBranches}"
+                SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}"
+                IsTextSearchEnabled="True"
+                IsEnabled="{Binding !Unset, Mode=OneWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="{x:Type m:Branch}">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+              <TextBlock Text="{Binding FriendlyName}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+
+        <ComboBox.ItemContainerTheme>
+          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
+          </ControlTheme>
+        </ComboBox.ItemContainerTheme>
+      </ComboBox>
+
+      <CheckBox Grid.Row="2" Grid.Column="1"
+                Content="{DynamicResource Text.SetUpstream.Unset}"
+                IsChecked="{Binding Unset, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>
