@@ -505,7 +505,7 @@
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Podar Worktrees</x:String>
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar informações de worktree em `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Puxar</x:String>
-  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Buscar todos os branches</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>

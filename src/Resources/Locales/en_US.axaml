@@ -497,7 +497,7 @@
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
-  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote Branch:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>

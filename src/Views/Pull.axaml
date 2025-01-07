@@ -52,15 +52,22 @@
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
                 SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
+                IsTextSearchEnabled="True"
                 IsEnabled="{Binding !HasSpecifiedRemoteBranch}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
               <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding FriendlyName}"/>
+              <TextBlock Text="{Binding Name}"/>
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
+
+        <ComboBox.ItemContainerTheme>
+          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
+          </ControlTheme>
+        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
