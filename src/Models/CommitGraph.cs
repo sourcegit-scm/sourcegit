@@ -71,7 +71,7 @@ namespace SourceGit.Models
             var unsolved = new List<PathHelper>();
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
-            var colorIdx = 0;
+            var colorPicker = new ColorPicker();
 
             foreach (var commit in commits)
             {
@@ -121,7 +121,10 @@ namespace SourceGit.Models
 
                 // Remove ended curves from unsolved
                 foreach (var l in ended)
+                {
+                    colorPicker.Recycle(l.Path.Color);
                     unsolved.Remove(l);
+                }
                 ended.Clear();
 
                 // If no path found, create new curve for branch head
@@ -132,12 +135,10 @@ namespace SourceGit.Models
 
                     if (commit.Parents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
+                        major = new PathHelper(commit.Parents[0], isMerged, colorPicker.Next(), new Point(offsetX, offsetY));
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
-
-                    colorIdx = (colorIdx + 1) % s_penCount;
                 }
                 else if (isMerged && !major.IsMerged && commit.Parents.Count > 0)
                 {
@@ -187,10 +188,9 @@ namespace SourceGit.Models
                             offsetX += unitWidth;
 
                             // Create new curve for parent commit that not includes before
-                            var l = new PathHelper(parentHash, isMerged, colorIdx, position, new Point(offsetX, position.Y + halfHeight));
+                            var l = new PathHelper(parentHash, isMerged, colorPicker.Next(), position, new Point(offsetX, position.Y + halfHeight));
                             unsolved.Add(l);
                             temp.Paths.Add(l.Path);
-                            colorIdx = (colorIdx + 1) % s_penCount;
                         }
                     }
                 }
@@ -215,6 +215,28 @@ namespace SourceGit.Models
             unsolved.Clear();
 
             return temp;
+        }
+
+        private class ColorPicker
+        {
+            public int Next()
+            {
+                if (_colorsQueue.Count == 0)
+                {
+                    for (var i = 0; i < s_penCount; i++)
+                        _colorsQueue.Enqueue(i);
+                }
+
+                return _colorsQueue.Dequeue();
+            }
+
+            public void Recycle(int idx)
+            {
+                if (!_colorsQueue.Contains(idx))
+                    _colorsQueue.Enqueue(idx);
+            }
+
+            private Queue<int> _colorsQueue = new Queue<int>();
         }
 
         private class PathHelper
