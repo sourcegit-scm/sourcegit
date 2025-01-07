@@ -130,7 +130,7 @@
     <Button Grid.Row="2"
             Classes="flat primary"
             Height="32" Width="80"
-            Margin="0,8,0,16"
+            Margin="0,0,0,8"
             HorizontalAlignment="Center"
             Content="{DynamicResource Text.Sure}"
             Click="OnApplyClicked"
