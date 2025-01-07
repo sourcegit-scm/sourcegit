@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.49%
+### de_DE.axaml: 97.95%
 
 
 <details>
@@ -15,10 +15,14 @@
 - Text.Repository.Tags.OrderByNameDes
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 
 </details>
 
-### es_ES.axaml: 98.49%
+### es_ES.axaml: 97.95%
 
 
 <details>
@@ -35,10 +39,14 @@
 - Text.Repository.Tags.OrderByNameDes
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 
 </details>
 
-### fr_FR.axaml: 93.69%
+### fr_FR.axaml: 93.17%
 
 
 <details>
@@ -88,12 +96,16 @@
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 - Text.ScanRepositories
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### it_IT.axaml: 94.24%
+### it_IT.axaml: 93.72%
 
 
 <details>
@@ -138,13 +150,17 @@
 - Text.Repository.Tags.OrderByNameDes
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### pt_BR.axaml: 95.34%
+### pt_BR.axaml: 94.81%
 
 
 <details>
@@ -182,12 +198,16 @@
 - Text.Repository.Tags.OrderByNameDes
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
 
 </details>
 
-### ru_RU.axaml: 99.73%
+### ru_RU.axaml: 99.18%
 
 
 <details>
@@ -195,6 +215,10 @@
 
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesOrder
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 
 </details>
 
