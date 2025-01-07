@@ -1,10 +1,11 @@
-### de_DE.axaml: 97.95%
+### de_DE.axaml: 97.82%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Preference.General.DateFormat
+- Text.Preference.Git.SSLVerify
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
@@ -22,13 +23,14 @@
 
 </details>
 
-### es_ES.axaml: 97.95%
+### es_ES.axaml: 97.82%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Preference.General.DateFormat
+- Text.Preference.Git.SSLVerify
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
@@ -46,7 +48,7 @@
 
 </details>
 
-### fr_FR.axaml: 93.17%
+### fr_FR.axaml: 93.04%
 
 
 <details>
@@ -77,6 +79,7 @@
 - Text.Preference.Appearance.FontSize.Editor
 - Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
+- Text.Preference.Git.SSLVerify
 - Text.Repository.CustomActions
 - Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
@@ -105,7 +108,7 @@
 
 </details>
 
-### it_IT.axaml: 93.72%
+### it_IT.axaml: 93.59%
 
 
 <details>
@@ -133,6 +136,7 @@
 - Text.MergeMultiple.Targets
 - Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
+- Text.Preference.Git.SSLVerify
 - Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
@@ -160,7 +164,7 @@
 
 </details>
 
-### pt_BR.axaml: 94.81%
+### pt_BR.axaml: 94.68%
 
 
 <details>
@@ -186,6 +190,7 @@
 - Text.MergeMultiple.Targets
 - Text.Preference.General.DateFormat
 - Text.Preference.General.ShowChildren
+- Text.Preference.Git.SSLVerify
 - Text.Repository.FilterCommits
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
@@ -207,12 +212,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.18%
+### ru_RU.axaml: 99.05%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Preference.Git.SSLVerify
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesOrder
 - Text.SetUpstream
