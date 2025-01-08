@@ -845,12 +845,17 @@ namespace SourceGit.Views
                 // CTRL/COMMAND + B -> shows Create Branch pop-up at selected commit.
                 if (e.Key == Key.B)
                 {
-                    if (selected.Count == 1 &&
-                        selected[0] is Models.Commit commit &&
-                        DataContext is ViewModels.Histories histories &&
-                        ViewModels.PopupHost.CanCreatePopup())
+                    var repoView = this.FindAncestorOfType<Repository>();
+                    if (repoView == null)
+                        return;
+
+                    var repo = repoView.DataContext as ViewModels.Repository;
+                    if (repo == null || !repo.CanCreatePopup())
+                        return;
+
+                    if (selected.Count == 1 && selected[0] is Models.Commit commit)
                     {
-                        ViewModels.PopupHost.ShowPopup(new ViewModels.CreateBranch(histories.Repo, commit));
+                        repo.ShowPopup(new ViewModels.CreateBranch(repo, commit));
                         e.Handled = true;
                     }
                 }

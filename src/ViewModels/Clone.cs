@@ -53,8 +53,9 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
-        public Clone()
+        public Clone(string pageId)
         {
+            _pageId = pageId;
             View = new Views.Clone() { DataContext = this };
 
             Task.Run(async () =>
@@ -94,7 +95,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var cmd = new Commands.Clone(HostPageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs, SetProgressDescription);
+                var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs, SetProgressDescription);
                 if (!cmd.Exec())
                     return false;
 
@@ -115,7 +116,7 @@ namespace SourceGit.ViewModels
                 {
                     CallUIThread(() =>
                     {
-                        App.RaiseException(HostPageId, $"Folder '{path}' can NOT be found");
+                        App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
                     });
                     return false;
                 }
@@ -134,7 +135,7 @@ namespace SourceGit.ViewModels
                     var page = null as LauncherPage;
                     foreach (var one in launcher.Pages)
                     {
-                        if (one.GetId() == HostPageId)
+                        if (one.Node.Id == _pageId)
                         {
                             page = one;
                             break;
@@ -149,6 +150,7 @@ namespace SourceGit.ViewModels
             });
         }
 
+        private string _pageId = string.Empty;
         private string _remote = string.Empty;
         private bool _useSSH = false;
         private string _sshKey = string.Empty;

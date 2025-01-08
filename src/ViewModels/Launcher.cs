@@ -36,7 +36,6 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _activePage, value))
                 {
-                    PopupHost.Active = value;
                     UpdateTitle();
 
                     if (!_ignoreIndexChange && value is { Data: Repository repo })
@@ -295,7 +294,6 @@ namespace SourceGit.ViewModels
                 FullPath = node.Id,
                 GitDir = gitDir,
             };
-
             repo.Open();
 
             if (page == null)
@@ -317,6 +315,8 @@ namespace SourceGit.ViewModels
                 page.Node = node;
                 page.Data = repo;
             }
+
+            repo.SetOwnerPage(page);
 
             if (page != _activePage)
                 ActivePage = page;
@@ -475,7 +475,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var one in Pages)
             {
-                if (one.IsInProgress())
+                if (!one.CanCreatePopup() || one.Data is Repository { IsAutoFetching: true })
                 {
                     App.RaiseException(null, "You have unfinished task(s) in opened pages. Please wait!!!");
                     return;

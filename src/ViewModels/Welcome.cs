@@ -87,12 +87,13 @@ namespace SourceGit.ViewModels
         {
             if (!Preference.Instance.IsGitConfigured())
             {
-                App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
             }
 
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new Init(path, parent, reason));
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
         }
 
         public void Clone()
@@ -103,14 +104,15 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new Clone());
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new Clone(activePage.Node.Id);
         }
 
         public void OpenTerminal()
         {
             if (!Preference.Instance.IsGitConfigured())
-                App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
             else
                 Native.OS.OpenTerminal(null);
         }
@@ -119,11 +121,20 @@ namespace SourceGit.ViewModels
         {
             var defaultCloneDir = Preference.Instance.GitDefaultCloneDir;
             if (string.IsNullOrEmpty(defaultCloneDir))
-                App.RaiseException(PopupHost.Active.GetId(), "The default clone dir hasn't been configured!");
-            else if (!Directory.Exists(defaultCloneDir))
-                App.RaiseException(PopupHost.Active.GetId(), $"The default clone dir '{defaultCloneDir}' does not exist!");
-            else if (PopupHost.CanCreatePopup())
-                PopupHost.ShowAndStartPopup(new ScanRepositories(defaultCloneDir));
+            {
+                App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
+                return;
+            }
+                
+            if (!Directory.Exists(defaultCloneDir))
+            {
+                App.RaiseException(string.Empty, $"The default clone directory '{defaultCloneDir}' does not exist!");
+                return;
+            }
+
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.StartPopup(new ScanRepositories(defaultCloneDir));
         }
 
         public void ClearSearchFilter()
@@ -133,8 +144,9 @@ namespace SourceGit.ViewModels
 
         public void AddRootNode()
         {
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new CreateGroup(null));
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new CreateGroup(null);
         }
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
@@ -224,8 +236,9 @@ namespace SourceGit.ViewModels
             move.Icon = App.CreateMenuIcon("Icons.MoveToAnotherGroup");
             move.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new MoveRepositoryNode(node));
+                var activePage = App.GetLauncer().ActivePage;
+                if (activePage != null && activePage.CanCreatePopup())
+                    activePage.Popup = new MoveRepositoryNode(node);
 
                 e.Handled = true;
             };

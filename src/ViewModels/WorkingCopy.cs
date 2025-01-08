@@ -314,13 +314,13 @@ namespace SourceGit.ViewModels
 
         public void StashAll(bool autoStart)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!_repo.CanCreatePopup())
                 return;
 
             if (autoStart)
-                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
+                _repo.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
             else
-                PopupHost.ShowPopup(new StashChanges(_repo, _cached, false));
+                _repo.ShowPopup(new StashChanges(_repo, _cached, false));
         }
 
         public void StageSelected(Models.Change next)
@@ -405,12 +405,12 @@ namespace SourceGit.ViewModels
 
         public void Discard(List<Models.Change> changes)
         {
-            if (PopupHost.CanCreatePopup())
+            if (_repo.CanCreatePopup())
             {
                 if (changes.Count == _unstaged.Count && _staged.Count == 0)
-                    PopupHost.ShowPopup(new Discard(_repo));
+                    _repo.ShowPopup(new Discard(_repo));
                 else
-                    PopupHost.ShowPopup(new Discard(_repo, changes));
+                    _repo.ShowPopup(new Discard(_repo, changes));
             }
         }
 
@@ -666,8 +666,8 @@ namespace SourceGit.ViewModels
                     stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                     stash.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                         e.Handled = true;
                     };
@@ -1008,8 +1008,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                     e.Handled = true;
                 };
@@ -1131,8 +1131,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1306,8 +1306,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1514,7 +1514,7 @@ namespace SourceGit.ViewModels
 
         private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!_repo.CanCreatePopup())
             {
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
                 return;
@@ -1560,7 +1560,7 @@ namespace SourceGit.ViewModels
                         UseAmend = false;
 
                         if (autoPush)
-                            PopupHost.ShowAndStartPopup(new Push(_repo, null));
+                            _repo.ShowAndStartPopup(new Push(_repo, null));
                     }
 
                     _repo.MarkBranchesDirtyManually();

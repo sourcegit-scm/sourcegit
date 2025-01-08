@@ -16,8 +16,9 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public Init(string path, RepositoryNode parent, string reason)
+        public Init(string pageId, string path, RepositoryNode parent, string reason)
         {
+            _pageId = pageId;
             _targetPath = path;
             _parentNode = parent;
 
@@ -31,7 +32,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Init(HostPageId, _targetPath).Exec();
+                var succ = new Commands.Init(_pageId, _targetPath).Exec();
                 if (!succ)
                     return false;
 
@@ -46,6 +47,7 @@ namespace SourceGit.ViewModels
             });
         }
 
+        private string _pageId = null;
         private string _targetPath = null;
         private RepositoryNode _parentNode = null;
     }

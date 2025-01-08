@@ -138,8 +138,8 @@ namespace SourceGit.ViewModels
             drop.Header = App.Text("StashCM.Drop");
             drop.Click += (_, ev) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new DropStash(_repo.FullPath, stash));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new DropStash(_repo.FullPath, stash));
 
                 ev.Handled = true;
             };
@@ -221,8 +221,8 @@ namespace SourceGit.ViewModels
 
         public void Clear()
         {
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new ClearStashes(_repo));
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new ClearStashes(_repo));
         }
 
         public void ClearSearchFilter()
