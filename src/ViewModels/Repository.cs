@@ -881,7 +881,9 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() =>
             {
-                Remotes = remotes;
+                lock (_lockRemotes)
+                    Remotes = remotes;
+                
                 Branches = branches;
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
@@ -2299,8 +2301,11 @@ namespace SourceGit.ViewModels
                 return;
 
             var remotes = new List<string>();
-            foreach (var remote in _remotes)
-                remotes.Add(remote.Name);
+            lock (_lockRemotes)
+            {
+                foreach (var remote in _remotes)
+                    remotes.Add(remote.Name);
+            }
 
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
             foreach (var remote in remotes)
@@ -2336,6 +2341,7 @@ namespace SourceGit.ViewModels
         private List<string> _revisionFiles = new List<string>();
 
         private string _filter = string.Empty;
+        private object _lockRemotes = new object();
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private Models.Branch _currentBranch = null;
