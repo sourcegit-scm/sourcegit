@@ -26,8 +26,20 @@ namespace SourceGit.Native
             internal string szCSDVersion;
         }
 
-        [DllImport("ntdll")]
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct MARGINS
+        {
+            public int cxLeftWidth;
+            public int cxRightWidth;
+            public int cyTopHeight;
+            public int cyBottomHeight;
+        }
+
+        [DllImport("ntdll.dll")]
         private static extern int RtlGetVersion(ref RTL_OSVERSIONINFOEX lpVersionInformation);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
 
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
@@ -202,10 +214,12 @@ namespace SourceGit.Native
 
         private void FixWindowFrameOnWin10(Window w)
         {
-            if (w.WindowState == WindowState.Maximized || w.WindowState == WindowState.FullScreen)
-                w.SystemDecorations = SystemDecorations.Full;
-            else if (w.WindowState == WindowState.Normal)
-                w.SystemDecorations = SystemDecorations.BorderOnly;
+            var platformHandle = w.TryGetPlatformHandle();
+            if (platformHandle == null)
+                return;
+
+            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
         }
 
         #region EXTERNAL_EDITOR_FINDER
