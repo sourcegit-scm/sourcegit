@@ -29,11 +29,11 @@ namespace SourceGit
         {
             get
             {
-            #if DISABLE_UPDATE_DETECTION
+#if DISABLE_UPDATE_DETECTION
                 return false;
-            #else
+#else
                 return true;
-            #endif
+#endif
             }
         }
 

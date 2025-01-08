@@ -125,7 +125,7 @@ namespace SourceGit.ViewModels
                 App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
                 return;
             }
-                
+
             if (!Directory.Exists(defaultCloneDir))
             {
                 App.RaiseException(string.Empty, $"The default clone directory '{defaultCloneDir}' does not exist!");

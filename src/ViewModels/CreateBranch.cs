@@ -134,7 +134,7 @@ namespace SourceGit.ViewModels
 
                         var folderEndIdx = fake.FullName.LastIndexOf('/');
                         if (folderEndIdx > 10)
-                            _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));                            
+                            _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
 
                         if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
                             _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);

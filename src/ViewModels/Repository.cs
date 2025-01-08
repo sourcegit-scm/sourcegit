@@ -904,7 +904,7 @@ namespace SourceGit.ViewModels
             {
                 lock (_lockRemotes)
                     Remotes = remotes;
-                
+
                 Branches = branches;
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;

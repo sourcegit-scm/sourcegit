@@ -56,7 +56,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             SetProgressDescription("Setting upstream...");
-            
+
             var upstream = (_unset || SelectedRemoteBranch == null) ? string.Empty : SelectedRemoteBranch.FullName;
             if (upstream == Local.Upstream)
                 return null;

@@ -548,11 +548,11 @@ namespace SourceGit
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
-        #if !DISABLE_UPDATE_DETECTION
+#if !DISABLE_UPDATE_DETECTION
             var pref = ViewModels.Preference.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
-        #endif
+#endif
         }
 
         private ViewModels.Launcher _launcher = null;

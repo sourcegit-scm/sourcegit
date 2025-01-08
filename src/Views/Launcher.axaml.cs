@@ -141,7 +141,7 @@ namespace SourceGit.Views
                     if (vm.ActivePage.Data is not ViewModels.Welcome)
                         vm.AddNewTab();
 
-                    ViewModels.Welcome.Instance.Clone();                    
+                    ViewModels.Welcome.Instance.Clone();
                     e.Handled = true;
                     return;
                 }
