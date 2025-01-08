@@ -26,7 +26,7 @@
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
-            <Grid ColumnDefinitions="16,Auto,*,20"
+            <Grid ColumnDefinitions="16,Auto,*,Auto"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
                   ContextRequested="OnRowContextRequested"
@@ -51,7 +51,7 @@
               <ContentControl Grid.Column="3" Content="{Binding Tag}">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Tag">
-                    <v:FilterModeSwitchButton Mode="{Binding FilterMode}"/>
+                    <v:FilterModeSwitchButton Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
                   </DataTemplate>
                 </ContentControl.DataTemplates>
               </ContentControl>
@@ -69,7 +69,7 @@
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Tag">
-            <Grid ColumnDefinitions="Auto,*,20"
+            <Grid ColumnDefinitions="Auto,*,Auto"
                   Background="Transparent"
                   ContextRequested="OnRowContextRequested"
                   ToolTip.Tip="{Binding Message}">
@@ -84,7 +84,7 @@
                          Margin="8,0,0,0"
                          TextTrimming="CharacterEllipsis"/>
               
-              <v:FilterModeSwitchButton Grid.Column="2" Mode="{Binding FilterMode}"/>
+              <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
