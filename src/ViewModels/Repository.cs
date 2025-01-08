@@ -2298,8 +2298,13 @@ namespace SourceGit.ViewModels
             if (desire > now)
                 return;
 
+            var remotes = new List<string>();
+            foreach (var remote in _remotes)
+                remotes.Add(remote.Name);
+
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
-            new Commands.Fetch(_fullpath, "--all", false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
+            foreach (var remote in remotes)
+                new Commands.Fetch(_fullpath, remote, false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }
