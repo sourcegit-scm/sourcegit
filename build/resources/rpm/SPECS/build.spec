@@ -8,6 +8,7 @@ Source: https://github.com/sourcegit-scm/sourcegit/archive/refs/tags/v%_version.
 Requires: libX11.so.6()(%{__isa_bits}bit)
 Requires: libSM.so.6()(%{__isa_bits}bit)
 Requires: libicu
+Requires: xdg-utils
 
 %define _build_id_links none
 
