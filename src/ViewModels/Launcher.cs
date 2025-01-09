@@ -316,8 +316,6 @@ namespace SourceGit.ViewModels
                 page.Data = repo;
             }
 
-            repo.SetOwnerPage(page);
-
             if (page != _activePage)
                 ActivePage = page;
             else

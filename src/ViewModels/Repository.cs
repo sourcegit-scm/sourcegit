@@ -493,7 +493,6 @@ namespace SourceGit.ViewModels
 
         public void Close()
         {
-            _page = null;
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
@@ -538,24 +537,25 @@ namespace SourceGit.ViewModels
             SearchCommitFilterSuggestion.Clear();
         }
 
-        public void SetOwnerPage(LauncherPage page)
-        {
-            _page = page;
-        }
-
         public bool CanCreatePopup()
         {
-            return !_isAutoFetching && _page != null && _page.CanCreatePopup();
+            var page = GetOwnerPage();
+            if (page == null)
+                return false;
+
+            return !_isAutoFetching && page.CanCreatePopup();
         }
 
         public void ShowPopup(Popup popup)
         {
-            _page.Popup = popup;
+            var page = GetOwnerPage();
+            if (page != null)
+                page.Popup = popup;
         }
 
         public void ShowAndStartPopup(Popup popup)
         {
-            _page.StartPopup(popup);
+            GetOwnerPage()?.StartPopup(popup);
         }
 
         public void RefreshAll()
@@ -2111,6 +2111,21 @@ namespace SourceGit.ViewModels
             return compare;
         }
 
+        private LauncherPage GetOwnerPage()
+        {
+            var launcher = App.GetLauncer();
+            if (launcher == null)
+                return null;
+
+            foreach (var page in launcher.Pages)
+            {
+                if (page.Node.Id.Equals(_fullpath))
+                    return page;
+            }
+
+            return null;
+        }
+
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
         {
             var builder = new BranchTreeNode.Builder();
@@ -2335,7 +2350,6 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }
 
-        private LauncherPage _page = null;
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
