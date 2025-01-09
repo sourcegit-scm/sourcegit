@@ -164,10 +164,12 @@
   <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交訊息追加署名 (--signoff)</x:String>
   <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">拉取變更時進行清理 (--prune)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增符合 Gitee 議題規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增符合 Gitee 合併請求規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增符合 GitHub Issue 規則</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增符合 Jira 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">新增符合 GitLab 議題規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">新增符合 GitLab 合併請求規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">新增符合 Jira 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自訂規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">符合 Issue 的正規表達式:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">規則名稱:</x:String>

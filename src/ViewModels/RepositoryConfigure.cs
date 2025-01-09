@@ -236,6 +236,40 @@ namespace SourceGit.ViewModels
             SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(null);
         }
 
+        public void AddSampleGiteeIssueTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal))
+                {
+                    if (remote.TryGetVisitURL(out string url))
+                    {
+                        SelectedIssueTrackerRule = _repo.Settings.AddGiteeIssueTracker(url);
+                        return;
+                    }
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGiteeIssueTracker(null);
+        }
+
+        public void AddSampleGiteePullRequestTracker()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal))
+                {
+                    if (remote.TryGetVisitURL(out string url))
+                    {
+                        SelectedIssueTrackerRule = _repo.Settings.AddGiteePullRequestTracker(url);
+                        return;
+                    }
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddGiteePullRequestTracker(null);
+        }
+
         public void NewIssueTracker()
         {
             SelectedIssueTrackerRule = _repo.Settings.AddNewIssueTracker();

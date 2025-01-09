@@ -290,6 +290,8 @@
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabIssue}" Command="{Binding AddSampleGitLabIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabMergeRequest}" Command="{Binding AddSampleGitLabMergeRequestTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGiteeIssue}" Command="{Binding AddSampleGiteeIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGiteePullRequest}" Command="{Binding AddSampleGiteePullRequestTracker}"/>
                     </MenuFlyout>
                   </Button.Flyout>
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>

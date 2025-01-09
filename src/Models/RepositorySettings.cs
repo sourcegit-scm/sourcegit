@@ -521,6 +521,32 @@ namespace SourceGit.Models
             return rule;
         }
 
+        public IssueTrackerRule AddGiteeIssueTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "Gitee ISSUE",
+                RegexString = "#([0-9A-Z]{6,10})",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitee.com/username/repository/issues/$1" : $"{repoURL}/issues/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
+        public IssueTrackerRule AddGiteePullRequestTracker(string repoURL)
+        {
+            var rule = new IssueTrackerRule()
+            {
+                Name = "Gitee Pull Request",
+                RegexString = "!(\\d+)",
+                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitee.com/username/repository/pulls/$1" : $"{repoURL}/pulls/$1",
+            };
+
+            IssueTrackerRules.Add(rule);
+            return rule;
+        }
+
         public void RemoveIssueTracker(IssueTrackerRule rule)
         {
             if (rule != null)
