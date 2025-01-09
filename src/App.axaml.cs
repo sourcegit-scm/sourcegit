@@ -22,6 +22,7 @@ namespace SourceGit
 {
     public partial class App : Application
     {
+        #region App Entry Point
         [STAThread]
         public static void Main(string[] args)
         {
@@ -74,35 +75,9 @@ namespace SourceGit
             Native.OS.SetupApp(builder);
             return builder;
         }
+        #endregion
 
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            var pref = ViewModels.Preference.Instance;
-            pref.PropertyChanged += (_, _) => pref.Save();
-
-            SetLocale(pref.Locale);
-            SetTheme(pref.Theme, pref.ThemeOverrides);
-            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                BindingPlugins.DataValidators.RemoveAt(0);
-
-                if (TryLaunchedAsCoreEditor(desktop))
-                    return;
-
-                if (TryLaunchedAsAskpass(desktop))
-                    return;
-
-                TryLaunchedAsNormal(desktop);
-            }
-        }
-
+        #region Utility Functions
         public static void OpenDialog(Window window)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
@@ -304,21 +279,6 @@ namespace SourceGit
             return Current is App app ? app._launcher : null;
         }
 
-        public static ViewModels.Repository FindOpenedRepository(string repoPath)
-        {
-            if (Current is App app && app._launcher != null)
-            {
-                foreach (var page in app._launcher.Pages)
-                {
-                    var id = page.Node.Id.Replace("\\", "/");
-                    if (id == repoPath && page.Data is ViewModels.Repository repo)
-                        return repo;
-                }
-            }
-
-            return null;
-        }
-
         public static void Quit(int exitCode)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -331,17 +291,37 @@ namespace SourceGit
                 Environment.Exit(exitCode);
             }
         }
+        #endregion
 
-        private static void CopyTextBlock(TextBlock textBlock)
+        #region Overrides
+        public override void Initialize()
         {
-            if (textBlock == null)
-                return;
+            AvaloniaXamlLoader.Load(this);
 
-            if (textBlock.Inlines is { Count: > 0 } inlines)
-                CopyText(inlines.Text);
-            else if (!string.IsNullOrEmpty(textBlock.Text))
-                CopyText(textBlock.Text);
+            var pref = ViewModels.Preference.Instance;
+            pref.PropertyChanged += (_, _) => pref.Save();
+
+            SetLocale(pref.Locale);
+            SetTheme(pref.Theme, pref.ThemeOverrides);
+            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
         }
+
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                BindingPlugins.DataValidators.RemoveAt(0);
+
+                if (TryLaunchedAsCoreEditor(desktop))
+                    return;
+
+                if (TryLaunchedAsAskpass(desktop))
+                    return;
+
+                TryLaunchedAsNormal(desktop);
+            }
+        }
+        #endregion
 
         private static void LogException(Exception ex)
         {
@@ -367,55 +347,6 @@ namespace SourceGit
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
             File.WriteAllText(file, builder.ToString());
-        }
-
-        private static void Check4Update(bool manually = false)
-        {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    // Fetch lastest release information.
-                    var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
-                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
-
-                    // Parse json into Models.Version.
-                    var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
-                    if (ver == null)
-                        return;
-
-                    // Check if already up-to-date.
-                    if (!ver.IsNewVersion)
-                    {
-                        if (manually)
-                            ShowSelfUpdateResult(new Models.AlreadyUpToDate());
-                        return;
-                    }
-
-                    // Should not check ignored tag if this is called manually.
-                    if (!manually)
-                    {
-                        var pref = ViewModels.Preference.Instance;
-                        if (ver.TagName == pref.IgnoreUpdateTag)
-                            return;
-                    }
-
-                    ShowSelfUpdateResult(ver);
-                }
-                catch (Exception e)
-                {
-                    if (manually)
-                        ShowSelfUpdateResult(e);
-                }
-            });
-        }
-
-        private static void ShowSelfUpdateResult(object data)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                OpenDialog(new Views.SelfUpdate() { DataContext = new ViewModels.SelfUpdate() { Data = data } });
-            });
         }
 
         private static bool TryLaunchedAsRebaseTodoEditor(string[] args, out int exitCode)
@@ -553,6 +484,59 @@ namespace SourceGit
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
 #endif
+        }
+
+        private void Check4Update(bool manually = false)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    // Fetch lastest release information.
+                    var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
+                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
+
+                    // Parse json into Models.Version.
+                    var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
+                    if (ver == null)
+                        return;
+
+                    // Check if already up-to-date.
+                    if (!ver.IsNewVersion)
+                    {
+                        if (manually)
+                            ShowSelfUpdateResult(new Models.AlreadyUpToDate());
+                        return;
+                    }
+
+                    // Should not check ignored tag if this is called manually.
+                    if (!manually)
+                    {
+                        var pref = ViewModels.Preference.Instance;
+                        if (ver.TagName == pref.IgnoreUpdateTag)
+                            return;
+                    }
+
+                    ShowSelfUpdateResult(ver);
+                }
+                catch (Exception e)
+                {
+                    if (manually)
+                        ShowSelfUpdateResult(e);
+                }
+            });
+        }
+
+        private void ShowSelfUpdateResult(object data)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                {
+                    var dialog = new Views.SelfUpdate() { DataContext = new ViewModels.SelfUpdate() { Data = data } };
+                    dialog.ShowDialog(owner);
+                }
+            });
         }
 
         private ViewModels.Launcher _launcher = null;

@@ -100,8 +100,18 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
-            var repo = App.FindOpenedRepository(_repo);
-            repo?.NavigateToCommit(commitSHA);
+            var launcher = App.GetLauncer();
+            if (launcher == null)
+                return;
+
+            foreach (var page in launcher.Pages)
+            {
+                if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
+                {
+                    repo.NavigateToCommit(commitSHA);
+                    break;
+                }
+            }
         }
 
         public void Swap()
