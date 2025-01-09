@@ -492,11 +492,11 @@ namespace SourceGit
             {
                 try
                 {
-                    // Fetch lastest release information.
+                    // Fetch latest release information.
                     var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
                     var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
 
-                    // Parse json into Models.Version.
+                    // Parse JSON into Models.Version.
                     var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
                     if (ver == null)
                         return;
