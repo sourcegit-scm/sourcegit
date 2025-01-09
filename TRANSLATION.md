@@ -1,9 +1,11 @@
-### de_DE.axaml: 97.82%
+### de_DE.axaml: 97.55%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.Preference.General.DateFormat
 - Text.Preference.Git.SSLVerify
 - Text.Repository.HistoriesLayout
@@ -23,12 +25,14 @@
 
 </details>
 
-### es_ES.axaml: 97.82%
+### es_ES.axaml: 97.55%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.Preference.General.DateFormat
 - Text.Preference.Git.SSLVerify
 - Text.Repository.HistoriesLayout
@@ -48,7 +52,7 @@
 
 </details>
 
-### fr_FR.axaml: 93.04%
+### fr_FR.axaml: 92.79%
 
 
 <details>
@@ -61,6 +65,8 @@
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -108,7 +114,7 @@
 
 </details>
 
-### it_IT.axaml: 93.59%
+### it_IT.axaml: 93.33%
 
 
 <details>
@@ -119,6 +125,8 @@
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
 - Text.Configure.OpenAI.Preferred.Tip
@@ -164,7 +172,7 @@
 
 </details>
 
-### pt_BR.axaml: 94.68%
+### pt_BR.axaml: 94.42%
 
 
 <details>
@@ -175,6 +183,8 @@
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -212,12 +222,14 @@
 
 </details>
 
-### ru_RU.axaml: 99.05%
+### ru_RU.axaml: 98.78%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.Preference.Git.SSLVerify
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesOrder
