@@ -456,91 +456,13 @@ namespace SourceGit.Models
             CommitMessages.Insert(0, message);
         }
 
-        public IssueTrackerRule AddNewIssueTracker()
+        public IssueTrackerRule AddIssueTracker(string name, string regex, string url)
         {
             var rule = new IssueTrackerRule()
             {
-                Name = "New Issue Tracker",
-                RegexString = "#(\\d+)",
-                URLTemplate = "https://xxx/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGithubIssueTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Github ISSUE",
-                RegexString = "#(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://github.com/username/repository/issues/$1" : $"{repoURL}/issues/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddJiraIssueTracker()
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Jira Tracker",
-                RegexString = "PROJ-(\\d+)",
-                URLTemplate = "https://jira.yourcompany.com/browse/PROJ-$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGitLabIssueTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "GitLab ISSUE",
-                RegexString = "#(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/issues/$1" : $"{repoURL}/-/issues/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGitLabMergeRequestTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "GitLab MR",
-                RegexString = "!(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/merge_requests/$1" : $"{repoURL}/-/merge_requests/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGiteeIssueTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Gitee ISSUE",
-                RegexString = "#([0-9A-Z]{6,10})",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitee.com/username/repository/issues/$1" : $"{repoURL}/issues/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGiteePullRequestTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Gitee Pull Request",
-                RegexString = "!(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitee.com/username/repository/pulls/$1" : $"{repoURL}/pulls/$1",
+                Name = name,
+                RegexString = regex,
+                URLTemplate = url,
             };
 
             IssueTrackerRules.Add(rule);
