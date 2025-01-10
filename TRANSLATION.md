@@ -25,30 +25,13 @@
 
 </details>
 
-### es_ES.axaml: 97.55%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Configure.IssueTracker.AddSampleGiteeIssue
-- Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.Preference.General.DateFormat
-- Text.Preference.Git.SSLVerify
-- Text.Repository.HistoriesLayout
-- Text.Repository.HistoriesLayout.Horizontal
-- Text.Repository.HistoriesLayout.Vertical
-- Text.Repository.HistoriesOrder
-- Text.Repository.OnlyHighlightCurrentBranchInHistories
-- Text.Repository.Tags.OrderByCreatorDate
-- Text.Repository.Tags.OrderByNameAsc
-- Text.Repository.Tags.OrderByNameDes
-- Text.Repository.Tags.Sort
-- Text.Repository.UseRelativeTimeInHistories
-- Text.SetUpstream
-- Text.SetUpstream.Local
-- Text.SetUpstream.Unset
-- Text.SetUpstream.Upstream
+
 
 </details>
 
