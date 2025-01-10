@@ -1,7 +1,7 @@
 Package: sourcegit
 Version: 8.23
 Priority: optional
-Depends: libx11-6, libice6, libsm6, libicu76 | libicu72 | libicu67 | libicu63, xdg-utils
+Depends: libx11-6, libice6, libsm6, libicu | libicu76 | libicu74 | libicu72 | libicu71 | libicu70 | libicu69 | libicu68 | libicu67 | libicu66 | libicu65 | libicu63 | libicu60 | libicu57 | libicu55 | libicu52, xdg-utils
 Architecture: amd64
 Maintainer: longshuang@msn.cn
 Description: Open-source & Free Git GUI Client
