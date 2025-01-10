@@ -102,6 +102,7 @@ For **macOS** users:
 
 For **Linux** users:
 
+* Thanks [@aikawayataro](https://github.com/aikawayataro) for providing `RPM/DEB` pacakges on [Codeberg.org](https://codeberg.org/yataro/-/packages).
 * `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
