@@ -164,6 +164,8 @@
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Внешний репозиторий по умолчанию</x:String>
   <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Разрешить '--prune' при скачивании</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Добавить пример правила для тем в Gitee</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Добавить пример правила запроса скачивания из Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Добавить пример правила для Git</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Добавить пример правила Jira</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Добавить пример правила выдачи GitLab</x:String>
@@ -479,6 +481,7 @@
   <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">Электроная почта пользователя</x:String>
   <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Общая электроная почта пользователя git</x:String>
   <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Путь установки</x:String>
+  <x:String x:Key="Text.Preference.Git.SSLVerify" xml:space="preserve">Разрешить верификацию HTTP SSL</x:String>
   <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">Имя пользователя</x:String>
   <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Общее имя пользователя git</x:String>
   <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Версия Git</x:String>
@@ -566,8 +569,10 @@
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Скрыть в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фильтр в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">ОТФИЛЬТРОВАНО:</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">РАСПОЛОЖЕНИЕ</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Горизонтально</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Вертикально</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">ЗАПРОС РЕВИЗИЙ</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Дата ревизии (--date-order)</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Топологически (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ЛОКАЛЬНЫЕ ВЕТКИ</x:String>
@@ -629,6 +634,10 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Пропустить эту версию</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Обновление ПО</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">В настоящее время обновления недоступны.</x:String>
+  <x:String x:Key="Text.SetUpstream" xml:space="preserve">Отслеживать ветку</x:String>
+  <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">Ветка:</x:String>
+  <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">Снять основную ветку</x:String>
+  <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Основная ветка:</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Втиснуть ревизии</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Приватный ключ SSH:</x:String>
