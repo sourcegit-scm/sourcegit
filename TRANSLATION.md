@@ -222,21 +222,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.78%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Configure.IssueTracker.AddSampleGiteeIssue
-- Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.Preference.Git.SSLVerify
-- Text.Repository.HistoriesLayout
-- Text.Repository.HistoriesOrder
-- Text.SetUpstream
-- Text.SetUpstream.Local
-- Text.SetUpstream.Unset
-- Text.SetUpstream.Upstream
+
 
 </details>
 
