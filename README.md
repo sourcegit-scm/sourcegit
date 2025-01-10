@@ -102,37 +102,10 @@ For **macOS** users:
 
 For **Linux** users:
 
-* For Debian/Ubuntu based distributions, you can add the `sourcegit` repository by following:
-  You may need to install curl and/or gpg first, if you're on a very minimal host:
-  ```shell
-  apt update && apt install curl gpg -y
-  ```
-  Install the registry signing key:
-  ```shell
-  curl -fsSL "https://packages.buildkite.com/sourcegit/sourcegit-deb/gpgkey" | gpg --dearmor -o /etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg
-  ```
-  Configure the source:
-  ```shell
-  echo -e "deb [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main\ndeb-src [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main" > /etc/apt/sources.list.d/buildkite-sourcegit-sourcegit-deb.list
-  ```
-  Update your local repository and install the package:
-  ```shell
-  apt update && apt install sourcegit
-  ```
-* For RHEL/Fedora based distributions, you can add the `sourcegit` repository by following:
-  Configure the source:
-  ```shell
-  sudo sh -c 'echo -e "[sourcegit-rpm]\nname=sourcegit-rpm\nbaseurl=https://packages.buildkite.com/sourcegit/sourcegit-rpm/rpm_any/rpm_any/\$basearch\nenabled=1\nrepo_gpgcheck=1\ngpgcheck=0\ngpgkey=https://packages.buildkite.com/sourcegit/sourcegit-rpm/gpgkey\npriority=1"' > /etc/yum.repos.d/sourcegit-rpm.repo
-  ```
-  Install the package with this command:
-  ```shell
-  sudo dnf install -y sourcegit
-  ```
-* `Appimage` files can be found on [AppimageHub](https://appimage.github.io/SourceGit/)
-* `xdg-open` must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
+* `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
+* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
-* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`. 
+* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`.
 
 ## OpenAI
 
