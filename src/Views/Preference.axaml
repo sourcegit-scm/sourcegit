@@ -263,7 +263,8 @@
             <TextBox Grid.Row="0" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
-                     Text="{Binding GitInstallPath, Mode=TwoWay}">
+                     Text="{Binding GitInstallPath, Mode=TwoWay}"
+                     TextChanged="OnGitInstallPathChanged">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectGitExecutable">
                   <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
@@ -282,7 +283,7 @@
 
               <Border Background="Transparent"
                       ToolTip.Tip="{DynamicResource Text.Preference.Git.Invalid}"
-                      IsVisible="{Binding #ThisControl.GitVersion, Converter={x:Static c:StringConverters.UnderRecommendGitVersion}}">
+                      IsVisible="{Binding #ThisControl.ShowGitVersionWarning}">
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
               </Border>
             </StackPanel>

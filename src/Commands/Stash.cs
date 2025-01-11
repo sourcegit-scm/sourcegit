@@ -17,47 +17,48 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Push(List<Models.Change> changes, string message, bool onlyStaged, bool keepIndex)
+        public bool Push(string message, List<Models.Change> changes, bool keepIndex)
         {
             var builder = new StringBuilder();
             builder.Append("stash push ");
-            if (onlyStaged)
-                builder.Append("--staged ");
             if (keepIndex)
                 builder.Append("--keep-index ");
             builder.Append("-m \"");
             builder.Append(message);
             builder.Append("\" -- ");
 
-            if (onlyStaged)
-            {
-                foreach (var c in changes)
-                    builder.Append($"\"{c.Path}\" ");
-            }
-            else
-            {
-                var needAdd = new List<Models.Change>();
-                foreach (var c in changes)
-                {
-                    builder.Append($"\"{c.Path}\" ");
+            foreach (var c in changes)
+                builder.Append($"\"{c.Path}\" ");
 
-                    if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
-                    {
-                        needAdd.Add(c);
-                        if (needAdd.Count > 10)
-                        {
-                            new Add(WorkingDirectory, needAdd).Exec();
-                            needAdd.Clear();
-                        }
-                    }
-                }
-                if (needAdd.Count > 0)
-                {
-                    new Add(WorkingDirectory, needAdd).Exec();
-                    needAdd.Clear();
-                }
-            }
+            Args = builder.ToString();
+            return Exec();
+        }
 
+        public bool Push(string message, string pathspecFromFile, bool keepIndex)
+        {
+            var builder = new StringBuilder();
+            builder.Append("stash push --pathspec-from-file=\"");
+            builder.Append(pathspecFromFile);
+            builder.Append("\" ");
+            if (keepIndex)
+                builder.Append("--keep-index ");
+            builder.Append("-m \"");
+            builder.Append(message);
+            builder.Append("\"");
+
+            Args = builder.ToString();
+            return Exec();
+        }
+
+        public bool PushOnlyStaged(string message, bool keepIndex)
+        {
+            var builder = new StringBuilder();
+            builder.Append("stash push --staged ");
+            if (keepIndex)
+                builder.Append("--keep-index ");
+            builder.Append("-m \"");
+            builder.Append(message);
+            builder.Append("\"");
             Args = builder.ToString();
             return Exec();
         }

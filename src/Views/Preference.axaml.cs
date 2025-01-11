@@ -37,6 +37,15 @@ namespace SourceGit.Views
             set => SetValue(GitVersionProperty, value);
         }
 
+        public static readonly StyledProperty<bool> ShowGitVersionWarningProperty =
+            AvaloniaProperty.Register<Preference, bool>(nameof(ShowGitVersionWarning));
+
+        public bool ShowGitVersionWarning
+        {
+            get => GetValue(ShowGitVersionWarningProperty);
+            set => SetValue(ShowGitVersionWarningProperty, value);
+        }
+
         public bool EnableGPGCommitSigning
         {
             get;
@@ -93,7 +102,6 @@ namespace SourceGit.Views
             var pref = ViewModels.Preference.Instance;
             DataContext = pref;
 
-            var ver = string.Empty;
             if (pref.IsGitConfigured())
             {
                 var config = new Commands.Config(null).ListAll();
@@ -122,12 +130,10 @@ namespace SourceGit.Views
                     EnableHTTPSSLVerify = sslVerify == "true";
                 else
                     EnableHTTPSSLVerify = true;
-
-                ver = new Commands.Version().Query();
             }
 
+            UpdateGitVersion();
             InitializeComponent();
-            GitVersion = ver;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -207,7 +213,7 @@ namespace SourceGit.Views
             if (selected.Count == 1)
             {
                 ViewModels.Preference.Instance.GitInstallPath = selected[0].Path.LocalPath;
-                GitVersion = new Commands.Version().Query();
+                UpdateGitVersion();
             }
 
             e.Handled = true;
@@ -328,6 +334,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnGitInstallPathChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateGitVersion();
+        }
+
         private void OnAddOpenAIService(object sender, RoutedEventArgs e)
         {
             var service = new Models.OpenAIService() { Name = "Unnamed Service" };
@@ -345,6 +356,12 @@ namespace SourceGit.Views
             ViewModels.Preference.Instance.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
             e.Handled = true;
+        }
+
+        private void UpdateGitVersion()
+        {
+            GitVersion = Native.OS.GitVersionString;
+            ShowGitVersionWarning = !string.IsNullOrEmpty(GitVersion) && Native.OS.GitVersion < Models.GitVersions.MINIMAL;
         }
     }
 }

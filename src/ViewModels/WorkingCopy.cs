@@ -347,6 +347,17 @@ namespace SourceGit.ViewModels
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
             }
+            else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
+            {
+                var paths = new List<string>();
+                foreach (var c in changes)
+                    paths.Add(c.Path);
+
+                var tmpFile = Path.GetTempFileName();
+                File.WriteAllLines(tmpFile, paths);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Exec());
+                File.Delete(tmpFile);
+            }
             else
             {
                 for (int i = 0; i < changes.Count; i += 10)
