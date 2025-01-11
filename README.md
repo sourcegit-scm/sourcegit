@@ -102,7 +102,29 @@ For **macOS** users:
 
 For **Linux** users:
 
-* Thanks [@aikawayataro](https://github.com/aikawayataro) for providing `RPM/DEB` pacakges on [Codeberg.org](https://codeberg.org/yataro/-/packages).
+* Thanks [@aikawayataro](https://github.com/aikawayataro) for providing `rpm` and `deb` repositories, hosted on [Codeberg](https://codeberg.org/yataro/-/packages).
+
+  `deb` how to:
+  ```shell
+  curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
+  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
+  sudo apt update
+  sudo apt install sourcegit
+  ```
+
+  `rpm` how to:
+  ```shell
+  curl https://codeberg.org/api/packages/yataro/rpm.repo | sed -e 's/gpgcheck=1/gpgcheck=0/' > sourcegit.repo
+
+  # Fedora 41 and newer
+  sudo dnf config-manager addrepo --from-repofile=./sourcegit.repo
+  # Fedora 40 and earlier
+  sudo dnf config-manager --add-repo ./sourcegit.repo
+
+  sudo dnf install sourcegit
+  ```
+
+  If your distribution isn't using `dnf`, please refer to the documentation of your distribution on how to add an `rpm` repository.
 * `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
