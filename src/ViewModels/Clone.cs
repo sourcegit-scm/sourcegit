@@ -129,8 +129,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    var normalizedPath = path.Replace("\\", "/");
-                    var node = Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, null, true);
+                    var node = Preference.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
                     var launcher = App.GetLauncer();
                     var page = null as LauncherPage;
                     foreach (var one in launcher.Pages)

@@ -405,13 +405,17 @@ namespace SourceGit.ViewModels
 
         public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode)
         {
-            var node = FindNodeRecursive(repo, RepositoryNodes);
+            var normalized = repo.Replace('\\', '/');
+            if (normalized.EndsWith("/"))
+                normalized = normalized.TrimEnd('/');
+
+            var node = FindNodeRecursive(normalized, RepositoryNodes);
             if (node == null)
             {
                 node = new RepositoryNode()
                 {
-                    Id = repo,
-                    Name = Path.GetFileName(repo),
+                    Id = normalized,
+                    Name = Path.GetFileName(normalized),
                     Bookmark = 0,
                     IsRepository = true,
                 };
