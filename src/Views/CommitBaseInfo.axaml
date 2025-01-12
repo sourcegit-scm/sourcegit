@@ -51,7 +51,7 @@
         <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
-        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
+        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
@@ -182,9 +182,13 @@
                                    UseGraphColor="False"/>
           </Border>
 
+          <!-- Stats -->
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Stats}" />
+          <v:LinesChanged Grid.Row="4" Grid.Column="1" AddedLines="0" RemovedLines="0" />
+
           <!-- Messages -->
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
-          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
+          <v:CommitMessagePresenter Grid.Row="5" Grid.Column="1" 
                                     Margin="12,4,8,0" 
                                     Classes="primary" 
                                     Message="{Binding #ThisControl.Message}"

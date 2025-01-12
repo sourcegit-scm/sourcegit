@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:SourceGit.Views"
+             x:Class="SourceGit.Views.LinesChanged"
+             x:Name="ThisControl"
+             x:DataType="local:LinesChanged">
+    <StackPanel Orientation="Horizontal" Height="24">
+        <TextBlock Margin="12,0,4,0" VerticalAlignment="Center">
+            <TextBlock.Inlines>
+                <Run Text="++"/>
+                <Run Text="{Binding AddedLines}"/>
+            </TextBlock.Inlines>
+        </TextBlock>
+
+        <TextBlock Margin="12,0,4,0" VerticalAlignment="Center">
+            <TextBlock.Inlines>
+                <Run Text="--"/>
+                <Run Text="{Binding RemovedLines}"/>
+            </TextBlock.Inlines>
+        </TextBlock>
+    </StackPanel>
+</UserControl>
