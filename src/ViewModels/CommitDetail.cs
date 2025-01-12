@@ -637,6 +637,13 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
+                var lines = new Commands.QueryCommitChangedLines(_repo.FullPath, _commit.SHA).Result();
+                Console.WriteLine(lines);
+                //Dispatcher.UIThread.Invoke(() => FullMessage = fullMessage);
+            });
+
+            Task.Run(() =>
+            {
                 var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile).Result();
                 Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
             });
