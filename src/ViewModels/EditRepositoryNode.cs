@@ -49,7 +49,7 @@ namespace SourceGit.ViewModels
 
             if (needSort)
             {
-                Preference.Instance.SortByRenamedNode(_node);
+                Preferences.Instance.SortByRenamedNode(_node);
                 Welcome.Instance.Refresh();
             }
 

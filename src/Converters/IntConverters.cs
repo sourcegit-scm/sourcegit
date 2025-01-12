@@ -23,10 +23,10 @@ namespace SourceGit.Converters
             new FuncValueConverter<int, bool>(v => v != 1);
 
         public static readonly FuncValueConverter<int, bool> IsSubjectLengthBad =
-            new FuncValueConverter<int, bool>(v => v > ViewModels.Preference.Instance.SubjectGuideLength);
+            new FuncValueConverter<int, bool>(v => v > ViewModels.Preferences.Instance.SubjectGuideLength);
 
         public static readonly FuncValueConverter<int, bool> IsSubjectLengthGood =
-            new FuncValueConverter<int, bool>(v => v <= ViewModels.Preference.Instance.SubjectGuideLength);
+            new FuncValueConverter<int, bool>(v => v <= ViewModels.Preferences.Instance.SubjectGuideLength);
 
         public static readonly FuncValueConverter<int, Thickness> ToTreeMargin =
             new FuncValueConverter<int, Thickness>(v => new Thickness(v * 16, 0, 0, 0));

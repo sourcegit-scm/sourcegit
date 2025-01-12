@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public ScanRepositories(string rootDir)
         {
-            GetManagedRepositories(Preference.Instance.RepositoryNodes, _managed);
+            GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
 
             RootDir = rootDir;
             View = new Views.ScanRepositories() { DataContext = this };
@@ -50,17 +50,17 @@ namespace SourceGit.ViewModels
                         var parent = new DirectoryInfo(f).Parent!.FullName.Replace("\\", "/");
                         if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                         {
-                            Preference.Instance.FindOrAddNodeByRepositoryPath(f, null, false);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false);
                         }
                         else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                         {
                             var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
-                            var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
-                            Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
+                            var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
                         }
                     }
 
-                    Preference.Instance.AutoRemoveInvalidNode();
+                    Preferences.Instance.AutoRemoveInvalidNode();
                     Welcome.Instance.Refresh();
                 });
 

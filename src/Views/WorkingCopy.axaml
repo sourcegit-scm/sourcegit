@@ -11,7 +11,7 @@
              x:DataType="vm:WorkingCopy">
   <Grid SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*" MinWidth="300"/>
     </Grid.ColumnDefinitions>
@@ -71,7 +71,7 @@
             <v:ChangeViewModeSwitcher Grid.Column="9"
                                       Width="26" Height="14"
                                       Margin="0,1,0,0"
-                                      ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
+                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
 
@@ -82,7 +82,7 @@
                                 IsUnstagedChange="True"
                                 SelectionMode="Multiple"
                                 Background="{DynamicResource Brush.Contents}"
-                                ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=UnstagedChangeViewMode}"
+                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode}"
                                 Changes="{Binding Unstaged}"
                                 SelectedChanges="{Binding SelectedUnstaged, Mode=TwoWay}"
                                 ContextRequested="OnUnstagedContextRequested"
@@ -120,7 +120,7 @@
             <v:ChangeViewModeSwitcher Grid.Column="7"
                                       Width="26" Height="14"
                                       Margin="0,1,0,0"
-                                      ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
+                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
 
@@ -130,7 +130,7 @@
                                 Focusable="True"
                                 SelectionMode="Multiple"
                                 Background="{DynamicResource Brush.Contents}"
-                                ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=StagedChangeViewMode}"
+                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode}"
                                 Changes="{Binding Staged}"
                                 SelectedChanges="{Binding SelectedStaged, Mode=TwoWay}"
                                 ContextRequested="OnStagedContextRequested"

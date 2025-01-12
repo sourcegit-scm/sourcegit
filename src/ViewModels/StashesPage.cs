@@ -161,8 +161,8 @@ namespace SourceGit.ViewModels
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
             diffWithMerger.Click += (_, ev) =>
             {
-                var toolType = Preference.Instance.ExternalMergeToolType;
-                var toolPath = Preference.Instance.ExternalMergeToolPath;
+                var toolType = Preferences.Instance.ExternalMergeToolType;
+                var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, change);
 
                 Task.Run(() => Commands.MergeTool.OpenForDiff(_repo.FullPath, toolType, toolPath, opt));

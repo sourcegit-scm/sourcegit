@@ -146,7 +146,7 @@ namespace SourceGit.ViewModels
                 Remotes.Add(remote.Name);
 
             AvailableOpenAIServices = new List<string>() { "---" };
-            foreach (var service in Preference.Instance.OpenAIServices)
+            foreach (var service in Preferences.Instance.OpenAIServices)
                 AvailableOpenAIServices.Add(service.Name);
 
             if (AvailableOpenAIServices.IndexOf(PreferedOpenAIService) == -1)

@@ -8,7 +8,7 @@ using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
 {
-    public partial class Preference : ChromelessWindow
+    public partial class Preferences : ChromelessWindow
     {
         public string DefaultUser
         {
@@ -29,7 +29,7 @@ namespace SourceGit.Views
         } = null;
 
         public static readonly StyledProperty<string> GitVersionProperty =
-            AvaloniaProperty.Register<Preference, string>(nameof(GitVersion));
+            AvaloniaProperty.Register<Preferences, string>(nameof(GitVersion));
 
         public string GitVersion
         {
@@ -38,7 +38,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> ShowGitVersionWarningProperty =
-            AvaloniaProperty.Register<Preference, bool>(nameof(ShowGitVersionWarning));
+            AvaloniaProperty.Register<Preferences, bool>(nameof(ShowGitVersionWarning));
 
         public bool ShowGitVersionWarning
         {
@@ -59,7 +59,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Models.GPGFormat> GPGFormatProperty =
-            AvaloniaProperty.Register<Preference, Models.GPGFormat>(nameof(GPGFormat), Models.GPGFormat.Supported[0]);
+            AvaloniaProperty.Register<Preferences, Models.GPGFormat>(nameof(GPGFormat), Models.GPGFormat.Supported[0]);
 
         public Models.GPGFormat GPGFormat
         {
@@ -68,7 +68,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<string> GPGExecutableFileProperty =
-            AvaloniaProperty.Register<Preference, string>(nameof(GPGExecutableFile));
+            AvaloniaProperty.Register<Preferences, string>(nameof(GPGExecutableFile));
 
         public string GPGExecutableFile
         {
@@ -89,7 +89,7 @@ namespace SourceGit.Views
         } = false;
 
         public static readonly StyledProperty<Models.OpenAIService> SelectedOpenAIServiceProperty =
-            AvaloniaProperty.Register<Preference, Models.OpenAIService>(nameof(SelectedOpenAIService));
+            AvaloniaProperty.Register<Preferences, Models.OpenAIService>(nameof(SelectedOpenAIService));
 
         public Models.OpenAIService SelectedOpenAIService
         {
@@ -97,9 +97,9 @@ namespace SourceGit.Views
             set => SetValue(SelectedOpenAIServiceProperty, value);
         }
 
-        public Preference()
+        public Preferences()
         {
-            var pref = ViewModels.Preference.Instance;
+            var pref = ViewModels.Preferences.Instance;
             DataContext = pref;
 
             if (pref.IsGitConfigured())
@@ -194,7 +194,7 @@ namespace SourceGit.Views
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
             {
-                ViewModels.Preference.Instance.ThemeOverrides = selected[0].Path.LocalPath;
+                ViewModels.Preferences.Instance.ThemeOverrides = selected[0].Path.LocalPath;
             }
 
             e.Handled = true;
@@ -212,7 +212,7 @@ namespace SourceGit.Views
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
             {
-                ViewModels.Preference.Instance.GitInstallPath = selected[0].Path.LocalPath;
+                ViewModels.Preferences.Instance.GitInstallPath = selected[0].Path.LocalPath;
                 UpdateGitVersion();
             }
 
@@ -227,7 +227,7 @@ namespace SourceGit.Views
                 var selected = await StorageProvider.OpenFolderPickerAsync(options);
                 if (selected.Count == 1)
                 {
-                    ViewModels.Preference.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
+                    ViewModels.Preferences.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
                 }
             }
             catch (Exception ex)
@@ -263,7 +263,7 @@ namespace SourceGit.Views
 
         private async void SelectShellOrTerminal(object _, RoutedEventArgs e)
         {
-            var type = ViewModels.Preference.Instance.ShellOrTerminal;
+            var type = ViewModels.Preferences.Instance.ShellOrTerminal;
             if (type == -1)
                 return;
 
@@ -277,7 +277,7 @@ namespace SourceGit.Views
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
             {
-                ViewModels.Preference.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
+                ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
             }
 
             e.Handled = true;
@@ -285,10 +285,10 @@ namespace SourceGit.Views
 
         private async void SelectExternalMergeTool(object _, RoutedEventArgs e)
         {
-            var type = ViewModels.Preference.Instance.ExternalMergeToolType;
+            var type = ViewModels.Preferences.Instance.ExternalMergeToolType;
             if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
             {
-                ViewModels.Preference.Instance.ExternalMergeToolType = 0;
+                ViewModels.Preferences.Instance.ExternalMergeToolType = 0;
                 e.Handled = true;
                 return;
             }
@@ -303,7 +303,7 @@ namespace SourceGit.Views
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
             {
-                ViewModels.Preference.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
+                ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
 
             e.Handled = true;
@@ -325,7 +325,7 @@ namespace SourceGit.Views
         {
             if (sender is CheckBox box)
             {
-                ViewModels.Preference.Instance.UseSystemWindowFrame = box.IsChecked == true;
+                ViewModels.Preferences.Instance.UseSystemWindowFrame = box.IsChecked == true;
 
                 var dialog = new ConfirmRestart();
                 App.OpenDialog(dialog);
@@ -342,7 +342,7 @@ namespace SourceGit.Views
         private void OnAddOpenAIService(object sender, RoutedEventArgs e)
         {
             var service = new Models.OpenAIService() { Name = "Unnamed Service" };
-            ViewModels.Preference.Instance.OpenAIServices.Add(service);
+            ViewModels.Preferences.Instance.OpenAIServices.Add(service);
             SelectedOpenAIService = service;
 
             e.Handled = true;
@@ -353,7 +353,7 @@ namespace SourceGit.Views
             if (SelectedOpenAIService == null)
                 return;
 
-            ViewModels.Preference.Instance.OpenAIServices.Remove(SelectedOpenAIService);
+            ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
             e.Handled = true;
         }

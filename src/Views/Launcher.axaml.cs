@@ -34,14 +34,14 @@ namespace SourceGit.Views
             get
             {
                 if (OperatingSystem.IsLinux())
-                    return !ViewModels.Preference.Instance.UseSystemWindowFrame;
+                    return !ViewModels.Preferences.Instance.UseSystemWindowFrame;
                 return OperatingSystem.IsWindows();
             }
         }
 
         public Launcher()
         {
-            var layout = ViewModels.Preference.Instance.Layout;
+            var layout = ViewModels.Preferences.Instance.Layout;
             if (layout.LauncherWindowState != WindowState.Maximized)
             {
                 Width = layout.LauncherWidth;
@@ -81,7 +81,7 @@ namespace SourceGit.Views
         {
             base.OnOpened(e);
 
-            var state = ViewModels.Preference.Instance.Layout.LauncherWindowState;
+            var state = ViewModels.Preferences.Instance.Layout.LauncherWindowState;
             if (state == WindowState.Maximized || state == WindowState.FullScreen)
                 WindowState = WindowState.Maximized;
         }
@@ -99,7 +99,7 @@ namespace SourceGit.Views
                 if (OperatingSystem.IsMacOS())
                     HasLeftCaptionButton = state != WindowState.FullScreen;
 
-                ViewModels.Preference.Instance.Layout.LauncherWindowState = state;
+                ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
             }
         }
 
@@ -115,7 +115,7 @@ namespace SourceGit.Views
             // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
             {
-                App.OpenDialog(new Preference());
+                App.OpenDialog(new Preferences());
                 e.Handled = true;
                 return;
             }

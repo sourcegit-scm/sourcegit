@@ -360,7 +360,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Vai alla pagina precedente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Vai alla pagina successiva</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Crea una nuova pagina</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.OpenPreference" xml:space="preserve">Apri la finestra di preferenze</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Apri la finestra di preferenze</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Conferma le modifiche in fase</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Conferma e invia le modifiche in fase</x:String>
@@ -425,57 +425,57 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} mesi fa</x:String>
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">L'anno scorso</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} anni fa</x:String>
-  <x:String x:Key="Text.Preference" xml:space="preserve">Preferenze</x:String>
-  <x:String x:Key="Text.Preference.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">Analizza il Prompt Differenza</x:String>
-  <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">Chiave API</x:String>
-  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">Genera Prompt Soggetto</x:String>
-  <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">Modello</x:String>
-  <x:String x:Key="Text.Preference.AI.Name" xml:space="preserve">Nome</x:String>
-  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">Server</x:String>
-  <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">ASPETTO</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
-  <x:String x:Key="Text.Preference.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
-  <x:String x:Key="Text.Preference.Appearance.FontSize.Default" xml:space="preserve">Dimensione Font Predefinita</x:String>
-  <x:String x:Key="Text.Preference.Appearance.FontSize.Editor" xml:space="preserve">Dimensione Font Editor</x:String>
-  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">Font Monospaziato</x:String>
-  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usa solo font monospaziato nell'editor</x:String>
-  <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">Tema</x:String>
-  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">Sostituzioni Tema</x:String>
-  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">Usa larghezza fissa per i tab nella barra del titolo</x:String>
-  <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Usa cornice finestra nativa</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">STRUMENTO DI DIFFERENZA/UNIONE</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Percorso Installazione</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Inserisci il percorso per lo strumento di differenza/unione</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">Strumento</x:String>
-  <x:String x:Key="Text.Preference.General" xml:space="preserve">GENERALE</x:String>
-  <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">Controlla aggiornamenti all'avvio</x:String>
-  <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">Lingua</x:String>
-  <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">Numero massimo di commit nella cronologia</x:String>
-  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">Mostra l'orario dell'autore anziché quello del commit nel grafico</x:String>
-  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">Lunghezza Guida Soggetto</x:String>
-  <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">Abilita Auto CRLF</x:String>
-  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">Cartella predefinita per cloni</x:String>
-  <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">Email Utente</x:String>
-  <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">Email globale utente Git</x:String>
-  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">Percorso Installazione</x:String>
-  <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">Nome Utente</x:String>
-  <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">Nome globale utente Git</x:String>
-  <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Versione di Git</x:String>
-  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) è richiesto da questa applicazione</x:String>
-  <x:String x:Key="Text.Preference.GPG" xml:space="preserve">FIRMA GPG</x:String>
-  <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">Firma GPG per commit</x:String>
-  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">Firma GPG per tag</x:String>
-  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">Formato GPG</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">Percorso Programma Installato</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">Inserisci il percorso per il programma GPG installato</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">Chiave Firma Utente</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">Chiave GPG dell'utente per la firma</x:String>
-  <x:String x:Key="Text.Preference.Integration" xml:space="preserve">INTEGRAZIONE</x:String>
-  <x:String x:Key="Text.Preference.Shell" xml:space="preserve">SHELL/TERMINALE</x:String>
-  <x:String x:Key="Text.Preference.Shell.Type" xml:space="preserve">Shell/Terminale</x:String>
-  <x:String x:Key="Text.Preference.Shell.Path" xml:space="preserve">Percorso</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">Preferenze</x:String>
+  <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analizza il Prompt Differenza</x:String>
+  <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Chiave API</x:String>
+  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Genera Prompt Soggetto</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modello</x:String>
+  <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
+  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
+  <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ASPETTO</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Dimensione Font Predefinita</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Dimensione Font Editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Font Monospaziato</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Usa solo font monospaziato nell'editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Sostituzioni Tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usa larghezza fissa per i tab nella barra del titolo</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usa cornice finestra nativa</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">STRUMENTO DI DIFFERENZA/UNIONE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Percorso Installazione</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Inserisci il percorso per lo strumento di differenza/unione</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Strumento</x:String>
+  <x:String x:Key="Text.Preferences.General" xml:space="preserve">GENERALE</x:String>
+  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Controlla aggiornamenti all'avvio</x:String>
+  <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Lingua</x:String>
+  <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Numero massimo di commit nella cronologia</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostra l'orario dell'autore anziché quello del commit nel grafico</x:String>
+  <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Lunghezza Guida Soggetto</x:String>
+  <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Abilita Auto CRLF</x:String>
+  <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Cartella predefinita per cloni</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email Utente</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email globale utente Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Percorso Installazione</x:String>
+  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nome Utente</x:String>
+  <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nome globale utente Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Versione di Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) è richiesto da questa applicazione</x:String>
+  <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">FIRMA GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">Firma GPG per commit</x:String>
+  <x:String x:Key="Text.Preferences.GPG.TagEnabled" xml:space="preserve">Firma GPG per tag</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Formato GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path" xml:space="preserve">Percorso Programma Installato</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path.Placeholder" xml:space="preserve">Inserisci il percorso per il programma GPG installato</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey" xml:space="preserve">Chiave Firma Utente</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">Chiave GPG dell'utente per la firma</x:String>
+  <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRAZIONE</x:String>
+  <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINALE</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminale</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Percorso</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Potatura Remota</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Destinazione:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Potatura Worktrees</x:String>

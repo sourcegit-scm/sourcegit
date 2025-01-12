@@ -11,7 +11,7 @@
              x:DataType="vm:Repository">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="500"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="500"/>
       <ColumnDefinition Width="3"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
@@ -115,7 +115,7 @@
                                 Classes="line_path"
                                 Width="26" Height="26"
                                 Background="Transparent"
-                                IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
+                                IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInHistories}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
                   </ToggleButton>
@@ -238,7 +238,7 @@
               <ToggleButton Grid.Column="3" 
                             Classes="tag_display_mode" 
                             Width="14" 
-                            IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowTagsAsTree, Mode=TwoWay}"
+                            IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsAsTree, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Repository.ShowTagsAsTree}"/>
               <Button Grid.Column="4"
                       Classes="icon_button"
@@ -263,7 +263,7 @@
                       Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
-                      ShowTagsAsTree="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowTagsAsTree, Mode=OneWay}"
+                      ShowTagsAsTree="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsAsTree, Mode=OneWay}"
                       Tags="{Binding VisibleTags}"
                       Focusable="False"
                       IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
@@ -694,7 +694,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
             <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
-                         AuthorNameColumnWidth="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
+                         AuthorNameColumnWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
                          IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
                          OnlyHighlightCurrentBranch="{Binding Repo.OnlyHighlightCurrentBranchInHistories}"
                          NavigationId="{Binding NavigationId}"/>

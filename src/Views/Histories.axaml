@@ -10,7 +10,7 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:LayoutableGrid UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+  <v:LayoutableGrid UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <v:LayoutableGrid.RowDefinitions>
       <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>
@@ -51,11 +51,11 @@
               <TextBlock Classes="table_header"
                          Margin="6,0,0,0"
                          Text="{DynamicResource Text.Histories.Header.Time}"
-                         IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
+                         IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
               <TextBlock Classes="table_header"
                          Margin="6,0,0,0"
                          Text="{DynamicResource Text.Histories.Header.AuthorTime}"
-                         IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"/>
+                         IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"/>
             </StackPanel>
           </Grid>
         </Border>
@@ -193,9 +193,9 @@
                                            HorizontalAlignment="Center"
                                            FontWeight="{Binding FontWeight}"
                                            Opacity="{Binding Opacity}"
-                                           UseAuthorTime="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
-                                           ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
-                                           DateTimeFormat="{Binding Source={x:Static vm:Preference.Instance}, Path=DateTimeFormat}"/>
+                                           UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
+                                           ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
+                                           DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat}"/>
                   </Border>
                 </Grid>
               </DataTemplate>

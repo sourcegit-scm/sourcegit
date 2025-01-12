@@ -38,17 +38,17 @@ namespace SourceGit.ViewModels
         {
             if (string.IsNullOrWhiteSpace(_searchFilter))
             {
-                foreach (var node in Preference.Instance.RepositoryNodes)
+                foreach (var node in Preferences.Instance.RepositoryNodes)
                     ResetVisibility(node);
             }
             else
             {
-                foreach (var node in Preference.Instance.RepositoryNodes)
+                foreach (var node in Preferences.Instance.RepositoryNodes)
                     SetVisibilityBySearch(node);
             }
 
             var rows = new List<RepositoryNode>();
-            MakeTreeRows(rows, Preference.Instance.RepositoryNodes);
+            MakeTreeRows(rows, Preferences.Instance.RepositoryNodes);
             Rows.Clear();
             Rows.AddRange(rows);
         }
@@ -85,7 +85,7 @@ namespace SourceGit.ViewModels
 
         public void InitRepository(string path, RepositoryNode parent, string reason)
         {
-            if (!Preference.Instance.IsGitConfigured())
+            if (!Preferences.Instance.IsGitConfigured())
             {
                 App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
@@ -98,7 +98,7 @@ namespace SourceGit.ViewModels
 
         public void Clone()
         {
-            if (!Preference.Instance.IsGitConfigured())
+            if (!Preferences.Instance.IsGitConfigured())
             {
                 App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
@@ -111,7 +111,7 @@ namespace SourceGit.ViewModels
 
         public void OpenTerminal()
         {
-            if (!Preference.Instance.IsGitConfigured())
+            if (!Preferences.Instance.IsGitConfigured())
                 App.RaiseException(string.Empty, App.Text("NotConfigured"));
             else
                 Native.OS.OpenTerminal(null);
@@ -119,7 +119,7 @@ namespace SourceGit.ViewModels
 
         public void ScanDefaultCloneDir()
         {
-            var defaultCloneDir = Preference.Instance.GitDefaultCloneDir;
+            var defaultCloneDir = Preferences.Instance.GitDefaultCloneDir;
             if (string.IsNullOrEmpty(defaultCloneDir))
             {
                 App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
@@ -151,7 +151,7 @@ namespace SourceGit.ViewModels
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
-            Preference.Instance.MoveNode(from, to, true);
+            Preferences.Instance.MoveNode(from, to, true);
             Refresh();
         }
 

@@ -11,7 +11,7 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            ViewModels.Preference.Instance.Save();
+            ViewModels.Preferences.Instance.Save();
             base.OnClosing(e);
         }
     }

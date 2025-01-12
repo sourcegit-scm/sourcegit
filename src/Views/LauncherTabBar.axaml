@@ -49,7 +49,7 @@
                   </Grid>
                 </ToolTip.Tip>
                 
-                <Grid Width="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                <Grid Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
                         Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
@@ -65,7 +65,7 @@
                   <TextBlock Grid.Column="1"
                              Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                             FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                              TextAlignment="Center"
                              Text="{Binding Node.Name}"
                              IsVisible="{Binding Node.IsRepository}"
@@ -73,7 +73,7 @@
                   <TextBlock Grid.Column="1"
                              Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                             FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                              TextAlignment="Center"
                              Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                              IsVisible="{Binding !Node.IsRepository}"

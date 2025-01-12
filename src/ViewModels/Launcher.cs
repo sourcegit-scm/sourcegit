@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             if (string.IsNullOrEmpty(startupRepo))
             {
                 ActiveWorkspace = pref.GetActiveWorkspace();
@@ -117,7 +117,7 @@ namespace SourceGit.ViewModels
 
         public void Quit(double width, double height)
         {
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             pref.Layout.LauncherWidth = width;
             pref.Layout.LauncherHeight = height;
             pref.Save();
@@ -355,7 +355,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextForWorkspace()
         {
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             var menu = new ContextMenu();
 
             for (var i = 0; i < pref.Workspaces.Count; i++)
@@ -481,7 +481,7 @@ namespace SourceGit.ViewModels
 
             _ignoreIndexChange = true;
 
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             foreach (var w in pref.Workspaces)
                 w.IsActive = false;
 

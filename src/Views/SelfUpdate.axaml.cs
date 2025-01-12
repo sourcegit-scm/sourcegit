@@ -84,7 +84,7 @@ namespace SourceGit.Views
         private void IgnoreThisVersion(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Version ver })
-                ViewModels.Preference.Instance.IgnoreUpdateTag = ver.TagName;
+                ViewModels.Preferences.Instance.IgnoreUpdateTag = ver.TagName;
 
             Close();
             e.Handled = true;

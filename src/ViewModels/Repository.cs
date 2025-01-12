@@ -949,7 +949,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var builder = new StringBuilder();
-            builder.Append($"-{Preference.Instance.MaxHistoryCommits} ");
+            builder.Append($"-{Preferences.Instance.MaxHistoryCommits} ");
 
             if (_settings.EnableTopoOrderInHistories)
                 builder.Append("--topo-order ");
@@ -1118,7 +1118,7 @@ namespace SourceGit.ViewModels
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
             var normalizedPath = root.Replace("\\", "/");
 
-            var node = Preference.Instance.FindNode(normalizedPath);
+            var node = Preferences.Instance.FindNode(normalizedPath);
             if (node == null)
             {
                 node = new RepositoryNode()
@@ -1147,7 +1147,7 @@ namespace SourceGit.ViewModels
 
         public void OpenWorktree(Models.Worktree worktree)
         {
-            var node = Preference.Instance.FindNode(worktree.FullPath);
+            var node = Preferences.Instance.FindNode(worktree.FullPath);
             if (node == null)
             {
                 node = new RepositoryNode()
