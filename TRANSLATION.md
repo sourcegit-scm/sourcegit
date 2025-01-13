@@ -83,7 +83,7 @@
 
 </details>
 
-### it_IT.axaml: 93.33%
+### it_IT.axaml: 93.32%
 
 
 <details>
@@ -141,7 +141,7 @@
 
 </details>
 
-### pt_BR.axaml: 94.42%
+### pt_BR.axaml: 94.41%
 
 
 <details>
