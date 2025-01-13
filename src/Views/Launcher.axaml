@@ -62,6 +62,7 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
               </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" InputGesture="Ctrl+Q"/>
           </MenuFlyout>
         </Button.Flyout>
         <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
