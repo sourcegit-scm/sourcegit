@@ -29,6 +29,8 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _activeWorkspace, value);
         }
 
+        public bool InterceptQuit { get; set; } = false;
+
         public LauncherPage ActivePage
         {
             get => _activePage;
@@ -47,7 +49,6 @@ namespace SourceGit.ViewModels
         public Launcher(string startupRepo)
         {
             _ignoreIndexChange = true;
-
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
