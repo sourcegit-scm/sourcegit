@@ -59,6 +59,12 @@ namespace SourceGit.Views
             var launcher = this.FindAncestorOfType<Launcher>();
             if (launcher is not null && DataContext is ViewModels.Repository repo)
             {
+                if (repo.IsBare)
+                {
+                    App.RaiseException(repo.FullPath, "Can't run `git pull` in bare repository!");
+                    return;
+                }
+
                 var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
                 launcher.ClearKeyModifier();
                 repo.Pull(startDirectly);
