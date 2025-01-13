@@ -23,6 +23,8 @@ namespace SourceGit.Native
             void OpenInFileManager(string path, bool select);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
+
+            bool EnsureSingleInstance();
         }
 
         public static string DataDir {
@@ -216,6 +218,11 @@ namespace SourceGit.Native
 
         [GeneratedRegex(@"^git version[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
         private static partial Regex REG_GIT_VERSION();
+
+        public static bool EnsureSingleInstance()
+        {
+            return _backend.EnsureSingleInstance();
+        }
 
         private static IBackend _backend = null;
         private static string _gitExecutable = string.Empty;
