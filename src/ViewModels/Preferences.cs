@@ -348,6 +348,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _lastCheckUpdateTime, value);
         }
 
+        public bool SystemTrayIcon 
+        {
+            get => _systemTrayIcon;
+            set => SetProperty(ref _systemTrayIcon, value);
+        }
+
         public bool IsGitConfigured()
         {
             var path = GitInstallPath;
@@ -682,5 +688,7 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolPath = string.Empty;
 
         private uint _statisticsSampleColor = 0xFF00FF00;
+
+        private bool _systemTrayIcon = false;
     }
 }
