@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-99.86%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-99.86%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-94.87%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-95.42%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-96.67%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-97.55%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-100.00%25-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-94.69%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-93.33%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-94.42%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 > [!NOTE]
 > You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
@@ -102,37 +102,33 @@ For **macOS** users:
 
 For **Linux** users:
 
-* For Debian/Ubuntu based distributions, you can add the `sourcegit` repository by following:
-  You may need to install curl and/or gpg first, if you're on a very minimal host:
+* Thanks [@aikawayataro](https://github.com/aikawayataro) for providing `rpm` and `deb` repositories, hosted on [Codeberg](https://codeberg.org/yataro/-/packages).
+
+  `deb` how to:
   ```shell
-  apt update && apt install curl gpg -y
+  curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
+  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
+  sudo apt update
+  sudo apt install sourcegit
   ```
-  Install the registry signing key:
+
+  `rpm` how to:
   ```shell
-  curl -fsSL "https://packages.buildkite.com/sourcegit/sourcegit-deb/gpgkey" | gpg --dearmor -o /etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg
+  curl https://codeberg.org/api/packages/yataro/rpm.repo | sed -e 's/gpgcheck=1/gpgcheck=0/' > sourcegit.repo
+
+  # Fedora 41 and newer
+  sudo dnf config-manager addrepo --from-repofile=./sourcegit.repo
+  # Fedora 40 and earlier
+  sudo dnf config-manager --add-repo ./sourcegit.repo
+
+  sudo dnf install sourcegit
   ```
-  Configure the source:
-  ```shell
-  echo -e "deb [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main\ndeb-src [signed-by=/etc/apt/keyrings/sourcegit_sourcegit-deb-archive-keyring.gpg] https://packages.buildkite.com/sourcegit/sourcegit-deb/any/ any main" > /etc/apt/sources.list.d/buildkite-sourcegit-sourcegit-deb.list
-  ```
-  Update your local repository and install the package:
-  ```shell
-  apt update && apt install sourcegit
-  ```
-* For RHEL/Fedora based distributions, you can add the `sourcegit` repository by following:
-  Configure the source:
-  ```shell
-  sudo sh -c 'echo -e "[sourcegit-rpm]\nname=sourcegit-rpm\nbaseurl=https://packages.buildkite.com/sourcegit/sourcegit-rpm/rpm_any/rpm_any/\$basearch\nenabled=1\nrepo_gpgcheck=1\ngpgcheck=0\ngpgkey=https://packages.buildkite.com/sourcegit/sourcegit-rpm/gpgkey\npriority=1"' > /etc/yum.repos.d/sourcegit-rpm.repo
-  ```
-  Install the package with this command:
-  ```shell
-  sudo dnf install -y sourcegit
-  ```
-* `Appimage` files can be found on [AppimageHub](https://appimage.github.io/SourceGit/)
-* `xdg-open` must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your linux.
+
+  If your distribution isn't using `dnf`, please refer to the documentation of your distribution on how to add an `rpm` repository.
+* `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
+* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
-* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`. 
+* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`.
 
 ## OpenAI
 

@@ -22,6 +22,7 @@
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
                 SelectedItem="{Binding SelectedLocalBranch, Mode=TwoWay}"
+                IsTextSearchEnabled="True"
                 IsEnabled="{Binding !HasSpecifiedLocalBranch}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
@@ -31,6 +32,12 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
+
+        <ComboBox.ItemContainerTheme>
+          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
+          </ControlTheme>
+        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
@@ -60,6 +67,7 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
+                IsTextSearchEnabled="True"
                 SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
@@ -77,6 +85,12 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
+
+        <ComboBox.ItemContainerTheme>
+          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
+          </ControlTheme>
+        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <CheckBox Grid.Row="3" Grid.Column="1"

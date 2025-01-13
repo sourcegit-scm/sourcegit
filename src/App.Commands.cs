@@ -29,20 +29,30 @@ namespace SourceGit
         {
             get
             {
-            #if DISABLE_UPDATE_DETECTION
+#if DISABLE_UPDATE_DETECTION
                 return false;
-            #else
+#else
                 return true;
-            #endif
+#endif
             }
         }
 
-        public static readonly Command OpenPreferenceCommand = new Command(_ => OpenDialog(new Views.Preference()));
+        public static readonly Command OpenPreferencesCommand = new Command(_ => OpenDialog(new Views.Preferences()));
         public static readonly Command OpenHotkeysCommand = new Command(_ => OpenDialog(new Views.Hotkeys()));
         public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
         public static readonly Command OpenAboutCommand = new Command(_ => OpenDialog(new Views.About()));
-        public static readonly Command CheckForUpdateCommand = new Command(_ => Check4Update(true));
+        public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
         public static readonly Command QuitCommand = new Command(_ => Quit(0));
-        public static readonly Command CopyTextBlockCommand = new Command(p => CopyTextBlock(p as TextBlock));
+        public static readonly Command CopyTextBlockCommand = new Command(p =>
+        {
+            var textBlock = p as TextBlock;
+            if (textBlock == null)
+                return;
+
+            if (textBlock.Inlines is { Count: > 0 } inlines)
+                CopyText(inlines.Text);
+            else if (!string.IsNullOrEmpty(textBlock.Text))
+                CopyText(textBlock.Text);
+        });
     }
 }

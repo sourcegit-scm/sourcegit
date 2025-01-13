@@ -45,7 +45,7 @@
     <TextBlock Grid.Row="2"
                x:Name="ProgressMessage"
                Margin="16"
-               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                HorizontalAlignment="Center"
                Text="Generating commit message... Please wait!"
                TextTrimming="CharacterEllipsis"/>

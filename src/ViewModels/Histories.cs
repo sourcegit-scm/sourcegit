@@ -209,12 +209,12 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (PopupHost.CanCreatePopup())
+            if (_repo.CanCreatePopup())
             {
                 if (firstRemoteBranch != null)
-                    PopupHost.ShowPopup(new CreateBranch(_repo, firstRemoteBranch));
+                    _repo.ShowPopup(new CreateBranch(_repo, firstRemoteBranch));
                 else
-                    PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
+                    _repo.ShowPopup(new CheckoutCommit(_repo, commit));
             }
         }
 
@@ -260,8 +260,8 @@ namespace SourceGit.ViewModels
                     cherryPickMultiple.Icon = App.CreateMenuIcon("Icons.CherryPick");
                     cherryPickMultiple.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new CherryPick(_repo, selected));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new CherryPick(_repo, selected));
                         e.Handled = true;
                     };
                     multipleMenu.Items.Add(cherryPickMultiple);
@@ -274,8 +274,8 @@ namespace SourceGit.ViewModels
                     mergeMultiple.Icon = App.CreateMenuIcon("Icons.Merge");
                     mergeMultiple.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new MergeMultiple(_repo, selected));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new MergeMultiple(_repo, selected));
                         e.Handled = true;
                     };
                     multipleMenu.Items.Add(mergeMultiple);
@@ -401,8 +401,8 @@ namespace SourceGit.ViewModels
                 reset.Icon = App.CreateMenuIcon("Icons.Reset");
                 reset.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Reset(_repo, current, commit));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new Reset(_repo, current, commit));
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
@@ -420,8 +420,8 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new Squash(_repo, commit, commit.SHA));
 
                         e.Handled = true;
                     };
@@ -441,8 +441,8 @@ namespace SourceGit.ViewModels
                         return;
                     }
 
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Reword(_repo, commit));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new Reword(_repo, commit));
                     e.Handled = true;
                 };
                 menu.Items.Add(reword);
@@ -462,8 +462,8 @@ namespace SourceGit.ViewModels
                     if (commit.Parents.Count == 1)
                     {
                         var parent = _commits.Find(x => x.SHA == commit.Parents[0]);
-                        if (parent != null && PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Squash(_repo, parent, commit.SHA));
+                        if (parent != null && _repo.CanCreatePopup())
+                            _repo.ShowPopup(new Squash(_repo, parent, commit.SHA));
                     }
 
                     e.Handled = true;
@@ -478,8 +478,8 @@ namespace SourceGit.ViewModels
                 rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                 rebase.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Rebase(_repo, current, commit));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new Rebase(_repo, current, commit));
                     e.Handled = true;
                 };
                 menu.Items.Add(rebase);
@@ -491,8 +491,8 @@ namespace SourceGit.ViewModels
                     merge.Icon = App.CreateMenuIcon("Icons.Merge");
                     merge.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Merge(_repo, commit, current.Name));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new Merge(_repo, commit, current.Name));
 
                         e.Handled = true;
                     };
@@ -504,11 +504,11 @@ namespace SourceGit.ViewModels
                 cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
                 cherryPick.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
+                    if (_repo.CanCreatePopup())
                     {
                         if (commit.Parents.Count <= 1)
                         {
-                            PopupHost.ShowPopup(new CherryPick(_repo, [commit]));
+                            _repo.ShowPopup(new CherryPick(_repo, [commit]));
                         }
                         else
                         {
@@ -523,7 +523,7 @@ namespace SourceGit.ViewModels
                                     parents.Add(parent);
                             }
 
-                            PopupHost.ShowPopup(new CherryPick(_repo, commit, parents));
+                            _repo.ShowPopup(new CherryPick(_repo, commit, parents));
                         }
                     }
 
@@ -538,8 +538,8 @@ namespace SourceGit.ViewModels
                 revert.Icon = App.CreateMenuIcon("Icons.Undo");
                 revert.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Revert(_repo, commit));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new Revert(_repo, commit));
                     e.Handled = true;
                 };
                 menu.Items.Add(revert);
@@ -552,8 +552,8 @@ namespace SourceGit.ViewModels
                 checkoutCommit.Icon = App.CreateMenuIcon("Icons.Detached");
                 checkoutCommit.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new CheckoutCommit(_repo, commit));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new CheckoutCommit(_repo, commit));
                     e.Handled = true;
                 };
                 menu.Items.Add(checkoutCommit);
@@ -630,8 +630,8 @@ namespace SourceGit.ViewModels
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new CreateBranch(_repo, commit));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new CreateBranch(_repo, commit));
                 e.Handled = true;
             };
             menu.Items.Add(createBranch);
@@ -641,8 +641,8 @@ namespace SourceGit.ViewModels
             createTag.Header = App.Text("CreateTag");
             createTag.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new CreateTag(_repo, commit));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new CreateTag(_repo, commit));
                 e.Handled = true;
             };
             menu.Items.Add(createTag);
@@ -683,8 +683,8 @@ namespace SourceGit.ViewModels
             archive.Header = App.Text("Archive");
             archive.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Archive(_repo, commit));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Archive(_repo, commit));
                 e.Handled = true;
             };
             menu.Items.Add(archive);
@@ -710,8 +710,8 @@ namespace SourceGit.ViewModels
                     item.Header = dup.Name;
                     item.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowAndStartPopup(new ExecuteCustomAction(_repo, dup, commit));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowAndStartPopup(new ExecuteCustomAction(_repo, dup, commit));
 
                         e.Handled = true;
                     };
@@ -871,8 +871,8 @@ namespace SourceGit.ViewModels
                     if (b == null)
                         return;
 
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowAndStartPopup(new Merge(_repo, b, current.Name));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowAndStartPopup(new Merge(_repo, b, current.Name));
 
                     e.Handled = true;
                 };
@@ -883,8 +883,8 @@ namespace SourceGit.ViewModels
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
                 pull.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Pull(_repo, null));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new Pull(_repo, null));
                     e.Handled = true;
                 };
                 submenu.Items.Add(pull);
@@ -896,8 +896,8 @@ namespace SourceGit.ViewModels
             push.IsEnabled = _repo.Remotes.Count > 0;
             push.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Push(_repo, current));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Push(_repo, current));
                 e.Handled = true;
             };
             submenu.Items.Add(push);
@@ -907,8 +907,8 @@ namespace SourceGit.ViewModels
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
             rename.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new RenameBranch(_repo, current));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new RenameBranch(_repo, current));
                 e.Handled = true;
             };
             submenu.Items.Add(rename);
@@ -922,8 +922,8 @@ namespace SourceGit.ViewModels
                 finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(_repo, current, detect.Type, detect.Prefix));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new GitFlowFinish(_repo, current, detect.Type, detect.Prefix));
                     e.Handled = true;
                 };
                 submenu.Items.Add(finish);
@@ -967,8 +967,8 @@ namespace SourceGit.ViewModels
             merge.IsEnabled = !merged;
             merge.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, branch, current.Name));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Merge(_repo, branch, current.Name));
                 e.Handled = true;
             };
             submenu.Items.Add(merge);
@@ -978,8 +978,8 @@ namespace SourceGit.ViewModels
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
             rename.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new RenameBranch(_repo, branch));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new RenameBranch(_repo, branch));
                 e.Handled = true;
             };
             submenu.Items.Add(rename);
@@ -989,8 +989,8 @@ namespace SourceGit.ViewModels
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new DeleteBranch(_repo, branch));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new DeleteBranch(_repo, branch));
                 e.Handled = true;
             };
             submenu.Items.Add(delete);
@@ -1004,8 +1004,8 @@ namespace SourceGit.ViewModels
                 finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                 finish.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
                     e.Handled = true;
                 };
                 submenu.Items.Add(finish);
@@ -1051,8 +1051,8 @@ namespace SourceGit.ViewModels
             merge.IsEnabled = !merged;
             merge.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, branch, current.Name));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Merge(_repo, branch, current.Name));
                 e.Handled = true;
             };
 
@@ -1063,8 +1063,8 @@ namespace SourceGit.ViewModels
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new DeleteBranch(_repo, branch));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new DeleteBranch(_repo, branch));
                 e.Handled = true;
             };
             submenu.Items.Add(delete);
@@ -1098,8 +1098,8 @@ namespace SourceGit.ViewModels
             push.IsEnabled = _repo.Remotes.Count > 0;
             push.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new PushTag(_repo, tag));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new PushTag(_repo, tag));
                 e.Handled = true;
             };
             submenu.Items.Add(push);
@@ -1110,8 +1110,8 @@ namespace SourceGit.ViewModels
             merge.IsEnabled = !merged;
             merge.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new Merge(_repo, tag, current.Name));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Merge(_repo, tag, current.Name));
                 e.Handled = true;
             };
             submenu.Items.Add(merge);
@@ -1121,8 +1121,8 @@ namespace SourceGit.ViewModels
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new DeleteTag(_repo, tag));
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new DeleteTag(_repo, tag));
                 e.Handled = true;
             };
             submenu.Items.Add(delete);

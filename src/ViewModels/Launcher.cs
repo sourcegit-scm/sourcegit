@@ -36,7 +36,6 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _activePage, value))
                 {
-                    PopupHost.Active = value;
                     UpdateTitle();
 
                     if (!_ignoreIndexChange && value is { Data: Repository repo })
@@ -52,7 +51,7 @@ namespace SourceGit.ViewModels
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             if (string.IsNullOrEmpty(startupRepo))
             {
                 ActiveWorkspace = pref.GetActiveWorkspace();
@@ -104,8 +103,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var normalized = test.StdOut.Trim().Replace("\\", "/");
-                    var node = pref.FindOrAddNodeByRepositoryPath(normalized, null, false);
+                    var node = pref.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
                     Welcome.Instance.Refresh();
                     OpenRepositoryInTab(node, null);
                 }
@@ -119,7 +117,7 @@ namespace SourceGit.ViewModels
 
         public void Quit(double width, double height)
         {
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             pref.Layout.LauncherWidth = width;
             pref.Layout.LauncherHeight = height;
             pref.Save();
@@ -295,7 +293,6 @@ namespace SourceGit.ViewModels
                 FullPath = node.Id,
                 GitDir = gitDir,
             };
-
             repo.Open();
 
             if (page == null)
@@ -358,7 +355,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextForWorkspace()
         {
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             var menu = new ContextMenu();
 
             for (var i = 0; i < pref.Workspaces.Count; i++)
@@ -475,7 +472,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var one in Pages)
             {
-                if (one.IsInProgress())
+                if (!one.CanCreatePopup() || one.Data is Repository { IsAutoFetching: true })
                 {
                     App.RaiseException(null, "You have unfinished task(s) in opened pages. Please wait!!!");
                     return;
@@ -484,7 +481,7 @@ namespace SourceGit.ViewModels
 
             _ignoreIndexChange = true;
 
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             foreach (var w in pref.Workspaces)
                 w.IsActive = false;
 

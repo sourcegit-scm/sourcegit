@@ -1,14 +1,12 @@
 using System;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-
+using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.TextMate;
-using AvaloniaEdit;
 
 namespace SourceGit.Views
 {
@@ -86,7 +84,7 @@ namespace SourceGit.Views
         private void IgnoreThisVersion(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Version ver })
-                ViewModels.Preference.Instance.IgnoreUpdateTag = ver.TagName;
+                ViewModels.Preferences.Instance.IgnoreUpdateTag = ver.TagName;
 
             Close();
             e.Handled = true;

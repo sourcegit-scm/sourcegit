@@ -26,10 +26,11 @@ namespace SourceGit.Native
         public string FindGitExecutable()
         {
             var gitPathVariants = new List<string>() {
-                 "/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git", "/opt/homebrew/opt/git/bin/git" 
+                 "/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git", "/opt/homebrew/opt/git/bin/git"
             };
             foreach (var path in gitPathVariants)
-                if (File.Exists(path)) return path;
+                if (File.Exists(path))
+                    return path;
             return string.Empty;
         }
 

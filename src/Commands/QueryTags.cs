@@ -11,7 +11,7 @@ namespace SourceGit.Commands
 
             Context = repo;
             WorkingDirectory = repo;
-            Args = $"tag -l --sort=-creatordate --format=\"{_boundary}%(refname)%00%(objectname)%00%(*objectname)%00%(contents:subject)%0a%0a%(contents:body)\"";
+            Args = $"tag -l --format=\"{_boundary}%(refname)%00%(objectname)%00%(*objectname)%00%(creatordate:unix)%00%(contents:subject)%0a%0a%(contents:body)\"";
         }
 
         public List<Models.Tag> Result()
@@ -25,14 +25,15 @@ namespace SourceGit.Commands
             foreach (var record in records)
             {
                 var subs = record.Split('\0', StringSplitOptions.None);
-                if (subs.Length != 4)
+                if (subs.Length != 5)
                     continue;
 
-                var message = subs[3].Trim();
+                var message = subs[4].Trim();
                 tags.Add(new Models.Tag()
                 {
                     Name = subs[0].Substring(10),
                     SHA = string.IsNullOrEmpty(subs[2]) ? subs[1] : subs[2],
+                    CreatorDate = ulong.Parse(subs[3]),
                     Message = string.IsNullOrEmpty(message) ? null : message,
                 });
             }

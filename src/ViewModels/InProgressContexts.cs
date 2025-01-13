@@ -71,7 +71,7 @@ namespace SourceGit.ViewModels
             get => GetFriendlyNameOfCommit(Head);
         }
 
-        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick") 
+        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick")
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
             Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };

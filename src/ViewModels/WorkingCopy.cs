@@ -314,13 +314,13 @@ namespace SourceGit.ViewModels
 
         public void StashAll(bool autoStart)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!_repo.CanCreatePopup())
                 return;
 
             if (autoStart)
-                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
+                _repo.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
             else
-                PopupHost.ShowPopup(new StashChanges(_repo, _cached, false));
+                _repo.ShowPopup(new StashChanges(_repo, _cached, false));
         }
 
         public void StageSelected(Models.Change next)
@@ -346,6 +346,17 @@ namespace SourceGit.ViewModels
             if (changes.Count == _unstaged.Count)
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
+            }
+            else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
+            {
+                var paths = new List<string>();
+                foreach (var c in changes)
+                    paths.Add(c.Path);
+
+                var tmpFile = Path.GetTempFileName();
+                File.WriteAllLines(tmpFile, paths);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Exec());
+                File.Delete(tmpFile);
             }
             else
             {
@@ -405,12 +416,12 @@ namespace SourceGit.ViewModels
 
         public void Discard(List<Models.Change> changes)
         {
-            if (PopupHost.CanCreatePopup())
+            if (_repo.CanCreatePopup())
             {
                 if (changes.Count == _unstaged.Count && _staged.Count == 0)
-                    PopupHost.ShowPopup(new Discard(_repo));
+                    _repo.ShowPopup(new Discard(_repo));
                 else
-                    PopupHost.ShowPopup(new Discard(_repo, changes));
+                    _repo.ShowPopup(new Discard(_repo, changes));
             }
         }
 
@@ -454,8 +465,8 @@ namespace SourceGit.ViewModels
 
         public async void UseExternalMergeTool(Models.Change change)
         {
-            var toolType = Preference.Instance.ExternalMergeToolType;
-            var toolPath = Preference.Instance.ExternalMergeToolPath;
+            var toolType = Preferences.Instance.ExternalMergeToolType;
+            var toolPath = Preferences.Instance.ExternalMergeToolPath;
 
             _repo.SetWatcherEnabled(false);
             await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
@@ -619,7 +630,7 @@ namespace SourceGit.ViewModels
                         useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
-                    else if(_inProgressContext is RebaseInProgress rebase)
+                    else if (_inProgressContext is RebaseInProgress rebase)
                     {
                         useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
@@ -666,8 +677,8 @@ namespace SourceGit.ViewModels
                     stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                     stash.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                         e.Handled = true;
                     };
@@ -971,7 +982,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0,10) + " (revert)");
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -1008,8 +1019,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                     e.Handled = true;
                 };
@@ -1131,8 +1142,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1306,8 +1317,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1514,7 +1525,7 @@ namespace SourceGit.ViewModels
 
         private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!_repo.CanCreatePopup())
             {
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
                 return;
@@ -1560,7 +1571,7 @@ namespace SourceGit.ViewModels
                         UseAmend = false;
 
                         if (autoPush)
-                            PopupHost.ShowAndStartPopup(new Push(_repo, null));
+                            _repo.ShowAndStartPopup(new Push(_repo, null));
                     }
 
                     _repo.MarkBranchesDirtyManually();
@@ -1590,7 +1601,7 @@ namespace SourceGit.ViewModels
 
         private IList<Models.OpenAIService> GetPreferedOpenAIServices()
         {
-            var services = Preference.Instance.OpenAIServices;
+            var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
                 return [];
 

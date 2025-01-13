@@ -10,12 +10,6 @@ namespace SourceGit.ViewModels
 {
     public class Popup : ObservableValidator
     {
-        public string HostPageId
-        {
-            get;
-            set;
-        }
-
         public object View
         {
             get;

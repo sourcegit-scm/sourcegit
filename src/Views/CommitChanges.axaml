@@ -9,7 +9,7 @@
              x:DataType="vm:CommitDetail">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preference.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
       <ColumnDefinition Width="4"/>
       <ColumnDefinition Width="*" MinWidth="100"/>
     </Grid.ColumnDefinitions>
@@ -40,13 +40,13 @@
         <v:ChangeViewModeSwitcher Grid.Column="1"
                                   Width="18" Height="18"
                                   Margin="4,0,0,0"
-                                  ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
+                                  ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
       </Grid>
 
       <!-- Changes -->
       <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
         <v:ChangeCollectionView SelectionMode="Single"
-                                ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode}"
+                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
                                 Changes="{Binding VisibleChanges}"
                                 SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                 ContextRequested="OnChangeContextRequested"/>

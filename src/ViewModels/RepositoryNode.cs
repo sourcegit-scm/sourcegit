@@ -70,14 +70,16 @@ namespace SourceGit.ViewModels
 
         public void Edit()
         {
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new EditRepositoryNode(this));
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new EditRepositoryNode(this);
         }
 
         public void AddSubFolder()
         {
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new CreateGroup(this));
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new CreateGroup(this);
         }
 
         public void OpenInFileManager()
@@ -96,8 +98,9 @@ namespace SourceGit.ViewModels
 
         public void Delete()
         {
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new DeleteRepositoryNode(this));
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new DeleteRepositoryNode(this);
         }
 
         private string _id = string.Empty;

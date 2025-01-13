@@ -100,8 +100,18 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
-            var repo = App.FindOpenedRepository(_repo);
-            repo?.NavigateToCommit(commitSHA);
+            var launcher = App.GetLauncer();
+            if (launcher == null)
+                return;
+
+            foreach (var page in launcher.Pages)
+            {
+                if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
+                {
+                    repo.NavigateToCommit(commitSHA);
+                    break;
+                }
+            }
         }
 
         public void Swap()
@@ -140,8 +150,8 @@ namespace SourceGit.ViewModels
             diffWithMerger.Click += (_, ev) =>
             {
                 var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
-                var toolType = Preference.Instance.ExternalMergeToolType;
-                var toolPath = Preference.Instance.ExternalMergeToolPath;
+                var toolType = Preferences.Instance.ExternalMergeToolType;
+                var toolPath = Preferences.Instance.ExternalMergeToolPath;
 
                 Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
                 ev.Handled = true;

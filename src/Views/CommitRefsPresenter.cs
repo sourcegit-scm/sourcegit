@@ -88,9 +88,8 @@ namespace SourceGit.Views
                 FontFamilyProperty,
                 FontSizeProperty,
                 ForegroundProperty,
-                TagBackgroundProperty);
-
-            AffectsRender<CommitRefsPresenter>(
+                UseGraphColorProperty,
+                TagBackgroundProperty,
                 BackgroundProperty);
         }
 
@@ -172,7 +171,7 @@ namespace SourceGit.Views
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
                 var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
-                var tagBG = TagBackground;
+                var tagBG = UseGraphColor ? TagBackground : Brushes.Gray;
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
                 var requiredHeight = 16.0;

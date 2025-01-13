@@ -25,10 +25,11 @@ namespace SourceGit.Models
             s_penCount = colors.Count;
         }
 
-        public class Path(int color)
+        public class Path(int color, bool isMerged)
         {
             public List<Point> Points { get; } = [];
             public int Color { get; } = color;
+            public bool IsMerged { get; } = isMerged;
         }
 
         public class Link
@@ -37,6 +38,7 @@ namespace SourceGit.Models
             public Point Control;
             public Point End;
             public int Color;
+            public bool IsMerged;
         }
 
         public enum DotType
@@ -51,6 +53,7 @@ namespace SourceGit.Models
             public DotType Type;
             public Point Center;
             public int Color;
+            public bool IsMerged;
         }
 
         public List<Path> Paths { get; } = [];
@@ -68,7 +71,7 @@ namespace SourceGit.Models
             var unsolved = new List<PathHelper>();
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
-            var colorIdx = 0;
+            var colorPicker = new ColorPicker();
 
             foreach (var commit in commits)
             {
@@ -108,7 +111,6 @@ namespace SourceGit.Models
                         }
 
                         isMerged = isMerged || l.IsMerged;
-                        major.IsMerged = isMerged;
                     }
                     else
                     {
@@ -119,28 +121,35 @@ namespace SourceGit.Models
 
                 // Remove ended curves from unsolved
                 foreach (var l in ended)
+                {
+                    colorPicker.Recycle(l.Path.Color);
                     unsolved.Remove(l);
+                }
                 ended.Clear();
 
-                // Create new curve for branch head
+                // If no path found, create new curve for branch head
+                // Otherwise, create new curve for new merged commit
                 if (major == null)
                 {
                     offsetX += unitWidth;
 
                     if (commit.Parents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isMerged, colorIdx, new Point(offsetX, offsetY));
+                        major = new PathHelper(commit.Parents[0], isMerged, colorPicker.Next(), new Point(offsetX, offsetY));
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
-
-                    colorIdx = (colorIdx + 1) % s_penCount;
+                }
+                else if (isMerged && !major.IsMerged && commit.Parents.Count > 0)
+                {
+                    major.ReplaceMerged();
+                    temp.Paths.Add(major.Path);
                 }
 
                 // Calculate link position of this commit.
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
                 var dotColor = major?.Path.Color ?? 0;
-                var anchor = new Dot() { Center = position, Color = dotColor };
+                var anchor = new Dot() { Center = position, Color = dotColor, IsMerged = isMerged };
                 if (commit.IsCurrentHead)
                     anchor.Type = DotType.Head;
                 else if (commit.Parents.Count > 1)
@@ -158,16 +167,20 @@ namespace SourceGit.Models
                         var parent = unsolved.Find(x => x.Next.Equals(parentHash, StringComparison.Ordinal));
                         if (parent != null)
                         {
-                            // Try to change the merge state of linked graph
-                            if (isMerged)
-                                parent.IsMerged = true;
+                            if (isMerged && !parent.IsMerged)
+                            {
+                                parent.Goto(parent.LastX, offsetY + halfHeight, halfHeight);
+                                parent.ReplaceMerged();
+                                temp.Paths.Add(parent.Path);
+                            }
 
                             temp.Links.Add(new Link
                             {
                                 Start = position,
                                 End = new Point(parent.LastX, offsetY + halfHeight),
                                 Control = new Point(parent.LastX, position.Y),
-                                Color = parent.Path.Color
+                                Color = parent.Path.Color,
+                                IsMerged = isMerged,
                             });
                         }
                         else
@@ -175,10 +188,9 @@ namespace SourceGit.Models
                             offsetX += unitWidth;
 
                             // Create new curve for parent commit that not includes before
-                            var l = new PathHelper(parentHash, isMerged, colorIdx, position, new Point(offsetX, position.Y + halfHeight));
+                            var l = new PathHelper(parentHash, isMerged, colorPicker.Next(), position, new Point(offsetX, position.Y + halfHeight));
                             unsolved.Add(l);
                             temp.Paths.Add(l.Path);
-                            colorIdx = (colorIdx + 1) % s_penCount;
                         }
                     }
                 }
@@ -205,32 +217,53 @@ namespace SourceGit.Models
             return temp;
         }
 
+        private class ColorPicker
+        {
+            public int Next()
+            {
+                if (_colorsQueue.Count == 0)
+                {
+                    for (var i = 0; i < s_penCount; i++)
+                        _colorsQueue.Enqueue(i);
+                }
+
+                return _colorsQueue.Dequeue();
+            }
+
+            public void Recycle(int idx)
+            {
+                if (!_colorsQueue.Contains(idx))
+                    _colorsQueue.Enqueue(idx);
+            }
+
+            private Queue<int> _colorsQueue = new Queue<int>();
+        }
+
         private class PathHelper
         {
-            public Path Path { get; }
+            public Path Path { get; private set; }
             public string Next { get; set; }
-            public bool IsMerged { get; set; }
             public double LastX { get; private set; }
+
+            public bool IsMerged => Path.IsMerged;
 
             public PathHelper(string next, bool isMerged, int color, Point start)
             {
                 Next = next;
-                IsMerged = isMerged;
                 LastX = start.X;
                 _lastY = start.Y;
 
-                Path = new Path(color);
+                Path = new Path(color, isMerged);
                 Path.Points.Add(start);
             }
 
             public PathHelper(string next, bool isMerged, int color, Point start, Point to)
             {
                 Next = next;
-                IsMerged = isMerged;
                 LastX = to.X;
                 _lastY = to.Y;
 
-                Path = new Path(color);
+                Path = new Path(color, isMerged);
                 Path.Points.Add(start);
                 Path.Points.Add(to);
             }
@@ -310,6 +343,19 @@ namespace SourceGit.Models
                 _lastY = y;
             }
 
+            /// <summary>
+            ///     End the current path and create a new from the end.
+            /// </summary>
+            public void ReplaceMerged()
+            {
+                var color = Path.Color;
+                Add(LastX, _lastY);
+
+                Path = new Path(color, true);
+                Path.Points.Add(new Point(LastX, _lastY));
+                _endY = 0;
+            }
+
             private void Add(double x, double y)
             {
                 if (_endY < y)
@@ -327,7 +373,6 @@ namespace SourceGit.Models
         private static readonly List<Color> s_defaultPenColors = [
             Colors.Orange,
             Colors.ForestGreen,
-            Colors.Gray,
             Colors.Turquoise,
             Colors.Olive,
             Colors.Magenta,

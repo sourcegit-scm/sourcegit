@@ -136,7 +136,8 @@ namespace SourceGit.Views
                 Task.Run(() =>
                 {
                     var c = detail.GetParent(sha);
-                    if (c == null) return;
+                    if (c == null)
+                        return;
 
                     Dispatcher.UIThread.Invoke(() =>
                     {

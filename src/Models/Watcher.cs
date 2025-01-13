@@ -174,7 +174,7 @@ namespace SourceGit.Models
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
 
-                lock (_submodules)
+                lock (_lockSubmodule)
                 {
                     if (_submodules.Count > 0)
                         _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
@@ -195,7 +195,7 @@ namespace SourceGit.Models
             if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal))
                 return;
 
-            lock (_submodules)
+            lock (_lockSubmodule)
             {
                 foreach (var submodule in _submodules)
                 {

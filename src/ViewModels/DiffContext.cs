@@ -75,7 +75,7 @@ namespace SourceGit.ViewModels
 
         public void ToggleFullTextDiff()
         {
-            Preference.Instance.UseFullTextDiff = !Preference.Instance.UseFullTextDiff;
+            Preferences.Instance.UseFullTextDiff = !Preferences.Instance.UseFullTextDiff;
             LoadDiffContent();
         }
 
@@ -93,8 +93,8 @@ namespace SourceGit.ViewModels
 
         public void OpenExternalMergeTool()
         {
-            var toolType = Preference.Instance.ExternalMergeToolType;
-            var toolPath = Preference.Instance.ExternalMergeToolPath;
+            var toolType = Preferences.Instance.ExternalMergeToolType;
+            var toolPath = Preferences.Instance.ExternalMergeToolPath;
             Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, _option));
         }
 
@@ -112,7 +112,7 @@ namespace SourceGit.ViewModels
                 // NOTE: Here we override the UnifiedLines value (if UseFullTextDiff is on).
                 // There is no way to tell a git-diff to use "ALL lines of context",
                 // so instead we set a very high number for the "lines of context" parameter.
-                var numLines = Preference.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
+                var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
                 var latest = new Commands.Diff(_repo, _option, numLines, _ignoreWhitespace).Result();
                 var info = new Info(_option, numLines, _ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))

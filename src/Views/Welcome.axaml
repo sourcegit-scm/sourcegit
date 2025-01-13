@@ -158,7 +158,7 @@
                Classes="italic"
                Margin="0,0,8,0"
                HorizontalAlignment="Center" VerticalAlignment="Center"
-               FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                Text="{DynamicResource Text.Welcome.DragDropTip}"
                Foreground="{DynamicResource Brush.FG2}"/>
   </Grid>

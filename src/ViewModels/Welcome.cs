@@ -38,17 +38,17 @@ namespace SourceGit.ViewModels
         {
             if (string.IsNullOrWhiteSpace(_searchFilter))
             {
-                foreach (var node in Preference.Instance.RepositoryNodes)
+                foreach (var node in Preferences.Instance.RepositoryNodes)
                     ResetVisibility(node);
             }
             else
             {
-                foreach (var node in Preference.Instance.RepositoryNodes)
+                foreach (var node in Preferences.Instance.RepositoryNodes)
                     SetVisibilityBySearch(node);
             }
 
             var rows = new List<RepositoryNode>();
-            MakeTreeRows(rows, Preference.Instance.RepositoryNodes);
+            MakeTreeRows(rows, Preferences.Instance.RepositoryNodes);
             Rows.Clear();
             Rows.AddRange(rows);
         }
@@ -85,45 +85,56 @@ namespace SourceGit.ViewModels
 
         public void InitRepository(string path, RepositoryNode parent, string reason)
         {
-            if (!Preference.Instance.IsGitConfigured())
-            {
-                App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
-                return;
-            }
-
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new Init(path, parent, reason));
-        }
-
-        public void Clone()
-        {
-            if (!Preference.Instance.IsGitConfigured())
+            if (!Preferences.Instance.IsGitConfigured())
             {
                 App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
             }
 
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new Clone());
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
+        }
+
+        public void Clone()
+        {
+            if (!Preferences.Instance.IsGitConfigured())
+            {
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                return;
+            }
+
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new Clone(activePage.Node.Id);
         }
 
         public void OpenTerminal()
         {
-            if (!Preference.Instance.IsGitConfigured())
-                App.RaiseException(PopupHost.Active.GetId(), App.Text("NotConfigured"));
+            if (!Preferences.Instance.IsGitConfigured())
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
             else
                 Native.OS.OpenTerminal(null);
         }
 
         public void ScanDefaultCloneDir()
         {
-            var defaultCloneDir = Preference.Instance.GitDefaultCloneDir;
+            var defaultCloneDir = Preferences.Instance.GitDefaultCloneDir;
             if (string.IsNullOrEmpty(defaultCloneDir))
-                App.RaiseException(PopupHost.Active.GetId(), "The default clone dir hasn't been configured!");
-            else if (!Directory.Exists(defaultCloneDir))
-                App.RaiseException(PopupHost.Active.GetId(), $"The default clone dir '{defaultCloneDir}' does not exist!");
-            else if (PopupHost.CanCreatePopup())
-                PopupHost.ShowAndStartPopup(new ScanRepositories(defaultCloneDir));
+            {
+                App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
+                return;
+            }
+
+            if (!Directory.Exists(defaultCloneDir))
+            {
+                App.RaiseException(string.Empty, $"The default clone directory '{defaultCloneDir}' does not exist!");
+                return;
+            }
+
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.StartPopup(new ScanRepositories(defaultCloneDir));
         }
 
         public void ClearSearchFilter()
@@ -133,13 +144,14 @@ namespace SourceGit.ViewModels
 
         public void AddRootNode()
         {
-            if (PopupHost.CanCreatePopup())
-                PopupHost.ShowPopup(new CreateGroup(null));
+            var activePage = App.GetLauncer().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new CreateGroup(null);
         }
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
-            Preference.Instance.MoveNode(from, to, true);
+            Preferences.Instance.MoveNode(from, to, true);
             Refresh();
         }
 
@@ -224,8 +236,9 @@ namespace SourceGit.ViewModels
             move.Icon = App.CreateMenuIcon("Icons.MoveToAnotherGroup");
             move.Click += (_, e) =>
             {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new MoveRepositoryNode(node));
+                var activePage = App.GetLauncer().ActivePage;
+                if (activePage != null && activePage.CanCreatePopup())
+                    activePage.Popup = new MoveRepositoryNode(node);
 
                 e.Handled = true;
             };

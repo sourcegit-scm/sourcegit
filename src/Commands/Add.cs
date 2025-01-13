@@ -27,5 +27,12 @@ namespace SourceGit.Commands
             }
             Args = builder.ToString();
         }
+
+        public Add(string repo, string pathspecFromFile)
+        {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"add --pathspec-from-file=\"{pathspecFromFile}\"";
+        }
     }
 }
