@@ -300,6 +300,13 @@ namespace SourceGit.Views
                     return;
             }
 
+            var isBare = new Commands.IsBareRepository(path).Result();
+            if (isBare)
+            {
+                App.RaiseException(string.Empty, $"'{path}' is a bare repository, which is not supported by SourceGit!");
+                return;
+            }
+
             var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
             if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
