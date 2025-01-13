@@ -35,25 +35,12 @@
 
 </details>
 
-### fr_FR.axaml: 92.79%
+### fr_FR.axaml: 94.69%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CherryPick.AppendSourceToMessage
-- Text.CherryPick.Mainline.Tips
-- Text.CommitCM.CherryPickMultiple
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.CommitDetail.Files.Search
-- Text.Configure.IssueTracker.AddSampleGiteeIssue
-- Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.Diff.UseBlockNavigation
-- Text.Fetch.Force
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -80,7 +67,6 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
-- Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
 - Text.Repository.Tags.OrderByNameAsc
