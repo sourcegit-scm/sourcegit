@@ -6,8 +6,8 @@
 
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.Preference.General.DateFormat
-- Text.Preference.Git.SSLVerify
+- Text.Preferences.General.DateFormat
+- Text.Preferences.Git.SSLVerify
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
@@ -50,12 +50,12 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
-- Text.Preference.General.DateFormat
-- Text.Preference.General.ShowChildren
-- Text.Preference.Git.SSLVerify
+- Text.Preferences.Appearance.FontSize
+- Text.Preferences.Appearance.FontSize.Default
+- Text.Preferences.Appearance.FontSize.Editor
+- Text.Preferences.General.DateFormat
+- Text.Preferences.General.ShowChildren
+- Text.Preferences.Git.SSLVerify
 - Text.Repository.CustomActions
 - Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
@@ -111,9 +111,9 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
-- Text.Preference.General.DateFormat
-- Text.Preference.General.ShowChildren
-- Text.Preference.Git.SSLVerify
+- Text.Preferences.General.DateFormat
+- Text.Preferences.General.ShowChildren
+- Text.Preferences.Git.SSLVerify
 - Text.Repository.FilterCommits
 - Text.Repository.FilterCommits.Default
 - Text.Repository.FilterCommits.Exclude
@@ -167,9 +167,9 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
-- Text.Preference.General.DateFormat
-- Text.Preference.General.ShowChildren
-- Text.Preference.Git.SSLVerify
+- Text.Preferences.General.DateFormat
+- Text.Preferences.General.ShowChildren
+- Text.Preferences.Git.SSLVerify
 - Text.Repository.FilterCommits
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
