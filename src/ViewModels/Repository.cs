@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -1463,13 +1464,6 @@ namespace SourceGit.ViewModels
                 }
 
                 menu.Items.Add(push);
-
-                var compareWithBranch = CreateMenuItemToCompareBranches(branch);
-                if (compareWithBranch != null)
-                {
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(compareWithBranch);
-                }
             }
             else
             {
@@ -1540,6 +1534,19 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
 
+                var compareWithHead = new MenuItem();
+                compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
+                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Click += (_, _) =>
+                {
+                    App.OpenDialog(new Views.BranchCompare()
+                    {
+                        DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
+                    });
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(compareWithHead);
+
                 if (_localChangesCount > 0)
                 {
                     var compareWithWorktree = new MenuItem();
@@ -1556,17 +1563,7 @@ namespace SourceGit.ViewModels
                             _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
                     };
-                    menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(compareWithWorktree);
-                }
-
-                var compareWithBranch = CreateMenuItemToCompareBranches(branch);
-                if (compareWithBranch != null)
-                {
-                    if (_localChangesCount == 0)
-                        menu.Items.Add(new MenuItem() { Header = "-" });
-
-                    menu.Items.Add(compareWithBranch);
                 }
             }
 
@@ -1813,7 +1810,19 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
-            var hasCompare = false;
+            var compareWithHead = new MenuItem();
+            compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
+            compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+            compareWithHead.Click += (_, _) =>
+            {
+                App.OpenDialog(new Views.BranchCompare()
+                {
+                    DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
+                });
+            };
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(compareWithHead);
+
             if (_localChangesCount > 0)
             {
                 var compareWithWorktree = new MenuItem();
@@ -1831,18 +1840,7 @@ namespace SourceGit.ViewModels
                     }
                 };
                 menu.Items.Add(compareWithWorktree);
-                hasCompare = true;
             }
-
-            var compareWithBranch = CreateMenuItemToCompareBranches(branch);
-            if (compareWithBranch != null)
-            {
-                menu.Items.Add(compareWithBranch);
-                hasCompare = true;
-            }
-
-            if (hasCompare)
-                menu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
@@ -2076,39 +2074,6 @@ namespace SourceGit.ViewModels
             menu.Items.Add(copy);
 
             return menu;
-        }
-
-        private MenuItem CreateMenuItemToCompareBranches(Models.Branch branch)
-        {
-            if (_branches.Count == 1)
-                return null;
-
-            var compare = new MenuItem();
-            compare.Header = App.Text("BranchCM.CompareWithBranch");
-            compare.Icon = App.CreateMenuIcon("Icons.Compare");
-
-            foreach (var b in _branches)
-            {
-                if (b.FullName != branch.FullName)
-                {
-                    var dup = b;
-                    var target = new MenuItem();
-                    target.Header = b.FriendlyName;
-                    target.Icon = App.CreateMenuIcon(b.IsCurrent ? "Icons.Check" : "Icons.Branch");
-                    target.Click += (_, e) =>
-                    {
-                        App.OpenDialog(new Views.BranchCompare()
-                        {
-                            DataContext = new BranchCompare(_fullpath, branch, dup)
-                        });
-                        e.Handled = true;
-                    };
-
-                    compare.Items.Add(target);
-                }
-            }
-
-            return compare;
         }
 
         private LauncherPage GetOwnerPage()
