@@ -18,8 +18,8 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
         <RowDefinition Height="32"/>
-        <RowDefinition Height="Auto" MinHeight="32"/>
-        <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -67,27 +67,31 @@
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
-                 Text="{DynamicResource Text.CreateBranch.LocalChanges}"/>
-      <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
-                     x:Name="RadioDoNothing"
-                     GroupName="LocalChanges"
-                     Margin="0,0,8,0"
-                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
-                     x:Name="RadioStashAndReply"
-                     GroupName="LocalChanges"
-                     Margin="0,0,8,0"
-                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-        <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
-                     x:Name="RadioDiscard"
-                     GroupName="LocalChanges"
-                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-      </WrapPanel>
+                 Text="{DynamicResource Text.CreateBranch.LocalChanges}"
+                 IsVisible="{Binding !IsBareRepository}"/>
+      <Border Grid.Row="2" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
+        <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+          <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
+                       x:Name="RadioDoNothing"
+                       GroupName="LocalChanges"
+                       Margin="0,0,8,0"
+                       IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
+          <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
+                       x:Name="RadioStashAndReply"
+                       GroupName="LocalChanges"
+                       Margin="0,0,8,0"
+                       IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
+          <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
+                       x:Name="RadioDiscard"
+                       GroupName="LocalChanges"
+                       IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
+        </WrapPanel>
+      </Border>
       
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.Checkout}"
-                IsChecked="{Binding CheckoutAfterCreated, Mode=TwoWay}"/>
+                IsChecked="{Binding CheckoutAfterCreated, Mode=TwoWay}"
+                IsVisible="{Binding !IsBareRepository}"/>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -18,6 +18,11 @@ namespace SourceGit.ViewModels
 {
     public class Repository : ObservableObject, Models.IRepository
     {
+        public bool IsBare
+        {
+            get;
+        }
+
         public string FullPath
         {
             get => _fullpath;
@@ -446,6 +451,13 @@ namespace SourceGit.ViewModels
         {
             get => _isAutoFetching;
             private set => SetProperty(ref _isAutoFetching, value);
+        }
+
+        public Repository(bool isBare, string path, string gitDir)
+        {
+            IsBare = isBare;
+            FullPath = path;
+            GitDir = gitDir;
         }
 
         public void Open()
@@ -995,6 +1007,9 @@ namespace SourceGit.ViewModels
 
         public void RefreshWorkingCopyChanges()
         {
+            if (IsBare)
+                return;
+
             var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).Result();
             if (_workingCopy == null)
                 return;
@@ -1010,6 +1025,9 @@ namespace SourceGit.ViewModels
 
         public void RefreshStashes()
         {
+            if (IsBare)
+                return;
+
             var stashes = new Commands.QueryStashes(_fullpath).Result();
             Dispatcher.UIThread.Invoke(() =>
             {
