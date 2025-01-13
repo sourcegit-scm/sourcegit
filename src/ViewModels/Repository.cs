@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -1820,7 +1819,6 @@ namespace SourceGit.ViewModels
                     DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
                 });
             };
-            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(compareWithHead);
 
             if (_localChangesCount > 0)
@@ -1841,6 +1839,7 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(compareWithWorktree);
             }
+            menu.Items.Add(new MenuItem() { Header = "-" });
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
