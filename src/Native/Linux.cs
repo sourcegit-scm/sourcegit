@@ -11,6 +11,7 @@ namespace SourceGit.Native
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
     {
+        private FileStream _fs = null;
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new X11PlatformOptions() { EnableIme = true });
@@ -97,6 +98,26 @@ namespace SourceGit.Native
             }
         }
 
+        public bool EnsureSingleInstance()
+        {
+            var pidfile = Path.Combine(Path.GetTempPath(), "sourcegit.pid");
+            var pid = Process.GetCurrentProcess().Id.ToString();
+            Console.WriteLine("pid " + pid);
+
+            try
+            {
+                _fs = File.OpenWrite(pidfile);
+                _fs.Lock(0, 1000);
+                new StreamWriter(_fs).Write(pid);
+                return true;
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("another SourceGit is running");
+                return false;
+            }
+        }
+        
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
