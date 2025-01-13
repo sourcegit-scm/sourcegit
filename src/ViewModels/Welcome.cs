@@ -94,20 +94,20 @@ namespace SourceGit.ViewModels
             }
 
             var isBare = new Commands.IsBareRepository(path).Result();
-            if (isBare)
+            var repoRoot = path;
+            if (!isBare)
             {
-                App.RaiseException(string.Empty, $"'{path}' is a bare repository, which is not supported by SourceGit!");
-                return;
+                var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
+                if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+                {
+                    InitRepository(path, parent, test.StdErr);
+                    return;
+                }
+
+                repoRoot = test.StdOut.Trim();
             }
 
-            var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
-            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
-            {
-                InitRepository(path, parent, test.StdErr);
-                return;
-            }
-
-            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), parent, bMoveExistedNode);
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repoRoot, parent, bMoveExistedNode);
             Refresh();
 
             var launcher = App.GetLauncer();
