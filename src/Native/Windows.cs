@@ -14,6 +14,8 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
+        private FileStream _fs = null;
+        
         [StructLayout(LayoutKind.Sequential)]
         internal struct RTL_OSVERSIONINFOEX
         {
@@ -392,6 +394,26 @@ namespace SourceGit.Native
             }
 
             return null;
+        }
+
+        public bool EnsureSingleInstance()
+        {
+            var pidfile = Path.Combine(Path.GetTempPath(), "sourcegit.pid");
+            var pid = Process.GetCurrentProcess().Id.ToString();
+            Console.WriteLine("pid " + pid);
+
+            try
+            {
+                _fs = File.OpenWrite(pidfile);
+                _fs.Lock(0, 1000);
+                new StreamWriter(_fs).Write(pid);
+                return true;
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("another SourceGit is running");
+                return false;
+            }
         }
     }
 }

@@ -36,7 +36,8 @@ namespace SourceGit
 #endif
             }
         }
-
+        
+        public static readonly Command Unminimize = new Command(_ => ShowWindow());
         public static readonly Command OpenPreferencesCommand = new Command(_ => OpenDialog(new Views.Preferences()));
         public static readonly Command OpenHotkeysCommand = new Command(_ => OpenDialog(new Views.Hotkeys()));
         public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
