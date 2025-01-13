@@ -70,7 +70,7 @@
                  Text="{DynamicResource Text.CreateBranch.LocalChanges}"
                  IsVisible="{Binding !IsBareRepository}"/>
       <Border Grid.Row="2" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
-        <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+        <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
           <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
                        x:Name="RadioDoNothing"
                        GroupName="LocalChanges"
