@@ -407,14 +407,14 @@ namespace SourceGit.Views
                 layout.Header = App.Text("Repository.HistoriesLayout");
                 layout.IsEnabled = false;
 
-                var isHorizontal = ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories;
+                var isHorizontal = ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories;
                 var horizontal = new MenuItem();
                 horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
                 if (isHorizontal)
                     horizontal.Icon = App.CreateMenuIcon("Icons.Check");
                 horizontal.Click += (_, ev) =>
                 {
-                    ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories = true;
+                    ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories = true;
                     ev.Handled = true;
                 };
 
@@ -424,7 +424,7 @@ namespace SourceGit.Views
                     vertical.Icon = App.CreateMenuIcon("Icons.Check");
                 vertical.Click += (_, ev) =>
                 {
-                    ViewModels.Preference.Instance.UseTwoColumnsLayoutInHistories = false;
+                    ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories = false;
                     ev.Handled = true;
                 };
 

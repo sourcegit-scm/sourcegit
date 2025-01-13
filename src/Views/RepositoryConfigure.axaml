@@ -105,15 +105,15 @@
           <TextBlock Grid.Row="4" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
-                     Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
+                     Text="{DynamicResource Text.Preferences.GPG.UserKey}"/>
           <TextBox Grid.Row="4" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
-                   Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"
+                   Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="5" Grid.Column="1"
-                    Content="{DynamicResource Text.Preference.GPG.CommitEnabled}"
+                    Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
                     IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="6" Grid.Column="1"
@@ -121,7 +121,7 @@
                     IsChecked="{Binding EnableSignOffForCommit, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="7" Grid.Column="1"
-                    Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
+                    Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="8" Grid.Column="1"

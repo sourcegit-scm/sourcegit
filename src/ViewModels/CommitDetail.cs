@@ -344,8 +344,8 @@ namespace SourceGit.ViewModels
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
             diffWithMerger.Click += (_, ev) =>
             {
-                var toolType = Preference.Instance.ExternalMergeToolType;
-                var toolPath = Preference.Instance.ExternalMergeToolPath;
+                var toolType = Preferences.Instance.ExternalMergeToolType;
+                var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_commit, change);
 
                 Task.Run(() => Commands.MergeTool.OpenForDiff(_repo.FullPath, toolType, toolPath, opt));
@@ -646,11 +646,11 @@ namespace SourceGit.ViewModels
 
             _cancelToken = new Commands.Command.CancelToken();
 
-            if (Preference.Instance.ShowChildren)
+            if (Preferences.Instance.ShowChildren)
             {
                 Task.Run(() =>
                 {
-                    var max = Preference.Instance.MaxHistoryCommits;
+                    var max = Preferences.Instance.MaxHistoryCommits;
                     var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { Cancel = _cancelToken };
                     var children = cmdChildren.Result();
                     if (!cmdChildren.Cancel.Requested)

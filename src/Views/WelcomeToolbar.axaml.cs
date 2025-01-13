@@ -26,9 +26,9 @@ namespace SourceGit.Views
                 return;
 
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            if (Directory.Exists(ViewModels.Preference.Instance.GitDefaultCloneDir))
+            if (Directory.Exists(ViewModels.Preferences.Instance.GitDefaultCloneDir))
             {
-                var folder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(ViewModels.Preference.Instance.GitDefaultCloneDir);
+                var folder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(ViewModels.Preferences.Instance.GitDefaultCloneDir);
                 options.SuggestedStartLocation = folder;
             }
 
@@ -63,7 +63,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), parent, false);
+            var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), parent, false);
             ViewModels.Welcome.Instance.Refresh();
 
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;

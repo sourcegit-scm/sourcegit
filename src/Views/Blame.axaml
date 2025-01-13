@@ -57,7 +57,7 @@
                          Background="Transparent"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{DynamicResource Fonts.Monospace}"
-                         FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
+                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                          BlameData="{Binding Data}"/>
       
       <!-- Not supported mask (for binary files) -->

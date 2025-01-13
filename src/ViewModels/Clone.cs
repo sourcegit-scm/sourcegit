@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    var node = Preference.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
                     var launcher = App.GetLauncer();
                     var page = null as LauncherPage;
                     foreach (var one in launcher.Pages)
@@ -153,7 +153,7 @@ namespace SourceGit.ViewModels
         private string _remote = string.Empty;
         private bool _useSSH = false;
         private string _sshKey = string.Empty;
-        private string _parentFolder = Preference.Instance.GitDefaultCloneDir;
+        private string _parentFolder = Preferences.Instance.GitDefaultCloneDir;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
     }

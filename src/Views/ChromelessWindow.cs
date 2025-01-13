@@ -11,7 +11,7 @@ namespace SourceGit.Views
     {
         public bool UseSystemWindowFrame
         {
-            get => OperatingSystem.IsLinux() && ViewModels.Preference.Instance.UseSystemWindowFrame;
+            get => OperatingSystem.IsLinux() && ViewModels.Preferences.Instance.UseSystemWindowFrame;
         }
 
         protected override Type StyleKeyOverride => typeof(Window);

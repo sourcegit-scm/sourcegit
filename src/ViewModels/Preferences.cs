@@ -9,10 +9,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Preference : ObservableObject
+    public class Preferences : ObservableObject
     {
         [JsonIgnore]
-        public static Preference Instance
+        public static Preferences Instance
         {
             get
             {
@@ -479,23 +479,23 @@ namespace SourceGit.ViewModels
                 return;
 
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
-            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
+            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
             File.WriteAllText(file, data);
         }
 
-        private static Preference Load()
+        private static Preferences Load()
         {
             var path = Path.Combine(Native.OS.DataDir, "preference.json");
             if (!File.Exists(path))
-                return new Preference();
+                return new Preferences();
 
             try
             {
-                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
+                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preferences);
             }
             catch
             {
-                return new Preference();
+                return new Preferences();
             }
         }
 
@@ -637,7 +637,7 @@ namespace SourceGit.ViewModels
             return builder.ToString();
         }
 
-        private static Preference _instance = null;
+        private static Preferences _instance = null;
         private static bool _isLoading = false;
 
         private string _locale = "en_US";

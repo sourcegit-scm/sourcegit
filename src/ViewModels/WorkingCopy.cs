@@ -465,8 +465,8 @@ namespace SourceGit.ViewModels
 
         public async void UseExternalMergeTool(Models.Change change)
         {
-            var toolType = Preference.Instance.ExternalMergeToolType;
-            var toolPath = Preference.Instance.ExternalMergeToolPath;
+            var toolType = Preferences.Instance.ExternalMergeToolType;
+            var toolPath = Preferences.Instance.ExternalMergeToolPath;
 
             _repo.SetWatcherEnabled(false);
             await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
@@ -1601,7 +1601,7 @@ namespace SourceGit.ViewModels
 
         private IList<Models.OpenAIService> GetPreferedOpenAIServices()
         {
-            var services = Preference.Instance.OpenAIServices;
+            var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
                 return [];
 

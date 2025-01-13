@@ -33,7 +33,7 @@ namespace SourceGit.ViewModels
                 Depth = 0,
                 Id = Guid.NewGuid().ToString()
             });
-            MakeRows(Preference.Instance.RepositoryNodes, 1);
+            MakeRows(Preferences.Instance.RepositoryNodes, 1);
 
             View = new Views.MoveRepositoryNode() { DataContext = this };
         }
@@ -42,8 +42,8 @@ namespace SourceGit.ViewModels
         {
             if (_selected != null)
             {
-                var node = Preference.Instance.FindNode(_selected.Id);
-                Preference.Instance.MoveNode(Target, node, true);
+                var node = Preferences.Instance.FindNode(_selected.Id);
+                Preferences.Instance.MoveNode(Target, node, true);
                 Welcome.Instance.Refresh();
             }
 

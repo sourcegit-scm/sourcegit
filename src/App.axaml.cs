@@ -41,9 +41,9 @@ namespace SourceGit
 
             try
             {
-                if (TryLaunchedAsRebaseTodoEditor(args, out int exitTodo))
+                if (TryLaunchAsRebaseTodoEditor(args, out int exitTodo))
                     Environment.Exit(exitTodo);
-                else if (TryLaunchedAsRebaseMessageEditor(args, out int exitMessage))
+                else if (TryLaunchAsRebaseMessageEditor(args, out int exitMessage))
                     Environment.Exit(exitMessage);
                 else
                     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
@@ -298,7 +298,7 @@ namespace SourceGit
         {
             AvaloniaXamlLoader.Load(this);
 
-            var pref = ViewModels.Preference.Instance;
+            var pref = ViewModels.Preferences.Instance;
             pref.PropertyChanged += (_, _) => pref.Save();
 
             SetLocale(pref.Locale);
@@ -312,13 +312,13 @@ namespace SourceGit
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
 
-                if (TryLaunchedAsCoreEditor(desktop))
+                if (TryLaunchAsCoreEditor(desktop))
                     return;
 
-                if (TryLaunchedAsAskpass(desktop))
+                if (TryLaunchAsAskpass(desktop))
                     return;
 
-                TryLaunchedAsNormal(desktop);
+                TryLaunchAsNormal(desktop);
             }
         }
         #endregion
@@ -349,7 +349,7 @@ namespace SourceGit
             File.WriteAllText(file, builder.ToString());
         }
 
-        private static bool TryLaunchedAsRebaseTodoEditor(string[] args, out int exitCode)
+        private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
 
@@ -402,7 +402,7 @@ namespace SourceGit
             return true;
         }
 
-        private static bool TryLaunchedAsRebaseMessageEditor(string[] args, out int exitCode)
+        private static bool TryLaunchAsRebaseMessageEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
 
@@ -436,7 +436,7 @@ namespace SourceGit
             return true;
         }
 
-        private bool TryLaunchedAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
+        private bool TryLaunchAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
             if (args == null || args.Length <= 1 || !args[0].Equals("--core-editor", StringComparison.Ordinal))
@@ -451,7 +451,7 @@ namespace SourceGit
             return true;
         }
 
-        private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
+        private bool TryLaunchAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var launchAsAskpass = Environment.GetEnvironmentVariable("SOURCEGIT_LAUNCH_AS_ASKPASS");
             if (launchAsAskpass is not "TRUE")
@@ -467,7 +467,7 @@ namespace SourceGit
             return false;
         }
 
-        private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
+        private void TryLaunchAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Native.OS.SetupEnternalTools();
             Models.AvatarManager.Instance.Start();
@@ -480,7 +480,7 @@ namespace SourceGit
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
 #if !DISABLE_UPDATE_DETECTION
-            var pref = ViewModels.Preference.Instance;
+            var pref = ViewModels.Preferences.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
 #endif
@@ -512,7 +512,7 @@ namespace SourceGit
                     // Should not check ignored tag if this is called manually.
                     if (!manually)
                     {
-                        var pref = ViewModels.Preference.Instance;
+                        var pref = ViewModels.Preferences.Instance;
                         if (ver.TagName == pref.IgnoreUpdateTag)
                             return;
                     }

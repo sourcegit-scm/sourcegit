@@ -307,7 +307,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), parent, true);
+            var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), parent, true);
             ViewModels.Welcome.Instance.Refresh();
 
             var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
