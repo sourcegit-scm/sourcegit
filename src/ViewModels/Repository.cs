@@ -1062,6 +1062,9 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            if (IsBare)
+                return;
+
             if (!CanCreatePopup())
                 return;
 
