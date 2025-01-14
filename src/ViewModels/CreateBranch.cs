@@ -31,6 +31,11 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.CheckoutBranchOnCreateBranch = value;
         }
 
+        public bool IsBareRepository
+        {
+            get => _repo.IsBare;
+        }
+
         public CreateBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
@@ -84,7 +89,7 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var succ = false;
-                if (CheckoutAfterCreated)
+                if (CheckoutAfterCreated && !_repo.IsBare)
                 {
                     var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
                     var needPopStash = false;

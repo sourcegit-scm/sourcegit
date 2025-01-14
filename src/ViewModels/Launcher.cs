@@ -280,19 +280,20 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var gitDir = new Commands.QueryGitDir(node.Id).Result();
-            if (string.IsNullOrEmpty(gitDir))
+            var isBare = new Commands.IsBareRepository(node.Id).Result();
+            var gitDir = node.Id;
+            if (!isBare)
             {
-                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                App.RaiseException(ctx, "Given path is not a valid git repository!");
-                return;
+                gitDir = new Commands.QueryGitDir(node.Id).Result();
+                if (string.IsNullOrEmpty(gitDir))
+                {
+                    var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
+                    App.RaiseException(ctx, "Given path is not a valid git repository!");
+                    return;
+                }
             }
 
-            var repo = new Repository()
-            {
-                FullPath = node.Id,
-                GitDir = gitDir,
-            };
+            var repo = new Repository(isBare, node.Id, gitDir);
             repo.Open();
 
             if (page == null)
