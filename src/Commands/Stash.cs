@@ -75,13 +75,13 @@ namespace SourceGit.Commands
 
         public bool Apply(string name)
         {
-            Args = $"stash apply -q {name}";
+            Args = $"stash apply --index -q {name}";
             return Exec();
         }
 
         public bool Pop(string name)
         {
-            Args = $"stash pop -q {name}";
+            Args = $"stash pop --index -q {name}";
             return Exec();
         }
 
