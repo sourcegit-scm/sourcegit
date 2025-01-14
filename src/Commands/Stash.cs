@@ -11,9 +11,19 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Push(string message)
+        public bool Push(string message, bool includeUntracked = true, bool keepIndex = false)
         {
-            Args = $"stash push -m \"{message}\"";
+            var builder = new StringBuilder();
+            builder.Append("stash push ");
+            if (includeUntracked)
+                builder.Append("--include-untracked ");
+            if (keepIndex)
+                builder.Append("--keep-index ");
+            builder.Append("-m \"");
+            builder.Append(message);
+            builder.Append("\"");
+
+            Args = builder.ToString();
             return Exec();
         }
 
