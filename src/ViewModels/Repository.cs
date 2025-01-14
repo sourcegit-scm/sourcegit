@@ -1434,66 +1434,72 @@ namespace SourceGit.ViewModels
 
             if (branch.IsCurrent)
             {
-                var discard = new MenuItem();
-                discard.Header = App.Text("BranchCM.DiscardAll");
-                discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                discard.Click += (_, e) =>
+                if (!IsBare)
                 {
-                    if (CanCreatePopup())
-                        ShowPopup(new Discard(this));
-                    e.Handled = true;
-                };
-
-                menu.Items.Add(discard);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-
-                if (!string.IsNullOrEmpty(branch.Upstream))
-                {
-                    var upstream = branch.Upstream.Substring(13);
-                    var fastForward = new MenuItem();
-                    fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
-                    fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
-                    fastForward.Click += (_, e) =>
+                    var discard = new MenuItem();
+                    discard.Header = App.Text("BranchCM.DiscardAll");
+                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                    discard.Click += (_, e) =>
                     {
-                        var b = _branches.Find(x => x.FriendlyName == upstream);
-                        if (b == null)
-                            return;
-
                         if (CanCreatePopup())
-                            ShowAndStartPopup(new Merge(this, b, branch.Name));
-
+                            ShowPopup(new Discard(this));
                         e.Handled = true;
                     };
 
-                    var pull = new MenuItem();
-                    pull.Header = new Views.NameHighlightedTextBlock("BranchCM.Pull", upstream);
-                    pull.Icon = App.CreateMenuIcon("Icons.Pull");
-                    pull.Click += (_, e) =>
-                    {
-                        if (CanCreatePopup())
-                            ShowPopup(new Pull(this, null));
-                        e.Handled = true;
-                    };
+                    menu.Items.Add(discard);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
 
-                    menu.Items.Add(fastForward);
-                    menu.Items.Add(pull);
-                }
+                    if (!string.IsNullOrEmpty(branch.Upstream))
+                    {
+                        var upstream = branch.Upstream.Substring(13);
+                        var fastForward = new MenuItem();
+                        fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
+                        fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
+                        fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                        fastForward.Click += (_, e) =>
+                        {
+                            var b = _branches.Find(x => x.FriendlyName == upstream);
+                            if (b == null)
+                                return;
+
+                            if (CanCreatePopup())
+                                ShowAndStartPopup(new Merge(this, b, branch.Name));
+
+                            e.Handled = true;
+                        };
+
+                        var pull = new MenuItem();
+                        pull.Header = new Views.NameHighlightedTextBlock("BranchCM.Pull", upstream);
+                        pull.Icon = App.CreateMenuIcon("Icons.Pull");
+                        pull.Click += (_, e) =>
+                        {
+                            if (CanCreatePopup())
+                                ShowPopup(new Pull(this, null));
+                            e.Handled = true;
+                        };
+
+                        menu.Items.Add(fastForward);
+                        menu.Items.Add(pull);
+                    }
+                }                
 
                 menu.Items.Add(push);
             }
             else
             {
-                var checkout = new MenuItem();
-                checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
-                checkout.Icon = App.CreateMenuIcon("Icons.Check");
-                checkout.Click += (_, e) =>
+                if (!IsBare)
                 {
-                    CheckoutBranch(branch);
-                    e.Handled = true;
-                };
-                menu.Items.Add(checkout);
-                menu.Items.Add(new MenuItem() { Header = "-" });
+                    var checkout = new MenuItem();
+                    checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
+                    checkout.Icon = App.CreateMenuIcon("Icons.Check");
+                    checkout.Click += (_, e) =>
+                    {
+                        CheckoutBranch(branch);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(checkout);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }                
 
                 var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
@@ -1528,28 +1534,31 @@ namespace SourceGit.ViewModels
 
                 menu.Items.Add(push);
 
-                var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", branch.Name, _currentBranch.Name);
-                merge.Icon = App.CreateMenuIcon("Icons.Merge");
-                merge.Click += (_, e) =>
+                if (!IsBare)
                 {
-                    if (CanCreatePopup())
-                        ShowPopup(new Merge(this, branch, _currentBranch.Name));
-                    e.Handled = true;
-                };
+                    var merge = new MenuItem();
+                    merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", branch.Name, _currentBranch.Name);
+                    merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                    merge.Click += (_, e) =>
+                    {
+                        if (CanCreatePopup())
+                            ShowPopup(new Merge(this, branch, _currentBranch.Name));
+                        e.Handled = true;
+                    };
 
-                var rebase = new MenuItem();
-                rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", _currentBranch.Name, branch.Name);
-                rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
-                rebase.Click += (_, e) =>
-                {
-                    if (CanCreatePopup())
-                        ShowPopup(new Rebase(this, _currentBranch, branch));
-                    e.Handled = true;
-                };
+                    var rebase = new MenuItem();
+                    rebase.Header = new Views.NameHighlightedTextBlock("BranchCM.Rebase", _currentBranch.Name, branch.Name);
+                    rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
+                    rebase.Click += (_, e) =>
+                    {
+                        if (CanCreatePopup())
+                            ShowPopup(new Rebase(this, _currentBranch, branch));
+                        e.Handled = true;
+                    };
 
-                menu.Items.Add(merge);
-                menu.Items.Add(rebase);
+                    menu.Items.Add(merge);
+                    menu.Items.Add(rebase);
+                }                
 
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
@@ -1584,21 +1593,24 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var detect = Commands.GitFlow.DetectType(_fullpath, _branches, branch.Name);
-            if (detect.IsGitFlowBranch)
+            if (!IsBare)
             {
-                var finish = new MenuItem();
-                finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
-                finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
-                finish.Click += (_, e) =>
+                var detect = Commands.GitFlow.DetectType(_fullpath, _branches, branch.Name);
+                if (detect.IsGitFlowBranch)
                 {
-                    if (CanCreatePopup())
-                        ShowPopup(new GitFlowFinish(this, branch, detect.Type, detect.Prefix));
-                    e.Handled = true;
-                };
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(finish);
-            }
+                    var finish = new MenuItem();
+                    finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
+                    finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
+                    finish.Click += (_, e) =>
+                    {
+                        if (CanCreatePopup())
+                            ShowPopup(new GitFlowFinish(this, branch, detect.Type, detect.Prefix));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(finish);
+                }
+            }            
 
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
@@ -1649,26 +1661,29 @@ namespace SourceGit.ViewModels
             menu.Items.Add(createTag);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
-            var remoteBranches = new List<Models.Branch>();
-            foreach (var b in _branches)
+            if (!IsBare)
             {
-                if (!b.IsLocal)
-                    remoteBranches.Add(b);
-            }
-
-            if (remoteBranches.Count > 0)
-            {
-                var tracking = new MenuItem();
-                tracking.Header = App.Text("BranchCM.Tracking");
-                tracking.Icon = App.CreateMenuIcon("Icons.Track");
-                tracking.Click += (_, e) =>
+                var remoteBranches = new List<Models.Branch>();
+                foreach (var b in _branches)
                 {
-                    if (CanCreatePopup())
-                        ShowPopup(new SetUpstream(this, branch, remoteBranches));
-                    e.Handled = true;
-                };
-                menu.Items.Add(tracking);
-            }
+                    if (!b.IsLocal)
+                        remoteBranches.Add(b);
+                }
+
+                if (remoteBranches.Count > 0)
+                {
+                    var tracking = new MenuItem();
+                    tracking.Header = App.Text("BranchCM.Tracking");
+                    tracking.Icon = App.CreateMenuIcon("Icons.Track");
+                    tracking.Click += (_, e) =>
+                    {
+                        if (CanCreatePopup())
+                            ShowPopup(new SetUpstream(this, branch, remoteBranches));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(tracking);
+                }
+            }            
 
             var archive = new MenuItem();
             archive.Icon = App.CreateMenuIcon("Icons.Archive");
