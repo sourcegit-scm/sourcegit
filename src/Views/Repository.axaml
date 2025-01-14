@@ -313,7 +313,7 @@
             </ListBox.Styles>
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Submodule">
-                <Grid ColumnDefinitions="Auto,*,8">
+                <Grid ColumnDefinitions="Auto,*,8,8">
                   <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
                   <Path Grid.Column="2"
