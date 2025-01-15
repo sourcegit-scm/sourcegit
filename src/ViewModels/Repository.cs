@@ -771,6 +771,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void MarkTagsDirtyManually()
+        {
+            if (_watcher == null)
+            {
+                Task.Run(RefreshTags);
+                Task.Run(RefreshCommits);
+            }
+            else
+            {
+                _watcher.MarkTagDirtyManually();
+            }
+        }
+
         public void MarkWorkingCopyDirtyManually()
         {
             if (_watcher == null)

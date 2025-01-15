@@ -33,7 +33,11 @@ namespace SourceGit.ViewModels
             {
                 var remotes = ShouldPushToRemote ? _repo.Remotes : null;
                 var succ = Commands.Tag.Delete(_repo.FullPath, Target.Name, remotes);
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkTagsDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return succ;
             });
         }
