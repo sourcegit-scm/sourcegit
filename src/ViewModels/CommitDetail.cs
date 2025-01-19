@@ -637,9 +637,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var lines = new Commands.QueryCommitChangedLines(_repo.FullPath, _commit.SHA).Result();
-                Console.WriteLine(lines);
-                //Dispatcher.UIThread.Invoke(() => FullMessage = fullMessage);
+                (var addedLines, var removedLines) = new Commands.QueryCommitChangedLines(_repo.FullPath, _commit.SHA).Result();
+                Dispatcher.UIThread.Invoke(() => {
+                    _commit.AddedLines = addedLines;
+                    _commit.RemovedLines = removedLines;
+                });
             });
 
             Task.Run(() =>

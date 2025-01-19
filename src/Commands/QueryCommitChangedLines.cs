@@ -31,8 +31,10 @@ namespace SourceGit.Commands
 
             if (parts.Length >= 2)
             {
-                _addedLines += int.Parse(parts[0]);
-                _removedLines += int.Parse(parts[1]);
+                bool canParseAdded = int.TryParse(parts[0], out int addedLines);
+                bool canParseRemoved = int.TryParse(parts[1], out int removedLines);
+                if (canParseAdded) _addedLines += addedLines;
+                if (canParseRemoved) _removedLines += removedLines;
             }
         }
 

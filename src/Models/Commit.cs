@@ -45,6 +45,9 @@ namespace SourceGit.Models
         public Thickness Margin { get; set; } = new Thickness(0);
         public IBrush Brush => CommitGraph.Pens[Color].Brush;
 
+        public int AddedLines { get; set; } = 0;
+        public int RemovedLines { get; set; } = 0;
+
         public void ParseDecorators(string data)
         {
             if (data.Length < 3)
