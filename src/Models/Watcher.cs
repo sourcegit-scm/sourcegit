@@ -72,6 +72,11 @@ namespace SourceGit.Models
             _updateBranch = DateTime.Now.ToFileTime() - 1;
         }
 
+        public void MarkTagDirtyManually()
+        {
+            _updateTags = DateTime.Now.ToFileTime() - 1;
+        }
+
         public void MarkWorkingCopyDirtyManually()
         {
             _updateWC = DateTime.Now.ToFileTime() - 1;

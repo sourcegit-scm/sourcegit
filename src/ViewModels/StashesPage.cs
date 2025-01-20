@@ -57,8 +57,25 @@ namespace SourceGit.ViewModels
                     {
                         Task.Run(() =>
                         {
-                            var changes = new Commands.QueryStashChanges(_repo.FullPath, value.SHA).Result();
-                            Dispatcher.UIThread.Invoke(() => Changes = changes);
+                            var changes = new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).Result();
+                            var untracked = new HashSet<string>();
+                            if (value.HasUntracked)
+                            {
+                                var untrackedChanges = new Commands.CompareRevisions(_repo.FullPath, "4b825dc642cb6eb9a060e54bf8d69288fbee4904", value.Parents[2]).Result();
+                                foreach (var c in untrackedChanges)
+                                {
+                                    untracked.Add(c.Path);
+                                    changes.Add(c);
+                                }
+                            }
+
+                            changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
+
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
+                                Changes = changes;
+                                _untrackedChanges = untracked;
+                            });
                         });
                     }
                 }
@@ -84,8 +101,10 @@ namespace SourceGit.ViewModels
                 {
                     if (value == null)
                         DiffContext = null;
+                    else if (_untrackedChanges.Contains(value.Path))
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption("4b825dc642cb6eb9a060e54bf8d69288fbee4904", _selectedStash.Parents[2], value), _diffContext);
                     else
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, value), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value), _diffContext);
                 }
             }
         }
@@ -254,6 +273,7 @@ namespace SourceGit.ViewModels
         private List<Models.Stash> _visibleStashes = new List<Models.Stash>();
         private string _searchFilter = string.Empty;
         private Models.Stash _selectedStash = null;
+        private HashSet<string> _untrackedChanges = new HashSet<string>();
         private List<Models.Change> _changes = null;
         private Models.Change _selectedChange = null;
         private DiffContext _diffContext = null;

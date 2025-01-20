@@ -83,6 +83,37 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void OpenOrInitRepository(string path, RepositoryNode parent, bool bMoveExistedNode)
+        {
+            if (!Directory.Exists(path))
+            {
+                if (File.Exists(path))
+                    path = Path.GetDirectoryName(path);
+                else
+                    return;
+            }
+
+            var isBare = new Commands.IsBareRepository(path).Result();
+            var repoRoot = path;
+            if (!isBare)
+            {
+                var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
+                if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+                {
+                    InitRepository(path, parent, test.StdErr);
+                    return;
+                }
+
+                repoRoot = test.StdOut.Trim();
+            }
+
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repoRoot, parent, bMoveExistedNode);
+            Refresh();
+
+            var launcher = App.GetLauncer();
+            launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
+        }
+
         public void InitRepository(string path, RepositoryNode parent, string reason)
         {
             if (!Preferences.Instance.IsGitConfigured())

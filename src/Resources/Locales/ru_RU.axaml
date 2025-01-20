@@ -50,7 +50,6 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Проверить ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">Сравнить с веткой</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ (HEAD)</x:String> 
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копировать имя ветки</x:String>

@@ -40,7 +40,7 @@
         <!-- Page Switcher for Right Panel -->
         <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
           <Border CornerRadius="6" ClipToBounds="True">
-            <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}">
+            <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
               <ListBox.Styles>
                 <Style Selector="Path.icon">
                   <Setter Property="Width" Value="12"/>
@@ -128,7 +128,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem>
+              <ListBoxItem IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
@@ -143,7 +143,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem>
+              <ListBoxItem IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
@@ -313,7 +313,7 @@
             </ListBox.Styles>
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Submodule">
-                <Grid ColumnDefinitions="Auto,*,8">
+                <Grid ColumnDefinitions="Auto,*,8,8">
                   <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
                   <Path Grid.Column="2"

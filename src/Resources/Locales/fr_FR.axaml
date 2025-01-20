@@ -50,7 +50,6 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Blâme</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">LE BLÂME SUR CE FICHIER N'EST PAS SUPPORTÉ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Récupérer ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithBranch" xml:space="preserve">Comparer avec la branche</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Comparer avec HEAD</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Comparer avec le worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copier le nom de la branche</x:String>

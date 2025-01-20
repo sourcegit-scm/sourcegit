@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-97.55%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-100.00%25-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-94.69%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-93.33%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-94.42%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-100.00%25-brightgreen)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-100.00%25-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-94.69%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-93.32%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-94.41%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
 
 > [!NOTE]
 > You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
@@ -62,7 +62,7 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 
 | OS      | PATH                                                |
 |---------|-----------------------------------------------------|
-| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit`      |
+| Windows | `%APPDATA%\SourceGit`                               |
 | Linux   | `${HOME}/.config/SourceGit` or `${HOME}/.sourcegit` |
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
@@ -107,7 +107,7 @@ For **Linux** users:
   `deb` how to:
   ```shell
   curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
-  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
+  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc, arch=amd64,arm64] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
   sudo apt update
   sudo apt install sourcegit
   ```

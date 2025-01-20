@@ -420,34 +420,37 @@ namespace SourceGit.ViewModels
             menu.Items.Add(patch);
             menu.Items.Add(new MenuItem { Header = "-" });
 
-            var resetToThisRevision = new MenuItem();
-            resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-            resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-            resetToThisRevision.Click += (_, ev) =>
+            if (!_repo.IsBare)
             {
-                new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}");
-                ev.Handled = true;
-            };
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += (_, ev) =>
+                {
+                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}");
+                    ev.Handled = true;
+                };
 
-            var resetToFirstParent = new MenuItem();
-            resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
-            resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-            resetToFirstParent.IsEnabled = _commit.Parents.Count > 0;
-            resetToFirstParent.Click += (_, ev) =>
-            {
-                if (change.Index == Models.ChangeState.Renamed)
-                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = _commit.Parents.Count > 0;
+                resetToFirstParent.Click += (_, ev) =>
+                {
+                    if (change.Index == Models.ChangeState.Renamed)
+                        new Commands.Checkout(_repo.FullPath).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
 
-                new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
-                ev.Handled = true;
-            };
+                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
+                    ev.Handled = true;
+                };
 
-            menu.Items.Add(resetToThisRevision);
-            menu.Items.Add(resetToFirstParent);
-            menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem { Header = "-" });
 
-            if (File.Exists(Path.Combine(fullPath)))
-                TryToAddContextMenuItemsForGitLFS(menu, change.Path);
+                if (File.Exists(Path.Combine(fullPath)))
+                    TryToAddContextMenuItemsForGitLFS(menu, change.Path);
+            }
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
