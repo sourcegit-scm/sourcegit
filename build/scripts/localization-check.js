@@ -25,7 +25,7 @@ async function calculateTranslationRate() {
     const files = (await fs.readdir(localesDir)).filter(file => file !== 'en_US.axaml' && file.endsWith('.axaml'));
 
     // Add en_US badge first
-    badges.push(`[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md)`);
+    badges.push(`[![en_US](https://img.shields.io/badge/en_US-%E2%88%9A-brightgreen)](TRANSLATION.md)`);
 
     for (const file of files) {
         const filePath = path.join(localesDir, file);
@@ -40,8 +40,12 @@ async function calculateTranslationRate() {
 
         // Add badges
         const locale = file.replace('.axaml', '').replace('_', '__');
-        const badgeColor = translationRate === 100 ? 'brightgreen' : translationRate >= 75 ? 'yellow' : 'red';
-        badges.push(`[![${locale}](https://img.shields.io/badge/${locale}-${translationRate.toFixed(2)}%25-${badgeColor})](TRANSLATION.md)`);
+        if (translationRate === 100) {
+            badges.push(`[![${locale}](https://img.shields.io/badge/${locale}-%E2%88%9A-brightgreen)](TRANSLATION.md)`);
+        } else {
+            const badgeColor = translationRate >= 75 ? 'yellow' : 'red';
+            badges.push(`[![${locale}](https://img.shields.io/badge/${locale}-${translationRate.toFixed(2)}%25-${badgeColor})](TRANSLATION.md)`);
+        }        
     }
 
     console.log(translationRates.join('\n\n'));
