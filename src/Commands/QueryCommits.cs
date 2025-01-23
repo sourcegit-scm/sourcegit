@@ -18,9 +18,13 @@ namespace SourceGit.Commands
         {
             string search = onlyCurrentBranch ? string.Empty : "--branches --remotes ";
 
-            if (method == Models.CommitSearchMethod.ByUser)
+            if (method == Models.CommitSearchMethod.ByAuthor)
             {
-                search += $"-i --author=\"{filter}\" --committer=\"{filter}\"";
+                search += $"-i --author=\"{filter}\"";
+            }
+            else if (method == Models.CommitSearchMethod.ByCommitter)
+            {
+                search += $"-i --committer=\"{filter}\"";
             }
             else if (method == Models.CommitSearchMethod.ByFile)
             {
