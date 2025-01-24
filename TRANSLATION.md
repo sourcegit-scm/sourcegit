@@ -1,29 +1,30 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CreateBranch.Name.WarnSpace
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CreateBranch.Name.WarnSpace
 
 </details>
 
-### fr_FR.axaml: 94.69%
+### fr_FR.axaml: 94.57%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CreateBranch.Name.WarnSpace
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -66,7 +67,7 @@
 
 </details>
 
-### it_IT.axaml: 93.33%
+### it_IT.axaml: 93.21%
 
 
 <details>
@@ -82,6 +83,7 @@
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
 - Text.Configure.OpenAI.Preferred.Tip
+- Text.CreateBranch.Name.WarnSpace
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -124,7 +126,7 @@
 
 </details>
 
-### pt_BR.axaml: 94.42%
+### pt_BR.axaml: 94.29%
 
 
 <details>
@@ -137,6 +139,7 @@
 - Text.CommitDetail.Info.Children
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.CreateBranch.Name.WarnSpace
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -174,13 +177,13 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CreateBranch.Name.WarnSpace
 
 </details>
 
