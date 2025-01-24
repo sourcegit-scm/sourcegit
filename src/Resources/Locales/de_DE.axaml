@@ -161,7 +161,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(n)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Standard Remote</x:String>
   <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Aktivere --prune beim fetchen</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Aktiviere --signoff für Commits</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TICKETSYSTEM</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Beispiel für Gitee Issue Regel einfügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Beispiel für Gitee Pull Request Regel einfügen</x:String>

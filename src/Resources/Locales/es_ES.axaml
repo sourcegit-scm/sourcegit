@@ -161,7 +161,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto por Defecto</x:String>
   <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Habilitar --prune para fetch</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Habilitar --signoff para commit</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SEGUIMIENTO DE INCIDENCIAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Añadir Regla de Ejemplo para Incidencias de Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Añadir Regla de Ejemplo para Pull Requests de Gitee</x:String>

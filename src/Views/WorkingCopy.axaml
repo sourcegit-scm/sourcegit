@@ -258,7 +258,7 @@
       <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
@@ -293,10 +293,26 @@
                   Height="24"
                   Margin="8,0,0,0"
                   HorizontalAlignment="Left"
-                  IsChecked="{Binding UseAmend, Mode=TwoWay}"
-                  Content="{DynamicResource Text.WorkingCopy.Amend}"/>
+                  IsChecked="{Binding EnableSignOff, Mode=TwoWay}"
+                  Content="{DynamicResource Text.WorkingCopy.SignOff}"
+                  ToolTip.Tip="--signoff"
+                  ToolTip.Placement="Top"
+                  ToolTip.VerticalOffset="0"/>
 
-        <v:LoadingIcon Grid.Column="5" Width="18" Height="18" IsVisible="{Binding IsCommitting}"/>
+        <CheckBox Grid.Column="4"
+                  Height="24"
+                  Margin="12,0,0,0"
+                  HorizontalAlignment="Left"
+                  IsChecked="{Binding UseAmend, Mode=TwoWay}"
+                  Content="{DynamicResource Text.WorkingCopy.Amend}"
+                  ToolTip.Tip="--amend"
+                  ToolTip.Placement="Top"
+                  ToolTip.VerticalOffset="0"/>
+
+        <v:LoadingIcon Grid.Column="5"
+                       Width="18" Height="18"
+                       HorizontalAlignment="Right"
+                       IsVisible="{Binding IsCommitting}"/>
         
         <SplitButton Grid.Column="6"
                      Content="{DynamicResource Text.Repository.Continue}"

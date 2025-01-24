@@ -62,6 +62,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isCommitting, value);
         }
 
+        public bool EnableSignOff
+        {
+            get => _repo.Settings.EnableSignOffForCommit;
+            set => _repo.Settings.EnableSignOffForCommit = value;
+        }
+
         public bool UseAmend
         {
             get => _useAmend;

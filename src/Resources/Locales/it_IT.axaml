@@ -156,7 +156,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto/i</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto Predefinito</x:String>
   <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Abilita --prune durante il fetch</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">Abilita --signoff per i commit</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TRACCIAMENTO ISSUE</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Aggiungi Regola Esempio per GitHub</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Aggiungi Regola Esempio per Jira</x:String>
