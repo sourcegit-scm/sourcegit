@@ -707,7 +707,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignorar archivos *{0} en la misma carpeta</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignorar archivos en la misma carpeta</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignorar solo este archivo</x:String>
-  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Enmendar (Amend)</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Enmendar</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Puedes stagear este archivo ahora.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
