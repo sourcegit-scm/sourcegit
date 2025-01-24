@@ -1,24 +1,26 @@
-### de_DE.axaml: 99.86%
+### de_DE.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CreateBranch.Name.WarnSpace
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 99.86%
+### es_ES.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CreateBranch.Name.WarnSpace
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 94.57%
+### fr_FR.axaml: 94.43%
 
 
 <details>
@@ -64,10 +66,11 @@
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### it_IT.axaml: 93.21%
+### it_IT.axaml: 93.07%
 
 
 <details>
@@ -123,10 +126,11 @@
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### pt_BR.axaml: 94.29%
+### pt_BR.axaml: 94.16%
 
 
 <details>
@@ -174,16 +178,18 @@
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### ru_RU.axaml: 99.86%
+### ru_RU.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.CreateBranch.Name.WarnSpace
+- Text.WorkingCopy.SignOff
 
 </details>
 
