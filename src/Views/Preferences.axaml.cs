@@ -28,6 +28,12 @@ namespace SourceGit.Views
             set;
         } = null;
 
+        public bool EnablePruneOnFetch
+        {
+            get;
+            set;
+        }
+
         public static readonly StyledProperty<string> GitVersionProperty =
             AvaloniaProperty.Register<Preferences, string>(nameof(GitVersion));
 
@@ -114,6 +120,8 @@ namespace SourceGit.Views
                     GPGUserKey = signingKey;
                 if (config.TryGetValue("core.autocrlf", out var crlf))
                     CRLFMode = Models.CRLFMode.Supported.Find(x => x.Value == crlf);
+                if (config.TryGetValue("fetch.prune", out var pruneOnFetch))
+                    EnablePruneOnFetch = (pruneOnFetch == "true");
                 if (config.TryGetValue("commit.gpgsign", out var gpgCommitSign))
                     EnableGPGCommitSigning = (gpgCommitSign == "true");
                 if (config.TryGetValue("tag.gpgsign", out var gpgTagSign))
@@ -157,6 +165,7 @@ namespace SourceGit.Views
             SetIfChanged(config, "user.email", DefaultEmail, "");
             SetIfChanged(config, "user.signingkey", GPGUserKey, "");
             SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null, null);
+            SetIfChanged(config, "fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");
             SetIfChanged(config, "http.sslverify", EnableHTTPSSLVerify ? "" : "false", "");

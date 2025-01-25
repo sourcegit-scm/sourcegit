@@ -180,7 +180,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Buscar remotos automaticamente</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto padrão</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Habilita --prune ao buscar</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">RASTREADOR DE PROBLEMAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Adicionar Regra de Exemplo do Github</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Adicionar Regra de Exemplo do Jira</x:String>
@@ -480,6 +479,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Diretório de Clone Padrão</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email do Usuário</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email global do usuário git</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Habilita --prune ao buscar</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Caminho de Instalação</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nome do Usuário</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nome global do usuário git</x:String>

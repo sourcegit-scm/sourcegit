@@ -60,12 +60,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
-        public bool EnablePruneOnFetch
-        {
-            get => _repo.Settings.EnablePruneOnFetch;
-            set => _repo.Settings.EnablePruneOnFetch = value;
-        }
-
         public bool EnableAutoFetch
         {
             get => _repo.Settings.EnableAutoFetch;

@@ -161,7 +161,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch les dépôts distants automatiquement</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">minute(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Dépôt par défaut</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Activer --prune pour fetch</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SUIVI DES PROBLÈMES</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Ajouter une règle d'exemple Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Ajouter une règle d'exemple pour Pull Request Gitee</x:String>
@@ -466,6 +465,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Répertoire de clônage par défaut</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">E-mail utilsateur</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">E-mail utilsateur global</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Activer --prune pour fetch</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Chemin d'installation</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nom d'utilisateur</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nom d'utilisateur global</x:String>

@@ -157,7 +157,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Enable --prune on fetch</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Add Sample Gitee Issue Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Add Sample Gitee Pull Request Rule</x:String>
@@ -475,6 +474,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">User Email</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Enable --prune on fetch</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Install Path</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Enable HTTP SSL Verify</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">User Name</x:String>

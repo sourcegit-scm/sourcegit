@@ -151,7 +151,6 @@ namespace SourceGit.ViewModels
                         _repo.FullPath,
                         _selectedRemote.Name,
                         NoTags,
-                        _repo.Settings.EnablePruneOnFetch,
                         false,
                         SetProgressDescription).Exec();
 
@@ -184,7 +183,6 @@ namespace SourceGit.ViewModels
                         _selectedBranch.Name,
                         UseRebase,
                         NoTags,
-                        _repo.Settings.EnablePruneOnFetch,
                         SetProgressDescription).Exec();
                 }
 

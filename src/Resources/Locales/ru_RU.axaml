@@ -160,7 +160,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автоматическое скачивание изменений</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Внешний репозиторий по умолчанию</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">Разрешить '--prune' при скачивании</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Добавить пример правила для тем в Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Добавить пример правила запроса скачивания из Gitee</x:String>
@@ -478,6 +477,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Каталог клонирования по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Электроная почта пользователя</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Общая электроная почта пользователя git</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Разрешить '--prune' при скачивании</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Путь установки</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Разрешить верификацию HTTP SSL</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Имя пользователя</x:String>

@@ -160,7 +160,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">拉取更新时启用修剪（--prune）</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增匹配Gitee议题规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增匹配Gitee合并请求规则</x:String>
@@ -479,6 +478,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">默认克隆路径</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">邮箱</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">默认GIT用户邮箱</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">拉取更新时启用修剪（--prune）</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">启用HTTP SSL验证</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">用户名</x:String>

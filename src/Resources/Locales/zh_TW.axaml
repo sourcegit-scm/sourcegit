@@ -160,7 +160,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">拉取變更時進行清理 (--prune)</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增符合 Gitee 議題規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增符合 Gitee 合併請求規則</x:String>
@@ -478,6 +477,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">預設複製 (clone) 路徑</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">預設 Git 使用者電子郵件</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">拉取變更時進行清理 (--prune)</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">啟用 HTTP SSL 驗證</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">使用者名稱</x:String>
