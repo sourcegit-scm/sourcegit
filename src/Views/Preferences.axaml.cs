@@ -342,6 +342,17 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+        private void OnSystemTrayIconCheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox box)
+            {
+                ViewModels.Preferences.Instance.SystemTrayIcon = box.IsChecked == true;
+                var dialog = new ConfirmRestart();
+                App.OpenDialog(dialog);
+            }
+
+            e.Handled = true;
+        }
 
         private void OnGitInstallPathChanged(object sender, TextChangedEventArgs e)
         {
