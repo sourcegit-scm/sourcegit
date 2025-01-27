@@ -30,7 +30,7 @@ namespace SourceGit.Commands
         public bool Push(string message, List<Models.Change> changes, bool keepIndex)
         {
             var builder = new StringBuilder();
-            builder.Append("stash push ");
+            builder.Append("stash push --include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
             builder.Append("-m \"");
@@ -47,7 +47,7 @@ namespace SourceGit.Commands
         public bool Push(string message, string pathspecFromFile, bool keepIndex)
         {
             var builder = new StringBuilder();
-            builder.Append("stash push --pathspec-from-file=\"");
+            builder.Append("stash push --include-untracked --pathspec-from-file=\"");
             builder.Append(pathspecFromFile);
             builder.Append("\" ");
             if (keepIndex)
