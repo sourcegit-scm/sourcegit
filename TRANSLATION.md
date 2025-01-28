@@ -1,29 +1,32 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CreateBranch.Name.WarnSpace
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CreateBranch.Name.WarnSpace
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 94.69%
+### fr_FR.axaml: 94.43%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.CreateBranch.Name.WarnSpace
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -63,10 +66,11 @@
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### it_IT.axaml: 93.32%
+### it_IT.axaml: 93.07%
 
 
 <details>
@@ -82,6 +86,7 @@
 - Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
 - Text.Configure.OpenAI.Preferred
 - Text.Configure.OpenAI.Preferred.Tip
+- Text.CreateBranch.Name.WarnSpace
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -121,10 +126,11 @@
 - Text.SHALinkCM.CopySHA
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### pt_BR.axaml: 94.41%
+### pt_BR.axaml: 94.16%
 
 
 <details>
@@ -137,6 +143,7 @@
 - Text.CommitDetail.Info.Children
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.CreateBranch.Name.WarnSpace
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -171,16 +178,18 @@
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.CreateBranch.Name.WarnSpace
+- Text.WorkingCopy.SignOff
 
 </details>
 

@@ -20,6 +20,7 @@
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -63,13 +64,19 @@
                Text="{Binding Name, Mode=TwoWay}"
                Watermark="{DynamicResource Text.CreateBranch.Name.Placeholder}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
+      <StackPanel Grid.Row="2" Grid.Column="1"
+                  Orientation="Horizontal"
+                  IsVisible="{Binding Name, Converter={x:Static c:StringConverters.ContainsSpaces}}">
+        <Path Width="10" Height="10" Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
+        <TextBlock Classes="small" Text="{DynamicResource Text.CreateBranch.Name.WarnSpace}" Margin="4,0,0,0"/>
+      </StackPanel>
 
-      <TextBlock Grid.Row="2" Grid.Column="0"
+      <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateBranch.LocalChanges}"
                  IsVisible="{Binding !IsBareRepository}"/>
-      <Border Grid.Row="2" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
+      <Border Grid.Row="3" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
           <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
                        x:Name="RadioDoNothing"
@@ -88,7 +95,7 @@
         </WrapPanel>
       </Border>
       
-      <CheckBox Grid.Row="3" Grid.Column="1"
+      <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.Checkout}"
                 IsChecked="{Binding CheckoutAfterCreated, Mode=TwoWay}"
                 IsVisible="{Binding !IsBareRepository}"/>

@@ -62,6 +62,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isCommitting, value);
         }
 
+        public bool EnableSignOff
+        {
+            get => _repo.Settings.EnableSignOffForCommit;
+            set => _repo.Settings.EnableSignOffForCommit = value;
+        }
+
         public bool UseAmend
         {
             get => _useAmend;
@@ -417,12 +423,7 @@ namespace SourceGit.ViewModels
         public void Discard(List<Models.Change> changes)
         {
             if (_repo.CanCreatePopup())
-            {
-                if (changes.Count == _unstaged.Count && _staged.Count == 0)
-                    _repo.ShowPopup(new Discard(_repo));
-                else
-                    _repo.ShowPopup(new Discard(_repo, changes));
-            }
+                _repo.ShowPopup(new Discard(_repo, changes));
         }
 
         public async void UseTheirs(List<Models.Change> changes)

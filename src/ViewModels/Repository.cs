@@ -733,12 +733,15 @@ namespace SourceGit.ViewModels
                             visible.Add(commit);
                         break;
                     case 1:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser, _onlySearchCommitsInCurrentBranch).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByAuthor, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByCommitter, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 3:
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
+                        break;
+                    case 4:
                         visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                 }
@@ -2358,7 +2361,7 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
             foreach (var remote in remotes)
-                new Commands.Fetch(_fullpath, remote, false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
+                new Commands.Fetch(_fullpath, remote, false, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }
@@ -2382,7 +2385,7 @@ namespace SourceGit.ViewModels
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
-        private int _searchCommitFilterType = 2;
+        private int _searchCommitFilterType = 3;
         private bool _onlySearchCommitsInCurrentBranch = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();

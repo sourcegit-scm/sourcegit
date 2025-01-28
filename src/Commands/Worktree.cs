@@ -73,6 +73,8 @@ namespace SourceGit.Commands
 
             if (!string.IsNullOrEmpty(tracking))
                 Args += tracking;
+            else if (!string.IsNullOrEmpty(name) && !createNew)
+                Args += name;
 
             _outputHandler = outputHandler;
             return Exec();

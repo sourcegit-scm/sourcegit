@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:s="using:SourceGit"
         xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
         xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
         xmlns:aee="using:AvaloniaEdit.Editing"
@@ -844,7 +845,19 @@
                          HorizontalAlignment="Right"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                         FontSize="11"/>
+                         FontSize="11"
+                         IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+
+              <TextBlock x:Name="PART_CommandTip"
+                         Grid.Column="2"
+                         Classes="CaptionTextBlockStyle"
+                         Margin="{DynamicResource MenuInputGestureTextMargin}"
+                         Text="{TemplateBinding (v:MenuItemExtension.Command)}"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         FontSize="11"
+                         IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
               
               <Path Name="PART_ChevronPath"
                     Width="6"
