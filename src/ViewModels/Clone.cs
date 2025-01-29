@@ -127,6 +127,14 @@ namespace SourceGit.ViewModels
                     config.Set("remote.origin.sshkey", _sshKey);
                 }
 
+                // individually update submodule (if any)
+                var submoduleList = new Commands.QuerySubmodules(path).Result();
+                foreach (var submodule in submoduleList)
+                {
+                    var update = new Commands.Submodule(path);
+                    update.Update(submodule.Path, true, true, false, SetProgressDescription);
+                }
+
                 CallUIThread(() =>
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);

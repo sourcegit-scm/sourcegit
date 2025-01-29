@@ -12,7 +12,7 @@ namespace SourceGit.Commands
             WorkingDirectory = path;
             TraitErrorAsOutput = true;
             SSHKey = sshKey;
-            Args = "clone --progress --verbose --recurse-submodules ";
+            Args = "clone --progress --verbose ";
 
             if (!string.IsNullOrEmpty(extraArgs))
                 Args += $"{extraArgs} ";
