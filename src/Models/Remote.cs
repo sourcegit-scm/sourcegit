@@ -10,10 +10,10 @@ namespace SourceGit.Models
         private static partial Regex REG_HTTPS();
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
         private static partial Regex REG_SSH1();
-        [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-/~]+/[\w\-\.]+(\.git)?$")]
+        [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
         private static partial Regex REG_SSH2();
 
-        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\-/~]+/[\w\-\.]+)\.git$")]
+        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\-/~%]+/[\w\-\.%]+)\.git$")]
         private static partial Regex REG_TO_VISIT_URL_CAPTURE();
 
         private static readonly Regex[] URL_FORMATS = [
