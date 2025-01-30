@@ -152,7 +152,7 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            var info = new ProcessStartInfo("cmd", $"/c start {url}");
+            var info = new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"");
             info.CreateNoWindow = true;
             Process.Start(info);
         }
