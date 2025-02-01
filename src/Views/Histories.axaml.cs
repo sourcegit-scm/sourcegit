@@ -520,6 +520,13 @@ namespace SourceGit.Views
             AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty, OnlyHighlightCurrentBranchProperty);
         }
 
+        public CommitGraph()
+        {
+            PointerPressed += OnPointerPressed;
+            PointerMoved += OnPointerMoved;
+            PointerExited += OnPointerExited;
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -704,6 +711,56 @@ namespace SourceGit.Views
                         break;
                 }
             }
+        }
+
+        private void OnPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            var point = e.GetPosition(this);
+            var dot = FindDotAtPosition(point);
+            var repoView = this.FindAncestorOfType<Repository>();
+            var repoPath = (repoView?.DataContext as ViewModels.Repository)?.FullPath;
+            if (dot == null || string.IsNullOrEmpty(repoPath))
+                return;
+
+            var tracking = new CommitRelationTracking(repoPath, dot.SHA);
+            var flyout = new Flyout { Content = tracking };
+            flyout.ShowAt(this, true);
+        }
+
+        private void OnPointerMoved(object sender, PointerEventArgs e)
+        {
+            var point = e.GetPosition(this);
+            var dot = FindDotAtPosition(point);
+            Cursor = dot != null ? new Cursor(StandardCursorType.Hand) : new Cursor(StandardCursorType.Arrow);
+        }
+
+        private void OnPointerExited(object sender, PointerEventArgs e)
+        {
+            Cursor = new Cursor(StandardCursorType.Arrow);
+        }
+
+        private Models.CommitGraph.Dot FindDotAtPosition(Point point)
+        {
+            var graph = Graph;
+            if (graph == null)
+                return null;
+
+            // get scroll offset
+            var histories = this.FindAncestorOfType<Histories>();
+            var scrollOffset = histories?.CommitListContainer.Scroll?.Offset.Y ?? 0;
+
+            // adjust point
+            var adjustedPoint = new Point(point.X, point.Y + scrollOffset);
+
+            foreach (var dot in graph.Dots)
+            {
+                var distance = Math.Sqrt(Math.Pow(dot.Center.X - adjustedPoint.X, 2) + Math.Pow(dot.Center.Y - adjustedPoint.Y, 2));
+                if (distance <= 6)
+                {
+                    return dot;
+                }
+            }
+            return null;
         }
     }
 

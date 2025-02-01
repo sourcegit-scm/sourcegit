@@ -207,7 +207,7 @@
                          DotBrush="{DynamicResource Brush.Contents}"
                          OnlyHighlightCurrentBranch="{Binding $parent[v:Histories].OnlyHighlightCurrentBranch}"
                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                         IsHitTestVisible="False"
+                         IsHitTestVisible="True"
                          ClipToBounds="True"/>
         </Grid>
       </Grid>

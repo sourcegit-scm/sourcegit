@@ -28,5 +28,22 @@ namespace SourceGit.Views
                 });
             });
         }
+
+        public CommitRelationTracking(string repoPath, string commitHash)
+        {
+            InitializeComponent();
+
+            LoadingIcon.IsVisible = true;
+
+            Task.Run(() =>
+            {
+                var containsIn = new Commands.QueryRefsContainsCommit(repoPath, commitHash).Result();
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    Container.ItemsSource = containsIn;
+                    LoadingIcon.IsVisible = false;
+                });
+            });
+        }
     }
 }
