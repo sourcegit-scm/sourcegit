@@ -56,25 +56,24 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
 
-            string target = string.Empty;
+            List<string> targets;
             if (_updateAll)
-            {
-                ProgressDescription = "Updating submodules ...";
-            }
+                targets = Submodules;
             else
-            {
-                target = SelectedSubmodule;
-                ProgressDescription = $"Updating submodule {target} ...";
-            }
+                targets = [SelectedSubmodule];
 
             return Task.Run(() =>
             {
-                new Commands.Submodule(_repo.FullPath).Update(
-                    target,
-                    EnableInit,
-                    EnableRecursive,
-                    EnableRemote,
-                    SetProgressDescription);
+                foreach (var submodule in targets)
+                {
+                    ProgressDescription = $"Updating submodule {submodule} ...";
+                    new Commands.Submodule(_repo.FullPath).Update(
+                        submodule,
+                        EnableInit,
+                        EnableRecursive,
+                        EnableRemote,
+                        SetProgressDescription);
+                }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;

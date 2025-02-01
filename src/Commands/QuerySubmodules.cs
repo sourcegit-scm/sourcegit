@@ -24,8 +24,6 @@ namespace SourceGit.Commands
         {
             var submodules = new List<Models.Submodule>();
             var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                return submodules;
 
             var builder = new StringBuilder();
             var lines = rs.StdOut.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
