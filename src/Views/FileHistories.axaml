@@ -13,6 +13,30 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.FileHistory}"
                     MinWidth="1280" MinHeight="720">
+  <v:ChromelessWindow.DataTemplates>
+    <DataTemplate DataType="m:Null">
+      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
+        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="primary" Margin="4,2" Foreground="#FFDDDDDD"/>
+      </Border>
+    </DataTemplate>
+    
+    <DataTemplate DataType="m:Commit">
+      <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+          <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+          <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
+            <TextBlock Text="HEAD" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
+          </Border>
+          <TextBlock Grid.Column="3" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
+          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+        </Grid>
+
+        <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+      </Grid>
+    </DataTemplate>
+  </v:ChromelessWindow.DataTemplates>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -56,8 +80,8 @@
                Margin="8,4,4,8"
                BorderBrush="{DynamicResource Brush.Border2}"
                ItemsSource="{Binding Commits}"
-               SelectedItem="{Binding SelectedCommit, Mode=TwoWay}"
-               SelectionMode="Single"
+               SelectionMode="Multiple"
+               SelectionChanged="OnRowSelectionChanged"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>
@@ -113,7 +137,7 @@
                      IsVisible="{Binding IsLoading}"/>
 
       <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !IsLoading}">
-        <StackPanel Grid.Row="0" Margin="0,8" Height="28" HorizontalAlignment="Center" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Margin="0,8" Height="28" HorizontalAlignment="Center" Orientation="Horizontal" IsVisible="{Binding SelectedCommits.Count, Converter={x:Static c:IntConverters.IsOne}}">
           <RadioButton Classes="switch_button"
                        GroupName="SearchGroup"
                        IsChecked="{Binding !IsViewContent, Mode=OneWay}">
@@ -126,6 +150,29 @@
             <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileContent}" FontWeight="Bold"/>
           </RadioButton>
         </StackPanel>
+
+        <!-- Compare Revision Info -->
+        <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto" IsVisible="{Binding SelectedCommits.Count, Converter={x:Static c:IntConverters.IsTwo}}">
+          <!-- Base Revision -->
+          <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+            <ContentControl Content="{Binding StartPoint}"/>
+          </Border>
+
+          <!-- Swap Buttons -->
+          <Button Grid.Column="1" Classes="icon_button" Command="{Binding Swap}" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
+            <Path Width="16" Height="16" Data="{DynamicResource Icons.Compare}"/>
+          </Button>
+
+          <!-- Right Revision -->
+          <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+            <ContentControl Content="{Binding EndPoint}"/>
+          </Border>
+
+          <!-- Save As Patch Button -->
+          <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
+            <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+          </Button>
+        </Grid>
         
         <ContentControl Grid.Row="1" Margin="4,4,8,8" Content="{Binding ViewContent}">
           <ContentControl.DataTemplates>
@@ -154,6 +201,21 @@
                 </Grid>
               </Border>
             </DataTemplate>
+
+            <DataTemplate DataType="x:Int32">
+              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Path Width="128" Height="128"
+                      Data="{StaticResource Icons.Detail}"
+                      HorizontalAlignment="Center"
+                      Fill="{DynamicResource Brush.FG2}"/>
+
+                <TextBlock HorizontalAlignment="Center"
+                           Margin="0,16"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{DynamicResource Brush.FG2}"
+                           Text="{Binding Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+              </StackPanel>
+            </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
         
@@ -162,7 +224,8 @@
                 Margin="0,0,0,8"
                 HorizontalAlignment="Center"
                 Content="{DynamicResource Text.ChangeCM.CheckoutThisRevision}"
-                Click="OnResetToSelectedRevision"/>
+                Click="OnResetToSelectedRevision"
+                IsVisible="{Binding SelectedCommits.Count, Converter={x:Static c:IntConverters.IsOne}}"/>
       </Grid>
     </Grid>
     

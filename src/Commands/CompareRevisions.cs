@@ -18,6 +18,15 @@ namespace SourceGit.Commands
             Args = $"diff --name-status {based} {end}";
         }
 
+        public CompareRevisions(string repo, string start, string end, string path)
+        {
+            WorkingDirectory = repo;
+            Context = repo;
+
+            var based = string.IsNullOrEmpty(start) ? "-R" : start;
+            Args = $"diff --name-status {based} {end} -- {path}";
+        }
+
         public List<Models.Change> Result()
         {
             Exec();
