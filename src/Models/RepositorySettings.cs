@@ -182,6 +182,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool AutoRestoreAfterStash
+        {
+            get;
+            set;
+        } = false;
+
         public string PreferedOpenAIService
         {
             get;

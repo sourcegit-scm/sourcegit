@@ -36,6 +36,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.KeepIndexWhenStash = value;
         }
 
+        public bool AutoRestore
+        {
+            get => _repo.Settings.AutoRestoreAfterStash;
+            set => _repo.Settings.AutoRestoreAfterStash = value;
+        }
+
         public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
         {
             _repo = repo;
@@ -83,6 +89,9 @@ namespace SourceGit.ViewModels
                 {
                     succ = StashWithChanges(_changes);
                 }
+
+                if (AutoRestore && succ)
+                    succ = new Commands.Stash(_repo.FullPath).Apply();
 
                 CallUIThread(() =>
                 {

@@ -73,21 +73,27 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Apply(string name)
+        public bool Apply(string name = null)
         {
-            Args = $"stash apply --index -q {name}";
+            Args = "stash apply -q";
+            if (!string.IsNullOrEmpty(name))
+                Args += $" \"{name}\"";
             return Exec();
         }
 
-        public bool Pop(string name)
+        public bool Pop(string name = null)
         {
-            Args = $"stash pop --index -q {name}";
+            Args = "stash pop -q";
+            if (!string.IsNullOrEmpty(name))
+                Args += $" \"{name}\"";
             return Exec();
         }
 
-        public bool Drop(string name)
+        public bool Drop(string name = null)
         {
-            Args = $"stash drop -q {name}";
+            Args = "stash drop -q";
+            if (!string.IsNullOrEmpty(name))
+                Args += $" \"{name}\"";
             return Exec();
         }
 
