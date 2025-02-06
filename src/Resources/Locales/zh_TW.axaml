@@ -37,6 +37,10 @@
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">套用修補檔，輸出關於空白字元的警告</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白字元處理:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">套用擱置</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">在成功套用后捨棄擱置</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">恢復索引中已暫存的變更</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">已選擇擱置 ：</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">封存 (archive)...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">封存檔案路徑:</x:String>
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">選擇封存檔案的儲存路徑</x:String>

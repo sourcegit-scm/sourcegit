@@ -34,6 +34,10 @@
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Warn</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Outputs warnings for a few such errors, but applies</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Apply Stash</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Delete after applying</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Reinstate the index's changes</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">Stash:</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">Archive...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">Save Archive To:</x:String>
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Select archive file path</x:String>

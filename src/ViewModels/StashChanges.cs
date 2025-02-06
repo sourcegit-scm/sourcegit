@@ -91,7 +91,7 @@ namespace SourceGit.ViewModels
                 }
 
                 if (AutoRestore && succ)
-                    succ = new Commands.Stash(_repo.FullPath).Apply();
+                    succ = new Commands.Stash(_repo.FullPath).Apply("stash@{0}", true);
 
                 CallUIThread(() =>
                 {
