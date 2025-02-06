@@ -937,9 +937,6 @@ namespace SourceGit.ViewModels
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
-
-                if (_workingCopy != null)
-                    _workingCopy.CanCommitWithPush = _currentBranch != null && !string.IsNullOrEmpty(_currentBranch.Upstream);
             });
         }
 
