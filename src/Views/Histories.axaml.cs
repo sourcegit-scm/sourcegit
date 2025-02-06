@@ -535,16 +535,15 @@ namespace SourceGit.Views
             if (graph == null)
                 return;
 
-            var histories = this.FindAncestorOfType<Histories>();
-            if (histories == null)
-                return;
+            _repoView = this.FindAncestorOfType<Repository>();
+            _histories = this.FindAncestorOfType<Histories>();
 
-            var list = histories.CommitListContainer;
+            var list = _histories?.CommitListContainer;
             if (list == null)
                 return;
 
             // Calculate drawing area.
-            double width = Bounds.Width - 273 - histories.AuthorNameColumnWidth.Value;
+            double width = Bounds.Width - 273 - _histories.AuthorNameColumnWidth.Value;
             double height = Bounds.Height;
             double startY = list.Scroll?.Offset.Y ?? 0;
             double endY = startY + height + 28;
@@ -717,8 +716,7 @@ namespace SourceGit.Views
         {
             var point = e.GetPosition(this);
             var dot = FindDotAtPosition(point);
-            var repoView = this.FindAncestorOfType<Repository>();
-            var repoPath = (repoView?.DataContext as ViewModels.Repository)?.FullPath;
+            var repoPath = (_repoView?.DataContext as ViewModels.Repository)?.FullPath;
             if (dot == null || string.IsNullOrEmpty(repoPath))
                 return;
 
@@ -746,22 +744,32 @@ namespace SourceGit.Views
                 return null;
 
             // get scroll offset
-            var histories = this.FindAncestorOfType<Histories>();
-            var scrollOffset = histories?.CommitListContainer.Scroll?.Offset.Y ?? 0;
+            var scrollOffset = _histories?.CommitListContainer.Scroll?.Offset.Y ?? 0;
 
             // adjust point
             var adjustedPoint = new Point(point.X, point.Y + scrollOffset);
+            var searchRadius = 9.0;
 
             foreach (var dot in graph.Dots)
             {
+                if (!(Math.Abs(dot.Center.X - adjustedPoint.X) <= searchRadius) ||
+                    !(Math.Abs(dot.Center.Y - adjustedPoint.Y) <= searchRadius))
+                {
+                    continue;
+                }
+
                 var distance = Math.Sqrt(Math.Pow(dot.Center.X - adjustedPoint.X, 2) + Math.Pow(dot.Center.Y - adjustedPoint.Y, 2));
-                if (distance <= 6)
+                if (distance <= searchRadius)
                 {
                     return dot;
                 }
             }
+
             return null;
         }
+
+        private Histories _histories;
+        private Repository _repoView;
     }
 
     public partial class Histories : UserControl
