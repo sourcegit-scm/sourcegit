@@ -31,12 +31,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commits, value);
         }
 
-        public Models.Commit SelectedCommit
+        public List<Models.Commit> SelectedCommits
         {
-            get => _selectedCommit;
+            get => _selectedCommits;
             set
             {
-                if (SetProperty(ref _selectedCommit, value))
+                if (SetProperty(ref _selectedCommits, value))
                     RefreshViewContent();
             }
         }
@@ -49,6 +49,18 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _isViewContent, value))
                     RefreshViewContent();
             }
+        }
+
+        public Models.Commit StartPoint
+        {
+            get => _startPoint;
+            set => SetProperty(ref _startPoint, value);
+        }
+
+        public Models.Commit EndPoint
+        {
+            get => _endPoint;
+            set => SetProperty(ref _endPoint, value);
         }
 
         public object ViewContent
@@ -71,7 +83,7 @@ namespace SourceGit.ViewModels
                     IsLoading = false;
                     Commits = commits;
                     if (commits.Count > 0)
-                        SelectedCommit = commits[0];
+                        SelectedCommits = [commits[0]];
                 });
             });
         }
@@ -83,18 +95,40 @@ namespace SourceGit.ViewModels
 
         public void ResetToSelectedRevision()
         {
-            new Commands.Checkout(_repo.FullPath).FileWithRevision(_file, $"{_selectedCommit.SHA}");
+            if (_selectedCommits is not { Count: 1 })
+                return;
+            new Commands.Checkout(_repo.FullPath).FileWithRevision(_file, $"{_selectedCommits[0].SHA}");
+        }
+
+        public void Swap()
+        {
+            if (_selectedCommits is not { Count: 2 })
+                return;
+
+            (_selectedCommits[0], _selectedCommits[1]) = (_selectedCommits[1], _selectedCommits[0]);
+            RefreshViewContent();
+        }
+
+        public Task<bool> SaveAsPatch(string saveTo)
+        {
+            return Task.Run(() =>
+            {
+                Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo.FullPath, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+                return true;
+            });
         }
 
         private void RefreshViewContent()
         {
-            if (_selectedCommit == null)
+            if (_selectedCommits == null || _selectedCommits.Count == 0)
             {
-                ViewContent = null;
+                StartPoint = null;
+                EndPoint = null;
+                ViewContent = 0;
                 return;
             }
 
-            if (_isViewContent)
+            if (_isViewContent && _selectedCommits.Count == 1)
                 SetViewContentAsRevisionFile();
             else
                 SetViewContentAsDiff();
@@ -102,7 +136,10 @@ namespace SourceGit.ViewModels
 
         private void SetViewContentAsRevisionFile()
         {
-            var objs = new Commands.QueryRevisionObjects(_repo.FullPath, _selectedCommit.SHA, _file).Result();
+            StartPoint = null;
+            EndPoint = null;
+            var selectedCommit = _selectedCommits[0];
+            var objs = new Commands.QueryRevisionObjects(_repo.FullPath, selectedCommit.SHA, _file).Result();
             if (objs.Count == 0)
             {
                 ViewContent = new FileHistoriesRevisionFile(_file, null);
@@ -115,13 +152,13 @@ namespace SourceGit.ViewModels
                 case Models.ObjectType.Blob:
                     Task.Run(() =>
                     {
-                        var isBinary = new Commands.IsBinary(_repo.FullPath, _selectedCommit.SHA, _file).Result();
+                        var isBinary = new Commands.IsBinary(_repo.FullPath, selectedCommit.SHA, _file).Result();
                         if (isBinary)
                         {
                             var ext = Path.GetExtension(_file);
                             if (IMG_EXTS.Contains(ext))
                             {
-                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _selectedCommit.SHA, _file);
+                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, selectedCommit.SHA, _file);
                                 var fileSize = stream.Length;
                                 var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
                                 var imageType = Path.GetExtension(_file).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
@@ -130,7 +167,7 @@ namespace SourceGit.ViewModels
                             }
                             else
                             {
-                                var size = new Commands.QueryFileSize(_repo.FullPath, _file, _selectedCommit.SHA).Result();
+                                var size = new Commands.QueryFileSize(_repo.FullPath, _file, selectedCommit.SHA).Result();
                                 var binaryFile = new Models.RevisionBinaryFile() { Size = size };
                                 Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, binaryFile));
                             }
@@ -138,7 +175,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _selectedCommit.SHA, _file);
+                        var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, selectedCommit.SHA, _file);
                         var content = new StreamReader(contentStream).ReadToEnd();
                         var matchLFS = REG_LFS_FORMAT().Match(content);
                         if (matchLFS.Success)
@@ -181,8 +218,35 @@ namespace SourceGit.ViewModels
 
         private void SetViewContentAsDiff()
         {
-            var option = new Models.DiffOption(_selectedCommit, _file);
-            ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
+            if (_selectedCommits is { Count: 1 })
+            {
+                StartPoint = null;
+                EndPoint = null;
+                var option = new Models.DiffOption(_selectedCommits[0], _file);
+                ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
+            }
+            else if (_selectedCommits is { Count: 2 })
+            {
+                StartPoint = _selectedCommits[0];
+                EndPoint = _selectedCommits[1];
+                _changes = new Commands.CompareRevisions(_repo.FullPath, GetSHA(_selectedCommits[0]), GetSHA(_selectedCommits[1]), _file).Result();
+                if (_changes.Count == 0)
+                {
+                    ViewContent = null;
+                    return;
+                }
+                var option = new Models.DiffOption(GetSHA(_selectedCommits[0]), GetSHA(_selectedCommits[1]), _changes[0]);
+                ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
+            }
+            else
+            {
+                ViewContent = _selectedCommits.Count;
+            }
+        }
+
+        private string GetSHA(object obj)
+        {
+            return obj is Models.Commit commit ? commit.SHA : string.Empty;
         }
 
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
@@ -197,8 +261,11 @@ namespace SourceGit.ViewModels
         private readonly string _file = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = null;
-        private Models.Commit _selectedCommit = null;
+        private List<Models.Commit> _selectedCommits = [];
         private bool _isViewContent = false;
         private object _viewContent = null;
+        private Models.Commit _startPoint = null;
+        private Models.Commit _endPoint = null;
+        private List<Models.Change> _changes = null;
     }
 }
