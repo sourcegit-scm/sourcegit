@@ -107,8 +107,12 @@ namespace SourceGit.ViewModels
         {
             _gitDir = repo.GitDir;
 
-            var stoppedSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha")).Trim();
-            StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
+            var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
+            if (File.Exists(stoppedSHAPath))
+            {
+                var stoppedSHA = File.ReadAllText(stoppedSHAPath).Trim();
+                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
+            }
 
             var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
             Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
