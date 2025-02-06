@@ -36,22 +36,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistoriesSingleRevision(Repository repo, string file, Models.Commit revision, object prev)
+        public FileHistoriesSingleRevision(Repository repo, string file, Models.Commit revision, bool prevIsDiffMode)
         {
             _repo = repo;
             _file = file;
             _revision = revision;
-
-            if (prev is FileHistoriesSingleRevision singleRevision)
-            {
-                _isDiffMode = singleRevision._isDiffMode;
-                _viewContent = singleRevision._viewContent;
-            }
-            else
-            {
-                _isDiffMode = true;
-                _viewContent = null;
-            }
+            _isDiffMode = prevIsDiffMode;
+            _viewContent = null;
 
             RefreshViewContent();
         }
@@ -283,13 +274,13 @@ namespace SourceGit.ViewModels
 
             SelectedCommits.CollectionChanged += (_, _) =>
             {
+                if (_viewContent is FileHistoriesSingleRevision singleRevision)
+                    _prevIsDiffMode = singleRevision.IsDiffMode;
+
                 switch (SelectedCommits.Count)
                 {
-                    case 0:
-                        ViewContent = new Models.Null();
-                        break;
                     case 1:
-                        ViewContent = new FileHistoriesSingleRevision(_repo, _file, SelectedCommits[0], _viewContent);
+                        ViewContent = new FileHistoriesSingleRevision(_repo, _file, SelectedCommits[0], _prevIsDiffMode);
                         break;
                     case 2:
                         ViewContent = new FileHistoriesCompareRevisions(_repo, _file, SelectedCommits[0], SelectedCommits[1]);
@@ -309,6 +300,7 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private readonly string _file = null;
         private bool _isLoading = true;
+        private bool _prevIsDiffMode = true;
         private List<Models.Commit> _commits = null;
         private object _viewContent = null;
     }

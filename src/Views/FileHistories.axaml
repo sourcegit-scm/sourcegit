@@ -109,10 +109,6 @@
 
       <ContentControl Grid.Column="2" Content="{Binding ViewContent}">
         <ContentControl.DataTemplates>
-          <DataTemplate DataType="m:Null">
-            <Border/>
-          </DataTemplate>
-
           <DataTemplate DataType="vm:FileHistoriesSingleRevision">
             <Grid RowDefinitions="Auto,*,Auto">
               <StackPanel Grid.Row="0" Margin="0,8" Height="28" HorizontalAlignment="Center" Orientation="Horizontal">
