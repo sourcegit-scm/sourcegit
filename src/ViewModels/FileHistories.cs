@@ -276,6 +276,8 @@ namespace SourceGit.ViewModels
                 {
                     IsLoading = false;
                     Commits = commits;
+                    if (Commits.Count > 0)
+                        SelectedCommits.Add(Commits[0]);
                 });
             });
 
