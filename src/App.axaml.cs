@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -332,17 +334,16 @@ namespace SourceGit
             builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
             builder.Append("----------------------------\n");
             builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
+            builder.Append($"OS: {Environment.OSVersion}\n");
             builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
             builder.Append($"Source: {ex.Source}\n");
+            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
+            builder.Append($"User: {Environment.UserName}\n");
+            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
+            builder.Append($"Exception Time: {DateTime.Now}\n");
+            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
             builder.Append($"---------------------------\n\n");
-            builder.Append(ex.StackTrace);
-            while (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-                builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
-                builder.Append(ex.StackTrace);
-            }
+            builder.Append(ex);
 
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
