@@ -25,7 +25,7 @@ async function calculateTranslationRate() {
     const files = (await fs.readdir(localesDir)).filter(file => file !== 'en_US.axaml' && file.endsWith('.axaml'));
 
     // Add en_US badge first
-    badges.push(`[![en_US](https://img.shields.io/badge/en_US-%E2%88%9A-brightgreen)](TRANSLATION.md)`);
+    badges.push(`[![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)](TRANSLATION.md)`);
 
     for (const file of files) {
         const filePath = path.join(localesDir, file);
