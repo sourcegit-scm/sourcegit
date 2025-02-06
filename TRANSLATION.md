@@ -1,31 +1,34 @@
-### de_DE.axaml: 99.73%
+### de_DE.axaml: 99.59%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 99.73%
+### es_ES.axaml: 99.59%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 94.43%
+### fr_FR.axaml: 94.30%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
@@ -70,23 +73,24 @@
 
 </details>
 
-### it_IT.axaml: 100.00%
+### it_IT.axaml: 99.86%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Clone.RecurseSubmodules
 
 </details>
 
-### pt_BR.axaml: 94.16%
+### pt_BR.axaml: 94.03%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.MergeMultiBranches
+- Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
@@ -132,12 +136,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.73%
+### ru_RU.axaml: 99.59%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.WorkingCopy.SignOff
 
