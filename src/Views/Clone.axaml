@@ -10,7 +10,7 @@
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
     <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Clone}"/>
 
-    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,32,32,32" ColumnDefinitions="Auto,*">
+    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,32,32,32,32" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0" 
                  HorizontalAlignment="Right" 
                  Margin="0,0,8,0" 
@@ -75,6 +75,11 @@
                CornerRadius="3" 
                Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}" 
                Text="{Binding ExtraArgs, Mode=TwoWay}"/>
+
+      <CheckBox Grid.Row="5" Grid.Column="1"
+                Content="{DynamicResource Text.Clone.RecurseSubmodules}"
+                IsChecked="{Binding InitAndUpdateSubmodules, Mode=TwoWay}"
+                ToolTip.Tip="--recurse-submodules"/>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -97,6 +97,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Local Name:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Repository name. Optional.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Parent Folder:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Initialize &amp; update submodules</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>

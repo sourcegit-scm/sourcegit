@@ -100,6 +100,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">本地仓库名 ：</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">本地仓库目录的名字，选填。</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">父级目录 ：</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">初始化并更新子模块</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>

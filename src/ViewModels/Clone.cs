@@ -53,6 +53,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
+        public bool InitAndUpdateSubmodules
+        {
+            get;
+            set;
+        } = true;
+
         public Clone(string pageId)
         {
             _pageId = pageId;
@@ -128,11 +134,14 @@ namespace SourceGit.ViewModels
                 }
 
                 // individually update submodule (if any)
-                var submoduleList = new Commands.QuerySubmodules(path).Result();
-                foreach (var submodule in submoduleList)
+                if (InitAndUpdateSubmodules)
                 {
-                    var update = new Commands.Submodule(path);
-                    update.Update(submodule.Path, true, true, false, SetProgressDescription);
+                    var submoduleList = new Commands.QuerySubmodules(path).Result();
+                    foreach (var submodule in submoduleList)
+                    {
+                        var update = new Commands.Submodule(path);
+                        update.Update(submodule.Path, true, true, false, SetProgressDescription);
+                    }
                 }
 
                 CallUIThread(() =>
