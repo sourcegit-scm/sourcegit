@@ -1,9 +1,13 @@
-### de_DE.axaml: 99.32%
+### de_DE.axaml: 98.79%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.Stash.AutoRestore
@@ -12,12 +16,16 @@
 
 </details>
 
-### es_ES.axaml: 99.32%
+### es_ES.axaml: 98.79%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.Stash.AutoRestore
@@ -26,12 +34,16 @@
 
 </details>
 
-### fr_FR.axaml: 94.05%
+### fr_FR.axaml: 93.54%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.InProgress.CherryPick.Head
@@ -79,24 +91,32 @@
 
 </details>
 
-### it_IT.axaml: 99.59%
+### it_IT.axaml: 99.06%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 
 </details>
 
-### pt_BR.axaml: 93.78%
+### pt_BR.axaml: 93.27%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.BranchCM.MergeMultiBranches
 - Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
@@ -146,12 +166,16 @@
 
 </details>
 
-### ru_RU.axaml: 99.32%
+### ru_RU.axaml: 98.79%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
 - Text.Stash.AutoRestore
