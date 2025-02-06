@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.59%
+### de_DE.axaml: 99.32%
 
 
 <details>
@@ -6,11 +6,13 @@
 
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 99.59%
+### es_ES.axaml: 99.32%
 
 
 <details>
@@ -18,11 +20,13 @@
 
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 94.30%
+### fr_FR.axaml: 94.05%
 
 
 <details>
@@ -68,22 +72,26 @@
 - Text.SetUpstream.Unset
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### it_IT.axaml: 99.86%
+### it_IT.axaml: 99.59%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.Clone.RecurseSubmodules
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 
 </details>
 
-### pt_BR.axaml: 94.03%
+### pt_BR.axaml: 93.78%
 
 
 <details>
@@ -131,12 +139,14 @@
 - Text.SetUpstream.Unset
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### ru_RU.axaml: 99.59%
+### ru_RU.axaml: 99.32%
 
 
 <details>
@@ -144,6 +154,8 @@
 
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
