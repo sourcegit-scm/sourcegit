@@ -228,8 +228,11 @@
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">You are trying to delete multiple branches at one time. Be sure to double-check before taking action!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Delete Remote</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Path:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">All children will be removed from list.</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Confirm Deleting Group</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">This will only remove it from list, not from disk!</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Confirm Deleting Repository</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Delete Submodule</x:String>
   <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Submodule Path:</x:String>

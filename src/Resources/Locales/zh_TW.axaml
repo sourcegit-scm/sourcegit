@@ -231,8 +231,11 @@
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在嘗試一次性刪除多個分支，請務必仔細檢查後再刪除!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">刪除遠端確認</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">遠端名稱:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">路徑:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目標:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">所有子節點都會從清單中移除。</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">刪除群組確認</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">只會從清單中移除，而不會刪除磁碟中的檔案！</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">刪除存放庫確認</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">刪除子模組確認</x:String>
   <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">子模組路徑:</x:String>

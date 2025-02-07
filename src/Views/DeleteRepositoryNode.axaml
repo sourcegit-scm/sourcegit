@@ -17,12 +17,12 @@
                Text="{DynamicResource Text.DeleteRepositoryNode.TitleForRepository}"
                IsVisible="{Binding Node.IsRepository}"/>
 
-    <Grid Margin="0,16,8,0" Height="28" ColumnDefinitions="120,*">
-      <TextBlock Grid.Column="0"
+    <Grid Margin="0,16,8,0" RowDefinitions="32,Auto,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.DeleteRepositoryNode.Target}"/>
-      <StackPanel Grid.Column="1" Orientation="Horizontal">
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
         <Path Width="12" Height="12" Margin="0,0,8,0"
               Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
               HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -35,8 +35,32 @@
               IsVisible="{Binding !Node.IsRepository}"/>
 
         <TextBlock VerticalAlignment="Center" Text="{Binding Node.Name}"/>
-        <TextBlock Margin="8,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Node.Id}" IsVisible="{Binding Node.IsRepository}"/>
       </StackPanel>
+      
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.DeleteRepositoryNode.Path}"
+                 IsVisible="{Binding Node.IsRepository}"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal" IsVisible="{Binding Node.IsRepository}">
+        <Path Width="12" Height="12"
+              Margin="0,0,8,0"
+              Fill="{DynamicResource Brush.FG1}"
+              HorizontalAlignment="Left" VerticalAlignment="Center"
+              Data="{StaticResource Icons.Folder}"/>
+        <TextBlock Text="{Binding Node.Id}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+      </StackPanel>
+
+      <Grid Grid.Row="2" Grid.Column="1">
+        <TextBlock Text="{DynamicResource Text.DeleteRepositoryNode.TipForRepository}"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   IsVisible="{Binding Node.IsRepository}"/>
+        <TextBlock Text="{DynamicResource Text.DeleteRepositoryNode.TipForGroup}"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   IsVisible="{Binding !Node.IsRepository}"/>
+      </Grid>
     </Grid>
   </StackPanel>
 </UserControl>
