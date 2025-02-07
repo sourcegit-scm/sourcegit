@@ -152,6 +152,11 @@ namespace SourceGit.ViewModels
             View = new Views.Push() { DataContext = this };
         }
 
+        public override bool AutoCheck()
+        {
+            return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
+        }
+
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);

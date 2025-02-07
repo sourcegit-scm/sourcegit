@@ -375,7 +375,6 @@
           <Button.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="UseAmend" Converter="{x:Static BoolConverters.Not}"/>
-              <Binding Path="CanCommitWithPush"/>
               <Binding Path="InProgressContext" Converter="{x:Static ObjectConverters.IsNull}"/>
             </MultiBinding>
           </Button.IsVisible>  

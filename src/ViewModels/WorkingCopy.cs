@@ -26,12 +26,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool CanCommitWithPush
-        {
-            get => _canCommitWithPush;
-            set => SetProperty(ref _canCommitWithPush, value);
-        }
-
         public bool HasUnsolvedConflicts
         {
             get => _hasUnsolvedConflicts;
@@ -1625,7 +1619,6 @@ namespace SourceGit.ViewModels
         private bool _isUnstaging = false;
         private bool _isCommitting = false;
         private bool _useAmend = false;
-        private bool _canCommitWithPush = false;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];
         private List<Models.Change> _staged = [];

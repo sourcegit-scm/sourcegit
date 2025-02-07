@@ -59,14 +59,16 @@ namespace SourceGit.ViewModels
         public void StartPopup(Popup popup)
         {
             Popup = popup;
-            ProcessPopup();
+            ProcessPopup(true);
         }
 
-        public async void ProcessPopup()
+        public async void ProcessPopup(bool autoCheck = false)
         {
             if (_popup != null)
             {
                 if (!_popup.Check())
+                    return;
+                if (autoCheck && !_popup.AutoCheck())
                     return;
 
                 _popup.InProgress = true;
