@@ -26,6 +26,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool HasRemotes
+        {
+            get => _hasRemotes;
+            set => SetProperty(ref _hasRemotes, value);
+        }
+
         public bool HasUnsolvedConflicts
         {
             get => _hasUnsolvedConflicts;
@@ -1619,6 +1625,7 @@ namespace SourceGit.ViewModels
         private bool _isUnstaging = false;
         private bool _isCommitting = false;
         private bool _useAmend = false;
+        private bool _hasRemotes = false;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];
         private List<Models.Change> _staged = [];
