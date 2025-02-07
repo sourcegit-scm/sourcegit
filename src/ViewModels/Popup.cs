@@ -29,12 +29,17 @@ namespace SourceGit.ViewModels
         }
 
         [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
-        public virtual bool Check()
+        public bool Check()
         {
             if (HasErrors)
                 return false;
             ValidateAllProperties();
             return !HasErrors;
+        }
+
+        public virtual bool CanStartDirectly()
+        {
+            return true;
         }
 
         public virtual Task<bool> Sure()

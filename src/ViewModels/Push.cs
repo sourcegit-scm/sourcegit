@@ -152,9 +152,9 @@ namespace SourceGit.ViewModels
             View = new Views.Push() { DataContext = this };
         }
 
-        public override bool Check()
+        public override bool CanStartDirectly()
         {
-            return base.Check() && !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
+            return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
         }
 
         public override Task<bool> Sure()
