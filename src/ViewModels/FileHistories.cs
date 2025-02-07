@@ -295,7 +295,7 @@ namespace SourceGit.ViewModels
         public void NavigateToCommit(Models.Commit commit)
         {
             _repo.NavigateToCommit(commit.SHA);
-        }        
+        }
 
         private readonly Repository _repo = null;
         private readonly string _file = null;

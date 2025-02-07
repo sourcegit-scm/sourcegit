@@ -1500,7 +1500,7 @@ namespace SourceGit.ViewModels
                         menu.Items.Add(fastForward);
                         menu.Items.Add(pull);
                     }
-                }                
+                }
 
                 menu.Items.Add(push);
             }
@@ -1518,7 +1518,7 @@ namespace SourceGit.ViewModels
                     };
                     menu.Items.Add(checkout);
                     menu.Items.Add(new MenuItem() { Header = "-" });
-                }                
+                }
 
                 var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
@@ -1577,7 +1577,7 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(merge);
                     menu.Items.Add(rebase);
-                }                
+                }
 
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
@@ -1629,7 +1629,7 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(finish);
                 }
-            }            
+            }
 
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
@@ -1702,7 +1702,7 @@ namespace SourceGit.ViewModels
                     };
                     menu.Items.Add(tracking);
                 }
-            }            
+            }
 
             var archive = new MenuItem();
             archive.Icon = App.CreateMenuIcon("Icons.Archive");

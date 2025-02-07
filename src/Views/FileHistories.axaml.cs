@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -56,7 +55,7 @@ namespace SourceGit.Views
 
                 NotifyDonePanel.IsVisible = true;
                 e.Handled = true;
-            }            
+            }
         }
     }
 }

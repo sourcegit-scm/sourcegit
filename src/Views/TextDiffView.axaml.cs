@@ -1000,7 +1000,7 @@ namespace SourceGit.Views
                     builder.AppendLine(line.Content.Substring(selection.StartPosition.Column - 1));
                     continue;
                 }
-                
+
                 if (i == endIdx && selection.EndPosition.Column < line.Content.Length)
                 {
                     builder.AppendLine(line.Content.Substring(0, selection.EndPosition.Column));

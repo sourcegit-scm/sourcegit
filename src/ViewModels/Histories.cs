@@ -285,7 +285,7 @@ namespace SourceGit.ViewModels
 
                     if (canCherryPick || canMerge)
                         multipleMenu.Items.Add(new MenuItem() { Header = "-" });
-                }                
+                }
 
                 var saveToPatchMultiple = new MenuItem();
                 saveToPatchMultiple.Icon = App.CreateMenuIcon("Icons.Diff");
@@ -589,7 +589,7 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(interactiveRebase);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
-            }            
+            }
 
             if (current.Head != commit.SHA)
             {
@@ -937,7 +937,7 @@ namespace SourceGit.ViewModels
                     submenu.Items.Add(finish);
                     submenu.Items.Add(new MenuItem() { Header = "-" });
                 }
-            }            
+            }
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
@@ -983,7 +983,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 submenu.Items.Add(merge);
-            }            
+            }
 
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
@@ -1025,7 +1025,7 @@ namespace SourceGit.ViewModels
                     submenu.Items.Add(finish);
                     submenu.Items.Add(new MenuItem() { Header = "-" });
                 }
-            }            
+            }
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
@@ -1131,7 +1131,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 submenu.Items.Add(merge);
-            }            
+            }
 
             var delete = new MenuItem();
             delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);

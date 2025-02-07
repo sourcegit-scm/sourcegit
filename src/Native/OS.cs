@@ -25,7 +25,8 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
-        public static string DataDir {
+        public static string DataDir
+        {
             get;
             private set;
         } = string.Empty;
@@ -61,12 +62,14 @@ namespace SourceGit.Native
             private set;
         } = new Version(0, 0, 0);
 
-        public static string ShellOrTerminal {
+        public static string ShellOrTerminal
+        {
             get;
             set;
         } = string.Empty;
 
-        public static List<Models.ExternalTool> ExternalTools {
+        public static List<Models.ExternalTool> ExternalTools
+        {
             get;
             set;
         } = [];
