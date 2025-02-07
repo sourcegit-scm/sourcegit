@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.79%
+### de_DE.axaml: 98.39%
 
 
 <details>
@@ -10,13 +10,16 @@
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 98.79%
+### es_ES.axaml: 98.39%
 
 
 <details>
@@ -28,13 +31,16 @@
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 93.54%
+### fr_FR.axaml: 93.16%
 
 
 <details>
@@ -46,6 +52,9 @@
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -91,7 +100,7 @@
 
 </details>
 
-### it_IT.axaml: 99.06%
+### it_IT.axaml: 98.66%
 
 
 <details>
@@ -102,12 +111,15 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 
 </details>
 
-### pt_BR.axaml: 93.27%
+### pt_BR.axaml: 92.90%
 
 
 <details>
@@ -126,6 +138,9 @@
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -166,7 +181,7 @@
 
 </details>
 
-### ru_RU.axaml: 98.79%
+### ru_RU.axaml: 98.39%
 
 
 <details>
@@ -178,6 +193,9 @@
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
