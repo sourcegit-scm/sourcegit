@@ -43,6 +43,9 @@ namespace SourceGit.Views
                 if (containerEndX < startX || containerEndX > endX)
                     continue;
 
+                if (OuterNewTabBtn.IsVisible && i == count - 1)
+                    break;
+
                 var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
                 context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 20));
             }
@@ -88,7 +91,7 @@ namespace SourceGit.Views
                     x = drawRightX - 6;
                 }
 
-                if (drawRightX < LauncherTabsScroller.Bounds.Right)
+                if (drawRightX <= LauncherTabsScroller.Bounds.Right)
                 {
                     ctx.LineTo(new Point(x, y));
                     x = drawRightX;
@@ -146,11 +149,15 @@ namespace SourceGit.Views
                 LeftScrollIndicator.IsEnabled = LauncherTabsScroller.Offset.X > 0;
                 RightScrollIndicator.IsVisible = true;
                 RightScrollIndicator.IsEnabled = LauncherTabsScroller.Offset.X < LauncherTabsScroller.Extent.Width - LauncherTabsScroller.Viewport.Width;
+                InnerNewTabBtn.IsVisible = false;
+                OuterNewTabBtn.IsVisible = true;
             }
             else
             {
                 LeftScrollIndicator.IsVisible = false;
                 RightScrollIndicator.IsVisible = false;
+                InnerNewTabBtn.IsVisible = true;
+                OuterNewTabBtn.IsVisible = false;
             }
 
             InvalidateVisual();
