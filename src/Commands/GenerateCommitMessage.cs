@@ -49,7 +49,7 @@ namespace SourceGit.Commands
                     if (rs.IsSuccess)
                     {
                         _service.Chat(
-                            _service.AnalyzeDiffPrompt, 
+                            _service.AnalyzeDiffPrompt,
                             $"Here is the `git diff` output: {rs.StdOut}",
                             _cancelToken,
                             update =>
@@ -72,8 +72,8 @@ namespace SourceGit.Commands
                 var responseBody = responseBuilder.ToString();
                 var subjectBuilder = new StringBuilder();
                 _service.Chat(
-                    _service.GenerateSubjectPrompt, 
-                    $"Here are the summaries changes:\n{summaryBuilder}", 
+                    _service.GenerateSubjectPrompt,
+                    $"Here are the summaries changes:\n{summaryBuilder}",
                     _cancelToken,
                     update =>
                     {
