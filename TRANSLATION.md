@@ -1,9 +1,11 @@
-### de_DE.axaml: 98.39%
+### de_DE.axaml: 98.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
 - Text.ApplyStash
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
@@ -19,12 +21,14 @@
 
 </details>
 
-### es_ES.axaml: 98.39%
+### es_ES.axaml: 98.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
 - Text.ApplyStash
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
@@ -40,12 +44,14 @@
 
 </details>
 
-### fr_FR.axaml: 93.16%
+### fr_FR.axaml: 92.91%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
 - Text.ApplyStash
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
@@ -100,12 +106,14 @@
 
 </details>
 
-### it_IT.axaml: 98.66%
+### it_IT.axaml: 98.40%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
 - Text.ApplyStash
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
@@ -119,12 +127,14 @@
 
 </details>
 
-### pt_BR.axaml: 92.90%
+### pt_BR.axaml: 92.65%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
 - Text.ApplyStash
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
@@ -181,12 +191,14 @@
 
 </details>
 
-### ru_RU.axaml: 98.39%
+### ru_RU.axaml: 98.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
 - Text.ApplyStash
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
