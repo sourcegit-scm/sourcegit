@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 using Avalonia.Threading;
@@ -48,16 +49,18 @@ namespace SourceGit.Commands
                     var rs = new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadToEnd();
                     if (rs.IsSuccess)
                     {
+                        var hasFirstValidChar = false;
+                        var thinkingBuffer = new StringBuilder();
                         _service.Chat(
-                            _service.AnalyzeDiffPrompt, 
+                            _service.AnalyzeDiffPrompt,
                             $"Here is the `git diff` output: {rs.StdOut}",
                             _cancelToken,
                             update =>
-                            {
-                                responseBuilder.Append(update);
-                                summaryBuilder.Append(update);
-                                _onResponse?.Invoke("Waiting for pre-file analyzing to complated...\n\n" + responseBuilder.ToString());
-                            });
+                                ProcessChatResponse(update, ref hasFirstValidChar, thinkingBuffer,
+                                    (responseBuilder, text =>
+                                        _onResponse?.Invoke(
+                                            $"Waiting for pre-file analyzing to completed...\n\n{text}")),
+                                    (summaryBuilder, null)));
                     }
 
                     responseBuilder.Append("\n");
@@ -71,19 +74,73 @@ namespace SourceGit.Commands
 
                 var responseBody = responseBuilder.ToString();
                 var subjectBuilder = new StringBuilder();
+                var hasSubjectFirstValidChar = false;
+                var subjectThinkingBuffer = new StringBuilder();
                 _service.Chat(
-                    _service.GenerateSubjectPrompt, 
-                    $"Here are the summaries changes:\n{summaryBuilder}", 
+                    _service.GenerateSubjectPrompt,
+                    $"Here are the summaries changes:\n{summaryBuilder}",
                     _cancelToken,
                     update =>
-                    {
-                        subjectBuilder.Append(update);
-                        _onResponse?.Invoke($"{subjectBuilder}\n\n{responseBody}");
-                    });
+                        ProcessChatResponse(update, ref hasSubjectFirstValidChar, subjectThinkingBuffer,
+                            (subjectBuilder, text => _onResponse?.Invoke($"{text}\n\n{responseBody}"))));
             }
             catch (Exception e)
             {
                 Dispatcher.UIThread.Post(() => App.RaiseException(_repo, $"Failed to generate commit message: {e}"));
+            }
+        }
+
+        private void ProcessChatResponse(
+            string update,
+            ref bool hasFirstValidChar,
+            StringBuilder thinkingBuffer,
+            params (StringBuilder builder, Action<string> callback)[] outputs)
+        {
+            if (!hasFirstValidChar)
+            {
+                update = update.TrimStart();
+                if (string.IsNullOrEmpty(update))
+                    return;
+                if (update.StartsWith("<", StringComparison.Ordinal))
+                    thinkingBuffer.Append(update);
+                hasFirstValidChar = true;
+            }
+
+            if (thinkingBuffer.Length > 0)
+                thinkingBuffer.Append(update);
+
+            if (thinkingBuffer.Length > 15)
+            {
+                var match = REG_COT.Match(thinkingBuffer.ToString());
+                if (match.Success)
+                {
+                    update = REG_COT.Replace(thinkingBuffer.ToString(), "").TrimStart();
+                    if (update.Length > 0)
+                    {
+                        foreach (var output in outputs)
+                            output.builder.Append(update);
+                        thinkingBuffer.Clear();
+                    }
+                    return;
+                }
+
+                match = REG_THINK_START.Match(thinkingBuffer.ToString());
+                if (!match.Success)
+                {
+                    foreach (var output in outputs)
+                        output.builder.Append(thinkingBuffer);
+                    thinkingBuffer.Clear();
+                    return;
+                }
+            }
+
+            if (thinkingBuffer.Length == 0)
+            {
+                foreach (var output in outputs)
+                {
+                    output.builder.Append(update);
+                    output.callback?.Invoke(output.builder.ToString());
+                }
             }
         }
 
@@ -92,5 +149,8 @@ namespace SourceGit.Commands
         private List<Models.Change> _changes;
         private CancellationToken _cancelToken;
         private Action<string> _onResponse;
+
+        private static readonly Regex REG_COT = new(@"^<(think|thought|thinking|thought_chain)>(.*?)</\1>", RegexOptions.Singleline);
+        private static readonly Regex REG_THINK_START = new(@"^<(think|thought|thinking|thought_chain)>", RegexOptions.Singleline);
     }
 }
