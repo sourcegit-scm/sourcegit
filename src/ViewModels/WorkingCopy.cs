@@ -99,10 +99,32 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string UnstagedFilter
+        {
+            get => _unstagedFilter;
+            set
+            {
+                if (SetProperty(ref _unstagedFilter, value))
+                {
+                    if (_isLoadingData)
+                        return;
+
+                    VisibleUnstaged = GetVisibleUnstagedChanges();
+                    SelectedUnstaged = [];
+                }
+            }
+        }
+
         public List<Models.Change> Unstaged
         {
             get => _unstaged;
             private set => SetProperty(ref _unstaged, value);
+        }
+
+        public List<Models.Change> VisibleUnstaged
+        {
+            get => _visibleUnstaged;
+            private set => SetProperty(ref _visibleUnstaged, value);
         }
 
         public List<Models.Change> Staged
@@ -191,8 +213,9 @@ namespace SourceGit.ViewModels
             _selectedStaged.Clear();
             OnPropertyChanged(nameof(SelectedStaged));
 
+            _visibleUnstaged.Clear();
             _unstaged.Clear();
-            OnPropertyChanged(nameof(Unstaged));
+            OnPropertyChanged(nameof(VisibleUnstaged));
 
             _staged.Clear();
             OnPropertyChanged(nameof(Staged));
@@ -249,7 +272,6 @@ namespace SourceGit.ViewModels
             }
 
             var unstaged = new List<Models.Change>();
-            var selectedUnstaged = new List<Models.Change>();
             var hasConflict = false;
             foreach (var c in changes)
             {
@@ -257,10 +279,17 @@ namespace SourceGit.ViewModels
                 {
                     unstaged.Add(c);
                     hasConflict |= c.IsConflit;
-
-                    if (lastSelectedUnstaged.Contains(c.Path))
-                        selectedUnstaged.Add(c);
                 }
+            }
+
+            _unstaged = unstaged;
+
+            var visibleUnstaged = GetVisibleUnstagedChanges();
+            var selectedUnstaged = new List<Models.Change>();
+            foreach (var c in visibleUnstaged)
+            {
+                if (lastSelectedUnstaged.Contains(c.Path))
+                    selectedUnstaged.Add(c);
             }
 
             var staged = GetStagedChanges();
@@ -275,7 +304,7 @@ namespace SourceGit.ViewModels
             {
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
-                Unstaged = unstaged;
+                VisibleUnstaged = visibleUnstaged;
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
                 SelectedStaged = selectedStaged;
@@ -336,46 +365,7 @@ namespace SourceGit.ViewModels
 
         public void StageAll()
         {
-            StageChanges(_unstaged, null);
-        }
-
-        public async void StageChanges(List<Models.Change> changes, Models.Change next)
-        {
-            if (_unstaged.Count == 0 || changes.Count == 0)
-                return;
-
-            // Use `_selectedUnstaged` instead of `SelectedUnstaged` to avoid UI refresh.
-            _selectedUnstaged = next != null ? [next] : [];
-
-            IsStaging = true;
-            _repo.SetWatcherEnabled(false);
-            if (changes.Count == _unstaged.Count)
-            {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
-            }
-            else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
-            {
-                var paths = new List<string>();
-                foreach (var c in changes)
-                    paths.Add(c.Path);
-
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, paths);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Exec());
-                File.Delete(tmpFile);
-            }
-            else
-            {
-                for (int i = 0; i < changes.Count; i += 10)
-                {
-                    var count = Math.Min(10, changes.Count - i);
-                    var step = changes.GetRange(i, count);
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
-                }
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
-            IsStaging = false;
+            StageChanges(_visibleUnstaged, null);
         }
 
         public void UnstageSelected(Models.Change next)
@@ -388,42 +378,15 @@ namespace SourceGit.ViewModels
             UnstageChanges(_staged, null);
         }
 
-        public async void UnstageChanges(List<Models.Change> changes, Models.Change next)
-        {
-            if (_staged.Count == 0 || changes.Count == 0)
-                return;
-
-            // Use `_selectedStaged` instead of `SelectedStaged` to avoid UI refresh.
-            _selectedStaged = next != null ? [next] : [];
-
-            IsUnstaging = true;
-            _repo.SetWatcherEnabled(false);
-            if (_useAmend)
-            {
-                await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
-            }
-            else if (changes.Count == _staged.Count)
-            {
-                await Task.Run(() => new Commands.Reset(_repo.FullPath).Exec());
-            }
-            else
-            {
-                for (int i = 0; i < changes.Count; i += 10)
-                {
-                    var count = Math.Min(10, changes.Count - i);
-                    var step = changes.GetRange(i, count);
-                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Exec());
-                }
-            }
-            _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
-            IsUnstaging = false;
-        }
-
         public void Discard(List<Models.Change> changes)
         {
             if (_repo.CanCreatePopup())
                 _repo.ShowPopup(new Discard(_repo, changes));
+        }
+
+        public void ClearUnstagedFilter()
+        {
+            UnstagedFilter = string.Empty;
         }
 
         public async void UseTheirs(List<Models.Change> changes)
@@ -1496,6 +1459,22 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private List<Models.Change> GetVisibleUnstagedChanges()
+        {
+            if (string.IsNullOrEmpty(_unstagedFilter))
+                return _unstaged;
+
+            var visible = new List<Models.Change>();
+            
+            foreach (var c in _unstaged)
+            {
+                if (c.Path.Contains(_unstagedFilter, StringComparison.OrdinalIgnoreCase))
+                    visible.Add(c);
+            }
+
+            return visible;
+        }
+
         private List<Models.Change> GetStagedChanges()
         {
             if (_useAmend)
@@ -1509,6 +1488,77 @@ namespace SourceGit.ViewModels
                     rs.Add(c);
             }
             return rs;
+        }
+
+        private async void StageChanges(List<Models.Change> changes, Models.Change next)
+        {
+            if (changes.Count == 0)
+                return;
+
+            // Use `_selectedUnstaged` instead of `SelectedUnstaged` to avoid UI refresh.
+            _selectedUnstaged = next != null ? [next] : [];
+
+            IsStaging = true;
+            _repo.SetWatcherEnabled(false);
+            if (changes.Count == _unstaged.Count)
+            {
+                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
+            }
+            else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
+            {
+                var paths = new List<string>();
+                foreach (var c in changes)
+                    paths.Add(c.Path);
+
+                var tmpFile = Path.GetTempFileName();
+                File.WriteAllLines(tmpFile, paths);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Exec());
+                File.Delete(tmpFile);
+            }
+            else
+            {
+                for (int i = 0; i < changes.Count; i += 10)
+                {
+                    var count = Math.Min(10, changes.Count - i);
+                    var step = changes.GetRange(i, count);
+                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
+                }
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
+            IsStaging = false;
+        }
+
+        private async void UnstageChanges(List<Models.Change> changes, Models.Change next)
+        {
+            if (changes.Count == 0)
+                return;
+
+            // Use `_selectedStaged` instead of `SelectedStaged` to avoid UI refresh.
+            _selectedStaged = next != null ? [next] : [];
+
+            IsUnstaging = true;
+            _repo.SetWatcherEnabled(false);
+            if (_useAmend)
+            {
+                await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
+            }
+            else if (changes.Count == _staged.Count)
+            {
+                await Task.Run(() => new Commands.Reset(_repo.FullPath).Exec());
+            }
+            else
+            {
+                for (int i = 0; i < changes.Count; i += 10)
+                {
+                    var count = Math.Min(10, changes.Count - i);
+                    var step = changes.GetRange(i, count);
+                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Exec());
+                }
+            }
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
+            IsUnstaging = false;
         }
 
         private void SetDetail(Models.Change change, bool isUnstaged)
@@ -1609,11 +1659,13 @@ namespace SourceGit.ViewModels
         private bool _hasRemotes = false;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];
+        private List<Models.Change> _visibleUnstaged = [];
         private List<Models.Change> _staged = [];
         private List<Models.Change> _selectedUnstaged = [];
         private List<Models.Change> _selectedStaged = [];
         private int _count = 0;
         private object _detailContext = null;
+        private string _unstagedFilter = string.Empty;
         private string _commitMessage = string.Empty;
 
         private bool _hasUnsolvedConflicts = false;
