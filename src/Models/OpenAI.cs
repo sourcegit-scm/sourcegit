@@ -98,7 +98,7 @@ namespace SourceGit.Models
             try
             {
                 var updates = client.CompleteChatStreaming([
-                    ShouldUseDeveloperPrompt() ? new DeveloperChatMessage(prompt) : new SystemChatMessage(prompt),
+                    _model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt),
                     new UserChatMessage(question),
                 ], null, cancellation);
 
@@ -113,12 +113,6 @@ namespace SourceGit.Models
                 if (!cancellation.IsCancellationRequested)
                     throw;
             }
-        }
-
-        private bool ShouldUseDeveloperPrompt()
-        {
-            return _model.Equals("o1", StringComparison.Ordinal) ||
-                _model.Equals("o1-mini", StringComparison.Ordinal);
         }
 
         private string _name;
