@@ -431,10 +431,7 @@ namespace SourceGit.ViewModels
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-
-            _repo.SetWatcherEnabled(false);
             await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
-            _repo.SetWatcherEnabled(true);
         }
 
         public void ContinueMerge()
