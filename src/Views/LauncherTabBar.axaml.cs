@@ -10,6 +10,15 @@ namespace SourceGit.Views
 {
     public partial class LauncherTabBar : UserControl
     {
+        public static readonly StyledProperty<bool> IsScrollerVisibleProperty =
+            AvaloniaProperty.Register<LauncherTabBar, bool>(nameof(IsScrollerVisible));
+
+        public bool IsScrollerVisible
+        {
+            get => GetValue(IsScrollerVisibleProperty);
+            set => SetValue(IsScrollerVisibleProperty, value);
+        }
+
         public LauncherTabBar()
         {
             InitializeComponent();
@@ -43,7 +52,7 @@ namespace SourceGit.Views
                 if (containerEndX < startX || containerEndX > endX)
                     continue;
 
-                if (OuterNewTabBtn.IsVisible && i == count - 1)
+                if (IsScrollerVisible && i == count - 1)
                     break;
 
                 var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
@@ -143,23 +152,7 @@ namespace SourceGit.Views
 
         private void OnTabsLayoutUpdated(object _1, EventArgs _2)
         {
-            if (LauncherTabsScroller.Extent.Width > LauncherTabsScroller.Viewport.Width)
-            {
-                LeftScrollIndicator.IsVisible = true;
-                LeftScrollIndicator.IsEnabled = LauncherTabsScroller.Offset.X > 0;
-                RightScrollIndicator.IsVisible = true;
-                RightScrollIndicator.IsEnabled = LauncherTabsScroller.Offset.X < LauncherTabsScroller.Extent.Width - LauncherTabsScroller.Viewport.Width;
-                InnerNewTabBtn.IsVisible = false;
-                OuterNewTabBtn.IsVisible = true;
-            }
-            else
-            {
-                LeftScrollIndicator.IsVisible = false;
-                RightScrollIndicator.IsVisible = false;
-                InnerNewTabBtn.IsVisible = true;
-                OuterNewTabBtn.IsVisible = false;
-            }
-
+            SetCurrentValue(IsScrollerVisibleProperty, LauncherTabsScroller.Extent.Width > LauncherTabsScroller.Viewport.Width);
             InvalidateVisual();
         }
 
