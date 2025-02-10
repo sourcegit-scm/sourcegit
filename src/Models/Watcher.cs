@@ -136,20 +136,20 @@ namespace SourceGit.Models
             if (_updateSubmodules > 0 && now > _updateSubmodules)
             {
                 _updateSubmodules = 0;
-                _repo.RefreshSubmodules();
+                Task.Run(_repo.RefreshSubmodules);
             }
 
             if (_updateStashes > 0 && now > _updateStashes)
             {
                 _updateStashes = 0;
-                _repo.RefreshStashes();
+                Task.Run(_repo.RefreshStashes);
             }
 
             if (_updateTags > 0 && now > _updateTags)
             {
                 _updateTags = 0;
-                _repo.RefreshTags();
-                _repo.RefreshCommits();
+                Task.Run(_repo.RefreshTags);
+                Task.Run(_repo.RefreshCommits);
             }
         }
 
