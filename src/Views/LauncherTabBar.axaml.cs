@@ -248,6 +248,15 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnGotoSelectedPage(object sender, LauncherTabSelectedEventArgs e)
+        {
+            if (DataContext is ViewModels.Launcher vm)
+                vm.ActivePage = e.Page;
+
+            PageSelector.Flyout?.Hide();
+            e.Handled = true;
+        }
+
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new Point();
         private bool _startDragTab = false;

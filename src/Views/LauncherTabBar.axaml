@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherTabBar"
              x:DataType="vm:Launcher"
              x:Name="ThisControl">
-  <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+  <Grid ColumnDefinitions="Auto,*,Auto">
     <RepeatButton Grid.Column="0"
                   Classes="icon_button"
                   Width="18" Height="30"
@@ -123,7 +124,16 @@
         <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
       </RepeatButton>
 
-      <Button Classes="icon_button" Width="16" Height="16" Margin="8,0" Command="{Binding AddNewTab}">
+      <Button x:Name="PageSelector" Classes="icon_button" Width="16" Height="16" Margin="8,0">
+        <Button.Flyout>
+          <Flyout>
+            <v:LauncherTabsSelector Pages="{Binding Pages}" PageSelected="OnGotoSelectedPage"/>
+          </Flyout>
+        </Button.Flyout>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.CircleDown}"/>
+      </Button>
+
+      <Button Classes="icon_button" Width="16" Height="16" Command="{Binding AddNewTab}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
