@@ -53,6 +53,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
+        public bool InitAndUpdateSubmodules
+        {
+            get;
+            set;
+        } = true;
+
         public Clone(string pageId)
         {
             _pageId = pageId;
@@ -125,6 +131,17 @@ namespace SourceGit.ViewModels
                 {
                     var config = new Commands.Config(path);
                     config.Set("remote.origin.sshkey", _sshKey);
+                }
+
+                // individually update submodule (if any)
+                if (InitAndUpdateSubmodules)
+                {
+                    var submoduleList = new Commands.QuerySubmodules(path).Result();
+                    foreach (var submodule in submoduleList)
+                    {
+                        var update = new Commands.Submodule(path);
+                        update.Update(submodule.Path, true, true, false, SetProgressDescription);
+                    }
                 }
 
                 CallUIThread(() =>

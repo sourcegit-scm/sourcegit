@@ -146,7 +146,8 @@ namespace SourceGit.Views
                     return;
                 }
 
-                if (e.Key == Key.Q) {
+                if (e.Key == Key.Q)
+                {
                     App.Quit(0);
                     e.Handled = true;
                     return;

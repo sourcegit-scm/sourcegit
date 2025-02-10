@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherTabBar"
              x:DataType="vm:Launcher">
-  <Grid ColumnDefinitions="Auto,*,Auto">
+  <Grid ColumnDefinitions="Auto,*,Auto,Auto">
     <RepeatButton x:Name="LeftScrollIndicator" Grid.Column="0" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsLeft">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
     </RepeatButton>
@@ -96,7 +96,8 @@
           </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Classes="icon_button"
+        <Button x:Name="InnerNewTabBtn"
+                Classes="icon_button"
                 Width="16" Height="16"
                 Margin="8,0"
                 Command="{Binding AddNewTab}">
@@ -115,5 +116,21 @@
     <RepeatButton x:Name="RightScrollIndicator" Grid.Column="2" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
     </RepeatButton>
+
+    <Button x:Name="OuterNewTabBtn"
+            Grid.Column="3"
+            Classes="icon_button"
+            Width="16" Height="16"
+            Margin="8,0"
+            Command="{Binding AddNewTab}">
+      <ToolTip.Tip>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
+          <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+T, macOS=⌘+T}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+        </StackPanel>
+      </ToolTip.Tip>
+
+      <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
+    </Button>
   </Grid>
 </UserControl>

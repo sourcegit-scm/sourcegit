@@ -15,7 +15,7 @@ namespace SourceGit.Views
 {
     public partial class CommitMessagePresenter : SelectableTextBlock
     {
-        [GeneratedRegex(@"\b([0-9a-fA-F]{10,40})\b")]
+        [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
 
         public static readonly StyledProperty<string> MessageProperty =
@@ -172,8 +172,11 @@ namespace SourceGit.Views
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            var point = e.GetCurrentPoint(this);
+
             if (_lastHover != null)
             {
+                var link = _lastHover.Link;
                 e.Pointer.Capture(null);
 
                 if (_lastHover.IsCommitSHA)
@@ -181,9 +184,6 @@ namespace SourceGit.Views
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
                     {
-                        var point = e.GetCurrentPoint(this);
-                        var link = _lastHover.Link;
-
                         if (point.Properties.IsLeftButtonPressed)
                         {
                             detail.NavigateTo(_lastHover.Link);
@@ -217,9 +217,6 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    var point = e.GetCurrentPoint(this);
-                    var link = _lastHover.Link;
-
                     if (point.Properties.IsLeftButtonPressed)
                     {
                         Native.OS.OpenBrowser(link);
@@ -251,6 +248,49 @@ namespace SourceGit.Views
                     }
                 }
 
+                e.Handled = true;
+                return;
+            }
+
+            if (point.Properties.IsLeftButtonPressed && e.ClickCount == 3)
+            {
+                var text = Inlines?.Text;
+                if (string.IsNullOrEmpty(text))
+                {
+                    e.Handled = true;
+                    return;
+                }
+
+                var position = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
+                var x = Math.Min(Math.Max(position.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
+                var y = Math.Min(Math.Max(position.Y, 0), Math.Max(TextLayout.Height, 0));
+                position = new Point(x, y);
+
+                var textPos = TextLayout.HitTestPoint(position).TextPosition;
+                var lineStart = 0;
+                var lineEnd = text.IndexOf('\n', lineStart);
+                if (lineEnd <= 0)
+                {
+                    lineEnd = text.Length;
+                }
+                else
+                {
+                    while (lineEnd < textPos)
+                    {
+                        lineStart = lineEnd + 1;
+                        lineEnd = text.IndexOf('\n', lineStart);
+                        if (lineEnd == -1)
+                        {
+                            lineEnd = text.Length;
+                            break;
+                        }
+                    }
+                }
+
+                SetCurrentValue(SelectionStartProperty, lineStart);
+                SetCurrentValue(SelectionEndProperty, lineEnd);
+
+                e.Pointer.Capture(this);
                 e.Handled = true;
                 return;
             }

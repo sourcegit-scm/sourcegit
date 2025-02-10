@@ -22,7 +22,9 @@
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">跟踪分支</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">设置上游跟踪分支</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI助手</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用AI助手生成提交信息</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用本次生成</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">应用补丁(apply)</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">错误</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">输出错误，并终止应用补丁</x:String>
@@ -37,6 +39,10 @@
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">应用补丁，输出关于空白符的警告</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白符号处理 ：</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">应用贮藏</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">在成功应用后丢弃该贮藏</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">恢复索引中已暂存的变化</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">已选贮藏 ：</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">存档(archive) ...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">存档文件路径：</x:String>
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">选择存档文件的存放路径</x:String>
@@ -100,6 +106,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">本地仓库名 ：</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">本地仓库目录的名字，选填。</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">父级目录 ：</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">初始化并更新子模块</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
@@ -160,8 +167,6 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableSignOff" xml:space="preserve">提交信息追加署名 (--signoff)</x:String>
-  <x:String x:Key="Text.Configure.Git.EnablePruneOnFetch" xml:space="preserve">拉取更新时启用修剪（--prune）</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增匹配Gitee议题规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增匹配Gitee合并请求规则</x:String>
@@ -204,6 +209,7 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填写分支名称。</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">空格将被替换为'-'符号</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">创建本地分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新建标签 ...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">标签位于 ：</x:String>
@@ -227,8 +233,11 @@
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">删除远程确认</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">远程名 ：</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">路径 ：</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">所有子节点将被同时从列表中移除。</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">删除分组确认</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">仅从列表中移除，不会删除硬盘中的文件！</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">删除仓库确认</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">删除子模块确认</x:String>
   <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">子模块路径 ：</x:String>
@@ -276,7 +285,7 @@
   <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快进(fast-forward，无需checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
-  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">覆盖REF检查</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">强制覆盖本地REFs</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不拉取远程标签</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取远程仓库内容</x:String>
@@ -479,6 +488,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">默认克隆路径</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">邮箱</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">默认GIT用户邮箱</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">拉取更新时启用修剪（--prune）</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">启用HTTP SSL验证</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">用户名</x:String>
@@ -571,8 +581,8 @@
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">水平排布</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">竖直排布</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">提交列表排序规则</x:String>
-  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">按提交时间 (--date-order)</x:String>
-  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">按拓扑排序 (--topo-order)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">按提交时间</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">按拓扑排序</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">启用 --first-parent 过滤选项</x:String>
@@ -584,10 +594,11 @@
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">远程列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
+  <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">文件</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
-  <x:String x:Key="Text.Repository.Search.ByUser" xml:space="preserve">作者及提交者</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">仅在当前分支中查找</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">跳过此提交</x:String>
@@ -642,6 +653,8 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">贮藏(stash)</x:String>
+  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">贮藏后自动恢复工作区</x:String>
+  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">工作区文件保持未修改状态，但贮藏内容已保存。</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟踪的文件</x:String>
   <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">保留暂存区文件</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">信息 ：</x:String>
@@ -707,7 +720,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">忽略同目录下所有 *{0} 文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同目录下所有文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本文件</x:String>
-  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修补(--amend)</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修补</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">现在您已可将其加入暂存区中</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交并推送</x:String>
@@ -721,6 +734,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">没有提交信息记录</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">没有可应用的提交信息模板</x:String>
+  <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">署名</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暂存</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">从暂存区移除选中</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">从暂存区移除所有</x:String>

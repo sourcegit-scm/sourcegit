@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-100.00%25-brightgreen)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-100.00%25-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-94.69%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-93.32%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-94.41%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-98.13%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-98.13%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-92.91%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-98.40%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-92.65%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-98.13%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)](TRANSLATION.md)
 
 > [!NOTE]
 > You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
@@ -136,11 +136,11 @@ This software supports using OpenAI or other AI service that has an OpenAI comap
 
 For `OpenAI`:
 
-* `Server` must be `https://api.openai.com/v1/chat/completions`
+* `Server` must be `https://api.openai.com/v1`
 
 For other AI service:
 
-* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`. For example, when using `Ollama`, it should be `http://localhost:11434/v1/chat/completions` instead of `http://localhost:11434/api/generate`
+* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
 * The `API Key` is optional that depends on the service
 
 ## External Tools

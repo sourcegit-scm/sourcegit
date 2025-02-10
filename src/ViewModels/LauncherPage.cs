@@ -59,7 +59,9 @@ namespace SourceGit.ViewModels
         public void StartPopup(Popup popup)
         {
             Popup = popup;
-            ProcessPopup();
+
+            if (popup.CanStartDirectly())
+                ProcessPopup();
         }
 
         public async void ProcessPopup()

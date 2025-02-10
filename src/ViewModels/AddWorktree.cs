@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value);
+            set => SetProperty(ref _path, value, true);
         }
 
         public bool CreateNewBranch

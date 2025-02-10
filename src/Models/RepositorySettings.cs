@@ -56,12 +56,6 @@ namespace SourceGit.Models
             set;
         } = DealWithLocalChanges.DoNothing;
 
-        public bool EnablePruneOnFetch
-        {
-            get;
-            set;
-        } = false;
-
         public bool EnableForceOnFetch
         {
             get;
@@ -183,6 +177,12 @@ namespace SourceGit.Models
         } = false;
 
         public bool KeepIndexWhenStash
+        {
+            get;
+            set;
+        } = false;
+
+        public bool AutoRestoreAfterStash
         {
             get;
             set;

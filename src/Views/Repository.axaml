@@ -479,7 +479,8 @@
                     SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
             <ComboBox.Items>
               <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}" FontSize="12"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByUser}" FontSize="12"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}" FontSize="12"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByCommitter}" FontSize="12"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}" FontSize="12"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}" FontSize="12"/>
             </ComboBox.Items>
@@ -597,11 +598,18 @@
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                   <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase.StoppedAt}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding StoppedAt.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding StoppedAt}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}"
+                             Text="{DynamicResource Text.InProgress.Rebase.StoppedAt}"
+                             IsVisible="{Binding StoppedAt, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange"
+                             Text="{Binding StoppedAt.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             IsVisible="{Binding StoppedAt, Converter={x:Static ObjectConverters.IsNotNull}}"
+                             ToolTip.Tip="{Binding StoppedAt}" />
                 </StackPanel>
 
-                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"/>
+                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0"
+                        Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"
+                        IsVisible="{Binding StoppedAt, Converter={x:Static ObjectConverters.IsNotNull}}" />
               </Grid>
             </DataTemplate>
 

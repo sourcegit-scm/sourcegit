@@ -669,6 +669,8 @@ namespace SourceGit.Views
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
 
+            TextArea.AddHandler(KeyDownEvent, OnTextAreaKeyDown, RoutingStrategies.Tunnel);
+
             UpdateTextMate();
             OnTextViewVisualLinesChanged(null, null);
         }
@@ -676,6 +678,8 @@ namespace SourceGit.Views
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
+
+            TextArea.RemoveHandler(KeyDownEvent, OnTextAreaKeyDown);
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.PointerEntered -= OnTextViewPointerChanged;
@@ -732,6 +736,21 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnTextAreaKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyModifiers.Equals(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                if (e.Key == Key.C)
+                {
+                    CopyWithoutIndicators();
+                    e.Handled = true;
+                }
+            }
+
+            if (!e.Handled)
+                base.OnKeyDown(e);
+        }
+
         private void OnBlockNavigationPropertyChanged(object _1, PropertyChangedEventArgs _2)
         {
             TextArea?.TextView?.Redraw();
@@ -748,7 +767,7 @@ namespace SourceGit.Views
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += (_, ev) =>
             {
-                App.CopyText(SelectedText);
+                CopyWithoutIndicators();
                 ev.Handled = true;
             };
 
@@ -939,6 +958,59 @@ namespace SourceGit.Views
                     TextArea.TextView.Redraw();
                 }
             }
+        }
+
+        private void CopyWithoutIndicators()
+        {
+            var selection = TextArea.Selection;
+            if (selection.IsEmpty)
+            {
+                App.CopyText(string.Empty);
+                return;
+            }
+
+            var lines = GetLines();
+            var startIdx = Math.Min(selection.StartPosition.Line - 1, lines.Count - 1);
+            var endIdx = Math.Min(selection.EndPosition.Line - 1, lines.Count - 1);
+
+            if (startIdx == endIdx)
+            {
+                var line = lines[startIdx];
+                if (line.Type == Models.TextDiffLineType.Indicator ||
+                    line.Type == Models.TextDiffLineType.None)
+                {
+                    App.CopyText(string.Empty);
+                    return;
+                }
+
+                App.CopyText(SelectedText);
+                return;
+            }
+
+            var builder = new StringBuilder();
+            for (var i = startIdx; i <= endIdx; i++)
+            {
+                var line = lines[i];
+                if (line.Type == Models.TextDiffLineType.Indicator ||
+                    line.Type == Models.TextDiffLineType.None)
+                    continue;
+
+                if (i == startIdx && selection.StartPosition.Column > 1)
+                {
+                    builder.AppendLine(line.Content.Substring(selection.StartPosition.Column - 1));
+                    continue;
+                }
+
+                if (i == endIdx && selection.EndPosition.Column < line.Content.Length)
+                {
+                    builder.AppendLine(line.Content.Substring(0, selection.EndPosition.Column));
+                    continue;
+                }
+
+                builder.AppendLine(line.Content);
+            }
+
+            App.CopyText(builder.ToString());
         }
 
         private TextMate.Installation _textMate = null;

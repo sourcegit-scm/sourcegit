@@ -37,6 +37,11 @@ namespace SourceGit.ViewModels
             return !HasErrors;
         }
 
+        public virtual bool CanStartDirectly()
+        {
+            return true;
+        }
+
         public virtual Task<bool> Sure()
         {
             return null;

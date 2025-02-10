@@ -1,29 +1,66 @@
-### de_DE.axaml: 100.00%
+### de_DE.axaml: 98.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
+- Text.Clone.RecurseSubmodules
+- Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 98.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
+- Text.Clone.RecurseSubmodules
+- Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 94.69%
+### fr_FR.axaml: 92.91%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
+- Text.Clone.RecurseSubmodules
+- Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -62,81 +99,58 @@
 - Text.SetUpstream.Unset
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### it_IT.axaml: 93.32%
+### it_IT.axaml: 98.40%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
+- Text.Clone.RecurseSubmodules
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
+
+</details>
+
+### pt_BR.axaml: 92.65%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
 - Text.BranchCM.MergeMultiBranches
+- Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
-- Text.Configure.OpenAI.Preferred
-- Text.Configure.OpenAI.Preferred.Tip
-- Text.Diff.UseBlockNavigation
-- Text.Fetch.Force
-- Text.FileCM.ResolveUsing
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Preferences.General.DateFormat
-- Text.Preferences.General.ShowChildren
-- Text.Preferences.Git.SSLVerify
-- Text.Repository.FilterCommits
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesLayout
-- Text.Repository.HistoriesLayout.Horizontal
-- Text.Repository.HistoriesLayout.Vertical
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
-- Text.Repository.OnlyHighlightCurrentBranchInHistories
-- Text.Repository.Skip
-- Text.Repository.Tags.OrderByCreatorDate
-- Text.Repository.Tags.OrderByNameAsc
-- Text.Repository.Tags.OrderByNameDes
-- Text.Repository.Tags.Sort
-- Text.Repository.UseRelativeTimeInHistories
-- Text.SetUpstream
-- Text.SetUpstream.Local
-- Text.SetUpstream.Unset
-- Text.SetUpstream.Upstream
-- Text.SHALinkCM.CopySHA
-- Text.SHALinkCM.NavigateTo
-- Text.WorkingCopy.CommitToEdit
-
-</details>
-
-### pt_BR.axaml: 94.41%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.CommitDetail.Files.Search
-- Text.CommitDetail.Info.Children
-- Text.Configure.IssueTracker.AddSampleGiteeIssue
-- Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -170,17 +184,33 @@
 - Text.SetUpstream.Unset
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 98.13%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
+- Text.Clone.RecurseSubmodules
+- Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
+- Text.WorkingCopy.SignOff
 
 </details>
 

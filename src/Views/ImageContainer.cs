@@ -92,6 +92,20 @@ namespace SourceGit.Views
 
             return availableSize;
         }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (Image is { } image)
+            {
+                var imageSize = image.Size;
+                var scaleW = finalSize.Width / imageSize.Width;
+                var scaleH = finalSize.Height / imageSize.Height;
+                var scale = Math.Min(scaleW, scaleH);
+                return new Size(scale * imageSize.Width, scale * imageSize.Height);
+            }
+
+            return base.ArrangeOverride(finalSize);
+        }
     }
 
     public class ImageSwipeControl : ImageContainer

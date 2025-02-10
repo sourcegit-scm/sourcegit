@@ -30,7 +30,7 @@ namespace SourceGit.Commands
         public bool Push(string message, List<Models.Change> changes, bool keepIndex)
         {
             var builder = new StringBuilder();
-            builder.Append("stash push ");
+            builder.Append("stash push --include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
             builder.Append("-m \"");
@@ -47,7 +47,7 @@ namespace SourceGit.Commands
         public bool Push(string message, string pathspecFromFile, bool keepIndex)
         {
             var builder = new StringBuilder();
-            builder.Append("stash push --pathspec-from-file=\"");
+            builder.Append("stash push --include-untracked --pathspec-from-file=\"");
             builder.Append(pathspecFromFile);
             builder.Append("\" ");
             if (keepIndex)
@@ -73,21 +73,22 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Apply(string name)
+        public bool Apply(string name, bool restoreIndex)
         {
-            Args = $"stash apply --index -q {name}";
+            var opts = restoreIndex ? "--index" : string.Empty;
+            Args = $"stash apply -q {opts} \"{name}\"";
             return Exec();
         }
 
         public bool Pop(string name)
         {
-            Args = $"stash pop --index -q {name}";
+            Args = $"stash pop -q \"{name}\"";
             return Exec();
         }
 
         public bool Drop(string name)
         {
-            Args = $"stash drop -q {name}";
+            Args = $"stash drop -q \"{name}\"";
             return Exec();
         }
 

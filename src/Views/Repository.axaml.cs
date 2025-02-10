@@ -434,6 +434,7 @@ namespace SourceGit.Views
 
                 var dateOrder = new MenuItem();
                 dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
+                dateOrder.SetValue(MenuItemExtension.CommandProperty, "--date-order");
                 if (!repo.EnableTopoOrderInHistories)
                     dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 dateOrder.Click += (_, ev) =>
@@ -444,6 +445,7 @@ namespace SourceGit.Views
 
                 var topoOrder = new MenuItem();
                 topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
+                topoOrder.SetValue(MenuItemExtension.CommandProperty, "--top-order");
                 if (repo.EnableTopoOrderInHistories)
                     topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 topoOrder.Click += (_, ev) =>

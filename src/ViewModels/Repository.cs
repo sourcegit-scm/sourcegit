@@ -733,12 +733,15 @@ namespace SourceGit.ViewModels
                             visible.Add(commit);
                         break;
                     case 1:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByUser, _onlySearchCommitsInCurrentBranch).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByAuthor, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 2:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByCommitter, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                     case 3:
+                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
+                        break;
+                    case 4:
                         visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile, _onlySearchCommitsInCurrentBranch).Result();
                         break;
                 }
@@ -936,7 +939,7 @@ namespace SourceGit.ViewModels
                 RemoteBranchTrees = builder.Remotes;
 
                 if (_workingCopy != null)
-                    _workingCopy.CanCommitWithPush = _currentBranch != null && !string.IsNullOrEmpty(_currentBranch.Upstream);
+                    _workingCopy.HasRemotes = remotes.Count > 0;
             });
         }
 
@@ -1194,6 +1197,25 @@ namespace SourceGit.ViewModels
             }
 
             App.GetLauncer()?.OpenRepositoryInTab(node, null);
+        }
+
+        public AvaloniaList<Models.OpenAIService> GetPreferedOpenAIServices()
+        {
+            var services = Preferences.Instance.OpenAIServices;
+            if (services == null || services.Count == 0)
+                return [];
+
+            if (services.Count == 1)
+                return services;
+
+            var prefered = _settings.PreferedOpenAIService;
+            foreach (var service in services)
+            {
+                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                    return [service];
+            }
+
+            return services;
         }
 
         public ContextMenu CreateContextMenuForGitFlow()
@@ -1497,7 +1519,7 @@ namespace SourceGit.ViewModels
                         menu.Items.Add(fastForward);
                         menu.Items.Add(pull);
                     }
-                }                
+                }
 
                 menu.Items.Add(push);
             }
@@ -1515,7 +1537,7 @@ namespace SourceGit.ViewModels
                     };
                     menu.Items.Add(checkout);
                     menu.Items.Add(new MenuItem() { Header = "-" });
-                }                
+                }
 
                 var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
                 var upstream = _branches.Find(x => x.FullName == branch.Upstream);
@@ -1574,7 +1596,7 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(merge);
                     menu.Items.Add(rebase);
-                }                
+                }
 
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
@@ -1626,7 +1648,7 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(finish);
                 }
-            }            
+            }
 
             var rename = new MenuItem();
             rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
@@ -1699,7 +1721,7 @@ namespace SourceGit.ViewModels
                     };
                     menu.Items.Add(tracking);
                 }
-            }            
+            }
 
             var archive = new MenuItem();
             archive.Icon = App.CreateMenuIcon("Icons.Archive");
@@ -2358,7 +2380,7 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
             foreach (var remote in remotes)
-                new Commands.Fetch(_fullpath, remote, false, _settings.EnablePruneOnFetch, false, null) { RaiseError = false }.Exec();
+                new Commands.Fetch(_fullpath, remote, false, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }
@@ -2382,7 +2404,7 @@ namespace SourceGit.ViewModels
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;
         private bool _isSearchCommitSuggestionOpen = false;
-        private int _searchCommitFilterType = 2;
+        private int _searchCommitFilterType = 3;
         private bool _onlySearchCommitsInCurrentBranch = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
