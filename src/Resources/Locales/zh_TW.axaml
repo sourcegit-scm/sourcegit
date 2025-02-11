@@ -587,6 +587,7 @@
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本機分支</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">回到 HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新增分支</x:String>
+  <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">清空通知清單</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">提交圖表中僅高亮顯示目前分支</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">在 {0} 中開啟</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具開啟</x:String>

@@ -45,6 +45,11 @@ namespace SourceGit.ViewModels
             _data = repo;
         }
 
+        public void ClearNotifications()
+        {
+            Notifications.Clear();
+        }
+
         public void CopyPath()
         {
             if (_node.IsRepository)
