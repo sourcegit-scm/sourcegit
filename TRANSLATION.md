@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.13%
+### de_DE.axaml: 98.00%
 
 
 <details>
@@ -11,6 +11,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
@@ -21,7 +22,7 @@
 
 </details>
 
-### es_ES.axaml: 98.13%
+### es_ES.axaml: 98.00%
 
 
 <details>
@@ -34,6 +35,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
@@ -44,7 +46,7 @@
 
 </details>
 
-### fr_FR.axaml: 92.91%
+### fr_FR.axaml: 92.79%
 
 
 <details>
@@ -57,6 +59,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
@@ -106,7 +109,7 @@
 
 </details>
 
-### it_IT.axaml: 98.40%
+### it_IT.axaml: 98.26%
 
 
 <details>
@@ -119,6 +122,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.WaitForExit
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
@@ -127,7 +131,7 @@
 
 </details>
 
-### pt_BR.axaml: 92.65%
+### pt_BR.axaml: 92.52%
 
 
 <details>
@@ -145,6 +149,7 @@
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
+- Text.Configure.CustomAction.WaitForExit
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.CreateBranch.Name.WarnSpace
@@ -191,7 +196,7 @@
 
 </details>
 
-### ru_RU.axaml: 98.13%
+### ru_RU.axaml: 98.00%
 
 
 <details>
@@ -204,6 +209,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
