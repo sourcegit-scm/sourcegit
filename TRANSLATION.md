@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.00%
+### de_DE.axaml: 97.87%
 
 
 <details>
@@ -16,13 +16,14 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 98.00%
+### es_ES.axaml: 97.87%
 
 
 <details>
@@ -40,13 +41,14 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### fr_FR.axaml: 92.79%
+### fr_FR.axaml: 92.67%
 
 
 <details>
@@ -90,6 +92,7 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.Repository.Notifications.Clear
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
 - Text.Repository.Tags.OrderByNameAsc
@@ -109,7 +112,7 @@
 
 </details>
 
-### it_IT.axaml: 98.26%
+### it_IT.axaml: 98.13%
 
 
 <details>
@@ -126,12 +129,13 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 
 </details>
 
-### pt_BR.axaml: 92.52%
+### pt_BR.axaml: 92.40%
 
 
 <details>
@@ -177,6 +181,7 @@
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.HistoriesOrder
+- Text.Repository.Notifications.Clear
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
@@ -196,7 +201,7 @@
 
 </details>
 
-### ru_RU.axaml: 98.00%
+### ru_RU.axaml: 97.87%
 
 
 <details>
@@ -214,6 +219,7 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
