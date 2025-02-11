@@ -34,9 +34,16 @@ namespace SourceGit.Models
             set => SetProperty(ref _arguments, value);
         }
 
+        public bool WaitForExit
+        {
+            get => _waitForExit;
+            set => SetProperty(ref _waitForExit, value);
+        }
+
         private string _name = string.Empty;
         private CustomActionScope _scope = CustomActionScope.Repository;
         private string _executable = string.Empty;
         private string _arguments = string.Empty;
+        private bool _waitForExit = true;
     }
 }

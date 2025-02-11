@@ -341,7 +341,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="250" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="300" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -439,6 +439,8 @@
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
                   <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+
+                  <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>
