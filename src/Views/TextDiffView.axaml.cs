@@ -973,13 +973,9 @@ namespace SourceGit.Views
 
             var startPosition = selection.StartPosition;
             var endPosition = selection.EndPosition;
-            
-            if (startPosition.Line  > endPosition.Line 
-                || startPosition.Line == endPosition.Line && startPosition.Column > endPosition.Column)
-            {
-                // swap start and end
+
+            if (startPosition.Location > endPosition.Location)
                 (startPosition, endPosition) = (endPosition, startPosition);
-            }
             
             var startIdx = Math.Min(startPosition.Line - 1, lines.Count - 1);
             var endIdx = Math.Min(endPosition.Line - 1, lines.Count - 1);
