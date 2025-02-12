@@ -86,10 +86,10 @@
       </Button>
 
       <!-- Pages Tabs-->
-      <v:LauncherTabBar Grid.Column="2" Height="30" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="2" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
 
       <!-- Caption Buttons (Windows/Linux)-->
-      <Border Grid.Column="3" Margin="32,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
+      <Border Grid.Column="3" Margin="16,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
