@@ -201,28 +201,13 @@
 
 </details>
 
-### ru_RU.axaml: 97.87%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.AIAssistant.Regen
-- Text.AIAssistant.Use
-- Text.ApplyStash
-- Text.ApplyStash.DropAfterApply
-- Text.ApplyStash.RestoreIndex
-- Text.ApplyStash.Stash
-- Text.Clone.RecurseSubmodules
-- Text.Configure.CustomAction.WaitForExit
-- Text.CreateBranch.Name.WarnSpace
-- Text.DeleteRepositoryNode.Path
-- Text.DeleteRepositoryNode.TipForGroup
-- Text.DeleteRepositoryNode.TipForRepository
-- Text.Repository.Notifications.Clear
-- Text.Stash.AutoRestore
-- Text.Stash.AutoRestore.Tip
-- Text.WorkingCopy.SignOff
+
 
 </details>
 
