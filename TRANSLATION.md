@@ -1,15 +1,17 @@
-### de_DE.axaml: 99.73%
+### de_DE.axaml: 99.47%
 
 
 <details>
 <summary>Missing Keys</summary>
 
+- Text.BranchCM.CustomAction
+- Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.Repository.Notifications.Clear
 
 </details>
 
-### es_ES.axaml: 97.87%
+### es_ES.axaml: 97.61%
 
 
 <details>
@@ -21,7 +23,9 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
@@ -34,7 +38,7 @@
 
 </details>
 
-### fr_FR.axaml: 92.67%
+### fr_FR.axaml: 92.42%
 
 
 <details>
@@ -46,7 +50,9 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
@@ -98,7 +104,7 @@
 
 </details>
 
-### it_IT.axaml: 98.13%
+### it_IT.axaml: 97.87%
 
 
 <details>
@@ -110,7 +116,9 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
@@ -121,7 +129,7 @@
 
 </details>
 
-### pt_BR.axaml: 92.40%
+### pt_BR.axaml: 92.15%
 
 
 <details>
@@ -133,12 +141,14 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
 - Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
+- Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
@@ -187,13 +197,14 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.BranchCM.CustomAction
+- Text.Configure.CustomAction.Scope.Branch
 
 </details>
 
