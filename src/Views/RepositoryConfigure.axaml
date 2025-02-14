@@ -5,7 +5,6 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
-                    xmlns:ac="using:Avalonia.Controls.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.RepositoryConfigure"
                     x:DataType="vm:RepositoryConfigure"
@@ -412,20 +411,12 @@
                   <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Name}"/>
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
-                  <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                    <StackPanel.Resources>
-                      <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-                    </StackPanel.Resources>
-                    
-                    <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
-                    <RadioButton Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"
-                                 GroupName="CustomActionScope"
-                                 Margin="8,0"
-                                 IsChecked="{Binding Scope, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:CustomActionScope.Repository}}"/>
-                    <RadioButton Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"
-                                 GroupName="CustomActionScope"
-                                 IsChecked="{Binding Scope, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:CustomActionScope.Commit}}"/>
-                  </StackPanel>
+                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
+                  <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Scope, Mode=TwoWay}">
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
+                  </ComboBox>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
                   <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">

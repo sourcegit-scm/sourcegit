@@ -56,6 +56,7 @@
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copy Branch Name</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Delete selected {0} branches</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Discard all changes</x:String>
@@ -152,10 +153,11 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Content:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository's path; ${SHA} - Selected commit's SHA</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository's path; ${BRANCH} - Selected branch; ${SHA} - Selected commit's SHA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Executable File:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Scope:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Wait for action exit</x:String>

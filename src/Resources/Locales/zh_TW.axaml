@@ -59,6 +59,7 @@
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">複製分支名稱</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">刪除所選的 {0} 個分支</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">捨棄所有變更</x:String>
@@ -155,10 +156,11 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">範本內容:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">指令參數:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">使用 ${REPO} 表示存放庫路徑、${SHA} 表示所選的提交編號</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">使用 ${REPO} 表示存放庫路徑、${BRANCH} 表示所選的分支、${SHA} 表示所選的提交編號</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">執行範圍:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">選取的分支</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">選取的提交</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">等待自訂操作退出</x:String>

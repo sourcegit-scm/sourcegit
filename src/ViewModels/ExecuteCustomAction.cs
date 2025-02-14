@@ -10,13 +10,26 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action)
         {
             _repo = repo;
             _args = action.Arguments.Replace("${REPO}", _repo.FullPath);
-            if (commit != null)
-                _args = _args.Replace("${SHA}", commit.SHA);
+            CustomAction = action;
+            View = new Views.ExecuteCustomAction() { DataContext = this };
+        }
 
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Branch branch)
+        {
+            _repo = repo;
+            _args = action.Arguments.Replace("${REPO}", _repo.FullPath).Replace("${BRANCH}", branch.FriendlyName);
+            CustomAction = action;
+            View = new Views.ExecuteCustomAction() { DataContext = this };
+        }
+
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
+        {
+            _repo = repo;
+            _args = action.Arguments.Replace("${REPO}", _repo.FullPath).Replace("${SHA}", commit.SHA);
             CustomAction = action;
             View = new Views.ExecuteCustomAction() { DataContext = this };
         }

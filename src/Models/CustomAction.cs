@@ -6,6 +6,7 @@ namespace SourceGit.Models
     {
         Repository,
         Commit,
+        Branch,
     }
 
     public class CustomAction : ObservableObject

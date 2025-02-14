@@ -59,6 +59,7 @@
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
@@ -155,10 +156,11 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">模板内容 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">请使用${REPO}代替仓库路径，${SHA}代替提交哈希</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">请使用${REPO}代替仓库路径，${BRANCH}代替选中的分支，${SHA}代替提交哈希</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可执行文件路径 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">作用目标 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">选中的分支</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">选中的提交</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">仓库</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">等待操作执行完成</x:String>
