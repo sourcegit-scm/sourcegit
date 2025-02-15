@@ -16,6 +16,8 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -169,6 +171,46 @@ namespace SourceGit
             }
         }
 
+        public void SetupTrayIcon(bool enable)
+        {
+            if (enable && Native.OS.EnsureSingleInstance())
+            {
+                var icons = new TrayIcons {
+                    new TrayIcon {
+                        Icon = new WindowIcon(new Bitmap(AssetLoader.Open(new Uri("avares://SourceGit/App.ico")))),
+                        Menu = [
+                            new NativeMenuItem(Text("Open")) {Command = Unminimize},
+                            new NativeMenuItem(Text("Preferences")) {Command = OpenPreferencesCommand},
+                            new NativeMenuItemSeparator(),
+                            new NativeMenuItem(Text("Quit")) {Command = QuitCommand},
+                        ]
+                    }
+                };
+                icons[0].Clicked += (_, _) => ToggleWindow();
+                TrayIcon.SetIcons(Current, icons);
+                _createdSystemTrayIcon = true;
+            }
+        }
+
+        private static void ToggleWindow() {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
+                if (desktop.MainWindow.IsVisible) {
+                    desktop.MainWindow.Hide();
+                } else {
+                    ShowWindow();
+                }
+            }
+        }
+
+        private static void ShowWindow()
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
+                desktop.MainWindow.WindowState = WindowState.Normal;
+                desktop.MainWindow.Show();
+                desktop.MainWindow.BringIntoView();
+                desktop.MainWindow.Focus();
+            }
+        }
         public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
         {
             var app = Current as App;
@@ -322,6 +364,7 @@ namespace SourceGit
 
                 TryLaunchAsNormal(desktop);
             }
+            base.OnFrameworkInitializationCompleted();
         }
         #endregion
 
@@ -477,11 +520,17 @@ namespace SourceGit
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
                 startupRepo = desktop.Args[0];
 
-            _launcher = new ViewModels.Launcher(startupRepo);
+            var pref = ViewModels.Preferences.Instance;
+
+            SetupTrayIcon(pref.SystemTrayIcon);            
+            if (_createdSystemTrayIcon) {
+                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            }
+
+            _launcher = new ViewModels.Launcher(startupRepo) { InterceptQuit = _createdSystemTrayIcon };
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
 #if !DISABLE_UPDATE_DETECTION
-            var pref = ViewModels.Preferences.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
 #endif
@@ -544,5 +593,6 @@ namespace SourceGit
         private ResourceDictionary _activeLocale = null;
         private ResourceDictionary _themeOverrides = null;
         private ResourceDictionary _fontsOverrides = null;
+        private bool _createdSystemTrayIcon = false;
     }
 }

@@ -262,7 +262,13 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
+            var launcher = DataContext as ViewModels.Launcher;
+            if (launcher is { InterceptQuit: true }) {
+                e.Cancel = true;
+                Hide();
+            } else {
+                launcher?.Quit(Width, Height);
+            }
             base.OnClosing(e);
         }
 
