@@ -826,6 +826,15 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshCommits);
         }
 
+        public void RemoveHistoriesFilter(Models.Filter filter)
+        {
+            if (_settings.HistoriesFilters.Remove(filter))
+            {
+                HistoriesFilterMode = _settings.HistoriesFilters.Count > 0 ? _settings.HistoriesFilters[0].Mode : Models.FilterMode.None;
+                RefreshHistoriesFilters(true);
+            }
+        }
+
         public void UpdateBranchNodeIsExpanded(BranchTreeNode node)
         {
             if (_settings == null || !string.IsNullOrWhiteSpace(_filter))
