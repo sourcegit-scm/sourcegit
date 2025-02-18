@@ -22,7 +22,9 @@
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Branch verfolgen:</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Remote-Branch verfolgen</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">OpenAI Assistent</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">Neu generieren</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Verwende OpenAI, um Commit-Nachrichten zu generieren</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Als Commit-Nachricht verwenden</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Fehler</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Fehler werfen und anwenden des Patches verweigern</x:String>
@@ -37,6 +39,10 @@
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Warnen</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Gibt eine Warnung für ein paar solcher Fehler aus, aber wendet es an</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Leerzeichen:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Stash anwenden</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Nach dem Anwenden löschen</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Änderungen des Index wiederherstellen</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">Stash:</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">Archivieren...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">Speichere Archiv in:</x:String>
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Wähle Archivpfad aus</x:String>
@@ -100,6 +106,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Lokaler Name:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Repository-Name. Optional.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Übergeordneter Ordner:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Submodule initialisieren und aktualisieren</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">SCHLIESSEN</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
@@ -202,6 +209,7 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Neuer Branch-Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Branch-Namen eingeben.</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Leerzeichen werden durch Bindestriche ersetzt.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Lokalen Branch erstellen</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Tag erstellen...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Neuer Tag auf:</x:String>
@@ -225,8 +233,11 @@
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Du versuchst mehrere Branches auf einmal zu löschen. Kontrolliere noch einmal vor dem Fortfahren!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Remote löschen</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Pfad:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Bestätige löschen von Gruppe</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">Alle Nachfolger werden aus der Liste entfernt.</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">Dadurch wird es nur aus der Liste entfernt, nicht von der Festplatte!</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Bestätige löschen von Repository</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Lösche Submodul</x:String>
   <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Submodul Pfad:</x:String>
@@ -565,6 +576,7 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Aufheben</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Im Graph ausblenden</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Im Graph filtern</x:String>
+  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Aktiviere '--first-parent' Option</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">LAYOUT</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Vertikal</x:String>
@@ -573,7 +585,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologie</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Aktiviere '--first-parent' Option</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Nur aktuellen Branch im Graphen hervorheben</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Öffne in {0}</x:String>
@@ -641,6 +652,8 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
+  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Automatisch wiederherstellen nach dem Stashen</x:String>
+  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Die Arbeitsdateien bleiben unverändert, aber ein Stash wird gespeichert.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inklusive nicht-verfolgter Dateien</x:String>
   <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Behalte gestagte Dateien</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Name:</x:String>
@@ -720,6 +733,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN INKLUDIEREN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">KEINE BISHERIGEN COMMIT-NACHRICHTEN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">KEINE COMMIT TEMPLATES</x:String>
+  <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">SignOff</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">GESTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">ALLES UNSTAGEN</x:String>

@@ -548,9 +548,9 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Activer l'option '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur de fichiers</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Rechercher Branches/Tags/Submodules</x:String>
+  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Activer l'option '--first-parent'</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCALES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Naviguer vers le HEAD</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Activer l'option '--first-parent'</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Créer une branche</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Mettre la branche courante en surbrillance dans le graph</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Ouvrir dans {0}</x:String>

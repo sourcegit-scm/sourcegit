@@ -372,8 +372,8 @@
                 <Grid ColumnDefinitions="Auto,*,22">
                   <Path Grid.Column="0" Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
                   <TextBlock Grid.Column="1" Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
-                    <Run Text="{Binding FullPath}"/>
-                    <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG2}"/>
+                    <Run Text="{Binding Name}"/>
+                    <Run Text="{Binding RelativePath}" Foreground="{DynamicResource Brush.FG2}"/>
                   </TextBlock>
                   <Path Grid.Column="2" Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
                 </Grid>
@@ -685,7 +685,11 @@
                   <StackPanel Orientation="Horizontal" Margin="8,0">
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
-                    <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,0,0"/>
+                    <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
+
+                    <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoriesFilter">
+                      <Path Width="8" Height="8" Data="{StaticResource Icons.Window.Close}"/>
+                    </Button>
                   </StackPanel>
                 </Border>
               </DataTemplate>

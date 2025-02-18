@@ -40,9 +40,9 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch;
         }
 
-        public FontWeight NameFontWeight
+        public bool IsCurrent
         {
-            get => Backend is Models.Branch { IsCurrent: true } ? FontWeight.Bold : FontWeight.Regular;
+            get => Backend is Models.Branch { IsCurrent: true };
         }
 
         public string Tooltip

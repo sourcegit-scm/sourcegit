@@ -970,8 +970,15 @@ namespace SourceGit.Views
             }
 
             var lines = GetLines();
-            var startIdx = Math.Min(selection.StartPosition.Line - 1, lines.Count - 1);
-            var endIdx = Math.Min(selection.EndPosition.Line - 1, lines.Count - 1);
+
+            var startPosition = selection.StartPosition;
+            var endPosition = selection.EndPosition;
+
+            if (startPosition.Location > endPosition.Location)
+                (startPosition, endPosition) = (endPosition, startPosition);
+            
+            var startIdx = Math.Min(startPosition.Line - 1, lines.Count - 1);
+            var endIdx = Math.Min(endPosition.Line - 1, lines.Count - 1);
 
             if (startIdx == endIdx)
             {
@@ -995,15 +1002,15 @@ namespace SourceGit.Views
                     line.Type == Models.TextDiffLineType.None)
                     continue;
 
-                if (i == startIdx && selection.StartPosition.Column > 1)
+                if (i == startIdx && startPosition.Column > 1)
                 {
-                    builder.AppendLine(line.Content.Substring(selection.StartPosition.Column - 1));
+                    builder.AppendLine(line.Content.Substring(startPosition.Column - 1));
                     continue;
                 }
 
-                if (i == endIdx && selection.EndPosition.Column < line.Content.Length)
+                if (i == endIdx && endPosition.Column < line.Content.Length)
                 {
-                    builder.AppendLine(line.Content.Substring(0, selection.EndPosition.Column));
+                    builder.AppendLine(line.Content.Substring(0, endPosition.Column));
                     continue;
                 }
 

@@ -1,4 +1,17 @@
-### de_DE.axaml: 98.13%
+### de_DE.axaml: 99.47%
+
+
+<details>
+<summary>Missing Keys</summary>
+
+- Text.BranchCM.CustomAction
+- Text.Configure.CustomAction.Scope.Branch
+- Text.Configure.CustomAction.WaitForExit
+- Text.Repository.Notifications.Clear
+
+</details>
+
+### es_ES.axaml: 97.61%
 
 
 <details>
@@ -10,18 +23,22 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.Scope.Branch
+- Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### es_ES.axaml: 98.13%
+### fr_FR.axaml: 92.42%
 
 
 <details>
@@ -33,30 +50,10 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.Clone.RecurseSubmodules
-- Text.CreateBranch.Name.WarnSpace
-- Text.DeleteRepositoryNode.Path
-- Text.DeleteRepositoryNode.TipForGroup
-- Text.DeleteRepositoryNode.TipForRepository
-- Text.Stash.AutoRestore
-- Text.Stash.AutoRestore.Tip
-- Text.WorkingCopy.SignOff
-
-</details>
-
-### fr_FR.axaml: 92.91%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- Text.AIAssistant.Regen
-- Text.AIAssistant.Use
-- Text.ApplyStash
-- Text.ApplyStash.DropAfterApply
-- Text.ApplyStash.RestoreIndex
-- Text.ApplyStash.Stash
-- Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.Scope.Branch
+- Text.Configure.CustomAction.WaitForExit
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
@@ -87,6 +84,7 @@
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
+- Text.Repository.Notifications.Clear
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
 - Text.Repository.Tags.OrderByNameAsc
@@ -106,7 +104,7 @@
 
 </details>
 
-### it_IT.axaml: 98.40%
+### it_IT.axaml: 97.87%
 
 
 <details>
@@ -118,16 +116,20 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.Clone.RecurseSubmodules
+- Text.Configure.CustomAction.Scope.Branch
+- Text.Configure.CustomAction.WaitForExit
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 
 </details>
 
-### pt_BR.axaml: 92.65%
+### pt_BR.axaml: 92.15%
 
 
 <details>
@@ -139,12 +141,15 @@
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
 - Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
+- Text.Configure.CustomAction.Scope.Branch
+- Text.Configure.CustomAction.WaitForExit
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.CreateBranch.Name.WarnSpace
@@ -172,6 +177,7 @@
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.HistoriesOrder
+- Text.Repository.Notifications.Clear
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
@@ -191,26 +197,14 @@
 
 </details>
 
-### ru_RU.axaml: 98.13%
+### ru_RU.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.AIAssistant.Regen
-- Text.AIAssistant.Use
-- Text.ApplyStash
-- Text.ApplyStash.DropAfterApply
-- Text.ApplyStash.RestoreIndex
-- Text.ApplyStash.Stash
-- Text.Clone.RecurseSubmodules
-- Text.CreateBranch.Name.WarnSpace
-- Text.DeleteRepositoryNode.Path
-- Text.DeleteRepositoryNode.TipForGroup
-- Text.DeleteRepositoryNode.TipForRepository
-- Text.Stash.AutoRestore
-- Text.Stash.AutoRestore.Tip
-- Text.WorkingCopy.SignOff
+- Text.BranchCM.CustomAction
+- Text.Configure.CustomAction.Scope.Branch
 
 </details>
 

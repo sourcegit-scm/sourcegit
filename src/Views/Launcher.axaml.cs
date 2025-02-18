@@ -120,6 +120,13 @@ namespace SourceGit.Views
                 return;
             }
 
+            // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control && e.Key == Key.Q)
+            {
+                App.Quit(0);
+                return;
+            }
+
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
                 if (e.Key == Key.W)
@@ -142,13 +149,6 @@ namespace SourceGit.Views
                         vm.AddNewTab();
 
                     ViewModels.Welcome.Instance.Clone();
-                    e.Handled = true;
-                    return;
-                }
-
-                if (e.Key == Key.Q)
-                {
-                    App.Quit(0);
                     e.Handled = true;
                     return;
                 }

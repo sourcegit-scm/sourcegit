@@ -826,6 +826,15 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshCommits);
         }
 
+        public void RemoveHistoriesFilter(Models.Filter filter)
+        {
+            if (_settings.HistoriesFilters.Remove(filter))
+            {
+                HistoriesFilterMode = _settings.HistoriesFilters.Count > 0 ? _settings.HistoriesFilters[0].Mode : Models.FilterMode.None;
+                RefreshHistoriesFilters(true);
+            }
+        }
+
         public void UpdateBranchNodeIsExpanded(BranchTreeNode node)
         {
             if (_settings == null || !string.IsNullOrWhiteSpace(_filter))
@@ -1439,7 +1448,7 @@ namespace SourceGit.ViewModels
                     item.Click += (_, e) =>
                     {
                         if (CanCreatePopup())
-                            ShowAndStartPopup(new ExecuteCustomAction(this, dup, null));
+                            ShowAndStartPopup(new ExecuteCustomAction(this, dup));
 
                         e.Handled = true;
                     };
@@ -1698,6 +1707,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
             menu.Items.Add(new MenuItem() { Header = "-" });
+            TryToAddCustomActionsToBranchContextMenu(menu, branch);
 
             if (!IsBare)
             {
@@ -1968,7 +1978,9 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(archive);
             menu.Items.Add(new MenuItem() { Header = "-" });
+            TryToAddCustomActionsToBranchContextMenu(menu, branch);
             menu.Items.Add(copy);
+
             return menu;
         }
 
@@ -2317,6 +2329,43 @@ namespace SourceGit.ViewModels
             }
 
             return null;
+        }
+
+        private void TryToAddCustomActionsToBranchContextMenu(ContextMenu menu, Models.Branch branch)
+        {
+            var actions = new List<Models.CustomAction>();
+            foreach (var action in Settings.CustomActions)
+            {
+                if (action.Scope == Models.CustomActionScope.Branch)
+                    actions.Add(action);
+            }
+
+            if (actions.Count == 0)
+                return;
+
+            var custom = new MenuItem();
+            custom.Header = App.Text("BranchCM.CustomAction");
+            custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+            foreach (var action in actions)
+            {
+                var dup = action;
+                var item = new MenuItem();
+                item.Icon = App.CreateMenuIcon("Icons.Action");
+                item.Header = dup.Name;
+                item.Click += (_, e) =>
+                {
+                    if (CanCreatePopup())
+                        ShowAndStartPopup(new ExecuteCustomAction(this, dup, branch));
+
+                    e.Handled = true;
+                };
+
+                custom.Items.Add(item);
+            }
+
+            menu.Items.Add(custom);
+            menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
         private void UpdateCurrentRevisionFilesForSearchSuggestion()
