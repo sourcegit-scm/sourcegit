@@ -57,11 +57,17 @@
                                   IsExpanded="{Binding IsExpanded}"/>
 
             <!-- Name -->
-            <TextBlock Grid.Column="1"
-                       Text="{Binding Name}"
-                       Classes="primary"
-                       FontWeight="{Binding NameFontWeight}"
-                       TextTrimming="CharacterEllipsis"/>
+            <Grid Grid.Column="1" ColumnDefinitions="Auto,*">
+              <Border Grid.Column="0" Margin="0,0,4,0" Background="Green" Height="16" CornerRadius="8" VerticalAlignment="Center" IsVisible="{Binding IsCurrent}">
+                <TextBlock Text="HEAD" Classes="primary" Margin="8,0" Foreground="#FFDDDDDD" FontSize="10" VerticalAlignment="Center"/>
+              </Border>              
+              
+              <TextBlock Grid.Column="1"
+                         Classes="primary"
+                         Text="{Binding Name}"
+                         TextTrimming="CharacterEllipsis"/>
+            </Grid>
+            
 
             <!-- Tracking status -->
             <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
