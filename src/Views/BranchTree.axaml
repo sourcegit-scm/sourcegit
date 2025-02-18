@@ -65,6 +65,7 @@
               <TextBlock Grid.Column="1"
                          Classes="primary"
                          Text="{Binding Name}"
+                         FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                          TextTrimming="CharacterEllipsis"/>
             </Grid>
             
