@@ -456,12 +456,13 @@
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">伺服器</x:String>
+  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API 金鑰</x:String>
+  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">產生提交訊息提示詞</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名稱</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">產生提交訊息提示詞</x:String>
+  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">伺服器</x:String>
+  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">啟用串流輸出</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">字型大小</x:String>
