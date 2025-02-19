@@ -151,6 +151,7 @@ namespace SourceGit.ViewModels
                         _repo.FullPath,
                         _selectedRemote.Name,
                         NoTags,
+                        false, 
                         false,
                         SetProgressDescription).Exec();
 

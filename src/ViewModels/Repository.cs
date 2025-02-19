@@ -2433,7 +2433,7 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
             foreach (var remote in remotes)
-                new Commands.Fetch(_fullpath, remote, false, false, null) { RaiseError = false }.Exec();
+                new Commands.Fetch(_fullpath, remote, false, false, false, null) { RaiseError = false }.Exec();
             _lastFetchTime = DateTime.Now;
             Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
         }

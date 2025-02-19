@@ -28,6 +28,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.FetchWithoutTags = value;
         }
 
+        public bool Prune
+        {
+            get;
+            set;
+        }
+
         public bool Force
         {
             get => _repo.Settings.EnableForceOnFetch;
@@ -46,8 +52,9 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
 
-            var notags = _repo.Settings.FetchWithoutTags;
-            var force = _repo.Settings.EnableForceOnFetch;
+            var notags = NoTags;
+            var force = Force;
+            var prune = Prune;
             return Task.Run(() =>
             {
                 if (FetchAllRemotes)
@@ -55,13 +62,13 @@ namespace SourceGit.ViewModels
                     foreach (var remote in _repo.Remotes)
                     {
                         SetProgressDescription($"Fetching remote: {remote.Name}");
-                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, SetProgressDescription).Exec();
+                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, prune, SetProgressDescription).Exec();
                     }
                 }
                 else
                 {
                     SetProgressDescription($"Fetching remote: {SelectedRemote.Name}");
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, SetProgressDescription).Exec();
+                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, prune, SetProgressDescription).Exec();
                 }
 
                 CallUIThread(() =>
