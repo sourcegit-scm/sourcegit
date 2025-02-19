@@ -307,6 +307,7 @@ namespace SourceGit.ViewModels
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
+                OnPropertyChanged(nameof(Unstaged));
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
                 SelectedStaged = selectedStaged;
