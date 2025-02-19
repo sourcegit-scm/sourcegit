@@ -214,8 +214,10 @@ namespace SourceGit.ViewModels
             OnPropertyChanged(nameof(SelectedStaged));
 
             _visibleUnstaged.Clear();
-            _unstaged.Clear();
             OnPropertyChanged(nameof(VisibleUnstaged));
+
+            _unstaged.Clear();
+            OnPropertyChanged(nameof(Unstaged));
 
             _staged.Clear();
             OnPropertyChanged(nameof(Staged));
