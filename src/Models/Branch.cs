@@ -30,6 +30,7 @@ namespace SourceGit.Models
         public string Head { get; set; }
         public bool IsLocal { get; set; }
         public bool IsCurrent { get; set; }
+        public bool IsGone { get; set; }
         public bool IsDetachedHead { get; set; }
         public string Upstream { get; set; }
         public BranchTrackStatus TrackStatus { get; set; }

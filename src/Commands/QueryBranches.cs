@@ -14,7 +14,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
+            Args = "branch -l --all -vv --format=\"%(refname)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)%00%(if:equals=[gone])%(upstream:track)%(then)[gone]%(end)\"";
         }
 
         public List<Models.Branch> Result()
@@ -38,7 +38,7 @@ namespace SourceGit.Commands
         private Models.Branch ParseLine(string line)
         {
             var parts = line.Split('\0');
-            if (parts.Length != 5)
+            if (parts.Length != 6)
                 return null;
 
             var branch = new Models.Branch();
@@ -74,7 +74,12 @@ namespace SourceGit.Commands
             branch.FullName = refName;
             branch.Head = parts[1];
             branch.IsCurrent = parts[2] == "*";
-            branch.Upstream = parts[3];
+
+            branch.IsGone = parts.Length > 5 && parts[5].Equals("[gone]", StringComparison.InvariantCultureIgnoreCase);
+            if (!branch.IsGone)
+            {
+                branch.Upstream = parts[3];
+            }
 
             if (branch.IsLocal && !string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=", StringComparison.Ordinal))
                 branch.TrackStatus = new QueryTrackStatus(WorkingDirectory, branch.Name, branch.Upstream).Result();

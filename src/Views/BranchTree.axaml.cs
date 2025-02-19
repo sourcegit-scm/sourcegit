@@ -56,10 +56,18 @@ namespace SourceGit.Views
             }
             else if (node.Backend is Models.Branch branch)
             {
-                if (branch.IsCurrent)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Check");
+
+                if (branch.IsGone)
+                {
+                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.Error");
+                }
                 else
-                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
+                {
+                    if (branch.IsCurrent)
+                        CreateContent(new Thickness(0, 2, 0, 0), "Icons.Check");
+                    else
+                        CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
+                }
             }
             else
             {
