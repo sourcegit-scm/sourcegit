@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.47%
+### de_DE.axaml: 99.34%
 
 
 <details>
@@ -7,11 +7,12 @@
 - Text.BranchCM.CustomAction
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
+- Text.Preferences.AI.Streaming
 - Text.Repository.Notifications.Clear
 
 </details>
 
-### es_ES.axaml: 97.61%
+### es_ES.axaml: 97.48%
 
 
 <details>
@@ -31,6 +32,7 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Preferences.AI.Streaming
 - Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
@@ -38,7 +40,7 @@
 
 </details>
 
-### fr_FR.axaml: 92.42%
+### fr_FR.axaml: 92.30%
 
 
 <details>
@@ -67,6 +69,7 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
+- Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.FontSize
 - Text.Preferences.Appearance.FontSize.Default
 - Text.Preferences.Appearance.FontSize.Editor
@@ -104,7 +107,7 @@
 
 </details>
 
-### it_IT.axaml: 97.87%
+### it_IT.axaml: 97.74%
 
 
 <details>
@@ -123,13 +126,14 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Preferences.AI.Streaming
 - Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 
 </details>
 
-### pt_BR.axaml: 92.15%
+### pt_BR.axaml: 92.03%
 
 
 <details>
@@ -169,6 +173,7 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
+- Text.Preferences.AI.Streaming
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.ShowChildren
 - Text.Preferences.Git.SSLVerify
@@ -197,7 +202,7 @@
 
 </details>
 
-### ru_RU.axaml: 99.73%
+### ru_RU.axaml: 99.60%
 
 
 <details>
@@ -205,6 +210,7 @@
 
 - Text.BranchCM.CustomAction
 - Text.Configure.CustomAction.Scope.Branch
+- Text.Preferences.AI.Streaming
 
 </details>
 

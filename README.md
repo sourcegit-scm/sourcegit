@@ -47,7 +47,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-99.47%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-97.61%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-92.42%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-97.87%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-92.15%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-99.73%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)](TRANSLATION.md)
+[![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-99.34%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-97.48%25-yellow)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-92.30%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-97.74%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-92.03%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-99.60%25-yellow)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)](TRANSLATION.md)
 
 > [!NOTE]
 > You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
