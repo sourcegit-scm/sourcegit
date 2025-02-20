@@ -1,10 +1,11 @@
-### de_DE.axaml: 99.34%
+### de_DE.axaml: 99.20%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.CustomAction
+- Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.Preferences.AI.Streaming
@@ -12,7 +13,7 @@
 
 </details>
 
-### es_ES.axaml: 97.48%
+### es_ES.axaml: 97.35%
 
 
 <details>
@@ -25,6 +26,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.BranchCM.CustomAction
+- Text.BranchUpstreamInvalid
 - Text.Clone.RecurseSubmodules
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
@@ -40,7 +42,7 @@
 
 </details>
 
-### fr_FR.axaml: 92.30%
+### fr_FR.axaml: 92.18%
 
 
 <details>
@@ -53,6 +55,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.BranchCM.CustomAction
+- Text.BranchUpstreamInvalid
 - Text.Clone.RecurseSubmodules
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
@@ -107,7 +110,7 @@
 
 </details>
 
-### it_IT.axaml: 97.74%
+### it_IT.axaml: 97.61%
 
 
 <details>
@@ -120,6 +123,7 @@
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
 - Text.BranchCM.CustomAction
+- Text.BranchUpstreamInvalid
 - Text.Clone.RecurseSubmodules
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
@@ -133,7 +137,7 @@
 
 </details>
 
-### pt_BR.axaml: 92.03%
+### pt_BR.axaml: 91.91%
 
 
 <details>
@@ -147,6 +151,7 @@
 - Text.ApplyStash.Stash
 - Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
+- Text.BranchUpstreamInvalid
 - Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
@@ -202,13 +207,14 @@
 
 </details>
 
-### ru_RU.axaml: 99.60%
+### ru_RU.axaml: 99.47%
 
 
 <details>
 <summary>Missing Keys</summary>
 
 - Text.BranchCM.CustomAction
+- Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Preferences.AI.Streaming
 
