@@ -233,25 +233,10 @@ namespace SourceGit.ViewModels
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (_selectedUnstaged.Count == 1)
-                        SetDetail(_selectedUnstaged[0], true);
-                    else if (_selectedStaged.Count == 1)
-                        SetDetail(_selectedStaged[0], false);
-                    else
-                        SetDetail(null, false);
-
-                    var inProgress = null as InProgressContext;
-                    if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-                        inProgress = new CherryPickInProgress(_repo);
-                    else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
-                        inProgress = new RebaseInProgress(_repo);
-                    else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-                        inProgress = new RevertInProgress(_repo);
-                    else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-                        inProgress = new MergeInProgress(_repo);
-
                     HasUnsolvedConflicts = _cached.Find(x => x.IsConflit) != null;
-                    InProgressContext = inProgress;
+
+                    UpdateDetail();
+                    UpdateInProgressState();
                 });
 
                 return;
@@ -311,32 +296,8 @@ namespace SourceGit.ViewModels
                 SelectedStaged = selectedStaged;
                 _isLoadingData = false;
 
-                if (selectedUnstaged.Count == 1)
-                    SetDetail(selectedUnstaged[0], true);
-                else if (selectedStaged.Count == 1)
-                    SetDetail(selectedStaged[0], false);
-                else
-                    SetDetail(null, false);
-
-                var inProgress = null as InProgressContext;
-                if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-                    inProgress = new CherryPickInProgress(_repo);
-                else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
-                    inProgress = new RebaseInProgress(_repo);
-                else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-                    inProgress = new RevertInProgress(_repo);
-                else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-                    inProgress = new MergeInProgress(_repo);
-
-                InProgressContext = inProgress;
-
-                // Try to load merge message from MERGE_MSG
-                if (string.IsNullOrEmpty(_commitMessage))
-                {
-                    var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
-                    if (File.Exists(mergeMsgFile))
-                        CommitMessage = File.ReadAllText(mergeMsgFile);
-                }
+                UpdateDetail();
+                UpdateInProgressState();
             });
         }
 
@@ -1486,6 +1447,57 @@ namespace SourceGit.ViewModels
                     rs.Add(c);
             }
             return rs;
+        }
+
+        private void UpdateDetail()
+        {
+            if (_selectedUnstaged.Count == 1)
+                SetDetail(_selectedUnstaged[0], true);
+            else if (_selectedStaged.Count == 1)
+                SetDetail(_selectedStaged[0], false);
+            else
+                SetDetail(null, false);
+        }
+
+        private void UpdateInProgressState()
+        {
+            if (string.IsNullOrEmpty(_commitMessage))
+            {
+                var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
+                if (File.Exists(mergeMsgFile))
+                    CommitMessage = File.ReadAllText(mergeMsgFile);
+            }
+
+            if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
+            {
+                InProgressContext = new CherryPickInProgress(_repo);
+            }
+            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
+            {
+                var rebasing = new RebaseInProgress(_repo);
+                InProgressContext = rebasing;
+
+                if (string.IsNullOrEmpty(_commitMessage))
+                {
+                    var rebaseMsgFile = Path.Combine(_repo.GitDir, "rebase-merge", "message");
+                    if (File.Exists(rebaseMsgFile))
+                        CommitMessage = File.ReadAllText(rebaseMsgFile);
+                    else if (rebasing.StoppedAt != null)
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).Result();
+                }
+            }
+            else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
+            {
+                InProgressContext = new RevertInProgress(_repo);
+            }
+            else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
+            {
+                InProgressContext = new MergeInProgress(_repo);
+            }
+            else
+            {
+                InProgressContext = null;
+            }
         }
 
         private async void StageChanges(List<Models.Change> changes, Models.Change next)
