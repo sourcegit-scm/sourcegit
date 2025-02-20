@@ -109,7 +109,7 @@ namespace SourceGit.ViewModels
                     if (_isLoadingData)
                         return;
 
-                    VisibleUnstaged = GetVisibleUnstagedChanges();
+                    VisibleUnstaged = GetVisibleUnstagedChanges(_unstaged);
                     SelectedUnstaged = [];
                 }
             }
@@ -284,9 +284,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            _unstaged = unstaged;
-
-            var visibleUnstaged = GetVisibleUnstagedChanges();
+            var visibleUnstaged = GetVisibleUnstagedChanges(unstaged);
             var selectedUnstaged = new List<Models.Change>();
             foreach (var c in visibleUnstaged)
             {
@@ -307,7 +305,7 @@ namespace SourceGit.ViewModels
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
-                OnPropertyChanged(nameof(Unstaged));
+                Unstaged = unstaged;
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
                 SelectedStaged = selectedStaged;
@@ -1459,14 +1457,14 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private List<Models.Change> GetVisibleUnstagedChanges()
+        private List<Models.Change> GetVisibleUnstagedChanges(List<Models.Change> unstaged)
         {
             if (string.IsNullOrEmpty(_unstagedFilter))
-                return _unstaged;
+                return unstaged;
 
             var visible = new List<Models.Change>();
             
-            foreach (var c in _unstaged)
+            foreach (var c in unstaged)
             {
                 if (c.Path.Contains(_unstagedFilter, StringComparison.OrdinalIgnoreCase))
                     visible.Add(c);
