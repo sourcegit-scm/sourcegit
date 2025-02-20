@@ -59,6 +59,7 @@
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Mit HEAD vergleichen</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Mit Worktree vergleichen</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Branch-Namen kopieren</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Lösche ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Lösche alle ausgewählten {0} Branches</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
@@ -159,6 +160,7 @@
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Ausführbare Datei:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Geltungsbereich:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Adresse</x:String>
@@ -586,6 +588,7 @@
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
+  <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BENACHRICHTIGUNGEN LÖSCHEN</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Nur aktuellen Branch im Graphen hervorheben</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Öffne in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Öffne in externen Tools</x:String>
@@ -710,7 +713,7 @@
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Öffne alle Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Öffne Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Öffne Terminal</x:String>
-  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Klon Standardordner erneut nach Repositories durchsuchen</x:String>  
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Klon Standardordner erneut nach Repositories durchsuchen</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Suche Repositories...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Sortieren</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Änderungen</x:String>
