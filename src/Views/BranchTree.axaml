@@ -61,7 +61,17 @@
                        Classes="primary"
                        Text="{Binding Name}"
                        FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
-                       TextTrimming="CharacterEllipsis"/>            
+                       TextTrimming="CharacterEllipsis"/>
+
+            <!-- Upstream invalid tip -->
+            <Border Grid.Column="2"
+                    Width="12" Height="12"
+                    Margin="8,0"
+                    Background="Transparent"
+                    ToolTip.Tip="{DynamicResource Text.BranchUpstreamInvalid}"
+                    IsVisible="{Binding ShowUpstreamGoneTip}">
+              <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
+            </Border>
 
             <!-- Tracking status -->
             <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"

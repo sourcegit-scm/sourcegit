@@ -25,11 +25,22 @@ namespace SourceGit.Commands
                 return branches;
 
             var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            var remoteBranches = new HashSet<string>();
             foreach (var line in lines)
             {
                 var b = ParseLine(line);
                 if (b != null)
+                {
                     branches.Add(b);
+                    if (!b.IsLocal)
+                        remoteBranches.Add(b.FullName);
+                }
+            }
+
+            foreach (var b in branches)
+            {
+                if (b.IsLocal && !string.IsNullOrEmpty(b.Upstream))
+                    b.IsUpsteamGone = !remoteBranches.Contains(b.Upstream);
             }
 
             return branches;
@@ -75,6 +86,7 @@ namespace SourceGit.Commands
             branch.Head = parts[1];
             branch.IsCurrent = parts[2] == "*";
             branch.Upstream = parts[3];
+            branch.IsUpsteamGone = false;
 
             if (branch.IsLocal && !string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=", StringComparison.Ordinal))
                 branch.TrackStatus = new QueryTrackStatus(WorkingDirectory, branch.Name, branch.Upstream).Result();
