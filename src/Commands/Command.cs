@@ -37,6 +37,12 @@ namespace SourceGit.Commands
         public string Args { get; set; } = string.Empty;
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
+        public bool Cancelable { get; } = false;
+
+        public Command(bool cancelable = false)
+        {
+            Cancelable = cancelable;
+        }
 
         public bool Exec()
         {
@@ -109,12 +115,22 @@ namespace SourceGit.Commands
                 return false;
             }
 
-            proc.BeginOutputReadLine();
-            proc.BeginErrorReadLine();
-            proc.WaitForExit();
+            _proc = proc;
 
-            int exitCode = proc.ExitCode;
-            proc.Close();
+            int exitCode;
+            try
+            {
+                proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
+                proc.WaitForExit();
+
+                exitCode = proc.ExitCode;
+                proc.Close();
+            }
+            finally
+            {
+                _proc = null;
+            }
 
             if (!isCancelled && exitCode != 0)
             {
@@ -150,17 +166,37 @@ namespace SourceGit.Commands
                 };
             }
 
-            var rs = new ReadToEndResult()
+            _proc = proc;
+
+            try
             {
-                StdOut = proc.StandardOutput.ReadToEnd(),
-                StdErr = proc.StandardError.ReadToEnd(),
-            };
+                var rs = new ReadToEndResult()
+                {
+                    StdOut = proc.StandardOutput.ReadToEnd(),
+                    StdErr = proc.StandardError.ReadToEnd(),
+                };
 
-            proc.WaitForExit();
-            rs.IsSuccess = proc.ExitCode == 0;
-            proc.Close();
+                proc.WaitForExit();
+                rs.IsSuccess = proc.ExitCode == 0;
+                proc.Close();
 
-            return rs;
+                return rs;
+            }
+            finally
+            {
+                _proc = null;
+            }
+        }
+
+        public void TryCancel()
+        {
+            if (!this.Cancelable)
+                throw new Exception("Command is not cancelable!");
+
+            if (_proc is null)
+                return;
+
+            Native.OS.TerminateSafely(_proc);
         }
 
         protected virtual void OnReadline(string line)
@@ -226,5 +262,7 @@ namespace SourceGit.Commands
 
         [GeneratedRegex(@"\d+%")]
         private static partial Regex REG_PROGRESS();
+
+        private Process _proc = null;
     }
 }

@@ -35,6 +35,11 @@ namespace SourceGit.Native
             public int cyBottomHeight;
         }
 
+        private enum CTRL_EVENT : int
+        {
+            CTRL_C = 0
+        }
+
         [DllImport("ntdll.dll")]
         private static extern int RtlGetVersion(ref RTL_OSVERSIONINFOEX lpVersionInformation);
 
@@ -52,6 +57,12 @@ namespace SourceGit.Native
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool SetConsoleCtrlHandler(IntPtr handlerRoutine, bool add);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool GenerateConsoleCtrlEvent(int dwCtrlEvent, int dwProcessGroupId);
 
         public void SetupApp(AppBuilder builder)
         {
@@ -210,6 +221,22 @@ namespace SourceGit.Native
             var start = new ProcessStartInfo("cmd", $"/c start \"\" \"{info.FullName}\"");
             start.CreateNoWindow = true;
             Process.Start(start);
+        }
+
+        public void TerminateSafely(Process process)
+        {
+            if (SetConsoleCtrlHandler(IntPtr.Zero, true))
+            {
+                try
+                {
+                    if (GenerateConsoleCtrlEvent((int)CTRL_EVENT.CTRL_C, process.Id))
+                        process.WaitForExit();
+                }
+                finally
+                {
+                    SetConsoleCtrlHandler(IntPtr.Zero, false);
+                }
+            }
         }
 
         private void FixWindowFrameOnWin10(Window w)
