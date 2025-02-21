@@ -353,38 +353,80 @@ namespace SourceGit.ViewModels
 
         public async void UseTheirs(List<Models.Change> changes)
         {
+            _repo.SetWatcherEnabled(false);
+
             var files = new List<string>();
+            var needStage = new List<string>();
+
             foreach (var change in changes)
             {
-                if (change.IsConflit)
+                if (!change.IsConflit)
+                    continue;
+
+                if (change.WorkTree == Models.ChangeState.Deleted)
+                {
+                    var fullpath = Path.Combine(_repo.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        File.Delete(fullpath);
+
+                    needStage.Add(change.Path);
+                }
+                else
+                {
                     files.Add(change.Path);
+                }
             }
 
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
-            if (succ)
+            if (files.Count > 0)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
+                if (succ)
+                    needStage.AddRange(files);
             }
+
+            if (needStage.Count > 0)
+                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Exec());
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
         }
 
         public async void UseMine(List<Models.Change> changes)
         {
+            _repo.SetWatcherEnabled(false);
+
             var files = new List<string>();
+            var needStage = new List<string>();
+
             foreach (var change in changes)
             {
-                if (change.IsConflit)
+                if (!change.IsConflit)
+                    continue;
+
+                if (change.Index == Models.ChangeState.Deleted)
+                {
+                    var fullpath = Path.Combine(_repo.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        File.Delete(fullpath);
+
+                    needStage.Add(change.Path);
+                }
+                else
+                {
                     files.Add(change.Path);
+                }
             }
 
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
-            if (succ)
+            if (files.Count > 0)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
+                if (succ)
+                    needStage.AddRange(files);
             }
+
+            if (needStage.Count > 0)
+                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Exec());
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
         }
@@ -1502,7 +1544,8 @@ namespace SourceGit.ViewModels
 
         private async void StageChanges(List<Models.Change> changes, Models.Change next)
         {
-            if (changes.Count == 0)
+            var count = changes.Count;
+            if (count == 0)
                 return;
 
             // Use `_selectedUnstaged` instead of `SelectedUnstaged` to avoid UI refresh.
@@ -1510,7 +1553,7 @@ namespace SourceGit.ViewModels
 
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
-            if (changes.Count == _unstaged.Count)
+            if (count == _unstaged.Count)
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
             }
@@ -1527,10 +1570,13 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                for (int i = 0; i < changes.Count; i += 10)
+                var paths = new List<string>();
+                foreach (var c in changes)
+                    paths.Add(c.Path);
+
+                for (int i = 0; i < count; i += 10)
                 {
-                    var count = Math.Min(10, changes.Count - i);
-                    var step = changes.GetRange(i, count);
+                    var step = paths.GetRange(i, Math.Min(10, count - i));
                     await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
                 }
             }

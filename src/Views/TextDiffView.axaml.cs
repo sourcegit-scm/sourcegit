@@ -1796,7 +1796,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                new Commands.Add(repo.FullPath, [change]).Exec();
+                new Commands.Add(repo.FullPath, [change.Path]).Exec();
             }
             else
             {
