@@ -23,6 +23,8 @@ namespace SourceGit.Native
             void OpenInFileManager(string path, bool select);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
+
+            void TerminateSafely(Process process);
         }
 
         public static string DataDir
@@ -166,6 +168,11 @@ namespace SourceGit.Native
         public static void OpenWithDefaultEditor(string file)
         {
             _backend.OpenWithDefaultEditor(file);
+        }
+
+        public static void TerminateSafely(Process process)
+        {
+            _backend.TerminateSafely(process);
         }
 
         private static void UpdateGitVersion()

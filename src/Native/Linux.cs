@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 using Avalonia;
@@ -11,6 +12,14 @@ namespace SourceGit.Native
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
     {
+        private enum SIGNAL : int
+        {
+            TERM = 15
+        }
+
+        [DllImport("c")]
+        private static extern int kill(int pid, int sig);
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new X11PlatformOptions() { EnableIme = true });
@@ -95,6 +104,12 @@ namespace SourceGit.Native
 
                 proc.Close();
             }
+        }
+
+        public void TerminateSafely(Process process)
+        {
+            if (kill(process.Id, (int)SIGNAL.TERM) == 0)
+                process.WaitForExit();
         }
 
         private string FindExecutable(string filename)

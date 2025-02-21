@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 using Avalonia;
@@ -11,6 +12,14 @@ namespace SourceGit.Native
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
     {
+        private enum SIGNAL : int
+        {
+            TERM = 15
+        }
+
+        [DllImport("System")]
+        private static extern int kill(int pid, int sig);
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new MacOSPlatformOptions()
@@ -87,6 +96,12 @@ namespace SourceGit.Native
         public void OpenWithDefaultEditor(string file)
         {
             Process.Start("open", $"\"{file}\"");
+        }
+
+        public void TerminateSafely(Process process)
+        {
+            if (kill(process.Id, (int)SIGNAL.TERM) == 0)
+                process.WaitForExit();
         }
     }
 }
