@@ -132,7 +132,7 @@ For **Linux** users:
 
 ## OpenAI
 
-This software supports using OpenAI or other AI service that has an OpenAI comaptible HTTP API to generate commit message. You need configurate the service in `Preference` window.
+This software supports using OpenAI or other AI service that has an OpenAI compatible HTTP API to generate commit message. You need configurate the service in `Preference` window.
 
 For `OpenAI`:
 
