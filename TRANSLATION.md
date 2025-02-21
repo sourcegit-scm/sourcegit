@@ -1,15 +1,12 @@
-### de_DE.axaml: 99.20%
+### de_DE.axaml: 99.60%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.CustomAction
 - Text.BranchUpstreamInvalid
-- Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.Preferences.AI.Streaming
-- Text.Repository.Notifications.Clear
 
 </details>
 
