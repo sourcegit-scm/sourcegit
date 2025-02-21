@@ -60,6 +60,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
+        public bool EnablePruneOnFetch
+        {
+            get;
+            set;
+        }
+
         public bool EnableAutoFetch
         {
             get => _repo.Settings.EnableAutoFetch;
@@ -153,6 +159,8 @@ namespace SourceGit.ViewModels
                 GPGUserSigningKey = signingKey;
             if (_cached.TryGetValue("http.proxy", out var proxy))
                 HttpProxy = proxy;
+            if (_cached.TryGetValue("fetch.prune", out var prune))
+                EnablePruneOnFetch = (prune == "true");
         }
 
         public void ClearHttpProxy()
@@ -286,6 +294,7 @@ namespace SourceGit.ViewModels
             SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
             SetIfChanged("user.signingkey", GPGUserSigningKey, "");
             SetIfChanged("http.proxy", HttpProxy, "");
+            SetIfChanged("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
         }
 
         private void SetIfChanged(string key, string value, string defValue)
