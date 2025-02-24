@@ -101,12 +101,12 @@ namespace SourceGit.ViewModels
             return (_current >= 0 && _current < Blocks.Count) ? Blocks[_current] : null;
         }
 
-        public Block GotoNext()
+        public Block GotoFirst()
         {
             if (Blocks.Count == 0)
                 return null;
 
-            Current = (_current + 1) % Blocks.Count;
+            Current = 0;
             return Blocks[_current];
         }
 
@@ -115,7 +115,29 @@ namespace SourceGit.ViewModels
             if (Blocks.Count == 0)
                 return null;
 
-            Current = _current == -1 ? Blocks.Count - 1 : (_current - 1 + Blocks.Count) % Blocks.Count;
+            if (_current == -1)
+                Current = 0;
+            else if (_current > 0)
+                Current = _current - 1;
+            return Blocks[_current];
+        }
+
+        public Block GotoNext()
+        {
+            if (Blocks.Count == 0)
+                return null;
+
+            if (_current < Blocks.Count - 1)
+                Current = _current + 1;
+            return Blocks[_current];
+        }
+
+        public Block GotoLast()
+        {
+            if (Blocks.Count == 0)
+                return null;
+
+            Current = Blocks.Count - 1;
             return Blocks[_current];
         }
 
