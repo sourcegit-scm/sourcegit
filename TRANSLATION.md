@@ -12,34 +12,14 @@
 
 </details>
 
-### es_ES.axaml: 97.09%
+### es_ES.axaml: 99.74%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.AIAssistant.Regen
-- Text.AIAssistant.Use
-- Text.ApplyStash
-- Text.ApplyStash.DropAfterApply
-- Text.ApplyStash.RestoreIndex
-- Text.ApplyStash.Stash
-- Text.BranchCM.CustomAction
-- Text.BranchUpstreamInvalid
-- Text.Clone.RecurseSubmodules
-- Text.Configure.CustomAction.Scope.Branch
-- Text.Configure.CustomAction.WaitForExit
-- Text.CreateBranch.Name.WarnSpace
-- Text.DeleteRepositoryNode.Path
-- Text.DeleteRepositoryNode.TipForGroup
-- Text.DeleteRepositoryNode.TipForRepository
 - Text.Diff.First
 - Text.Diff.Last
-- Text.Preferences.AI.Streaming
-- Text.Repository.Notifications.Clear
-- Text.Stash.AutoRestore
-- Text.Stash.AutoRestore.Tip
-- Text.WorkingCopy.SignOff
 
 </details>
 
