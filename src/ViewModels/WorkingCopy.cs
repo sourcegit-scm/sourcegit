@@ -109,7 +109,7 @@ namespace SourceGit.ViewModels
                     if (_isLoadingData)
                         return;
 
-                    VisibleUnstaged = GetVisibleUnstagedChanges();
+                    VisibleUnstaged = GetVisibleUnstagedChanges(_unstaged);
                     SelectedUnstaged = [];
                 }
             }
@@ -214,8 +214,10 @@ namespace SourceGit.ViewModels
             OnPropertyChanged(nameof(SelectedStaged));
 
             _visibleUnstaged.Clear();
-            _unstaged.Clear();
             OnPropertyChanged(nameof(VisibleUnstaged));
+
+            _unstaged.Clear();
+            OnPropertyChanged(nameof(Unstaged));
 
             _staged.Clear();
             OnPropertyChanged(nameof(Staged));
@@ -231,25 +233,10 @@ namespace SourceGit.ViewModels
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (_selectedUnstaged.Count == 1)
-                        SetDetail(_selectedUnstaged[0], true);
-                    else if (_selectedStaged.Count == 1)
-                        SetDetail(_selectedStaged[0], false);
-                    else
-                        SetDetail(null, false);
-
-                    var inProgress = null as InProgressContext;
-                    if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-                        inProgress = new CherryPickInProgress(_repo);
-                    else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
-                        inProgress = new RebaseInProgress(_repo);
-                    else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-                        inProgress = new RevertInProgress(_repo);
-                    else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-                        inProgress = new MergeInProgress(_repo);
-
                     HasUnsolvedConflicts = _cached.Find(x => x.IsConflit) != null;
-                    InProgressContext = inProgress;
+
+                    UpdateDetail();
+                    UpdateInProgressState();
                 });
 
                 return;
@@ -282,9 +269,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            _unstaged = unstaged;
-
-            var visibleUnstaged = GetVisibleUnstagedChanges();
+            var visibleUnstaged = GetVisibleUnstagedChanges(unstaged);
             var selectedUnstaged = new List<Models.Change>();
             foreach (var c in visibleUnstaged)
             {
@@ -305,37 +290,14 @@ namespace SourceGit.ViewModels
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
+                Unstaged = unstaged;
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
                 SelectedStaged = selectedStaged;
                 _isLoadingData = false;
 
-                if (selectedUnstaged.Count == 1)
-                    SetDetail(selectedUnstaged[0], true);
-                else if (selectedStaged.Count == 1)
-                    SetDetail(selectedStaged[0], false);
-                else
-                    SetDetail(null, false);
-
-                var inProgress = null as InProgressContext;
-                if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-                    inProgress = new CherryPickInProgress(_repo);
-                else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
-                    inProgress = new RebaseInProgress(_repo);
-                else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-                    inProgress = new RevertInProgress(_repo);
-                else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-                    inProgress = new MergeInProgress(_repo);
-
-                InProgressContext = inProgress;
-
-                // Try to load merge message from MERGE_MSG
-                if (string.IsNullOrEmpty(_commitMessage))
-                {
-                    var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
-                    if (File.Exists(mergeMsgFile))
-                        CommitMessage = File.ReadAllText(mergeMsgFile);
-                }
+                UpdateDetail();
+                UpdateInProgressState();
             });
         }
 
@@ -391,38 +353,80 @@ namespace SourceGit.ViewModels
 
         public async void UseTheirs(List<Models.Change> changes)
         {
+            _repo.SetWatcherEnabled(false);
+
             var files = new List<string>();
+            var needStage = new List<string>();
+
             foreach (var change in changes)
             {
-                if (change.IsConflit)
+                if (!change.IsConflit)
+                    continue;
+
+                if (change.WorkTree == Models.ChangeState.Deleted)
+                {
+                    var fullpath = Path.Combine(_repo.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        File.Delete(fullpath);
+
+                    needStage.Add(change.Path);
+                }
+                else
+                {
                     files.Add(change.Path);
+                }
             }
 
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
-            if (succ)
+            if (files.Count > 0)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
+                if (succ)
+                    needStage.AddRange(files);
             }
+
+            if (needStage.Count > 0)
+                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Exec());
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
         }
 
         public async void UseMine(List<Models.Change> changes)
         {
+            _repo.SetWatcherEnabled(false);
+
             var files = new List<string>();
+            var needStage = new List<string>();
+
             foreach (var change in changes)
             {
-                if (change.IsConflit)
+                if (!change.IsConflit)
+                    continue;
+
+                if (change.Index == Models.ChangeState.Deleted)
+                {
+                    var fullpath = Path.Combine(_repo.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        File.Delete(fullpath);
+
+                    needStage.Add(change.Path);
+                }
+                else
+                {
                     files.Add(change.Path);
+                }
             }
 
-            _repo.SetWatcherEnabled(false);
-            var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
-            if (succ)
+            if (files.Count > 0)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, changes).Exec());
+                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
+                if (succ)
+                    needStage.AddRange(files);
             }
+
+            if (needStage.Count > 0)
+                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Exec());
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
         }
@@ -1456,14 +1460,14 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private List<Models.Change> GetVisibleUnstagedChanges()
+        private List<Models.Change> GetVisibleUnstagedChanges(List<Models.Change> unstaged)
         {
             if (string.IsNullOrEmpty(_unstagedFilter))
-                return _unstaged;
+                return unstaged;
 
             var visible = new List<Models.Change>();
             
-            foreach (var c in _unstaged)
+            foreach (var c in unstaged)
             {
                 if (c.Path.Contains(_unstagedFilter, StringComparison.OrdinalIgnoreCase))
                     visible.Add(c);
@@ -1487,9 +1491,61 @@ namespace SourceGit.ViewModels
             return rs;
         }
 
+        private void UpdateDetail()
+        {
+            if (_selectedUnstaged.Count == 1)
+                SetDetail(_selectedUnstaged[0], true);
+            else if (_selectedStaged.Count == 1)
+                SetDetail(_selectedStaged[0], false);
+            else
+                SetDetail(null, false);
+        }
+
+        private void UpdateInProgressState()
+        {
+            if (string.IsNullOrEmpty(_commitMessage))
+            {
+                var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
+                if (File.Exists(mergeMsgFile))
+                    CommitMessage = File.ReadAllText(mergeMsgFile);
+            }
+
+            if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
+            {
+                InProgressContext = new CherryPickInProgress(_repo);
+            }
+            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
+            {
+                var rebasing = new RebaseInProgress(_repo);
+                InProgressContext = rebasing;
+
+                if (string.IsNullOrEmpty(_commitMessage))
+                {
+                    var rebaseMsgFile = Path.Combine(_repo.GitDir, "rebase-merge", "message");
+                    if (File.Exists(rebaseMsgFile))
+                        CommitMessage = File.ReadAllText(rebaseMsgFile);
+                    else if (rebasing.StoppedAt != null)
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).Result();
+                }
+            }
+            else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
+            {
+                InProgressContext = new RevertInProgress(_repo);
+            }
+            else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
+            {
+                InProgressContext = new MergeInProgress(_repo);
+            }
+            else
+            {
+                InProgressContext = null;
+            }
+        }
+
         private async void StageChanges(List<Models.Change> changes, Models.Change next)
         {
-            if (changes.Count == 0)
+            var count = changes.Count;
+            if (count == 0)
                 return;
 
             // Use `_selectedUnstaged` instead of `SelectedUnstaged` to avoid UI refresh.
@@ -1497,7 +1553,7 @@ namespace SourceGit.ViewModels
 
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
-            if (changes.Count == _unstaged.Count)
+            if (count == _unstaged.Count)
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
             }
@@ -1514,10 +1570,13 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                for (int i = 0; i < changes.Count; i += 10)
+                var paths = new List<string>();
+                foreach (var c in changes)
+                    paths.Add(c.Path);
+
+                for (int i = 0; i < count; i += 10)
                 {
-                    var count = Math.Min(10, changes.Count - i);
-                    var step = changes.GetRange(i, count);
+                    var step = paths.GetRange(i, Math.Min(10, count - i));
                     await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
                 }
             }

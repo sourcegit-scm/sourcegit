@@ -104,6 +104,18 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool PushToRemoteWhenCreateTag
+        {
+            get;
+            set;
+        } = true;
+
+        public bool PushToRemoteWhenDeleteTag
+        {
+            get;
+            set;
+        } = false;
+
         public DealWithLocalChanges DealWithLocalChangesOnCreateBranch
         {
             get;

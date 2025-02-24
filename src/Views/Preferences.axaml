@@ -616,6 +616,10 @@
                              Text="{Binding GenerateSubjectPrompt, Mode=TwoWay}"
                              AcceptsReturn="true"
                              TextWrapping="Wrap"/>
+
+                    <CheckBox Margin="0,12,0,0"
+                              Content="{DynamicResource Text.Preferences.AI.Streaming}"
+                              IsChecked="{Binding Streaming, Mode=TwoWay}"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>

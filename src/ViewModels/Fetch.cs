@@ -38,7 +38,24 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _fetchAllRemotes = preferedRemote == null;
-            SelectedRemote = preferedRemote != null ? preferedRemote : _repo.Remotes[0];
+
+            if (preferedRemote != null)
+            {
+                SelectedRemote = preferedRemote;
+            }
+            else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
+            {
+                var def = _repo.Remotes.Find(r => r.Name == _repo.Settings.DefaultRemote);
+                if (def != null)
+                    SelectedRemote = def;
+                else
+                    SelectedRemote = _repo.Remotes[0];
+            }
+            else
+            {
+                SelectedRemote = _repo.Remotes[0];
+            }
+
             View = new Views.Fetch() { DataContext = this };
         }
 

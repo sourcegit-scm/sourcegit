@@ -57,6 +57,7 @@ namespace SourceGit.Models
                     new ShellOrTerminal("mate-terminal", "MATE Terminal", "mate-terminal"),
                     new ShellOrTerminal("foot", "Foot", "foot"),
                     new ShellOrTerminal("wezterm", "WezTerm", "wezterm"),
+                    new ShellOrTerminal("ptyxis", "Ptyxis", "ptyxis"),
                     new ShellOrTerminal("custom", "Custom", ""),
                 };
             }

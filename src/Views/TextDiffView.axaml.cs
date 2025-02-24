@@ -543,6 +543,21 @@ namespace SourceGit.Views
         {
         }
 
+        public void GotoFirstChange()
+        {
+            var blockNavigation = BlockNavigation;
+            if (blockNavigation != null)
+            {
+                var prev = blockNavigation.GotoFirst();
+                if (prev != null)
+                {
+                    TextArea.Caret.Line = prev.Start;
+                    ScrollToLine(prev.Start);
+                }
+            }
+            // NOTE: Not implemented (button hidden) for non-block navigation.
+        }
+
         public void GotoPrevChange()
         {
             var blockNavigation = BlockNavigation;
@@ -639,6 +654,21 @@ namespace SourceGit.Views
                     findNormalLine = true;
                 }
             }
+        }
+
+        public void GotoLastChange()
+        {
+            var blockNavigation = BlockNavigation;
+            if (blockNavigation != null)
+            {
+                var next = blockNavigation.GotoLast();
+                if (next != null)
+                {
+                    TextArea.Caret.Line = next.Start;
+                    ScrollToLine(next.Start);
+                }
+            }
+            // NOTE: Not implemented (button hidden) for non-block navigation.
         }
 
         public override void Render(DrawingContext context)
@@ -1682,6 +1712,19 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        public void GotoFirstChange()
+        {
+            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
+            if (presenter == null)
+                return;
+
+            presenter.GotoFirstChange();
+            if (presenter is SingleSideTextDiffPresenter singleSide)
+                singleSide.ForceSyncScrollOffset();
+
+            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+        }
+
         public void GotoPrevChange()
         {
             var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
@@ -1702,6 +1745,19 @@ namespace SourceGit.Views
                 return;
 
             presenter.GotoNextChange();
+            if (presenter is SingleSideTextDiffPresenter singleSide)
+                singleSide.ForceSyncScrollOffset();
+
+            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+        }
+
+        public void GotoLastChange()
+        {
+            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
+            if (presenter == null)
+                return;
+
+            presenter.GotoLastChange();
             if (presenter is SingleSideTextDiffPresenter singleSide)
                 singleSide.ForceSyncScrollOffset();
 
@@ -1796,7 +1852,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                new Commands.Add(repo.FullPath, [change]).Exec();
+                new Commands.Add(repo.FullPath, [change.Path]).Exec();
             }
             else
             {
