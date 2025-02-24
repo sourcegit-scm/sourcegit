@@ -672,6 +672,7 @@
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">套用 (apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">刪除 (drop)</x:String>
   <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">套用並刪除 (pop)</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">捨棄擱置變更確認</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">捨棄擱置變更:</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">擱置變更</x:String>
