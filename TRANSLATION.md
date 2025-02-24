@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.60%
+### de_DE.axaml: 99.34%
 
 
 <details>
@@ -6,11 +6,13 @@
 
 - Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.WaitForExit
+- Text.Diff.First
+- Text.Diff.Last
 - Text.Preferences.AI.Streaming
 
 </details>
 
-### es_ES.axaml: 97.35%
+### es_ES.axaml: 97.09%
 
 
 <details>
@@ -31,6 +33,8 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Diff.First
+- Text.Diff.Last
 - Text.Preferences.AI.Streaming
 - Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
@@ -39,7 +43,7 @@
 
 </details>
 
-### fr_FR.axaml: 92.18%
+### fr_FR.axaml: 91.93%
 
 
 <details>
@@ -60,6 +64,8 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Diff.First
+- Text.Diff.Last
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -107,7 +113,7 @@
 
 </details>
 
-### it_IT.axaml: 97.61%
+### it_IT.axaml: 97.35%
 
 
 <details>
@@ -127,6 +133,8 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Diff.First
+- Text.Diff.Last
 - Text.Preferences.AI.Streaming
 - Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
@@ -134,7 +142,7 @@
 
 </details>
 
-### pt_BR.axaml: 91.91%
+### pt_BR.axaml: 91.67%
 
 
 <details>
@@ -162,6 +170,8 @@
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
+- Text.Diff.First
+- Text.Diff.Last
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -204,7 +214,7 @@
 
 </details>
 
-### ru_RU.axaml: 99.47%
+### ru_RU.axaml: 99.21%
 
 
 <details>
@@ -213,26 +223,30 @@
 - Text.BranchCM.CustomAction
 - Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.Scope.Branch
+- Text.Diff.First
+- Text.Diff.Last
 - Text.Preferences.AI.Streaming
 
 </details>
 
-### zh_CN.axaml: 100.00%
+### zh_CN.axaml: 99.74%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.First
+- Text.Diff.Last
 
 </details>
 
-### zh_TW.axaml: 100.00%
+### zh_TW.axaml: 99.74%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Diff.First
+- Text.Diff.Last
 
 </details>
