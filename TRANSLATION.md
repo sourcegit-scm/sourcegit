@@ -229,24 +229,22 @@
 
 </details>
 
-### zh_CN.axaml: 99.74%
+### zh_CN.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.First
-- Text.Diff.Last
+
 
 </details>
 
-### zh_TW.axaml: 99.74%
+### zh_TW.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.First
-- Text.Diff.Last
+
 
 </details>
