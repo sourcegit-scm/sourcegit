@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.34%
+### de_DE.axaml: 99.21%
 
 
 <details>
@@ -9,10 +9,11 @@
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
+- Text.StashCM.SaveAsPatch
 
 </details>
 
-### es_ES.axaml: 99.74%
+### es_ES.axaml: 99.60%
 
 
 <details>
@@ -20,10 +21,11 @@
 
 - Text.Diff.First
 - Text.Diff.Last
+- Text.StashCM.SaveAsPatch
 
 </details>
 
-### fr_FR.axaml: 91.93%
+### fr_FR.axaml: 91.81%
 
 
 <details>
@@ -88,12 +90,13 @@
 - Text.SHALinkCM.NavigateTo
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
+- Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### it_IT.axaml: 97.35%
+### it_IT.axaml: 97.23%
 
 
 <details>
@@ -119,10 +122,11 @@
 - Text.Repository.Notifications.Clear
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
+- Text.StashCM.SaveAsPatch
 
 </details>
 
-### pt_BR.axaml: 91.67%
+### pt_BR.axaml: 91.55%
 
 
 <details>
@@ -189,12 +193,13 @@
 - Text.SHALinkCM.NavigateTo
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
+- Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### ru_RU.axaml: 99.21%
+### ru_RU.axaml: 99.08%
 
 
 <details>
@@ -206,6 +211,7 @@
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
+- Text.StashCM.SaveAsPatch
 
 </details>
 
