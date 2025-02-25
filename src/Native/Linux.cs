@@ -65,13 +65,16 @@ namespace SourceGit.Native
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
+            var terminal = OS.ShellOrTerminal;
 
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = cwd;
-            startInfo.FileName = OS.ShellOrTerminal;
+            startInfo.FileName = terminal;
 
-            if (OS.ShellOrTerminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
+            if (terminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
                 startInfo.Arguments = $"start --cwd \"{cwd}\"";
+            else if (terminal.EndsWith("ptyxis", StringComparison.OrdinalIgnoreCase))
+                startInfo.Arguments = $"--working-directory=\"{cwd}\"";
 
             try
             {
