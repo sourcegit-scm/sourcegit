@@ -453,6 +453,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isAutoFetching, value);
         }
 
+        public int CommitDetailActivePageIndex
+        {
+            get;
+            set;
+        } = 0;
+
         public Repository(bool isBare, string path, string gitDir)
         {
             IsBare = isBare;

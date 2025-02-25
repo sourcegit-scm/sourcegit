@@ -36,7 +36,7 @@ namespace SourceGit.Models
             {
                 if (startIdx > 0)
                     OnReceive(buffer.Substring(0, startIdx));
-                   
+
                 var endIdx = buffer.IndexOf(">", startIdx + 1, StringComparison.Ordinal);
                 if (endIdx <= startIdx)
                 {

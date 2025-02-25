@@ -1466,7 +1466,7 @@ namespace SourceGit.ViewModels
                 return unstaged;
 
             var visible = new List<Models.Change>();
-            
+
             foreach (var c in unstaged)
             {
                 if (c.Path.Contains(_unstagedFilter, StringComparison.OrdinalIgnoreCase))

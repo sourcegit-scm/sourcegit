@@ -25,8 +25,15 @@ namespace SourceGit.ViewModels
 
         public int ActivePageIndex
         {
-            get => _activePageIndex;
-            set => SetProperty(ref _activePageIndex, value);
+            get => _repo.CommitDetailActivePageIndex;
+            set
+            {
+                if (_repo.CommitDetailActivePageIndex != value)
+                {
+                    _repo.CommitDetailActivePageIndex = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public Models.Commit Commit
@@ -617,11 +624,7 @@ namespace SourceGit.ViewModels
             _changes = null;
             _revisionFiles.Clear();
 
-            FullMessage = string.Empty;
             SignInfo = null;
-            Changes = [];
-            VisibleChanges = null;
-            SelectedChanges = null;
             ViewRevisionFileContent = null;
             Children.Clear();
             RevisionFileSearchFilter = string.Empty;
@@ -821,7 +824,6 @@ namespace SourceGit.ViewModels
         };
 
         private Repository _repo = null;
-        private int _activePageIndex = 0;
         private Models.Commit _commit = null;
         private string _fullMessage = string.Empty;
         private Models.CommitSignInfo _signInfo = null;

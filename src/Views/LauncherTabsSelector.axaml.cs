@@ -39,7 +39,7 @@ namespace SourceGit.Views
         }
 
         public static readonly RoutedEvent<LauncherTabSelectedEventArgs> PageSelectedEvent =
-            RoutedEvent.Register<ChangeCollectionView, LauncherTabSelectedEventArgs>(nameof(PageSelected), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            RoutedEvent.Register<LauncherTabsSelector, LauncherTabSelectedEventArgs>(nameof(PageSelected), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
         public event EventHandler<LauncherTabSelectedEventArgs> PageSelected
         {
@@ -74,7 +74,7 @@ namespace SourceGit.Views
 
         private void OnPageSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListBox { SelectedItem : ViewModels.LauncherPage page })
+            if (sender is ListBox { SelectedItem: ViewModels.LauncherPage page })
             {
                 _isProcessingSelection = true;
                 RaiseEvent(new LauncherTabSelectedEventArgs(page));
@@ -88,7 +88,7 @@ namespace SourceGit.Views
         {
             if (_isProcessingSelection)
                 return;
-                
+
             VisiblePages.Clear();
 
             if (Pages == null)
