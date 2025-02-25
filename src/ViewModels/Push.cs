@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -44,20 +45,32 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public List<Models.Branch> RemoteBranches
-        {
-            get => _remoteBranches;
-            private set => SetProperty(ref _remoteBranches, value);
-        }
-
-        [Required(ErrorMessage = "Remote branch is required!!!")]
         public Models.Branch SelectedRemoteBranch
         {
             get => _selectedRemoteBranch;
+            private set => SetProperty(ref _selectedRemoteBranch, value);
+        }
+        
+        [Required(ErrorMessage = "Remote branch is required!!!")]
+        public string SelectedRemoteBranchName
+        {
+            get => _selectedRemoteBranchName;
             set
             {
-                if (SetProperty(ref _selectedRemoteBranch, value))
-                    IsSetTrackOptionVisible = value != null && _selectedLocalBranch.Upstream != value.FullName;
+                if (SetProperty(ref _selectedRemoteBranchName, value))
+                {
+                    SelectedRemoteBranch = null;
+
+                    foreach (var branch in _repo.Branches.Where(branch => branch.Remote == _selectedRemote.Name))
+                    {
+                        if (_selectedRemoteBranchName == branch.Name)
+                        {
+                            SelectedRemoteBranch = branch;
+                        }
+                    }
+
+                    IsSetTrackOptionVisible = SelectedRemoteBranch != null && _selectedLocalBranch.Upstream != SelectedRemoteBranch.FullName;
+                }
             }
         }
 
@@ -130,7 +143,7 @@ namespace SourceGit.ViewModels
                 {
                     if (!branch.IsLocal && _selectedLocalBranch.Upstream == branch.FullName)
                     {
-                        _selectedRemote = repo.Remotes.Find(x => x.Name == branch.Remote);
+                        _selectedRemote = repo.Remotes.Find(remote => remote.Name == branch.Remote);
                         break;
                     }
                 }
@@ -141,7 +154,7 @@ namespace SourceGit.ViewModels
             {
                 var remote = null as Models.Remote;
                 if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
-                    remote = repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
+                    remote = repo.Remotes.Find(remote => remote.Name == _repo.Settings.DefaultRemote);
 
                 _selectedRemote = remote ?? repo.Remotes[0];
             }
@@ -154,15 +167,15 @@ namespace SourceGit.ViewModels
 
         public override bool CanStartDirectly()
         {
-            return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
+            return !string.IsNullOrEmpty(SelectedRemoteBranch?.Head);
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
-            var remoteBranchName = _selectedRemoteBranch.Name;
-            ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
+            ProgressDescription =
+                $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{_selectedRemoteBranchName} ...";
 
             return Task.Run(() =>
             {
@@ -170,7 +183,7 @@ namespace SourceGit.ViewModels
                     _repo.FullPath,
                     _selectedLocalBranch.Name,
                     _selectedRemote.Name,
-                    remoteBranchName,
+                    _selectedRemoteBranchName,
                     PushAllTags,
                     _repo.Submodules.Count > 0 && CheckSubmodules,
                     _isSetTrackOptionVisible && Tracking,
@@ -183,54 +196,36 @@ namespace SourceGit.ViewModels
 
         private void AutoSelectBranchByRemote()
         {
-            // Gather branches.
-            var branches = new List<Models.Branch>();
-            foreach (var branch in _repo.Branches)
-            {
-                if (branch.Remote == _selectedRemote.Name)
-                    branches.Add(branch);
-            }
-
             // If selected local branch has upstream. Try to find it in current remote branches.
             if (!string.IsNullOrEmpty(_selectedLocalBranch.Upstream))
             {
-                foreach (var branch in branches)
+                foreach (var branch in _repo.Branches.Where(branch => branch.Remote == _selectedRemote.Name))
                 {
                     if (_selectedLocalBranch.Upstream == branch.FullName)
                     {
-                        RemoteBranches = branches;
-                        SelectedRemoteBranch = branch;
+                        SelectedRemoteBranchName = branch.Name;
                         return;
                     }
                 }
             }
 
             // Try to find a remote branch with the same name of selected local branch.
-            foreach (var branch in branches)
+            foreach (var branch in _repo.Branches.Where(branch => branch.Remote == _selectedRemote.Name))
             {
                 if (_selectedLocalBranch.Name == branch.Name)
                 {
-                    RemoteBranches = branches;
-                    SelectedRemoteBranch = branch;
+                    SelectedRemoteBranchName = branch.Name;
                     return;
                 }
             }
 
-            // Add a fake new branch.
-            var fake = new Models.Branch()
-            {
-                Name = _selectedLocalBranch.Name,
-                Remote = _selectedRemote.Name,
-            };
-            branches.Add(fake);
-            RemoteBranches = branches;
-            SelectedRemoteBranch = fake;
+            SelectedRemoteBranchName = _selectedLocalBranch.Name;
         }
 
         private readonly Repository _repo = null;
         private Models.Branch _selectedLocalBranch = null;
         private Models.Remote _selectedRemote = null;
-        private List<Models.Branch> _remoteBranches = [];
+        private string _selectedRemoteBranchName = null;
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
     }
