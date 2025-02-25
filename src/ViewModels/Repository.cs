@@ -663,6 +663,12 @@ namespace SourceGit.ViewModels
                 return;
             }
 
+            if (_currentBranch == null)
+            {
+                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                return;
+            }
+
             var pull = new Pull(this, null);
             if (autoStart && pull.SelectedBranch != null)
                 ShowAndStartPopup(pull);
