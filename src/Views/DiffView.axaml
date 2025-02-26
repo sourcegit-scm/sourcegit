@@ -37,7 +37,6 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"
-                    IsVisible="{Binding IsTextDiff}"
                     ToolTip.Tip="{DynamicResource Text.Diff.First}">
               <Button.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -78,7 +77,6 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
-                    IsVisible="{Binding IsTextDiff}"
                     ToolTip.Tip="{DynamicResource Text.Diff.Last}">
               <Button.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
