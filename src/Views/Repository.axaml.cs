@@ -522,7 +522,7 @@ namespace SourceGit.Views
 
         private void OnRemoveSelectedHistoriesFilter(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter})
+            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter })
                 repo.RemoveHistoriesFilter(filter);
 
             e.Handled = true;

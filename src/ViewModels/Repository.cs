@@ -453,6 +453,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isAutoFetching, value);
         }
 
+        public int CommitDetailActivePageIndex
+        {
+            get;
+            set;
+        } = 0;
+
         public Repository(bool isBare, string path, string gitDir)
         {
             IsBare = isBare;
@@ -654,6 +660,12 @@ namespace SourceGit.ViewModels
             if (_remotes.Count == 0)
             {
                 App.RaiseException(_fullpath, "No remotes added to this repository!!!");
+                return;
+            }
+
+            if (_currentBranch == null)
+            {
+                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
                 return;
             }
 

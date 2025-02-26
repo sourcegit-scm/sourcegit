@@ -253,7 +253,9 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
+  <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化</x:String>
+  <x:String x:Key="Text.Diff.Last" xml:space="preserve">最后一个差异</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS对象变更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一个差异</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">没有变更或仅有换行符差异</x:String>
@@ -671,6 +673,7 @@
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">应用(apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">删除(drop)</x:String>
   <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">应用并删除(pop)</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">丢弃贮藏确认</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">丢弃贮藏 ：</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">贮藏列表</x:String>

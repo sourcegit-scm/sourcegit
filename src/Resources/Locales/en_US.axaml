@@ -250,7 +250,9 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copy</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
+  <x:String x:Key="Text.Diff.First" xml:space="preserve">First Difference</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore Whitespace Change</x:String>
+  <x:String x:Key="Text.Diff.Last" xml:space="preserve">Last Difference</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</x:String>
@@ -667,6 +669,7 @@
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Apply</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Drop</x:String>
   <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Pop</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Drop:</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">STASHES</x:String>

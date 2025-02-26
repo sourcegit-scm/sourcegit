@@ -11,6 +11,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnGotoFirstChange(object _, RoutedEventArgs e)
+        {
+            var textDiff = this.FindDescendantOfType<TextDiffView>();
+            textDiff?.GotoFirstChange();
+            e.Handled = true;
+        }
+
         private void OnGotoPrevChange(object _, RoutedEventArgs e)
         {
             var textDiff = this.FindDescendantOfType<TextDiffView>();
@@ -22,6 +29,13 @@ namespace SourceGit.Views
         {
             var textDiff = this.FindDescendantOfType<TextDiffView>();
             textDiff?.GotoNextChange();
+            e.Handled = true;
+        }
+
+        private void OnGotoLastChange(object _, RoutedEventArgs e)
+        {
+            var textDiff = this.FindDescendantOfType<TextDiffView>();
+            textDiff?.GotoLastChange();
             e.Handled = true;
         }
     }
