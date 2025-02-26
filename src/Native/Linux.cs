@@ -74,7 +74,7 @@ namespace SourceGit.Native
             if (terminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
                 startInfo.Arguments = $"start --cwd \"{cwd}\"";
             else if (terminal.EndsWith("ptyxis", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"--working-directory=\"{cwd}\"";
+                startInfo.Arguments = $"--new-window --working-directory=\"{cwd}\"";
 
             try
             {
