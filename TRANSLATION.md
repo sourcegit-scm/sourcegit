@@ -13,14 +13,12 @@
 
 </details>
 
-### es_ES.axaml: 99.60%
+### es_ES.axaml: 99.87%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.First
-- Text.Diff.Last
 - Text.StashCM.SaveAsPatch
 
 </details>
