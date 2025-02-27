@@ -11,11 +11,21 @@ namespace SourceGit.Views
             private set;
         }
 
+        public string Copyright
+        {
+            get;
+            private set;
+        }
+
         public About()
         {
             var ver = Assembly.GetExecutingAssembly().GetName().Version;
             if (ver != null)
                 Version = $"{ver.Major}.{ver.Minor}";
+            var attributes = Assembly.GetExecutingAssembly()
+                .GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+            if (attributes.Length > 0)
+                Copyright = ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
 
             DataContext = this;
             InitializeComponent();
