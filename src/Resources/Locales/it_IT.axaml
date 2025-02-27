@@ -6,7 +6,6 @@
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Informazioni su SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Creato con </x:String>
   <x:String x:Key="Text.About.Chart" xml:space="preserve">• Il grafico è reso da </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor di testo da </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• I font monospaziati provengono da </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Il codice sorgente è disponibile su </x:String>

@@ -6,7 +6,6 @@
   <x:String x:Key="Text.About.Menu" xml:space="preserve">À propos de SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Compilé avec </x:String>
   <x:String x:Key="Text.About.Chart" xml:space="preserve">• Le graphique est rendu par </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor de </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Les polices Monospace proviennent de </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Le code source est disponible sur </x:String>

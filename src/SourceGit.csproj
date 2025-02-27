@@ -13,7 +13,7 @@
     <Product>SourceGit</Product>
     <Description>OpenSource GIT client</Description>
     <Company>sourcegit-scm</Company>
-    <Copyright>Copyright © 2024 sourcegit-scm.</Copyright>
+    <Copyright>Copyright © $([System.DateTime]::Now.Year) sourcegit-scm.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/sourcegit-scm/sourcegit.git</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>

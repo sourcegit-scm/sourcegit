@@ -52,7 +52,7 @@
 
         <TextBlock Margin="2,0,0,0" Text="{DynamicResource Text.About.SubTitle}" FontSize="16"/>
 
-        <TextBlock Margin="2,8,0,0" Text="{DynamicResource Text.About.Copyright}" Foreground="{DynamicResource Brush.FG2}"/>
+        <TextBlock Margin="2,8,0,0" Text="{Binding Copyright}" Foreground="{DynamicResource Brush.FG2}"/>
 
         <StackPanel Orientation="Vertical" Margin="0,24,0,0">
           <StackPanel Orientation="Horizontal" Height="18">
