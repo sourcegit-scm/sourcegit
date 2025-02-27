@@ -686,6 +686,9 @@ namespace SourceGit.ViewModels
                     {
                         Changes = changes;
                         VisibleChanges = visible;
+
+                        if (visible.Count == 0)
+                            SelectedChanges = null;
                     });
                 }
             });
