@@ -20,7 +20,7 @@
   * Clone/Fetch/Pull/Push...
   * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
   * Amend/Reword
-  * Interactive rebase (Basic)
+  * Interactive rebase
   * Branches
   * Remotes
   * Tags
