@@ -40,9 +40,9 @@ namespace SourceGit.ViewModels
 
         public Models.DealWithLocalChanges PreAction
         {
-            get => _repo.Settings.DealWithLocalChangesOnPull;
-            set => _repo.Settings.DealWithLocalChangesOnPull = value;
-        }
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
 
         public bool UseRebase
         {
