@@ -566,7 +566,7 @@ namespace SourceGit.ViewModels
 
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                if (commit.IsMerged && current.Head != commit.SHA)
+                if (current.Head != commit.SHA)
                 {
                     var interactiveRebase = new MenuItem();
                     interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
