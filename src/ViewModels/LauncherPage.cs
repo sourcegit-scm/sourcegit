@@ -71,7 +71,7 @@ namespace SourceGit.ViewModels
 
         public async void ProcessPopup()
         {
-            if (_popup != null)
+            if (_popup is { InProgress: false })
             {
                 if (!_popup.Check())
                     return;
