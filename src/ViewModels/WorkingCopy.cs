@@ -445,6 +445,10 @@ namespace SourceGit.ViewModels
                 _repo.SetWatcherEnabled(false);
                 Task.Run(() =>
                 {
+                    var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
+                    if (File.Exists(mergeMsgFile))
+                        File.WriteAllText(mergeMsgFile, _commitMessage);
+
                     var succ = _inProgressContext.Continue();
                     Dispatcher.UIThread.Invoke(() =>
                     {
