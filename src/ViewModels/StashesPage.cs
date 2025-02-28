@@ -89,7 +89,7 @@ namespace SourceGit.ViewModels
             private set
             {
                 if (SetProperty(ref _changes, value))
-                    SelectedChange = value is { Count: >0 } ? value[0] : null;
+                    SelectedChange = value is { Count: > 0 } ? value[0] : null;
             }
         }
 
