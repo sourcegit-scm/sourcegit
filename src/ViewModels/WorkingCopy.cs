@@ -446,7 +446,7 @@ namespace SourceGit.ViewModels
                 Task.Run(() =>
                 {
                     var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
-                    if (File.Exists(mergeMsgFile))
+                    if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
                         File.WriteAllText(mergeMsgFile, _commitMessage);
 
                     var succ = _inProgressContext.Continue();
@@ -729,8 +729,8 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            var path = Path.GetDirectoryName(change.Path).Replace("\\", "/");
-                            Commands.GitIgnore.Add(_repo.FullPath, path + "/");
+                            var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                            Commands.GitIgnore.Add(_repo.FullPath, dir + "/");
                             e.Handled = true;
                         };
                         addToIgnore.Items.Add(byParentFolder);
@@ -751,8 +751,8 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                var path = Path.GetDirectoryName(change.Path).Replace("\\", "/");
-                                Commands.GitIgnore.Add(_repo.FullPath, path + "/*" + extension);
+                                var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                                Commands.GitIgnore.Add(_repo.FullPath, dir + "/*" + extension);
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtensionInSameFolder);
