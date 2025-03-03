@@ -37,6 +37,19 @@ namespace SourceGit.Commands
             return true;
         }
 
+        public static bool ProcessStashChanges(string repo, List<Models.DiffOption> opts, string saveTo)
+        {
+            using (var sw = File.Create(saveTo))
+            {
+                foreach (var opt in opts)
+                {
+                    if (!ProcessSingleChange(repo, opt, sw))
+                        return false;
+                }
+            }
+            return true;
+        }
+
         private static bool ProcessSingleChange(string repo, Models.DiffOption opt, FileStream writer)
         {
             var starter = new ProcessStartInfo();

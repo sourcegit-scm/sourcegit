@@ -50,12 +50,6 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
-        {
-            get;
-            set;
-        } = DealWithLocalChanges.DoNothing;
-
         public bool EnableForceOnFetch
         {
             get;
@@ -67,12 +61,6 @@ namespace SourceGit.Models
             get;
             set;
         } = false;
-
-        public DealWithLocalChanges DealWithLocalChangesOnPull
-        {
-            get;
-            set;
-        } = DealWithLocalChanges.DoNothing;
 
         public bool PreferRebaseInsteadOfMerge
         {
@@ -115,12 +103,6 @@ namespace SourceGit.Models
             get;
             set;
         } = false;
-
-        public DealWithLocalChanges DealWithLocalChangesOnCreateBranch
-        {
-            get;
-            set;
-        } = DealWithLocalChanges.DoNothing;
 
         public bool CheckoutBranchOnCreateBranch
         {

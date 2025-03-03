@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -88,7 +89,7 @@ namespace SourceGit.ViewModels
             private set
             {
                 if (SetProperty(ref _changes, value))
-                    SelectedChange = null;
+                    SelectedChange = value is { Count: > 0 } ? value[0] : null;
             }
         }
 
@@ -157,9 +158,45 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var patch = new MenuItem();
+            patch.Header = App.Text("StashCM.SaveAsPatch");
+            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = App.GetStorageProvider();
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("StashCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                if (storageFile != null)
+                {
+                    var opts = new List<Models.DiffOption>();
+                    foreach (var c in _changes)
+                    {
+                        if (_untrackedChanges.Contains(c.Path))
+                            opts.Add(new Models.DiffOption("4b825dc642cb6eb9a060e54bf8d69288fbee4904", _selectedStash.Parents[2], c));
+                        else
+                            opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
+                    }
+
+                    var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessStashChanges(_repo.FullPath, opts, storageFile.Path.LocalPath));
+                    if (succ)
+                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                }
+
+                e.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(apply);
             menu.Items.Add(drop);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(patch);
             return menu;
         }
 

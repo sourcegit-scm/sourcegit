@@ -561,13 +561,7 @@ namespace SourceGit.ViewModels
                             _repo.ShowPopup(new CheckoutCommit(_repo, commit));
                         e.Handled = true;
                     };
-                    menu.Items.Add(checkoutCommit);
-                }
 
-                menu.Items.Add(new MenuItem() { Header = "-" });
-
-                if (commit.IsMerged && current.Head != commit.SHA)
-                {
                     var interactiveRebase = new MenuItem();
                     interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
                     interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
@@ -586,9 +580,13 @@ namespace SourceGit.ViewModels
 
                         e.Handled = true;
                     };
-                    menu.Items.Add(interactiveRebase);
+
+                    menu.Items.Add(checkoutCommit);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(interactiveRebase);
                 }
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
             if (current.Head != commit.SHA)

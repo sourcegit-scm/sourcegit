@@ -21,9 +21,9 @@ namespace SourceGit.ViewModels
 
         public Models.DealWithLocalChanges PreAction
         {
-            get => _repo.Settings.DealWithLocalChangesOnCreateBranch;
-            set => _repo.Settings.DealWithLocalChangesOnCreateBranch = value;
-        }
+            get;
+            set;
+        } = Models.DealWithLocalChanges.DoNothing;
 
         public bool CheckoutAfterCreated
         {

@@ -8,9 +8,9 @@ namespace SourceGit.Models
     {
         [GeneratedRegex(@"^https?://([-a-zA-Z0-9:%._\+~#=]+@)?[-a-zA-Z0-9:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?(:[0-9]{1,5})?\b(/[-a-zA-Z0-9()@:%_\+.~#?&=]+)+(\.git)?$")]
         private static partial Regex REG_HTTPS();
-        [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
+        [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH1();
-        [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/[\w\-/~%]+/[\w\-\.%]+(\.git)?$")]
+        [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH2();
 
         [GeneratedRegex(@"^git@([\w\.\-]+):([\w\-/~%]+/[\w\-\.%]+)\.git$")]

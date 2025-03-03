@@ -31,10 +31,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, e.Message);
-                });
+                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, e.Message));
             }
         }
 
@@ -87,19 +84,14 @@ namespace SourceGit.Commands
                 var exitCode = proc.ExitCode;
                 if (exitCode != 0)
                 {
-                    var errMsg = builder.ToString();
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(repo, errMsg);
-                    });
+                    var errMsg = builder.ToString().Trim();
+                    if (!string.IsNullOrEmpty(errMsg))
+                        Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, errMsg));
                 }
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, e.Message);
-                });
+                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, e.Message));
             }
 
             proc.Close();

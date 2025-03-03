@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.34%
+### de_DE.axaml: 99.21%
 
 
 <details>
@@ -9,21 +9,21 @@
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
+- Text.StashCM.SaveAsPatch
 
 </details>
 
-### es_ES.axaml: 99.74%
+### es_ES.axaml: 99.87%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Diff.First
-- Text.Diff.Last
+- Text.StashCM.SaveAsPatch
 
 </details>
 
-### fr_FR.axaml: 91.93%
+### fr_FR.axaml: 91.80%
 
 
 <details>
@@ -88,41 +88,23 @@
 - Text.SHALinkCM.NavigateTo
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
+- Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### it_IT.axaml: 97.35%
+### it_IT.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.AIAssistant.Regen
-- Text.AIAssistant.Use
-- Text.ApplyStash
-- Text.ApplyStash.DropAfterApply
-- Text.ApplyStash.RestoreIndex
-- Text.ApplyStash.Stash
-- Text.BranchCM.CustomAction
-- Text.BranchUpstreamInvalid
-- Text.Clone.RecurseSubmodules
-- Text.Configure.CustomAction.Scope.Branch
-- Text.Configure.CustomAction.WaitForExit
-- Text.DeleteRepositoryNode.Path
-- Text.DeleteRepositoryNode.TipForGroup
-- Text.DeleteRepositoryNode.TipForRepository
-- Text.Diff.First
-- Text.Diff.Last
-- Text.Preferences.AI.Streaming
-- Text.Repository.Notifications.Clear
-- Text.Stash.AutoRestore
-- Text.Stash.AutoRestore.Tip
+
 
 </details>
 
-### pt_BR.axaml: 91.67%
+### pt_BR.axaml: 91.53%
 
 
 <details>
@@ -189,12 +171,13 @@
 - Text.SHALinkCM.NavigateTo
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
+- Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### ru_RU.axaml: 99.21%
+### ru_RU.axaml: 99.07%
 
 
 <details>
@@ -206,6 +189,7 @@
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
+- Text.StashCM.SaveAsPatch
 
 </details>
 

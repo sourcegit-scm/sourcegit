@@ -6,7 +6,6 @@
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Informazioni su SourceGit</x:String>
   <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Creato con </x:String>
   <x:String x:Key="Text.About.Chart" xml:space="preserve">• Il grafico è reso da </x:String>
-  <x:String x:Key="Text.About.Copyright" xml:space="preserve">© 2024 sourcegit-scm</x:String>
   <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor di testo da </x:String>
   <x:String x:Key="Text.About.Fonts" xml:space="preserve">• I font monospaziati provengono da </x:String>
   <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Il codice sorgente è disponibile su </x:String>
@@ -22,7 +21,9 @@
   <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Traccia Branch:</x:String>
   <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Traccia branch remoto</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistente AI</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RIGENERA</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare il messaggio di commit</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLICA COME MESSAGGIO DI COMMIT</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Applica</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Errore</x:String>
   <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Genera errori e si rifiuta di applicare la patch</x:String>
@@ -37,6 +38,10 @@
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Avviso</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Mostra avvisi per alcuni errori, ma applica comunque</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Spazi:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Applica lo stash</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Rimuovi dopo aver applicato</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Ripristina le modifiche all'indice</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">Stash:</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">Archivia...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">Salva Archivio In:</x:String>
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Seleziona il percorso del file archivio</x:String>
@@ -53,6 +58,7 @@
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Confronta con HEAD</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copia Nome Branch</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Azione personalizzata</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Elimina ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Elimina i {0} branch selezionati</x:String>
   <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Scarta tutte le modifiche</x:String>
@@ -68,6 +74,7 @@
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rinomina ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Imposta Branch di Tracciamento...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Confronto Branch</x:String>
+  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Upstream non valido</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">Byte</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ANNULLA</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Ripristina Questa Revisione</x:String>
@@ -100,6 +107,7 @@
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Nome Locale:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nome del repository. Facoltativo.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Cartella Principale:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Inizializza e aggiorna i sottomoduli</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL del Repository:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CHIUDI</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
@@ -152,8 +160,10 @@
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">File Eseguibile:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nome:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Ambito:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Attendi la fine dell'azione</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Indirizzo Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Indirizzo email</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
@@ -226,7 +236,10 @@
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Stai per eliminare più branch contemporaneamente. Controlla attentamente prima di procedere!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Elimina Remoto</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remoto:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Percorso:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Destinazione:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">Tutti i figli verranno rimossi dalla lista.</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">Lo rimuoverà solamente dalla lista, non dal disco!</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Conferma Eliminazione Gruppo</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Conferma Eliminazione Repository</x:String>
   <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Elimina Sottomodulo</x:String>
@@ -239,7 +252,9 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">VECCHIO</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modalità File Modificata</x:String>
+  <x:String x:Key="Text.Diff.First" xml:space="preserve">Prima differenza</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi</x:String>
+  <x:String x:Key="Text.Diff.Last" xml:space="preserve">Ultima differenza</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MODIFICA OGGETTO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Differenza Successiva</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NESSUNA MODIFICA O SOLO CAMBIAMENTI DI FINE LINEA</x:String>
@@ -450,6 +465,7 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modello</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
+  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Abilita streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ASPETTO</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
@@ -578,6 +594,7 @@
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCH LOCALI</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Vai a HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Crea Branch</x:String>
+  <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">CANCELLA LE NOTIFICHE</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Evidenzia nel grafico solo il branch corrente</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Apri in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Apri in Strumenti Esterni</x:String>
@@ -644,6 +661,8 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Percorso per la chiave SSH privata</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">AVVIA</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stasha</x:String>
+  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Auto-ripristino dopo lo stash</x:String>
+  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">I tuoi file di lavoro rimangono inalterati, ma viene salvato uno stash.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Includi file non tracciati</x:String>
   <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Mantieni file in stage</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Messaggio:</x:String>
@@ -654,6 +673,7 @@
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Applica</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Elimina</x:String>
   <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Estrai</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Salva come Patch...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Elimina Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Elimina:</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">STASH</x:String>
