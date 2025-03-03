@@ -1007,8 +1007,8 @@ namespace SourceGit.Views
             if (startPosition.Location > endPosition.Location)
                 (startPosition, endPosition) = (endPosition, startPosition);
 
-            var startIdx = Math.Min(startPosition.Line - 1, lines.Count - 1);
-            var endIdx = Math.Min(endPosition.Line - 1, lines.Count - 1);
+            var startIdx = startPosition.Line - 1;
+            var endIdx = endPosition.Line - 1;
 
             if (startIdx == endIdx)
             {
@@ -1025,7 +1025,7 @@ namespace SourceGit.Views
             }
 
             var builder = new StringBuilder();
-            for (var i = startIdx; i <= endIdx; i++)
+            for (var i = startIdx; i <= endIdx && i <= lines.Count - 1; i++)
             {
                 var line = lines[i];
                 if (line.Type == Models.TextDiffLineType.Indicator ||
@@ -1040,7 +1040,7 @@ namespace SourceGit.Views
 
                 if (i == endIdx && endPosition.Column < line.Content.Length)
                 {
-                    builder.AppendLine(line.Content.Substring(0, endPosition.Column));
+                    builder.AppendLine(line.Content.Substring(0, endPosition.Column - 1));
                     continue;
                 }
 
