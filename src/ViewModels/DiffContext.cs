@@ -116,7 +116,10 @@ namespace SourceGit.ViewModels
                 var latest = new Commands.Diff(_repo, _option, numLines, _ignoreWhitespace).Result();
                 var info = new Info(_option, numLines, _ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
+                {
+                    FileModeChange = latest.FileModeChange;
                     return;
+                }
 
                 _info = info;
 
