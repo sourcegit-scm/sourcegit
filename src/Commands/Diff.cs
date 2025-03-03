@@ -68,6 +68,18 @@ namespace SourceGit.Commands
                 return;
             }
 
+            if (line.StartsWith("deleted file mode ", StringComparison.Ordinal))
+            {
+                _result.OldMode = line.Substring(18);
+                return;
+            }
+
+            if (line.StartsWith("new file mode ", StringComparison.Ordinal))
+            {
+                _result.NewMode = line.Substring(14);
+                return;
+            }
+
             if (_result.IsBinary)
                 return;
 
