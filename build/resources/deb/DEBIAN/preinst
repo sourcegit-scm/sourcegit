@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+# summary of how this script can be called:
+#        * <new-preinst> `install'
+#        * <new-preinst> `install' <old-version>
+#        * <new-preinst> `upgrade' <old-version>
+#        * <old-preinst> `abort-upgrade' <new-version>
+# for details, see http://www.debian.org/doc/debian-policy/
+
+case "$1" in
+    install|upgrade)
+        # Check if SourceGit is running and stop it
+        if pidof -q sourcegit || pgrep -f sourcegit > /dev/null; then
+            echo "SourceGit is running, stopping it..."
+            killall sourcegit 2>/dev/null || pkill -f sourcegit 2>/dev/null || true
+            # Wait for SourceGit to exit
+            sleep 1
+        fi
+    ;;
+
+    abort-upgrade)
+    ;;
+
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
