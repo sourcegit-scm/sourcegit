@@ -1034,17 +1034,26 @@ namespace SourceGit.Views
 
                 if (i == startIdx && startPosition.Column > 1)
                 {
-                    builder.AppendLine(line.Content.Substring(startPosition.Column - 1));
+                    var content = line.Content.Substring(startPosition.Column - 1);
+                    if (i == endIdx && endPosition.Column < line.Content.Length + 1)
+                        builder.Append(content.Substring(0,
+                            Math.Min(content.Length, endPosition.Column - startPosition.Column)));
+                    else
+                        builder.AppendLine(content);
                     continue;
                 }
 
-                if (i == endIdx && endPosition.Column < line.Content.Length)
+                if (i == endIdx)
                 {
-                    builder.AppendLine(line.Content.Substring(0, endPosition.Column));
-                    continue;
+                    // Handle the last line specially
+                    if (endPosition.Column > 1)
+                        builder.Append(line.Content.Substring(0,
+                            Math.Min(line.Content.Length, endPosition.Column - 1)));
+                    else
+                        builder.Append(line.Content);
                 }
-
-                builder.AppendLine(line.Content);
+                else
+                    builder.AppendLine(line.Content);
             }
 
             App.CopyText(builder.ToString());
