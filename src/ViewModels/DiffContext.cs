@@ -60,6 +60,7 @@ namespace SourceGit.ViewModels
             {
                 _isTextDiff = previous._isTextDiff;
                 _content = previous._content;
+                _fileModeChange = previous._fileModeChange;
                 _unifiedLines = previous._unifiedLines;
                 _ignoreWhitespace = previous._ignoreWhitespace;
                 _info = previous._info;
@@ -116,10 +117,7 @@ namespace SourceGit.ViewModels
                 var latest = new Commands.Diff(_repo, _option, numLines, _ignoreWhitespace).Result();
                 var info = new Info(_option, numLines, _ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
-                {
-                    FileModeChange = latest.FileModeChange;
                     return;
-                }
 
                 _info = info;
 
