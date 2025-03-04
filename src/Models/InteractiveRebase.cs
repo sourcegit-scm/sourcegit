@@ -12,6 +12,12 @@ namespace SourceGit.Models
         Drop,
     }
 
+    public class InteractiveCommit
+    {
+        public Commit Commit { get; set; } = new Commit();
+        public string Message { get; set; } = string.Empty;
+    }
+
     public class InteractiveRebaseJob
     {
         public string SHA { get; set; } = string.Empty;

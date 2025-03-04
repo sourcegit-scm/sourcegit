@@ -112,9 +112,9 @@ namespace SourceGit.Models
         }
     }
 
-    public class CommitWithMessage
+    public class CommitFullMessage
     {
-        public Commit Commit { get; set; } = new Commit();
-        public string Message { get; set; } = "";
+        public string Message { get; set; } = string.Empty;
+        public List<Hyperlink> Links { get; set; } = [];
     }
 }

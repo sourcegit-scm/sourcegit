@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommitsWithFullMessage(repoPath, $"{on.SHA}..HEAD").Result();
+                var commits = new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).Result();
                 var list = new List<InteractiveRebaseItem>();
 
                 foreach (var c in commits)

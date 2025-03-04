@@ -123,12 +123,20 @@ namespace SourceGit.ViewModels
                         if (commit != null)
                         {
                             var message = new Commands.QueryCommitFullMessage(submoduleRoot, obj.SHA).Result();
-                            var module = new Models.RevisionSubmodule() { Commit = commit, FullMessage = message };
+                            var module = new Models.RevisionSubmodule()
+                            {
+                                Commit = commit,
+                                FullMessage = new Models.CommitFullMessage { Message = message }
+                            };
                             Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
                         }
                         else
                         {
-                            var module = new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = obj.SHA }, FullMessage = "" };
+                            var module = new Models.RevisionSubmodule()
+                            {
+                                Commit = new Models.Commit() { SHA = obj.SHA },
+                                FullMessage = null
+                            };
                             Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
                         }
                     });

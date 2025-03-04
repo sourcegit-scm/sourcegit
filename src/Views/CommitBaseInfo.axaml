@@ -95,8 +95,8 @@
           </StackPanel>
 
           <!-- PARENTS -->
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
-          <ItemsControl Grid.Row="1" Grid.Column="1" Height="24" Margin="12,0,0,0" ItemsSource="{Binding Parents}" IsVisible="{Binding Parents.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+          <ItemsControl Grid.Row="1" Grid.Column="1" Height="24" Margin="12,0,0,0" ItemsSource="{Binding Parents}" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
@@ -133,8 +133,8 @@
           </ItemsControl>
 
           <!-- CHILDREN -->
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Children}" IsVisible="{Binding #ThisControl.Children.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
-          <ItemsControl Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" ItemsSource="{Binding #ThisControl.Children}" IsVisible="{Binding #ThisControl.Children.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+          <ItemsControl Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" ItemsSource="{Binding #ThisControl.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" ItemHeight="24"/>
@@ -187,8 +187,7 @@
           <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
                                     Margin="12,4,8,0" 
                                     Classes="primary" 
-                                    Message="{Binding #ThisControl.Message}"
-                                    IssueTrackerRules="{Binding #ThisControl.IssueTrackerRules}"
+                                    FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap">            
             <v:CommitMessagePresenter.DataTemplates>
