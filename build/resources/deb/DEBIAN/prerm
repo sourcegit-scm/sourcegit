@@ -15,11 +15,10 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        # Check if SourceGit is running and stop it
-        if pidof -q sourcegit || pgrep -f sourcegit > /dev/null; then
-            echo "SourceGit is running, stopping it before removal..."
-            killall sourcegit 2>/dev/null || pkill -f sourcegit 2>/dev/null || true
-            # Wait for SourceGit to exit
+        if pgrep -f '/opt/sourcegit/sourcegit' > /dev/null; then
+            echo "Stopping running SourceGit instance..."
+            pkill -f '/opt/sourcegit/sourcegit' || true
+            # Give the process a moment to terminate
             sleep 1
         fi
     ;;
