@@ -1049,11 +1049,7 @@ namespace SourceGit.Views
                 // For the last line (selection range is within original source)
                 if (i == endIdx)
                 {
-                    if (endPosition.Column < line.Content.Length)
-                        builder.Append(line.Content.Substring(0, endPosition.Column - 1));
-                    else
-                        builder.Append(line.Content);
-
+                    builder.Append(endPosition.Column - 1 < line.Content.Length ? line.Content.Substring(0, endPosition.Column - 1) : line.Content);
                     break;
                 }
 
