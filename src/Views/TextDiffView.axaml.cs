@@ -475,6 +475,15 @@ namespace SourceGit.Views
             set => SetValue(ShowHiddenSymbolsProperty, value);
         }
 
+        public static readonly StyledProperty<int> TabWidthProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, int>(nameof(TabWidth), 4);
+
+        public int TabWidth
+        {
+            get => GetValue(TabWidthProperty);
+            set => SetValue(TabWidthProperty, value);
+        }
+
         public static readonly StyledProperty<bool> EnableChunkSelectionProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(EnableChunkSelection));
 
@@ -519,12 +528,13 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             BorderThickness = new Thickness(0);
 
+            Options.IndentationSize = TabWidth;
+            Options.EnableHyperlinks = false;
+            Options.EnableEmailHyperlinks = false;
+
             _lineStyleTransformer = new LineStyleTransformer(this);
 
             TextArea.TextView.Margin = new Thickness(2, 0);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
-
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
@@ -734,9 +744,13 @@ namespace SourceGit.Views
             }
             else if (change.Property == ShowHiddenSymbolsProperty)
             {
-                var val = change.NewValue is true;
+                var val = ShowHiddenSymbols;
                 Options.ShowTabs = val;
                 Options.ShowSpaces = val;
+            }
+            else if (change.Property == TabWidthProperty)
+            {
+                Options.IndentationSize = TabWidth;
             }
             else if (change.Property == FileNameProperty)
             {

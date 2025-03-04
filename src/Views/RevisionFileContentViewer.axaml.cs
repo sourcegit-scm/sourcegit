@@ -15,6 +15,15 @@ namespace SourceGit.Views
 {
     public class RevisionTextFileView : TextEditor
     {
+        public static readonly StyledProperty<int> TabWidthProperty =
+            AvaloniaProperty.Register<RevisionTextFileView, int>(nameof(TabWidth), 4);
+
+        public int TabWidth
+        {
+            get => GetValue(TabWidthProperty);
+            set => SetValue(TabWidthProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public RevisionTextFileView() : base(new TextArea(), new TextDocument())
@@ -22,13 +31,16 @@ namespace SourceGit.Views
             IsReadOnly = true;
             ShowLineNumbers = true;
             WordWrap = false;
+
+            Options.IndentationSize = TabWidth;
+            Options.EnableHyperlinks = false;
+            Options.EnableEmailHyperlinks = false;
+
             HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
             TextArea.LeftMargins[0].Margin = new Thickness(8, 0);
             TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -66,6 +78,16 @@ namespace SourceGit.Views
             else
             {
                 Text = string.Empty;
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == TabWidthProperty)
+            {
+                Options.IndentationSize = TabWidth;
             }
         }
 

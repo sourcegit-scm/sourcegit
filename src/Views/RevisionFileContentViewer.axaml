@@ -22,6 +22,7 @@
     <DataTemplate DataType="m:RevisionTextFile">
       <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}"
                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
+                              TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
                               Background="{DynamicResource Brush.Contents}"/>
     </DataTemplate>
 

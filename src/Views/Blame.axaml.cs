@@ -260,6 +260,15 @@ namespace SourceGit.Views
             set => SetValue(BlameDataProperty, value);
         }
 
+        public static readonly StyledProperty<int> TabWidthProperty =
+            AvaloniaProperty.Register<BlameTextEditor, int>(nameof(TabWidth), 4);
+
+        public int TabWidth
+        {
+            get => GetValue(TabWidthProperty);
+            set => SetValue(TabWidthProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public BlameTextEditor() : base(new TextArea(), new TextDocument())
@@ -267,6 +276,10 @@ namespace SourceGit.Views
             IsReadOnly = true;
             ShowLineNumbers = false;
             WordWrap = false;
+
+            Options.IndentationSize = TabWidth;
+            Options.EnableHyperlinks = false;
+            Options.EnableEmailHyperlinks = false;
 
             _textMate = Models.TextMateHelper.CreateForEditor(this);
 
@@ -280,8 +293,6 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
         public override void Render(DrawingContext context)
@@ -349,6 +360,10 @@ namespace SourceGit.Views
                 {
                     Text = string.Empty;
                 }
+            }
+            else if (change.Property == TabWidthProperty)
+            {
+                Options.IndentationSize = TabWidth;
             }
             else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {

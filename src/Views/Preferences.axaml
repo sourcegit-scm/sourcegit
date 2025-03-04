@@ -148,7 +148,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -190,12 +190,12 @@
                        Margin="0,0,16,0"/>
             <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,8,*">
               <NumericUpDown Grid.Column="0"
-                           Minimum="10" Maximum="18" Increment="0.5"
-                           Height="28"
-                           Padding="4"
-                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
-                           CornerRadius="3"
-                           Value="{Binding DefaultFontSize, Mode=TwoWay}">
+                             Minimum="10" Maximum="18" Increment="0.5"
+                             Height="28"
+                             Padding="4"
+                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                             CornerRadius="3"
+                             Value="{Binding DefaultFontSize, Mode=TwoWay}">
                 <NumericUpDown.InnerLeftContent>
                   <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource Brush.Border1}">
                     <TextBlock Margin="4,0" Text="{DynamicResource Text.Preferences.Appearance.FontSize.Default}"/>
@@ -218,10 +218,23 @@
             </Grid>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
+                       Text="{DynamicResource Text.Preferences.Appearance.EditorTabWidth}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <Grid Grid.Row="4" Grid.Column="1">
+              <NumericUpDown Minimum="1" Maximum="16" Increment="1"
+                             Height="28"
+                             Padding="4"
+                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                             CornerRadius="3"
+                             Value="{Binding EditorTabWidth, Mode=TwoWay}"/>
+            </Grid>
+
+            <TextBlock Grid.Row="5" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.ThemeOverrides}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1"
+            <TextBox Grid.Row="5" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding ThemeOverrides, Mode=TwoWay}">
@@ -232,16 +245,16 @@
               </TextBox.InnerRightContent>
             </TextBox>
 
-            <CheckBox Grid.Row="5" Grid.Column="1"
+            <CheckBox Grid.Row="6" Grid.Column="1"
                       Content="{DynamicResource Text.Preferences.Appearance.OnlyUseMonoFontInEditor}"
                       IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="6" Grid.Column="1"
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseFixedTabWidth}"
                       IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="7" Grid.Column="1"
+            <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseNativeWindowFrame}"
                       IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSystemWindowFrame, Mode=OneTime}"
