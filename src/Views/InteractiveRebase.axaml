@@ -60,7 +60,7 @@
                                     SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
-          <ListBox.Styles>
+          <v:InteractiveRebaseListBox.Styles>
             <Style Selector="ListBoxItem">
               <Setter Property="Margin" Value="0"/>
               <Setter Property="Padding" Value="0"/>
@@ -68,17 +68,17 @@
               <Setter Property="HorizontalAlignment" Value="Stretch"/>
               <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             </Style>
-          </ListBox.Styles>
+          </v:InteractiveRebaseListBox.Styles>
 
-          <ListBox.ItemsPanel>
+          <v:InteractiveRebaseListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <VirtualizingStackPanel Orientation="Vertical"/>
             </ItemsPanelTemplate>
-          </ListBox.ItemsPanel>
+          </v:InteractiveRebaseListBox.ItemsPanel>
 
-          <ListBox.ItemTemplate>
+          <v:InteractiveRebaseListBox.ItemTemplate>
             <DataTemplate DataType="vm:InteractiveRebaseItem">
-              <Grid Height="26" Margin="8,0" ColumnDefinitions="16,110,*,32,108,96,Auto,32,32" ClipToBounds="True">
+              <Grid Height="26" Margin="8,0" ColumnDefinitions="16,110,*,32,108,96,170,32,32" ClipToBounds="True">                
                 <!-- Drag & Drop Anchor -->
                 <Border Grid.Column="0" Background="Transparent"
                         Loaded="OnSetupRowHeaderDragDrop"
@@ -210,8 +210,8 @@
 
                 <!-- Commit Time -->
                 <Border Grid.Column="6">
-                  <TextBlock Classes="primary" Text="{Binding Commit.CommitterTimeStr}" Margin="8,0"/>
-                </Border>                
+                  <TextBlock Classes="primary" Text="{Binding Commit.CommitterTimeStr}" HorizontalAlignment="Center"/>
+                </Border>
 
                 <!-- MoveUp Button -->
                 <Button Grid.Column="7" Classes="icon_button" Click="OnMoveItemUp" ToolTip.Tip="Alt+Up">
@@ -224,7 +224,7 @@
                 </Button>
               </Grid>
             </DataTemplate>
-          </ListBox.ItemTemplate>
+          </v:InteractiveRebaseListBox.ItemTemplate>
         </v:InteractiveRebaseListBox>
 
         <v:LoadingIcon Grid.Row="0" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
