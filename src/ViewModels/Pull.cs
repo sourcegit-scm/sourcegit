@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
         public Models.Branch SelectedBranch
         {
             get => _selectedBranch;
-            set => SetProperty(ref _selectedBranch, value);
+            set => SetProperty(ref _selectedBranch, value, true);
         }
 
         public Models.DealWithLocalChanges PreAction
