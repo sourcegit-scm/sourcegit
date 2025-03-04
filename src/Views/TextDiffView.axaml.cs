@@ -1032,18 +1032,32 @@ namespace SourceGit.Views
                     line.Type == Models.TextDiffLineType.None)
                     continue;
 
+                // The first selected line (partial selection)
                 if (i == startIdx && startPosition.Column > 1)
                 {
                     builder.AppendLine(line.Content.Substring(startPosition.Column - 1));
                     continue;
                 }
 
-                if (i == endIdx && endPosition.Column < line.Content.Length)
+                // The selection range is larger than original source.
+                if (i == lines.Count - 1 && i < endIdx)
                 {
-                    builder.AppendLine(line.Content.Substring(0, endPosition.Column - 1));
-                    continue;
+                    builder.Append(line.Content);
+                    break;
                 }
 
+                // For the last line (selection range is within original source)
+                if (i == endIdx)
+                {
+                    if (endPosition.Column < line.Content.Length)
+                        builder.Append(line.Content.Substring(0, endPosition.Column - 1));
+                    else
+                        builder.Append(line.Content);
+
+                    break;
+                }
+
+                // Other lines.
                 builder.AppendLine(line.Content);
             }
 
