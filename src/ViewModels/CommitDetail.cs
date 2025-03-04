@@ -16,12 +16,6 @@ namespace SourceGit.ViewModels
 {
     public partial class CommitDetail : ObservableObject
     {
-        public DiffContext DiffContext
-        {
-            get => _diffContext;
-            private set => SetProperty(ref _diffContext, value);
-        }
-
         public int ActivePageIndex
         {
             get => _repo.CommitDetailActivePageIndex;
@@ -57,6 +51,18 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _signInfo, value);
         }
 
+        public List<Models.CommitLink> WebLinks
+        {
+            get;
+            private set;
+        } = [];
+
+        public List<string> Children
+        {
+            get => _children;
+            private set => SetProperty(ref _children, value);
+        }
+
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -84,10 +90,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public List<string> Children
+        public DiffContext DiffContext
         {
-            get => _children;
-            private set => SetProperty(ref _children, value);
+            get => _diffContext;
+            private set => SetProperty(ref _diffContext, value);
         }
 
         public string SearchChangeFilter
@@ -108,53 +114,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewRevisionFileContent, value);
         }
 
-        public List<Models.CommitLink> WebLinks
-        {
-            get;
-            private set;
-        } = [];
-
         public string RevisionFileSearchFilter
         {
             get => _revisionFileSearchFilter;
             set
             {
                 if (SetProperty(ref _revisionFileSearchFilter, value))
-                {
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        if (_revisionFiles == null)
-                        {
-                            var sha = Commit.SHA;
-
-                            Task.Run(() =>
-                            {
-                                var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
-                                var filesList = new List<string>();
-                                filesList.AddRange(files);
-
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    if (sha == Commit.SHA)
-                                    {
-                                        _revisionFiles = filesList;
-                                        if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
-                                            UpdateRevisionFileSearchSuggestion();
-                                    }
-                                });
-                            });
-                        }
-                        else
-                        {
-                            UpdateRevisionFileSearchSuggestion();
-                        }
-                    }
-                    else
-                    {
-                        RevisionFileSearchSuggestion = null;
-                        GC.Collect();
-                    }
-                }
+                    RefreshRevisionSearchSuggestion();
             }
         }
 
@@ -832,7 +798,44 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
-        private void UpdateRevisionFileSearchSuggestion()
+        private void RefreshRevisionSearchSuggestion()
+        {
+            if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+            {
+                if (_revisionFiles == null)
+                {
+                    var sha = Commit.SHA;
+
+                    Task.Run(() =>
+                    {
+                        var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
+                        var filesList = new List<string>();
+                        filesList.AddRange(files);
+
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            if (sha == Commit.SHA)
+                            {
+                                _revisionFiles = filesList;
+                                if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+                                    CalcRevisionFileSearchSuggestion();
+                            }
+                        });
+                    });
+                }
+                else
+                {
+                    CalcRevisionFileSearchSuggestion();
+                }
+            }
+            else
+            {
+                RevisionFileSearchSuggestion = null;
+                GC.Collect();
+            }
+        }
+
+        private void CalcRevisionFileSearchSuggestion()
         {
             var suggestion = new List<string>();
             foreach (var file in _revisionFiles)
