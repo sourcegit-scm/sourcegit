@@ -57,6 +57,11 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Models.Commit GetCommitInfo(string commitSHA)
+        {
+            return new Commands.QuerySingleCommit(_repo, commitSHA).Result();
+        }
+
         private readonly string _repo;
         private Models.BlameData _data = null;
     }

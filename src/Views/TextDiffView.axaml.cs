@@ -60,7 +60,7 @@ namespace SourceGit.Views
 
     public class ThemedTextDiffPresenter : TextEditor
     {
-        public class VerticalSeperatorMargin : AbstractMargin
+        public class VerticalSeparatorMargin : AbstractMargin
         {
             public override void Render(DrawingContext context)
             {
@@ -1085,9 +1085,9 @@ namespace SourceGit.Views
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
             TextArea.LeftMargins.Add(new LineNumberMargin(false, true));
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineNumberMargin(false, false));
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
@@ -1286,7 +1286,7 @@ namespace SourceGit.Views
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
             TextArea.LeftMargins.Add(new LineNumberMargin(true, false));
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
