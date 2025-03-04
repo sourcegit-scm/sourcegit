@@ -440,6 +440,8 @@ namespace SourceGit.ViewModels
 
         public void ContinueMerge()
         {
+            IsCommitting = true;
+
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
@@ -456,17 +458,21 @@ namespace SourceGit.ViewModels
                             CommitMessage = string.Empty;
 
                         _repo.SetWatcherEnabled(true);
+                        IsCommitting = false;
                     });
                 });
             }
             else
             {
                 _repo.MarkWorkingCopyDirtyManually();
+                IsCommitting = false;
             }
         }
 
         public void SkipMerge()
         {
+            IsCommitting = true;
+
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
@@ -479,17 +485,21 @@ namespace SourceGit.ViewModels
                             CommitMessage = string.Empty;
 
                         _repo.SetWatcherEnabled(true);
+                        IsCommitting = false;
                     });
                 });
             }
             else
             {
                 _repo.MarkWorkingCopyDirtyManually();
+                IsCommitting = false;
             }
         }
 
         public void AbortMerge()
         {
+            IsCommitting = true;
+
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
@@ -502,12 +512,14 @@ namespace SourceGit.ViewModels
                             CommitMessage = string.Empty;
 
                         _repo.SetWatcherEnabled(true);
+                        IsCommitting = false;
                     });
                 });
             }
             else
             {
                 _repo.MarkWorkingCopyDirtyManually();
+                IsCommitting = false;
             }
         }
 

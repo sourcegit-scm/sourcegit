@@ -397,7 +397,8 @@
                 Width="0" Height="0"
                 Background="Transparent"
                 Command="{Binding CommitWithAutoStage}"
-                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"/>
+                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
+                IsEnabled="{Binding !IsCommitting}"/>
 
         <Button Grid.Column="8"
                 Classes="flat"
