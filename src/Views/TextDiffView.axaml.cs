@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Avalonia;
@@ -2014,6 +2015,113 @@ namespace SourceGit.Views
 
             repo.MarkWorkingCopyDirtyManually();
             repo.SetWatcherEnabled(true);
+        }
+    }
+
+    public class ConflictTextDiffPresenter: SingleSideTextDiffPresenter
+    {
+        public enum Side : int 
+        {
+            Ours = 0, WorkingCopy = 1, Theirs = 2
+        }
+
+        public Side DisplaySide {
+            get;  set;
+        }
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+        }
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.Conflict diff)
+            {
+                string conflict_start_marker = "<<<<<<< HEAD";
+                string conflict_separator_marker = "=======";
+                string conflict_end_marker = ">>>>>>> ";
+
+                var cmd = new Commands.QueryRefsContainsCommit(diff.Repository.FullPath, (diff.Theirs as Models.Commit)?.SHA);
+                var their_branches = cmd.Result().ToArray();
+
+                string filePath = Path.Combine(diff.Repository.FullPath, diff.Change.Path);
+                var lines =File.ReadAllLines(filePath).ToList<string>();
+
+                bool shouldFilter = DisplaySide != Side.WorkingCopy;
+                while(shouldFilter) {
+                    int idx_start = lines.IndexOf(conflict_start_marker);
+                    if (idx_start == -1) {
+                        shouldFilter = false;
+                        break;
+                    }
+
+                    int idx_sep = lines.IndexOf(conflict_separator_marker, idx_start);
+                    if (idx_sep == -1) {
+                        shouldFilter = false;
+                        break;
+                    }
+
+                    int idx_end = idx_sep + 1;
+                    while(idx_end < lines.Count - 1) {
+                        bool found = false;
+                        for (int i = 0; i < their_branches.Length; i++) {
+                            string ce_marker = conflict_end_marker + their_branches[i].Name;
+                            if(lines[idx_end].StartsWith(ce_marker)) {
+                                found = true; 
+                                break;
+                            }
+                        }
+                        if (found) {
+                            break;
+                        }
+                        idx_end++;
+                    }
+                    if (idx_end == lines.Count - 1) {
+                        shouldFilter = false;
+                        break;
+                    }
+
+                    switch (DisplaySide) {
+                        case Side.Ours: 
+                            lines.RemoveRange(idx_sep, idx_end - idx_sep + 1);
+                            lines.RemoveAt(idx_start);
+                            break;
+                        case Side.WorkingCopy:
+                            break;
+                        case Side.Theirs:
+                            lines.RemoveAt(idx_end);
+                            lines.RemoveRange(idx_start, idx_sep - idx_start + 1);
+                            break;
+                    } 
+                }
+
+                var builder = new StringBuilder();
+                foreach (var line in lines)
+                {
+                    if (line.Length > 10000)
+                    {
+                        builder.Append(line.Substring(0, 1000));
+                        builder.Append($"...({line.Length - 1000} characters trimmed)");
+                        builder.AppendLine();
+                    }
+                    else
+                    {
+                        builder.AppendLine(line);
+                    }
+                }
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
         }
     }
 }
