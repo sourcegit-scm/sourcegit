@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-
+using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
@@ -162,7 +162,8 @@ namespace SourceGit.Views
                             break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop)
+                                - view.VerticalOffset;
                         var shaLink = new FormattedText(
                             info.CommitSHA,
                             CultureInfo.CurrentCulture,
@@ -175,12 +176,38 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             Cursor = Cursor.Parse("Hand");
+
+                            // check if the tooltip is already set
+                            var tooltip = ToolTip.GetTip(this);
+                            if (tooltip is Models.Commit existedCommit && existedCommit.SHA == info.CommitSHA)
+                                return;
+
+                            if (DataContext is ViewModels.Blame blame)
+                            {
+                                Task.Run(() =>
+                                {
+                                    var commit = blame.GetCommitInfo(info.CommitSHA);
+                                    if (commit == null)
+                                        return;
+
+                                    Dispatcher.UIThread.Invoke(() =>
+                                    {
+                                        if (IsEffectivelyVisible && IsPointerOver)
+                                        {
+                                            ToolTip.SetTip(this, commit);
+                                            ToolTip.SetIsOpen(this, true);
+                                        }
+                                    });
+                                });
+                            }
+
                             return;
                         }
                     }
-                }
 
-                Cursor = Cursor.Default;
+                    Cursor = Cursor.Default;
+                    ToolTip.SetIsOpen(this, false);
+                }
             }
 
             protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -230,9 +257,9 @@ namespace SourceGit.Views
             private readonly BlameTextEditor _editor = null;
         }
 
-        public class VerticalSeperatorMargin : AbstractMargin
+        public class VerticalSeparatorMargin : AbstractMargin
         {
-            public VerticalSeperatorMargin(BlameTextEditor editor)
+            public VerticalSeparatorMargin(BlameTextEditor editor)
             {
                 _editor = editor;
             }
@@ -284,9 +311,9 @@ namespace SourceGit.Views
             _textMate = Models.TextMateHelper.CreateForEditor(this);
 
             TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
             TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
             TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
