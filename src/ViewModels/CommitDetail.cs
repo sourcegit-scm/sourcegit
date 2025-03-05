@@ -665,11 +665,6 @@ namespace SourceGit.ViewModels
                 if (!sha.Success)
                     continue;
 
-                var hash = sha.Groups[1].Value;
-                var test = new Commands.IsCommitSHA(_repo.FullPath, hash).Result();
-                if (!test)
-                    continue;
-
                 var start = sha.Index;
                 var len = sha.Length;
                 var intersect = false;
@@ -682,7 +677,12 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                if (!intersect)
+                if (intersect)
+                    continue;
+
+                var hash = sha.Groups[1].Value;
+                var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, hash).Result();
+                if (isCommitSHA)
                     links.Add(new Models.Hyperlink(start, len, hash, true));
             }
 
