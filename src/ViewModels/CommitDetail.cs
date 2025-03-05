@@ -658,15 +658,15 @@ namespace SourceGit.ViewModels
                     rule.Matches(links, message);
             }
 
-            var shas = REG_SHA_FORMAT().Matches(message);
-            for (int i = 0; i < shas.Count; i++)
+            var matches = REG_SHA_FORMAT().Matches(message);
+            for (int i = 0; i < matches.Count; i++)
             {
-                var sha = shas[i];
-                if (!sha.Success)
+                var match = matches[i];
+                if (!match.Success)
                     continue;
 
-                var start = sha.Index;
-                var len = sha.Length;
+                var start = match.Index;
+                var len = match.Length;
                 var intersect = false;
                 foreach (var link in links)
                 {
@@ -680,10 +680,10 @@ namespace SourceGit.ViewModels
                 if (intersect)
                     continue;
 
-                var hash = sha.Groups[1].Value;
-                var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, hash).Result();
+                var sha = match.Groups[1].Value;
+                var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
                 if (isCommitSHA)
-                    links.Add(new Models.Hyperlink(start, len, hash, true));
+                    links.Add(new Models.Hyperlink(start, len, sha, true));
             }
 
             if (links.Count > 0)
