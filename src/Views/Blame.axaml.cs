@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Threading;
+
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
@@ -162,8 +162,7 @@ namespace SourceGit.Views
                             break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop)
-                                - view.VerticalOffset;
+                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
                         var shaLink = new FormattedText(
                             info.CommitSHA,
                             CultureInfo.CurrentCulture,
@@ -177,28 +176,11 @@ namespace SourceGit.Views
                         {
                             Cursor = Cursor.Parse("Hand");
 
-                            // check if the tooltip is already set
-                            var tooltip = ToolTip.GetTip(this);
-                            if (tooltip is Models.Commit existedCommit && existedCommit.SHA == info.CommitSHA)
-                                return;
-
                             if (DataContext is ViewModels.Blame blame)
                             {
-                                Task.Run(() =>
-                                {
-                                    var commit = blame.GetCommitInfo(info.CommitSHA);
-                                    if (commit == null)
-                                        return;
-
-                                    Dispatcher.UIThread.Invoke(() =>
-                                    {
-                                        if (IsEffectivelyVisible && IsPointerOver)
-                                        {
-                                            ToolTip.SetTip(this, commit);
-                                            ToolTip.SetIsOpen(this, true);
-                                        }
-                                    });
-                                });
+                                var msg = blame.GetCommitMessage(info.CommitSHA);
+                                ToolTip.SetTip(this, msg);
+                                ToolTip.SetIsOpen(this, true);
                             }
 
                             return;

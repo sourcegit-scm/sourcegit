@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -60,21 +59,7 @@
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                          TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
-                         BlameData="{Binding Data}">
-        <v:BlameTextEditor.DataTemplates>
-          <DataTemplate DataType="m:Commit">
-            <StackPanel MinWidth="400" Orientation="Vertical">
-              <Grid ColumnDefinitions="Auto,*,Auto">
-                <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-              </Grid>
-
-              <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
-            </StackPanel>
-          </DataTemplate>
-        </v:BlameTextEditor.DataTemplates>
-      </v:BlameTextEditor>
+                         BlameData="{Binding Data}"/>
 
       <!-- Not supported mask (for binary files) -->
       <StackPanel Orientation="Vertical"
