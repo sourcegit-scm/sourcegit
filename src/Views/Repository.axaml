@@ -129,17 +129,31 @@
               </ListBoxItem>
 
               <ListBoxItem IsVisible="{Binding !IsBare}">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
-                  <v:CounterPresenter Grid.Column="2"
+                  <v:LoadingIcon Grid.Column="2"
+                                 Width="18" Height="18"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                                 Margin="9, 0"
+                                 IsHitTestVisible="False"
+                                 IsVisible="{Binding IsRefreshingWorkingCopyChanges}"/>
+                  <!-- Tooltip rectangle to prevent tooltip ping ponging because of animation -->
+                  <Rectangle Grid.Column="2"
+                             Width="18" Height="18"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                             Fill="Transparent"
+                             ToolTip.Tip="{DynamicResource Text.Repository.RefreshWorkingCopyChanges}"
+                             IsVisible="{Binding IsRefreshingWorkingCopyChanges}"/>
+                  <v:CounterPresenter Grid.Column="3"
                                       Margin="6,0"
                                       VerticalAlignment="Center"
                                       Count="{Binding LocalChangesCount}"
                                       FontFamily="{DynamicResource Fonts.Monospace}"
                                       FontSize="10"
                                       Foreground="{DynamicResource Brush.BadgeFG}"
-                                      Background="{DynamicResource Brush.Badge}"/>
+                                      Background="{DynamicResource Brush.Badge}"
+                                      IsVisible="{Binding !IsRefreshingWorkingCopyChanges}"/>
                 </Grid>
               </ListBoxItem>
 

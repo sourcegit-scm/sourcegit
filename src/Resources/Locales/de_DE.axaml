@@ -615,6 +615,7 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sortiere</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Öffne im Terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Verwende relative Zeitangaben in Verlauf</x:String>
+  <x:String x:Key="Text.Repository.RefreshWorkingCopyChanges" xml:space="preserve">Aktualisiere Änderungen der Arbeitskopie</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">WORKTREE HINZUFÜGEN</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>

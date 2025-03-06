@@ -616,6 +616,7 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Сортировать</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Открыть в терминале</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Использовать относительное время в историях</x:String>
+  <x:String x:Key="Text.Repository.RefreshWorkingCopyChanges" xml:space="preserve">Обновление статуса локальных изменений</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ КАТАЛОГИ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОБАВИТЬ РАБОЧИЙ КАТАЛОГ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ОБРЕЗАТЬ</x:String>

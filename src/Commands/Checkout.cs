@@ -12,19 +12,21 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Branch(string branch, Action<string> onProgress)
+        public bool Branch(string branch, Action<string> onProgress, Action onIndexLockExists)
         {
             Args = $"checkout --recurse-submodules --progress {branch}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
+            _onIndexLockExists = onIndexLockExists;
             return Exec();
         }
 
-        public bool Branch(string branch, string basedOn, Action<string> onProgress)
+        public bool Branch(string branch, string basedOn, Action<string> onProgress, Action onIndexLockExists)
         {
             Args = $"checkout --recurse-submodules --progress -b {branch} {basedOn}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
+            _onIndexLockExists = onIndexLockExists;
             return Exec();
         }
 
@@ -62,11 +64,12 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Commit(string commitId, Action<string> onProgress)
+        public bool Commit(string commitId, Action<string> onProgress, Action onIndexLockExists)
         {
             Args = $"checkout --detach --progress {commitId}";
             TraitErrorAsOutput = true;
             _outputHandler = onProgress;
+            _onIndexLockExists = onIndexLockExists;
             return Exec();
         }
 
@@ -75,6 +78,15 @@ namespace SourceGit.Commands
             _outputHandler?.Invoke(line);
         }
 
+        protected override void OnIndexLockExistsChanged(bool exists)
+        {
+            if (exists)
+                _onIndexLockExists?.Invoke();
+        }
+
+        public override bool IsLockingIndex => true;
+
         private Action<string> _outputHandler;
+        private Action _onIndexLockExists;
     }
 }

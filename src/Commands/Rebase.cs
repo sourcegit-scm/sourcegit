@@ -11,6 +11,8 @@
                 Args += "--autostash ";
             Args += basedOn;
         }
+        
+        public override bool IsLockingIndex => true;
     }
 
     public class InteractiveRebase : Command
@@ -22,5 +24,7 @@
             Editor = EditorType.RebaseEditor;
             Args = $"rebase -i --autosquash {basedOn}";
         }
+        
+        public override bool IsLockingIndex => true;
     }
 }

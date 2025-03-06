@@ -10,5 +10,7 @@
             if (!autoCommit)
                 Args += " --no-commit";
         }
+        
+        public override bool IsLockingIndex => true;
     }
 }

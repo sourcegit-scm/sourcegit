@@ -175,7 +175,8 @@ namespace SourceGit.ViewModels
                     _repo.Submodules.Count > 0 && CheckSubmodules,
                     _isSetTrackOptionVisible && Tracking,
                     ForcePush,
-                    SetProgressDescription).Exec();
+                    SetProgressDescription,
+                    OnIndexLockExists).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

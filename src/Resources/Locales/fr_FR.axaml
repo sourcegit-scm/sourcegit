@@ -575,6 +575,7 @@
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">AJOUTER WORKTREE</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ELAGUER</x:String>
+  <x:String x:Key="Text.Repository.RefreshWorkingCopyChanges" xml:space="preserve">Actualiser les modifications de la copie de travail</x:String>
   <x:String x:Key="Text.RepositoryURL" xml:space="preserve">URL du repository Git</x:String>
   <x:String x:Key="Text.Reset" xml:space="preserve">Reset branche actuelle à la révision</x:String>
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</x:String>

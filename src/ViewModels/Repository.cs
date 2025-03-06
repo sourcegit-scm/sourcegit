@@ -453,6 +453,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isAutoFetching, value);
         }
 
+        public bool IsRefreshingWorkingCopyChanges
+        {
+            get => _isRefreshingWorkingCopyChanges;
+            set => SetProperty(ref _isRefreshingWorkingCopyChanges, value);
+        }
+
         public int CommitDetailActivePageIndex
         {
             get;
@@ -1046,8 +1052,11 @@ namespace SourceGit.ViewModels
         {
             if (IsBare)
                 return;
-
+            
+            Dispatcher.UIThread.Invoke(() => { IsRefreshingWorkingCopyChanges = true; });
             var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).Result();
+            Dispatcher.UIThread.Invoke(() => { IsRefreshingWorkingCopyChanges = false; });
+            
             if (_workingCopy == null)
                 return;
 
@@ -2492,5 +2501,6 @@ namespace SourceGit.ViewModels
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
+        private bool _isRefreshingWorkingCopyChanges;
     }
 }

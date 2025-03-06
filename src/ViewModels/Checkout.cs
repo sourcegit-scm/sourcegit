@@ -53,7 +53,7 @@ namespace SourceGit.ViewModels
                 }
 
                 SetProgressDescription("Checkout branch ...");
-                var rs = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
+                var rs = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription, OnIndexLockExists);
 
                 if (needPopStash)
                 {

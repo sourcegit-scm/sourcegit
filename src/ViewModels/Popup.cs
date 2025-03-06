@@ -56,6 +56,11 @@ namespace SourceGit.ViewModels
         {
             CallUIThread(() => ProgressDescription = description);
         }
+        
+        protected void OnIndexLockExists()
+        {
+            SetProgressDescription("Found index.lock. Waiting until other operation completes...");
+        }
 
         private bool _inProgress = false;
         private string _progressDescription = string.Empty;

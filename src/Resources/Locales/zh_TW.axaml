@@ -621,6 +621,7 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端機中開啟</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相對時間</x:String>
+  <x:String x:Key="Text.Repository.RefreshWorkingCopyChanges" xml:space="preserve">刷新工作副本更改</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>

@@ -34,5 +34,7 @@ namespace SourceGit.Commands
             Context = repo;
             Args = $"reset {mode} {revision}";
         }
+        
+        public override bool IsLockingIndex => true;
     }
 }

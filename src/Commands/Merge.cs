@@ -6,18 +6,20 @@ namespace SourceGit.Commands
 {
     public class Merge : Command
     {
-        public Merge(string repo, string source, string mode, Action<string> outputHandler)
+        public Merge(string repo, string source, string mode, Action<string> outputHandler, Action onIndexLockExists)
         {
             _outputHandler = outputHandler;
+            _onIndexLockExists = onIndexLockExists;
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
             Args = $"merge --progress {source} {mode}";
         }
 
-        public Merge(string repo, List<string> targets, bool autoCommit, string strategy, Action<string> outputHandler)
+        public Merge(string repo, List<string> targets, bool autoCommit, string strategy, Action<string> outputHandler, Action onIndexLockExists)
         {
             _outputHandler = outputHandler;
+            _onIndexLockExists = onIndexLockExists;
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
@@ -38,11 +40,20 @@ namespace SourceGit.Commands
             Args = builder.ToString();
         }
 
+        public override bool IsLockingIndex => true;
+
         protected override void OnReadline(string line)
         {
             _outputHandler?.Invoke(line);
         }
 
+        protected override void OnIndexLockExistsChanged(bool exists)
+        {
+            if (exists)
+                _onIndexLockExists?.Invoke();
+        }
+
         private readonly Action<string> _outputHandler = null;
+        private readonly Action _onIndexLockExists;
     }
 }

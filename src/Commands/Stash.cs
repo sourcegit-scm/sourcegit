@@ -97,5 +97,7 @@ namespace SourceGit.Commands
             Args = "stash clear";
             return Exec();
         }
+
+        public override bool IsLockingIndex => true;
     }
 }

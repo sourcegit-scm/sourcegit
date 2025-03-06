@@ -34,5 +34,7 @@ namespace SourceGit.Commands
             Context = repo;
             Args = $"add --pathspec-from-file=\"{pathspecFromFile}\"";
         }
+
+        public override bool IsLockingIndex => true;
     }
 }
