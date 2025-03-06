@@ -821,6 +821,11 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Models.Commit GetCommitInfo(string sha)
+        {
+            return new Commands.QuerySingleCommit(_fullpath, sha).Result();
+        }
+
         public void NavigateToCurrentHead()
         {
             if (_currentBranch != null)

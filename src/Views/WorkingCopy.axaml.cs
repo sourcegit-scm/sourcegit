@@ -1,7 +1,10 @@
+using System.Threading.Tasks;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -118,6 +121,36 @@ namespace SourceGit.Views
                 var next = UnstagedChangesView.GetNextChangeWithoutSelection();
                 vm.StageSelected(next);
                 UnstagedChangesView.Focus();
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnSHAPointerEntered(object sender, PointerEventArgs e)
+        {
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView is { DataContext: ViewModels.Repository repo } && sender is TextBlock text)
+            {
+                var commit = repo.GetCommitInfo(text.Text);
+
+                if (sender is Control control)
+                {
+                    var tooltip = ToolTip.GetTip(control);
+                    if (tooltip is Models.Commit tip_commit && tip_commit.SHA == commit.SHA)
+                        return;
+
+                    Task.Run(() =>
+                    {
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            if (control.IsEffectivelyVisible && control.IsPointerOver)
+                            {
+                                ToolTip.SetTip(control, commit);
+                                ToolTip.SetIsOpen(control, true);
+                            }
+                        });
+                    });
+                }
             }
 
             e.Handled = true;
