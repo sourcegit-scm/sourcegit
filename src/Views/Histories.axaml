@@ -24,7 +24,7 @@
     </v:LayoutableGrid.ColumnDefinitions>
     
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <Grid RowDefinitions="24,*">
+      <Grid RowDefinitions="24,*" Grid.IsSharedSizeScope="True">
         <!-- Headers -->
         <Border Grid.Row="0"
                 Background="{DynamicResource Brush.Window}"
@@ -35,8 +35,8 @@
               <ColumnDefinition Width="*" MinWidth="100"/>
               <ColumnDefinition Width="3"/>
               <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
-              <ColumnDefinition Width="100" MaxWidth="100" MinWidth="100"/>
-              <ColumnDefinition Width="170" MaxWidth="170" MinWidth="170"/>
+              <ColumnDefinition SharedSizeGroup="SHA"/>
+              <ColumnDefinition SharedSizeGroup="Time"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
@@ -121,8 +121,8 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
-                    <ColumnDefinition Width="100" MaxWidth="100" MinWidth="100"/>
-                    <ColumnDefinition Width="170" MaxWidth="170" MinWidth="170"/>
+                    <ColumnDefinition SharedSizeGroup="SHA" Width="Auto" MinWidth="100"/>
+                    <ColumnDefinition SharedSizeGroup="Time" Width="Auto" MinWidth="160"/>
                   </Grid.ColumnDefinitions>
 
                   <!-- Subject & REFS -->

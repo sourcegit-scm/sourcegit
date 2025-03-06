@@ -59,7 +59,8 @@
                                     SelectionMode="Single"
                                     SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    Grid.IsSharedSizeScope="True">
           <v:InteractiveRebaseListBox.Styles>
             <Style Selector="ListBoxItem">
               <Setter Property="Margin" Value="0"/>
@@ -78,7 +79,19 @@
 
           <v:InteractiveRebaseListBox.ItemTemplate>
             <DataTemplate DataType="vm:InteractiveRebaseItem">
-              <Grid Height="26" Margin="8,0" ColumnDefinitions="16,110,*,32,108,96,170,32,32" ClipToBounds="True">                
+              <Grid Height="26" Margin="8,0" ClipToBounds="True">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="16"/>
+                  <ColumnDefinition Width="110"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="32"/>
+                  <ColumnDefinition Width="108"/>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="CommitHashColumn"/>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="CommitTimeColumn"/>
+                  <ColumnDefinition Width="32"/>
+                  <ColumnDefinition Width="32"/>
+                </Grid.ColumnDefinitions>
+                
                 <!-- Drag & Drop Anchor -->
                 <Border Grid.Column="0" Background="Transparent"
                         Loaded="OnSetupRowHeaderDragDrop"
@@ -210,7 +223,10 @@
 
                 <!-- Commit Time -->
                 <Border Grid.Column="6">
-                  <TextBlock Classes="primary" Text="{Binding Commit.CommitterTimeStr}" HorizontalAlignment="Center"/>
+                  <TextBlock Classes="primary"
+                             Margin="16,0,8,0"
+                             Text="{Binding Commit.CommitterTimeStr}"
+                             HorizontalAlignment="Center"/>
                 </Border>
 
                 <!-- MoveUp Button -->
