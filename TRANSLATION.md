@@ -14,14 +14,13 @@
 
 </details>
 
-### es_ES.axaml: 99.74%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preferences.Appearance.EditorTabWidth
-- Text.StashCM.SaveAsPatch
+
 
 </details>
 
