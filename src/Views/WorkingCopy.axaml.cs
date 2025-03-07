@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -156,6 +157,15 @@ namespace SourceGit.Views
 
                 App.OpenDialog(dialog);
             }
+
+            e.Handled = true;
+        }
+
+        private void OnPressedSHA(object sender, PointerPressedEventArgs e)
+        {
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView is { DataContext: ViewModels.Repository repo } && sender is TextBlock text)
+                repo.NavigateToCommit(text.Text);
 
             e.Handled = true;
         }

@@ -211,7 +211,12 @@
                         <StackPanel Orientation="Horizontal">
                           <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
                           <TextBlock Margin="4,0,0,0" Text="{Binding FriendlyName}"/>
-                          <TextBlock Margin="4,0,0,0" Text="{Binding Head, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+                          <TextBlock Margin="4,0,0,0"
+                                     Text="{Binding Head, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                     Foreground="DarkOrange"
+                                     TextDecorations="Underline"
+                                     Cursor="Hand"
+                                     PointerPressed="OnPressedSHA"/>
                         </StackPanel>
                       </DataTemplate>
 
@@ -225,16 +230,13 @@
                                                  FontSize="11"
                                                  VerticalAlignment="Center"
                                                  UseGraphColor="False"/>
-                          <TextBlock Margin="4,0,0,0" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+                          <TextBlock Margin="4,0,0,0"
+                                     Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                     Foreground="DarkOrange"
+                                     TextDecorations="Underline"
+                                     Cursor="Hand"
+                                     PointerPressed="OnPressedSHA"/>
                           <TextBlock Margin="4,0,0,0" Text="{Binding Subject}"/>
-                        </StackPanel>
-                      </DataTemplate>
-
-                      <DataTemplate DataType="m:Tag">
-                        <StackPanel Orientation="Horizontal">
-                          <Path Width="12" Height="12" Data="{StaticResource Icons.Tag}"/>
-                          <TextBlock Margin="4,0,0,0" Text="{Binding Name}"/>
-                          <TextBlock Margin="4,0,0,0" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
                         </StackPanel>
                       </DataTemplate>
                     </StackPanel.DataTemplates>
