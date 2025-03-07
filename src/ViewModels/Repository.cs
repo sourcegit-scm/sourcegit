@@ -1012,7 +1012,7 @@ namespace SourceGit.ViewModels
 
             var filters = _settings.BuildHistoriesFilter();
             if (string.IsNullOrEmpty(filters))
-                builder.Append("--branches --remotes --tags");
+                builder.Append("--branches --remotes --tags HEAD");
             else
                 builder.Append(filters);
 
