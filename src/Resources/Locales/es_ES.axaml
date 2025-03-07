@@ -24,17 +24,17 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERAR</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR CÓMO MENSAJE DE COMMIT</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Patch</x:String>
+  <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Parche</x:String>
   <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Genera errores y se niega a aplicar el patch</x:String>
+  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Genera errores y se niega a aplicar el parche</x:String>
   <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Error Todo</x:String>
   <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similar a 'error', pero muestra más</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo Patch:</x:String>
+  <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo del Parche:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar cambios de espacios en blanco</x:String>
   <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Sin Advertencia</x:String>
   <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Desactiva la advertencia de espacios en blanco al final</x:String>
-  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Patch</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Parche</x:String>
   <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Advertencia</x:String>
   <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Genera advertencias para algunos de estos errores, pero aplica</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espacios en Blanco:</x:String>
@@ -126,7 +126,7 @@
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revertir Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reescribir</x:String>
-  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Guardar como Patch...</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash en Parent</x:String>
   <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Commits Hijos hasta Aquí</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CAMBIOS</x:String>
@@ -259,7 +259,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Siguiente Diferencia</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SIN CAMBIOS O SOLO CAMBIOS DE EOL</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Diferencia Anterior</x:String>
-  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Guardar como Patch</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Guardar como Parche</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostrar símbolos ocultos</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diferencia Lado a Lado</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMÓDULO</x:String>
@@ -300,7 +300,7 @@
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Descartar Cambios en Línea(s) Seleccionada(s)</x:String>
   <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Abrir Herramienta de Merge Externa</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Resolver usando ${0}$</x:String>
-  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Guardar Como Patch...</x:String>
+  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} archivos</x:String>
   <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">Stage Cambios en Línea(s) Seleccionada(s)</x:String>
@@ -468,6 +468,7 @@
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Activar Transmisión</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APARIENCIA</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Fuente por defecto</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Ancho de la Pestaña del Editor</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Tamaño de fuente</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Por defecto</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
@@ -638,7 +639,7 @@
   <x:String x:Key="Text.Running" xml:space="preserve">Ejecutando. Por favor espera...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">GUARDAR</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Guardar Como...</x:String>
-  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">¡El patch se ha guardado exitosamente!</x:String>
+  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">¡El parche se ha guardado exitosamente!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Escanear Repositorios</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Directorio Raíz:</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Buscar Actualizaciones...</x:String>
@@ -672,6 +673,7 @@
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplicar</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Eliminar</x:String>
   <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Pop</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Eliminar Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Eliminar:</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">Stashes</x:String>
