@@ -107,19 +107,24 @@ namespace SourceGit.ViewModels
         {
             _gitDir = repo.GitDir;
 
-            var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
-            if (File.Exists(stoppedSHAPath))
-            {
-                var stoppedSHA = File.ReadAllText(stoppedSHAPath).Trim();
-                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
-            }
-
-            var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
-            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
-
             HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
             if (HeadName.StartsWith("refs/heads/"))
                 HeadName = HeadName.Substring(11);
+            else if (HeadName.StartsWith("refs/tags/"))
+                HeadName = HeadName.Substring(10);
+
+            var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
+            var stoppedSHA = string.Empty;
+            if (File.Exists(stoppedSHAPath))
+                stoppedSHA = File.ReadAllText(stoppedSHAPath).Trim();
+            else
+                stoppedSHA = new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).Result();
+
+            if (!string.IsNullOrEmpty(stoppedSHA))
+                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
+
+            var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
+            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
         }
 
         public override bool Continue()
