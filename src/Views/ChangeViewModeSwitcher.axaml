@@ -6,21 +6,21 @@
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeViewModeSwitcher"
-             x:DataType="v:ChangeViewModeSwitcher">
+             x:Name="ThisControl">
   <Button Classes="icon_button" ToolTip.Tip="{DynamicResource Text.ChangeDisplayMode}">
     <Button.Flyout>
       <MenuFlyout Placement="BottomEdgeAlignedLeft">
-        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.List}">
+        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Click="SwitchToList">
           <MenuItem.Icon>
             <Path Width="12" Height="12" Data="{StaticResource Icons.List}"/>
           </MenuItem.Icon>
         </MenuItem>
-        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.Grid}">
+        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Click="SwitchToGrid">
           <MenuItem.Icon>
             <Path Width="12" Height="12" Data="{StaticResource Icons.Grid}"/>
           </MenuItem.Icon>
         </MenuItem>
-        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Tree}" Command="{Binding SwitchMode}" CommandParameter="{x:Static m:ChangeViewMode.Tree}">
+        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Tree}" Click="SwitchToTree">
           <MenuItem.Icon>
             <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
           </MenuItem.Icon>
@@ -31,13 +31,13 @@
     <Grid Width="14" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center">
       <Path Width="14" Height="14"
             Data="{StaticResource Icons.List}"
-            IsVisible="{Binding ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.List}}"/>
+            IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.List}}"/>
       <Path Width="14" Height="14"
             Data="{StaticResource Icons.Grid}"
-            IsVisible="{Binding ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Grid}}"/>
+            IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Grid}}"/>
       <Path Width="14" Height="14"
             Data="{StaticResource Icons.Tree}"
-            IsVisible="{Binding ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Tree}}"/>
+            IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Tree}}"/>
     </Grid>
   </Button>
 </UserControl>

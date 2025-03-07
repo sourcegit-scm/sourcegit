@@ -445,10 +445,14 @@ namespace SourceGit
 
             var file = args[1];
             if (!File.Exists(file))
+            {
                 desktop.Shutdown(-1);
-            else
-                desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
+                return true;
+            }
 
+            var editor = new Views.StandaloneCommitMessageEditor();
+            editor.SetFile(file);
+            desktop.MainWindow = editor;
             return true;
         }
 
@@ -461,7 +465,9 @@ namespace SourceGit
             var args = desktop.Args;
             if (args?.Length > 0)
             {
-                desktop.MainWindow = new Views.Askpass(args[0]);
+                var askpass = new Views.Askpass();
+                askpass.TxtDescription.Text = args[0];
+                desktop.MainWindow = askpass;
                 return true;
             }
 

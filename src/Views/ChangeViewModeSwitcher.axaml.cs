@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -16,13 +17,25 @@ namespace SourceGit.Views
 
         public ChangeViewModeSwitcher()
         {
-            DataContext = this;
             InitializeComponent();
         }
 
-        public void SwitchMode(object param)
+        private void SwitchToList(object sender, RoutedEventArgs e)
         {
-            ViewMode = (Models.ChangeViewMode)param;
+            ViewMode = Models.ChangeViewMode.List;
+            e.Handled = true;
+        }
+
+        private void SwitchToGrid(object sender, RoutedEventArgs e)
+        {
+            ViewMode = Models.ChangeViewMode.Grid;
+            e.Handled = true;
+        }
+
+        private void SwitchToTree(object sender, RoutedEventArgs e)
+        {
+            ViewMode = Models.ChangeViewMode.Tree;
+            e.Handled = true;
         }
     }
 }

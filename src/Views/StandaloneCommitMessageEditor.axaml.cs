@@ -9,18 +9,14 @@ namespace SourceGit.Views
     {
         public StandaloneCommitMessageEditor()
         {
-            _file = string.Empty;
-            DataContext = this;
             InitializeComponent();
         }
 
-        public StandaloneCommitMessageEditor(string file)
+        public void SetFile(string file)
         {
             _file = file;
-            DataContext = this;
-            InitializeComponent();
 
-            var content = File.ReadAllText(file).ReplaceLineEndings("\n");
+            var content = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
             var firstLineEnd = content.IndexOf('\n');
             if (firstLineEnd == -1)
             {
@@ -29,7 +25,7 @@ namespace SourceGit.Views
             else
             {
                 Editor.SubjectEditor.Text = content.Substring(0, firstLineEnd);
-                Editor.DescriptionEditor.Text = content.Substring(firstLineEnd + 1);
+                Editor.DescriptionEditor.Text = content.Substring(firstLineEnd + 1).Trim();
             }
         }
 
@@ -41,12 +37,16 @@ namespace SourceGit.Views
 
         private void SaveAndClose(object _1, RoutedEventArgs _2)
         {
-            File.WriteAllText(_file, Editor.Text);
-            _exitCode = 0;
+            if (!string.IsNullOrEmpty(_file))
+            {
+                File.WriteAllText(_file, Editor.Text);
+                _exitCode = 0;
+            }
+
             Close();
         }
 
-        private readonly string _file;
+        private string _file = string.Empty;
         private int _exitCode = -1;
     }
 }
