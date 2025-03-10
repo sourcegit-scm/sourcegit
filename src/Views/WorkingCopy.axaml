@@ -239,6 +239,13 @@
                           <TextBlock Margin="4,0,0,0" Text="{Binding Subject}"/>
                         </StackPanel>
                       </DataTemplate>
+
+                      <DataTemplate DataType="x:String">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
+                          <TextBlock Margin="4,0,0,0" Text="{Binding}"/>
+                        </StackPanel>
+                      </DataTemplate>
                     </StackPanel.DataTemplates>
                     
                     <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>

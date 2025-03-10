@@ -49,6 +49,11 @@
                 Theirs = merge.Source;
                 Mine = repo.CurrentBranch;
             }
+            else
+            {
+                Theirs = "Stash or Patch";
+                Mine = repo.CurrentBranch;
+            }
         }
 
         public void UseTheirs()
