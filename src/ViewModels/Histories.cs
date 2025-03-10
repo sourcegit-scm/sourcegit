@@ -694,17 +694,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(archive);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
-            var actions = new List<Models.CustomAction>();
-            foreach (var action in Preferences.Instance.CustomActions)
-            {
-                if (action.Scope == Models.CustomActionScope.Commit)
-                    actions.Add(action);
-            }
-            foreach (var action in _repo.Settings.CustomActions)
-            {
-                if (action.Scope == Models.CustomActionScope.Commit)
-                    actions.Add(action);
-            }
+            var actions = _repo.GetCustomActions(Models.CustomActionScope.Commit);
             if (actions.Count > 0)
             {
                 var custom = new MenuItem();
