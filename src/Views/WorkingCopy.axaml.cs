@@ -160,14 +160,5 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
-
-        private void OnPressedSHA(object sender, PointerPressedEventArgs e)
-        {
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView is { DataContext: ViewModels.Repository repo } && sender is TextBlock text)
-                repo.NavigateToCommit(text.Text);
-
-            e.Handled = true;
-        }
     }
 }
