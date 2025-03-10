@@ -14,7 +14,6 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            ForceEnglishLocale = true;
             Args = "branch -l --all -v --format=\"%(refname)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
         }
 
