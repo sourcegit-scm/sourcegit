@@ -12,7 +12,7 @@ namespace SourceGit.Commands
             Args = $"rev-list -{max} --parents --branches --remotes ^{commit}";
         }
 
-        public IEnumerable<string> Result()
+        public List<string> Result()
         {
             Exec();
             return _lines;

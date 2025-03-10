@@ -615,7 +615,7 @@ namespace SourceGit.ViewModels
                     var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { Cancel = _cancelToken };
                     var children = cmdChildren.Result();
                     if (!cmdChildren.Cancel.Requested)
-                        Dispatcher.UIThread.Post(() => Children.AddRange(children));
+                        Dispatcher.UIThread.Post(() => Children = children);
                 });
             }
 
