@@ -19,7 +19,10 @@ namespace SourceGit.Commands
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())
-                start.Environment.Add("LANG", "en_US.UTF-8");
+            {
+                start.Environment.Add("LANG", "C");
+                start.Environment.Add("LC_ALL", "C");
+            }
 
             // Fix macOS `PATH` env
             if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
@@ -50,7 +53,10 @@ namespace SourceGit.Commands
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
             if (OperatingSystem.IsLinux())
-                start.Environment.Add("LANG", "en_US.UTF-8");
+            {
+                start.Environment.Add("LANG", "C");
+                start.Environment.Add("LC_ALL", "C");
+            }
 
             // Fix macOS `PATH` env
             if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))

@@ -37,6 +37,7 @@ namespace SourceGit.Commands
         public string Args { get; set; } = string.Empty;
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
+        protected bool ForceEnglishLocale { get; set; } = false;
 
         public bool Exec()
         {
@@ -193,8 +194,11 @@ namespace SourceGit.Commands
                 start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}'");
 
             // Force using en_US.UTF-8 locale to avoid GCM crash
-            if (OperatingSystem.IsLinux())
-                start.Environment.Add("LANG", "en_US.UTF-8");
+            if (ForceEnglishLocale || OperatingSystem.IsLinux())
+            {
+                start.Environment.Add("LANG", "C");
+                start.Environment.Add("LC_ALL", "C");
+            }
 
             // Fix macOS `PATH` env
             if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
