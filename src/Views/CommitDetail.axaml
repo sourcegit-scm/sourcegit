@@ -20,12 +20,11 @@
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
           <v:CommitBaseInfo Content="{Binding Commit}" 
-                            Message="{Binding FullMessage}"
+                            FullMessage="{Binding FullMessage}"
                             SignInfo="{Binding SignInfo}"
                             SupportsContainsIn="True"
                             WebLinks="{Binding WebLinks}"
-                            Children="{Binding Children}"
-                            IssueTrackerRules="{Binding IssueTrackerRules}"/>
+                            Children="{Binding Children}"/>
 
           <!-- Line -->
           <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>

@@ -5,30 +5,18 @@ namespace SourceGit.Views
 {
     public partial class About : ChromelessWindow
     {
-        public string Version
-        {
-            get;
-            private set;
-        }
-
-        public string Copyright
-        {
-            get;
-            private set;
-        }
-
         public About()
         {
-            var ver = Assembly.GetExecutingAssembly().GetName().Version;
-            if (ver != null)
-                Version = $"{ver.Major}.{ver.Minor}";
-            var attributes = Assembly.GetExecutingAssembly()
-                .GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-            if (attributes.Length > 0)
-                Copyright = ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-
-            DataContext = this;
             InitializeComponent();
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var ver = assembly.GetName().Version;
+            if (ver != null)
+                TxtVersion.Text = $"{ver.Major}.{ver.Minor:D2}";
+
+            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
+            if (copyright != null)
+                TxtCopyright.Text = copyright.Copyright;
         }
 
         private void OnVisitAvaloniaUI(object _, PointerPressedEventArgs e)

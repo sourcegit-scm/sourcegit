@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace SourceGit.Commands
 {
-    public class QueryCommitsWithFullMessage : Command
+    public class QueryCommitsForInteractiveRebase : Command
     {
-        public QueryCommitsWithFullMessage(string repo, string args)
+        public QueryCommitsForInteractiveRebase(string repo, string on)
         {
             _boundary = $"----- BOUNDARY OF COMMIT {Guid.NewGuid()} -----";
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {args}";
+            Args = $"log --date-order --no-show-signature --decorate=full --pretty=format:\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}..HEAD";
         }
 
-        public List<Models.CommitWithMessage> Result()
+        public List<Models.InteractiveCommit> Result()
         {
             var rs = ReadToEnd();
             if (!rs.IsSuccess)
@@ -29,7 +29,7 @@ namespace SourceGit.Commands
                 switch (nextPartIdx)
                 {
                     case 0:
-                        _current = new Models.CommitWithMessage();
+                        _current = new Models.InteractiveCommit();
                         _current.Commit.SHA = line;
                         _commits.Add(_current);
                         break;
@@ -52,7 +52,7 @@ namespace SourceGit.Commands
                         _current.Commit.CommitterTime = ulong.Parse(line);
                         break;
                     default:
-                        var boundary = rs.StdOut.IndexOf(_boundary, end + 1);
+                        var boundary = rs.StdOut.IndexOf(_boundary, end + 1, StringComparison.Ordinal);
                         if (boundary > end)
                         {
                             _current.Message = rs.StdOut.Substring(start, boundary - start - 1);
@@ -88,8 +88,8 @@ namespace SourceGit.Commands
             _current.Commit.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private List<Models.CommitWithMessage> _commits = new List<Models.CommitWithMessage>();
-        private Models.CommitWithMessage _current = null;
+        private List<Models.InteractiveCommit> _commits = [];
+        private Models.InteractiveCommit _current = null;
         private string _boundary = "";
     }
 }

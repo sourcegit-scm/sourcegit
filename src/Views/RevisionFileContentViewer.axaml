@@ -22,6 +22,7 @@
     <DataTemplate DataType="m:RevisionTextFile">
       <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}"
                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
+                              TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
                               Background="{DynamicResource Brush.Contents}"/>
     </DataTemplate>
 
@@ -63,7 +64,7 @@
       <Grid RowDefinitions="Auto,*" Margin="8,0">
         <TextBlock Grid.Row="0" Margin="0,8,0,0" Text="{DynamicResource Text.CommitDetail.Files.Submodule}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <ScrollViewer Grid.Row="1" Margin="0,16,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-          <v:CommitBaseInfo Content="{Binding Commit}" Message="{Binding FullMessage}"/>
+          <v:CommitBaseInfo Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
         </ScrollViewer>
       </Grid>
     </DataTemplate>

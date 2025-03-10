@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.21%
+### de_DE.axaml: 99.08%
 
 
 <details>
@@ -9,21 +9,22 @@
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
+- Text.Preferences.Appearance.EditorTabWidth
 - Text.StashCM.SaveAsPatch
 
 </details>
 
-### es_ES.axaml: 99.87%
+### es_ES.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.StashCM.SaveAsPatch
+
 
 </details>
 
-### fr_FR.axaml: 91.80%
+### fr_FR.axaml: 91.68%
 
 
 <details>
@@ -56,6 +57,7 @@
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
 - Text.Preferences.AI.Streaming
+- Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.Appearance.FontSize
 - Text.Preferences.Appearance.FontSize.Default
 - Text.Preferences.Appearance.FontSize.Editor
@@ -94,17 +96,17 @@
 
 </details>
 
-### it_IT.axaml: 100.00%
+### it_IT.axaml: 99.87%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Preferences.Appearance.EditorTabWidth
 
 </details>
 
-### pt_BR.axaml: 91.53%
+### pt_BR.axaml: 91.41%
 
 
 <details>
@@ -148,6 +150,7 @@
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
 - Text.Preferences.AI.Streaming
+- Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.ShowChildren
 - Text.Preferences.Git.SSLVerify
@@ -177,19 +180,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.07%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.CustomAction
-- Text.BranchUpstreamInvalid
-- Text.Configure.CustomAction.Scope.Branch
-- Text.Diff.First
-- Text.Diff.Last
-- Text.Preferences.AI.Streaming
-- Text.StashCM.SaveAsPatch
+
 
 </details>
 

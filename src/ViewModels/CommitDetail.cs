@@ -5,7 +5,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
@@ -17,12 +16,6 @@ namespace SourceGit.ViewModels
 {
     public partial class CommitDetail : ObservableObject
     {
-        public DiffContext DiffContext
-        {
-            get => _diffContext;
-            private set => SetProperty(ref _diffContext, value);
-        }
-
         public int ActivePageIndex
         {
             get => _repo.CommitDetailActivePageIndex;
@@ -46,7 +39,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public string FullMessage
+        public Models.CommitFullMessage FullMessage
         {
             get => _fullMessage;
             private set => SetProperty(ref _fullMessage, value);
@@ -56,6 +49,18 @@ namespace SourceGit.ViewModels
         {
             get => _signInfo;
             private set => SetProperty(ref _signInfo, value);
+        }
+
+        public List<Models.CommitLink> WebLinks
+        {
+            get;
+            private set;
+        } = [];
+
+        public List<string> Children
+        {
+            get => _children;
+            private set => SetProperty(ref _children, value);
         }
 
         public List<Models.Change> Changes
@@ -85,11 +90,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public AvaloniaList<string> Children
+        public DiffContext DiffContext
         {
-            get;
-            private set;
-        } = [];
+            get => _diffContext;
+            private set => SetProperty(ref _diffContext, value);
+        }
 
         public string SearchChangeFilter
         {
@@ -109,73 +114,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewRevisionFileContent, value);
         }
 
-        public AvaloniaList<Models.CommitLink> WebLinks
-        {
-            get;
-            private set;
-        } = [];
-
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
-        {
-            get => _repo.Settings?.IssueTrackerRules;
-        }
-
         public string RevisionFileSearchFilter
         {
             get => _revisionFileSearchFilter;
             set
             {
                 if (SetProperty(ref _revisionFileSearchFilter, value))
-                {
-                    RevisionFileSearchSuggestion.Clear();
-
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        if (_revisionFiles.Count == 0)
-                        {
-                            var sha = Commit.SHA;
-
-                            Task.Run(() =>
-                            {
-                                var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
-
-                                Dispatcher.UIThread.Invoke(() =>
-                                {
-                                    if (sha == Commit.SHA)
-                                    {
-                                        _revisionFiles.Clear();
-                                        _revisionFiles.AddRange(files);
-
-                                        if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
-                                            UpdateRevisionFileSearchSuggestion();
-                                    }
-                                });
-                            });
-                        }
-                        else
-                        {
-                            UpdateRevisionFileSearchSuggestion();
-                        }
-                    }
-                    else
-                    {
-                        IsRevisionFileSearchSuggestionOpen = false;
-                        GC.Collect();
-                    }
-                }
+                    RefreshRevisionSearchSuggestion();
             }
         }
 
-        public AvaloniaList<string> RevisionFileSearchSuggestion
+        public List<string> RevisionFileSearchSuggestion
         {
-            get;
-            private set;
-        } = [];
-
-        public bool IsRevisionFileSearchSuggestionOpen
-        {
-            get => _isRevisionFileSearchSuggestionOpen;
-            set => SetProperty(ref _isRevisionFileSearchSuggestionOpen, value);
+            get => _revisionFileSearchSuggestion;
+            private set => SetProperty(ref _revisionFileSearchSuggestion, value);
         }
 
         public CommitDetail(Repository repo)
@@ -212,23 +164,17 @@ namespace SourceGit.ViewModels
         {
             _repo = null;
             _commit = null;
-
-            if (_changes != null)
-                _changes.Clear();
-            if (_visibleChanges != null)
-                _visibleChanges.Clear();
-            if (_selectedChanges != null)
-                _selectedChanges.Clear();
-
+            _changes = null;
+            _visibleChanges = null;
+            _selectedChanges = null;
             _signInfo = null;
             _searchChangeFilter = null;
             _diffContext = null;
             _viewRevisionFileContent = null;
             _cancelToken = null;
-
             WebLinks.Clear();
-            _revisionFiles.Clear();
-            RevisionFileSearchSuggestion.Clear();
+            _revisionFiles = null;
+            _revisionFileSearchSuggestion = null;
         }
 
         public void NavigateTo(string commitSHA)
@@ -249,6 +195,11 @@ namespace SourceGit.ViewModels
         public void ClearRevisionFileSearchFilter()
         {
             RevisionFileSearchFilter = string.Empty;
+        }
+
+        public void CancelRevisionFileSuggestions()
+        {
+            RevisionFileSearchSuggestion = null;
         }
 
         public Models.Commit GetParent(string sha)
@@ -322,7 +273,12 @@ namespace SourceGit.ViewModels
                         if (commit != null)
                         {
                             var body = new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result();
-                            var submodule = new Models.RevisionSubmodule() { Commit = commit, FullMessage = body };
+                            var submodule = new Models.RevisionSubmodule()
+                            {
+                                Commit = commit,
+                                FullMessage = new Models.CommitFullMessage { Message = body }
+                            };
+
                             Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = submodule);
                         }
                         else
@@ -332,7 +288,7 @@ namespace SourceGit.ViewModels
                                 ViewRevisionFileContent = new Models.RevisionSubmodule()
                                 {
                                     Commit = new Models.Commit() { SHA = file.SHA },
-                                    FullMessage = string.Empty,
+                                    FullMessage = null,
                                 };
                             });
                         }
@@ -622,23 +578,22 @@ namespace SourceGit.ViewModels
         private void Refresh()
         {
             _changes = null;
-            _revisionFiles.Clear();
+            _revisionFiles = null;
 
             SignInfo = null;
             ViewRevisionFileContent = null;
-            Children.Clear();
+            Children = null;
             RevisionFileSearchFilter = string.Empty;
-            IsRevisionFileSearchSuggestionOpen = false;
-
-            GC.Collect();
+            RevisionFileSearchSuggestion = null;
 
             if (_commit == null)
                 return;
 
             Task.Run(() =>
             {
-                var fullMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
-                Dispatcher.UIThread.Invoke(() => FullMessage = fullMessage);
+                var message = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
+                var links = ParseLinksInMessage(message);
+                Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Links = links });
             });
 
             Task.Run(() =>
@@ -692,6 +647,49 @@ namespace SourceGit.ViewModels
                     });
                 }
             });
+        }
+
+        private List<Models.Hyperlink> ParseLinksInMessage(string message)
+        {
+            var links = new List<Models.Hyperlink>();
+            if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
+            {
+                foreach (var rule in rules)
+                    rule.Matches(links, message);
+            }
+
+            var matches = REG_SHA_FORMAT().Matches(message);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                var match = matches[i];
+                if (!match.Success)
+                    continue;
+
+                var start = match.Index;
+                var len = match.Length;
+                var intersect = false;
+                foreach (var link in links)
+                {
+                    if (link.Intersect(start, len))
+                    {
+                        intersect = true;
+                        break;
+                    }
+                }
+
+                if (intersect)
+                    continue;
+
+                var sha = match.Groups[1].Value;
+                var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
+                if (isCommitSHA)
+                    links.Add(new Models.Hyperlink(start, len, sha, true));
+            }
+
+            if (links.Count > 0)
+                links.Sort((l, r) => l.Start - r.Start);
+
+            return links;
         }
 
         private void RefreshVisibleChanges()
@@ -800,7 +798,44 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
-        private void UpdateRevisionFileSearchSuggestion()
+        private void RefreshRevisionSearchSuggestion()
+        {
+            if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+            {
+                if (_revisionFiles == null)
+                {
+                    var sha = Commit.SHA;
+
+                    Task.Run(() =>
+                    {
+                        var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
+                        var filesList = new List<string>();
+                        filesList.AddRange(files);
+
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            if (sha == Commit.SHA)
+                            {
+                                _revisionFiles = filesList;
+                                if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
+                                    CalcRevisionFileSearchSuggestion();
+                            }
+                        });
+                    });
+                }
+                else
+                {
+                    CalcRevisionFileSearchSuggestion();
+                }
+            }
+            else
+            {
+                RevisionFileSearchSuggestion = null;
+                GC.Collect();
+            }
+        }
+
+        private void CalcRevisionFileSearchSuggestion()
         {
             var suggestion = new List<string>();
             foreach (var file in _revisionFiles)
@@ -813,10 +848,11 @@ namespace SourceGit.ViewModels
                     break;
             }
 
-            RevisionFileSearchSuggestion.Clear();
-            RevisionFileSearchSuggestion.AddRange(suggestion);
-            IsRevisionFileSearchSuggestionOpen = suggestion.Count > 0;
+            RevisionFileSearchSuggestion = suggestion;
         }
+
+        [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
+        private static partial Regex REG_SHA_FORMAT();
 
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
         private static partial Regex REG_LFS_FORMAT();
@@ -828,8 +864,9 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private Models.Commit _commit = null;
-        private string _fullMessage = string.Empty;
+        private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
+        private List<string> _children = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;
@@ -837,8 +874,8 @@ namespace SourceGit.ViewModels
         private DiffContext _diffContext = null;
         private object _viewRevisionFileContent = null;
         private Commands.Command.CancelToken _cancelToken = null;
-        private List<string> _revisionFiles = [];
+        private List<string> _revisionFiles = null;
         private string _revisionFileSearchFilter = string.Empty;
-        private bool _isRevisionFileSearchSuggestionOpen = false;
+        private List<string> _revisionFileSearchSuggestion = null;
     }
 }

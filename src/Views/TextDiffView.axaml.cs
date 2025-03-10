@@ -60,7 +60,7 @@ namespace SourceGit.Views
 
     public class ThemedTextDiffPresenter : TextEditor
     {
-        public class VerticalSeperatorMargin : AbstractMargin
+        public class VerticalSeparatorMargin : AbstractMargin
         {
             public override void Render(DrawingContext context)
             {
@@ -475,6 +475,15 @@ namespace SourceGit.Views
             set => SetValue(ShowHiddenSymbolsProperty, value);
         }
 
+        public static readonly StyledProperty<int> TabWidthProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, int>(nameof(TabWidth), 4);
+
+        public int TabWidth
+        {
+            get => GetValue(TabWidthProperty);
+            set => SetValue(TabWidthProperty, value);
+        }
+
         public static readonly StyledProperty<bool> EnableChunkSelectionProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(EnableChunkSelection));
 
@@ -519,12 +528,13 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             BorderThickness = new Thickness(0);
 
+            Options.IndentationSize = TabWidth;
+            Options.EnableHyperlinks = false;
+            Options.EnableEmailHyperlinks = false;
+
             _lineStyleTransformer = new LineStyleTransformer(this);
 
             TextArea.TextView.Margin = new Thickness(2, 0);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
-
             TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
@@ -734,9 +744,13 @@ namespace SourceGit.Views
             }
             else if (change.Property == ShowHiddenSymbolsProperty)
             {
-                var val = change.NewValue is true;
+                var val = ShowHiddenSymbols;
                 Options.ShowTabs = val;
                 Options.ShowSpaces = val;
+            }
+            else if (change.Property == TabWidthProperty)
+            {
+                Options.IndentationSize = TabWidth;
             }
             else if (change.Property == FileNameProperty)
             {
@@ -1007,8 +1021,8 @@ namespace SourceGit.Views
             if (startPosition.Location > endPosition.Location)
                 (startPosition, endPosition) = (endPosition, startPosition);
 
-            var startIdx = Math.Min(startPosition.Line - 1, lines.Count - 1);
-            var endIdx = Math.Min(endPosition.Line - 1, lines.Count - 1);
+            var startIdx = startPosition.Line - 1;
+            var endIdx = endPosition.Line - 1;
 
             if (startIdx == endIdx)
             {
@@ -1025,25 +1039,35 @@ namespace SourceGit.Views
             }
 
             var builder = new StringBuilder();
-            for (var i = startIdx; i <= endIdx; i++)
+            for (var i = startIdx; i <= endIdx && i <= lines.Count - 1; i++)
             {
                 var line = lines[i];
                 if (line.Type == Models.TextDiffLineType.Indicator ||
                     line.Type == Models.TextDiffLineType.None)
                     continue;
 
+                // The first selected line (partial selection)
                 if (i == startIdx && startPosition.Column > 1)
                 {
                     builder.AppendLine(line.Content.Substring(startPosition.Column - 1));
                     continue;
                 }
 
-                if (i == endIdx && endPosition.Column < line.Content.Length)
+                // The selection range is larger than original source.
+                if (i == lines.Count - 1 && i < endIdx)
                 {
-                    builder.AppendLine(line.Content.Substring(0, endPosition.Column));
-                    continue;
+                    builder.Append(line.Content);
+                    break;
                 }
 
+                // For the last line (selection range is within original source)
+                if (i == endIdx)
+                {
+                    builder.Append(endPosition.Column - 1 < line.Content.Length ? line.Content.Substring(0, endPosition.Column - 1) : line.Content);
+                    break;
+                }
+
+                // Other lines.
                 builder.AppendLine(line.Content);
             }
 
@@ -1061,9 +1085,9 @@ namespace SourceGit.Views
         public CombinedTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
             TextArea.LeftMargins.Add(new LineNumberMargin(false, true));
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineNumberMargin(false, false));
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
@@ -1262,7 +1286,7 @@ namespace SourceGit.Views
         public SingleSideTextDiffPresenter() : base(new TextArea(), new TextDocument())
         {
             TextArea.LeftMargins.Add(new LineNumberMargin(true, false));
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin());
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 

@@ -112,8 +112,19 @@ namespace SourceGit.Views
             // We should clear all unhandled key modifiers.
             _unhandledModifiers = KeyModifiers.None;
 
+            // Check for AltGr (which is detected as Ctrl+Alt)
+            bool isAltGr = e.KeyModifiers.HasFlag(KeyModifiers.Control) &&
+                           e.KeyModifiers.HasFlag(KeyModifiers.Alt);
+
+            // Skip hotkey processing if AltGr is pressed
+            if (isAltGr)
+            {
+                base.OnKeyDown(e);
+                return;
+            }
+
             // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
+            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: (KeyModifiers.Control | KeyModifiers.Shift), Key: Key.P })
             {
                 App.OpenDialog(new Preferences());
                 e.Handled = true;
@@ -243,13 +254,13 @@ namespace SourceGit.Views
             {
                 _unhandledModifiers = e.KeyModifiers;
 
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && (e.Key == Key.LeftAlt || e.Key == Key.RightAlt))
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && e.Key is Key.LeftAlt or Key.RightAlt)
                     _unhandledModifiers |= KeyModifiers.Alt;
 
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl))
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && e.Key is Key.LeftCtrl or Key.RightCtrl)
                     _unhandledModifiers |= KeyModifiers.Control;
 
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && (e.Key == Key.LeftShift || e.Key == Key.RightShift))
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && e.Key is Key.LeftShift or Key.RightShift)
                     _unhandledModifiers |= KeyModifiers.Shift;
             }
         }

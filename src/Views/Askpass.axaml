@@ -5,7 +5,7 @@
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Askpass"
-                    x:DataType="v:Askpass"
+                    x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Askpass}"
                     SizeToContent="WidthAndHeight"
@@ -13,7 +13,7 @@
                     WindowStartupLocation="CenterScreen">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !UseSystemWindowFrame}">
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
@@ -36,23 +36,23 @@
 
     <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
       <Border Margin="16,0">
-        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+        <TextBlock x:Name="TxtDescription" Text="Enter passphrase:" TextWrapping="Wrap"/>
       </Border>
       
-      <TextBox Margin="16"
-               MinWidth="300" 
-               Height="32" 
+      <TextBox x:Name="TxtPassphrase"
+               Margin="16"
+               MinWidth="300"
+               Height="32"
                Focusable="True"
-               Text="{Binding Passphrase, Mode=TwoWay}" 
                PasswordChar="*"
-               RevealPassword="{Binding ShowPassword, Mode=OneWay}"
+               RevealPassword="{Binding #ToggleShowPassword.IsChecked, Mode=OneWay}"
                HorizontalAlignment="Stretch"
                v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerRightContent>
           <ToggleButton Grid.Column="6"
+                        x:Name="ToggleShowPassword"
                         Classes="toggle_untracked"
-                        Width="26" Height="14"
-                        IsChecked="{Binding ShowPassword, Mode=TwoWay}"/>
+                        Width="26" Height="14"/>
         </TextBox.InnerRightContent>
       </TextBox>
       

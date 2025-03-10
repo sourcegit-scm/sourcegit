@@ -44,7 +44,7 @@
         <Popup PlacementTarget="{Binding #TxtSearchRevisionFiles}"
                Placement="BottomEdgeAlignedLeft"
                HorizontalOffset="-8" VerticalAlignment="-8"
-               IsOpen="{Binding IsRevisionFileSearchSuggestionOpen}">
+               IsOpen="{Binding RevisionFileSearchSuggestion, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
           <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
             <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
               <ListBox x:Name="SearchSuggestionBox"

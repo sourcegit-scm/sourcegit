@@ -60,6 +60,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DEBIAN", "DEBIAN", "{F101849D-BDB7-40D4-A516-751150C3CCFC}"
 	ProjectSection(SolutionItems) = preProject
 		build\resources\deb\DEBIAN\control = build\resources\deb\DEBIAN\control
+		build\resources\deb\DEBIAN\preinst = build\resources\deb\DEBIAN\preinst
+		build\resources\deb\DEBIAN\prerm = build\resources\deb\DEBIAN\prerm
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rpm", "rpm", "{9BA0B044-0CC9-46F8-B551-204F149BF45D}"

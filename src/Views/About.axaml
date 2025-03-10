@@ -5,7 +5,7 @@
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.About"
-                    x:DataType="v:About"
+                    x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.About}"
                     SizeToContent="WidthAndHeight"
@@ -13,7 +13,7 @@
                     WindowStartupLocation="CenterScreen">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !UseSystemWindowFrame}">
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
@@ -46,13 +46,13 @@
         <StackPanel Height="48" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
           <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
-            <TextBlock Classes="primary" Margin="8,0" Text="{Binding Version}" FontSize="12" Foreground="White"/>
+            <TextBlock x:Name="TxtVersion" Classes="primary" Margin="8,0" FontSize="12" Foreground="White"/>
           </Border>
         </StackPanel>
 
         <TextBlock Margin="2,0,0,0" Text="{DynamicResource Text.About.SubTitle}" FontSize="16"/>
 
-        <TextBlock Margin="2,8,0,0" Text="{Binding Copyright}" Foreground="{DynamicResource Brush.FG2}"/>
+        <TextBlock x:Name="TxtCopyright" Margin="2,8,0,0" Foreground="{DynamicResource Brush.FG2}"/>
 
         <StackPanel Orientation="Vertical" Margin="0,24,0,0">
           <StackPanel Orientation="Horizontal" Height="18">

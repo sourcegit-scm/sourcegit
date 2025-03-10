@@ -257,7 +257,7 @@
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
                           <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
-                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding Commit}" Message="{Binding FullMessage}"/>
+                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
                           </Border>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
@@ -271,7 +271,7 @@
                   <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
                   <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}">
-                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding New.Commit}" Message="{Binding New.FullMessage}"/>
+                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding New.Commit}" FullMessage="{Binding New.FullMessage}"/>
                   </Border>
                 </StackPanel>
               </ScrollViewer>

@@ -23,7 +23,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Down || e.Key == Key.Up)
             {
-                if (vm.IsRevisionFileSearchSuggestionOpen)
+                if (vm.RevisionFileSearchSuggestion.Count > 0)
                 {
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
@@ -33,12 +33,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (vm.IsRevisionFileSearchSuggestionOpen)
-                {
-                    vm.RevisionFileSearchSuggestion.Clear();
-                    vm.IsRevisionFileSearchSuggestionOpen = false;
-                }
-
+                vm.CancelRevisionFileSuggestions();
                 e.Handled = true;
             }
         }
@@ -57,7 +52,7 @@ namespace SourceGit.Views
 
             if (e.Key == Key.Escape)
             {
-                vm.RevisionFileSearchSuggestion.Clear();
+                vm.CancelRevisionFileSuggestions();
                 e.Handled = true;
             }
             else if (e.Key == Key.Enter && SearchSuggestionBox.SelectedItem is string content)

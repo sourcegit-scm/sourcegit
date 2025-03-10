@@ -35,14 +35,8 @@
             }
             else if (context is RebaseInProgress rebase)
             {
-                Theirs = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName) ??
-                    new Models.Branch()
-                    {
-                        IsLocal = true,
-                        Name = rebase.HeadName,
-                        FullName = $"refs/heads/{rebase.HeadName}"
-                    };
-
+                var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
+                Theirs = (object)b ?? rebase.StoppedAt;
                 Mine = rebase.Onto;
             }
             else if (context is RevertInProgress revert)

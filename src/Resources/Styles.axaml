@@ -1299,6 +1299,8 @@
       <Setter Property="MinHeight" Value="0"/>
       <Setter Property="Height" Value="28"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
     </Style>
     <Style Selector="^:focus-within /template/ ButtonSpinner#PART_Spinner">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>

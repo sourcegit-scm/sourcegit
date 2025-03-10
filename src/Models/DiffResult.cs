@@ -681,6 +681,18 @@ namespace SourceGit.Models
         public TextDiff TextDiff { get; set; } = null;
         public LFSDiff LFSDiff { get; set; } = null;
 
-        public string FileModeChange => string.IsNullOrEmpty(OldMode) ? string.Empty : $"{OldMode} → {NewMode}";
+        public string FileModeChange
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(OldMode) && string.IsNullOrEmpty(NewMode))
+                    return string.Empty;
+
+                var oldDisplay = string.IsNullOrEmpty(OldMode) ? "0" : OldMode;
+                var newDisplay = string.IsNullOrEmpty(NewMode) ? "0" : NewMode;
+
+                return $"{oldDisplay} → {newDisplay}";
+            }
+        }
     }
 }

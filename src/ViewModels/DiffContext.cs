@@ -60,6 +60,7 @@ namespace SourceGit.ViewModels
             {
                 _isTextDiff = previous._isTextDiff;
                 _content = previous._content;
+                _fileModeChange = previous._fileModeChange;
                 _unifiedLines = previous._unifiedLines;
                 _ignoreWhitespace = previous._ignoreWhitespace;
                 _info = previous._info;
@@ -234,13 +235,17 @@ namespace SourceGit.ViewModels
             if (commit != null)
             {
                 var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
-                return new Models.RevisionSubmodule() { Commit = commit, FullMessage = body };
+                return new Models.RevisionSubmodule()
+                {
+                    Commit = commit,
+                    FullMessage = new Models.CommitFullMessage { Message = body }
+                };
             }
 
             return new Models.RevisionSubmodule()
             {
                 Commit = new Models.Commit() { SHA = sha },
-                FullMessage = string.Empty,
+                FullMessage = null,
             };
         }
 

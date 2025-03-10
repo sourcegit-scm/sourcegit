@@ -9,4 +9,8 @@ cd build
 
 rm -rf SourceGit/*.pdb
 
-zip "sourcegit_$VERSION.$RUNTIME.zip" -r SourceGit
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+  powershell -Command "Compress-Archive -Path SourceGit\\* -DestinationPath \"sourcegit_$VERSION.$RUNTIME.zip\" -Force"
+else
+  zip "sourcegit_$VERSION.$RUNTIME.zip" -r SourceGit
+fi

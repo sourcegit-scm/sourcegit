@@ -111,6 +111,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _editorFontSize, value);
         }
 
+        public int EditorTabWidth
+        {
+            get => _editorTabWidth;
+            set => SetProperty(ref _editorTabWidth, value);
+        }
+
         public LayoutInfo Layout
         {
             get => _layout;
@@ -649,6 +655,7 @@ namespace SourceGit.ViewModels
         private bool _useSystemWindowFrame = false;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
+        private int _editorTabWidth = 4;
         private LayoutInfo _layout = new LayoutInfo();
 
         private int _maxHistoryCommits = 20000;

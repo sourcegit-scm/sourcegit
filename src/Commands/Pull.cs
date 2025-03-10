@@ -11,10 +11,11 @@ namespace SourceGit.Commands
             Context = repo;
             TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = "pull --verbose --progress --tags ";
+            Args = "pull --verbose --progress ";
 
             if (useRebase)
-                Args += "--rebase ";
+                Args += "--rebase=true ";
+
             if (noTags)
                 Args += "--no-tags ";
 
