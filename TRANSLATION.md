@@ -180,20 +180,13 @@
 
 </details>
 
-### ru_RU.axaml: 98.94%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.BranchCM.CustomAction
-- Text.BranchUpstreamInvalid
-- Text.Configure.CustomAction.Scope.Branch
-- Text.Diff.First
-- Text.Diff.Last
-- Text.Preferences.AI.Streaming
-- Text.Preferences.Appearance.EditorTabWidth
-- Text.StashCM.SaveAsPatch
+
 
 </details>
 
