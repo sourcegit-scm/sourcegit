@@ -525,6 +525,7 @@ namespace SourceGit.ViewModels
             }
 
             _ignoreIndexChange = false;
+            Preferences.Instance.Save();
             GC.Collect();
         }
 
