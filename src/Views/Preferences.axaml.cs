@@ -189,6 +189,7 @@ namespace SourceGit.Views
                     new Commands.Config(null).Set($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
             }
 
+            ViewModels.Preferences.Instance.Save();
             base.OnClosing(e);
         }
 
