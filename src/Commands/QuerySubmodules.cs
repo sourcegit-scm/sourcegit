@@ -49,7 +49,7 @@ namespace SourceGit.Commands
 
             if (submodules.Count > 0)
             {
-                Args = $"status -uno --porcelain -- {builder}";
+                Args = $"--no-optional-locks status -uno --porcelain -- {builder}";
                 rs = ReadToEnd();
                 if (!rs.IsSuccess)
                     return submodules;
