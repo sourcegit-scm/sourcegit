@@ -342,6 +342,12 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public AvaloniaList<Models.CustomAction> CustomActions
+        {
+            get;
+            set;
+        } = [];
+
         public AvaloniaList<Models.OpenAIService> OpenAIServices
         {
             get;

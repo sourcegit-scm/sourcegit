@@ -471,11 +471,7 @@ namespace SourceGit.Models
 
         public CustomAction AddNewCustomAction()
         {
-            var act = new CustomAction()
-            {
-                Name = "Unnamed Custom Action",
-            };
-
+            var act = new CustomAction() { Name = "Unnamed Action" };
             CustomActions.Add(act);
             return act;
         }

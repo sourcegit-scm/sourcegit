@@ -1444,6 +1444,12 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateContextMenuForCustomAction()
         {
             var actions = new List<Models.CustomAction>();
+            foreach (var action in Preferences.Instance.CustomActions)
+            {
+                if (action.Scope == Models.CustomActionScope.Repository)
+                    actions.Add(action);
+            }
+
             foreach (var action in _settings.CustomActions)
             {
                 if (action.Scope == Models.CustomActionScope.Repository)
@@ -2350,6 +2356,12 @@ namespace SourceGit.ViewModels
         private void TryToAddCustomActionsToBranchContextMenu(ContextMenu menu, Models.Branch branch)
         {
             var actions = new List<Models.CustomAction>();
+            foreach (var action in Preferences.Instance.CustomActions)
+            {
+                if (action.Scope == Models.CustomActionScope.Branch)
+                    actions.Add(action);
+            }
+
             foreach (var action in Settings.CustomActions)
             {
                 if (action.Scope == Models.CustomActionScope.Branch)

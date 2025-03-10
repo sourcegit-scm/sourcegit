@@ -103,6 +103,15 @@ namespace SourceGit.Views
             set => SetValue(SelectedOpenAIServiceProperty, value);
         }
 
+        public static readonly StyledProperty<Models.CustomAction> SelectedCustomActionProperty =
+            AvaloniaProperty.Register<Preferences, Models.CustomAction>(nameof(SelectedCustomAction));
+
+        public Models.CustomAction SelectedCustomAction
+        {
+            get => GetValue(SelectedCustomActionProperty);
+            set => SetValue(SelectedCustomActionProperty, value);
+        }
+
         public Preferences()
         {
             var pref = ViewModels.Preferences.Instance;
@@ -365,6 +374,40 @@ namespace SourceGit.Views
 
             ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
+            e.Handled = true;
+        }
+
+        private void OnAddCustomAction(object sender, RoutedEventArgs e)
+        {
+            var action = new Models.CustomAction() { Name = "Unnamed Action (Global)" };
+            ViewModels.Preferences.Instance.CustomActions.Add(action);
+            SelectedCustomAction = action;
+
+            e.Handled = true;
+        }
+
+        private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)
+        {
+            var options = new FilePickerOpenOptions()
+            {
+                FileTypeFilter = [new FilePickerFileType("Executable file(script)") { Patterns = ["*.*"] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
+            if (selected.Count == 1 && sender is Button { DataContext: Models.CustomAction action })
+                action.Executable = selected[0].Path.LocalPath;
+
+            e.Handled = true;
+        }
+
+        private void OnRemoveSelectedCustomAction(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomAction == null)
+                return;
+
+            ViewModels.Preferences.Instance.CustomActions.Remove(SelectedCustomAction);
+            SelectedCustomAction = null;
             e.Handled = true;
         }
 
