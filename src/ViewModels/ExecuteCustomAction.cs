@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -13,7 +14,7 @@ namespace SourceGit.ViewModels
         public ExecuteCustomAction(Repository repo, Models.CustomAction action)
         {
             _repo = repo;
-            _args = action.Arguments.Replace("${REPO}", _repo.FullPath);
+            _args = action.Arguments.Replace("${REPO}", GetWorkdir());
             CustomAction = action;
             View = new Views.ExecuteCustomAction() { DataContext = this };
         }
@@ -21,7 +22,7 @@ namespace SourceGit.ViewModels
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Branch branch)
         {
             _repo = repo;
-            _args = action.Arguments.Replace("${REPO}", _repo.FullPath).Replace("${BRANCH}", branch.FriendlyName);
+            _args = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${BRANCH}", branch.FriendlyName);
             CustomAction = action;
             View = new Views.ExecuteCustomAction() { DataContext = this };
         }
@@ -29,7 +30,7 @@ namespace SourceGit.ViewModels
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
         {
             _repo = repo;
-            _args = action.Arguments.Replace("${REPO}", _repo.FullPath).Replace("${SHA}", commit.SHA);
+            _args = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${SHA}", commit.SHA);
             CustomAction = action;
             View = new Views.ExecuteCustomAction() { DataContext = this };
         }
@@ -49,6 +50,11 @@ namespace SourceGit.ViewModels
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });
+        }
+
+        private string GetWorkdir()
+        {
+            return OperatingSystem.IsWindows() ? _repo.FullPath.Replace("/", "\\") : _repo.FullPath;
         }
 
         private readonly Repository _repo = null;
