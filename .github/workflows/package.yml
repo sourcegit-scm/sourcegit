@@ -9,10 +9,10 @@ on:
 jobs:
   windows:
     name: Package Windows
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
     strategy:
       matrix:
-        runtime: [win-x64, win-arm64]
+        runtime: [ win-x64, win-arm64 ]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -22,6 +22,7 @@ jobs:
           name: sourcegit.${{ matrix.runtime }}
           path: build/SourceGit
       - name: Package
+        shell: bash
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
@@ -69,6 +70,7 @@ jobs:
   linux:
     name: Package Linux
     runs-on: ubuntu-latest
+    container: ubuntu:20.04
     strategy:
       matrix:
         runtime: [linux-x64, linux-arm64]
@@ -77,9 +79,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Download package dependencies
         run: |
-          sudo add-apt-repository universe
-          sudo apt-get update
-          sudo apt-get install desktop-file-utils rpm libfuse2
+          export DEBIAN_FRONTEND=noninteractive
+          ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
+          apt-get update
+          apt-get install -y curl wget git dpkg-dev fakeroot tzdata zip unzip desktop-file-utils rpm libfuse2 file build-essential binutils
       - name: Download build
         uses: actions/download-artifact@v4
         with:
@@ -89,6 +92,7 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
+          APPIMAGE_EXTRACT_AND_RUN: 1
         run: |
           mkdir build/SourceGit
           tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
