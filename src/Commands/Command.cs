@@ -73,6 +73,7 @@ namespace SourceGit.Commands
             };
 
             var dummy = null as Process;
+            var dummyProcLock = new object();
             try
             {
                 proc.Start();
@@ -83,11 +84,10 @@ namespace SourceGit.Commands
                     dummy = proc;
                     CancellationToken.Register(() =>
                     {
-                        if (dummy is { HasExited: false })
+                        lock (dummyProcLock)
                         {
-                            dummy.CancelErrorRead();
-                            dummy.CancelOutputRead();
-                            dummy.Kill();
+                            if (dummy is { HasExited: false })
+                                dummy.Kill();
                         }
                     });
                 }
@@ -104,7 +104,14 @@ namespace SourceGit.Commands
             proc.BeginErrorReadLine();
             proc.WaitForExit();
 
-            dummy = null;
+            if (dummy != null)
+            {
+                lock (dummyProcLock)
+                {
+                    dummy = null;
+                }
+            }
+
             int exitCode = proc.ExitCode;
             proc.Close();
 
