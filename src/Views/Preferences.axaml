@@ -422,7 +422,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Integration}"/>
           </TabItem.Header>
 
-          <StackPanel Margin="8" MaxWidth="580" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+          <StackPanel Margin="8" Orientation="Vertical" Grid.IsSharedSizeScope="True">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Terminal}"/>
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.Shell}"/>
