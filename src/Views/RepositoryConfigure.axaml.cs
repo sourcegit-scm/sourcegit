@@ -13,8 +13,10 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            (DataContext as ViewModels.RepositoryConfigure)?.Save();
             base.OnClosing(e);
+
+            if (!Design.IsDesignMode && DataContext is ViewModels.RepositoryConfigure configure)
+                configure.Save();
         }
 
         private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)

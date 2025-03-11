@@ -169,6 +169,11 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
+            base.OnClosing(e);
+
+            if (Design.IsDesignMode)
+                return;
+
             var config = new Commands.Config(null).ListAll();
             SetIfChanged(config, "user.name", DefaultUser, "");
             SetIfChanged(config, "user.email", DefaultEmail, "");
@@ -199,7 +204,6 @@ namespace SourceGit.Views
             }
 
             ViewModels.Preferences.Instance.Save();
-            base.OnClosing(e);
         }
 
         private async void SelectThemeOverrideFile(object _, RoutedEventArgs e)
