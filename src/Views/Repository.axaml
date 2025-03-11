@@ -421,8 +421,14 @@
 
           <Popup PlacementTarget="{Binding #TxtSearchCommitsBox}"
                  Placement="BottomEdgeAlignedLeft"
-                 HorizontalOffset="-8" VerticalAlignment="-8"
-                 IsOpen="{Binding IsSearchCommitSuggestionOpen}">
+                 HorizontalOffset="-8" VerticalAlignment="-8">
+            <Popup.IsOpen>
+              <MultiBinding Converter="{x:Static BoolConverters.And}">
+                <Binding Path="IsSearchCommitSuggestionOpen"/>
+                <Binding Path="$parent[Window].IsActive"/>
+              </MultiBinding>
+            </Popup.IsOpen>
+            
             <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
               <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
                 <ListBox x:Name="SearchSuggestionBox"
