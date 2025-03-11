@@ -424,7 +424,7 @@
                  HorizontalOffset="-8" VerticalAlignment="-8">
             <Popup.IsOpen>
               <MultiBinding Converter="{x:Static BoolConverters.And}">
-                <Binding Path="IsSearchCommitSuggestionOpen"/>
+                <Binding Path="MatchedFilesForSearching" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
                 <Binding Path="$parent[Window].IsActive"/>
               </MultiBinding>
             </Popup.IsOpen>
@@ -434,7 +434,7 @@
                 <ListBox x:Name="SearchSuggestionBox"
                          Background="Transparent"
                          SelectionMode="Single"
-                         ItemsSource="{Binding SearchCommitFilterSuggestion}"
+                         ItemsSource="{Binding MatchedFilesForSearching}"
                          MaxHeight="400"
                          Focusable="True"
                          KeyDown="OnSearchSuggestionBoxKeyDown">

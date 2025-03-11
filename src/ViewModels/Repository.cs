@@ -271,14 +271,13 @@ namespace SourceGit.ViewModels
                 {
                     SearchedCommits = new List<Models.Commit>();
                     SearchCommitFilter = string.Empty;
-                    SearchCommitFilterSuggestion.Clear();
-                    IsSearchCommitSuggestionOpen = false;
-                    _revisionFiles.Clear();
+                    MatchedFilesForSearching = null;
+                    _worktreeFiles = null;
 
                     if (value)
                     {
                         SelectedViewIndex = 0;
-                        UpdateCurrentRevisionFilesForSearchSuggestion();
+                        CalcWorktreeFilesForSearching();
                     }
                 }
             }
@@ -307,7 +306,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _searchCommitFilterType, value))
                 {
-                    UpdateCurrentRevisionFilesForSearchSuggestion();
+                    CalcWorktreeFilesForSearching();
 
                     if (!string.IsNullOrEmpty(_searchCommitFilter))
                         StartSearchCommits();
@@ -320,46 +319,21 @@ namespace SourceGit.ViewModels
             get => _searchCommitFilter;
             set
             {
-                if (SetProperty(ref _searchCommitFilter, value) &&
-                    _searchCommitFilterType == 4 &&
-                    !string.IsNullOrEmpty(value) &&
-                    value.Length >= 2 &&
-                    _revisionFiles.Count > 0)
+                if (SetProperty(ref _searchCommitFilter, value))
                 {
-                    var suggestion = new List<string>();
-                    foreach (var file in _revisionFiles)
-                    {
-                        if (file.Contains(value, StringComparison.OrdinalIgnoreCase) && file.Length != value.Length)
-                        {
-                            suggestion.Add(file);
-                            if (suggestion.Count > 100)
-                                break;
-                        }
-                    }
-
-                    SearchCommitFilterSuggestion.Clear();
-                    SearchCommitFilterSuggestion.AddRange(suggestion);
-                    IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
-                }
-                else if (SearchCommitFilterSuggestion.Count > 0)
-                {
-                    SearchCommitFilterSuggestion.Clear();
-                    IsSearchCommitSuggestionOpen = false;
+                    if (_searchCommitFilterType == 4 && value is { Length: > 2 })
+                        CalcMatchedFilesForSearching();
+                    else if (_matchedFilesForSearching is { })
+                        MatchedFilesForSearching = null;
                 }
             }
         }
 
-        public bool IsSearchCommitSuggestionOpen
+        public List<string> MatchedFilesForSearching
         {
-            get => _isSearchCommitSuggestionOpen;
-            set => SetProperty(ref _isSearchCommitSuggestionOpen, value);
+            get => _matchedFilesForSearching;
+            private set => SetProperty(ref _matchedFilesForSearching, value);
         }
-
-        public AvaloniaList<string> SearchCommitFilterSuggestion
-        {
-            get;
-            private set;
-        } = new AvaloniaList<string>();
 
         public List<Models.Commit> SearchedCommits
         {
@@ -551,8 +525,8 @@ namespace SourceGit.ViewModels
             _visibleSubmodules.Clear();
             _searchedCommits.Clear();
 
-            _revisionFiles.Clear();
-            SearchCommitFilterSuggestion.Clear();
+            _worktreeFiles = null;
+            _matchedFilesForSearching = null;
         }
 
         public bool CanCreatePopup()
@@ -723,6 +697,11 @@ namespace SourceGit.ViewModels
             SearchCommitFilter = string.Empty;
         }
 
+        public void ClearMatchedFilesForSearching()
+        {
+            MatchedFilesForSearching = null;
+        }
+
         public void StartSearchCommits()
         {
             if (_histories == null)
@@ -730,8 +709,7 @@ namespace SourceGit.ViewModels
 
             IsSearchLoadingVisible = true;
             SearchResultSelectedCommit = null;
-            IsSearchCommitSuggestionOpen = false;
-            SearchCommitFilterSuggestion.Clear();
+            MatchedFilesForSearching = null;
 
             Task.Run(() =>
             {
@@ -2391,9 +2369,9 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
-        private void UpdateCurrentRevisionFilesForSearchSuggestion()
+        private void CalcWorktreeFilesForSearching()
         {
-            _revisionFiles.Clear();
+            _worktreeFiles = null;
 
             if (_searchCommitFilterType == 4)
             {
@@ -2405,28 +2383,34 @@ namespace SourceGit.ViewModels
                         if (_searchCommitFilterType != 4)
                             return;
 
-                        _revisionFiles.AddRange(files);
+                        _worktreeFiles = new List<string>();
+                        foreach (var f in files)
+                            _worktreeFiles.Add(f);
 
-                        if (!string.IsNullOrEmpty(_searchCommitFilter) && _searchCommitFilter.Length > 2 && _revisionFiles.Count > 0)
-                        {
-                            var suggestion = new List<string>();
-                            foreach (var file in _revisionFiles)
-                            {
-                                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
-                                {
-                                    suggestion.Add(file);
-                                    if (suggestion.Count > 100)
-                                        break;
-                                }
-                            }
-
-                            SearchCommitFilterSuggestion.Clear();
-                            SearchCommitFilterSuggestion.AddRange(suggestion);
-                            IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
-                        }
+                        if (_searchCommitFilter is { Length: > 2 })
+                            CalcMatchedFilesForSearching();
                     });
                 });
             }
+        }
+
+        private void CalcMatchedFilesForSearching()
+        {
+            if (_worktreeFiles == null || _worktreeFiles.Count == 0)
+                return;
+
+            var matched = new List<string>();
+            foreach (var file in _worktreeFiles)
+            {
+                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
+                {
+                    matched.Add(file);
+                    if (matched.Count > 100)
+                        break;
+                }
+            }
+
+            MatchedFilesForSearching = matched;
         }
 
         private void AutoFetchImpl(object sender)
@@ -2475,13 +2459,13 @@ namespace SourceGit.ViewModels
 
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;
-        private bool _isSearchCommitSuggestionOpen = false;
         private int _searchCommitFilterType = 3;
         private bool _onlySearchCommitsInCurrentBranch = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private Models.Commit _searchResultSelectedCommit = null;
-        private List<string> _revisionFiles = new List<string>();
+        private List<string> _worktreeFiles = null;
+        private List<string> _matchedFilesForSearching = null;
 
         private string _filter = string.Empty;
         private object _lockRemotes = new object();
