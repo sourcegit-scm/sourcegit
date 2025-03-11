@@ -51,7 +51,7 @@
         <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
-        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
+        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
@@ -182,9 +182,32 @@
                                    UseGraphColor="False"/>
           </Border>
 
+          <!-- Stats -->
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Stats}" />
+          <!--v:LinesChanged Grid.Row="4" Grid.Column="1" AddedCount="{Binding AddedLines}" RemovedCount="{Binding RemovedLines}" /-->
+          <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Height="24">
+            <Border Margin="12,0,4,0" VerticalAlignment="Center" BorderBrush="Green" BorderThickness="1" CornerRadius="6">
+              <TextBlock VerticalAlignment="Center" Foreground="Green" Padding="3,0">
+                <TextBlock.Inlines>
+                  <Run Text="+"/>
+                  <Run Text="{Binding AddedLines}"/>
+                </TextBlock.Inlines>
+              </TextBlock>
+            </Border>
+
+            <Border Margin="12,0,4,0" VerticalAlignment="Center" BorderBrush="Red" BorderThickness="1" CornerRadius="6">
+              <TextBlock VerticalAlignment="Center" Foreground="Red" Padding="3,0">
+                <TextBlock.Inlines>
+                  <Run Text="-"/>
+                  <Run Text="{Binding RemovedLines}"/>
+                </TextBlock.Inlines>
+              </TextBlock>
+            </Border>
+          </StackPanel>
+
           <!-- Messages -->
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
-          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
+          <v:CommitMessagePresenter Grid.Row="5" Grid.Column="1" 
                                     Margin="12,4,8,0" 
                                     Classes="primary" 
                                     FullMessage="{Binding #ThisControl.FullMessage}"
