@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 using Avalonia.Threading;
 
@@ -10,11 +11,6 @@ namespace SourceGit.Commands
 {
     public partial class Command
     {
-        public class CancelToken
-        {
-            public bool Requested { get; set; } = false;
-        }
-
         public class ReadToEndResult
         {
             public bool IsSuccess { get; set; } = false;
@@ -30,7 +26,7 @@ namespace SourceGit.Commands
         }
 
         public string Context { get; set; } = string.Empty;
-        public CancelToken Cancel { get; set; } = null;
+        public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public string WorkingDirectory { get; set; } = null;
         public EditorType Editor { get; set; } = EditorType.CoreEditor; // Only used in Exec() mode
         public string SSHKey { get; set; } = string.Empty;
@@ -43,36 +39,15 @@ namespace SourceGit.Commands
             var start = CreateGitStartInfo();
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
-            var isCancelled = false;
 
             proc.OutputDataReceived += (_, e) =>
             {
-                if (Cancel != null && Cancel.Requested)
-                {
-                    isCancelled = true;
-                    proc.CancelErrorRead();
-                    proc.CancelOutputRead();
-                    if (!proc.HasExited)
-                        proc.Kill(true);
-                    return;
-                }
-
                 if (e.Data != null)
                     OnReadline(e.Data);
             };
 
             proc.ErrorDataReceived += (_, e) =>
             {
-                if (Cancel != null && Cancel.Requested)
-                {
-                    isCancelled = true;
-                    proc.CancelErrorRead();
-                    proc.CancelOutputRead();
-                    if (!proc.HasExited)
-                        proc.Kill(true);
-                    return;
-                }
-
                 if (string.IsNullOrEmpty(e.Data))
                 {
                     errs.Add(string.Empty);
@@ -97,9 +72,25 @@ namespace SourceGit.Commands
                 errs.Add(e.Data);
             };
 
+            var dummy = null as Process;
             try
             {
                 proc.Start();
+
+                // It not safe, please only use `CancellationToken` in readonly commands.
+                if (CancellationToken.CanBeCanceled)
+                {
+                    dummy = proc;
+                    CancellationToken.Register(() =>
+                    {
+                        if (dummy is { HasExited: false })
+                        {
+                            dummy.CancelErrorRead();
+                            dummy.CancelOutputRead();
+                            dummy.Kill();
+                        }
+                    });
+                }
             }
             catch (Exception e)
             {
@@ -113,10 +104,11 @@ namespace SourceGit.Commands
             proc.BeginErrorReadLine();
             proc.WaitForExit();
 
+            dummy = null;
             int exitCode = proc.ExitCode;
             proc.Close();
 
-            if (!isCancelled && exitCode != 0)
+            if (!CancellationToken.IsCancellationRequested && exitCode != 0)
             {
                 if (RaiseError)
                 {
