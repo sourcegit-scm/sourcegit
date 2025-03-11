@@ -518,7 +518,7 @@ namespace SourceGit.ViewModels
             {
                 File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
             }
-            catch (DirectoryNotFoundException)
+            catch
             {
                 // Ignore
             }
