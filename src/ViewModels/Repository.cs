@@ -321,7 +321,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchCommitFilter, value) &&
-                    _searchCommitFilterType == 3 &&
+                    _searchCommitFilterType == 4 &&
                     !string.IsNullOrEmpty(value) &&
                     value.Length >= 2 &&
                     _revisionFiles.Count > 0)
@@ -2395,14 +2395,14 @@ namespace SourceGit.ViewModels
         {
             _revisionFiles.Clear();
 
-            if (_searchCommitFilterType == 3)
+            if (_searchCommitFilterType == 4)
             {
                 Task.Run(() =>
                 {
                     var files = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
                     Dispatcher.UIThread.Invoke(() =>
                     {
-                        if (_searchCommitFilterType != 3)
+                        if (_searchCommitFilterType != 4)
                             return;
 
                         _revisionFiles.AddRange(files);
