@@ -1452,28 +1452,24 @@ namespace SourceGit.ViewModels
                 App.OpenDialog(dialog);
                 return null;
             }
-            else
+
+            var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
+            foreach (var service in services)
             {
-                var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
-
-                foreach (var service in services)
+                var dup = service;
+                var item = new MenuItem();
+                item.Header = service.Name;
+                item.Click += (_, e) =>
                 {
-                    var dup = service;
+                    var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _staged);
+                    App.OpenDialog(dialog);
+                    e.Handled = true;
+                };
 
-                    var item = new MenuItem();
-                    item.Header = service.Name;
-                    item.Click += (_, e) =>
-                    {
-                        var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _staged);
-                        App.OpenDialog(dialog);
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(item);
-                }
-
-                return menu;
+                menu.Items.Add(item);
             }
+
+            return menu;
         }
 
         private List<Models.Change> GetVisibleUnstagedChanges(List<Models.Change> unstaged)

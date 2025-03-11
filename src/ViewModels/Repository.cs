@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -1221,23 +1220,26 @@ namespace SourceGit.ViewModels
             App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
-        public AvaloniaList<Models.OpenAIService> GetPreferedOpenAIServices()
+        public List<Models.OpenAIService> GetPreferedOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
                 return [];
 
             if (services.Count == 1)
-                return services;
+                return [services[0]];
 
             var prefered = _settings.PreferedOpenAIService;
+            var all = new List<Models.OpenAIService>();
             foreach (var service in services)
             {
                 if (service.Name.Equals(prefered, StringComparison.Ordinal))
                     return [service];
+
+                all.Add(service);
             }
 
-            return services;
+            return all;
         }
 
         public ContextMenu CreateContextMenuForGitFlow()
