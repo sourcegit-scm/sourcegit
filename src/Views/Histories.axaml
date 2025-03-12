@@ -10,18 +10,18 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:LayoutableGrid UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
-    <v:LayoutableGrid.RowDefinitions>
+  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+    <v:HistoriesLayout.RowDefinitions>
       <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>
       <RowDefinition Height="{Binding BottomArea, Mode=TwoWay}" MinHeight="200"/>
-    </v:LayoutableGrid.RowDefinitions>
+    </v:HistoriesLayout.RowDefinitions>
 
-    <v:LayoutableGrid.ColumnDefinitions>
+    <v:HistoriesLayout.ColumnDefinitions>
       <ColumnDefinition Width="{Binding LeftArea, Mode=TwoWay}" MinWidth="100"/>
       <ColumnDefinition Width="3"/>
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
-    </v:LayoutableGrid.ColumnDefinitions>
+    </v:HistoriesLayout.ColumnDefinitions>
     
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <Grid RowDefinitions="24,*" Grid.IsSharedSizeScope="True">
@@ -264,5 +264,5 @@
         </ContentControl.DataTemplates>
       </ContentControl>
     </Grid>
-  </v:LayoutableGrid>
+  </v:HistoriesLayout>
 </UserControl>
