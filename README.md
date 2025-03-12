@@ -79,7 +79,7 @@ For **Windows** users:
   ```
 > [!NOTE]
 > `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
-* You can install the latest stable by `scoope` with follow commands:
+* You can install the latest stable by `scoop` with follow commands:
   ```shell
   scoop bucket add extras
   scoop install sourcegit
