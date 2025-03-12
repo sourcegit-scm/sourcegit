@@ -148,14 +148,14 @@ namespace SourceGit.ViewModels
         {
             if (commits.Count == 0)
             {
-                _repo.SearchResultSelectedCommit = null;
+                _repo.SelectedSearchedCommit = null;
                 DetailContext = null;
             }
             else if (commits.Count == 1)
             {
                 var commit = (commits[0] as Models.Commit)!;
-                if (_repo.SearchResultSelectedCommit == null || _repo.SearchResultSelectedCommit.SHA != commit.SHA)
-                    _repo.SearchResultSelectedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
+                if (_repo.SelectedSearchedCommit == null || _repo.SelectedSearchedCommit.SHA != commit.SHA)
+                    _repo.SelectedSearchedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
 
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
@@ -173,7 +173,7 @@ namespace SourceGit.ViewModels
             }
             else if (commits.Count == 2)
             {
-                _repo.SearchResultSelectedCommit = null;
+                _repo.SelectedSearchedCommit = null;
 
                 var end = commits[0] as Models.Commit;
                 var start = commits[1] as Models.Commit;
@@ -181,7 +181,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                _repo.SearchResultSelectedCommit = null;
+                _repo.SelectedSearchedCommit = null;
                 DetailContext = commits.Count;
             }
         }
@@ -599,7 +599,7 @@ namespace SourceGit.ViewModels
                     var head = _commits.Find(x => x.SHA == current.Head);
                     if (head == null)
                     {
-                        _repo.SearchResultSelectedCommit = null;
+                        _repo.SelectedSearchedCommit = null;
                         head = new Commands.QuerySingleCommit(_repo.FullPath, current.Head).Result();
                         if (head != null)
                             DetailContext = new RevisionCompare(_repo.FullPath, commit, head);

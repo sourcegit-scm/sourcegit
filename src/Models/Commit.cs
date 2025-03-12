@@ -8,6 +8,7 @@ namespace SourceGit.Models
 {
     public enum CommitSearchMethod
     {
+        BySHA = 0,
         ByAuthor,
         ByCommitter,
         ByMessage,

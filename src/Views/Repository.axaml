@@ -504,7 +504,7 @@
                  Margin="0,8,0,0"
                  ItemsSource="{Binding SearchedCommits}"
                  SelectionMode="Single"
-                 SelectedItem="{Binding SearchResultSelectedCommit, Mode=TwoWay}"
+                 SelectedItem="{Binding SelectedSearchedCommit, Mode=TwoWay}"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Background="{DynamicResource Brush.Contents}"
