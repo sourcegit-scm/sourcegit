@@ -2376,17 +2376,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var files = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
+                _worktreeFiles = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (!IsSearchingCommitsByFilePath())
-                        return;
-
-                    _worktreeFiles = new List<string>();
-                    foreach (var f in files)
-                        _worktreeFiles.Add(f);
-
-                    CalcMatchedFilesForSearching();
+                    if (IsSearchingCommitsByFilePath())
+                        CalcMatchedFilesForSearching();
                 });
             });
         }

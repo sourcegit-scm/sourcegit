@@ -814,14 +814,11 @@ namespace SourceGit.ViewModels
                     Task.Run(() =>
                     {
                         var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
-                        var filesList = new List<string>();
-                        filesList.AddRange(files);
-
                         Dispatcher.UIThread.Invoke(() =>
                         {
                             if (sha == Commit.SHA)
                             {
-                                _revisionFiles = filesList;
+                                _revisionFiles = files;
                                 if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
                                     CalcRevisionFileSearchSuggestion();
                             }
