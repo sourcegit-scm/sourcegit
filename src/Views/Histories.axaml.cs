@@ -22,9 +22,8 @@ namespace SourceGit.Views
 
         protected override Type StyleKeyOverride => typeof(Grid);
 
-        public override void ApplyTemplate()
+        public HistoriesLayout()
         {
-            base.ApplyTemplate();
             RefreshLayout();
         }
 
