@@ -482,13 +482,13 @@
                     Padding="4,0"
                     Background="Transparent"
                     BorderThickness="0"
-                    SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
+                    SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">            
             <ComboBox.Items>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}" FontSize="12"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}" FontSize="12"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByCommitter}" FontSize="12"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}" FontSize="12"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}" FontSize="12"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByCommitter}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}"/>
             </ComboBox.Items>
           </ComboBox>
 
@@ -496,12 +496,13 @@
                     Margin="4,0,0,0"
                     IsChecked="{Binding OnlySearchCommitsInCurrentBranch, Mode=TwoWay}"
                     IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-            <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}" FontSize="12"/>
+            <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}"/>
           </CheckBox>
         </StackPanel>
 
         <ListBox Grid.Row="2"
                  Margin="0,8,0,0"
+                 Padding="4"
                  ItemsSource="{Binding SearchedCommits}"
                  SelectionMode="Single"
                  SelectedItem="{Binding SelectedSearchedCommit, Mode=TwoWay}"
@@ -510,12 +511,14 @@
                  Background="{DynamicResource Brush.Contents}"
                  CornerRadius="4"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Grid.IsSharedSizeScope="True">
           <ListBox.Styles>
             <Style Selector="ListBoxItem">
               <Setter Property="Margin" Value="0"/>
               <Setter Property="Padding" Value="0"/>
-              <Setter Property="Height" Value="50"/>
+              <Setter Property="Height" Value="28"/>
+              <Setter Property="CornerRadius" Value="4"/>
             </Style>
           </ListBox.Styles>
 
@@ -527,18 +530,22 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="m:Commit">
-              <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent">
-                <Grid RowDefinitions="Auto,*">
-                  <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
-                    <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                    <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0" ClipToBounds="True"/>
-                    <TextBlock Grid.Column="2" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-                    <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-                  </Grid>
-
-                  <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
-                </Grid>
-              </Border>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="24"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="SearchCommitTimeColumn"/>
+                </Grid.ColumnDefinitions>
+                <v:Avatar Grid.Column="0" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Subject}" Margin="2,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="2"
+                           Classes="primary"
+                           Margin="4,0"
+                           Foreground="{DynamicResource Brush.FG2}"
+                           Text="{Binding CommitterTimeShortStr}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"/>
+              </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
