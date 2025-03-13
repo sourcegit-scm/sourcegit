@@ -26,7 +26,5 @@ namespace SourceGit.Commands
                 builder.Append(' ').Append('"').Append(f).Append('"');
             Args = builder.ToString();
         }
-
-        public override bool IsLockingIndex => true;
     }
 }

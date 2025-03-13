@@ -22,8 +22,6 @@ namespace SourceGit.Commands
             return _changes;
         }
 
-        public override bool IsLockingIndex => true;
-
         protected override void OnReadline(string line)
         {
             var match = REG_FORMAT().Match(line);

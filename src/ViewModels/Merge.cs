@@ -61,7 +61,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, SelectedMode.Arg, SetProgressDescription, OnIndexLockExists).Exec();
+                new Commands.Merge(_repo.FullPath, _sourceName, SelectedMode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

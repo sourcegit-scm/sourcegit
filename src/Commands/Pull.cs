@@ -4,10 +4,9 @@ namespace SourceGit.Commands
 {
     public class Pull : Command
     {
-        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, Action<string> outputHandler, Action onIndexLockExists = null)
+        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
-            _onIndexLockExists = onIndexLockExists;
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
@@ -22,21 +21,12 @@ namespace SourceGit.Commands
 
             Args += $"{remote} {branch}";
         }
-        
-        public override bool IsLockingIndex => true;
 
         protected override void OnReadline(string line)
         {
             _outputHandler?.Invoke(line);
         }
 
-        protected override void OnIndexLockExistsChanged(bool exists)
-        {
-            if (exists)
-                _onIndexLockExists?.Invoke();
-        }
-
         private readonly Action<string> _outputHandler;
-        private readonly Action _onIndexLockExists;
     }
 }

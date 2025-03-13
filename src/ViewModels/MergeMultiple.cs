@@ -53,8 +53,7 @@ namespace SourceGit.ViewModels
                     ConvertTargetToMergeSources(),
                     AutoCommit,
                     Strategy.Arg,
-                    SetProgressDescription,
-                    OnIndexLockExists).Exec();
+                    SetProgressDescription).Exec();
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

@@ -171,7 +171,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         SetProgressDescription($"Merge {_selectedBranch.FriendlyName} into {_current.Name} ...");
-                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "", SetProgressDescription, OnIndexLockExists).Exec();
+                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "", SetProgressDescription).Exec();
                     }
                 }
                 else
@@ -183,8 +183,7 @@ namespace SourceGit.ViewModels
                         _selectedBranch.Name,
                         UseRebase,
                         NoTags,
-                        SetProgressDescription,
-                        OnIndexLockExists).Exec();
+                        SetProgressDescription).Exec();
                 }
 
                 if (rs && needPopStash)

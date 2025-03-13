@@ -38,11 +38,6 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public bool TraitErrorAsOutput { get; set; } = false;
 
-        public virtual bool IsLockingIndex
-        {
-            get => false;
-        }
-        
         public bool Exec()
         {
             var start = CreateGitStartInfo();
@@ -101,24 +96,6 @@ namespace SourceGit.Commands
 
                 errs.Add(e.Data);
             };
-
-            if (IsLockingIndex)
-            {
-                // Check if index.lock file exists and wait until it's gone
-                // This is to prevent git from running multiple commands at the same time
-                var lockFilePath = System.IO.Path.Combine(WorkingDirectory, ".git", "index.lock");
-                if (System.IO.File.Exists(lockFilePath))
-                {
-                    OnIndexLockExistsChanged(true);
-
-                    while (System.IO.File.Exists(lockFilePath))
-                    {
-                        System.Threading.Thread.Sleep(500);
-                    }
-                
-                    OnIndexLockExistsChanged(false);
-                }
-            }
 
             try
             {
@@ -187,11 +164,6 @@ namespace SourceGit.Commands
         }
 
         protected virtual void OnReadline(string line)
-        {
-            // Implemented by derived class
-        }
-        
-        protected virtual void OnIndexLockExistsChanged(bool exists)
         {
             // Implemented by derived class
         }

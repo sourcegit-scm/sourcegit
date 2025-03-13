@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
                     }
 
                     SetProgressDescription($"Create new branch '{fixedName}'");
-                    succ = new Commands.Checkout(_repo.FullPath).Branch(fixedName, _baseOnRevision, SetProgressDescription, OnIndexLockExists);
+                    succ = new Commands.Checkout(_repo.FullPath).Branch(fixedName, _baseOnRevision, SetProgressDescription);
 
                     if (needPopStash)
                     {

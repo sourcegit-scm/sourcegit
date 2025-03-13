@@ -4,10 +4,9 @@ namespace SourceGit.Commands
 {
     public class Push : Command
     {
-        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, Action<string> onProgress, Action onIndexLockExists)
+        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, Action<string> onProgress)
         {
             _outputHandler = onProgress;
-            _onIndexLockExists = onIndexLockExists;
 
             WorkingDirectory = repo;
             Context = repo;
@@ -40,20 +39,11 @@ namespace SourceGit.Commands
             Args += $"{remote} refs/tags/{tag}";
         }
 
-        public override bool IsLockingIndex => true;
-
         protected override void OnReadline(string line)
         {
             _outputHandler?.Invoke(line);
         }
-        
-        protected override void OnIndexLockExistsChanged(bool exists)
-        {
-            if (exists)
-                _onIndexLockExists?.Invoke();
-        }
 
         private readonly Action<string> _outputHandler = null;
-        private readonly Action _onIndexLockExists;
     }
 }
