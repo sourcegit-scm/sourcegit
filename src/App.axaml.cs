@@ -181,8 +181,8 @@ namespace SourceGit
                 app._fontsOverrides = null;
             }
 
-            defaultFont = ProcessFontString(defaultFont);
-            monospaceFont = ProcessFontString(monospaceFont);
+            defaultFont = FixFontFamilyName(defaultFont);
+            monospaceFont = FixFontFamilyName(monospaceFont);
 
             var resDic = new ResourceDictionary();
             if (!string.IsNullOrEmpty(defaultFont))
@@ -440,26 +440,22 @@ namespace SourceGit
             return true;
         }
 
-        private static string ProcessFontString(string input)
+        private static string FixFontFamilyName(string input)
         {
-            if (string.IsNullOrEmpty(input)) return string.Empty;
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
 
             var parts = input.Split(',');
-            var result = new StringBuilder();
-            var isFirst = true;
+            var trimmed = new List<string>();
 
             foreach (var part in parts)
             {
-                var trimmed = part.Trim();
-                if (!string.IsNullOrEmpty(trimmed))
-                {
-                    if (!isFirst) result.Append(',');
-                    result.Append(trimmed);
-                    isFirst = false;
-                }
+                var t = part.Trim();
+                if (!string.IsNullOrEmpty(t))
+                    trimmed.Add(t);
             }
 
-            return result.ToString();
+            return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
         private bool TryLaunchAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
