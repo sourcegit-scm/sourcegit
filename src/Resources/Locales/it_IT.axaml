@@ -91,7 +91,6 @@
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Non fare nulla</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stasha e Ripristina</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Aggiungi sorgente al messaggio di commit</x:String>
@@ -208,7 +207,6 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout del Branch Creato</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Non Fare Nulla</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stasha e Ripristina</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nome Nuovo Branch:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Inserisci il nome del branch.</x:String>
@@ -523,7 +521,6 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Non fare nulla</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stasha e Riapplica</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Recupera senza tag</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>

@@ -91,7 +91,6 @@
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交資訊中追加來源資訊</x:String>
@@ -208,7 +207,6 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成後切換到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名稱:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">輸入分支名稱。</x:String>
@@ -523,7 +521,6 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">不拉取遠端標籤</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>

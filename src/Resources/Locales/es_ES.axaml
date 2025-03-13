@@ -91,7 +91,6 @@
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Rama:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">No Hacer Nada</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Añadir fuente al mensaje de commit</x:String>
@@ -208,7 +207,6 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout de la rama creada</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">No Hacer Nada</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nombre de la Nueva Rama:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Introduzca el nombre de la rama.</x:String>
@@ -524,7 +522,6 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">No Hacer Nada</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch sin etiquetas</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>

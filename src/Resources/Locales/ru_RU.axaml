@@ -91,7 +91,6 @@
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для ревизии сообщения</x:String>
@@ -209,7 +208,6 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Проверить созданную ветку</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Имя новой ветки:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Введите имя ветки.</x:String>
@@ -524,7 +522,6 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Забрать без меток</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Внешний репозиторий:</x:String>

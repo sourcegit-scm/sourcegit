@@ -107,7 +107,6 @@
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Nada</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Adicionar origem à mensagem de commit</x:String>
@@ -215,7 +214,6 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checar o branch criado</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Não Fazer Nada</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nome do Novo Branch:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Insira o nome do branch.</x:String>
@@ -506,7 +504,6 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Não Fazer Nada</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Buscar sem tags</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
