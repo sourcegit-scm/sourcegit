@@ -198,10 +198,6 @@ namespace SourceGit.Commands
                 start.Environment.Add("LC_ALL", "C");
             }
 
-            // Fix macOS `PATH` env
-            if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
-                start.Environment.Add("PATH", Native.OS.CustomPathEnv);
-
             // Force using this app as git editor.
             switch (Editor)
             {

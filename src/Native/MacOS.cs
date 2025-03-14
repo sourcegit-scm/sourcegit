@@ -18,9 +18,22 @@ namespace SourceGit.Native
                 DisableDefaultApplicationMenuItems = true,
             });
 
+            // Fix `PATH` env on macOS.
+            var path = Environment.GetEnvironmentVariable("PATH");
+            if (string.IsNullOrEmpty(path))
+                path = "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+            else if (!path.Contains("/opt/homebrew/", StringComparison.Ordinal))
+                path = "/opt/homebrew/bin:/opt/homebrew/sbin:" + path;
+
             var customPathFile = Path.Combine(OS.DataDir, "PATH");
             if (File.Exists(customPathFile))
-                OS.CustomPathEnv = File.ReadAllText(customPathFile).Trim();
+            {
+                var env = File.ReadAllText(customPathFile).Trim();
+                if (!string.IsNullOrEmpty(env))
+                    path = env;
+            }            
+
+            Environment.SetEnvironmentVariable("PATH", path);
         }
 
         public string FindGitExecutable()

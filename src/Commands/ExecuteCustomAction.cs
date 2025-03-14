@@ -17,10 +17,6 @@ namespace SourceGit.Commands
             start.CreateNoWindow = true;
             start.WorkingDirectory = repo;
 
-            // Fix macOS `PATH` env
-            if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
-                start.Environment.Add("PATH", Native.OS.CustomPathEnv);
-
             try
             {
                 Process.Start(start);
@@ -43,10 +39,6 @@ namespace SourceGit.Commands
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
             start.WorkingDirectory = repo;
-
-            // Fix macOS `PATH` env
-            if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
-                start.Environment.Add("PATH", Native.OS.CustomPathEnv);
 
             var proc = new Process() { StartInfo = start };
             var builder = new StringBuilder();
