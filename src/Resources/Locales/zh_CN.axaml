@@ -447,6 +447,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">粘贴</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">刚刚</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0}分钟前</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">1小时前</x:String>
   <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0}小时前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}天前</x:String>

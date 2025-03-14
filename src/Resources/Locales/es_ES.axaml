@@ -447,6 +447,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">Pegar</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Justo ahora</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Hace {0} minutos</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">Hace 1 hora</x:String>
   <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">Hace {0} horas</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ayer</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">Hace {0} días</x:String>

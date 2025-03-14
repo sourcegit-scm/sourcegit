@@ -448,6 +448,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">Incolla</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Proprio ora</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} minuti fa</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">1 ora fa</x:String>
   <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} ore fa</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ieri</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} giorni fa</x:String>

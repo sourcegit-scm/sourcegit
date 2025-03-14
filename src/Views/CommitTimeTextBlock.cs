@@ -129,7 +129,10 @@ namespace SourceGit.Views
                 return App.Text("Period.MinutesAgo", (int)span.TotalMinutes);
 
             if (span.TotalDays < 1)
-                return App.Text("Period.HoursAgo", (int)span.TotalHours);
+            {
+                var hours = (int)span.TotalHours;
+                return hours == 1 ? App.Text("Period.HourAgo") : App.Text("Period.HoursAgo", hours);
+            }
 
             var lastDay = now.AddDays(-1).Date;
             if (localTime >= lastDay)

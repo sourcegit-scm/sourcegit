@@ -443,6 +443,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">Einfügen</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Gerade eben</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Vor {0} Minuten</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">Vor 1 Stunde</x:String>
   <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">Vor {0} Stunden</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Gestern</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">Vor {0} Tagen</x:String>
