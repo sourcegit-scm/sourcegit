@@ -96,7 +96,7 @@ namespace SourceGit.ViewModels
                     foreach (var remote in remotes)
                     {
                         SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
-                        new Commands.Push(_repo.FullPath, remote.Name, _tagName, false).Exec();
+                        new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Exec();
                     }
                 }
 
