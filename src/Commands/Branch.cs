@@ -62,7 +62,7 @@
             if (exists)
             {
                 cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-                cmd.Args = $"push {remote} --delete {name}";
+                cmd.Args = $"push {remote} --delete refs/heads/{name}";
             }
             else
             {
