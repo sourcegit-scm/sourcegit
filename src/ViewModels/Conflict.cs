@@ -41,10 +41,21 @@
             private set;
         }
 
+        public Models.Change Change 
+        {
+            get => _change;
+        }
+
+        public Repository Repository 
+        {
+            get => _repo;
+        }
+
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
             _wc = wc;
             _change = change;
+            _repo = repo;
 
             IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).ReadToEnd().IsSuccess;
 
@@ -98,5 +109,6 @@
 
         private WorkingCopy _wc = null;
         private Models.Change _change = null;
+        private Repository _repo = null;
     }
 }
