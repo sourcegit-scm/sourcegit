@@ -166,7 +166,7 @@
                   <Grid Grid.Column="1"
                         ColumnDefinitions="20,*"
                         Background="Transparent"
-                        ToolTip.Tip="{Binding Author, Converter={x:Static c:StringConverters.UserToString}}">
+                        ToolTip.Tip="{Binding Author}">
                     <v:Avatar Grid.Column="0"
                               Width="16" Height="16"
                               Margin="4,0,0,0"
