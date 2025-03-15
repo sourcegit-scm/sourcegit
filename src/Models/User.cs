@@ -43,6 +43,11 @@ namespace SourceGit.Models
             return _caches.GetOrAdd(data, key => new User(key));
         }
 
+        public override string ToString()
+        {
+            return $"{Name} <{Email}>";
+        }
+
         private static ConcurrentDictionary<string, User> _caches = new ConcurrentDictionary<string, User>();
         private readonly int _hash;
     }
