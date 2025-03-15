@@ -81,5 +81,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<string, bool> ContainsSpaces =
             new FuncValueConverter<string, bool>(v => v != null && v.Contains(' '));
+        
+        public static readonly FuncValueConverter<Models.User, string> UserToString =
+            new FuncValueConverter<Models.User, string>(v => v == null ? string.Empty : $"{v.Name} <{v.Email}>");
     }
 }
