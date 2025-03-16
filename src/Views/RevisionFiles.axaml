@@ -46,7 +46,7 @@
                HorizontalOffset="-8" VerticalAlignment="-8">
           <Popup.IsOpen>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="RevisionFileSearchSuggestion" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+              <Binding Path="RevisionFileSearchSuggestion" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
               <Binding Path="$parent[Window].IsActive"/>
             </MultiBinding>
           </Popup.IsOpen>

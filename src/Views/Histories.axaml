@@ -126,7 +126,11 @@
                   </Grid.ColumnDefinitions>
 
                   <!-- Subject & REFS -->
-                  <Border Grid.Column="0" Padding="{Binding Margin}" ClipToBounds="True">
+                  <Border Grid.Column="0"
+                          Padding="{Binding Margin}"
+                          ClipToBounds="True"
+                          Background="Transparent"
+                          ToolTip.Tip="{Binding Subject}">
                     <Grid ColumnDefinitions="Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
                       <v:CommitStatusIndicator Grid.Column="0" 
                                                CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
@@ -159,7 +163,10 @@
                   </Border>
 
                   <!-- Author -->
-                  <Grid Grid.Column="1" ColumnDefinitions="20,*" IsHitTestVisible="False">
+                  <Grid Grid.Column="1"
+                        ColumnDefinitions="20,*"
+                        Background="Transparent"
+                        ToolTip.Tip="{Binding Author}">
                     <v:Avatar Grid.Column="0"
                               Width="16" Height="16"
                               Margin="4,0,0,0"
