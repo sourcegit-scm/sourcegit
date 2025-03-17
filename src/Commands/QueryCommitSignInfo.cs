@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SourceGit.Commands
+﻿namespace SourceGit.Commands
 {
     public class QueryCommitSignInfo : Command
     {
@@ -9,7 +7,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
 
-            const string baseArgs = "show --no-show-signature --pretty=format:\"%G?%n%GS%n%GK\" -s";
+            const string baseArgs = "show --no-show-signature --format=%G?%n%GS%n%GK -s";
             const string fakeSignersFileArg = "-c gpg.ssh.allowedSignersFile=/dev/null";
             Args = $"{(useFakeSignersFile ? fakeSignersFileArg : string.Empty)} {baseArgs} {sha}";
         }
