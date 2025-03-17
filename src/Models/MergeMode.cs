@@ -6,7 +6,7 @@
         [
             new MergeMode("Default", "Fast-forward if possible", ""),
             new MergeMode("No Fast-forward", "Always create a merge commit", "--no-ff"),
-            new MergeMode("Squash", "Use '--squash'", "--squash"),
+            new MergeMode("Squash", "Squash merge", "--squash"),
             new MergeMode("Don't commit", "Merge without commit", "--no-ff --no-commit"),
         ];
 

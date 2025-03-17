@@ -15,7 +15,7 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public Models.MergeMode SelectedMode
+        public Models.MergeMode Mode
         {
             get;
             set;
@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            SelectedMode = AutoSelectMergeMode();
+            Mode = AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            SelectedMode = AutoSelectMergeMode();
+            Mode = AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            SelectedMode = AutoSelectMergeMode();
+            Mode = AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -61,7 +61,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, SelectedMode.Arg, SetProgressDescription).Exec();
+                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });
