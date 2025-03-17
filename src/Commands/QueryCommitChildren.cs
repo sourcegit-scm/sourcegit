@@ -9,7 +9,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             _commit = commit;
-            Args = $"rev-list -{max} --parents --branches --remotes --ancestry-path={commit} ^{commit}";
+            Args = $"rev-list -{max} --parents --branches --remotes --ancestry-path ^{commit}";
         }
 
         public List<string> Result()
