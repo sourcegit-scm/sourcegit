@@ -55,7 +55,7 @@ This project incorporates components from the following third parties:
 - **License**: SIL Open Font License, Version 1.1
 - **License Link**: https://github.com/JetBrains/JetBrainsMono/blob/v2.304/OFL.txt
 
-## Gramar Files
+## Grammar Files
 
 ### haxe-TmLanguage
 
