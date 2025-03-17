@@ -508,7 +508,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Удалить внешний репозиторий</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Цель:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Удалить рабочий каталог</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Информация об обрезке рабочего каталога в «$GIT_DIR/worktrees»</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Информация об обрезке рабочего каталога в «$GIT_COMMON_DIR/worktrees»</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Забрать</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Ветка внешнего репозитория:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Извлечь все ветки</x:String>

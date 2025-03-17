@@ -45,6 +45,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
+        public string GitCommonDir
+        {
+            get => _gitCommonDir;
+            set => SetProperty(ref _gitCommonDir, value);
+        }
+
         public Models.RepositorySettings Settings
         {
             get => _settings;
@@ -429,11 +435,12 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
-        public Repository(bool isBare, string path, string gitDir)
+        public Repository(bool isBare, string path, string gitDir, string gitCommonDir)
         {
             IsBare = isBare;
             FullPath = path;
             GitDir = gitDir;
+            GitCommonDir = gitCommonDir;
         }
 
         public void Open()
@@ -2437,6 +2444,7 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
+        private string _gitCommonDir = string.Empty;
         private Models.RepositorySettings _settings = null;
         private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;

@@ -476,7 +476,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Élaguer une branche distant</x:String> <!-- If it is indeed about a branch -->
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Cible :</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Élaguer les Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve"> Élaguer les information de worktree dans `$GIT_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve"> Élaguer les information de worktree dans `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branche distante :</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch toutes les branches</x:String>
