@@ -201,3 +201,7 @@ dotnet run --project src/SourceGit.csproj
 Thanks to all the people who contribute.
 
 [![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
+
+## Third-Party Components
+
+For detailed license information, see [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
