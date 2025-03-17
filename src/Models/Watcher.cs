@@ -8,12 +8,12 @@ namespace SourceGit.Models
 {
     public class Watcher : IDisposable
     {
-        public Watcher(IRepository repo)
+        public Watcher(IRepository repo, string fullpath, string gitDir)
         {
             _repo = repo;
 
             _wcWatcher = new FileSystemWatcher();
-            _wcWatcher.Path = _repo.FullPath;
+            _wcWatcher.Path = fullpath;
             _wcWatcher.Filter = "*";
             _wcWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
             _wcWatcher.IncludeSubdirectories = true;
@@ -24,7 +24,7 @@ namespace SourceGit.Models
             _wcWatcher.EnableRaisingEvents = true;
 
             _repoWatcher = new FileSystemWatcher();
-            _repoWatcher.Path = _repo.GitDirForWatcher;
+            _repoWatcher.Path = gitDir;
             _repoWatcher.Filter = "*";
             _repoWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
             _repoWatcher.IncludeSubdirectories = true;

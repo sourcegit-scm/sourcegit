@@ -45,21 +45,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
-        public string GitDirForWatcher
-        {
-            get
-            {
-                // Only try to get `$GIT_COMMON_DIR` if this repository looks like a worktree.
-                if (_gitDir.Replace("\\", "/").IndexOf(".git/worktrees/", StringComparison.Ordinal) > 0)
-                {
-                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
-                    return string.IsNullOrEmpty(commonDir) ? _gitDir : commonDir;
-                }
-
-                return _gitDir;
-            }
-        }
-
         public Models.RepositorySettings Settings
         {
             get => _settings;
@@ -472,7 +457,16 @@ namespace SourceGit.ViewModels
 
             try
             {
-                _watcher = new Models.Watcher(this);
+                // For worktrees, we need to watch the $GIT_COMMON_DIR instead of the $GIT_DIR.
+                var gitDirForWatcher = _gitDir;
+                if (_gitDir.Replace("\\", "/").IndexOf(".git/worktrees/", StringComparison.Ordinal) > 0)
+                {
+                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
+                    if (!string.IsNullOrEmpty(commonDir))
+                        gitDirForWatcher = commonDir;
+                }
+
+                _watcher = new Models.Watcher(this, _fullpath, gitDirForWatcher);
             }
             catch (Exception ex)
             {
