@@ -871,7 +871,7 @@ namespace SourceGit.ViewModels
                         return;
 
                     if (_repo.CanCreatePopup())
-                        _repo.ShowAndStartPopup(new Merge(_repo, b, current.Name));
+                        _repo.ShowAndStartPopup(new Merge(_repo, b, current.Name, true));
 
                     e.Handled = true;
                 };
@@ -972,7 +972,7 @@ namespace SourceGit.ViewModels
                 merge.Click += (_, e) =>
                 {
                     if (_repo.CanCreatePopup())
-                        _repo.ShowPopup(new Merge(_repo, branch, current.Name));
+                        _repo.ShowPopup(new Merge(_repo, branch, current.Name, false));
                     e.Handled = true;
                 };
                 submenu.Items.Add(merge);
@@ -1060,7 +1060,7 @@ namespace SourceGit.ViewModels
             merge.Click += (_, e) =>
             {
                 if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new Merge(_repo, branch, current.Name));
+                    _repo.ShowPopup(new Merge(_repo, branch, current.Name, false));
                 e.Handled = true;
             };
 

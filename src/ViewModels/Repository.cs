@@ -1516,7 +1516,7 @@ namespace SourceGit.ViewModels
                                 return;
 
                             if (CanCreatePopup())
-                                ShowAndStartPopup(new Merge(this, b, branch.Name));
+                                ShowAndStartPopup(new Merge(this, b, branch.Name, true));
 
                             e.Handled = true;
                         };
@@ -1595,7 +1595,7 @@ namespace SourceGit.ViewModels
                     merge.Click += (_, e) =>
                     {
                         if (CanCreatePopup())
-                            ShowPopup(new Merge(this, branch, _currentBranch.Name));
+                            ShowPopup(new Merge(this, branch, _currentBranch.Name, false));
                         e.Handled = true;
                     };
 
@@ -1876,7 +1876,7 @@ namespace SourceGit.ViewModels
                 merge.Click += (_, e) =>
                 {
                     if (CanCreatePopup())
-                        ShowPopup(new Merge(this, branch, _currentBranch.Name));
+                        ShowPopup(new Merge(this, branch, _currentBranch.Name, false));
                     e.Handled = true;
                 };
 

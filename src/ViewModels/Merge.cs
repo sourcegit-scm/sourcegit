@@ -21,14 +21,14 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public Merge(Repository repo, Models.Branch source, string into)
+        public Merge(Repository repo, Models.Branch source, string into, bool forceFastForward)
         {
             _repo = repo;
             _sourceName = source.FriendlyName;
 
             Source = source;
             Into = into;
-            Mode = AutoSelectMergeMode();
+            Mode = forceFastForward ? Models.MergeMode.Supported[1] : AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -72,12 +72,14 @@ namespace SourceGit.ViewModels
             var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
             if (string.IsNullOrEmpty(config))
                 return Models.MergeMode.Supported[0];
-            if (config.Equals("--no-ff", StringComparison.Ordinal))
+            if (config.Equals("--ff-only", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[1];
-            if (config.Equals("--squash", StringComparison.Ordinal))
+            if (config.Equals("--no-ff", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[2];
-            if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
+            if (config.Equals("--squash", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[3];
+            if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
+                return Models.MergeMode.Supported[4];
 
             return Models.MergeMode.Supported[0];
         }
