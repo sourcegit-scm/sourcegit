@@ -29,11 +29,6 @@
   
   <x:String x:Key="Text.About" xml:space="preserve">Sobre</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Sobre o SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Construído com </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Gráfico desenhado por </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor de Texto de </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Fontes monoespaçadas de </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Código-fonte pode ser encontrado em </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI Livre e de Código Aberto</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Adicionar Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">O que Checar:</x:String>

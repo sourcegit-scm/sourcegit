@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">О программе</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">О SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Сборка с </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Диаграмма отображается с помощью</x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Текстовый редактор от </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Моноширинные шрифты взяты из </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Исходный код можно найти по адресу </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Бесплатный графический клиент Git с исходным кодом</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Добавить рабочий каталог</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Переключиться на:</x:String>

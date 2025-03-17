@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">關於</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於 SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 專案依賴於 </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• 圖表繪製元件來自 </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文字編輯器使用 </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等寬字型來自於 </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• 專案原始碼網址 </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">開源免費的 Git 客戶端</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">簽出分支方式:</x:String>

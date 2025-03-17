@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">Acerca de</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Acerca de SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Construido con </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• El gráfico es renderizado por </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor de texto de </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Las fuentes monoespaciadas provienen de </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• El código fuente se puede encontrar en </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI de código abierto y gratuito</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Agregar Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Qué Checkout:</x:String>

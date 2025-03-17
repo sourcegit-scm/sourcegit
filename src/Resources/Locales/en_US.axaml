@@ -1,11 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Build with </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Chart is rendered by </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor from </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Source code can be found at </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
