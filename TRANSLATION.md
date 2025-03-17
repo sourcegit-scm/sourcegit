@@ -96,13 +96,13 @@
 
 </details>
 
-### it_IT.axaml: 99.87%
+### it_IT.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Preferences.Appearance.EditorTabWidth
+
 
 </details>
 
