@@ -25,18 +25,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Использовать OpenAI для создания сообщения о ревизии</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">ПРИМЕНИТЬ КАК СООБЩЕНИЕ РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Исправить </x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Ошибка</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Выдает ошибки и отказывается применять заплатку</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Все ошибки</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Аналогично «ошибке», но показывает больше</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Файл заплатки:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Выберите файл .patch для применения</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Игнорировать изменения пробелов</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Нет предупреждений</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Отключить предупреждения о пробелах в конце</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Применить заплатку</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Предупреждать</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Выдавать предупреждения о нескольких таких ошибках, но применять</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Пробел:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Отложить</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Удалить после применения</x:String>

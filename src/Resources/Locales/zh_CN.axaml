@@ -25,18 +25,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用AI助手生成提交信息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用本次生成</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">应用补丁(apply)</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">错误</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">输出错误，并终止应用补丁</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">更多错误</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">与【错误】级别相似，但输出内容更多</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">补丁文件 ：</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">选择补丁文件</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">忽略</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">关闭所有警告</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">应用补丁</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">警告</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">应用补丁，输出关于空白符的警告</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白符号处理 ：</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">应用贮藏</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">在成功应用后丢弃该贮藏</x:String>

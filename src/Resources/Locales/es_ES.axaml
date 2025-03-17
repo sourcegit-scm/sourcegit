@@ -25,18 +25,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR CÓMO MENSAJE DE COMMIT</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Parche</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Genera errores y se niega a aplicar el parche</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Error Todo</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similar a 'error', pero muestra más</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo del Parche:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar cambios de espacios en blanco</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Sin Advertencia</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Desactiva la advertencia de espacios en blanco al final</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Parche</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Advertencia</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Genera advertencias para algunos de estos errores, pero aplica</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espacios en Blanco:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Aplicar Stash</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Borrar después de aplicar</x:String>

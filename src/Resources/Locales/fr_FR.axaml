@@ -23,18 +23,10 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistant IA</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utiliser l'IA pour générer un message de commit</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Appliquer</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Erreur</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Soulever les erreurs et refuser d'appliquer le patch</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Toutes les erreurs</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similaire à 'Erreur', mais plus détaillé</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Fichier de patch :</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selectionner le fichier .patch à appliquer</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorer les changements d'espaces blancs</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Pas d'avertissement</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Désactiver l'avertissement sur les espaces blancs terminaux</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Appliquer le patch</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Avertissement</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Affiche des avertissements pour ce type d'erreurs tout en appliquant le patch</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espaces blancs :</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">Archiver...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">Enregistrer l'archive sous :</x:String>

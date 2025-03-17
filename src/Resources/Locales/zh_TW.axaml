@@ -25,18 +25,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">套用為提交訊息</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">錯誤</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">輸出錯誤，並中止套用修補檔</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">更多錯誤</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">與 [錯誤] 級別相似，但輸出更多內容</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">修補檔:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">選擇修補檔</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符號</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">忽略</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">關閉所有警告</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">套用修補檔</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">警告</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">套用修補檔，輸出關於空白字元的警告</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白字元處理:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">套用擱置變更</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">套用擱置變更後刪除</x:String>
