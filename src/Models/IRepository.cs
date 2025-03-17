@@ -4,6 +4,7 @@
     {
         string FullPath { get; set; }
         string GitDir { get; set; }
+        string GitCommonDir { get; set; }
 
         void RefreshBranches();
         void RefreshWorktrees();

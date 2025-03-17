@@ -509,7 +509,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote löschen</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Worktrees löschen</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Worktree Informationen in `$GIT_DIR/worktrees` löschen</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Worktree Informationen in `$GIT_COMMON_DIR/worktrees` löschen</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote-Branch:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Alle Branches fetchen</x:String>

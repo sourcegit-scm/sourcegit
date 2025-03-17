@@ -282,6 +282,7 @@ namespace SourceGit.ViewModels
 
             var isBare = new Commands.IsBareRepository(node.Id).Result();
             var gitDir = node.Id;
+            var gitCommonDir = gitDir;
             if (!isBare)
             {
                 gitDir = new Commands.QueryGitDir(node.Id).Result();
@@ -291,9 +292,12 @@ namespace SourceGit.ViewModels
                     App.RaiseException(ctx, "Given path is not a valid git repository!");
                     return;
                 }
+                gitCommonDir = new Commands.QueryGitCommonDir(node.Id).Result();
+                if (string.IsNullOrEmpty(gitCommonDir))
+                    gitCommonDir = gitDir;
             }
 
-            var repo = new Repository(isBare, node.Id, gitDir);
+            var repo = new Repository(isBare, node.Id, gitDir, gitCommonDir);
             repo.Open();
 
             if (page == null)

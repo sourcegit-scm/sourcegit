@@ -515,7 +515,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理遠端已刪除分支</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">清理工作區</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在 `$GIT_DIR/worktrees` 中的無效工作區資訊</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在 `$GIT_COMMON_DIR/worktrees` 中的無效工作區資訊</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉取 (pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">拉取遠端中的所有分支</x:String>
