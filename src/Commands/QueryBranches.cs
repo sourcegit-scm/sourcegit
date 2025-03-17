@@ -24,7 +24,7 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return branches;
 
-            var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             var remoteBranches = new HashSet<string>();
             foreach (var line in lines)
             {

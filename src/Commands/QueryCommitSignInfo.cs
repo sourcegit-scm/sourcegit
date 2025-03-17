@@ -20,11 +20,11 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return null;
 
-            var raw = rs.StdOut.Trim();
+            var raw = rs.StdOut.Trim().ReplaceLineEndings("\n");
             if (raw.Length <= 1)
                 return null;
 
-            var lines = raw.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
+            var lines = raw.Split('\n');
             return new Models.CommitSignInfo()
             {
                 VerifyResult = lines[0][0],

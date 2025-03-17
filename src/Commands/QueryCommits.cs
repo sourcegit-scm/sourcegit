@@ -10,7 +10,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --no-show-signature --decorate=full --pretty=format:%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s {limits}";
+            Args = $"log --no-show-signature --decorate=full --format=%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s {limits}";
             _findFirstMerged = needFindHead;
         }
 
@@ -35,7 +35,7 @@ namespace SourceGit.Commands
                 var argsBuilder = new StringBuilder();
                 argsBuilder.Append(search);
 
-                var words = filter.Split(new[] { ' ', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                var words = filter.Split([' ', '\t', '\r'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
                 {
                     var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
@@ -124,7 +124,7 @@ namespace SourceGit.Commands
             Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
 
             var rs = ReadToEnd();
-            var shas = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             if (shas.Length == 0)
                 return;
 
