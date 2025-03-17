@@ -2,6 +2,48 @@
 
 This project incorporates components from the following third parties:
 
+## AvaloniaUI
+
+- **Source**: https://github.com/AvaloniaUI/Avalonia
+- **Version**: 11.2.5
+- **License**: MIT License
+- **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
+
+## AvaloniaEdit
+
+- **Source**: https://github.com/AvaloniaUI/AvaloniaEdit
+- **Version**: 11.2.0
+- **License**: MIT License
+- **License Link**: https://github.com/AvaloniaUI/AvaloniaEdit/blob/master/LICENSE
+
+## LiveChartsCore.SkiaSharpView.Avalonia
+
+- **Source**: https://github.com/beto-rodriguez/LiveCharts2
+- **Version**: 2.0.0-rc5.4
+- **License**: MIT License
+- **License Link**: https://github.com/beto-rodriguez/LiveCharts2/blob/master/LICENSE
+
+## TextMateSharp
+
+- **Source**: https://github.com/danipen/TextMateSharp
+- **Version**: 1.0.66
+- **License**: MIT License
+- **License Link**: https://github.com/danipen/TextMateSharp/blob/master/LICENSE.md
+
+## OpenAI .NET SDK
+
+- **Source**: https://github.com/openai/openai-dotnet
+- **Version**: 2.2.0-beta2
+- **License**: MIT License
+- **License Link**: https://github.com/openai/openai-dotnet/blob/main/LICENSE
+
+## Azure.AI.OpenAI
+
+- **Source**: https://github.com/Azure/azure-sdk-for-net
+- **Version**: 2.2.0-beta2
+- **License**: MIT License
+- **License Link**: https://github.com/Azure/azure-sdk-for-net/blob/main/LICENSE.txt
+
 ## haxe-TmLanguage
 
 - **Source**: https://github.com/vshaxe/haxe-TmLanguage
@@ -36,3 +78,4 @@ This project incorporates components from the following third parties:
 - **Commit**: v2.304
 - **License**: SIL Open Font License, Version 1.1
 - **License Link**: https://github.com/JetBrains/JetBrainsMono/blob/v2.304/OFL.txt
+
