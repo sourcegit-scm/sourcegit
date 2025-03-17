@@ -3,8 +3,7 @@
     public interface IRepository
     {
         string FullPath { get; set; }
-        string GitDir { get; set; }
-        string GitCommonDir { get; set; }
+        string GitDirForWatcher { get; }
 
         void RefreshBranches();
         void RefreshWorktrees();

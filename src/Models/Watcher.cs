@@ -23,11 +23,8 @@ namespace SourceGit.Models
             _wcWatcher.Deleted += OnWorkingCopyChanged;
             _wcWatcher.EnableRaisingEvents = true;
 
-            // If this repository is a worktree repository, just watch the main repository's gitdir.
-            var repoWatchDir = _repo.GitCommonDir.Replace("\\", "/");
-
             _repoWatcher = new FileSystemWatcher();
-            _repoWatcher.Path = repoWatchDir;
+            _repoWatcher.Path = _repo.GitDirForWatcher;
             _repoWatcher.Filter = "*";
             _repoWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
             _repoWatcher.IncludeSubdirectories = true;

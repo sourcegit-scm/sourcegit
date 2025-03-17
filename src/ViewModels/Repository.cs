@@ -45,10 +45,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDir, value);
         }
 
-        public string GitCommonDir
+        public string GitDirForWatcher
         {
-            get => _gitCommonDir;
-            set => SetProperty(ref _gitCommonDir, value);
+            get
+            {
+                // Only try to get `$GIT_COMMON_DIR` if this repository looks like a worktree.
+                if (_gitDir.Replace("\\", "/").IndexOf(".git/worktrees/", StringComparison.Ordinal) > 0)
+                {
+                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
+                    return string.IsNullOrEmpty(commonDir) ? _gitDir : commonDir;
+                }
+
+                return _gitDir;
+            }
         }
 
         public Models.RepositorySettings Settings
@@ -435,12 +444,11 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
-        public Repository(bool isBare, string path, string gitDir, string gitCommonDir)
+        public Repository(bool isBare, string path, string gitDir)
         {
             IsBare = isBare;
             FullPath = path;
             GitDir = gitDir;
-            GitCommonDir = gitCommonDir;
         }
 
         public void Open()
@@ -2444,7 +2452,6 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
-        private string _gitCommonDir = string.Empty;
         private Models.RepositorySettings _settings = null;
         private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
