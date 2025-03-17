@@ -273,8 +273,10 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
             base.OnClosing(e);
+
+            if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
+                launcher.Quit(Width, Height);
         }
 
         private void OnOpenWorkspaceMenu(object sender, RoutedEventArgs e)

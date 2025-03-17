@@ -19,11 +19,11 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public Models.DealWithLocalChanges PreAction
+        public bool DiscardLocalChanges
         {
             get;
             set;
-        } = Models.DealWithLocalChanges.DoNothing;
+        }
 
         public bool CheckoutAfterCreated
         {
@@ -47,6 +47,7 @@ namespace SourceGit.ViewModels
             }
 
             BasedOn = branch;
+            DiscardLocalChanges = false;
             View = new Views.CreateBranch() { DataContext = this };
         }
 
@@ -56,6 +57,7 @@ namespace SourceGit.ViewModels
             _baseOnRevision = commit.SHA;
 
             BasedOn = commit;
+            DiscardLocalChanges = false;
             View = new Views.CreateBranch() { DataContext = this };
         }
 
@@ -65,6 +67,7 @@ namespace SourceGit.ViewModels
             _baseOnRevision = tag.SHA;
 
             BasedOn = tag;
+            DiscardLocalChanges = false;
             View = new Views.CreateBranch() { DataContext = this };
         }
 
@@ -98,7 +101,12 @@ namespace SourceGit.ViewModels
                     var needPopStash = false;
                     if (changes > 0)
                     {
-                        if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
+                        if (DiscardLocalChanges)
+                        {
+                            SetProgressDescription("Discard local changes...");
+                            Commands.Discard.All(_repo.FullPath, false);
+                        }
+                        else
                         {
                             SetProgressDescription("Stash local changes");
                             succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
@@ -109,11 +117,6 @@ namespace SourceGit.ViewModels
                             }
 
                             needPopStash = true;
-                        }
-                        else if (PreAction == Models.DealWithLocalChanges.Discard)
-                        {
-                            SetProgressDescription("Discard local changes...");
-                            Commands.Discard.All(_repo.FullPath, false);
                         }
                     }
 

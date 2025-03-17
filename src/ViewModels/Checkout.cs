@@ -9,16 +9,17 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public Models.DealWithLocalChanges PreAction
+        public bool DiscardLocalChanges
         {
             get;
             set;
-        } = Models.DealWithLocalChanges.DoNothing;
+        }
 
         public Checkout(Repository repo, string branch)
         {
             _repo = repo;
             Branch = branch;
+            DiscardLocalChanges = false;
             View = new Views.Checkout() { DataContext = this };
         }
 
@@ -33,7 +34,12 @@ namespace SourceGit.ViewModels
                 var needPopStash = false;
                 if (changes > 0)
                 {
-                    if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
+                    if (DiscardLocalChanges)
+                    {
+                        SetProgressDescription("Discard local changes ...");
+                        Commands.Discard.All(_repo.FullPath, false);
+                    }
+                    else
                     {
                         SetProgressDescription("Stash local changes ...");
                         var succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
@@ -44,11 +50,6 @@ namespace SourceGit.ViewModels
                         }
 
                         needPopStash = true;
-                    }
-                    else if (PreAction == Models.DealWithLocalChanges.Discard)
-                    {
-                        SetProgressDescription("Discard local changes ...");
-                        Commands.Discard.All(_repo.FullPath, false);
                     }
                 }
 

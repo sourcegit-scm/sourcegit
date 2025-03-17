@@ -14,15 +14,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CreateBranch.Title}"/>
-    <Grid Margin="0,16,0,0" ColumnDefinitions="140,*">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="32"/>
-        <RowDefinition Height="32"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-      </Grid.RowDefinitions>
-      
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,Auto,Auto" ColumnDefinitions="140,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -78,23 +70,15 @@
                  IsVisible="{Binding !IsBareRepository}"/>
       <Border Grid.Row="3" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.DoNothing}"
-                       x:Name="RadioDoNothing"
-                       GroupName="LocalChanges"
+          <RadioButton GroupName="LocalChanges"
                        Margin="0,0,8,0"
-                       IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-          <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
-                       x:Name="RadioStashAndReply"
-                       GroupName="LocalChanges"
-                       Margin="0,0,8,0"
-                       IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-          <RadioButton Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"
-                       x:Name="RadioDiscard"
-                       GroupName="LocalChanges"
-                       IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
+                       Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
+                       IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
+          <RadioButton GroupName="LocalChanges"
+                       Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"/>
         </WrapPanel>
       </Border>
-      
+
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.Checkout}"
                 IsChecked="{Binding CheckoutAfterCreated, Mode=TwoWay}"

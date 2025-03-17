@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -269,16 +268,18 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _isSearching, value))
                 {
-                    SearchedCommits = new List<Models.Commit>();
-                    SearchCommitFilter = string.Empty;
-                    SearchCommitFilterSuggestion.Clear();
-                    IsSearchCommitSuggestionOpen = false;
-                    _revisionFiles.Clear();
-
                     if (value)
                     {
                         SelectedViewIndex = 0;
-                        UpdateCurrentRevisionFilesForSearchSuggestion();
+                        CalcWorktreeFilesForSearching();
+                    }
+                    else
+                    {
+                        SearchedCommits = new List<Models.Commit>();
+                        SelectedSearchedCommit = null;
+                        SearchCommitFilter = string.Empty;
+                        MatchedFilesForSearching = null;
+                        _worktreeFiles = null;
                     }
                 }
             }
@@ -307,8 +308,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _searchCommitFilterType, value))
                 {
-                    UpdateCurrentRevisionFilesForSearchSuggestion();
-
+                    CalcWorktreeFilesForSearching();
                     if (!string.IsNullOrEmpty(_searchCommitFilter))
                         StartSearchCommits();
                 }
@@ -320,51 +320,31 @@ namespace SourceGit.ViewModels
             get => _searchCommitFilter;
             set
             {
-                if (SetProperty(ref _searchCommitFilter, value) &&
-                    _searchCommitFilterType == 3 &&
-                    !string.IsNullOrEmpty(value) &&
-                    value.Length >= 2 &&
-                    _revisionFiles.Count > 0)
-                {
-                    var suggestion = new List<string>();
-                    foreach (var file in _revisionFiles)
-                    {
-                        if (file.Contains(value, StringComparison.OrdinalIgnoreCase) && file.Length != value.Length)
-                        {
-                            suggestion.Add(file);
-                            if (suggestion.Count > 100)
-                                break;
-                        }
-                    }
-
-                    SearchCommitFilterSuggestion.Clear();
-                    SearchCommitFilterSuggestion.AddRange(suggestion);
-                    IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
-                }
-                else if (SearchCommitFilterSuggestion.Count > 0)
-                {
-                    SearchCommitFilterSuggestion.Clear();
-                    IsSearchCommitSuggestionOpen = false;
-                }
+                if (SetProperty(ref _searchCommitFilter, value) && IsSearchingCommitsByFilePath())
+                    CalcMatchedFilesForSearching();
             }
         }
 
-        public bool IsSearchCommitSuggestionOpen
+        public List<string> MatchedFilesForSearching
         {
-            get => _isSearchCommitSuggestionOpen;
-            set => SetProperty(ref _isSearchCommitSuggestionOpen, value);
+            get => _matchedFilesForSearching;
+            private set => SetProperty(ref _matchedFilesForSearching, value);
         }
-
-        public AvaloniaList<string> SearchCommitFilterSuggestion
-        {
-            get;
-            private set;
-        } = new AvaloniaList<string>();
 
         public List<Models.Commit> SearchedCommits
         {
             get => _searchedCommits;
             set => SetProperty(ref _searchedCommits, value);
+        }
+
+        public Models.Commit SelectedSearchedCommit
+        {
+            get => _selectedSearchedCommit;
+            set
+            {
+                if (SetProperty(ref _selectedSearchedCommit, value) && value != null)
+                    NavigateToCommit(value.SHA);
+            }
         }
 
         public bool IsLocalBranchGroupExpanded
@@ -435,16 +415,6 @@ namespace SourceGit.ViewModels
         public InProgressContext InProgressContext
         {
             get => _workingCopy?.InProgressContext;
-        }
-
-        public Models.Commit SearchResultSelectedCommit
-        {
-            get => _searchResultSelectedCommit;
-            set
-            {
-                if (SetProperty(ref _searchResultSelectedCommit, value) && value != null)
-                    NavigateToCommit(value.SHA);
-            }
         }
 
         public bool IsAutoFetching
@@ -518,7 +488,7 @@ namespace SourceGit.ViewModels
             {
                 File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
             }
-            catch (DirectoryNotFoundException)
+            catch
             {
                 // Ignore
             }
@@ -550,9 +520,10 @@ namespace SourceGit.ViewModels
             _submodules.Clear();
             _visibleSubmodules.Clear();
             _searchedCommits.Clear();
+            _selectedSearchedCommit = null;
 
-            _revisionFiles.Clear();
-            SearchCommitFilterSuggestion.Clear();
+            _worktreeFiles = null;
+            _matchedFilesForSearching = null;
         }
 
         public bool CanCreatePopup()
@@ -723,39 +694,33 @@ namespace SourceGit.ViewModels
             SearchCommitFilter = string.Empty;
         }
 
+        public void ClearMatchedFilesForSearching()
+        {
+            MatchedFilesForSearching = null;
+        }
+
         public void StartSearchCommits()
         {
             if (_histories == null)
                 return;
 
             IsSearchLoadingVisible = true;
-            SearchResultSelectedCommit = null;
-            IsSearchCommitSuggestionOpen = false;
-            SearchCommitFilterSuggestion.Clear();
+            SelectedSearchedCommit = null;
+            MatchedFilesForSearching = null;
 
             Task.Run(() =>
             {
-                var visible = new List<Models.Commit>();
+                var visible = null as List<Models.Commit>;
+                var method = (Models.CommitSearchMethod)_searchCommitFilterType;
 
-                switch (_searchCommitFilterType)
+                if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    case 0:
-                        var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
-                        if (commit != null)
-                            visible.Add(commit);
-                        break;
-                    case 1:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByAuthor, _onlySearchCommitsInCurrentBranch).Result();
-                        break;
-                    case 2:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByCommitter, _onlySearchCommitsInCurrentBranch).Result();
-                        break;
-                    case 3:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByMessage, _onlySearchCommitsInCurrentBranch).Result();
-                        break;
-                    case 4:
-                        visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, Models.CommitSearchMethod.ByFile, _onlySearchCommitsInCurrentBranch).Result();
-                        break;
+                    var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
+                    visible = commit == null ? [] : [commit];
+                }
+                else
+                {
+                    visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch).Result();
                 }
 
                 Dispatcher.UIThread.Invoke(() =>
@@ -941,6 +906,25 @@ namespace SourceGit.ViewModels
         public void AbortMerge()
         {
             _workingCopy?.AbortMerge();
+        }
+
+        public List<Models.CustomAction> GetCustomActions(Models.CustomActionScope scope)
+        {
+            var actions = new List<Models.CustomAction>();
+
+            foreach (var act in Preferences.Instance.CustomActions)
+            {
+                if (act.Scope == scope)
+                    actions.Add(act);
+            }
+
+            foreach (var act in _settings.CustomActions)
+            {
+                if (act.Scope == scope)
+                    actions.Add(act);
+            }
+
+            return actions;
         }
 
         public void RefreshBranches()
@@ -1224,23 +1208,26 @@ namespace SourceGit.ViewModels
             App.GetLauncer()?.OpenRepositoryInTab(node, null);
         }
 
-        public AvaloniaList<Models.OpenAIService> GetPreferedOpenAIServices()
+        public List<Models.OpenAIService> GetPreferedOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
                 return [];
 
             if (services.Count == 1)
-                return services;
+                return [services[0]];
 
             var prefered = _settings.PreferedOpenAIService;
+            var all = new List<Models.OpenAIService>();
             foreach (var service in services)
             {
                 if (service.Name.Equals(prefered, StringComparison.Ordinal))
                     return [service];
+
+                all.Add(service);
             }
 
-            return services;
+            return all;
         }
 
         public ContextMenu CreateContextMenuForGitFlow()
@@ -1443,16 +1430,10 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextMenuForCustomAction()
         {
-            var actions = new List<Models.CustomAction>();
-            foreach (var action in _settings.CustomActions)
-            {
-                if (action.Scope == Models.CustomActionScope.Repository)
-                    actions.Add(action);
-            }
-
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
 
+            var actions = GetCustomActions(Models.CustomActionScope.Repository);
             if (actions.Count > 0)
             {
                 foreach (var action in actions)
@@ -1643,7 +1624,7 @@ namespace SourceGit.ViewModels
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                     compareWithWorktree.Click += (_, _) =>
                     {
-                        SearchResultSelectedCommit = null;
+                        SelectedSearchedCommit = null;
 
                         if (_histories != null)
                         {
@@ -1925,7 +1906,7 @@ namespace SourceGit.ViewModels
                 compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithWorktree.Click += (_, _) =>
                 {
-                    SearchResultSelectedCommit = null;
+                    SelectedSearchedCommit = null;
 
                     if (_histories != null)
                     {
@@ -2349,13 +2330,7 @@ namespace SourceGit.ViewModels
 
         private void TryToAddCustomActionsToBranchContextMenu(ContextMenu menu, Models.Branch branch)
         {
-            var actions = new List<Models.CustomAction>();
-            foreach (var action in Settings.CustomActions)
-            {
-                if (action.Scope == Models.CustomActionScope.Branch)
-                    actions.Add(action);
-            }
-
+            var actions = GetCustomActions(Models.CustomActionScope.Branch);
             if (actions.Count == 0)
                 return;
 
@@ -2384,42 +2359,52 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
-        private void UpdateCurrentRevisionFilesForSearchSuggestion()
+        private bool IsSearchingCommitsByFilePath()
         {
-            _revisionFiles.Clear();
+            return _isSearching && _searchCommitFilterType == (int)Models.CommitSearchMethod.ByFile;
+        }
 
-            if (_searchCommitFilterType == 3)
+        private void CalcWorktreeFilesForSearching()
+        {
+            if (!IsSearchingCommitsByFilePath())
             {
-                Task.Run(() =>
-                {
-                    var files = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        if (_searchCommitFilterType != 3)
-                            return;
-
-                        _revisionFiles.AddRange(files);
-
-                        if (!string.IsNullOrEmpty(_searchCommitFilter) && _searchCommitFilter.Length > 2 && _revisionFiles.Count > 0)
-                        {
-                            var suggestion = new List<string>();
-                            foreach (var file in _revisionFiles)
-                            {
-                                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
-                                {
-                                    suggestion.Add(file);
-                                    if (suggestion.Count > 100)
-                                        break;
-                                }
-                            }
-
-                            SearchCommitFilterSuggestion.Clear();
-                            SearchCommitFilterSuggestion.AddRange(suggestion);
-                            IsSearchCommitSuggestionOpen = SearchCommitFilterSuggestion.Count > 0;
-                        }
-                    });
-                });
+                _worktreeFiles = null;
+                MatchedFilesForSearching = null;
+                GC.Collect();
+                return;
             }
+
+            Task.Run(() =>
+            {
+                _worktreeFiles = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    if (IsSearchingCommitsByFilePath())
+                        CalcMatchedFilesForSearching();
+                });
+            });
+        }
+
+        private void CalcMatchedFilesForSearching()
+        {
+            if (_worktreeFiles == null || _worktreeFiles.Count == 0 || _searchCommitFilter.Length < 3)
+            {
+                MatchedFilesForSearching = null;
+                return;
+            }
+
+            var matched = new List<string>();
+            foreach (var file in _worktreeFiles)
+            {
+                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
+                {
+                    matched.Add(file);
+                    if (matched.Count > 100)
+                        break;
+                }
+            }
+
+            MatchedFilesForSearching = matched;
         }
 
         private void AutoFetchImpl(object sender)
@@ -2468,13 +2453,13 @@ namespace SourceGit.ViewModels
 
         private bool _isSearching = false;
         private bool _isSearchLoadingVisible = false;
-        private bool _isSearchCommitSuggestionOpen = false;
-        private int _searchCommitFilterType = 3;
+        private int _searchCommitFilterType = (int)Models.CommitSearchMethod.ByMessage;
         private bool _onlySearchCommitsInCurrentBranch = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
-        private Models.Commit _searchResultSelectedCommit = null;
-        private List<string> _revisionFiles = new List<string>();
+        private Models.Commit _selectedSearchedCommit = null;
+        private List<string> _worktreeFiles = null;
+        private List<string> _matchedFilesForSearching = null;
 
         private string _filter = string.Empty;
         private object _lockRemotes = new object();

@@ -422,7 +422,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Integration}"/>
           </TabItem.Header>
 
-          <StackPanel Margin="8" MaxWidth="580" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+          <StackPanel Margin="8" Orientation="Vertical" Grid.IsSharedSizeScope="True">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Terminal}"/>
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.Shell}"/>
@@ -529,10 +529,124 @@
 
         <TabItem>
           <TabItem.Header>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
+          </TabItem.Header>
+
+          <Grid MinHeight="340" Margin="0,8,0,16">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="200"/>
+              <ColumnDefinition Width="*" MaxWidth="400"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                    Background="{DynamicResource Brush.Contents}">
+              <Grid RowDefinitions="*,1,Auto">
+                <ListBox Grid.Row="0"
+                         Background="Transparent"
+                         ItemsSource="{Binding CustomActions}"
+                         SelectedItem="{Binding #ThisControl.SelectedCustomAction, Mode=TwoWay}"
+                         SelectionMode="Single">
+                  <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                      <Setter Property="MinHeight" Value="0"/>
+                      <Setter Property="Height" Value="26"/>
+                      <Setter Property="Padding" Value="4,2"/>
+                    </Style>
+                  </ListBox.Styles>
+
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+
+                  <ListBox.ItemTemplate>
+                    <DataTemplate DataType="m:CustomAction">
+                      <Grid Margin="4,0" ColumnDefinitions="Auto,*">
+                        <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Action}" Fill="{DynamicResource Brush.FG1}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"/>
+                      </Grid>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+                  <Button Classes="icon_button" Click="OnAddCustomAction">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+                  </Button>
+
+                  <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+
+                  <Button Classes="icon_button" Click="OnRemoveSelectedCustomAction">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                  </Button>
+
+                  <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <ContentControl Grid.Column="1" Margin="16,0,0,0">
+              <ContentControl.Content>
+                <Binding Path="SelectedCustomAction" ElementName="ThisControl">
+                  <Binding.TargetNullValue>
+                    <Path Width="64" Height="64"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Fill="{DynamicResource Brush.FG2}"
+                          Data="{StaticResource Icons.Empty}"/>
+                  </Binding.TargetNullValue>
+                </Binding>
+              </ContentControl.Content>
+
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="m:CustomAction">
+                  <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Name}"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
+                    <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Scope, Mode=TwoWay}">
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
+                    </ComboBox>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
+                    <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
+                      <TextBox.InnerRightContent>
+                        <Button Classes="icon_button" Width="30" Height="30" Click="SelectExecutableForCustomAction">
+                          <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                        </Button>
+                      </TextBox.InnerRightContent>
+                    </TextBox>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
+                    <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+
+                    <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
+          </Grid>
+        </TabItem>
+        
+        <TabItem>
+          <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.AI}"/>
           </TabItem.Header>
 
-          <Grid ColumnDefinitions="200,*" Margin="0,8,0,16" MinHeight="400">
+          <Grid Margin="0,8,0,16" MinHeight="400">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="200"/>
+              <ColumnDefinition Width="*" MaxWidth="400"/>
+            </Grid.ColumnDefinitions>
+            
             <Border Grid.Column="0"
                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                     Background="{DynamicResource Brush.Contents}">

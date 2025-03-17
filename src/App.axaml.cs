@@ -77,6 +77,31 @@ namespace SourceGit
             Native.OS.SetupApp(builder);
             return builder;
         }
+
+        private static void LogException(Exception ex)
+        {
+            if (ex == null)
+                return;
+
+            var builder = new StringBuilder();
+            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
+            builder.Append("----------------------------\n");
+            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
+            builder.Append($"OS: {Environment.OSVersion}\n");
+            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
+            builder.Append($"Source: {ex.Source}\n");
+            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
+            builder.Append($"User: {Environment.UserName}\n");
+            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
+            builder.Append($"Exception Time: {DateTime.Now}\n");
+            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
+            builder.Append($"---------------------------\n\n");
+            builder.Append(ex);
+
+            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            File.WriteAllText(file, builder.ToString());
+        }
         #endregion
 
         #region Utility Functions
@@ -180,6 +205,9 @@ namespace SourceGit
                 app.Resources.MergedDictionaries.Remove(app._fontsOverrides);
                 app._fontsOverrides = null;
             }
+
+            defaultFont = app.FixFontFamilyName(defaultFont);
+            monospaceFont = app.FixFontFamilyName(monospaceFont);
 
             var resDic = new ResourceDictionary();
             if (!string.IsNullOrEmpty(defaultFont))
@@ -324,31 +352,6 @@ namespace SourceGit
             }
         }
         #endregion
-
-        private static void LogException(Exception ex)
-        {
-            if (ex == null)
-                return;
-
-            var builder = new StringBuilder();
-            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-            builder.Append("----------------------------\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion}\n");
-            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-            builder.Append($"Source: {ex.Source}\n");
-            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
-            builder.Append($"User: {Environment.UserName}\n");
-            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
-            builder.Append($"Exception Time: {DateTime.Now}\n");
-            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
-            builder.Append($"---------------------------\n\n");
-            builder.Append(ex);
-
-            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-            File.WriteAllText(file, builder.ToString());
-        }
 
         private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
@@ -544,6 +547,24 @@ namespace SourceGit
                     dialog.ShowDialog(owner);
                 }
             });
+        }
+
+        private string FixFontFamilyName(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var parts = input.Split(',');
+            var trimmed = new List<string>();
+
+            foreach (var part in parts)
+            {
+                var t = part.Trim();
+                if (!string.IsNullOrEmpty(t))
+                    trimmed.Add(t);
+            }
+
+            return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
         private ViewModels.Launcher _launcher = null;

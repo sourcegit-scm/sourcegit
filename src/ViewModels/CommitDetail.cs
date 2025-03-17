@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -171,7 +172,7 @@ namespace SourceGit.ViewModels
             _searchChangeFilter = null;
             _diffContext = null;
             _viewRevisionFileContent = null;
-            _cancelToken = null;
+            _cancellationSource = null;
             WebLinks.Clear();
             _revisionFiles = null;
             _revisionFileSearchSuggestion = null;
@@ -589,32 +590,36 @@ namespace SourceGit.ViewModels
             if (_commit == null)
                 return;
 
+            if (_cancellationSource is { IsCancellationRequested: false })
+                _cancellationSource.Cancel();
+
+            _cancellationSource = new CancellationTokenSource();
+            var token = _cancellationSource.Token;
+
             Task.Run(() =>
             {
                 var message = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
                 var links = ParseLinksInMessage(message);
-                Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Links = links });
+
+                if (!token.IsCancellationRequested)
+                    Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Links = links });
             });
 
             Task.Run(() =>
             {
                 var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile).Result();
-                Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
+                if (!token.IsCancellationRequested)
+                    Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
             });
-
-            if (_cancelToken != null)
-                _cancelToken.Requested = true;
-
-            _cancelToken = new Commands.Command.CancelToken();
 
             if (Preferences.Instance.ShowChildren)
             {
                 Task.Run(() =>
                 {
                     var max = Preferences.Instance.MaxHistoryCommits;
-                    var cmdChildren = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { Cancel = _cancelToken };
-                    var children = cmdChildren.Result();
-                    if (!cmdChildren.Cancel.Requested)
+                    var cmd = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { CancellationToken = token };
+                    var children = cmd.Result();
+                    if (!token.IsCancellationRequested)
                         Dispatcher.UIThread.Post(() => Children = children);
                 });
             }
@@ -622,8 +627,8 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var parent = _commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : _commit.Parents[0];
-                var cmdChanges = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { Cancel = _cancelToken };
-                var changes = cmdChanges.Result();
+                var cmd = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { CancellationToken = token };
+                var changes = cmd.Result();
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
                 {
@@ -635,7 +640,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                if (!cmdChanges.Cancel.Requested)
+                if (!token.IsCancellationRequested)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
@@ -809,14 +814,11 @@ namespace SourceGit.ViewModels
                     Task.Run(() =>
                     {
                         var files = new Commands.QueryRevisionFileNames(_repo.FullPath, sha).Result();
-                        var filesList = new List<string>();
-                        filesList.AddRange(files);
-
                         Dispatcher.UIThread.Invoke(() =>
                         {
                             if (sha == Commit.SHA)
                             {
-                                _revisionFiles = filesList;
+                                _revisionFiles = files;
                                 if (!string.IsNullOrEmpty(_revisionFileSearchFilter))
                                     CalcRevisionFileSearchSuggestion();
                             }
@@ -873,7 +875,7 @@ namespace SourceGit.ViewModels
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
         private object _viewRevisionFileContent = null;
-        private Commands.Command.CancelToken _cancelToken = null;
+        private CancellationTokenSource _cancellationSource = null;
         private List<string> _revisionFiles = null;
         private string _revisionFileSearchFilter = string.Empty;
         private List<string> _revisionFileSearchSuggestion = null;

@@ -134,7 +134,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Down)
             {
-                if (repo.IsSearchCommitSuggestionOpen)
+                if (repo.MatchedFilesForSearching is { Count: > 0 })
                 {
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
@@ -144,12 +144,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (repo.IsSearchCommitSuggestionOpen)
-                {
-                    repo.SearchCommitFilterSuggestion.Clear();
-                    repo.IsSearchCommitSuggestionOpen = false;
-                }
-
+                repo.ClearMatchedFilesForSearching();
                 e.Handled = true;
             }
         }
@@ -369,9 +364,7 @@ namespace SourceGit.Views
 
             if (e.Key == Key.Escape)
             {
-                repo.IsSearchCommitSuggestionOpen = false;
-                repo.SearchCommitFilterSuggestion.Clear();
-
+                repo.ClearMatchedFilesForSearching();
                 e.Handled = true;
             }
             else if (e.Key == Key.Enter && SearchSuggestionBox.SelectedItem is string content)

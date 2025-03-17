@@ -31,12 +31,6 @@ namespace SourceGit.Native
             private set;
         } = string.Empty;
 
-        public static string CustomPathEnv
-        {
-            get;
-            set;
-        } = string.Empty;
-
         public static string GitExecutable
         {
             get => _gitExecutable;

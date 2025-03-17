@@ -90,7 +90,6 @@
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.DoNothing" xml:space="preserve">Nichts tun</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Quelle an Commit-Nachricht anhängen</x:String>
@@ -206,7 +205,6 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Erstellten Branch auschecken</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.DoNothing" xml:space="preserve">Nichts tun</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Neuer Branch-Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Branch-Namen eingeben.</x:String>
@@ -445,6 +443,7 @@
   <x:String x:Key="Text.Paste" xml:space="preserve">Einfügen</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Gerade eben</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Vor {0} Minuten</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">Vor 1 Stunde</x:String>
   <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">Vor {0} Stunden</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Gestern</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">Vor {0} Tagen</x:String>
@@ -517,7 +516,6 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Lokaler Branch:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Nichts tun</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Ohne Tags fetchen</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>

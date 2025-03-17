@@ -26,7 +26,7 @@ namespace SourceGit.Commands
             Args += $"{remote} {local}:{remoteBranch}";
         }
 
-        public Push(string repo, string remote, string tag, bool isDelete)
+        public Push(string repo, string remote, string refname, bool isDelete)
         {
             WorkingDirectory = repo;
             Context = repo;
@@ -36,7 +36,7 @@ namespace SourceGit.Commands
             if (isDelete)
                 Args += "--delete ";
 
-            Args += $"{remote} refs/tags/{tag}";
+            Args += $"{remote} {refname}";
         }
 
         protected override void OnReadline(string line)

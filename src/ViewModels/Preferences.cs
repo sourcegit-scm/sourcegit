@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Avalonia.Collections;
@@ -66,9 +65,8 @@ namespace SourceGit.ViewModels
             get => _defaultFontFamily;
             set
             {
-                var name = FixFontFamilyName(value);
-                if (SetProperty(ref _defaultFontFamily, name) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
+                    App.SetFonts(value, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
 
@@ -77,9 +75,8 @@ namespace SourceGit.ViewModels
             get => _monospaceFontFamily;
             set
             {
-                var name = FixFontFamilyName(value);
-                if (SetProperty(ref _monospaceFontFamily, name) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, value, _onlyUseMonoFontInEditor);
             }
         }
 
@@ -337,6 +334,12 @@ namespace SourceGit.ViewModels
         } = [];
 
         public List<Workspace> Workspaces
+        {
+            get;
+            set;
+        } = [];
+
+        public AvaloniaList<Models.CustomAction> CustomActions
         {
             get;
             set;
@@ -612,35 +615,6 @@ namespace SourceGit.ViewModels
             }
 
             return changed;
-        }
-
-        private string FixFontFamilyName(string name)
-        {
-            var trimmed = name.Trim();
-            if (string.IsNullOrEmpty(trimmed))
-                return string.Empty;
-
-            var builder = new StringBuilder();
-            var lastIsSpace = false;
-            for (int i = 0; i < trimmed.Length; i++)
-            {
-                var c = trimmed[i];
-                if (char.IsWhiteSpace(c))
-                {
-                    if (lastIsSpace)
-                        continue;
-
-                    lastIsSpace = true;
-                }
-                else
-                {
-                    lastIsSpace = false;
-                }
-
-                builder.Append(c);
-            }
-
-            return builder.ToString();
         }
 
         private static Preferences _instance = null;
