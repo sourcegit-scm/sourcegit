@@ -459,7 +459,8 @@
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Abilita streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ASPETTO</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Larghezza della Tab Editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Dimensione Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Dimensione Font Predefinita</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Dimensione Font Editor</x:String>
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Font Monospaziato</x:String>
