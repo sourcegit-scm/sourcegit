@@ -16,7 +16,7 @@ namespace SourceGit.Commands
             var rs = ReadToEnd();
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
                 return lines.Length;
             }
 

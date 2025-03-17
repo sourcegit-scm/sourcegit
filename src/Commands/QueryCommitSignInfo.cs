@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System;
+
+namespace SourceGit.Commands
 {
     public class QueryCommitSignInfo : Command
     {
@@ -22,7 +24,7 @@
             if (raw.Length <= 1)
                 return null;
 
-            var lines = raw.Split('\n');
+            var lines = raw.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
             return new Models.CommitSignInfo()
             {
                 VerifyResult = lines[0][0],
