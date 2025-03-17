@@ -21,10 +21,11 @@ namespace SourceGit.Models
     {
         private static readonly ExtraGrammar[] s_extraGrammars =
         [
-            new ExtraGrammar("source.toml", ".toml", "toml.json"),
-            new ExtraGrammar("source.kotlin", ".kotlin", "kotlin.json"),
-            new ExtraGrammar("source.hx", ".hx", "haxe.json"),
-            new ExtraGrammar("source.hxml", ".hxml", "hxml.json"),
+            new ExtraGrammar("source.toml", [".toml"], "toml.json"),
+            new ExtraGrammar("source.kotlin", [".kotlin", ".kt", ".kts"], "kotlin.json"),
+            new ExtraGrammar("source.hx", [".hx"], "haxe.json"),
+            new ExtraGrammar("source.hxml", [".hxml"], "hxml.json"),
+            new ExtraGrammar("text.html.jsp", [".jsp", ".jspf", ".tag"], "jsp.json"),
         ];
 
         public static string GetScope(string file, RegistryOptions reg)
@@ -36,13 +37,14 @@ namespace SourceGit.Models
                 extension = ".xml";
             else if (extension == ".command")
                 extension = ".sh";
-            else if (extension == ".kt" || extension == ".kts")
-                extension = ".kotlin";
 
             foreach (var grammar in s_extraGrammars)
             {
-                if (grammar.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase))
-                    return grammar.Scope;
+                foreach (var ext in grammar.Extensions)
+                {
+                    if (ext.Equals(extension, StringComparison.OrdinalIgnoreCase))
+                        return grammar.Scope;
+                }
             }
 
             return reg.GetScopeByExtension(extension);
@@ -71,10 +73,10 @@ namespace SourceGit.Models
             return reg.GetGrammar(scopeName);
         }
 
-        private record ExtraGrammar(string Scope, string Extension, string File)
+        private record ExtraGrammar(string Scope, List<string> Extensions, string File)
         {
             public readonly string Scope = Scope;
-            public readonly string Extension = Extension;
+            public readonly List<string> Extensions = Extensions;
             public readonly string File = File;
         }
     }
