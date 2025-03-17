@@ -70,7 +70,7 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeDescriptionColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeOptionColumn"/>
               </Grid.ColumnDefinitions>
-              
+
               <TextBlock Grid.Column="0" Text="{Binding Name}"/>
               <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>

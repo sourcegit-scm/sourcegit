@@ -31,8 +31,8 @@
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
-      
-      <TextBlock Grid.Row="1" Grid.Column="1" 
+
+      <TextBlock Grid.Row="1" Grid.Column="1"
                  Text="{DynamicResource Text.GitLFS.Fetch.Tips}"
                  Margin="0,8,0,0"
                  TextWrapping="Wrap"/>

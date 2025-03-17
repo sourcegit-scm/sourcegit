@@ -38,7 +38,7 @@
                  Text="{DynamicResource Text.BranchCompare}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
-      
+
       <!-- Caption Buttons (Windows/Linux) -->
       <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
@@ -89,7 +89,7 @@
           </Grid>
         </Border>
       </Grid>
-    </Border>    
+    </Border>
 
     <!-- Changes -->
     <Border Grid.Row="2">

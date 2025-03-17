@@ -84,7 +84,7 @@
               </Border>
               <Border Grid.Column="2" Margin="8,0" ClipToBounds="True">
                 <TextBlock Text="{Binding User}" HorizontalAlignment="Left"/>
-              </Border> 
+              </Border>
               <Button Grid.Column="3" Classes="icon_button" Click="OnUnlockButtonClicked" ToolTip.Tip="{DynamicResource Text.GitLFS.Locks.Unlock}">
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Unlock}"/>
               </Button>
@@ -104,7 +104,7 @@
             <Binding Path="VisibleLocks" Converter="{x:Static c:ListConverters.IsNullOrEmpty}"/>
           </MultiBinding>
         </StackPanel.IsVisible>
-        
+
         <Path Width="48" Height="48" Data="{StaticResource Icons.Empty}" Fill="{DynamicResource Brush.FG2}"/>
         <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.GitLFS.Locks.Empty}" Foreground="{DynamicResource Brush.FG2}"/>
       </StackPanel>

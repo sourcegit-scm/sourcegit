@@ -19,7 +19,7 @@
       <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
         <TextBox Grid.Column="0"
                  Height="26"
-                 BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" 
+                 BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                  Background="Transparent"
                  CornerRadius="4"
                  Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"

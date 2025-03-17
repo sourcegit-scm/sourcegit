@@ -15,7 +15,7 @@
         <TextBlock Text="{DynamicResource Text.Worktree}" Classes="primary" Margin="4,2" Foreground="#FFDDDDDD"/>
       </Border>
     </DataTemplate>
-    
+
     <DataTemplate DataType="m:Commit">
       <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
@@ -32,7 +32,7 @@
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
-  
+
   <Grid RowDefinitions="50,*" Margin="4">
     <!-- Compare Revision Info -->
     <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">

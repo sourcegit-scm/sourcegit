@@ -48,7 +48,7 @@
       <TextBlock Grid.Column="5" Classes="primary" VerticalAlignment="Center" Text="{Binding On.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
       <TextBlock Grid.Column="6" VerticalAlignment="Center" Text="{Binding On.Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
     </Grid>
-    
+
     <!-- Body -->
     <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
       <Grid RowDefinitions="*,3,*">
@@ -91,13 +91,13 @@
                   <ColumnDefinition Width="32"/>
                   <ColumnDefinition Width="32"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <!-- Drag & Drop Anchor -->
                 <Border Grid.Column="0" Background="Transparent"
                         Loaded="OnSetupRowHeaderDragDrop"
                         PointerPressed="OnRowHeaderPointerPressed">
-                  <Path Width="14" Height="14" 
-                        Data="{StaticResource Icons.Move}" 
+                  <Path Width="14" Height="14"
+                        Data="{StaticResource Icons.Move}"
                         Fill="{DynamicResource Brush.FG2}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"/>
@@ -258,7 +258,7 @@
                 HorizontalAlignment="Center"
                 Fill="{DynamicResource Brush.FG2}"
                 IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
-          
+
           <ContentControl Content="{Binding DetailContext}" IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:CommitDetail">
@@ -272,12 +272,12 @@
 
     <!-- Options -->
     <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" Margin="8,0,8,8">
-      <ProgressBar x:Name="Running" 
-                   Grid.Column="0" 
-                   Margin="0,0,32,0" 
-                   Background="{DynamicResource Brush.FG2}" 
-                   Foreground="{DynamicResource Brush.Accent}" 
-                   Minimum="0" 
+      <ProgressBar x:Name="Running"
+                   Grid.Column="0"
+                   Margin="0,0,32,0"
+                   Background="{DynamicResource Brush.FG2}"
+                   Foreground="{DynamicResource Brush.Accent}"
+                   Minimum="0"
                    Maximum="100"
                    IsVisible="False"/>
       <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="StartJobs"/>

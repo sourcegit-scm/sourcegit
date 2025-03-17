@@ -38,7 +38,7 @@
       <Border Margin="16,0">
         <TextBlock x:Name="TxtDescription" Text="Enter passphrase:" TextWrapping="Wrap"/>
       </Border>
-      
+
       <TextBox x:Name="TxtPassphrase"
                Margin="16"
                MinWidth="300"
@@ -55,7 +55,7 @@
                         Width="26" Height="14"/>
         </TextBox.InnerRightContent>
       </TextBox>
-      
+
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <Button Classes="flat primary"
                 Width="80"

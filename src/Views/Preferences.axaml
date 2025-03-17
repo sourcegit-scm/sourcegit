@@ -78,7 +78,7 @@
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
-            
+
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.DefaultCloneDir}"
                        HorizontalAlignment="Right"
@@ -537,7 +537,7 @@
               <ColumnDefinition Width="200"/>
               <ColumnDefinition Width="*" MaxWidth="400"/>
             </Grid.ColumnDefinitions>
-            
+
             <Border Grid.Column="0"
                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                     Background="{DynamicResource Brush.Contents}">
@@ -635,7 +635,7 @@
             </ContentControl>
           </Grid>
         </TabItem>
-        
+
         <TabItem>
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.AI}"/>
@@ -646,7 +646,7 @@
               <ColumnDefinition Width="200"/>
               <ColumnDefinition Width="*" MaxWidth="400"/>
             </Grid.ColumnDefinitions>
-            
+
             <Border Grid.Column="0"
                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                     Background="{DynamicResource Brush.Contents}">
@@ -725,8 +725,8 @@
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*"/>
-                    
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>                    
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>
                     <TextBox Height="120"
                              Margin="0,4,0,0"
                              CornerRadius="3"

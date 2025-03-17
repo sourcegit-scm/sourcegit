@@ -29,7 +29,6 @@
                 Signer = lines[1],
                 Key = lines[2]
             };
-
         }
     }
 }

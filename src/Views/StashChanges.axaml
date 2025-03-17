@@ -12,13 +12,13 @@
                Classes="bold"
                Text="{DynamicResource Text.Stash.Title}"/>
     <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,Auto,32,Auto,Auto" ColumnDefinitions="120,*">
-      <TextBlock Grid.Row="0" Grid.Column="0" 
-                 HorizontalAlignment="Right" 
-                 Margin="8,0" 
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="8,0"
                  Text="{DynamicResource Text.Stash.Message}"/>
-      <TextBox Grid.Row="0" Grid.Column="1" 
-               Height="26" 
-               CornerRadius="3" 
+      <TextBox Grid.Row="0" Grid.Column="1"
+               Height="26"
+               CornerRadius="3"
                Text="{Binding Message, Mode=TwoWay}"
                Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
                v:AutoFocusBehaviour.IsEnabled="True"/>

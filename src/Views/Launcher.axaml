@@ -12,7 +12,7 @@
                     Icon="/App.ico"
                     Title="{Binding Title}"
                     MinWidth="1024" MinHeight="600"
-                    WindowStartupLocation="CenterScreen"> 
+                    WindowStartupLocation="CenterScreen">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #ThisControl.CaptionHeight}"/>
@@ -80,7 +80,7 @@
             <TextBlock Text="{Binding ActiveWorkspace.Name}"/>
           </StackPanel>
         </ToolTip.Tip>
-        <Path Width="14" Height="14" 
+        <Path Width="14" Height="14"
               Data="{StaticResource Icons.Workspace}"
               Fill="{Binding ActiveWorkspace.Brush}"/>
       </Button>
@@ -93,7 +93,7 @@
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
-    
+
     <!-- Page -->
     <ContentControl Grid.Row="1" Content="{Binding ActivePage}">
       <ContentControl.DataTemplates>

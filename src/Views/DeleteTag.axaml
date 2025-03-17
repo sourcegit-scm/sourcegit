@@ -24,6 +24,6 @@
       <CheckBox Grid.Row="1" Grid.Column="1"
                 Content="{DynamicResource Text.DeleteTag.WithRemote}"
                 IsChecked="{Binding PushToRemotes, Mode=TwoWay}"/>
-    </Grid>    
+    </Grid>
   </StackPanel>
 </UserControl>

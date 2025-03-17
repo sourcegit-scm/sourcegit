@@ -28,7 +28,7 @@
                  Text="{DynamicResource Text.About}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
-      
+
       <v:CaptionButtons HorizontalAlignment="Right"
                         IsCloseButtonOnly="True"
                         IsVisible="{OnPlatform True, macOS=False}"/>

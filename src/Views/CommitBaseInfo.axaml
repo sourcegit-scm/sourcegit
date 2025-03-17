@@ -55,9 +55,9 @@
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
-            <TextBlock Classes="primary" 
-                       Text="{Binding SHA}" 
-                       Margin="12,0,4,0" 
+            <TextBlock Classes="primary"
+                       Text="{Binding SHA}"
+                       Margin="12,0,4,0"
                        VerticalAlignment="Center"/>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnCopyCommitSHA" ToolTip.Tip="{DynamicResource Text.Copy}">
@@ -184,12 +184,12 @@
 
           <!-- Messages -->
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
-          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1" 
-                                    Margin="12,4,8,0" 
-                                    Classes="primary" 
+          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
+                                    Margin="12,4,8,0"
+                                    Classes="primary"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
-                                    TextWrapping="Wrap">            
+                                    TextWrapping="Wrap">
             <v:CommitMessagePresenter.DataTemplates>
               <DataTemplate DataType="m:Commit">
                 <StackPanel MinWidth="400" Orientation="Vertical">

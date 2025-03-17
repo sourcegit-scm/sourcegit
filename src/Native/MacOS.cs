@@ -31,7 +31,7 @@ namespace SourceGit.Native
                 var env = File.ReadAllText(customPathFile).Trim();
                 if (!string.IsNullOrEmpty(env))
                     path = env;
-            }            
+            }
 
             Environment.SetEnvironmentVariable("PATH", path);
         }

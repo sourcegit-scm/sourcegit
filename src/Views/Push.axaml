@@ -76,8 +76,8 @@
               <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
               <Border Height="14"
                       CornerRadius="7"
-                      Margin="4,0,0,0" Padding="6,0" 
-                      VerticalAlignment="Center" 
+                      Margin="4,0,0,0" Padding="6,0"
+                      VerticalAlignment="Center"
                       Background="Green"
                       IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
                 <TextBlock Text="NEW" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>

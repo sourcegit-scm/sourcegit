@@ -20,14 +20,14 @@
         </ItemsPanelTemplate>
       </Setter>
     </Style>
-    
+
     <Style Selector="ListBoxItem">
       <Setter Property="Height" Value="24"/>
       <Setter Property="Margin" Value="0"/>
       <Setter Property="Padding" Value="0"/>
     </Style>
   </UserControl.Styles>
-  
+
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:ChangeCollectionAsTree">
       <v:ChangeCollectionContainer ItemsSource="{Binding Rows}"

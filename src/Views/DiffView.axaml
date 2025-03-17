@@ -46,7 +46,7 @@
               </Button.IsVisible>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Top}"/>
             </Button>
-            
+
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoPrevChange"
@@ -54,7 +54,7 @@
                     ToolTip.Tip="{DynamicResource Text.Diff.Prev}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
             </Button>
-            
+
             <Border>
               <Border.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -62,7 +62,7 @@
                   <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseBlockNavigationInDiffView" Mode="OneWay"/>
                 </MultiBinding>
               </Border.IsVisible>
-              
+
               <TextBlock x:Name="BlockNavigationIndicator" Classes="primary" Margin="0,0,0,0" FontSize="11" Text="-/-"/>
             </Border>
 
@@ -73,7 +73,7 @@
                     ToolTip.Tip="{DynamicResource Text.Diff.Next}">
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
             </Button>
-            
+
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
@@ -94,10 +94,10 @@
                           ToolTip.Tip="{DynamicResource Text.Diff.UseBlockNavigation}">
               <Path Width="13" Height="13" Data="{StaticResource Icons.CodeBlock}" Margin="0,3,0,0"/>
             </ToggleButton>
-            
-            <Button Classes="icon_button" 
+
+            <Button Classes="icon_button"
                     Width="28"
-                    Command="{Binding IncrUnified}" 
+                    Command="{Binding IncrUnified}"
                     IsVisible="{Binding IsTextDiff}"
                     ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
               <Button.IsEnabled>
@@ -106,10 +106,10 @@
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Incr}"/>
             </Button>
 
-            <Button Classes="icon_button" 
-                    Width="28" 
-                    Command="{Binding DecrUnified}" 
-                    IsVisible="{Binding IsTextDiff}" 
+            <Button Classes="icon_button"
+                    Width="28"
+                    Command="{Binding DecrUnified}"
+                    IsVisible="{Binding IsTextDiff}"
                     ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Decr}">
               <Button.IsEnabled>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -119,7 +119,7 @@
               </Button.IsEnabled>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Decr}"/>
             </Button>
-            
+
             <ToggleButton Classes="line_path"
                           Width="28"
                           Command="{Binding ToggleFullTextDiff}"
@@ -148,7 +148,7 @@
                   <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseSideBySideDiff" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
                 </MultiBinding>
               </ToggleButton.IsVisible>
-              
+
               <Path Width="12" Height="12" Data="{StaticResource Icons.WordWrap}" Margin="0,2,0,0"/>
             </ToggleButton>
 
