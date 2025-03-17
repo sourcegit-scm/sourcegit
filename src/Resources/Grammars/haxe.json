@@ -1,7 +1,9 @@
 {
   "information_for_contributors": [
     "This file has been copied from https://github.com/vshaxe/haxe-TmLanguage/blob/ddad8b4c6d0781ac20be0481174ec1be772c5da5/haxe.tmLanguage",
-    "and converted to JSON using https://marketplace.visualstudio.com/items?itemName=pedro-w.tmlanguage"
+    "and converted to JSON using https://marketplace.visualstudio.com/items?itemName=pedro-w.tmlanguage",
+    "The original file was licensed under the MIT License",
+    "https://github.com/vshaxe/haxe-TmLanguage/blob/ddad8b4c6d0781ac20be0481174ec1be772c5da5/LICENSE.md"
   ],
   "fileTypes": [
     "hx",
