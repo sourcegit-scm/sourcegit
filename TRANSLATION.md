@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.07%
+### de_DE.axaml: 99.06%
 
 
 <details>
@@ -24,7 +24,7 @@
 
 </details>
 
-### fr_FR.axaml: 91.66%
+### fr_FR.axaml: 91.57%
 
 
 <details>
@@ -106,7 +106,7 @@
 
 </details>
 
-### pt_BR.axaml: 91.39%
+### pt_BR.axaml: 91.30%
 
 
 <details>
