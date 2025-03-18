@@ -1,4 +1,4 @@
-### de_DE.axaml: 99.06%
+### de_DE.axaml: 98.79%
 
 
 <details>
@@ -10,21 +10,24 @@
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.EditorTabWidth
+- Text.Repository.HistoriesOptions
+- Text.Repository.HistoriesOptions.ShowTagsInGraph
 - Text.StashCM.SaveAsPatch
 
 </details>
 
-### es_ES.axaml: 100.00%
+### es_ES.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesOptions
+- Text.Repository.HistoriesOptions.ShowTagsInGraph
 
 </details>
 
-### fr_FR.axaml: 91.51%
+### fr_FR.axaml: 91.26%
 
 
 <details>
@@ -72,6 +75,8 @@
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOptions
+- Text.Repository.HistoriesOptions.ShowTagsInGraph
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
@@ -96,17 +101,18 @@
 
 </details>
 
-### it_IT.axaml: 100.00%
+### it_IT.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesOptions
+- Text.Repository.HistoriesOptions.ShowTagsInGraph
 
 </details>
 
-### pt_BR.axaml: 91.24%
+### pt_BR.axaml: 90.99%
 
 
 <details>
@@ -158,6 +164,8 @@
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
+- Text.Repository.HistoriesOptions
+- Text.Repository.HistoriesOptions.ShowTagsInGraph
 - Text.Repository.HistoriesOrder
 - Text.Repository.Notifications.Clear
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
@@ -180,13 +188,14 @@
 
 </details>
 
-### ru_RU.axaml: 100.00%
+### ru_RU.axaml: 99.73%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-
+- Text.Repository.HistoriesOptions
+- Text.Repository.HistoriesOptions.ShowTagsInGraph
 
 </details>
 
