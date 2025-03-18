@@ -12,7 +12,7 @@ namespace SourceGit.Views
     public class HistoriesLayout : Grid
     {
         public static readonly StyledProperty<bool> UseHorizontalProperty =
-            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(UseHorizontal));
+            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(UseHorizontal), false);
 
         public bool UseHorizontal
         {
@@ -22,17 +22,18 @@ namespace SourceGit.Views
 
         protected override Type StyleKeyOverride => typeof(Grid);
 
-        public HistoriesLayout()
-        {
-            RefreshLayout();
-        }
-
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == UseHorizontalProperty)
+            if (change.Property == UseHorizontalProperty && IsLoaded)
                 RefreshLayout();
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+            RefreshLayout();
         }
 
         private void RefreshLayout()
