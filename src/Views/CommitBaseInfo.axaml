@@ -173,8 +173,7 @@
           <!-- REFS -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
           <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
-            <v:CommitRefsPresenter TagBackground="{DynamicResource Brush.DecoratorTag}"
-                                   Foreground="{DynamicResource Brush.FG1}"
+            <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
                                    FontSize="11"
                                    AllowWrap="True"

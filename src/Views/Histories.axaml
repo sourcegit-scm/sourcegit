@@ -140,9 +140,9 @@
 
                       <v:CommitRefsPresenter Grid.Column="1"
                                              Background="{DynamicResource Brush.Contents}"
-                                             TagBackground="{DynamicResource Brush.DecoratorTag}"
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
+                                             ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                              FontSize="11"
                                              VerticalAlignment="Center">
                         <v:CommitRefsPresenter.UseGraphColor>
