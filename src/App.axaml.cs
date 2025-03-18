@@ -532,7 +532,7 @@ namespace SourceGit
                 catch (Exception e)
                 {
                     if (manually)
-                        ShowSelfUpdateResult(e);
+                        ShowSelfUpdateResult(new Models.SelfUpdateFailed(e));
                 }
             });
         }
