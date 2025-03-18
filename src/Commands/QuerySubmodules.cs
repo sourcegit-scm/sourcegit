@@ -26,7 +26,7 @@ namespace SourceGit.Commands
             var rs = ReadToEnd();
 
             var builder = new StringBuilder();
-            var lines = rs.StdOut.Split(['r', '\n'], System.StringSplitOptions.RemoveEmptyEntries);
+            var lines = rs.StdOut.Split(['\r', '\n'], System.StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 var match = REG_FORMAT1().Match(line);
