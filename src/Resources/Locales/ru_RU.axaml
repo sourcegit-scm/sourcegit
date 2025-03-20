@@ -574,6 +574,8 @@
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">РАСПОЛОЖЕНИЕ</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Горизонтально</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Вертикально</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOptions" xml:space="preserve">ОПЦИИ</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOptions.ShowTagsInGraph" xml:space="preserve">Показывать метки на графике</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">ЗАПРОС РЕВИЗИЙ</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Дата ревизии</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Топологически</x:String>
