@@ -1,4 +1,4 @@
-### de_DE.axaml: 98.79%
+### de_DE.axaml: 98.92%
 
 
 <details>
@@ -10,24 +10,22 @@
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.EditorTabWidth
-- Text.Repository.HistoriesOptions
-- Text.Repository.HistoriesOptions.ShowTagsInGraph
+- Text.Preferences.General.ShowTagsInGraph
 - Text.StashCM.SaveAsPatch
 
 </details>
 
-### es_ES.axaml: 99.73%
+### es_ES.axaml: 99.87%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.HistoriesOptions
-- Text.Repository.HistoriesOptions.ShowTagsInGraph
+- Text.Preferences.General.ShowTagsInGraph
 
 </details>
 
-### fr_FR.axaml: 91.26%
+### fr_FR.axaml: 91.39%
 
 
 <details>
@@ -66,6 +64,7 @@
 - Text.Preferences.Appearance.FontSize.Editor
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.ShowChildren
+- Text.Preferences.General.ShowTagsInGraph
 - Text.Preferences.Git.SSLVerify
 - Text.Repository.CustomActions
 - Text.Repository.FilterCommits
@@ -75,8 +74,6 @@
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
-- Text.Repository.HistoriesOptions
-- Text.Repository.HistoriesOptions.ShowTagsInGraph
 - Text.Repository.HistoriesOrder
 - Text.Repository.HistoriesOrder.ByDate
 - Text.Repository.HistoriesOrder.Topo
@@ -101,18 +98,17 @@
 
 </details>
 
-### it_IT.axaml: 99.73%
+### it_IT.axaml: 99.87%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.HistoriesOptions
-- Text.Repository.HistoriesOptions.ShowTagsInGraph
+- Text.Preferences.General.ShowTagsInGraph
 
 </details>
 
-### pt_BR.axaml: 90.99%
+### pt_BR.axaml: 91.12%
 
 
 <details>
@@ -159,13 +155,12 @@
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.ShowChildren
+- Text.Preferences.General.ShowTagsInGraph
 - Text.Preferences.Git.SSLVerify
 - Text.Repository.FilterCommits
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
-- Text.Repository.HistoriesOptions
-- Text.Repository.HistoriesOptions.ShowTagsInGraph
 - Text.Repository.HistoriesOrder
 - Text.Repository.Notifications.Clear
 - Text.Repository.OnlyHighlightCurrentBranchInHistories
