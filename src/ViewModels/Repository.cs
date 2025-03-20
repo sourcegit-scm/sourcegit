@@ -1505,20 +1505,6 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var others = new MenuItem();
-            others.Header = App.Text("Repository.HistoriesOptions");
-            others.IsEnabled = false;
-
-            var showTagsInGraph = new MenuItem();
-            showTagsInGraph.Header = App.Text("Repository.HistoriesOptions.ShowTagsInGraph");
-            if (Preferences.Instance.ShowTagsInGraph)
-                showTagsInGraph.Icon = App.CreateMenuIcon("Icons.Check");
-            showTagsInGraph.Click += (_, ev) =>
-            {
-                Preferences.Instance.ShowTagsInGraph = !Preferences.Instance.ShowTagsInGraph;
-                ev.Handled = true;
-            };
-
             var menu = new ContextMenu();
             menu.Items.Add(layout);
             menu.Items.Add(horizontal);
@@ -1527,9 +1513,6 @@ namespace SourceGit.ViewModels
             menu.Items.Add(order);
             menu.Items.Add(dateOrder);
             menu.Items.Add(topoOrder);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(others);
-            menu.Items.Add(showTagsInGraph);
             return menu;
         }
 
