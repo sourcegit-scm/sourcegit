@@ -118,20 +118,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool EnableTopoOrderInHistories
-        {
-            get => _settings.EnableTopoOrderInHistories;
-            set
-            {
-                if (value != _settings.EnableTopoOrderInHistories)
-                {
-                    _settings.EnableTopoOrderInHistories = value;
-                    OnPropertyChanged();
-                    Task.Run(RefreshCommits);
-                }
-            }
-        }
-
         public bool OnlyHighlightCurrentBranchInHistories
         {
             get => _settings.OnlyHighlighCurrentBranchInHistories;
@@ -141,20 +127,6 @@ namespace SourceGit.ViewModels
                 {
                     _settings.OnlyHighlighCurrentBranchInHistories = value;
                     OnPropertyChanged();
-                }
-            }
-        }
-
-        public Models.TagSortMode TagSortMode
-        {
-            get => _settings.TagSortMode;
-            set
-            {
-                if (value != _settings.TagSortMode)
-                {
-                    _settings.TagSortMode = value;
-                    OnPropertyChanged();
-                    VisibleTags = BuildVisibleTags();
                 }
             }
         }
@@ -1470,6 +1442,97 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public ContextMenu CreateContextMenuForHistoriesPage()
+        {
+            var layout = new MenuItem();
+            layout.Header = App.Text("Repository.HistoriesLayout");
+            layout.IsEnabled = false;
+
+            var isHorizontal = Preferences.Instance.UseTwoColumnsLayoutInHistories;
+            var horizontal = new MenuItem();
+            horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
+            if (isHorizontal)
+                horizontal.Icon = App.CreateMenuIcon("Icons.Check");
+            horizontal.Click += (_, ev) =>
+            {
+                Preferences.Instance.UseTwoColumnsLayoutInHistories = true;
+                ev.Handled = true;
+            };
+
+            var vertical = new MenuItem();
+            vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
+            if (!isHorizontal)
+                vertical.Icon = App.CreateMenuIcon("Icons.Check");
+            vertical.Click += (_, ev) =>
+            {
+                Preferences.Instance.UseTwoColumnsLayoutInHistories = false;
+                ev.Handled = true;
+            };
+
+            var order = new MenuItem();
+            order.Header = App.Text("Repository.HistoriesOrder");
+            order.IsEnabled = false;
+
+            var dateOrder = new MenuItem();
+            dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
+            dateOrder.SetValue(Views.MenuItemExtension.CommandProperty, "--date-order");
+            if (!_settings.EnableTopoOrderInHistories)
+                dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
+            dateOrder.Click += (_, ev) =>
+            {
+                if (_settings.EnableTopoOrderInHistories)
+                {
+                    _settings.EnableTopoOrderInHistories = false;
+                    Task.Run(RefreshCommits);
+                }
+
+                ev.Handled = true;
+            };
+
+            var topoOrder = new MenuItem();
+            topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
+            topoOrder.SetValue(Views.MenuItemExtension.CommandProperty, "--top-order");
+            if (_settings.EnableTopoOrderInHistories)
+                topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
+            topoOrder.Click += (_, ev) =>
+            {
+                if (!_settings.EnableTopoOrderInHistories)
+                {
+                    _settings.EnableTopoOrderInHistories = true;
+                    Task.Run(RefreshCommits);
+                }
+
+                ev.Handled = true;
+            };
+
+            var others = new MenuItem();
+            others.Header = App.Text("Repository.HistoriesOptions");
+            others.IsEnabled = false;
+
+            var showTagsInGraph = new MenuItem();
+            showTagsInGraph.Header = App.Text("Repository.HistoriesOptions.ShowTagsInGraph");
+            if (Preferences.Instance.ShowTagsInGraph)
+                showTagsInGraph.Icon = App.CreateMenuIcon("Icons.Check");
+            showTagsInGraph.Click += (_, ev) =>
+            {
+                Preferences.Instance.ShowTagsInGraph = !Preferences.Instance.ShowTagsInGraph;
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(layout);
+            menu.Items.Add(horizontal);
+            menu.Items.Add(vertical);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(order);
+            menu.Items.Add(dateOrder);
+            menu.Items.Add(topoOrder);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(others);
+            menu.Items.Add(showTagsInGraph);
+            return menu;
+        }
+
         public ContextMenu CreateContextMenuForLocalBranch(Models.Branch branch)
         {
             var menu = new ContextMenu();
@@ -2062,6 +2125,55 @@ namespace SourceGit.ViewModels
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
             menu.Items.Add(copyMessage);
+            return menu;
+        }
+
+        public ContextMenu CreateContextMenuForTagSortMode()
+        {
+            var mode = _settings.TagSortMode;
+            var changeMode = new Action<Models.TagSortMode>((m) =>
+            {
+                if (_settings.TagSortMode != m)
+                {
+                    _settings.TagSortMode = m;
+                    VisibleTags = BuildVisibleTags();
+                }
+            });
+
+            var byCreatorDate = new MenuItem();
+            byCreatorDate.Header = App.Text("Repository.Tags.OrderByCreatorDate");
+            if (mode == Models.TagSortMode.CreatorDate)
+                byCreatorDate.Icon = App.CreateMenuIcon("Icons.Check");
+            byCreatorDate.Click += (_, ev) =>
+            {
+                changeMode(Models.TagSortMode.CreatorDate);
+                ev.Handled = true;
+            };
+
+            var byNameAsc = new MenuItem();
+            byNameAsc.Header = App.Text("Repository.Tags.OrderByNameAsc");
+            if (mode == Models.TagSortMode.NameInAscending)
+                byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
+            byNameAsc.Click += (_, ev) =>
+            {
+                changeMode(Models.TagSortMode.NameInAscending);
+                ev.Handled = true;
+            };
+
+            var byNameDes = new MenuItem();
+            byNameDes.Header = App.Text("Repository.Tags.OrderByNameDes");
+            if (mode == Models.TagSortMode.NameInDescending)
+                byNameDes.Icon = App.CreateMenuIcon("Icons.Check");
+            byNameDes.Click += (_, ev) =>
+            {
+                changeMode(Models.TagSortMode.NameInDescending);
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(byCreatorDate);
+            menu.Items.Add(byNameAsc);
+            menu.Items.Add(byNameDes);
             return menu;
         }
 
