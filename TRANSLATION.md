@@ -188,14 +188,13 @@
 
 </details>
 
-### ru_RU.axaml: 99.73%
+### ru_RU.axaml: 100.00%
 
 
 <details>
 <summary>Missing Keys</summary>
 
-- Text.Repository.HistoriesOptions
-- Text.Repository.HistoriesOptions.ShowTagsInGraph
+
 
 </details>
 
