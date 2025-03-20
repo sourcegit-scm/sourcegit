@@ -58,14 +58,26 @@ namespace SourceGit.ViewModels
                     {
                         Task.Run(() =>
                         {
-                            var changes = new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).Result();
-                            if (value.Parents.Count == 3)
-                            {
-                                var untracked = new Commands.CompareRevisions(_repo.FullPath, "4b825dc642cb6eb9a060e54bf8d69288fbee4904", value.Parents[2]).Result();
-                                foreach (var c in untracked)
-                                    changes.Add(c);
+                            var changes = null as List<Models.Change>;
 
-                                changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
+                            if (Native.OS.GitVersion >= Models.GitVersions.STASH_SHOW_WITH_UNTRACKED)
+                            {
+                                changes = new Commands.QueryStashChanges(_repo.FullPath, value.Name).Result();
+                            }
+                            else
+                            {
+                                changes = new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).Result();
+                                if (value.Parents.Count == 3)
+                                {
+                                    var untracked = new Commands.CompareRevisions(_repo.FullPath, "4b825dc642cb6eb9a060e54bf8d69288fbee4904", value.Parents[2]).Result();
+                                    var needSort = changes.Count > 0;
+
+                                    foreach (var c in untracked)
+                                        changes.Add(c);
+
+                                    if (needSort)
+                                        changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
+                                }
                             }
 
                             Dispatcher.UIThread.Invoke(() => Changes = changes);
