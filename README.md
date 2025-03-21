@@ -19,7 +19,7 @@
 * GIT commands with GUI
   * Clone/Fetch/Pull/Push...
   * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
-  * Amend/Reword
+  * Amend/Reword/Squash
   * Interactive rebase
   * Branches
   * Remotes
@@ -40,6 +40,7 @@
 * Git LFS
 * Issue Link
 * Workspace
+* Custom Action
 * Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
 
 > [!WARNING]
