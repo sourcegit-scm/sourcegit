@@ -285,10 +285,9 @@
 
           <!-- Text Diff -->
           <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView
-              UseSideBySideDiff="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"
-              UseBlockNavigation="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseBlockNavigationInDiffView, Mode=OneWay}"
-              BlockNavigationIndicator="{Binding #BlockNavigationIndicator.Text, Mode=OneWayToSource}"/>
+            <v:TextDiffView UseSideBySideDiff="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"
+                            UseBlockNavigation="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseBlockNavigationInDiffView, Mode=OneWay}"
+                            BlockNavigationChanged="OnBlockNavigationChanged"/>
           </DataTemplate>
 
           <!-- Empty or only EOL changes -->

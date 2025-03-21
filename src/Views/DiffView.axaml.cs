@@ -13,30 +13,32 @@ namespace SourceGit.Views
 
         private void OnGotoFirstChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<TextDiffView>();
-            textDiff?.GotoFirstChange();
+            this.FindDescendantOfType<TextDiffView>()?.GotoFirstChange();
             e.Handled = true;
         }
 
         private void OnGotoPrevChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<TextDiffView>();
-            textDiff?.GotoPrevChange();
+            this.FindDescendantOfType<TextDiffView>()?.GotoPrevChange();
             e.Handled = true;
         }
 
         private void OnGotoNextChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<TextDiffView>();
-            textDiff?.GotoNextChange();
+            this.FindDescendantOfType<TextDiffView>()?.GotoNextChange();
             e.Handled = true;
         }
 
         private void OnGotoLastChange(object _, RoutedEventArgs e)
         {
-            var textDiff = this.FindDescendantOfType<TextDiffView>();
-            textDiff?.GotoLastChange();
+            this.FindDescendantOfType<TextDiffView>()?.GotoLastChange();
             e.Handled = true;
+        }
+
+        private void OnBlockNavigationChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextDiffView { UseBlockNavigation: true } textDiff)
+                BlockNavigationIndicator.Text = textDiff.BlockNavigation?.Indicator ?? string.Empty;
         }
     }
 }
