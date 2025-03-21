@@ -565,7 +565,6 @@ namespace SourceGit.Views
                     ScrollToLine(prev.Start);
                 }
             }
-            // NOTE: Not implemented (button hidden) for non-block navigation.
         }
 
         public void GotoPrevChange()
@@ -678,7 +677,6 @@ namespace SourceGit.Views
                     ScrollToLine(next.Start);
                 }
             }
-            // NOTE: Not implemented (button hidden) for non-block navigation.
         }
 
         public override void Render(DrawingContext context)
@@ -1229,7 +1227,7 @@ namespace SourceGit.Views
             if (scroller != null)
             {
                 scroller.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
-                scroller.GotFocus += OnTextViewScrollGotFocus;
+                scroller.ScrollChanged += OnTextViewScrollChanged;
             }
         }
 
@@ -1237,7 +1235,7 @@ namespace SourceGit.Views
         {
             var scroller = this.FindDescendantOfType<ScrollViewer>();
             if (scroller != null)
-                scroller.GotFocus -= OnTextViewScrollGotFocus;
+                scroller.ScrollChanged -= OnTextViewScrollChanged;
 
             base.OnUnloaded(e);
         }
@@ -1274,9 +1272,9 @@ namespace SourceGit.Views
             GC.Collect();
         }
 
-        private void OnTextViewScrollGotFocus(object sender, GotFocusEventArgs e)
+        private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (EnableChunkSelection && !TextArea.IsPointerOver)
+            if (sender is ScrollViewer { IsExpanded: true, IsPointerOver: true } scroller)
                 TrySetChunk(null);
         }
     }
@@ -1446,12 +1444,9 @@ namespace SourceGit.Views
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
-                _scrollViewer.GotFocus += OnTextViewScrollGotFocus;
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
                 _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
             }
-
-            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -1459,11 +1454,8 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-                _scrollViewer.GotFocus -= OnTextViewScrollGotFocus;
                 _scrollViewer = null;
             }
-
-            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
 
             base.OnUnloaded(e);
             GC.Collect();
@@ -1499,22 +1491,15 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTextViewScrollGotFocus(object sender, GotFocusEventArgs e)
-        {
-            if (EnableChunkSelection && !TextArea.IsPointerOver)
-                TrySetChunk(null);
-        }
-
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
+            if (IsPointerOver && DataContext is ViewModels.TwoSideTextDiff diff)
+            {
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
-        }
 
-        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
-        {
-            if (!TextArea.IsFocused)
-                Focus();
+                if (sender is ScrollViewer { IsExpanded: true, IsPointerOver: true } scroller )
+                    TrySetChunk(null);
+            }
         }
 
         private ScrollViewer _scrollViewer = null;
