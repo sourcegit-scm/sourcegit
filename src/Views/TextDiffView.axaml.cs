@@ -1272,7 +1272,7 @@ namespace SourceGit.Views
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (_scrollViewer is { IsExpanded: true, IsPointerOver: true })
+            if (!TextArea.TextView.IsPointerOver)
                 TrySetChunk(null);
         }
 
@@ -1513,7 +1513,7 @@ namespace SourceGit.Views
             {
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
 
-                if (_scrollViewer is { IsExpanded: true, IsPointerOver: true } )
+                if (!TextArea.TextView.IsPointerOver)
                     TrySetChunk(null);
             }
         }
