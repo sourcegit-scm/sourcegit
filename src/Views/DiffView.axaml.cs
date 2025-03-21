@@ -37,7 +37,7 @@ namespace SourceGit.Views
 
         private void OnBlockNavigationChanged(object sender, RoutedEventArgs e)
         {
-            if (sender is TextDiffView { UseBlockNavigation: true } textDiff)
+            if (sender is TextDiffView textDiff)
                 BlockNavigationIndicator.Text = textDiff.BlockNavigation?.Indicator ?? string.Empty;
         }
     }

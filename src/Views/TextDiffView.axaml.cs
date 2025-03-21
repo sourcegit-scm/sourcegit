@@ -1746,25 +1746,25 @@ namespace SourceGit.Views
         public void GotoFirstChange()
         {
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoFirstChange();
-            RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
+            TryRaiseBlockNavigationChanged();
         }
 
         public void GotoPrevChange()
         {
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoPrevChange();
-            RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
+            TryRaiseBlockNavigationChanged();
         }
 
         public void GotoNextChange()
         {
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoNextChange();
-            RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
+            TryRaiseBlockNavigationChanged();
         }
 
         public void GotoLastChange()
         {
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoLastChange();
-            RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
+            TryRaiseBlockNavigationChanged();
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -1818,7 +1818,7 @@ namespace SourceGit.Views
             else
                 BlockNavigation = null;
 
-            RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
+            TryRaiseBlockNavigationChanged();
         }
 
         private void OnStageChunk(object _1, RoutedEventArgs _2)
@@ -1989,6 +1989,12 @@ namespace SourceGit.Views
 
             repo.MarkWorkingCopyDirtyManually();
             repo.SetWatcherEnabled(true);
+        }
+
+        private void TryRaiseBlockNavigationChanged()
+        {
+            if (UseBlockNavigation)
+                RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
         }
     }
 }
