@@ -37,7 +37,7 @@
                  Text="{DynamicResource Text.FileHistory}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
-      
+
       <!-- Caption Buttons (Windows/Linux) -->
       <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
@@ -184,7 +184,7 @@
                     </Grid>
                   </DataTemplate>
                 </Grid.DataTemplates>
-                
+
                 <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
                   <ContentControl Content="{Binding StartPoint}"/>
                 </Border>
@@ -234,7 +234,7 @@
                      HorizontalAlignment="Center" VerticalAlignment="Center"
                      IsVisible="{Binding IsLoading}"/>
     </Grid>
-    
+
     <Border Grid.Row="1" x:Name="NotifyDonePanel" Background="Transparent" IsVisible="False" PointerPressed="OnCloseNotifyPanel">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #80000000)">
         <Border CornerRadius="8" Background="{DynamicResource Brush.Popup}" Padding="32">

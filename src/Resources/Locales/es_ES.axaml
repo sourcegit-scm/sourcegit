@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">Acerca de</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Acerca de SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Construido con </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• El gráfico es renderizado por </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor de texto de </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Las fuentes monoespaciadas provienen de </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• El código fuente se puede encontrar en </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI de código abierto y gratuito</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Agregar Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Qué Checkout:</x:String>
@@ -25,18 +20,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR CÓMO MENSAJE DE COMMIT</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Parche</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Genera errores y se niega a aplicar el parche</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Error Todo</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similar a 'error', pero muestra más</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo del Parche:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar cambios de espacios en blanco</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Sin Advertencia</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Desactiva la advertencia de espacios en blanco al final</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Parche</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Advertencia</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Genera advertencias para algunos de estos errores, pero aplica</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espacios en Blanco:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Aplicar Stash</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Borrar después de aplicar</x:String>
@@ -516,7 +503,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Podar Remoto</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Podar Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar información de worktree en `$GIT_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar información de worktree en `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Rama Remota:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch todas las ramas</x:String>

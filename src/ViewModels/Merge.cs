@@ -15,20 +15,20 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public Models.MergeMode SelectedMode
+        public Models.MergeMode Mode
         {
             get;
             set;
         }
 
-        public Merge(Repository repo, Models.Branch source, string into)
+        public Merge(Repository repo, Models.Branch source, string into, bool forceFastForward)
         {
             _repo = repo;
             _sourceName = source.FriendlyName;
 
             Source = source;
             Into = into;
-            SelectedMode = AutoSelectMergeMode();
+            Mode = forceFastForward ? Models.MergeMode.Supported[1] : AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            SelectedMode = AutoSelectMergeMode();
+            Mode = AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            SelectedMode = AutoSelectMergeMode();
+            Mode = AutoSelectMergeMode();
             View = new Views.Merge() { DataContext = this };
         }
 
@@ -61,7 +61,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, SelectedMode.Arg, SetProgressDescription).Exec();
+                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });
@@ -72,12 +72,14 @@ namespace SourceGit.ViewModels
             var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
             if (string.IsNullOrEmpty(config))
                 return Models.MergeMode.Supported[0];
-            if (config.Equals("--no-ff", StringComparison.Ordinal))
+            if (config.Equals("--ff-only", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[1];
-            if (config.Equals("--squash", StringComparison.Ordinal))
+            if (config.Equals("--no-ff", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[2];
-            if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
+            if (config.Equals("--squash", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[3];
+            if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
+                return Models.MergeMode.Supported[4];
 
             return Models.MergeMode.Supported[0];
         }

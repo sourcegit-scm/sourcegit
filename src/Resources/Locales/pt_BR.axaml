@@ -29,11 +29,6 @@
   
   <x:String x:Key="Text.About" xml:space="preserve">Sobre</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Sobre o SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Construído com </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Gráfico desenhado por </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor de Texto de </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Fontes monoespaçadas de </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Código-fonte pode ser encontrado em </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI Livre e de Código Aberto</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Adicionar Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">O que Checar:</x:String>
@@ -48,18 +43,10 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assietente IA</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Erro</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Erros levantados e se recusa a aplicar o patch</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Erro Total</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Semelhante a 'erro', mas mostra mais</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Arquivo de Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selecione o arquivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Sem Aviso</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Desativa o aviso de espaço em branco no final</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Patch</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Aviso</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Emite avisos para alguns erros, mas aplica</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espaço em Branco:</x:String>
   <x:String x:Key="Text.Archive" xml:space="preserve">Arquivar...</x:String>
   <x:String x:Key="Text.Archive.File" xml:space="preserve">Salvar Arquivo Como:</x:String>
@@ -498,7 +485,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prunar Remoto</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Alvo:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Podar Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar informações de worktree em `$GIT_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar informações de worktree em `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Puxar</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Buscar todos os branches</x:String>

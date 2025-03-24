@@ -7,7 +7,7 @@
             WorkingDirectory = repo;
             Context = repo;
 
-            const string baseArgs = "show --no-show-signature --pretty=format:\"%G?%n%GS%n%GK\" -s";
+            const string baseArgs = "show --no-show-signature --format=%G?%n%GS%n%GK -s";
             const string fakeSignersFileArg = "-c gpg.ssh.allowedSignersFile=/dev/null";
             Args = $"{(useFakeSignersFile ? fakeSignersFileArg : string.Empty)} {baseArgs} {sha}";
         }
@@ -18,7 +18,7 @@
             if (!rs.IsSuccess)
                 return null;
 
-            var raw = rs.StdOut.Trim();
+            var raw = rs.StdOut.Trim().ReplaceLineEndings("\n");
             if (raw.Length <= 1)
                 return null;
 
@@ -29,7 +29,6 @@
                 Signer = lines[1],
                 Key = lines[2]
             };
-
         }
     }
 }

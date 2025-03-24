@@ -9,19 +9,19 @@
              x:Name="ThisControl">
   <StackPanel Orientation="Vertical">
     <Rectangle Height="1" HorizontalAlignment="Stretch" Fill="{DynamicResource Brush.Border1}" />
-    
+
     <StackPanel Orientation="Horizontal" Margin="0,8">
       <ContentPresenter x:Name="Icon" Width="12" Height="12"/>
       <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
     </StackPanel>
-    
+
     <TextBlock x:Name="TxtDesc"
                HorizontalAlignment="Stretch"
                TextWrapping="Wrap"
                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                FontStyle="Italic"
                Text="{Binding #ThisControl.Description}"/>
-    
+
     <ProgressBar x:Name="ProgressBar"
                  Margin="0,8,0,0"
                  HorizontalAlignment="Stretch"

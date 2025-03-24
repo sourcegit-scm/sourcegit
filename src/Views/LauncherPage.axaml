@@ -17,14 +17,14 @@
           <DataTemplate DataType="vm:Welcome">
             <v:WelcomeToolbar/>
           </DataTemplate>
-          
+
           <DataTemplate DataType="vm:Repository">
             <v:RepositoryToolbar/>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
     </Border>
-    
+
     <!-- Body -->
     <Border Grid.Row="1">
       <ContentControl Content="{Binding Data}">
@@ -32,7 +32,7 @@
           <DataTemplate DataType="vm:Welcome">
             <v:Welcome/>
           </DataTemplate>
-          
+
           <DataTemplate DataType="vm:Repository">
             <v:Repository/>
           </DataTemplate>
@@ -138,7 +138,7 @@
                         </Button>
                         <Button Grid.Column="3" Classes="icon_button" Width="16" Height="16" Margin="8,0,0,0" Click="OnDismissNotification">
                           <Path Width="10" Height="10" Data="{StaticResource Icons.Window.Close}"/>
-                        </Button> 
+                        </Button>
                       </Grid>
 
                       <ScrollViewer Grid.Row="1" Margin="8" MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

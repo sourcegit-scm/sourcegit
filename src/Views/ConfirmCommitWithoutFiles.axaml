@@ -52,7 +52,7 @@
               HorizontalAlignment="Center"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
-      
+
       <Button Classes="flat primary"
               Width="80"
               Height="30"

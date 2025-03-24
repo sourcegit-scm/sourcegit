@@ -18,8 +18,8 @@
 * Supports SSH access with each remote
 * GIT commands with GUI
   * Clone/Fetch/Pull/Push...
-  * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
-  * Amend/Reword
+  * Merge/Rebase/Reset/Revert/Cherry-pick...
+  * Amend/Reword/Squash
   * Interactive rebase
   * Branches
   * Remotes
@@ -40,6 +40,7 @@
 * Git LFS
 * Issue Link
 * Workspace
+* Custom Action
 * Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
 
 > [!WARNING]
@@ -47,10 +48,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-99.07%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-91.66%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-99.87%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-91.39%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)](TRANSLATION.md)
-
-> [!NOTE]
-> You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
+You can find the current translation status in [TRANSLATION.md](TRANSLATION.md)
 
 ## How to Use
 
@@ -201,3 +199,7 @@ dotnet run --project src/SourceGit.csproj
 Thanks to all the people who contribute.
 
 [![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
+
+## Third-Party Components
+
+For detailed license information, see [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).

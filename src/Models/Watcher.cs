@@ -8,12 +8,12 @@ namespace SourceGit.Models
 {
     public class Watcher : IDisposable
     {
-        public Watcher(IRepository repo)
+        public Watcher(IRepository repo, string fullpath, string gitDir)
         {
             _repo = repo;
 
             _wcWatcher = new FileSystemWatcher();
-            _wcWatcher.Path = _repo.FullPath;
+            _wcWatcher.Path = fullpath;
             _wcWatcher.Filter = "*";
             _wcWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
             _wcWatcher.IncludeSubdirectories = true;
@@ -23,15 +23,8 @@ namespace SourceGit.Models
             _wcWatcher.Deleted += OnWorkingCopyChanged;
             _wcWatcher.EnableRaisingEvents = true;
 
-            // If this repository is a worktree repository, just watch the main repository's gitdir.
-            var gitDirNormalized = _repo.GitDir.Replace("\\", "/");
-            var worktreeIdx = gitDirNormalized.IndexOf(".git/worktrees/", StringComparison.Ordinal);
-            var repoWatchDir = _repo.GitDir;
-            if (worktreeIdx > 0)
-                repoWatchDir = _repo.GitDir.Substring(0, worktreeIdx + 4);
-
             _repoWatcher = new FileSystemWatcher();
-            _repoWatcher.Path = repoWatchDir;
+            _repoWatcher.Path = gitDir;
             _repoWatcher.Filter = "*";
             _repoWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
             _repoWatcher.IncludeSubdirectories = true;

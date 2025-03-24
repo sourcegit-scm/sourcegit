@@ -3,7 +3,10 @@
   "scopeName": "source.toml",
   "uuid": "8b4e5008-c50d-11ea-a91b-54ee75aeeb97",
   "information_for_contributors": [
-    "Originally was maintained by aster (galaster@foxmail.com). This notice is only kept here for the record, please don't send e-mails about bugs and other issues."
+    "Originally was maintained by aster (galaster@foxmail.com). This notice is only kept here for the record, please don't send e-mails about bugs and other issues.",
+    "This file has been copied from https://github.com/kkiyama117/coc-toml/blob/main/toml.tmLanguage.json",
+    "The original file was licensed under the MIT License",
+    "https://github.com/kkiyama117/coc-toml/blob/main/LICENSE"
   ],
   "patterns": [
     {

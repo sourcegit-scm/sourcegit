@@ -21,7 +21,7 @@ namespace SourceGit.Commands
             var last = null as Models.Worktree;
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     if (line.StartsWith("worktree ", StringComparison.Ordinal))

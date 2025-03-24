@@ -14,7 +14,7 @@
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:TextDiff">
           <Grid ColumnDefinitions="*,1,8">
-            <v:CombinedTextDiffPresenter Grid.Column="0" 
+            <v:CombinedTextDiffPresenter Grid.Column="0"
                                          x:Name="CombinedPresenter"
                                          FileName="{Binding File}"
                                          Foreground="{DynamicResource Brush.FG1}"
@@ -34,7 +34,7 @@
                                          EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
                                          SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"
                                          BlockNavigation="{Binding #ThisControl.BlockNavigation, Mode=TwoWay}"/>
-            
+
             <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
             <v:TextDiffViewMinimap Grid.Column="2"
@@ -90,7 +90,7 @@
                                            EnableChunkSelection="{Binding #ThisControl.EnableChunkSelection}"
                                            SelectedChunk="{Binding #ThisControl.SelectedChunk, Mode=TwoWay}"
                                            BlockNavigation="{Binding #ThisControl.BlockNavigation, Mode=TwoWay}"/>
-            
+
             <Rectangle Grid.Column="3" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 
             <v:TextDiffViewMinimap Grid.Column="4"
@@ -110,7 +110,7 @@
           <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+S, macOS=⌘+S}"/>
         </TextBlock>
       </Button>
-      
+
       <Button Classes="flat" Click="OnUnstageChunk" HotKey="{OnPlatform Ctrl+U, macOS=⌘+U}" IsVisible="{Binding #ThisControl.IsUnstagedChange, Converter={x:Static BoolConverters.Not}}">
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Unstage}"/>
@@ -118,7 +118,7 @@
           <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+U, macOS=⌘+U}"/>
         </TextBlock>
       </Button>
-      
+
       <Button Classes="flat" Margin="8,0,0,0" HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}" Click="OnDiscardChunk" IsVisible="{Binding #ThisControl.IsUnstagedChange}">
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Discard}"/>

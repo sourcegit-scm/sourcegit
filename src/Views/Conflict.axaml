@@ -46,7 +46,6 @@
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Commit}"/>
               <v:CommitRefsPresenter Margin="8,0,0,0"
-                                     TagBackground="{DynamicResource Brush.DecoratorTag}"
                                      Foreground="{DynamicResource Brush.FG1}"
                                      FontFamily="{DynamicResource Fonts.Primary}"
                                      FontSize="11"

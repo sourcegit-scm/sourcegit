@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">關於</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於 SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• 專案依賴於 </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• 圖表繪製元件來自 </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• 文字編輯器使用 </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• 等寬字型來自於 </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• 專案原始碼網址 </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">開源免費的 Git 客戶端</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">簽出分支方式:</x:String>
@@ -25,18 +20,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">套用為提交訊息</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">錯誤</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">輸出錯誤，並中止套用修補檔</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">更多錯誤</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">與 [錯誤] 級別相似，但輸出更多內容</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">修補檔:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">選擇修補檔</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符號</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">忽略</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">關閉所有警告</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">套用修補檔</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">警告</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">套用修補檔，輸出關於空白字元的警告</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白字元處理:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">套用擱置變更</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">套用擱置變更後刪除</x:String>
@@ -487,6 +474,7 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">在提交路線圖中顯示修改時間而非提交時間</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交詳細資訊中顯示後續提交</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在路線圖中顯示標籤</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">提交標題字數偵測</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">Git 設定</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自動換行轉換</x:String>
@@ -515,7 +503,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理遠端已刪除分支</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">清理工作區</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在 `$GIT_DIR/worktrees` 中的無效工作區資訊</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在 `$GIT_COMMON_DIR/worktrees` 中的無效工作區資訊</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉取 (pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">拉取遠端中的所有分支</x:String>

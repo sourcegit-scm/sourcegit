@@ -553,7 +553,7 @@ namespace SourceGit.Views
         {
         }
 
-        public void GotoFirstChange()
+        public virtual void GotoFirstChange()
         {
             var blockNavigation = BlockNavigation;
             if (blockNavigation != null)
@@ -565,10 +565,9 @@ namespace SourceGit.Views
                     ScrollToLine(prev.Start);
                 }
             }
-            // NOTE: Not implemented (button hidden) for non-block navigation.
         }
 
-        public void GotoPrevChange()
+        public virtual void GotoPrevChange()
         {
             var blockNavigation = BlockNavigation;
             if (blockNavigation != null)
@@ -624,7 +623,7 @@ namespace SourceGit.Views
             }
         }
 
-        public void GotoNextChange()
+        public virtual void GotoNextChange()
         {
             var blockNavigation = BlockNavigation;
             if (blockNavigation != null)
@@ -666,7 +665,7 @@ namespace SourceGit.Views
             }
         }
 
-        public void GotoLastChange()
+        public virtual void GotoLastChange()
         {
             var blockNavigation = BlockNavigation;
             if (blockNavigation != null)
@@ -678,7 +677,6 @@ namespace SourceGit.Views
                     ScrollToLine(next.Start);
                 }
             }
-            // NOTE: Not implemented (button hidden) for non-block navigation.
         }
 
         public override void Render(DrawingContext context)
@@ -768,15 +766,13 @@ namespace SourceGit.Views
             {
                 var oldValue = change.OldValue as ViewModels.BlockNavigation;
                 if (oldValue != null)
-                {
                     oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
-                    if (oldValue.Current != -1)
-                        TextArea?.TextView?.Redraw();
-                }
 
                 var newValue = change.NewValue as ViewModels.BlockNavigation;
                 if (newValue != null)
                     newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
+
+                TextArea?.TextView?.Redraw();
             }
         }
 
@@ -795,9 +791,10 @@ namespace SourceGit.Views
                 base.OnKeyDown(e);
         }
 
-        private void OnBlockNavigationPropertyChanged(object _1, PropertyChangedEventArgs _2)
+        private void OnBlockNavigationPropertyChanged(object _1, PropertyChangedEventArgs e)
         {
-            TextArea?.TextView?.Redraw();
+            if (e.PropertyName == "Current")
+                TextArea?.TextView?.Redraw();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -1225,19 +1222,18 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
-            var scroller = this.FindDescendantOfType<ScrollViewer>();
-            if (scroller != null)
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
             {
-                scroller.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
-                scroller.GotFocus += OnTextViewScrollGotFocus;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
             }
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            var scroller = this.FindDescendantOfType<ScrollViewer>();
-            if (scroller != null)
-                scroller.GotFocus -= OnTextViewScrollGotFocus;
+            if (_scrollViewer != null)
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
 
             base.OnUnloaded(e);
         }
@@ -1274,11 +1270,13 @@ namespace SourceGit.Views
             GC.Collect();
         }
 
-        private void OnTextViewScrollGotFocus(object sender, GotFocusEventArgs e)
+        private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (EnableChunkSelection && !TextArea.IsPointerOver)
+            if (!TextArea.TextView.IsPointerOver)
                 TrySetChunk(null);
         }
+
+        private ScrollViewer _scrollViewer = null;
     }
 
     public class SingleSideTextDiffPresenter : ThemedTextDiffPresenter
@@ -1288,14 +1286,6 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineNumberMargin(true, false));
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
-        }
-
-        public void ForceSyncScrollOffset()
-        {
-            if (_scrollViewer == null)
-                return;
-            if (DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
         public override List<Models.TextDiffLine> GetLines()
@@ -1310,6 +1300,30 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.TwoSideTextDiff diff)
                 return diff.MaxLineNumber;
             return 0;
+        }
+
+        public override void GotoFirstChange()
+        {
+            base.GotoFirstChange();
+            DirectSyncScrollOffset();
+        }
+
+        public override void GotoPrevChange()
+        {
+            base.GotoPrevChange();
+            DirectSyncScrollOffset();
+        }
+
+        public override void GotoNextChange()
+        {
+            base.GotoNextChange();
+            DirectSyncScrollOffset();
+        }
+
+        public override void GotoLastChange()
+        {
+            base.GotoLastChange();
+            DirectSyncScrollOffset();
         }
 
         public override void UpdateSelectedChunk(double y)
@@ -1446,12 +1460,9 @@ namespace SourceGit.Views
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
-                _scrollViewer.GotFocus += OnTextViewScrollGotFocus;
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
                 _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("SyncScrollOffset", BindingMode.OneWay));
             }
-
-            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -1459,11 +1470,8 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-                _scrollViewer.GotFocus -= OnTextViewScrollGotFocus;
                 _scrollViewer = null;
             }
-
-            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
 
             base.OnUnloaded(e);
             GC.Collect();
@@ -1499,22 +1507,21 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTextViewScrollGotFocus(object sender, GotFocusEventArgs e)
-        {
-            if (EnableChunkSelection && !TextArea.IsPointerOver)
-                TrySetChunk(null);
-        }
-
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (TextArea.IsFocused && DataContext is ViewModels.TwoSideTextDiff diff)
+            if (IsPointerOver && DataContext is ViewModels.TwoSideTextDiff diff)
+            {
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
+
+                if (!TextArea.TextView.IsPointerOver)
+                    TrySetChunk(null);
+            }
         }
 
-        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        private void DirectSyncScrollOffset()
         {
-            if (!TextArea.IsFocused)
-                Focus();
+            if (_scrollViewer is { } && DataContext is ViewModels.TwoSideTextDiff diff)
+                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
         private ScrollViewer _scrollViewer = null;
@@ -1694,13 +1701,13 @@ namespace SourceGit.Views
             set => SetValue(BlockNavigationProperty, value);
         }
 
-        public static readonly StyledProperty<string> BlockNavigationIndicatorProperty =
-            AvaloniaProperty.Register<TextDiffView, string>(nameof(BlockNavigationIndicator));
+        public static readonly RoutedEvent<RoutedEventArgs> BlockNavigationChangedEvent =
+            RoutedEvent.Register<TextDiffView, RoutedEventArgs>(nameof(BlockNavigationChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
-        public string BlockNavigationIndicator
+        public event EventHandler<RoutedEventArgs> BlockNavigationChanged
         {
-            get => GetValue(BlockNavigationIndicatorProperty);
-            set => SetValue(BlockNavigationIndicatorProperty, value);
+            add { AddHandler(BlockNavigationChangedEvent, value); }
+            remove { RemoveHandler(BlockNavigationChangedEvent, value); }
         }
 
         static TextDiffView()
@@ -1738,54 +1745,26 @@ namespace SourceGit.Views
 
         public void GotoFirstChange()
         {
-            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (presenter == null)
-                return;
-
-            presenter.GotoFirstChange();
-            if (presenter is SingleSideTextDiffPresenter singleSide)
-                singleSide.ForceSyncScrollOffset();
-
-            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoFirstChange();
+            TryRaiseBlockNavigationChanged();
         }
 
         public void GotoPrevChange()
         {
-            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (presenter == null)
-                return;
-
-            presenter.GotoPrevChange();
-            if (presenter is SingleSideTextDiffPresenter singleSide)
-                singleSide.ForceSyncScrollOffset();
-
-            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoPrevChange();
+            TryRaiseBlockNavigationChanged();
         }
 
         public void GotoNextChange()
         {
-            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (presenter == null)
-                return;
-
-            presenter.GotoNextChange();
-            if (presenter is SingleSideTextDiffPresenter singleSide)
-                singleSide.ForceSyncScrollOffset();
-
-            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoNextChange();
+            TryRaiseBlockNavigationChanged();
         }
 
         public void GotoLastChange()
         {
-            var presenter = this.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (presenter == null)
-                return;
-
-            presenter.GotoLastChange();
-            if (presenter is SingleSideTextDiffPresenter singleSide)
-                singleSide.ForceSyncScrollOffset();
-
-            BlockNavigationIndicator = BlockNavigation?.Indicator ?? string.Empty;
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoLastChange();
+            TryRaiseBlockNavigationChanged();
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -1835,15 +1814,11 @@ namespace SourceGit.Views
         private void RefreshBlockNavigation()
         {
             if (UseBlockNavigation)
-            {
                 BlockNavigation = new ViewModels.BlockNavigation(Editor.Content);
-                BlockNavigationIndicator = BlockNavigation.Indicator;
-            }
             else
-            {
                 BlockNavigation = null;
-                BlockNavigationIndicator = "-/-";
-            }
+
+            TryRaiseBlockNavigationChanged();
         }
 
         private void OnStageChunk(object _1, RoutedEventArgs _2)
@@ -2014,6 +1989,12 @@ namespace SourceGit.Views
 
             repo.MarkWorkingCopyDirtyManually();
             repo.SetWatcherEnabled(true);
+        }
+
+        private void TryRaiseBlockNavigationChanged()
+        {
+            if (UseBlockNavigation)
+                RaiseEvent(new RoutedEventArgs(BlockNavigationChangedEvent));
         }
     }
 }

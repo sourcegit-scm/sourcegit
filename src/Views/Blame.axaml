@@ -36,7 +36,7 @@
                  Text="{DynamicResource Text.Blame}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
-      
+
       <!-- Caption Buttons (Windows/Linux) -->
       <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>

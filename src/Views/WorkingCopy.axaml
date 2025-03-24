@@ -23,7 +23,7 @@
         <RowDefinition Height="1"/>
         <RowDefinition Height="*" MinHeight="100"/>
       </Grid.RowDefinitions>
-      
+
       <!-- Unstaged -->
       <Grid Grid.Row="0" RowDefinitions="28,36,*">
         <!-- Unstaged Toolbar -->
@@ -106,7 +106,7 @@
             </TextBox.InnerRightContent>
           </TextBox>
         </Border>
-        
+
         <!-- Unstaged Changes -->
         <v:ChangeCollectionView Grid.Row="2"
                                 x:Name="UnstagedChangesView"
@@ -121,7 +121,7 @@
                                 ChangeDoubleTapped="OnUnstagedChangeDoubleTapped"
                                 KeyDown="OnUnstagedKeyDown"/>
       </Grid>
-      
+
       <!-- Splitter -->
       <GridSplitter Grid.Row="1"
                     MinHeight="1"
@@ -129,7 +129,7 @@
                     Background="{DynamicResource Brush.Border0}"/>
 
       <!-- Staged -->
-      <Grid Grid.Row="2" RowDefinitions="28,*">        
+      <Grid Grid.Row="2" RowDefinitions="28,*">
         <!-- Staged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
@@ -186,7 +186,7 @@
         <RowDefinition Height="128" MinHeight="100"/>
         <RowDefinition Height="36"/>
       </Grid.RowDefinitions>
-      
+
       <!-- Select Change Detail -->
       <Grid Grid.Row="0">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
@@ -277,7 +277,7 @@
                        Width="18" Height="18"
                        HorizontalAlignment="Right"
                        IsVisible="{Binding IsCommitting}"/>
-        
+
         <SplitButton Grid.Column="6"
                      Content="{DynamicResource Text.Repository.Continue}"
                      Height="28"
@@ -323,7 +323,7 @@
             </StackPanel>
           </ToolTip.Tip>
         </Button>
-        
+
         <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
         <Button Grid.Column="7"
                 Width="0" Height="0"
@@ -350,7 +350,7 @@
               <Binding Path="UseAmend" Converter="{x:Static BoolConverters.Not}"/>
               <Binding Path="InProgressContext" Converter="{x:Static ObjectConverters.IsNull}"/>
             </MultiBinding>
-          </Button.IsVisible>  
+          </Button.IsVisible>
         </Button>
       </Grid>
     </Grid>

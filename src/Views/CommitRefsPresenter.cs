@@ -64,15 +64,6 @@ namespace SourceGit.Views
             set => SetValue(UseGraphColorProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> TagBackgroundProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, IBrush>(nameof(TagBackground), Brushes.White);
-
-        public IBrush TagBackground
-        {
-            get => GetValue(TagBackgroundProperty);
-            set => SetValue(TagBackgroundProperty, value);
-        }
-
         public static readonly StyledProperty<bool> AllowWrapProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(AllowWrap));
 
@@ -82,6 +73,15 @@ namespace SourceGit.Views
             set => SetValue(AllowWrapProperty, value);
         }
 
+        public static readonly StyledProperty<bool> ShowTagsProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(ShowTags), true);
+
+        public bool ShowTags
+        {
+            get => GetValue(ShowTagsProperty);
+            set => SetValue(ShowTagsProperty, value);
+        }
+
         static CommitRefsPresenter()
         {
             AffectsMeasure<CommitRefsPresenter>(
@@ -89,8 +89,8 @@ namespace SourceGit.Views
                 FontSizeProperty,
                 ForegroundProperty,
                 UseGraphColorProperty,
-                TagBackgroundProperty,
-                BackgroundProperty);
+                BackgroundProperty,
+                ShowTagsProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -171,15 +171,18 @@ namespace SourceGit.Views
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
                 var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
-                var tagBG = UseGraphColor ? TagBackground : Brushes.Gray;
                 var labelSize = FontSize;
                 var requiredWidth = 0.0;
                 var requiredHeight = 16.0;
                 var x = 0.0;
                 var allowWrap = AllowWrap;
+                var showTags = ShowTags;
 
                 foreach (var decorator in refs)
                 {
+                    if (!showTags && decorator.Type == Models.DecoratorType.Tag)
+                        continue;
+
                     var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead ||
                         decorator.Type == Models.DecoratorType.CurrentCommitHead;
 
@@ -209,7 +212,7 @@ namespace SourceGit.Views
                             geo = this.FindResource("Icons.Remote") as StreamGeometry;
                             break;
                         case Models.DecoratorType.Tag:
-                            item.Brush = tagBG;
+                            item.Brush = Brushes.Gray;
                             geo = this.FindResource("Icons.Tag") as StreamGeometry;
                             break;
                         default:

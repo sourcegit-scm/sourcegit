@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">Informazioni</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Informazioni su SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Creato con </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Il grafico è reso da </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Editor di testo da </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• I font monospaziati provengono da </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Il codice sorgente è disponibile su </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Client GUI Git open source e gratuito</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Aggiungi Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Di cosa fare il checkout:</x:String>
@@ -25,18 +20,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare il messaggio di commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLICA COME MESSAGGIO DI COMMIT</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Applica</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Errore</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Genera errori e si rifiuta di applicare la patch</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Tutti gli errori</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Simile a 'errore', ma mostra di più</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">File Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleziona file .patch da applicare</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignora modifiche agli spazi</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Nessun avviso</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Disattiva l'avviso sugli spazi finali</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Applica Patch</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Avviso</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Mostra avvisi per alcuni errori, ma applica comunque</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Spazi:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Applica lo stash</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Rimuovi dopo aver applicato</x:String>
@@ -467,7 +454,8 @@
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Abilita streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ASPETTO</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Larghezza della Tab Editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Dimensione Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Dimensione Font Predefinita</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Dimensione Font Editor</x:String>
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Font Monospaziato</x:String>
@@ -515,7 +503,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Potatura Remota</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Destinazione:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Potatura Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Potatura delle informazioni di worktree in `$GIT_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Potatura delle informazioni di worktree in `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Scarica</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Recupera tutti i branch</x:String>

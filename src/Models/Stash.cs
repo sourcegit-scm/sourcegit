@@ -10,7 +10,6 @@ namespace SourceGit.Models
         public List<string> Parents { get; set; } = [];
         public ulong Time { get; set; } = 0;
         public string Message { get; set; } = "";
-        public bool HasUntracked => Parents.Count == 3;
 
         public string TimeStr => DateTime.UnixEpoch.AddSeconds(Time).ToLocalTime().ToString(DateTimeFormat.Actived.DateTime);
     }

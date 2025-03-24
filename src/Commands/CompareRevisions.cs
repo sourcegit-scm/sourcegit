@@ -6,7 +6,7 @@ namespace SourceGit.Commands
 {
     public partial class CompareRevisions : Command
     {
-        [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
+        [GeneratedRegex(@"^([MADRC])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
 
         public CompareRevisions(string repo, string start, string end)

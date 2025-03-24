@@ -10,7 +10,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.DeleteBranch}"/>
-    
+
     <Grid Margin="0,16,8,0" RowDefinitions="32,Auto" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Text="{DynamicResource Text.DeleteBranch.Branch}"/>
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">

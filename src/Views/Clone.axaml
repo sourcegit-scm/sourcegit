@@ -11,14 +11,14 @@
     <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Clone}"/>
 
     <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,32,32,32,32" ColumnDefinitions="Auto,*">
-      <TextBlock Grid.Row="0" Grid.Column="0" 
-                 HorizontalAlignment="Right" 
-                 Margin="0,0,8,0" 
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.Clone.RemoteURL}"/>
-      <TextBox Grid.Row="0" Grid.Column="1" 
+      <TextBox Grid.Row="0" Grid.Column="1"
                Height="28"
-               CornerRadius="3" 
-               Text="{Binding Remote, Mode=TwoWay}" 
+               CornerRadius="3"
+               Text="{Binding Remote, Mode=TwoWay}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
@@ -40,9 +40,9 @@
         </TextBox.InnerRightContent>
       </TextBox>
 
-      <TextBlock Grid.Row="2" Grid.Column="0" 
-                 HorizontalAlignment="Right" 
-                 Margin="0,0,8,0" 
+      <TextBlock Grid.Row="2" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.Clone.ParentFolder}"/>
       <TextBox Grid.Row="2" Grid.Column="1"
                x:Name="TxtParentFolder"
@@ -56,24 +56,24 @@
         </TextBox.InnerRightContent>
       </TextBox>
 
-      <TextBlock Grid.Row="3" Grid.Column="0" 
-                 HorizontalAlignment="Right" 
-                 Margin="0,0,8,0" 
+      <TextBlock Grid.Row="3" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.Clone.LocalName}"/>
       <TextBox Grid.Row="3" Grid.Column="1"
                Height="28"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Clone.LocalName.Placeholder}" 
+               Watermark="{DynamicResource Text.Clone.LocalName.Placeholder}"
                Text="{Binding Local, Mode=TwoWay}"/>
 
-      <TextBlock Grid.Row="4" Grid.Column="0" 
-                 HorizontalAlignment="Right" 
-                 Margin="0,0,8,0" 
+      <TextBlock Grid.Row="4" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.Clone.AdditionalParam}"/>
       <TextBox Grid.Row="4" Grid.Column="1"
                Height="28"
-               CornerRadius="3" 
-               Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}" 
+               CornerRadius="3"
+               Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
                Text="{Binding ExtraArgs, Mode=TwoWay}"/>
 
       <CheckBox Grid.Row="5" Grid.Column="1"

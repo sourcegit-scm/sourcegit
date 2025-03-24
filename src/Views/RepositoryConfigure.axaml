@@ -65,7 +65,7 @@
                    CornerRadius="3"
                    Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
                    Text="{Binding UserEmail, Mode=TwoWay}"/>
-          
+
           <TextBlock Grid.Row="2" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -244,9 +244,9 @@
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
             <Grid RowDefinitions="*,1,Auto">
-              <ListBox Grid.Row="0" 
-                       Background="Transparent" 
-                       ItemsSource="{Binding IssueTrackerRules}" 
+              <ListBox Grid.Row="0"
+                       Background="Transparent"
+                       ItemsSource="{Binding IssueTrackerRules}"
                        SelectedItem="{Binding SelectedIssueTrackerRule, Mode=TwoWay}"
                        SelectionMode="Single">
                 <ListBox.Styles>
@@ -256,7 +256,7 @@
                     <Setter Property="Padding" Value="4,2"/>
                   </Style>
                 </ListBox.Styles>
-                
+
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical"/>
@@ -315,7 +315,7 @@
                 </Binding.TargetNullValue>
               </Binding>
             </ContentControl.Content>
-            
+
             <ContentControl.DataTemplates>
               <DataTemplate DataType="m:IssueTrackerRule">
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -442,7 +442,7 @@
           </ContentControl>
         </Grid>
       </TabItem>
-      
+
       <TabItem>
         <TabItem.Header>
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.OpenAI}"/>

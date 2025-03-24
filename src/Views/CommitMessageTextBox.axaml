@@ -36,7 +36,7 @@
                    VerticalAlignment="Stretch"
                    IsHitTestVisible="False"
                    Fill="{DynamicResource Brush.Border2}"/>
-        
+
         <StackPanel Grid.Column="2"
                     Margin="8,0"
                     VerticalAlignment="Center"
@@ -48,7 +48,7 @@
           <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
         </StackPanel>
       </Grid>
-      
+
       <Rectangle Grid.Row="1"
                  Height="1"
                  HorizontalAlignment="Stretch"

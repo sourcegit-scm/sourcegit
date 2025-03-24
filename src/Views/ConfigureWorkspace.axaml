@@ -66,11 +66,11 @@
                 <Grid ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0" Margin="4,0" Width="14" Height="14" Data="{StaticResource Icons.Workspace}" Fill="{Binding Brush}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4,0" TextTrimming="CharacterEllipsis"/>
-                  <Path Grid.Column="2" 
-                        Margin="4,0" 
-                        Width="14" Height="14" 
-                        Data="{StaticResource Icons.Check}" 
-                        Fill="{DynamicResource Brush.FG1}" 
+                  <Path Grid.Column="2"
+                        Margin="4,0"
+                        Width="14" Height="14"
+                        Data="{StaticResource Icons.Check}"
+                        Fill="{DynamicResource Brush.FG1}"
                         IsVisible="{Binding IsActive}"/>
                 </Grid>
               </DataTemplate>

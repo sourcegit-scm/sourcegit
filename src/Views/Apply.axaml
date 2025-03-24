@@ -39,17 +39,34 @@
       <ComboBox Grid.Row="1" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding WhiteSpaceModes}"
+                ItemsSource="{Binding Source={x:Static m:ApplyWhiteSpaceMode.Supported}}"
                 SelectedItem="{Binding SelectedWhiteSpaceMode, Mode=TwoWay}"
-                IsEnabled="{Binding !IgnoreWhiteSpace}">
+                IsEnabled="{Binding !IgnoreWhiteSpace}"
+                Grid.IsSharedSizeScope="True">
         <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type m:ApplyWhiteSpaceMode}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Name}"/>
-              <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
+          <DataTemplate DataType="m:ApplyWhiteSpaceMode">
+            <Grid Height="20" VerticalAlignment="Center">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ApplyModeNameColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ApplyModeDescColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ApplyModeArgsColumn"/>
+              </Grid.ColumnDefinitions>
+
+              <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
+
+        <ComboBox.SelectionBoxItemTemplate>
+          <DataTemplate DataType="m:ApplyWhiteSpaceMode">
+            <Grid ColumnDefinitions="Auto,*">
+              <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0,0,8,0"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
+          </DataTemplate>
+        </ComboBox.SelectionBoxItemTemplate>
       </ComboBox>
 
       <CheckBox Grid.Row="2" Grid.Column="1"

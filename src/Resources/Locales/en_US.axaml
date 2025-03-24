@@ -1,11 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Build with </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Chart is rendered by </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• TextEditor from </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace fonts come from </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Source code can be found at </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
@@ -22,18 +17,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLY AS COMMIT MESSAGE</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Error</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Raise errors and refuses to apply the patch</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Error All</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Similar to 'error', but shows more</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch File:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select .patch file to apply</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignore whitespace changes</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">No Warn</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Turns off the trailing whitespace warning</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Apply Patch</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Warn</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Outputs warnings for a few such errors, but applies</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Apply Stash</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Delete after applying</x:String>
@@ -484,6 +471,7 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Show author time instead of commit time in graph</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Show children in the commit details</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Show tags in commit graph</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Subject Guide Length</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Enable Auto CRLF</x:String>
@@ -512,7 +500,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote Branch:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</x:String>

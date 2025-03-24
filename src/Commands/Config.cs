@@ -29,7 +29,7 @@ namespace SourceGit.Commands
             var rs = new Dictionary<string, string>();
             if (output.IsSuccess)
             {
-                var lines = output.StdOut.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     var idx = line.IndexOf('=', StringComparison.Ordinal);

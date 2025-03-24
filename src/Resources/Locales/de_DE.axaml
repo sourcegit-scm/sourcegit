@@ -4,11 +4,6 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">Info</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Über SourceGit</x:String>
-  <x:String x:Key="Text.About.BuildWith" xml:space="preserve">• Erstellt mit </x:String>
-  <x:String x:Key="Text.About.Chart" xml:space="preserve">• Grafik gerendert durch </x:String>
-  <x:String x:Key="Text.About.Editor" xml:space="preserve">• Texteditor von </x:String>
-  <x:String x:Key="Text.About.Fonts" xml:space="preserve">• Monospace-Schriftarten von </x:String>
-  <x:String x:Key="Text.About.SourceCode" xml:space="preserve">• Quelltext findest du auf </x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Open Source &amp; freier Git GUI Client</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Worktree hinzufügen</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Was auschecken:</x:String>
@@ -25,18 +20,10 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Verwende OpenAI, um Commit-Nachrichten zu generieren</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Als Commit-Nachricht verwenden</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
-  <x:String x:Key="Text.Apply.Error" xml:space="preserve">Fehler</x:String>
-  <x:String x:Key="Text.Apply.Error.Desc" xml:space="preserve">Fehler werfen und anwenden des Patches verweigern</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll" xml:space="preserve">Alle Fehler</x:String>
-  <x:String x:Key="Text.Apply.ErrorAll.Desc" xml:space="preserve">Ähnlich wie 'Fehler', zeigt aber mehr an</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch-Datei:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Wähle die anzuwendende .patch-Datei</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignoriere Leerzeichenänderungen</x:String>
-  <x:String x:Key="Text.Apply.NoWarn" xml:space="preserve">Keine Warnungen</x:String>
-  <x:String x:Key="Text.Apply.NoWarn.Desc" xml:space="preserve">Keine Warnung vor Leerzeichen am Zeilenende</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Patch anwenden</x:String>
-  <x:String x:Key="Text.Apply.Warn" xml:space="preserve">Warnen</x:String>
-  <x:String x:Key="Text.Apply.Warn.Desc" xml:space="preserve">Gibt eine Warnung für ein paar solcher Fehler aus, aber wendet es an</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Leerzeichen:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Stash anwenden</x:String>
   <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Nach dem Anwenden löschen</x:String>
@@ -509,7 +496,7 @@
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote löschen</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Worktrees löschen</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Worktree Informationen in `$GIT_DIR/worktrees` löschen</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Worktree Informationen in `$GIT_COMMON_DIR/worktrees` löschen</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote-Branch:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Alle Branches fetchen</x:String>
