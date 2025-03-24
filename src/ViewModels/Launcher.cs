@@ -275,22 +275,16 @@ namespace SourceGit.ViewModels
 
             if (!Path.Exists(node.Id))
             {
-                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                App.RaiseException(ctx, "Repository does NOT exists any more. Please remove it.");
+                App.RaiseException(node.Id, "Repository does NOT exists any more. Please remove it.");
                 return;
             }
 
             var isBare = new Commands.IsBareRepository(node.Id).Result();
-            var gitDir = node.Id;
-            if (!isBare)
+            var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
+            if (string.IsNullOrEmpty(gitDir))
             {
-                gitDir = new Commands.QueryGitDir(node.Id).Result();
-                if (string.IsNullOrEmpty(gitDir))
-                {
-                    var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                    App.RaiseException(ctx, "Given path is not a valid git repository!");
-                    return;
-                }
+                App.RaiseException(node.Id, "Given path is not a valid git repository!");
+                return;
             }
 
             var repo = new Repository(isBare, node.Id, gitDir);
@@ -467,6 +461,37 @@ namespace SourceGit.ViewModels
             }
 
             return menu;
+        }
+
+        private string GetRepositoryGitDir(string repo)
+        {
+            var fullpath = Path.Combine(repo, ".git");
+            if (Directory.Exists(fullpath))
+            {
+                if (Directory.Exists(Path.Combine(fullpath, "refs")) &&
+                    Directory.Exists(Path.Combine(fullpath, "objects")) &&
+                    File.Exists(Path.Combine(fullpath, "HEAD")))
+                    return fullpath;
+
+                return null;
+            }
+
+            if (File.Exists(fullpath))
+            {
+                var redirect = File.ReadAllText(fullpath).Trim();
+                if (redirect.StartsWith("gitdir: ", StringComparison.Ordinal))
+                    redirect = redirect.Substring(8);
+
+                if (!Path.IsPathRooted(redirect))
+                    redirect = Path.GetFullPath(Path.Combine(repo, redirect));
+
+                if (Directory.Exists(redirect))
+                    return redirect;
+
+                return null;
+            }
+
+            return new Commands.QueryGitDir(repo).Result();
         }
 
         private void SwitchWorkspace(Workspace to)
