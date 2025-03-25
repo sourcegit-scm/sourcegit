@@ -37,7 +37,6 @@ namespace SourceGit
 
             TaskScheduler.UnobservedTaskException += (_, e) =>
             {
-                LogException(e.Exception);
                 e.SetObserved();
             };
 
