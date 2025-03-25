@@ -475,6 +475,7 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits en el historial</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostrar hora del autor en lugar de la hora del commit en el gráfico</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostrar hijos en los detalles de commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Mostrar etiquetas en el gráfico de commit</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Longitud de la guía del asunto</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>
@@ -604,7 +605,7 @@
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Por Fecha de Creación</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">Por Nombre (Ascendiente)</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">Por Nombre (Descendiente)</x:String>
-  <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sort</x:String>
+  <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ordenar</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Abrir en Terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Usar tiempo relativo en las historias</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
