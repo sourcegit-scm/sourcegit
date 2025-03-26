@@ -112,20 +112,6 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-99.87%25-yellow)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing keys in zh_CN.axaml</summary>
-
-- Text.Configure.IssueTracker.AddSampleAzure
-
-</details>
-
-### ![zh__TW](https://img.shields.io/badge/zh__TW-99.87%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.Configure.IssueTracker.AddSampleAzure
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
