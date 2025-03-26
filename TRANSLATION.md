@@ -6,13 +6,14 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.92%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.79%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.WaitForExit
+- Text.Configure.IssueTracker.AddSampleAzure
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
@@ -35,7 +36,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-91.12%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-91.13%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -111,6 +112,20 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.87%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.Configure.IssueTracker.AddSampleAzure
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.87%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.Configure.IssueTracker.AddSampleAzure
+
+</details>
