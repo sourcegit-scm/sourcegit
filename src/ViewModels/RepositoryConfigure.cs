@@ -203,6 +203,11 @@ namespace SourceGit.ViewModels
             SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", "PROJ-(\\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
         }
 
+        public void AddSampleAzureWorkItemTracker()
+        {
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", "#(\\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
+        }
+
         public void AddSampleGitLabIssueTracker()
         {
             var link = "https://gitlab.com/username/repository/-/issues/$1";
