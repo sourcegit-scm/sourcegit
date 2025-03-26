@@ -157,6 +157,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增匹配Azure DevOps规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增匹配Gitee议题规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增匹配Gitee合并请求规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
