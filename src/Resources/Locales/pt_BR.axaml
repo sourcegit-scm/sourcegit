@@ -196,7 +196,6 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copiar todo o texto</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copiar Caminho</x:String>
-  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copiar Nome do Arquivo</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Criar Branch...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Baseado Em:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checar o branch criado</x:String>

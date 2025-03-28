@@ -162,6 +162,15 @@ namespace SourceGit.Native
             _backend.OpenWithDefaultEditor(file);
         }
 
+        public static string GetAbsPath(string root, string sub)
+        {
+            var fullpath = Path.Combine(root, sub);
+            if (OperatingSystem.IsWindows())
+                return fullpath.Replace('/', '\\');
+
+            return fullpath;
+        }
+
         private static void UpdateGitVersion()
         {
             if (string.IsNullOrEmpty(_gitExecutable) || !File.Exists(_gitExecutable))

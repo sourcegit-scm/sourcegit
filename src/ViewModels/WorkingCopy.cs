@@ -903,15 +903,15 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(copy);
 
-                var copyFileName = new MenuItem();
-                copyFileName.Header = App.Text("CopyFileName");
-                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyFileName.Click += (_, e) =>
+                var copyFullPath = new MenuItem();
+                copyFullPath.Header = App.Text("CopyFullPath");
+                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Click += (_, e) =>
                 {
-                    App.CopyText(Path.GetFileName(change.Path));
+                    App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
                     e.Handled = true;
                 };
-                menu.Items.Add(copyFileName);
+                menu.Items.Add(copyFullPath);
             }
             else
             {
@@ -1270,17 +1270,17 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
-                var copyFileName = new MenuItem();
-                copyFileName.Header = App.Text("CopyFileName");
-                copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyFileName.Click += (_, e) =>
+                var copyFullPath = new MenuItem();
+                copyFullPath.Header = App.Text("CopyFullPath");
+                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Click += (_, e) =>
                 {
-                    App.CopyText(Path.GetFileName(change.Path));
+                    App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
                     e.Handled = true;
                 };
 
                 menu.Items.Add(copyPath);
-                menu.Items.Add(copyFileName);
+                menu.Items.Add(copyFullPath);
             }
             else
             {

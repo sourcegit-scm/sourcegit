@@ -190,7 +190,6 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Копировать весь текст</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Копировать путь</x:String>
-  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Копировать имя файла</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Создать ветку...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Основан на:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Проверить созданную ветку</x:String>

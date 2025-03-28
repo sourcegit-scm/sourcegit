@@ -189,7 +189,7 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">複製全部內容</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">複製路徑</x:String>
-  <x:String x:Key="Text.CopyFileName" xml:space="preserve">複製檔案名稱</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">複製完整路徑</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">新增分支...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">新分支基於:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成後切換到新分支</x:String>
