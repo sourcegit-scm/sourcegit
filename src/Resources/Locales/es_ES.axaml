@@ -659,7 +659,6 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Cambios Locales</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplicar</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Eliminar</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Pop</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Eliminar Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Eliminar:</x:String>

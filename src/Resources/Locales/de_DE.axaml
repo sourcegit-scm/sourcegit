@@ -650,7 +650,6 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Lokale Änderungen stashen</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Anwenden</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Entfernen</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Anwenden und entfernen</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Stash entfernen</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Entfernen:</x:String>
   <x:String x:Key="Text.Stashes" xml:space="preserve">Stashes</x:String>

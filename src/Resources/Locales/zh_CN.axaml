@@ -659,7 +659,6 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">贮藏本地变更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">应用(apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">删除(drop)</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">应用并删除(pop)</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">丢弃贮藏确认</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">丢弃贮藏 ：</x:String>

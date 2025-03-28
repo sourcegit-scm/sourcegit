@@ -660,7 +660,6 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Отложить локальные изменения</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Принять</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Отбросить</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Применить</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатку...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Отбросить тайник</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Отбросить:</x:String>
