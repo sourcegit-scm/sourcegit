@@ -36,7 +36,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-91.13%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-91.12%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
