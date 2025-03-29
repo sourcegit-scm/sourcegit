@@ -190,6 +190,7 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Копировать весь текст</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Копировать путь</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Копировать полный путь</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Создать ветку...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Основан на:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Проверить созданную ветку</x:String>
@@ -212,7 +213,7 @@
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Вид:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">С примечаниями</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Простой</x:String>
-  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Удерживайте Ctrl, чтобы начать сразу</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Удерживайте Ctrl, чтобы сразу начать</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Вырезать</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Удалить ветку</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Ветка:</x:String>
@@ -330,7 +331,7 @@
   <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Добавить шаблон отслеживания в LFS Git</x:String>
   <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Извлечь объекты LFS</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустить «git lfs fetch», чтобы загрузить объекты LFS Git. При этом рабочая копия не обновляется.</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Запустить (git lfs fetch), чтобы загрузить объекты LFS Git. При этом рабочая копия не обновляется.</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Установить перехват LFS Git</x:String>
   <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Показывать блокировки</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">Нет заблокированных файлов</x:String>
@@ -340,10 +341,10 @@
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Разблокировать</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Принудительно разблокировать</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Обрезать</x:String>
-  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Запустить «git lfs prune», чтобы удалить старые файлы LFS из локального хранилища</x:String>
+  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Запустить (git lfs prune), чтобы удалить старые файлы LFS из локального хранилища</x:String>
   <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Забрать</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Забрать объекты LFS</x:String>
-  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Запустить «git lfs pull», чтобы загрузить все файлы LFS Git для текущей ссылки и проверить</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Запустить (git lfs pull), чтобы загрузить все файлы LFS Git для текущей ссылки и проверить</x:String>
   <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Выложить</x:String>
   <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Выложить объекты LFS</x:String>
   <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Отправляйте большие файлы, помещенные в очередь, в конечную точку LFS Git</x:String>
@@ -557,7 +558,7 @@
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">Отказ</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Автоматическое извлечение изменений с внешних репозиторий...</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Очистить (Сбор мусора и удаление) </x:String>
-  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Запустить команду «git gc» для данного репозитория.</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Запустить команду (git gc) для данного репозитория.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Очистить всё</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
