@@ -456,12 +456,13 @@ namespace SourceGit.ViewModels
             _selectedView = _histories;
             _selectedViewIndex = 0;
 
-            _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
+            _ = StartAutoFetchAsync();
             RefreshAll();
         }
 
         public void Close()
         {
+            _isClosing = true;
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
@@ -473,7 +474,7 @@ namespace SourceGit.ViewModels
             {
                 // Ignore
             }
-            _autoFetchTimer.Dispose();
+            _autoFetchTimer?.Dispose();
             _autoFetchTimer = null;
 
             _settings = null;
@@ -2511,7 +2512,34 @@ namespace SourceGit.ViewModels
             MatchedFilesForSearching = matched;
         }
 
-        private void AutoFetchImpl(object sender)
+        private async Task StartAutoFetchAsync()
+        {
+            _autoFetchTimer = new PeriodicTimer(TimeSpan.FromSeconds(5));
+
+            try
+            {
+                while (!_isClosing && await _autoFetchTimer.WaitForNextTickAsync())
+                {
+                    if (_isClosing)
+                        break;
+
+                    try
+                    {
+                        await Task.Run(AutoFetchImpl);
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // ignored
+            }
+        }
+
+        private void AutoFetchImpl()
         {
             if (!_settings.EnableAutoFetch || _isAutoFetching)
                 return;
@@ -2579,7 +2607,8 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
 
         private bool _isAutoFetching = false;
-        private Timer _autoFetchTimer = null;
+        private PeriodicTimer _autoFetchTimer;
+        private volatile bool _isClosing = false;
         private DateTime _lastFetchTime = DateTime.MinValue;
     }
 }
