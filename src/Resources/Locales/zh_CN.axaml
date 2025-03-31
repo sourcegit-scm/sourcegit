@@ -157,6 +157,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增匹配Azure DevOps规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增匹配Gitee议题规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增匹配Gitee合并请求规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">新增匹配Github Issue规则</x:String>
@@ -188,7 +189,7 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">复制全部文本</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">复制路径</x:String>
-  <x:String x:Key="Text.CopyFileName" xml:space="preserve">复制文件名</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">复制完整路径</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">新建分支 ...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">新分支基于 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成后切换到新分支</x:String>
@@ -658,7 +659,6 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">贮藏本地变更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">应用(apply)</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">删除(drop)</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">应用并删除(pop)</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">丢弃贮藏确认</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">丢弃贮藏 ：</x:String>

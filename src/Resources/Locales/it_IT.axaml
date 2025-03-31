@@ -161,6 +161,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Aggiungi una regola di esempio per un Pull Request Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Aggiungi una regola di esempio per GitHub</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Aggiungi una regola di esempio per Jira</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Aggiungi una regola di esempio per Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Aggiungi una regola di esempio per Issue GitLab</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Aggiungi una regola di esempio per una Merge Request GitLab</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Nuova Regola</x:String>
@@ -188,7 +189,6 @@
   <x:String x:Key="Text.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copia Tutto il Testo</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copia Percorso</x:String>
-  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copia Nome File</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Crea Branch...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basato Su:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout del Branch Creato</x:String>
@@ -658,7 +658,6 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stasha Modifiche Locali</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Applica</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Elimina</x:String>
-  <x:String x:Key="Text.StashCM.Pop" xml:space="preserve">Estrai</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Salva come Patch...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Elimina Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Elimina:</x:String>

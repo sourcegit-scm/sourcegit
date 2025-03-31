@@ -251,12 +251,12 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var copyFileName = new MenuItem();
-            copyFileName.Header = App.Text("CopyFileName");
-            copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFileName.Click += (_, e) =>
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Click += (_, e) =>
             {
-                App.CopyText(Path.GetFileName(change.Path));
+                App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
                 e.Handled = true;
             };
 
@@ -267,7 +267,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(resetToThisRevision);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(copyPath);
-            menu.Items.Add(copyFileName);
+            menu.Items.Add(copyFullPath);
 
             return menu;
         }

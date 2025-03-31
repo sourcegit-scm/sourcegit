@@ -37,7 +37,6 @@ namespace SourceGit
 
             TaskScheduler.UnobservedTaskException += (_, e) =>
             {
-                LogException(e.Exception);
                 e.SetObserved();
             };
 
@@ -560,8 +559,22 @@ namespace SourceGit
             foreach (var part in parts)
             {
                 var t = part.Trim();
-                if (!string.IsNullOrEmpty(t))
-                    trimmed.Add(t);
+                if (string.IsNullOrEmpty(t))
+                    continue;
+
+                // Collapse multiple spaces into single space
+                var prevChar = '\0';
+                var sb = new StringBuilder();
+
+                foreach (var c in t)
+                {
+                    if (c == ' ' && prevChar == ' ')
+                        continue;
+                    sb.Append(c);
+                    prevChar = c;
+                }
+
+                trimmed.Add(sb.ToString());
             }
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;

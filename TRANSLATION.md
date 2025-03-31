@@ -6,13 +6,15 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.92%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.65%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.WaitForExit
+- Text.Configure.IssueTracker.AddSampleAzure
+- Text.CopyFullPath
 - Text.Diff.First
 - Text.Diff.Last
 - Text.Preferences.AI.Streaming
@@ -27,22 +29,30 @@ This document shows the translation status of each locale file in the repository
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.Preferences.General.ShowTagsInGraph
+- Text.CopyFullPath
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-%E2%88%9A-brightgreen)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-99.87%25-yellow)
 
-### ![it__IT](https://img.shields.io/badge/it__IT-99.87%25-yellow)
+<details>
+<summary>Missing keys in fr_FR.axaml</summary>
+
+- Text.CopyFullPath
+
+</details>
+
+### ![it__IT](https://img.shields.io/badge/it__IT-99.73%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.CopyFullPath
 - Text.Preferences.General.ShowTagsInGraph
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-91.12%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-90.98%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -65,6 +75,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.WaitForExit
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.CopyFullPath
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup

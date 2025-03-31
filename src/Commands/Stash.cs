@@ -82,7 +82,7 @@ namespace SourceGit.Commands
 
         public bool Pop(string name)
         {
-            Args = $"stash pop -q \"{name}\"";
+            Args = $"stash pop -q --index \"{name}\"";
             return Exec();
         }
 
