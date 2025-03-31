@@ -127,14 +127,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.87%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.CopyFullPath
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
