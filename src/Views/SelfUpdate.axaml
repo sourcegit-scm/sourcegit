@@ -5,7 +5,6 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.SelfUpdate"
                     x:DataType="vm:SelfUpdate"
@@ -52,13 +51,13 @@
                 </Border>
               </StackPanel>
 
-              <TextBox IsReadOnly="True"
-                       TextWrapping="Wrap"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                       MaxWidth="500" MaxHeight="400"
-                       Margin="0,8" Padding="0"
-                       VerticalContentAlignment="Top"
-                       Text="{Binding Body}"/>
+              <Border Width="500" MaxHeight="400"
+                      Margin="0,8"
+                      Background="{DynamicResource Brush.Contents}"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource Brush.Border2}">
+                <v:UpdateInfoView/>
+              </Border>
 
               <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Classes="flat primary"
@@ -87,14 +86,12 @@
             </StackPanel>
           </DataTemplate>
 
-          <DataTemplate DataType="sys:Exception">
+          <DataTemplate DataType="m:AlreadyUpToDate">
             <StackPanel Orientation="Vertical" Margin="16,8">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
-                <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Error}"/>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8">
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
+                <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.SelfUpdate.UpToDate}"/>
               </StackPanel>
-
-              <TextBlock Text="{Binding Message}" MaxWidth="500" TextWrapping="Wrap" Margin="0,8"/>
 
               <Button Classes="flat primary"
                       Height="30"
@@ -107,12 +104,14 @@
             </StackPanel>
           </DataTemplate>
 
-          <DataTemplate DataType="m:AlreadyUpToDate">
+          <DataTemplate DataType="m:SelfUpdateFailed">
             <StackPanel Orientation="Vertical" Margin="16,8">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
-                <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.SelfUpdate.UpToDate}"/>
-              </StackPanel>              
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
+                <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Error}"/>
+              </StackPanel>
+
+              <TextBlock Text="{Binding Reason}" MaxWidth="500" TextWrapping="Wrap" Margin="0,8"/>
 
               <Button Classes="flat primary"
                       Height="30"

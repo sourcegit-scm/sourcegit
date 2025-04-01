@@ -4,11 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherTabBar"
-             x:DataType="vm:Launcher">
+             x:DataType="vm:Launcher"
+             x:Name="ThisControl">
   <Grid ColumnDefinitions="Auto,*,Auto">
-    <RepeatButton x:Name="LeftScrollIndicator" Grid.Column="0" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsLeft">
+    <RepeatButton Grid.Column="0"
+                  Classes="icon_button"
+                  Width="18" Height="30"
+                  Click="ScrollTabsLeft"
+                  IsVisible="{Binding #ThisControl.IsScrollerVisible}">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
     </RepeatButton>
 
@@ -48,8 +54,8 @@
                     <TextBlock Text="{Binding Node.Id}" IsVisible="{Binding Node.IsRepository}"/>
                   </Grid>
                 </ToolTip.Tip>
-                
-                <Grid Width="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+
+                <Grid Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
                         Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
@@ -65,7 +71,7 @@
                   <TextBlock Grid.Column="1"
                              Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                             FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                              TextAlignment="Center"
                              Text="{Binding Node.Name}"
                              IsVisible="{Binding Node.IsRepository}"
@@ -73,7 +79,7 @@
                   <TextBlock Grid.Column="1"
                              Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                             FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                              TextAlignment="Center"
                              Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                              IsVisible="{Binding !Node.IsRepository}"
@@ -99,7 +105,8 @@
         <Button Classes="icon_button"
                 Width="16" Height="16"
                 Margin="8,0"
-                Command="{Binding AddNewTab}">
+                Command="{Binding AddNewTab}"
+                IsVisible="{Binding !#ThisControl.IsScrollerVisible}">
           <ToolTip.Tip>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
               <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
@@ -112,8 +119,30 @@
       </StackPanel>
     </ScrollViewer>
 
-    <RepeatButton x:Name="RightScrollIndicator" Grid.Column="2" Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
-      <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
-    </RepeatButton>
+    <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollerVisible}">
+      <RepeatButton Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
+        <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
+      </RepeatButton>
+
+      <Button x:Name="PageSelector" Classes="icon_button" Width="16" Height="16" Margin="8,0">
+        <Button.Flyout>
+          <Flyout>
+            <v:LauncherTabsSelector Pages="{Binding Pages}" PageSelected="OnGotoSelectedPage"/>
+          </Flyout>
+        </Button.Flyout>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.CircleDown}"/>
+      </Button>
+
+      <Button Classes="icon_button" Width="16" Height="16" Command="{Binding AddNewTab}">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
+            <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+T, macOS=⌘+T}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+          </StackPanel>
+        </ToolTip.Tip>
+
+        <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
+      </Button>
+    </StackPanel>
   </Grid>
 </UserControl>

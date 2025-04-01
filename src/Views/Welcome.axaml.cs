@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -197,7 +196,7 @@ namespace SourceGit.Views
                 {
                     foreach (var item in items)
                     {
-                        OpenOrInitRepository(item.Path.LocalPath);
+                        ViewModels.Welcome.Instance.OpenOrInitRepository(item.Path.LocalPath, null, true);
                         break;
                     }
                 }
@@ -261,7 +260,7 @@ namespace SourceGit.Views
                 {
                     foreach (var item in items)
                     {
-                        OpenOrInitRepository(item.Path.LocalPath, to);
+                        ViewModels.Welcome.Instance.OpenOrInitRepository(item.Path.LocalPath, to, true);
                         break;
                     }
                 }
@@ -288,31 +287,6 @@ namespace SourceGit.Views
 
                 e.Handled = true;
             }
-        }
-
-        private void OpenOrInitRepository(string path, ViewModels.RepositoryNode parent = null)
-        {
-            if (!Directory.Exists(path))
-            {
-                if (File.Exists(path))
-                    path = Path.GetDirectoryName(path);
-                else
-                    return;
-            }
-
-            var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
-            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
-            {
-                ViewModels.Welcome.Instance.InitRepository(path, parent, test.StdErr);
-                return;
-            }
-
-            var normalizedPath = test.StdOut.Trim().Replace("\\", "/");
-            var node = ViewModels.Preference.Instance.FindOrAddNodeByRepositoryPath(normalizedPath, parent, true);
-            ViewModels.Welcome.Instance.Refresh();
-
-            var launcher = this.FindAncestorOfType<Launcher>()?.DataContext as ViewModels.Launcher;
-            launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }
 
         private bool _pressedTreeNode = false;

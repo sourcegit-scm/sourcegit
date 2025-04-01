@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace SourceGit.Models
@@ -32,5 +33,24 @@ namespace SourceGit.Models
         }
     }
 
-    public class AlreadyUpToDate { }
+    public class AlreadyUpToDate
+    {
+    }
+
+    public class SelfUpdateFailed
+    {
+        public string Reason
+        {
+            get;
+            private set;
+        }
+
+        public SelfUpdateFailed(Exception e)
+        {
+            if (e.InnerException is { } inner)
+                Reason = inner.Message;
+            else
+                Reason = e.Message;
+        }
+    }
 }

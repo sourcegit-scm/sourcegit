@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SourceGit.Commands
 {
@@ -20,12 +21,13 @@ namespace SourceGit.Commands
             var last = null as Models.Worktree;
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     if (line.StartsWith("worktree ", StringComparison.Ordinal))
                     {
                         last = new Models.Worktree() { FullPath = line.Substring(9).Trim() };
+                        last.RelativePath = Path.GetRelativePath(WorkingDirectory, last.FullPath);
                         worktrees.Add(last);
                     }
                     else if (line.StartsWith("bare", StringComparison.Ordinal))
@@ -73,6 +75,8 @@ namespace SourceGit.Commands
 
             if (!string.IsNullOrEmpty(tracking))
                 Args += tracking;
+            else if (!string.IsNullOrEmpty(name) && !createNew)
+                Args += name;
 
             _outputHandler = outputHandler;
             return Exec();

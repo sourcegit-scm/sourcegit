@@ -134,7 +134,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Down)
             {
-                if (repo.IsSearchCommitSuggestionOpen)
+                if (repo.MatchedFilesForSearching is { Count: > 0 })
                 {
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
@@ -144,12 +144,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (repo.IsSearchCommitSuggestionOpen)
-                {
-                    repo.SearchCommitFilterSuggestion.Clear();
-                    repo.IsSearchCommitSuggestionOpen = false;
-                }
-
+                repo.ClearMatchedFilesForSearching();
                 e.Handled = true;
             }
         }
@@ -248,6 +243,9 @@ namespace SourceGit.Views
                 return;
 
             var leftHeight = LeftSidebarGroups.Bounds.Height - 28.0 * 5 - 4;
+            if (leftHeight <= 0)
+                return;
+
             var localBranchRows = vm.IsLocalBranchGroupExpanded ? LocalBranchTree.Rows.Count : 0;
             var remoteBranchRows = vm.IsRemoteGroupExpanded ? RemoteBranchTree.Rows.Count : 0;
             var desiredBranches = (localBranchRows + remoteBranchRows) * 24.0;
@@ -307,7 +305,7 @@ namespace SourceGit.Views
                 WorktreeList.Height = height;
             }
 
-            if (desiredBranches > leftHeight)
+            if (leftHeight > 0 && desiredBranches > leftHeight)
             {
                 var local = localBranchRows * 24.0;
                 var remote = remoteBranchRows * 24.0;
@@ -366,9 +364,7 @@ namespace SourceGit.Views
 
             if (e.Key == Key.Escape)
             {
-                repo.IsSearchCommitSuggestionOpen = false;
-                repo.SearchCommitFilterSuggestion.Clear();
-
+                repo.ClearMatchedFilesForSearching();
                 e.Handled = true;
             }
             else if (e.Key == Key.Enter && SearchSuggestionBox.SelectedItem is string content)
@@ -396,34 +392,23 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnSwitchHistoriesOrderClicked(object sender, RoutedEventArgs e)
+        private void OnOpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var checkIcon = App.CreateMenuIcon("Icons.Check");
+                var menu = repo.CreateContextMenuForHistoriesPage();
+                menu?.Open(button);
+            }
 
-                var dateOrder = new MenuItem();
-                dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
-                dateOrder.Icon = repo.EnableTopoOrderInHistories ? null : checkIcon;
-                dateOrder.Click += (_, ev) =>
-                {
-                    repo.EnableTopoOrderInHistories = false;
-                    ev.Handled = true;
-                };
+            e.Handled = true;
+        }
 
-                var topoOrder = new MenuItem();
-                topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
-                topoOrder.Icon = repo.EnableTopoOrderInHistories ? checkIcon : null;
-                topoOrder.Click += (_, ev) =>
-                {
-                    repo.EnableTopoOrderInHistories = true;
-                    ev.Handled = true;
-                };
-
-                var menu = new ContextMenu();
-                menu.Items.Add(dateOrder);
-                menu.Items.Add(topoOrder);
-                menu.Open(button);
+        private void OnOpenSortTagMenu(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForTagSortMode();
+                menu?.Open(button);
             }
 
             e.Handled = true;
@@ -433,6 +418,14 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Repository repo)
                 repo.SkipMerge();
+
+            e.Handled = true;
+        }
+
+        private void OnRemoveSelectedHistoriesFilter(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter })
+                repo.RemoveHistoriesFilter(filter);
 
             e.Handled = true;
         }

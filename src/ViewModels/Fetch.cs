@@ -30,16 +30,32 @@ namespace SourceGit.ViewModels
 
         public bool Force
         {
-            get;
-            set;
+            get => _repo.Settings.EnableForceOnFetch;
+            set => _repo.Settings.EnableForceOnFetch = value;
         }
 
         public Fetch(Repository repo, Models.Remote preferedRemote = null)
         {
             _repo = repo;
             _fetchAllRemotes = preferedRemote == null;
-            Force = false;
-            SelectedRemote = preferedRemote != null ? preferedRemote : _repo.Remotes[0];
+
+            if (preferedRemote != null)
+            {
+                SelectedRemote = preferedRemote;
+            }
+            else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
+            {
+                var def = _repo.Remotes.Find(r => r.Name == _repo.Settings.DefaultRemote);
+                if (def != null)
+                    SelectedRemote = def;
+                else
+                    SelectedRemote = _repo.Remotes[0];
+            }
+            else
+            {
+                SelectedRemote = _repo.Remotes[0];
+            }
+
             View = new Views.Fetch() { DataContext = this };
         }
 
@@ -48,8 +64,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
 
             var notags = _repo.Settings.FetchWithoutTags;
-            var prune = _repo.Settings.EnablePruneOnFetch;
-            var force = Force;
+            var force = _repo.Settings.EnableForceOnFetch;
             return Task.Run(() =>
             {
                 if (FetchAllRemotes)
@@ -57,13 +72,13 @@ namespace SourceGit.ViewModels
                     foreach (var remote in _repo.Remotes)
                     {
                         SetProgressDescription($"Fetching remote: {remote.Name}");
-                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, prune, force, SetProgressDescription).Exec();
+                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, SetProgressDescription).Exec();
                     }
                 }
                 else
                 {
                     SetProgressDescription($"Fetching remote: {SelectedRemote.Name}");
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, prune, force, SetProgressDescription).Exec();
+                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, SetProgressDescription).Exec();
                 }
 
                 CallUIThread(() =>

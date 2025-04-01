@@ -34,15 +34,18 @@
 
       <CheckBox Grid.Row="1" Grid.Column="1"
                 Content="{DynamicResource Text.Fetch.Force}"
-                IsChecked="{Binding Force, Mode=TwoWay}"/>
+                IsChecked="{Binding Force, Mode=TwoWay}"
+                ToolTip.Tip="--force"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.Fetch.AllRemotes}"
-                IsChecked="{Binding FetchAllRemotes, Mode=TwoWay}"/>
+                IsChecked="{Binding FetchAllRemotes, Mode=TwoWay}"
+                ToolTip.Tip="--all"/>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.Fetch.NoTags}"
-                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
+                IsChecked="{Binding NoTags, Mode=TwoWay}"
+                ToolTip.Tip="--no-tags"/>
     </Grid>
   </StackPanel>
 </UserControl>

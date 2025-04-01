@@ -14,13 +14,43 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
-        public DealWithLocalChanges DealWithLocalChangesOnCheckoutBranch
+        public bool EnableReflog
         {
             get;
             set;
-        } = DealWithLocalChanges.DoNothing;
+        } = false;
 
-        public bool EnablePruneOnFetch
+        public bool EnableFirstParentInHistories
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableTopoOrderInHistories
+        {
+            get;
+            set;
+        } = false;
+
+        public bool OnlyHighlighCurrentBranchInHistories
+        {
+            get;
+            set;
+        } = false;
+
+        public TagSortMode TagSortMode
+        {
+            get;
+            set;
+        } = TagSortMode.CreatorDate;
+
+        public bool IncludeUntrackedInLocalChanges
+        {
+            get;
+            set;
+        } = true;
+
+        public bool EnableForceOnFetch
         {
             get;
             set;
@@ -31,12 +61,6 @@ namespace SourceGit.Models
             get;
             set;
         } = false;
-
-        public DealWithLocalChanges DealWithLocalChangesOnPull
-        {
-            get;
-            set;
-        } = DealWithLocalChanges.DoNothing;
 
         public bool PreferRebaseInsteadOfMerge
         {
@@ -68,11 +92,17 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public DealWithLocalChanges DealWithLocalChangesOnCreateBranch
+        public bool PushToRemoteWhenCreateTag
         {
             get;
             set;
-        } = DealWithLocalChanges.DoNothing;
+        } = true;
+
+        public bool PushToRemoteWhenDeleteTag
+        {
+            get;
+            set;
+        } = false;
 
         public bool CheckoutBranchOnCreateBranch
         {
@@ -84,31 +114,31 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = new AvaloniaList<Filter>();
+        } = [];
 
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
             get;
             set;
-        } = new AvaloniaList<CommitTemplate>();
+        } = [];
 
         public AvaloniaList<string> CommitMessages
         {
             get;
             set;
-        } = new AvaloniaList<string>();
+        } = [];
 
         public AvaloniaList<IssueTrackerRule> IssueTrackerRules
         {
             get;
             set;
-        } = new AvaloniaList<IssueTrackerRule>();
+        } = [];
 
         public AvaloniaList<CustomAction> CustomActions
         {
             get;
             set;
-        } = new AvaloniaList<CustomAction>();
+        } = [];
 
         public bool EnableAutoFetch
         {
@@ -146,11 +176,53 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool AutoRestoreAfterStash
+        {
+            get;
+            set;
+        } = false;
+
         public string PreferedOpenAIService
         {
             get;
             set;
         } = "---";
+
+        public bool IsLocalBranchesExpandedInSideBar
+        {
+            get;
+            set;
+        } = true;
+
+        public bool IsRemotesExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsTagsExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsSubmodulesExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsWorktreeExpandedInSideBar
+        {
+            get;
+            set;
+        } = false;
+
+        public List<string> ExpandedBranchNodesInSideBar
+        {
+            get;
+            set;
+        } = [];
 
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
@@ -378,65 +450,13 @@ namespace SourceGit.Models
             CommitMessages.Insert(0, message);
         }
 
-        public IssueTrackerRule AddNewIssueTracker()
+        public IssueTrackerRule AddIssueTracker(string name, string regex, string url)
         {
             var rule = new IssueTrackerRule()
             {
-                Name = "New Issue Tracker",
-                RegexString = "#(\\d+)",
-                URLTemplate = "https://xxx/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGithubIssueTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Github ISSUE",
-                RegexString = "#(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://github.com/username/repository/issues/$1" : $"{repoURL}/issues/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddJiraIssueTracker()
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "Jira Tracker",
-                RegexString = "PROJ-(\\d+)",
-                URLTemplate = "https://jira.yourcompany.com/browse/PROJ-$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGitLabIssueTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "GitLab ISSUE",
-                RegexString = "#(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/issues/$1" : $"{repoURL}/-/issues/$1",
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public IssueTrackerRule AddGitLabMergeRequestTracker(string repoURL)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = "GitLab MR",
-                RegexString = "!(\\d+)",
-                URLTemplate = string.IsNullOrEmpty(repoURL) ? "https://gitlab.com/username/repository/-/merge_requests/$1" : $"{repoURL}/-/merge_requests/$1",
+                Name = name,
+                RegexString = regex,
+                URLTemplate = url,
             };
 
             IssueTrackerRules.Add(rule);
@@ -451,11 +471,7 @@ namespace SourceGit.Models
 
         public CustomAction AddNewCustomAction()
         {
-            var act = new CustomAction()
-            {
-                Name = "Unnamed Custom Action",
-            };
-
+            var act = new CustomAction() { Name = "Unnamed Action" };
             CustomActions.Add(act);
             return act;
         }

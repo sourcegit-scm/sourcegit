@@ -36,7 +36,7 @@
                  Text="{DynamicResource Text.Blame}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
-      
+
       <!-- Caption Buttons (Windows/Linux) -->
       <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
@@ -57,9 +57,10 @@
                          Background="Transparent"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{DynamicResource Fonts.Monospace}"
-                         FontSize="{Binding Source={x:Static vm:Preference.Instance}, Path=EditorFontSize}"
+                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
+                         TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
                          BlameData="{Binding Data}"/>
-      
+
       <!-- Not supported mask (for binary files) -->
       <StackPanel Orientation="Vertical"
                   HorizontalAlignment="Center" VerticalAlignment="Center"

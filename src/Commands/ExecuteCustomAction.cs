@@ -8,7 +8,26 @@ namespace SourceGit.Commands
 {
     public static class ExecuteCustomAction
     {
-        public static void Run(string repo, string file, string args, Action<string> outputHandler)
+        public static void Run(string repo, string file, string args)
+        {
+            var start = new ProcessStartInfo();
+            start.FileName = file;
+            start.Arguments = args;
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.WorkingDirectory = repo;
+
+            try
+            {
+                Process.Start(start);
+            }
+            catch (Exception e)
+            {
+                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, e.Message));
+            }
+        }
+
+        public static void RunAndWait(string repo, string file, string args, Action<string> outputHandler)
         {
             var start = new ProcessStartInfo();
             start.FileName = file;
@@ -20,14 +39,6 @@ namespace SourceGit.Commands
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
             start.WorkingDirectory = repo;
-
-            // Force using en_US.UTF-8 locale to avoid GCM crash
-            if (OperatingSystem.IsLinux())
-                start.Environment.Add("LANG", "en_US.UTF-8");
-
-            // Fix macOS `PATH` env
-            if (OperatingSystem.IsMacOS() && !string.IsNullOrEmpty(Native.OS.CustomPathEnv))
-                start.Environment.Add("PATH", Native.OS.CustomPathEnv);
 
             var proc = new Process() { StartInfo = start };
             var builder = new StringBuilder();
@@ -53,26 +64,21 @@ namespace SourceGit.Commands
                 proc.BeginOutputReadLine();
                 proc.BeginErrorReadLine();
                 proc.WaitForExit();
+
+                var exitCode = proc.ExitCode;
+                if (exitCode != 0)
+                {
+                    var errMsg = builder.ToString().Trim();
+                    if (!string.IsNullOrEmpty(errMsg))
+                        Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, errMsg));
+                }
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, e.Message);
-                });
+                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, e.Message));
             }
 
-            var exitCode = proc.ExitCode;
             proc.Close();
-
-            if (exitCode != 0)
-            {
-                var errMsg = builder.ToString();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, errMsg);
-                });
-            }
         }
     }
 }

@@ -17,7 +17,7 @@
       <Setter Property="IsNoneVisible" Value="True"/>
     </Style>
   </UserControl.Styles>
-  
+
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:TagCollectionAsTree">
       <ListBox Classes="repo_left_content_list"
@@ -38,20 +38,20 @@
                                          HorizontalAlignment="Center"
                                          IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                          IsVisible="{Binding IsFolder}"/>
-              
+
               <v:TagTreeNodeIcon Grid.Column="1"
                                  Node="{Binding .}"
                                  IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-              <TextBlock Grid.Column="2" 
-                         Classes="primary" 
-                         Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" 
+              <TextBlock Grid.Column="2"
+                         Classes="primary"
+                         Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"
                          Margin="8,0,0,0"/>
 
               <ContentControl Grid.Column="3" Content="{Binding Tag}">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Tag">
-                    <v:FilterModeSwitchButton Mode="{Binding FilterMode}"/>
+                    <v:FilterModeSwitchButton Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
                   </DataTemplate>
                 </ContentControl.DataTemplates>
               </ContentControl>
@@ -65,26 +65,26 @@
       <ListBox Classes="repo_left_content_list"
                Margin="8,0,0,0"
                ItemsSource="{Binding Tags}"
-               SelectionMode="Single" 
+               SelectionMode="Single"
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Tag">
-            <Grid ColumnDefinitions="Auto,*,20"
+            <Grid ColumnDefinitions="Auto,*,Auto"
                   Background="Transparent"
                   ContextRequested="OnRowContextRequested"
                   ToolTip.Tip="{Binding Message}">
-              <Path Grid.Column="0" 
+              <Path Grid.Column="0"
                     Margin="8,0,0,0"
                     Width="12" Height="12"
                     Data="{StaticResource Icons.Tag}"/>
 
               <TextBlock Grid.Column="1"
-                         Classes="primary" 
-                         Text="{Binding Name}" 
+                         Classes="primary"
+                         Text="{Binding Name}"
                          Margin="8,0,0,0"
                          TextTrimming="CharacterEllipsis"/>
-              
-              <v:FilterModeSwitchButton Grid.Column="2" Mode="{Binding FilterMode}"/>
+
+              <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

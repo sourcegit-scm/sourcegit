@@ -5,7 +5,7 @@
              xmlns:m="using:SourceGit.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.FilterModeSwitchButton"
-             x:Name="ThisControl">  
+             x:Name="ThisControl">
   <Button Classes="icon_button"
           Width="12" Height="12"
           Padding="0"

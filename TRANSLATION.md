@@ -1,117 +1,91 @@
-### de_DE.axaml: 97.50%
+# Translation Status
 
+This document shows the translation status of each locale file in the repository.
+
+## Details
+
+### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
+
+### ![de__DE](https://img.shields.io/badge/de__DE-98.65%25-yellow)
 
 <details>
-<summary>Missing Keys</summary>
+<summary>Missing keys in de_DE.axaml</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.CommitDetail.Files.Search
-- Text.Diff.UseBlockNavigation
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Repository.Skip
-- Text.WorkingCopy.CommitToEdit
+- Text.BranchUpstreamInvalid
+- Text.Configure.CustomAction.WaitForExit
+- Text.Configure.IssueTracker.AddSampleAzure
+- Text.CopyFullPath
+- Text.Diff.First
+- Text.Diff.Last
+- Text.Preferences.AI.Streaming
+- Text.Preferences.Appearance.EditorTabWidth
+- Text.Preferences.General.ShowTagsInGraph
+- Text.StashCM.SaveAsPatch
 
 </details>
 
-### es_ES.axaml: 97.78%
-
+### ![es__ES](https://img.shields.io/badge/es__ES-99.87%25-yellow)
 
 <details>
-<summary>Missing Keys</summary>
+<summary>Missing keys in es_ES.axaml</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.Diff.UseBlockNavigation
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Repository.Skip
+- Text.CopyFullPath
 
 </details>
 
-### fr_FR.axaml: 95.00%
-
+### ![fr__FR](https://img.shields.io/badge/fr__FR-99.87%25-yellow)
 
 <details>
-<summary>Missing Keys</summary>
+<summary>Missing keys in fr_FR.axaml</summary>
 
-- Text.BranchCM.MergeMultiBranches
-- Text.CherryPick.AppendSourceToMessage
-- Text.CherryPick.Mainline.Tips
-- Text.CommitCM.CherryPickMultiple
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.CommitDetail.Files.Search
-- Text.Diff.UseBlockNavigation
-- Text.Fetch.Force
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Preference.Appearance.FontSize
-- Text.Preference.Appearance.FontSize.Default
-- Text.Preference.Appearance.FontSize.Editor
-- Text.Preference.General.ShowChildren
-- Text.Repository.CustomActions
-- Text.Repository.FilterCommits
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
-- Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
-- Text.Repository.Skip
-- Text.ScanRepositories
-- Text.SHALinkCM.NavigateTo
-- Text.WorkingCopy.CommitToEdit
+- Text.CopyFullPath
 
 </details>
 
-### it_IT.axaml: 95.56%
-
+### ![it__IT](https://img.shields.io/badge/it__IT-99.73%25-yellow)
 
 <details>
-<summary>Missing Keys</summary>
+<summary>Missing keys in it_IT.axaml</summary>
 
+- Text.CopyFullPath
+- Text.Preferences.General.ShowTagsInGraph
+
+</details>
+
+### ![pt__BR](https://img.shields.io/badge/pt__BR-90.98%25-yellow)
+
+<details>
+<summary>Missing keys in pt_BR.axaml</summary>
+
+- Text.AIAssistant.Regen
+- Text.AIAssistant.Use
+- Text.ApplyStash
+- Text.ApplyStash.DropAfterApply
+- Text.ApplyStash.RestoreIndex
+- Text.ApplyStash.Stash
+- Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
+- Text.BranchUpstreamInvalid
+- Text.Clone.RecurseSubmodules
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
-- Text.Configure.IssueTracker.AddSampleGitLabMergeRequest
-- Text.Configure.OpenAI.Preferred
-- Text.Configure.OpenAI.Preferred.Tip
+- Text.Configure.CustomAction.Scope.Branch
+- Text.Configure.CustomAction.WaitForExit
+- Text.Configure.IssueTracker.AddSampleGiteeIssue
+- Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.CopyFullPath
+- Text.CreateBranch.Name.WarnSpace
+- Text.DeleteRepositoryNode.Path
+- Text.DeleteRepositoryNode.TipForGroup
+- Text.DeleteRepositoryNode.TipForRepository
+- Text.Diff.First
+- Text.Diff.Last
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
+- Text.Hotkeys.Global.Clone
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -121,93 +95,40 @@
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
-- Text.Preference.General.ShowChildren
+- Text.Preferences.AI.Streaming
+- Text.Preferences.Appearance.EditorTabWidth
+- Text.Preferences.General.DateFormat
+- Text.Preferences.General.ShowChildren
+- Text.Preferences.General.ShowTagsInGraph
+- Text.Preferences.Git.SSLVerify
 - Text.Repository.FilterCommits
-- Text.Repository.FilterCommits.Default
-- Text.Repository.FilterCommits.Exclude
-- Text.Repository.FilterCommits.Include
+- Text.Repository.HistoriesLayout
+- Text.Repository.HistoriesLayout.Horizontal
+- Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.HistoriesOrder
-- Text.Repository.HistoriesOrder.ByDate
-- Text.Repository.HistoriesOrder.Topo
+- Text.Repository.Notifications.Clear
+- Text.Repository.OnlyHighlightCurrentBranchInHistories
 - Text.Repository.Skip
-- Text.SHALinkCM.CopySHA
+- Text.Repository.Tags.OrderByCreatorDate
+- Text.Repository.Tags.OrderByNameAsc
+- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.Sort
+- Text.Repository.UseRelativeTimeInHistories
+- Text.SetUpstream
+- Text.SetUpstream.Local
+- Text.SetUpstream.Unset
+- Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
+- Text.Stash.AutoRestore
+- Text.Stash.AutoRestore.Tip
+- Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.SignOff
 
 </details>
 
-### pt_BR.axaml: 96.81%
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
+### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing Keys</summary>
-
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.CommitDetail.Files.Search
-- Text.CommitDetail.Info.Children
-- Text.Diff.UseBlockNavigation
-- Text.Fetch.Force
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Preference.General.ShowChildren
-- Text.Repository.FilterCommits
-- Text.Repository.Skip
-- Text.SHALinkCM.NavigateTo
-- Text.WorkingCopy.CommitToEdit
-
-</details>
-
-### ru_RU.axaml: 97.92%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-- Text.BranchCM.MergeMultiBranches
-- Text.CommitCM.Merge
-- Text.CommitCM.MergeMultiple
-- Text.FileCM.ResolveUsing
-- Text.Hotkeys.Global.Clone
-- Text.InProgress.CherryPick.Head
-- Text.InProgress.Merge.Operating
-- Text.InProgress.Rebase.StoppedAt
-- Text.InProgress.Revert.Head
-- Text.Merge.Source
-- Text.MergeMultiple
-- Text.MergeMultiple.CommitChanges
-- Text.MergeMultiple.Strategy
-- Text.MergeMultiple.Targets
-- Text.Repository.Skip
-
-</details>
-
-### zh_CN.axaml: 100.00%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-
-
-</details>
-
-### zh_TW.axaml: 100.00%
-
-
-<details>
-<summary>Missing Keys</summary>
-
-
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)

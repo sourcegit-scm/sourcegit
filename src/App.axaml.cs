@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -22,6 +24,7 @@ namespace SourceGit
 {
     public partial class App : Application
     {
+        #region App Entry Point
         [STAThread]
         public static void Main(string[] args)
         {
@@ -34,15 +37,14 @@ namespace SourceGit
 
             TaskScheduler.UnobservedTaskException += (_, e) =>
             {
-                LogException(e.Exception);
                 e.SetObserved();
             };
 
             try
             {
-                if (TryLaunchedAsRebaseTodoEditor(args, out int exitTodo))
+                if (TryLaunchAsRebaseTodoEditor(args, out int exitTodo))
                     Environment.Exit(exitTodo);
-                else if (TryLaunchedAsRebaseMessageEditor(args, out int exitMessage))
+                else if (TryLaunchAsRebaseMessageEditor(args, out int exitMessage))
                     Environment.Exit(exitMessage);
                 else
                     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
@@ -75,34 +77,33 @@ namespace SourceGit
             return builder;
         }
 
-        public override void Initialize()
+        private static void LogException(Exception ex)
         {
-            AvaloniaXamlLoader.Load(this);
+            if (ex == null)
+                return;
 
-            var pref = ViewModels.Preference.Instance;
-            pref.PropertyChanged += (_, _) => pref.Save();
+            var builder = new StringBuilder();
+            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
+            builder.Append("----------------------------\n");
+            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
+            builder.Append($"OS: {Environment.OSVersion}\n");
+            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
+            builder.Append($"Source: {ex.Source}\n");
+            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
+            builder.Append($"User: {Environment.UserName}\n");
+            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
+            builder.Append($"Exception Time: {DateTime.Now}\n");
+            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
+            builder.Append($"---------------------------\n\n");
+            builder.Append(ex);
 
-            SetLocale(pref.Locale);
-            SetTheme(pref.Theme, pref.ThemeOverrides);
-            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
+            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            File.WriteAllText(file, builder.ToString());
         }
+        #endregion
 
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                BindingPlugins.DataValidators.RemoveAt(0);
-
-                if (TryLaunchedAsCoreEditor(desktop))
-                    return;
-
-                if (TryLaunchedAsAskpass(desktop))
-                    return;
-
-                TryLaunchedAsNormal(desktop);
-            }
-        }
-
+        #region Utility Functions
         public static void OpenDialog(Window window)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
@@ -204,6 +205,9 @@ namespace SourceGit
                 app._fontsOverrides = null;
             }
 
+            defaultFont = app.FixFontFamilyName(defaultFont);
+            monospaceFont = app.FixFontFamilyName(monospaceFont);
+
             var resDic = new ResourceDictionary();
             if (!string.IsNullOrEmpty(defaultFont))
                 resDic.Add("Fonts.Default", new FontFamily(defaultFont));
@@ -304,21 +308,6 @@ namespace SourceGit
             return Current is App app ? app._launcher : null;
         }
 
-        public static ViewModels.Repository FindOpenedRepository(string repoPath)
-        {
-            if (Current is App app && app._launcher != null)
-            {
-                foreach (var page in app._launcher.Pages)
-                {
-                    var id = page.Node.Id.Replace("\\", "/");
-                    if (id == repoPath && page.Data is ViewModels.Repository repo)
-                        return repo;
-                }
-            }
-
-            return null;
-        }
-
         public static void Quit(int exitCode)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -331,94 +320,39 @@ namespace SourceGit
                 Environment.Exit(exitCode);
             }
         }
+        #endregion
 
-        private static void CopyTextBlock(TextBlock textBlock)
+        #region Overrides
+        public override void Initialize()
         {
-            if (textBlock == null)
-                return;
+            AvaloniaXamlLoader.Load(this);
 
-            if (textBlock.Inlines is { Count: > 0 } inlines)
-                CopyText(inlines.Text);
-            else if (!string.IsNullOrEmpty(textBlock.Text))
-                CopyText(textBlock.Text);
+            var pref = ViewModels.Preferences.Instance;
+            pref.PropertyChanged += (_, _) => pref.Save();
+
+            SetLocale(pref.Locale);
+            SetTheme(pref.Theme, pref.ThemeOverrides);
+            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
         }
 
-        private static void LogException(Exception ex)
+        public override void OnFrameworkInitializationCompleted()
         {
-            if (ex == null)
-                return;
-
-            var builder = new StringBuilder();
-            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-            builder.Append("----------------------------\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
-            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-            builder.Append($"Source: {ex.Source}\n");
-            builder.Append($"---------------------------\n\n");
-            builder.Append(ex.StackTrace);
-            while (ex.InnerException != null)
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                ex = ex.InnerException;
-                builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
-                builder.Append(ex.StackTrace);
+                BindingPlugins.DataValidators.RemoveAt(0);
+
+                if (TryLaunchAsCoreEditor(desktop))
+                    return;
+
+                if (TryLaunchAsAskpass(desktop))
+                    return;
+
+                TryLaunchAsNormal(desktop);
             }
-
-            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-            File.WriteAllText(file, builder.ToString());
         }
+        #endregion
 
-        private static void Check4Update(bool manually = false)
-        {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    // Fetch lastest release information.
-                    var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
-                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
-
-                    // Parse json into Models.Version.
-                    var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
-                    if (ver == null)
-                        return;
-
-                    // Check if already up-to-date.
-                    if (!ver.IsNewVersion)
-                    {
-                        if (manually)
-                            ShowSelfUpdateResult(new Models.AlreadyUpToDate());
-                        return;
-                    }
-
-                    // Should not check ignored tag if this is called manually.
-                    if (!manually)
-                    {
-                        var pref = ViewModels.Preference.Instance;
-                        if (ver.TagName == pref.IgnoreUpdateTag)
-                            return;
-                    }
-
-                    ShowSelfUpdateResult(ver);
-                }
-                catch (Exception e)
-                {
-                    if (manually)
-                        ShowSelfUpdateResult(e);
-                }
-            });
-        }
-
-        private static void ShowSelfUpdateResult(object data)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                OpenDialog(new Views.SelfUpdate() { DataContext = new ViewModels.SelfUpdate() { Data = data } });
-            });
-        }
-
-        private static bool TryLaunchedAsRebaseTodoEditor(string[] args, out int exitCode)
+        private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
 
@@ -471,7 +405,7 @@ namespace SourceGit
             return true;
         }
 
-        private static bool TryLaunchedAsRebaseMessageEditor(string[] args, out int exitCode)
+        private static bool TryLaunchAsRebaseMessageEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
 
@@ -505,7 +439,7 @@ namespace SourceGit
             return true;
         }
 
-        private bool TryLaunchedAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
+        private bool TryLaunchAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
             if (args == null || args.Length <= 1 || !args[0].Equals("--core-editor", StringComparison.Ordinal))
@@ -513,14 +447,18 @@ namespace SourceGit
 
             var file = args[1];
             if (!File.Exists(file))
+            {
                 desktop.Shutdown(-1);
-            else
-                desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
+                return true;
+            }
 
+            var editor = new Views.StandaloneCommitMessageEditor();
+            editor.SetFile(file);
+            desktop.MainWindow = editor;
             return true;
         }
 
-        private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
+        private bool TryLaunchAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var launchAsAskpass = Environment.GetEnvironmentVariable("SOURCEGIT_LAUNCH_AS_ASKPASS");
             if (launchAsAskpass is not "TRUE")
@@ -529,14 +467,16 @@ namespace SourceGit
             var args = desktop.Args;
             if (args?.Length > 0)
             {
-                desktop.MainWindow = new Views.Askpass(args[0]);
+                var askpass = new Views.Askpass();
+                askpass.TxtDescription.Text = args[0];
+                desktop.MainWindow = askpass;
                 return true;
             }
 
             return false;
         }
 
-        private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
+        private void TryLaunchAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Native.OS.SetupEnternalTools();
             Models.AvatarManager.Instance.Start();
@@ -548,9 +488,96 @@ namespace SourceGit
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
-            var pref = ViewModels.Preference.Instance;
+#if !DISABLE_UPDATE_DETECTION
+            var pref = ViewModels.Preferences.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
+#endif
+        }
+
+        private void Check4Update(bool manually = false)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    // Fetch latest release information.
+                    var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
+                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
+
+                    // Parse JSON into Models.Version.
+                    var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
+                    if (ver == null)
+                        return;
+
+                    // Check if already up-to-date.
+                    if (!ver.IsNewVersion)
+                    {
+                        if (manually)
+                            ShowSelfUpdateResult(new Models.AlreadyUpToDate());
+                        return;
+                    }
+
+                    // Should not check ignored tag if this is called manually.
+                    if (!manually)
+                    {
+                        var pref = ViewModels.Preferences.Instance;
+                        if (ver.TagName == pref.IgnoreUpdateTag)
+                            return;
+                    }
+
+                    ShowSelfUpdateResult(ver);
+                }
+                catch (Exception e)
+                {
+                    if (manually)
+                        ShowSelfUpdateResult(new Models.SelfUpdateFailed(e));
+                }
+            });
+        }
+
+        private void ShowSelfUpdateResult(object data)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                {
+                    var dialog = new Views.SelfUpdate() { DataContext = new ViewModels.SelfUpdate() { Data = data } };
+                    dialog.ShowDialog(owner);
+                }
+            });
+        }
+
+        private string FixFontFamilyName(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var parts = input.Split(',');
+            var trimmed = new List<string>();
+
+            foreach (var part in parts)
+            {
+                var t = part.Trim();
+                if (string.IsNullOrEmpty(t))
+                    continue;
+
+                // Collapse multiple spaces into single space
+                var prevChar = '\0';
+                var sb = new StringBuilder();
+
+                foreach (var c in t)
+                {
+                    if (c == ' ' && prevChar == ' ')
+                        continue;
+                    sb.Append(c);
+                    prevChar = c;
+                }
+
+                trimmed.Add(sb.ToString());
+            }
+
+            return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
         private ViewModels.Launcher _launcher = null;

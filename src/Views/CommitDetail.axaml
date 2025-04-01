@@ -19,19 +19,18 @@
       <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
-          <v:CommitBaseInfo Content="{Binding Commit}" 
-                            Message="{Binding FullMessage}"
+          <v:CommitBaseInfo Content="{Binding Commit}"
+                            FullMessage="{Binding FullMessage}"
                             SignInfo="{Binding SignInfo}"
                             SupportsContainsIn="True"
                             WebLinks="{Binding WebLinks}"
-                            Children="{Binding Children}"
-                            IssueTrackerRules="{Binding IssueTrackerRules}"/>
+                            Children="{Binding Children}"/>
 
           <!-- Line -->
           <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>
 
           <!-- Change List -->
-          <ListBox Background="Transparent" 
+          <ListBox Background="Transparent"
                    Margin="64,0,8,4"
                    SelectionMode="Single"
                    ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}">
@@ -42,30 +41,30 @@
                 <Setter Property="CornerRadius" Value="4"/>
               </Style>
             </ListBox.Styles>
-            
+
             <ListBox.ItemsPanel>
               <ItemsPanelTemplate>
                 <StackPanel Orientation="Vertical"/>
               </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-            
+
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Change">
                 <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
-                  <v:ChangeStatusIcon Grid.Column="0" 
-                                      Width="14" Height="14" 
-                                      HorizontalAlignment="Left" 
-                                      Margin="16,0,0,0" 
+                  <v:ChangeStatusIcon Grid.Column="0"
+                                      Width="14" Height="14"
+                                      HorizontalAlignment="Left"
+                                      Margin="16,0,0,0"
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
 
           <!-- Only Top100 Tip -->
-          <TextBlock Margin="108,0,0,16" 
-                     Text="{DynamicResource Text.CommitDetail.Info.GotoChangesPage}" 
+          <TextBlock Margin="108,0,0,16"
+                     Text="{DynamicResource Text.CommitDetail.Info.GotoChangesPage}"
                      Foreground="{DynamicResource Brush.FG2}"
                      IsVisible="{Binding Changes, Converter={x:Static c:ListConverters.IsOnlyTop100Shows}}"/>
         </StackPanel>

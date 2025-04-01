@@ -37,7 +37,7 @@
                  Text="{DynamicResource Text.FileHistory}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
-      
+
       <!-- Caption Buttons (Windows/Linux) -->
       <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
@@ -56,8 +56,8 @@
                Margin="8,4,4,8"
                BorderBrush="{DynamicResource Brush.Border2}"
                ItemsSource="{Binding Commits}"
-               SelectedItem="{Binding SelectedCommit, Mode=TwoWay}"
-               SelectionMode="Single"
+               SelectedItems="{Binding SelectedCommits, Mode=TwoWay}"
+               SelectionMode="Multiple"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>
@@ -78,7 +78,7 @@
           <DataTemplate DataType="m:Commit">
             <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
               <Grid RowDefinitions="Auto,*">
-                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,96">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                   <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                   <TextBlock Grid.Column="2"
@@ -90,7 +90,7 @@
                              TextDecorations="Underline"
                              Margin="8,0,0,0"
                              PointerPressed="OnPressCommitSHA"/>
-                  <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
                 </Grid>
 
                 <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
@@ -107,65 +107,134 @@
                     BorderThickness="1,0,0,0"
                     BorderBrush="{DynamicResource Brush.Border0}"/>
 
-      <v:LoadingIcon Grid.Column="2" 
-                     Width="48" Height="48" 
+      <ContentControl Grid.Column="2" Content="{Binding ViewContent}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:FileHistoriesSingleRevision">
+            <Grid RowDefinitions="Auto,*,Auto">
+              <StackPanel Grid.Row="0" Margin="0,8" Height="28" HorizontalAlignment="Center" Orientation="Horizontal">
+                <RadioButton Classes="switch_button"
+                             GroupName="SearchGroup"
+                             IsChecked="{Binding IsDiffMode, Mode=OneWay}">
+                  <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileChange}" FontWeight="Bold"/>
+                </RadioButton>
+
+                <RadioButton Classes="switch_button"
+                             GroupName="SearchGroup"
+                             IsChecked="{Binding !IsDiffMode, Mode=TwoWay}">
+                  <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileContent}" FontWeight="Bold"/>
+                </RadioButton>
+              </StackPanel>
+
+              <ContentControl Grid.Row="1" Margin="4,4,8,8" Content="{Binding ViewContent}">
+                <ContentControl.DataTemplates>
+                  <DataTemplate DataType="vm:DiffContext">
+                    <v:DiffView/>
+                  </DataTemplate>
+
+                  <DataTemplate DataType="vm:FileHistoriesRevisionFile">
+                    <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+                      <Grid RowDefinitions="26,*">
+                        <Border Grid.Row="0"
+                                BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+                                Background="{DynamicResource Brush.Window}">
+                          <Grid ColumnDefinitions="Auto,*">
+                            <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Classes="primary"
+                                       Margin="4,0,0,0"
+                                       Text="{Binding Path}"
+                                       FontSize="11"
+                                       TextTrimming="CharacterEllipsis"/>
+                          </Grid>
+                        </Border>
+
+                        <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding Content}"/>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ContentControl.DataTemplates>
+              </ContentControl>
+
+              <Button Grid.Row="2"
+                      Classes="flat primary"
+                      Margin="0,0,0,8"
+                      HorizontalAlignment="Center"
+                      Content="{DynamicResource Text.ChangeCM.CheckoutThisRevision}"
+                      Click="OnResetToSelectedRevision"/>
+            </Grid>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:FileHistoriesCompareRevisions">
+            <Grid RowDefinitions="Auto,*">
+              <Grid Grid.Row="0" Margin="4,6" ColumnDefinitions="*,32,*,Auto">
+                <Grid.DataTemplates>
+                  <DataTemplate DataType="m:Commit">
+                    <Grid RowDefinitions="Auto,*">
+                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                        <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                        <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
+                          <TextBlock Text="HEAD" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
+                        </Border>
+                        <TextBlock Grid.Column="3" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
+                        <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                      </Grid>
+
+                      <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                    </Grid>
+                  </DataTemplate>
+                </Grid.DataTemplates>
+
+                <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+                  <ContentControl Content="{Binding StartPoint}"/>
+                </Border>
+
+                <Button Grid.Column="1" Classes="icon_button" Command="{Binding Swap}" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
+                  <Path Width="16" Height="16" Data="{DynamicResource Icons.Compare}"/>
+                </Button>
+
+                <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+                  <ContentControl Content="{Binding EndPoint}"/>
+                </Border>
+
+                <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
+                  <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+                </Button>
+              </Grid>
+
+              <ContentControl Grid.Row="1" Margin="4,4,8,8" Content="{Binding ViewContent}">
+                <ContentControl.DataTemplates>
+                  <DataTemplate DataType="vm:DiffContext">
+                    <v:DiffView/>
+                  </DataTemplate>
+                </ContentControl.DataTemplates>
+              </ContentControl>
+            </Grid>
+          </DataTemplate>
+
+          <DataTemplate DataType="x:Int32">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <Path Width="128" Height="128"
+                    Data="{StaticResource Icons.Detail}"
+                    HorizontalAlignment="Center"
+                    Fill="{DynamicResource Brush.FG2}"/>
+
+              <TextBlock HorizontalAlignment="Center"
+                         Margin="0,16"
+                         FontSize="24" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         Text="{Binding Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+
+      <v:LoadingIcon Grid.Column="2"
+                     Width="48" Height="48"
                      HorizontalAlignment="Center" VerticalAlignment="Center"
                      IsVisible="{Binding IsLoading}"/>
-
-      <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !IsLoading}">
-        <StackPanel Grid.Row="0" Margin="0,8" Height="28" HorizontalAlignment="Center" Orientation="Horizontal">
-          <RadioButton Classes="switch_button"
-                       GroupName="SearchGroup"
-                       IsChecked="{Binding !IsViewContent, Mode=OneWay}">
-            <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileChange}" FontWeight="Bold"/>
-          </RadioButton>
-
-          <RadioButton Classes="switch_button"
-                       GroupName="SearchGroup"
-                       IsChecked="{Binding IsViewContent, Mode=TwoWay}">
-            <TextBlock Margin="16,0" Text="{DynamicResource Text.FileHistory.FileContent}" FontWeight="Bold"/>
-          </RadioButton>
-        </StackPanel>
-        
-        <ContentControl Grid.Row="1" Margin="4,4,8,8" Content="{Binding ViewContent}">
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:DiffContext">
-              <v:DiffView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="vm:FileHistoriesRevisionFile">
-              <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-                <Grid RowDefinitions="26,*">
-                  <Border Grid.Row="0" 
-                          BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}" 
-                          Background="{DynamicResource Brush.Window}">
-                    <Grid ColumnDefinitions="Auto,*">
-                      <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
-                      <TextBlock Grid.Column="1" 
-                                 Classes="primary" 
-                                 Margin="4,0,0,0" 
-                                 Text="{Binding Path}" 
-                                 FontSize="11" 
-                                 TextTrimming="CharacterEllipsis"/>
-                    </Grid>
-                  </Border>
-                  
-                  <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding Content}"/>
-                </Grid>
-              </Border>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
-        
-        <Button Grid.Row="2"
-                Classes="flat primary"
-                Margin="0,0,0,8"
-                HorizontalAlignment="Center"
-                Content="{DynamicResource Text.ChangeCM.CheckoutThisRevision}"
-                Click="OnResetToSelectedRevision"/>
-      </Grid>
     </Grid>
-    
+
     <Border Grid.Row="1" x:Name="NotifyDonePanel" Background="Transparent" IsVisible="False" PointerPressed="OnCloseNotifyPanel">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #80000000)">
         <Border CornerRadius="8" Background="{DynamicResource Brush.Popup}" Padding="32">

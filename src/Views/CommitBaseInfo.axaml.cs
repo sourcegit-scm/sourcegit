@@ -1,22 +1,23 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
     public partial class CommitBaseInfo : UserControl
     {
-        public static readonly StyledProperty<string> MessageProperty =
-            AvaloniaProperty.Register<CommitBaseInfo, string>(nameof(Message), string.Empty);
+        public static readonly StyledProperty<Models.CommitFullMessage> FullMessageProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, Models.CommitFullMessage>(nameof(FullMessage));
 
-        public string Message
+        public Models.CommitFullMessage FullMessage
         {
-            get => GetValue(MessageProperty);
-            set => SetValue(MessageProperty, value);
+            get => GetValue(FullMessageProperty);
+            set => SetValue(FullMessageProperty, value);
         }
 
         public static readonly StyledProperty<Models.CommitSignInfo> SignInfoProperty =
@@ -37,28 +38,19 @@ namespace SourceGit.Views
             set => SetValue(SupportsContainsInProperty, value);
         }
 
-        public static readonly StyledProperty<AvaloniaList<Models.CommitLink>> WebLinksProperty =
-            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<Models.CommitLink>>(nameof(WebLinks));
+        public static readonly StyledProperty<List<Models.CommitLink>> WebLinksProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, List<Models.CommitLink>>(nameof(WebLinks));
 
-        public AvaloniaList<Models.CommitLink> WebLinks
+        public List<Models.CommitLink> WebLinks
         {
             get => GetValue(WebLinksProperty);
             set => SetValue(WebLinksProperty, value);
         }
 
-        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
-            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+        public static readonly StyledProperty<List<string>> ChildrenProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, List<string>>(nameof(Children));
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
-        {
-            get => GetValue(IssueTrackerRulesProperty);
-            set => SetValue(IssueTrackerRulesProperty, value);
-        }
-
-        public static readonly StyledProperty<AvaloniaList<string>> ChildrenProperty =
-            AvaloniaProperty.Register<CommitBaseInfo, AvaloniaList<string>>(nameof(Children));
-
-        public AvaloniaList<string> Children
+        public List<string> Children
         {
             get => GetValue(ChildrenProperty);
             set => SetValue(ChildrenProperty, value);
@@ -124,7 +116,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnSHAPointerEntered(object sender, PointerEventArgs e)
+        private void OnSHAPointerEntered(object sender, PointerEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha } ctl)
             {
@@ -132,14 +124,23 @@ namespace SourceGit.Views
                 if (tooltip is Models.Commit commit && commit.SHA == sha)
                     return;
 
-                var c = await Task.Run(() => detail.GetParent(sha));
-                if (c != null && ctl.IsVisible && ctl.DataContext is string newSHA && newSHA == sha)
+                Task.Run(() =>
                 {
-                    ToolTip.SetTip(ctl, c);
+                    var c = detail.GetParent(sha);
+                    if (c == null)
+                        return;
 
-                    if (ctl.IsPointerOver)
-                        ToolTip.SetIsOpen(ctl, true);
-                }
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (ctl.IsEffectivelyVisible && ctl.DataContext is string newSHA && newSHA == sha)
+                        {
+                            ToolTip.SetTip(ctl, c);
+
+                            if (ctl.IsPointerOver)
+                                ToolTip.SetIsOpen(ctl, true);
+                        }
+                    });
+                });
             }
 
             e.Handled = true;

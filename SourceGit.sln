@@ -18,7 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\package.yml = .github\workflows\package.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
 		.github\workflows\localization-check.yml = .github\workflows\localization-check.yml
-		.github\workflows\publish-packages.yml = .github\workflows\publish-packages.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49A7C2D6-558C-4FAA-8F5D-EEE81497AED7}"
@@ -61,6 +60,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DEBIAN", "DEBIAN", "{F101849D-BDB7-40D4-A516-751150C3CCFC}"
 	ProjectSection(SolutionItems) = preProject
 		build\resources\deb\DEBIAN\control = build\resources\deb\DEBIAN\control
+		build\resources\deb\DEBIAN\preinst = build\resources\deb\DEBIAN\preinst
+		build\resources\deb\DEBIAN\prerm = build\resources\deb\DEBIAN\prerm
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rpm", "rpm", "{9BA0B044-0CC9-46F8-B551-204F149BF45D}"
@@ -81,7 +82,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C54D
 		build\scripts\localization-check.js = build\scripts\localization-check.js
 		build\scripts\package.linux.sh = build\scripts\package.linux.sh
 		build\scripts\package.osx-app.sh = build\scripts\package.osx-app.sh
-		build\scripts\package.windows-portable.sh = build\scripts\package.windows-portable.sh
+		build\scripts\package.windows.sh = build\scripts\package.windows.sh
 	EndProjectSection
 EndProject
 Global

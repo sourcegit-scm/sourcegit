@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Collections.Generic;
+
+namespace SourceGit.Commands
 {
     public class QueryRevisionFileNames : Command
     {
@@ -9,13 +11,17 @@
             Args = $"ls-tree -r -z --name-only {revision}";
         }
 
-        public string[] Result()
+        public List<string> Result()
         {
             var rs = ReadToEnd();
-            if (rs.IsSuccess)
-                return rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
+            if (!rs.IsSuccess)
+                return [];
 
-            return [];
+            var lines = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
+            var outs = new List<string>();
+            foreach (var line in lines)
+                outs.Add(line);
+            return outs;
         }
     }
 }

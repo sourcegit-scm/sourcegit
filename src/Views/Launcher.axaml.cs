@@ -34,14 +34,14 @@ namespace SourceGit.Views
             get
             {
                 if (OperatingSystem.IsLinux())
-                    return !ViewModels.Preference.Instance.UseSystemWindowFrame;
+                    return !ViewModels.Preferences.Instance.UseSystemWindowFrame;
                 return OperatingSystem.IsWindows();
             }
         }
 
         public Launcher()
         {
-            var layout = ViewModels.Preference.Instance.Layout;
+            var layout = ViewModels.Preferences.Instance.Layout;
             if (layout.LauncherWindowState != WindowState.Maximized)
             {
                 Width = layout.LauncherWidth;
@@ -81,7 +81,7 @@ namespace SourceGit.Views
         {
             base.OnOpened(e);
 
-            var state = ViewModels.Preference.Instance.Layout.LauncherWindowState;
+            var state = ViewModels.Preferences.Instance.Layout.LauncherWindowState;
             if (state == WindowState.Maximized || state == WindowState.FullScreen)
                 WindowState = WindowState.Maximized;
         }
@@ -99,7 +99,7 @@ namespace SourceGit.Views
                 if (OperatingSystem.IsMacOS())
                     HasLeftCaptionButton = state != WindowState.FullScreen;
 
-                ViewModels.Preference.Instance.Layout.LauncherWindowState = state;
+                ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
             }
         }
 
@@ -112,11 +112,29 @@ namespace SourceGit.Views
             // We should clear all unhandled key modifiers.
             _unhandledModifiers = KeyModifiers.None;
 
-            // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.P)
+            // Check for AltGr (which is detected as Ctrl+Alt)
+            bool isAltGr = e.KeyModifiers.HasFlag(KeyModifiers.Control) &&
+                           e.KeyModifiers.HasFlag(KeyModifiers.Alt);
+
+            // Skip hotkey processing if AltGr is pressed
+            if (isAltGr)
             {
-                App.OpenDialog(new Preference());
+                base.OnKeyDown(e);
+                return;
+            }
+
+            // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: (KeyModifiers.Control | KeyModifiers.Shift), Key: Key.P })
+            {
+                App.OpenDialog(new Preferences());
                 e.Handled = true;
+                return;
+            }
+
+            // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control && e.Key == Key.Q)
+            {
+                App.Quit(0);
                 return;
             }
 
@@ -141,7 +159,7 @@ namespace SourceGit.Views
                     if (vm.ActivePage.Data is not ViewModels.Welcome)
                         vm.AddNewTab();
 
-                    ViewModels.Welcome.Instance.Clone();                    
+                    ViewModels.Welcome.Instance.Clone();
                     e.Handled = true;
                     return;
                 }
@@ -236,13 +254,13 @@ namespace SourceGit.Views
             {
                 _unhandledModifiers = e.KeyModifiers;
 
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && (e.Key == Key.LeftAlt || e.Key == Key.RightAlt))
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && e.Key is Key.LeftAlt or Key.RightAlt)
                     _unhandledModifiers |= KeyModifiers.Alt;
 
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl))
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && e.Key is Key.LeftCtrl or Key.RightCtrl)
                     _unhandledModifiers |= KeyModifiers.Control;
 
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && (e.Key == Key.LeftShift || e.Key == Key.RightShift))
+                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && e.Key is Key.LeftShift or Key.RightShift)
                     _unhandledModifiers |= KeyModifiers.Shift;
             }
         }
@@ -255,8 +273,10 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            (DataContext as ViewModels.Launcher)?.Quit(Width, Height);
             base.OnClosing(e);
+
+            if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
+                launcher.Quit(Width, Height);
         }
 
         private void OnOpenWorkspaceMenu(object sender, RoutedEventArgs e)

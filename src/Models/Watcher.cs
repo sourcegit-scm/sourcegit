@@ -8,12 +8,12 @@ namespace SourceGit.Models
 {
     public class Watcher : IDisposable
     {
-        public Watcher(IRepository repo)
+        public Watcher(IRepository repo, string fullpath, string gitDir)
         {
             _repo = repo;
 
             _wcWatcher = new FileSystemWatcher();
-            _wcWatcher.Path = _repo.FullPath;
+            _wcWatcher.Path = fullpath;
             _wcWatcher.Filter = "*";
             _wcWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
             _wcWatcher.IncludeSubdirectories = true;
@@ -23,15 +23,8 @@ namespace SourceGit.Models
             _wcWatcher.Deleted += OnWorkingCopyChanged;
             _wcWatcher.EnableRaisingEvents = true;
 
-            // If this repository is a worktree repository, just watch the main repository's gitdir.
-            var gitDirNormalized = _repo.GitDir.Replace("\\", "/");
-            var worktreeIdx = gitDirNormalized.IndexOf(".git/worktrees/", StringComparison.Ordinal);
-            var repoWatchDir = _repo.GitDir;
-            if (worktreeIdx > 0)
-                repoWatchDir = _repo.GitDir.Substring(0, worktreeIdx + 4);
-
             _repoWatcher = new FileSystemWatcher();
-            _repoWatcher.Path = repoWatchDir;
+            _repoWatcher.Path = gitDir;
             _repoWatcher.Filter = "*";
             _repoWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
             _repoWatcher.IncludeSubdirectories = true;
@@ -72,6 +65,11 @@ namespace SourceGit.Models
             _updateBranch = DateTime.Now.ToFileTime() - 1;
         }
 
+        public void MarkTagDirtyManually()
+        {
+            _updateTags = DateTime.Now.ToFileTime() - 1;
+        }
+
         public void MarkWorkingCopyDirtyManually()
         {
             _updateWC = DateTime.Now.ToFileTime() - 1;
@@ -109,6 +107,7 @@ namespace SourceGit.Models
             {
                 _updateBranch = 0;
                 _updateWC = 0;
+                _updateSubmodules = 0;
 
                 if (_updateTags > 0)
                 {
@@ -119,6 +118,7 @@ namespace SourceGit.Models
                 Task.Run(_repo.RefreshBranches);
                 Task.Run(_repo.RefreshCommits);
                 Task.Run(_repo.RefreshWorkingCopyChanges);
+                Task.Run(_repo.RefreshSubmodules);
                 Task.Run(_repo.RefreshWorktrees);
             }
 
@@ -131,20 +131,20 @@ namespace SourceGit.Models
             if (_updateSubmodules > 0 && now > _updateSubmodules)
             {
                 _updateSubmodules = 0;
-                _repo.RefreshSubmodules();
+                Task.Run(_repo.RefreshSubmodules);
             }
 
             if (_updateStashes > 0 && now > _updateStashes)
             {
                 _updateStashes = 0;
-                _repo.RefreshStashes();
+                Task.Run(_repo.RefreshStashes);
             }
 
             if (_updateTags > 0 && now > _updateTags)
             {
                 _updateTags = 0;
-                _repo.RefreshTags();
-                _repo.RefreshCommits();
+                Task.Run(_repo.RefreshTags);
+                Task.Run(_repo.RefreshCommits);
             }
         }
 
@@ -173,12 +173,6 @@ namespace SourceGit.Models
                 (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
                 _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
-
-                lock (_submodules)
-                {
-                    if (_submodules.Count > 0)
-                        _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                }
             }
             else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
             {
@@ -195,7 +189,7 @@ namespace SourceGit.Models
             if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal))
                 return;
 
-            lock (_submodules)
+            lock (_lockSubmodule)
             {
                 foreach (var submodule in _submodules)
                 {

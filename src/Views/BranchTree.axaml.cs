@@ -52,31 +52,31 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote");
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote", false);
             }
             else if (node.Backend is Models.Branch branch)
             {
                 if (branch.IsCurrent)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Check");
+                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", true);
                 else
-                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", false);
             }
             else
             {
                 if (node.IsExpanded)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open", false);
                 else
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder");
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder", false);
             }
         }
 
-        private void CreateContent(Thickness margin, string iconKey)
+        private void CreateContent(Thickness margin, string iconKey, bool highlight)
         {
             var geo = this.FindResource(iconKey) as StreamGeometry;
             if (geo == null)
                 return;
 
-            Content = new Path()
+            var path = new Path()
             {
                 Width = 12,
                 Height = 12,
@@ -85,6 +85,11 @@ namespace SourceGit.Views
                 Margin = margin,
                 Data = geo,
             };
+
+            if (highlight)
+                path.Fill = Brushes.Green;
+
+            Content = path;
         }
     }
 
@@ -275,6 +280,9 @@ namespace SourceGit.Views
                 rows.RemoveRange(idx + 1, removeCount);
             }
 
+            var repo = DataContext as ViewModels.Repository;
+            repo?.UpdateBranchNodeIsExpanded(node);
+
             RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             _disableSelectionChangingEvent = false;
         }
@@ -396,15 +404,6 @@ namespace SourceGit.Views
             else if (branches.Find(x => x.IsCurrent) == null)
             {
                 var menu = new ContextMenu();
-                var deleteMulti = new MenuItem();
-                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
-                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
-                deleteMulti.Click += (_, ev) =>
-                {
-                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(deleteMulti);
 
                 var mergeMulti = new MenuItem();
                 mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
@@ -415,6 +414,17 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(mergeMulti);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var deleteMulti = new MenuItem();
+                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteMulti.Click += (_, ev) =>
+                {
+                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(deleteMulti);
 
                 menu?.Open(this);
             }

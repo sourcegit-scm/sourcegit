@@ -1,43 +1,12 @@
 using System;
-
-using Avalonia;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
     public partial class Askpass : ChromelessWindow
     {
-        public static readonly StyledProperty<bool> ShowPasswordProperty =
-            AvaloniaProperty.Register<Askpass, bool>(nameof(ShowPassword));
-
-        public bool ShowPassword
-        {
-            get => GetValue(ShowPasswordProperty);
-            set => SetValue(ShowPasswordProperty, value);
-        }
-
-        public string Description
-        {
-            get;
-            private set;
-        } = string.Empty;
-
-        public string Passphrase
-        {
-            get;
-            set;
-        } = string.Empty;
-
         public Askpass()
         {
-            DataContext = this;
-            InitializeComponent();
-        }
-
-        public Askpass(string description)
-        {
-            Description = description;
-            DataContext = this;
             InitializeComponent();
         }
 
@@ -49,7 +18,8 @@ namespace SourceGit.Views
 
         private void EnterPassword(object _1, RoutedEventArgs _2)
         {
-            Console.Out.Write($"{Passphrase}\n");
+            var passphrase = TxtPassphrase.Text ?? string.Empty;
+            Console.Out.Write($"{passphrase}\n");
             App.Quit(0);
         }
     }

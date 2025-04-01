@@ -15,7 +15,7 @@
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
       </Grid.RowDefinitions>
-      
+
       <TextBlock Grid.Row="0" Grid.Column="0"
                  Text="{DynamicResource Text.Init.Path}"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

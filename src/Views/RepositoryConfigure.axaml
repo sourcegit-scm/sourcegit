@@ -5,7 +5,6 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
-                    xmlns:ac="using:Avalonia.Controls.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.RepositoryConfigure"
                     x:DataType="vm:RepositoryConfigure"
@@ -45,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -66,7 +65,7 @@
                    CornerRadius="3"
                    Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
                    Text="{Binding UserEmail, Mode=TwoWay}"/>
-          
+
           <TextBlock Grid.Row="2" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -105,30 +104,26 @@
           <TextBlock Grid.Row="4" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
-                     Text="{DynamicResource Text.Preference.GPG.UserKey}"/>
+                     Text="{DynamicResource Text.Preferences.GPG.UserKey}"/>
           <TextBox Grid.Row="4" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
-                   Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"
+                   Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="5" Grid.Column="1"
-                    Content="{DynamicResource Text.Preference.GPG.CommitEnabled}"
+                    Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
                     IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="6" Grid.Column="1"
-                    Content="{DynamicResource Text.Configure.Git.EnableSignOff}"
-                    IsChecked="{Binding EnableSignOffForCommit, Mode=TwoWay}"/>
-
-          <CheckBox Grid.Row="7" Grid.Column="1"
-                    Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
+                    Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
 
-          <CheckBox Grid.Row="8" Grid.Column="1"
-                    Content="{DynamicResource Text.Configure.Git.EnablePruneOnFetch}"
+          <CheckBox Grid.Row="7" Grid.Column="1"
+                    Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
                     IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
 
-          <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
+          <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
@@ -155,7 +150,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CommitMessageTemplate}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="284" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="300" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -249,9 +244,9 @@
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
             <Grid RowDefinitions="*,1,Auto">
-              <ListBox Grid.Row="0" 
-                       Background="Transparent" 
-                       ItemsSource="{Binding IssueTrackerRules}" 
+              <ListBox Grid.Row="0"
+                       Background="Transparent"
+                       ItemsSource="{Binding IssueTrackerRules}"
                        SelectedItem="{Binding SelectedIssueTrackerRule, Mode=TwoWay}"
                        SelectionMode="Single">
                 <ListBox.Styles>
@@ -261,7 +256,7 @@
                     <Setter Property="Padding" Value="4,2"/>
                   </Style>
                 </ListBox.Styles>
-                
+
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical"/>
@@ -288,8 +283,11 @@
                       <MenuItem Header="-"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGithub}" Command="{Binding AddSampleGithubIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleAzure}" Command="{Binding AddSampleAzureWorkItemTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabIssue}" Command="{Binding AddSampleGitLabIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabMergeRequest}" Command="{Binding AddSampleGitLabMergeRequestTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGiteeIssue}" Command="{Binding AddSampleGiteeIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGiteePullRequest}" Command="{Binding AddSampleGiteePullRequestTracker}"/>
                     </MenuFlyout>
                   </Button.Flyout>
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
@@ -318,7 +316,7 @@
                 </Binding.TargetNullValue>
               </Binding>
             </ContentControl.Content>
-            
+
             <ContentControl.DataTemplates>
               <DataTemplate DataType="m:IssueTrackerRule">
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -347,7 +345,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="250" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="340" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -418,20 +416,12 @@
                   <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Name}"/>
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
-                  <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                    <StackPanel.Resources>
-                      <ac:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-                    </StackPanel.Resources>
-                    
-                    <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
-                    <RadioButton Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"
-                                 GroupName="CustomActionScope"
-                                 Margin="8,0"
-                                 IsChecked="{Binding Scope, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:CustomActionScope.Repository}}"/>
-                    <RadioButton Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"
-                                 GroupName="CustomActionScope"
-                                 IsChecked="{Binding Scope, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static m:CustomActionScope.Commit}}"/>
-                  </StackPanel>
+                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
+                  <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Scope, Mode=TwoWay}">
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
+                  </ComboBox>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
                   <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
@@ -445,13 +435,15 @@
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
                   <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+
+                  <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>
         </Grid>
       </TabItem>
-      
+
       <TabItem>
         <TabItem.Header>
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.OpenAI}"/>

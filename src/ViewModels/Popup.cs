@@ -10,12 +10,6 @@ namespace SourceGit.ViewModels
 {
     public class Popup : ObservableValidator
     {
-        public string HostPageId
-        {
-            get;
-            set;
-        }
-
         public object View
         {
             get;
@@ -41,6 +35,11 @@ namespace SourceGit.ViewModels
                 return false;
             ValidateAllProperties();
             return !HasErrors;
+        }
+
+        public virtual bool CanStartDirectly()
+        {
+            return true;
         }
 
         public virtual Task<bool> Sure()

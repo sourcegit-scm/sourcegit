@@ -17,7 +17,7 @@ namespace SourceGit.Views
             if (grid == null)
                 return;
 
-            var layout = ViewModels.Preference.Instance.Layout;
+            var layout = ViewModels.Preferences.Instance.Layout;
             var width = grid.Bounds.Width;
             var maxLeft = width - 304;
 

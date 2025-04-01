@@ -1,51 +1,31 @@
 using System.Reflection;
-using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
     public partial class About : ChromelessWindow
     {
-        public string Version
-        {
-            get;
-            private set;
-        }
-
         public About()
         {
-            var ver = Assembly.GetExecutingAssembly().GetName().Version;
-            if (ver != null)
-                Version = $"{ver.Major}.{ver.Minor}";
-
-            DataContext = this;
             InitializeComponent();
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var ver = assembly.GetName().Version;
+            if (ver != null)
+                TxtVersion.Text = $"{ver.Major}.{ver.Minor:D2}";
+
+            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
+            if (copyright != null)
+                TxtCopyright.Text = copyright.Copyright;
         }
 
-        private void OnVisitAvaloniaUI(object _, PointerPressedEventArgs e)
+        private void OnVisitWebsite(object _, RoutedEventArgs e)
         {
-            Native.OS.OpenBrowser("https://www.avaloniaui.net/");
+            Native.OS.OpenBrowser("https://sourcegit-scm.github.io/");
             e.Handled = true;
         }
 
-        private void OnVisitAvaloniaEdit(object _, PointerPressedEventArgs e)
-        {
-            Native.OS.OpenBrowser("https://github.com/AvaloniaUI/AvaloniaEdit");
-            e.Handled = true;
-        }
-
-        private void OnVisitJetBrainsMonoFont(object _, PointerPressedEventArgs e)
-        {
-            Native.OS.OpenBrowser("https://www.jetbrains.com/lp/mono/");
-            e.Handled = true;
-        }
-
-        private void OnVisitLiveCharts2(object _, PointerPressedEventArgs e)
-        {
-            Native.OS.OpenBrowser("https://livecharts.dev/");
-            e.Handled = true;
-        }
-
-        private void OnVisitSourceCode(object _, PointerPressedEventArgs e)
+        private void OnVisitSourceCode(object _, RoutedEventArgs e)
         {
             Native.OS.OpenBrowser("https://github.com/sourcegit-scm/sourcegit");
             e.Handled = true;

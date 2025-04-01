@@ -10,17 +10,16 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public bool ShouldPushToRemote
+        public bool PushToRemotes
         {
-            get;
-            set;
+            get => _repo.Settings.PushToRemoteWhenDeleteTag;
+            set => _repo.Settings.PushToRemoteWhenDeleteTag = value;
         }
 
         public DeleteTag(Repository repo, Models.Tag tag)
         {
             _repo = repo;
             Target = tag;
-            ShouldPushToRemote = true;
             View = new Views.DeleteTag() { DataContext = this };
         }
 
@@ -29,11 +28,15 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Deleting tag '{Target.Name}' ...";
 
+            var remotes = PushToRemotes ? _repo.Remotes : null;
             return Task.Run(() =>
             {
-                var remotes = ShouldPushToRemote ? _repo.Remotes : null;
                 var succ = Commands.Tag.Delete(_repo.FullPath, Target.Name, remotes);
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.MarkTagsDirtyManually();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return succ;
             });
         }

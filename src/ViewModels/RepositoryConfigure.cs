@@ -60,16 +60,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
-        public bool EnableSignOffForCommit
-        {
-            get => _repo.Settings.EnableSignOffForCommit;
-            set => _repo.Settings.EnableSignOffForCommit = value;
-        }
-
         public bool EnablePruneOnFetch
         {
-            get => _repo.Settings.EnablePruneOnFetch;
-            set => _repo.Settings.EnablePruneOnFetch = value;
+            get;
+            set;
         }
 
         public bool EnableAutoFetch
@@ -146,7 +140,7 @@ namespace SourceGit.ViewModels
                 Remotes.Add(remote.Name);
 
             AvailableOpenAIServices = new List<string>() { "---" };
-            foreach (var service in Preference.Instance.OpenAIServices)
+            foreach (var service in Preferences.Instance.OpenAIServices)
                 AvailableOpenAIServices.Add(service.Name);
 
             if (AvailableOpenAIServices.IndexOf(PreferedOpenAIService) == -1)
@@ -165,6 +159,8 @@ namespace SourceGit.ViewModels
                 GPGUserSigningKey = signingKey;
             if (_cached.TryGetValue("http.proxy", out var proxy))
                 HttpProxy = proxy;
+            if (_cached.TryGetValue("fetch.prune", out var prune))
+                EnablePruneOnFetch = (prune == "true");
         }
 
         public void ClearHttpProxy()
@@ -188,57 +184,94 @@ namespace SourceGit.ViewModels
 
         public void AddSampleGithubIssueTracker()
         {
+            var link = "https://github.com/username/repository/issues/$1";
             foreach (var remote in _repo.Remotes)
             {
-                if (remote.URL.Contains("github.com", System.StringComparison.Ordinal))
+                if (remote.URL.Contains("github.com", System.StringComparison.Ordinal) &&
+                    remote.TryGetVisitURL(out string url))
                 {
-                    if (remote.TryGetVisitURL(out string url))
-                    {
-                        SelectedIssueTrackerRule = _repo.Settings.AddGithubIssueTracker(url);
-                        return;
-                    }
+                    link = $"{url}/issues/$1";
+                    break;
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddGithubIssueTracker(null);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Github ISSUE", "#(\\d+)", link);
         }
 
         public void AddSampleJiraIssueTracker()
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddJiraIssueTracker();
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", "PROJ-(\\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
+        }
+
+        public void AddSampleAzureWorkItemTracker()
+        {
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", "#(\\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
         }
 
         public void AddSampleGitLabIssueTracker()
         {
+            var link = "https://gitlab.com/username/repository/-/issues/$1";
             foreach (var remote in _repo.Remotes)
             {
                 if (remote.TryGetVisitURL(out string url))
                 {
-                    SelectedIssueTrackerRule = _repo.Settings.AddGitLabIssueTracker(url);
-                    return;
+                    link = $"{url}/-/issues/$1";
+                    break;
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddGitLabIssueTracker(null);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab ISSUE", "#(\\d+)", link);
         }
 
         public void AddSampleGitLabMergeRequestTracker()
         {
+            var link = "https://gitlab.com/username/repository/-/merge_requests/$1";
             foreach (var remote in _repo.Remotes)
             {
                 if (remote.TryGetVisitURL(out string url))
                 {
-                    SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(url);
-                    return;
+                    link = $"{url}/-/merge_requests/$1";
+                    break;
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddGitLabMergeRequestTracker(null);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab MR", "!(\\d+)", link);
+        }
+
+        public void AddSampleGiteeIssueTracker()
+        {
+            var link = "https://gitee.com/username/repository/issues/$1";
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
+                    remote.TryGetVisitURL(out string url))
+                {
+                    link = $"{url}/issues/$1";
+                    break;
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee ISSUE", "#([0-9A-Z]{6,10})", link);
+        }
+
+        public void AddSampleGiteePullRequestTracker()
+        {
+            var link = "https://gitee.com/username/repository/pulls/$1";
+            foreach (var remote in _repo.Remotes)
+            {
+                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
+                    remote.TryGetVisitURL(out string url))
+                {
+                    link = $"{url}/pulls/$1";
+                }
+            }
+
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee Pull Request", "!(\\d+)", link);
         }
 
         public void NewIssueTracker()
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddNewIssueTracker();
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("New Issue Tracker", "#(\\d+)", "https://xxx/$1");
         }
 
         public void RemoveSelectedIssueTracker()
@@ -266,6 +299,7 @@ namespace SourceGit.ViewModels
             SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
             SetIfChanged("user.signingkey", GPGUserSigningKey, "");
             SetIfChanged("http.proxy", HttpProxy, "");
+            SetIfChanged("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
         }
 
         private void SetIfChanged(string key, string value, string defValue)

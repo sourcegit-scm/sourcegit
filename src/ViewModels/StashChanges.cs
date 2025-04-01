@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -34,6 +36,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.KeepIndexWhenStash = value;
         }
 
+        public bool AutoRestore
+        {
+            get => _repo.Settings.AutoRestoreAfterStash;
+            set => _repo.Settings.AutoRestoreAfterStash = value;
+        }
+
         public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
         {
             _repo = repo;
@@ -45,35 +53,86 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
-            var jobs = _changes;
-            if (!HasSelectedFiles && !IncludeUntracked)
-            {
-                jobs = new List<Models.Change>();
-                foreach (var job in _changes)
-                {
-                    if (job.WorkTree != Models.ChangeState.Untracked && job.WorkTree != Models.ChangeState.Added)
-                    {
-                        jobs.Add(job);
-                    }
-                }
-            }
-
-            if (jobs.Count == 0)
-                return null;
-
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Stash changes ...";
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Stash(_repo.FullPath).Push(jobs, Message, !HasSelectedFiles && OnlyStaged, KeepIndex);
+                var succ = false;
+
+                if (!HasSelectedFiles)
+                {
+                    if (OnlyStaged)
+                    {
+                        if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
+                        {
+                            succ = new Commands.Stash(_repo.FullPath).PushOnlyStaged(Message, KeepIndex);
+                        }
+                        else
+                        {
+                            var staged = new List<Models.Change>();
+                            foreach (var c in _changes)
+                            {
+                                if (c.Index != Models.ChangeState.None && c.Index != Models.ChangeState.Untracked)
+                                    staged.Add(c);
+                            }
+
+                            succ = StashWithChanges(staged);
+                        }
+                    }
+                    else
+                    {
+                        succ = new Commands.Stash(_repo.FullPath).Push(Message, IncludeUntracked, KeepIndex);
+                    }
+                }
+                else
+                {
+                    succ = StashWithChanges(_changes);
+                }
+
+                if (AutoRestore && succ)
+                    succ = new Commands.Stash(_repo.FullPath).Apply("stash@{0}", true);
+
                 CallUIThread(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
+
                 return succ;
             });
+        }
+
+        private bool StashWithChanges(List<Models.Change> changes)
+        {
+            if (changes.Count == 0)
+                return true;
+
+            var succ = false;
+            if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_WITH_PATHSPECFILE)
+            {
+                var paths = new List<string>();
+                foreach (var c in changes)
+                    paths.Add(c.Path);
+
+                var tmpFile = Path.GetTempFileName();
+                File.WriteAllLines(tmpFile, paths);
+                succ = new Commands.Stash(_repo.FullPath).Push(Message, tmpFile, KeepIndex);
+                File.Delete(tmpFile);
+            }
+            else
+            {
+                for (int i = 0; i < changes.Count; i += 10)
+                {
+                    var count = Math.Min(10, changes.Count - i);
+                    var step = changes.GetRange(i, count);
+                    succ = new Commands.Stash(_repo.FullPath).Push(Message, step, KeepIndex);
+                    if (!succ)
+                        break;
+                }
+            }
+
+            return succ;
         }
 
         private readonly Repository _repo = null;

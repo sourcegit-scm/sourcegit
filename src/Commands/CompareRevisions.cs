@@ -6,7 +6,7 @@ namespace SourceGit.Commands
 {
     public partial class CompareRevisions : Command
     {
-        [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
+        [GeneratedRegex(@"^([MADRC])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
 
         public CompareRevisions(string repo, string start, string end)
@@ -16,6 +16,15 @@ namespace SourceGit.Commands
 
             var based = string.IsNullOrEmpty(start) ? "-R" : start;
             Args = $"diff --name-status {based} {end}";
+        }
+
+        public CompareRevisions(string repo, string start, string end, string path)
+        {
+            WorkingDirectory = repo;
+            Context = repo;
+
+            var based = string.IsNullOrEmpty(start) ? "-R" : start;
+            Args = $"diff --name-status {based} {end} -- \"{path}\"";
         }
 
         public List<Models.Change> Result()

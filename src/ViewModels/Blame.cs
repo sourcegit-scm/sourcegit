@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Avalonia.Threading;
 
@@ -43,11 +44,32 @@ namespace SourceGit.ViewModels
 
         public void NavigateToCommit(string commitSHA)
         {
-            var repo = App.FindOpenedRepository(_repo);
-            repo?.NavigateToCommit(commitSHA);
+            var launcher = App.GetLauncer();
+            if (launcher == null)
+                return;
+
+            foreach (var page in launcher.Pages)
+            {
+                if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
+                {
+                    repo.NavigateToCommit(commitSHA);
+                    break;
+                }
+            }
+        }
+
+        public string GetCommitMessage(string sha)
+        {
+            if (_commitMessages.TryGetValue(sha, out var msg))
+                return msg;
+
+            msg = new Commands.QueryCommitFullMessage(_repo, sha).Result();
+            _commitMessages[sha] = msg;
+            return msg;
         }
 
         private readonly string _repo;
         private Models.BlameData _data = null;
+        private Dictionary<string, string> _commitMessages = new Dictionary<string, string>();
     }
 }

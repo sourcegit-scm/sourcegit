@@ -20,14 +20,14 @@
         </ItemsPanelTemplate>
       </Setter>
     </Style>
-    
+
     <Style Selector="ListBoxItem">
       <Setter Property="Height" Value="24"/>
       <Setter Property="Margin" Value="0"/>
       <Setter Property="Padding" Value="0"/>
     </Style>
   </UserControl.Styles>
-  
+
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:ChangeCollectionAsTree">
       <v:ChangeCollectionContainer ItemsSource="{Binding Rows}"
@@ -39,7 +39,8 @@
             <Grid ColumnDefinitions="16,Auto,Auto,*"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
-                  DoubleTapped="OnRowDoubleTapped">
+                  DoubleTapped="OnRowDoubleTapped"
+                  ToolTip.Tip="{Binding FullPath}">
               <v:ChangeTreeNodeToggleButton Grid.Column="0"
                                             Classes="tree_expander"
                                             Focusable="False"
@@ -71,7 +72,10 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
-            <Grid ColumnDefinitions="Auto,Auto,Auto,*" Background="Transparent" DoubleTapped="OnRowDoubleTapped">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,*"
+                  Background="Transparent"
+                  DoubleTapped="OnRowDoubleTapped"
+                  ToolTip.Tip="{Binding Path}">
               <v:ChangeStatusIcon Grid.Column="0"
                                   Width="14" Height="14"
                                   Margin="4,0,0,0"
@@ -100,7 +104,10 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
-            <Grid ColumnDefinitions="Auto,Auto,*" Background="Transparent" DoubleTapped="OnRowDoubleTapped">
+            <Grid ColumnDefinitions="Auto,Auto,*"
+                  Background="Transparent"
+                  DoubleTapped="OnRowDoubleTapped"
+                  ToolTip.Tip="{Binding Path}">
               <v:ChangeStatusIcon Grid.Column="0"
                                   Width="14" Height="14"
                                   Margin="4,0,0,0"

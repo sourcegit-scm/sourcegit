@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "status -uno --ignore-submodules=dirty --porcelain";
+            Args = "--no-optional-locks status -uno --ignore-submodules=dirty --porcelain";
         }
 
         public int Result()
@@ -16,7 +16,7 @@ namespace SourceGit.Commands
             var rs = ReadToEnd();
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 return lines.Length;
             }
 

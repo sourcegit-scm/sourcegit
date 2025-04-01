@@ -48,9 +48,7 @@ namespace SourceGit.Commands
             if (remotes != null)
             {
                 foreach (var r in remotes)
-                {
-                    new Push(repo, r.Name, name, true).Exec();
-                }
+                    new Push(repo, r.Name, $"refs/tags/{name}", true).Exec();
             }
 
             return true;

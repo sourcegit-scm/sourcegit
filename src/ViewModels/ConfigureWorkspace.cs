@@ -31,13 +31,13 @@ namespace SourceGit.ViewModels
         public ConfigureWorkspace()
         {
             Workspaces = new AvaloniaList<Workspace>();
-            Workspaces.AddRange(Preference.Instance.Workspaces);
+            Workspaces.AddRange(Preferences.Instance.Workspaces);
         }
 
         public void Add()
         {
             var workspace = new Workspace() { Name = $"Unnamed {DateTime.Now:yyyy-MM-dd HH:mm:ss}" };
-            Preference.Instance.Workspaces.Add(workspace);
+            Preferences.Instance.Workspaces.Add(workspace);
             Workspaces.Add(workspace);
             Selected = workspace;
         }
@@ -47,7 +47,7 @@ namespace SourceGit.ViewModels
             if (_selected == null || _selected.IsActive)
                 return;
 
-            Preference.Instance.Workspaces.Remove(_selected);
+            Preferences.Instance.Workspaces.Remove(_selected);
             Workspaces.Remove(_selected);
         }
 

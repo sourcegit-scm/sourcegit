@@ -12,7 +12,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CherryPick}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="Auto,Auto,32,32" ColumnDefinitions="100,*">      
+    <Grid Margin="0,16,0,0" RowDefinitions="Auto,Auto,32,32" ColumnDefinitions="100,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -73,15 +73,15 @@
           </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Border Grid.Column="1" 
-                Background="Transparent" 
+        <Border Grid.Column="1"
+                Background="Transparent"
                 ToolTip.Tip="{DynamicResource Text.CherryPick.Mainline.Tips}">
           <Path Grid.Column="1"
                 Width="14" Height="14"
                 Data="{StaticResource Icons.Info}"/>
         </Border>
       </Grid>
-      
+
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.CherryPick.CommitChanges}"
                 IsChecked="{Binding AutoCommit, Mode=TwoWay}"/>

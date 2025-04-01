@@ -12,7 +12,7 @@ namespace SourceGit.Commands
             Args = includeUntracked ? "add ." : "add -u .";
         }
 
-        public Add(string repo, List<Models.Change> changes)
+        public Add(string repo, List<string> changes)
         {
             WorkingDirectory = repo;
             Context = repo;
@@ -22,10 +22,17 @@ namespace SourceGit.Commands
             foreach (var c in changes)
             {
                 builder.Append(" \"");
-                builder.Append(c.Path);
+                builder.Append(c);
                 builder.Append("\"");
             }
             Args = builder.ToString();
+        }
+
+        public Add(string repo, string pathspecFromFile)
+        {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"add --pathspec-from-file=\"{pathspecFromFile}\"";
         }
     }
 }

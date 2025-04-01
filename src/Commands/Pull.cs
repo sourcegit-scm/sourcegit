@@ -4,21 +4,20 @@ namespace SourceGit.Commands
 {
     public class Pull : Command
     {
-        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, bool prune, Action<string> outputHandler)
+        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags, Action<string> outputHandler)
         {
             _outputHandler = outputHandler;
             WorkingDirectory = repo;
             Context = repo;
             TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-            Args = "pull --verbose --progress --tags ";
+            Args = "pull --verbose --progress ";
 
             if (useRebase)
-                Args += "--rebase ";
+                Args += "--rebase=true ";
+
             if (noTags)
                 Args += "--no-tags ";
-            if (prune)
-                Args += "--prune ";
 
             Args += $"{remote} {branch}";
         }

@@ -120,7 +120,7 @@ namespace SourceGit.Views
                     unset.Header = App.Text("Repository.FilterCommits.Default");
                     unset.Click += (_, ev) =>
                     {
-                        repo.SetBranchFilterMode(node, Models.FilterMode.None);
+                        repo.SetBranchFilterMode(node, Models.FilterMode.None, false, true);
                         ev.Handled = true;
                     };
 
@@ -134,7 +134,7 @@ namespace SourceGit.Views
                 include.IsEnabled = mode != Models.FilterMode.Included;
                 include.Click += (_, ev) =>
                 {
-                    repo.SetBranchFilterMode(node, Models.FilterMode.Included);
+                    repo.SetBranchFilterMode(node, Models.FilterMode.Included, false, true);
                     ev.Handled = true;
                 };
 
@@ -144,7 +144,7 @@ namespace SourceGit.Views
                 exclude.IsEnabled = mode != Models.FilterMode.Excluded;
                 exclude.Click += (_, ev) =>
                 {
-                    repo.SetBranchFilterMode(node, Models.FilterMode.Excluded);
+                    repo.SetBranchFilterMode(node, Models.FilterMode.Excluded, false, true);
                     ev.Handled = true;
                 };
 

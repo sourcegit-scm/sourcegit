@@ -22,7 +22,7 @@
         <RowDefinition Height="32"/>
         <RowDefinition Height="32"/>
       </Grid.RowDefinitions>
-      
+
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -52,15 +52,22 @@
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
                 SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
+                IsTextSearchEnabled="True"
                 IsEnabled="{Binding !HasSpecifiedRemoteBranch}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
               <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding FriendlyName}"/>
+              <TextBlock Text="{Binding Name}"/>
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
+
+        <ComboBox.ItemContainerTheme>
+          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
+          </ControlTheme>
+        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
@@ -77,33 +84,27 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Pull.LocalChanges}"/>
       <WrapPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.DoNothing}"
-                     x:Name="RadioDoNothing"
+        <RadioButton GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     GroupName="LocalChanges"
-                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.StashAndReply}"
-                     x:Name="RadioStashAndReply"
-                     Margin="0,0,8,0"
-                     GroupName="LocalChanges"
-                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
-        <RadioButton Content="{DynamicResource Text.Pull.LocalChanges.Discard}"
-                     x:Name="RadioDiscard"
-                     GroupName="LocalChanges"
-                     IsCheckedChanged="OnLocalChangeActionIsCheckedChanged"/>
+                     Content="{DynamicResource Text.Pull.LocalChanges.StashAndReply}"
+                     IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
+        <RadioButton GroupName="LocalChanges"
+                     Content="{DynamicResource Text.Pull.LocalChanges.Discard}"/>
       </WrapPanel>
-      
+
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.FetchAllBranches}"
                 IsChecked="{Binding FetchAllBranches, Mode=TwoWay}"/>
 
       <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.NoTags}"
-                IsChecked="{Binding NoTags, Mode=TwoWay}"/>
+                IsChecked="{Binding NoTags, Mode=TwoWay}"
+                ToolTip.Tip="--no-tags"/>
 
       <CheckBox Grid.Row="6" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.UseRebase}"
-                IsChecked="{Binding UseRebase, Mode=TwoWay}"/>
+                IsChecked="{Binding UseRebase, Mode=TwoWay}"
+                ToolTip.Tip="--rebase"/>
     </Grid>
   </StackPanel>
 </UserControl>

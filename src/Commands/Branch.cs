@@ -54,21 +54,14 @@
 
         public static bool DeleteRemote(string repo, string remote, string name)
         {
+            bool exists = new Remote(repo).HasBranch(remote, name);
+            if (exists)
+                return new Push(repo, remote, $"refs/heads/{name}", true).Exec();
+
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-
-            bool exists = new Remote(repo).HasBranch(remote, name);
-            if (exists)
-            {
-                cmd.SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
-                cmd.Args = $"push {remote} --delete {name}";
-            }
-            else
-            {
-                cmd.Args = $"branch -D -r {remote}/{name}";
-            }
-
+            cmd.Args = $"branch -D -r {remote}/{name}";
             return cmd.Exec();
         }
     }

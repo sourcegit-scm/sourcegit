@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
             get => _selectedLocalBranch;
             set
             {
-                if (SetProperty(ref _selectedLocalBranch, value))
+                if (SetProperty(ref _selectedLocalBranch, value, true))
                     AutoSelectBranchByRemote();
             }
         }
@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
             get => _selectedRemote;
             set
             {
-                if (SetProperty(ref _selectedRemote, value))
+                if (SetProperty(ref _selectedRemote, value, true))
                     AutoSelectBranchByRemote();
             }
         }
@@ -56,7 +56,7 @@ namespace SourceGit.ViewModels
             get => _selectedRemoteBranch;
             set
             {
-                if (SetProperty(ref _selectedRemoteBranch, value))
+                if (SetProperty(ref _selectedRemoteBranch, value, true))
                     IsSetTrackOptionVisible = value != null && _selectedLocalBranch.Upstream != value.FullName;
             }
         }
@@ -150,6 +150,11 @@ namespace SourceGit.ViewModels
             AutoSelectBranchByRemote();
 
             View = new Views.Push() { DataContext = this };
+        }
+
+        public override bool CanStartDirectly()
+        {
+            return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
         }
 
         public override Task<bool> Sure()
