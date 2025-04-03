@@ -403,85 +403,94 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</x:String>
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Last year</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
-  <x:String x:Key="Text.Preference" xml:space="preserve">設定</x:String>
-  <x:String x:Key="Text.Preference.Advanced" xml:space="preserve">Advanced Options</x:String>
-  <x:String x:Key="Text.Preference.AI" xml:space="preserve">OPEN AI</x:String>
-  <x:String x:Key="Text.Preference.AI.AnalyzeDiffPrompt" xml:space="preserve">差分分析プロンプト</x:String>
-  <x:String x:Key="Text.Preference.AI.ApiKey" xml:space="preserve">APIキー</x:String>
-  <x:String x:Key="Text.Preference.AI.GenerateSubjectPrompt" xml:space="preserve">タイトル生成プロンプト</x:String>
-  <x:String x:Key="Text.Preference.AI.Model" xml:space="preserve">モデル</x:String>
-  <x:String x:Key="Text.Preference.AI.Server" xml:space="preserve">サーバー</x:String>
-  <x:String x:Key="Text.Preference.Appearance" xml:space="preserve">外観</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFont" xml:space="preserve">デフォルトのフォント</x:String>
-  <x:String x:Key="Text.Preference.Appearance.DefaultFontSize" xml:space="preserve">デフォルトのフォントサイズ</x:String>
-  <x:String x:Key="Text.Preference.Appearance.MonospaceFont" xml:space="preserve">等幅フォント</x:String>
-  <x:String x:Key="Text.Preference.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">テキストエディタでは等幅フォントのみを使用する</x:String>
-  <x:String x:Key="Text.Preference.Appearance.Theme" xml:space="preserve">テーマ</x:String>
-  <x:String x:Key="Text.Preference.Appearance.ThemeOverrides" xml:space="preserve">テーマの上書き</x:String>
-  <x:String x:Key="Text.Preference.Appearance.UseFixedTabWidth" xml:space="preserve">タイトルバーの固定タブ幅を使用</x:String>
-  <x:String x:Key="Text.Preference.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge" xml:space="preserve">DIFF/マージ ツール</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
-  <x:String x:Key="Text.Preference.DiffMerge.Type" xml:space="preserve">ツール</x:String>
-  <x:String x:Key="Text.Preference.General" xml:space="preserve">総合</x:String>
-  <x:String x:Key="Text.Preference.General.Check4UpdatesOnStartup" xml:space="preserve">起動時にアップデートを確認</x:String>
-  <x:String x:Key="Text.Preference.General.Locale" xml:space="preserve">言語</x:String>
-  <x:String x:Key="Text.Preference.General.MaxHistoryCommits" xml:space="preserve">コミット履歴</x:String>
-  <x:String x:Key="Text.Preference.General.ShowAuthorTime" xml:space="preserve">グラフにコミット時間の代わりに著者時間を表示する</x:String>
-  <x:String x:Key="Text.Preference.General.SubjectGuideLength" xml:space="preserve">コミットタイトル枠の大きさ</x:String>
-  <x:String x:Key="Text.Preference.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Preference.Git.CRLF" xml:space="preserve">自動CRLFを有効化</x:String>
-  <x:String x:Key="Text.Preference.Git.DefaultCloneDir" xml:space="preserve">デフォルトのクローンディレクトリ</x:String>
-  <x:String x:Key="Text.Preference.Git.Email" xml:space="preserve">ユーザー Eメール</x:String>
-  <x:String x:Key="Text.Preference.Git.Email.Placeholder" xml:space="preserve">グローバルのGitユーザー Eメールアドレス</x:String>
-  <x:String x:Key="Text.Preference.Git.Path" xml:space="preserve">インストール パス</x:String>
-  <x:String x:Key="Text.Preference.Git.User" xml:space="preserve">ユーザー名</x:String>
-  <x:String x:Key="Text.Preference.Git.User.Placeholder" xml:space="preserve">グローバルのGitユーザー名</x:String>
-  <x:String x:Key="Text.Preference.Git.Version" xml:space="preserve">Gitのバージョン</x:String>
-  <x:String x:Key="Text.Preference.Git.Invalid" xml:space="preserve">Git (>= 2.23.0) is required by this app</x:String>
-  <x:String x:Key="Text.Preference.GPG" xml:space="preserve">GPG署名</x:String>
-  <x:String x:Key="Text.Preference.GPG.CommitEnabled" xml:space="preserve">コミットにGPG署名を行う</x:String>
-  <x:String x:Key="Text.Preference.GPG.TagEnabled" xml:space="preserve">タグにGPG署名を行う</x:String>
-  <x:String x:Key="Text.Preference.GPG.Format" xml:space="preserve">GPGフォーマット</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path" xml:space="preserve">プログラムのインストールパス</x:String>
-  <x:String x:Key="Text.Preference.GPG.Path.Placeholder" xml:space="preserve">インストールされたGPGプログラムのパスを入力</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey" xml:space="preserve">ユーザー署名キー</x:String>
-  <x:String x:Key="Text.Preference.GPG.UserKey.Placeholder" xml:space="preserve">ユーザーのGPG署名キー</x:String>
-  <x:String x:Key="Text.Preference.Integration" xml:space="preserve">統合</x:String>
-  <x:String x:Key="Text.Preference.Shell" xml:space="preserve">シェル/ターミナル</x:String>
-  <x:String x:Key="Text.Preference.Shell.Type" xml:space="preserve">シェル/ターミナル</x:String>
-  <x:String x:Key="Text.Preference.Shell.Path" xml:space="preserve">パス</x:String>
-  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">設定</x:String>
+  <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">差分分析プロンプト</x:String>
+  <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">APIキー</x:String>
+  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">タイトル生成プロンプト</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">モデル</x:String>
+  <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名称</x:String>
+  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>
+  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">ストリーミングを有効化</x:String>
+  <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外観</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">デフォルトのフォント</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">エディタのタブ幅</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">フォントサイズ</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">デフォルト</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">エディタ</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">等幅フォント</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">テキストエディタでは等幅フォントのみを使用する</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">テーマ</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">テーマの上書き</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">タイトルバーの固定タブ幅を使用</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">ネイティブウィンドウフレームを使用</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/マージ ツール</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">インストール パス</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">diff/merge ツールのパスを入力</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">ツール</x:String>
+  <x:String x:Key="Text.Preferences.General" xml:space="preserve">総合</x:String>
+  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">起動時にアップデートを確認</x:String>
+  <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">日付のフォーマット</x:String>
+  <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">言語</x:String>
+  <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">コミット履歴</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">グラフにコミット時間の代わりに著者の時間を表示する</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">コミット詳細に子コミットを表示</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">コミットグラフにタグを表示</x:String>
+  <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">コミットタイトル枠の大きさ</x:String>
+  <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自動CRLFを有効化</x:String>
+  <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">デフォルトのクローンディレクトリ</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">ユーザー Eメールアドレス</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">グローバルgitのEメールアドレス</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">フェッチ時に--pruneを有効化</x:String>
+  <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">インストール パス</x:String>
+  <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">HTTP SSL 検証を有効にする</x:String>
+  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">ユーザー名</x:String>
+  <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">グローバルのgitユーザー名</x:String>
+  <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Gitバージョン</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (>= 2.23.0) はこのアプリで必要です</x:String>
+  <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG 署名</x:String>
+  <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">コミットにGPG署名を行う</x:String>
+  <x:String x:Key="Text.Preferences.GPG.TagEnabled" xml:space="preserve">タグにGPG署名を行う</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">GPGフォーマット</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path" xml:space="preserve">プログラムのインストールパス</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path.Placeholder" xml:space="preserve">インストールされたgpgプログラムのパスを入力</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey" xml:space="preserve">ユーザー署名キー</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">ユーザーのGPG署名キー</x:String>
+  <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">統合</x:String>
+  <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">シェル/ターミナル</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">シェル/ターミナル</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">パス</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">リモートを削除</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktrees</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_DIR/worktrees`</x:String>
-  <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">作業ツリーを削除</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">`$GIT_DIR/worktrees` の作業ツリー情報を削除</x:String>
+  <x:String x:Key="Text.Pull" xml:space="preserve">プル</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">すべてのブランチをフェッチ</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">Do Nothing</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.DoNothing" xml:space="preserve">何もしない</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch without tags</x:String>
+  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">タグなしでフェッチ</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージの代わりにリベースを使用</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">プッシュ</x:String>
-  <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Make sure submodules have been pushed</x:String>
+  <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">サブモジュールがプッシュされていることを確認</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">強制的にプッシュ</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">ローカル ブランチ:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">変更をリモートにプッシュ</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">リモート ブランチ:</x:String>
-  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">追跡ブランチとして設定</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">すべてのタグをプッシュ</x:String>
-  <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag To Remote</x:String>
-  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>
-  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag:</x:String>
-  <x:String x:Key="Text.Quit" xml:space="preserve">Quit</x:String>
+  <x:String x:Key="Text.PushTag" xml:space="preserve">リモートにタグをプッシュ</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">すべてのリモートにプッシュ</x:String>
+  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">リモート:</x:String>
+  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">タグ:</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">終了</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Current Branch</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reapply local changes</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">On:</x:String>
