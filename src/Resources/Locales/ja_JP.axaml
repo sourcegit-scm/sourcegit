@@ -153,7 +153,7 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Eメールアドレス</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Eメールアドレス</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">指定した間隔でリモートからフェッチ 間隔:</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">自動的にリモートからフェッチ 間隔:</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">リモートの初期値</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUEトラッカー</x:String>
@@ -249,7 +249,7 @@
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">隠されたシンボルを表示</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">差分の分割表示</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">サブモジュール</x:String>
-  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</x:String>
+  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新規</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">スワップ</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">シンタックスハイライト</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">行の折り返し</x:String>
@@ -581,7 +581,7 @@
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">ブランチを作成</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">通知をクリア</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">グラフで現在のブランチを強調表示</x:String>
-  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Open In {0}</x:String>
+  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0} で開く</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">外部ツールで開く</x:String>
   <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">リモート</x:String>
