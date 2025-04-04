@@ -109,8 +109,24 @@ namespace SourceGit.ViewModels
                     if (_isLoadingData)
                         return;
 
-                    VisibleUnstaged = GetVisibleUnstagedChanges(_unstaged);
+                    VisibleUnstaged = GetVisibleChanges(_unstaged, _unstagedFilter);
                     SelectedUnstaged = [];
+                }
+            }
+        }
+
+        public string StagedFilter
+        {
+            get => _stagedFilter;
+            set
+            {
+                if (SetProperty(ref _stagedFilter, value))
+                {
+                    if (_isLoadingData)
+                        return;
+
+                    VisibleStaged = GetVisibleChanges(_staged, _stagedFilter);
+                    SelectedStaged = [];
                 }
             }
         }
@@ -131,6 +147,12 @@ namespace SourceGit.ViewModels
         {
             get => _staged;
             private set => SetProperty(ref _staged, value);
+        }
+
+        public List<Models.Change> VisibleStaged
+        {
+            get => _visibleStaged;
+            private set => SetProperty(ref _visibleStaged, value);
         }
 
         public List<Models.Change> SelectedUnstaged
@@ -216,6 +238,9 @@ namespace SourceGit.ViewModels
             _visibleUnstaged.Clear();
             OnPropertyChanged(nameof(VisibleUnstaged));
 
+            _visibleStaged.Clear();
+            OnPropertyChanged(nameof(VisibleStaged));
+
             _unstaged.Clear();
             OnPropertyChanged(nameof(Unstaged));
 
@@ -269,7 +294,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var visibleUnstaged = GetVisibleUnstagedChanges(unstaged);
+            var visibleUnstaged = GetVisibleChanges(unstaged, _unstagedFilter);
             var selectedUnstaged = new List<Models.Change>();
             foreach (var c in visibleUnstaged)
             {
@@ -278,8 +303,10 @@ namespace SourceGit.ViewModels
             }
 
             var staged = GetStagedChanges();
+
+            var visibleStaged = GetVisibleChanges(staged, _stagedFilter);
             var selectedStaged = new List<Models.Change>();
-            foreach (var c in staged)
+            foreach (var c in visibleStaged)
             {
                 if (lastSelectedStaged.Contains(c.Path))
                     selectedStaged.Add(c);
@@ -290,6 +317,7 @@ namespace SourceGit.ViewModels
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
+                VisibleStaged = visibleStaged;
                 Unstaged = unstaged;
                 Staged = staged;
                 SelectedUnstaged = selectedUnstaged;
@@ -337,7 +365,7 @@ namespace SourceGit.ViewModels
 
         public void UnstageAll()
         {
-            UnstageChanges(_staged, null);
+            UnstageChanges(_visibleStaged, null);
         }
 
         public void Discard(List<Models.Change> changes)
@@ -349,6 +377,11 @@ namespace SourceGit.ViewModels
         public void ClearUnstagedFilter()
         {
             UnstagedFilter = string.Empty;
+        }
+ 
+        public void ClearStagedFilter()
+        {
+            StagedFilter = string.Empty;
         }
 
         public async void UseTheirs(List<Models.Change> changes)
@@ -1472,16 +1505,16 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private List<Models.Change> GetVisibleUnstagedChanges(List<Models.Change> unstaged)
+        private List<Models.Change> GetVisibleChanges(List<Models.Change> changes, string filter)
         {
-            if (string.IsNullOrEmpty(_unstagedFilter))
-                return unstaged;
+            if (string.IsNullOrEmpty(filter))
+                return changes;
 
             var visible = new List<Models.Change>();
 
-            foreach (var c in unstaged)
+            foreach (var c in changes)
             {
-                if (c.Path.Contains(_unstagedFilter, StringComparison.OrdinalIgnoreCase))
+                if (c.Path.Contains(filter, StringComparison.OrdinalIgnoreCase))
                     visible.Add(c);
             }
 
@@ -1599,7 +1632,8 @@ namespace SourceGit.ViewModels
 
         private async void UnstageChanges(List<Models.Change> changes, Models.Change next)
         {
-            if (changes.Count == 0)
+            var count = changes.Count;
+            if (count == 0)
                 return;
 
             // Use `_selectedStaged` instead of `SelectedStaged` to avoid UI refresh.
@@ -1611,16 +1645,15 @@ namespace SourceGit.ViewModels
             {
                 await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
             }
-            else if (changes.Count == _staged.Count)
+            else if (count == _staged.Count)
             {
                 await Task.Run(() => new Commands.Reset(_repo.FullPath).Exec());
             }
             else
             {
-                for (int i = 0; i < changes.Count; i += 10)
+                for (int i = 0; i < count; i += 10)
                 {
-                    var count = Math.Min(10, changes.Count - i);
-                    var step = changes.GetRange(i, count);
+                    var step = changes.GetRange(i, Math.Min(10, count - i));
                     await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Exec());
                 }
             }
@@ -1647,6 +1680,13 @@ namespace SourceGit.ViewModels
             if (!_repo.CanCreatePopup())
             {
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(_stagedFilter))
+            {
+                // FIXME - make this a proper warning message-box "Staged-area filter will not be applied to commit. Continue?" Yes/No
+                App.RaiseException(_repo.FullPath, "Committing with staged-area filter applied is NOT allowed!");
                 return;
             }
 
@@ -1729,11 +1769,13 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _unstaged = [];
         private List<Models.Change> _visibleUnstaged = [];
         private List<Models.Change> _staged = [];
+        private List<Models.Change> _visibleStaged = [];
         private List<Models.Change> _selectedUnstaged = [];
         private List<Models.Change> _selectedStaged = [];
         private int _count = 0;
         private object _detailContext = null;
         private string _unstagedFilter = string.Empty;
+        private string _stagedFilter = string.Empty;
         private string _commitMessage = string.Empty;
 
         private bool _hasUnsolvedConflicts = false;
