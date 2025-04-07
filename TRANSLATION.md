@@ -26,14 +26,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-99.87%25-yellow)
-
-<details>
-<summary>Missing keys in fr_FR.axaml</summary>
-
-- Text.CopyFullPath
-
-</details>
+### ![fr__FR](https://img.shields.io/badge/fr__FR-%E2%88%9A-brightgreen)
 
 ### ![it__IT](https://img.shields.io/badge/it__IT-99.73%25-yellow)
 
