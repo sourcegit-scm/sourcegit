@@ -5,8 +5,8 @@
                     xmlns:v="using:SourceGit.Views"
                     xmlns:vm="using:SourceGit.ViewModels"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.ConfirmCommitWithoutFiles"
-                    x:DataType="vm:ConfirmCommitWithoutFiles"
+                    x:Class="SourceGit.Views.ConfirmCommit"
+                    x:DataType="vm:ConfirmCommit"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Warn}"
@@ -38,7 +38,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock Text="{DynamicResource Text.WorkingCopy.ConfirmCommitWithoutFiles}"/>
+      <TextBlock Text="{Binding Message}" MaxWidth="400" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->
