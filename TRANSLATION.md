@@ -36,12 +36,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-99.73%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-99.60%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
 - Text.Configure.Git.PreferredMergeMode
+- Text.PruneRemote
 - Text.WorkingCopy.ConfirmCommitWithFilter
 
 </details>
@@ -147,16 +148,33 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.73%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.33%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.BranchCM.CompareWithHead
 - Text.Configure.Git.PreferredMergeMode
+- Text.Launcher.Error
+- Text.Welcome.ScanDefaultCloneDir
 - Text.WorkingCopy.ConfirmCommitWithFilter
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.87%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.WorkingCopy.ConfirmCommitWithFilter
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.87%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.WorkingCopy.ConfirmCommitWithFilter
+
+</details>
