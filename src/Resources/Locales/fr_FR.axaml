@@ -505,6 +505,7 @@
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Chemin</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Élaguer une branche distant</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Cible :</x:String>
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Élaguer les Worktrees</x:String>
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve"> Élaguer les information de worktree dans `$GIT_COMMON_DIR/worktrees`</x:String>

@@ -43,6 +43,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Проверить ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ (HEAD)</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копировать имя ветки</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Изменить действие</x:String>
@@ -409,6 +410,7 @@
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Целевая ветка:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Копировать ссылку</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Открыть в браузере</x:String>
+  <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ОШИБКА</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Влить ветку</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
@@ -706,6 +708,7 @@
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Открыть все репозитории</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Открыть репозиторий</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Открыть терминал</x:String>
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Повторное сканирование репозиториев в каталоге клонирования по умолчанию</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Поиск репозиториев...</x:String>
   <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Сортировка</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Изменения</x:String>
