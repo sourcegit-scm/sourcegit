@@ -99,34 +99,19 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public string UnstagedFilter
+        public string Filter
         {
-            get => _unstagedFilter;
+            get => _filter;
             set
             {
-                if (SetProperty(ref _unstagedFilter, value))
+                if (SetProperty(ref _filter, value))
                 {
                     if (_isLoadingData)
                         return;
 
-                    VisibleUnstaged = GetVisibleChanges(_unstaged, _unstagedFilter);
+                    VisibleUnstaged = GetVisibleChanges(_unstaged);
+                    VisibleStaged = GetVisibleChanges(_staged);
                     SelectedUnstaged = [];
-                }
-            }
-        }
-
-        public string StagedFilter
-        {
-            get => _stagedFilter;
-            set
-            {
-                if (SetProperty(ref _stagedFilter, value))
-                {
-                    if (_isLoadingData)
-                        return;
-
-                    VisibleStaged = GetVisibleChanges(_staged, _stagedFilter);
-                    SelectedStaged = [];
                 }
             }
         }
@@ -294,7 +279,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var visibleUnstaged = GetVisibleChanges(unstaged, _unstagedFilter);
+            var visibleUnstaged = GetVisibleChanges(unstaged);
             var selectedUnstaged = new List<Models.Change>();
             foreach (var c in visibleUnstaged)
             {
@@ -304,7 +289,7 @@ namespace SourceGit.ViewModels
 
             var staged = GetStagedChanges();
 
-            var visibleStaged = GetVisibleChanges(staged, _stagedFilter);
+            var visibleStaged = GetVisibleChanges(staged);
             var selectedStaged = new List<Models.Change>();
             foreach (var c in visibleStaged)
             {
@@ -374,14 +359,9 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new Discard(_repo, changes));
         }
 
-        public void ClearUnstagedFilter()
+        public void ClearFilter()
         {
-            UnstagedFilter = string.Empty;
-        }
- 
-        public void ClearStagedFilter()
-        {
-            StagedFilter = string.Empty;
+            Filter = string.Empty;
         }
 
         public async void UseTheirs(List<Models.Change> changes)
@@ -569,11 +549,6 @@ namespace SourceGit.ViewModels
         public void CommitWithPush()
         {
             DoCommit(false, true, false);
-        }
-
-        public void CommitWithoutFiles(bool autoPush)
-        {
-            DoCommit(false, autoPush, true);
         }
 
         public ContextMenu CreateContextMenuForUnstagedChanges()
@@ -1505,16 +1480,16 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private List<Models.Change> GetVisibleChanges(List<Models.Change> changes, string filter)
+        private List<Models.Change> GetVisibleChanges(List<Models.Change> changes)
         {
-            if (string.IsNullOrEmpty(filter))
+            if (string.IsNullOrEmpty(_filter))
                 return changes;
 
             var visible = new List<Models.Change>();
 
             foreach (var c in changes)
             {
-                if (c.Path.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                if (c.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                     visible.Add(c);
             }
 
@@ -1675,7 +1650,7 @@ namespace SourceGit.ViewModels
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
         }
 
-        private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
+        private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty = false, bool confirmWithFilter = false)
         {
             if (!_repo.CanCreatePopup())
             {
@@ -1683,10 +1658,17 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_stagedFilter))
+            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && !confirmWithFilter)
             {
-                // FIXME - make this a proper warning message-box "Staged-area filter will not be applied to commit. Continue?" Yes/No
-                App.RaiseException(_repo.FullPath, "Committing with staged-area filter applied is NOT allowed!");
+                var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
+                App.OpenDialog(new Views.ConfirmCommit()
+                {
+                    DataContext = new ConfirmCommit(confirmMessage, () =>
+                    {
+                        DoCommit(autoStage, autoPush, allowEmpty, true);
+                    })
+                });
+
                 return;
             }
 
@@ -1700,9 +1682,13 @@ namespace SourceGit.ViewModels
             {
                 if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
                 {
-                    App.OpenDialog(new Views.ConfirmCommitWithoutFiles()
+                    var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithoutFiles");
+                    App.OpenDialog(new Views.ConfirmCommit()
                     {
-                        DataContext = new ConfirmCommitWithoutFiles(this, autoPush)
+                        DataContext = new ConfirmCommit(confirmMessage, () =>
+                        {
+                            DoCommit(autoStage, autoPush, true, confirmWithFilter);
+                        })
                     });
 
                     return;
@@ -1774,8 +1760,7 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _selectedStaged = [];
         private int _count = 0;
         private object _detailContext = null;
-        private string _unstagedFilter = string.Empty;
-        private string _stagedFilter = string.Empty;
+        private string _filter = string.Empty;
         private string _commitMessage = string.Empty;
 
         private bool _hasUnsolvedConflicts = false;

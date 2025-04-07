@@ -19,13 +19,46 @@
     <!-- Left -->
     <Grid Grid.Column="0">
       <Grid.RowDefinitions>
+        <RowDefinition Height="36"/>
         <RowDefinition Height="*" MinHeight="100"/>
         <RowDefinition Height="1"/>
         <RowDefinition Height="*" MinHeight="100"/>
       </Grid.RowDefinitions>
 
+      <!-- Search Filter -->
+      <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+        <TextBox Height="24"
+                 Margin="4,0"
+                 BorderThickness="1"
+                 CornerRadius="12"
+                 Text="{Binding Filter, Mode=TwoWay}"
+                 BorderBrush="{DynamicResource Brush.Border2}"
+                 VerticalContentAlignment="Center">
+          <TextBox.InnerLeftContent>
+            <Path Width="14" Height="14"
+                  Margin="6,0,0,0"
+                  Fill="{DynamicResource Brush.FG2}"
+                  Data="{StaticResource Icons.Search}"/>
+          </TextBox.InnerLeftContent>
+
+          <TextBox.InnerRightContent>
+            <Button Classes="icon_button"
+                    Width="16"
+                    Margin="0,0,6,0"
+                    Command="{Binding ClearFilter}"
+                    IsVisible="{Binding Filter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    HorizontalAlignment="Right">
+              <Path Width="14" Height="14"
+                    Margin="0,1,0,0"
+                    Fill="{DynamicResource Brush.FG1}"
+                    Data="{StaticResource Icons.Clear}"/>
+            </Button>
+          </TextBox.InnerRightContent>
+        </TextBox>
+      </Border>
+
       <!-- Unstaged -->
-      <Grid Grid.Row="0" RowDefinitions="28,36,*">
+      <Grid Grid.Row="1" RowDefinitions="28,*">
         <!-- Unstaged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
@@ -75,40 +108,8 @@
           </Grid>
         </Border>
 
-        <!-- Unstaged Filter -->
-        <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-          <TextBox Height="24"
-                   Margin="4,0"
-                   BorderThickness="1"
-                   CornerRadius="12"
-                   Text="{Binding UnstagedFilter, Mode=TwoWay}"
-                   BorderBrush="{DynamicResource Brush.Border2}"
-                   VerticalContentAlignment="Center">
-            <TextBox.InnerLeftContent>
-              <Path Width="14" Height="14"
-                    Margin="6,0,0,0"
-                    Fill="{DynamicResource Brush.FG2}"
-                    Data="{StaticResource Icons.Search}"/>
-            </TextBox.InnerLeftContent>
-
-            <TextBox.InnerRightContent>
-              <Button Classes="icon_button"
-                      Width="16"
-                      Margin="0,0,6,0"
-                      Command="{Binding ClearUnstagedFilter}"
-                      IsVisible="{Binding UnstagedFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                      HorizontalAlignment="Right">
-                <Path Width="14" Height="14"
-                      Margin="0,1,0,0"
-                      Fill="{DynamicResource Brush.FG1}"
-                      Data="{StaticResource Icons.Clear}"/>
-              </Button>
-            </TextBox.InnerRightContent>
-          </TextBox>
-        </Border>
-
         <!-- Unstaged Changes -->
-        <v:ChangeCollectionView Grid.Row="2"
+        <v:ChangeCollectionView Grid.Row="1"
                                 x:Name="UnstagedChangesView"
                                 Focusable="True"
                                 IsUnstagedChange="True"
@@ -123,13 +124,13 @@
       </Grid>
 
       <!-- Splitter -->
-      <GridSplitter Grid.Row="1"
+      <GridSplitter Grid.Row="2"
                     MinHeight="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="{DynamicResource Brush.Border0}"/>
 
       <!-- Staged -->
-      <Grid Grid.Row="2" RowDefinitions="28,36,*">
+      <Grid Grid.Row="3" RowDefinitions="28,*">
         <!-- Staged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
@@ -155,41 +156,9 @@
                                       ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
-
-        <!-- Staged Filter -->
-        <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-          <TextBox Height="24"
-                   Margin="4,0"
-                   BorderThickness="1"
-                   CornerRadius="12"
-                   Text="{Binding StagedFilter, Mode=TwoWay}"
-                   BorderBrush="{DynamicResource Brush.Border2}"
-                   VerticalContentAlignment="Center">
-            <TextBox.InnerLeftContent>
-              <Path Width="14" Height="14"
-                    Margin="6,0,0,0"
-                    Fill="{DynamicResource Brush.FG2}"
-                    Data="{StaticResource Icons.Search}"/>
-            </TextBox.InnerLeftContent>
-
-            <TextBox.InnerRightContent>
-              <Button Classes="icon_button"
-                      Width="16"
-                      Margin="0,0,6,0"
-                      Command="{Binding ClearStagedFilter}"
-                      IsVisible="{Binding StagedFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                      HorizontalAlignment="Right">
-                <Path Width="14" Height="14"
-                      Margin="0,1,0,0"
-                      Fill="{DynamicResource Brush.FG1}"
-                      Data="{StaticResource Icons.Clear}"/>
-              </Button>
-            </TextBox.InnerRightContent>
-          </TextBox>
-        </Border>
         
         <!-- Staged Changes -->
-        <v:ChangeCollectionView Grid.Row="2"
+        <v:ChangeCollectionView Grid.Row="1"
                                 x:Name="StagedChangesView"
                                 Focusable="True"
                                 IsUnstagedChange="False"
