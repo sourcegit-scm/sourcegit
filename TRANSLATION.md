@@ -38,6 +38,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
+### ![ja__JP](https://img.shields.io/badge/ja__JP-99.73%25-yellow)
+
+<details>
+<summary>Missing keys in ja_JP.axaml</summary>
+
+- Text.Repository.FilterCommits
+- Text.Repository.Tags.OrderByNameDes
+
+</details>
+
 ### ![pt__BR](https://img.shields.io/badge/pt__BR-90.98%25-yellow)
 
 <details>
