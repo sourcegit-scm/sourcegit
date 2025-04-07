@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.65%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.52%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -21,34 +21,51 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.General.ShowTagsInGraph
 - Text.StashCM.SaveAsPatch
+- Text.WorkingCopy.ConfirmCommitWithFilter
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.87%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-99.73%25-yellow)
+- Text.WorkingCopy.ConfirmCommitWithFilter
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-99.87%25-yellow)
+
+<details>
+<summary>Missing keys in fr_FR.axaml</summary>
+
+- Text.WorkingCopy.ConfirmCommitWithFilter
+
+</details>
+
+### ![it__IT](https://img.shields.io/badge/it__IT-99.60%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
 - Text.CopyFullPath
 - Text.Preferences.General.ShowTagsInGraph
+- Text.WorkingCopy.ConfirmCommitWithFilter
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-99.73%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-99.60%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
 - Text.Repository.FilterCommits
 - Text.Repository.Tags.OrderByNameDes
+- Text.WorkingCopy.ConfirmCommitWithFilter
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-90.98%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-90.86%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -119,11 +136,19 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.AutoRestore.Tip
 - Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.ConfirmCommitWithFilter
 - Text.WorkingCopy.SignOff
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.87%25-yellow)
+
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.WorkingCopy.ConfirmCommitWithFilter
+
+</details>
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
