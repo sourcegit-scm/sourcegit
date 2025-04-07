@@ -48,7 +48,7 @@
 
 ## Translation Status
 
-You can find the current translation status in [TRANSLATION.md](TRANSLATION.md)
+You can find the current translation status in [TRANSLATION.md](https://github.com/sourcegit-scm/sourcegit/blob/develop/TRANSLATION.md)
 
 ## How to Use
 
