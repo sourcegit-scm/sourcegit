@@ -156,6 +156,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">首選合併模式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增符合 Azure DevOps 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增符合 Gitee 議題規則</x:String>

@@ -224,6 +224,12 @@ namespace SourceGit.Models
             set;
         } = [];
 
+        public int PreferredMergeMode
+        {
+            get;
+            set;
+        } = 0;
+
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
             var map = new Dictionary<string, FilterMode>();

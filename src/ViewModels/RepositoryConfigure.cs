@@ -36,6 +36,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int PreferredMergeMode
+        {
+            get => _repo.Settings.PreferredMergeMode;
+            set
+            {
+                if (_repo.Settings.PreferredMergeMode != value)
+                {
+                    _repo.Settings.PreferredMergeMode = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool GPGCommitSigningEnabled
         {
             get;
