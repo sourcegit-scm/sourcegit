@@ -725,7 +725,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Запустить событие щелчка</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Зафиксировать (Редактировать)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Подготовить все изменения и зафиксировать</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТЬ НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>

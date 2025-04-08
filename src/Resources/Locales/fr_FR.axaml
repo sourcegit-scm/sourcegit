@@ -726,7 +726,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Modifier)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Indexer tous les changements et commit</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Un commit vide a été détecté ! Voulez-vous continuer (--allow-empty) ?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLITS DÉTECTÉS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LES CONFLITS DE FICHIER SONT RÉSOLUS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLURE LES FICHIERS NON-SUIVIS</x:String>

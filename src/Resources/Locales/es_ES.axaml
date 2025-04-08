@@ -724,7 +724,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Activar evento de clic</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Editar)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stagear todos los cambios y commit</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTOS DETECTADOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LOS CONFLICTOS DE ARCHIVOS ESTÁN RESUELTOS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUIR ARCHIVOS NO RASTREADOS</x:String>

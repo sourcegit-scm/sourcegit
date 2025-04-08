@@ -722,7 +722,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">クリックイベントをトリガー</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">コミット (Edit)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">すべての変更をステージしてコミット</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">空のコミットが検出されました。続行しますか？ (--allow-empty)</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">競合が検出されました</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">ファイルの競合は解決されました</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">追跡されていないファイルを含める</x:String>

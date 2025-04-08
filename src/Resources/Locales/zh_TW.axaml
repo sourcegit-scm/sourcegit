@@ -181,6 +181,9 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Message" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)或者自動暫存全部變更並提交?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">确认继续</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自动暂存并提交</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">產生約定式提交訊息</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壞性變更:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">關閉的 Issue:</x:String>
@@ -725,7 +728,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交 (修改原始提交)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">您已暫存 {0} 檔案，但只顯示 {1} 檔案 ({2} 檔案被篩選器隱藏)。您要繼續嗎？</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>

@@ -1679,12 +1679,11 @@ namespace SourceGit.ViewModels
             {
                 if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
                 {
-                    var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithoutFiles");
-                    App.OpenDialog(new Views.ConfirmCommit()
+                    App.OpenDialog(new Views.ConfirmEmptyCommit()
                     {
-                        DataContext = new ConfirmCommit(confirmMessage, () =>
+                        DataContext = new ConfirmEmptyCommit(_count > 0, stageAll =>
                         {
-                            DoCommit(autoStage, autoPush, true, confirmWithFilter);
+                            DoCommit(stageAll, autoPush, true, confirmWithFilter);
                         })
                     });
 

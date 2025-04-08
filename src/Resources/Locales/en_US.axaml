@@ -177,6 +177,9 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restore tabs on startup</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Message" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty) or stage all then commit?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">CONTINUE</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">STAGE ALL &amp; COMMIT</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commit Helper</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Closed Issue:</x:String>
@@ -721,7 +724,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Edit)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">You have staged {0} file(s) but only {1} file(s) displayed ({2} files are filtered out). Do you want to continue?</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">FILE CONFLICTS ARE RESOLVED</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>

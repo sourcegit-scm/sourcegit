@@ -713,7 +713,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Klick-Ereignis auslösen</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Bearbeitung)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">Leerer Commit erkannt! Fortfahren (--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIKTE ERKANNT</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">DATEI KONFLIKTE GELÖST</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN INKLUDIEREN</x:String>
