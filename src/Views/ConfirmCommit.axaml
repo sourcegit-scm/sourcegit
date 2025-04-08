@@ -38,7 +38,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock Text="{Binding Message}" MaxWidth="400" TextWrapping="Wrap"/>
+      <TextBlock Text="{Binding Message}" MaxWidth="520" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->
