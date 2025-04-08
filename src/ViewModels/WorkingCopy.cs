@@ -1652,6 +1652,9 @@ namespace SourceGit.ViewModels
 
         private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty = false, bool confirmWithFilter = false)
         {
+            if (string.IsNullOrWhiteSpace(_commitMessage))
+                return;
+
             if (!_repo.CanCreatePopup())
             {
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
@@ -1669,12 +1672,6 @@ namespace SourceGit.ViewModels
                     })
                 });
 
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(_commitMessage))
-            {
-                App.RaiseException(_repo.FullPath, "Commit without message is NOT allowed!");
                 return;
             }
 

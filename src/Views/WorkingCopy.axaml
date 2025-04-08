@@ -295,7 +295,9 @@
           </SplitButton.IsEnabled>
           <SplitButton.Flyout>
             <MenuFlyout>
-              <MenuItem Header="{DynamicResource Text.WorkingCopy.CommitToEdit}" Command="{Binding Commit}"/>
+              <MenuItem Header="{DynamicResource Text.WorkingCopy.CommitToEdit}"
+                        Command="{Binding Commit}"
+                        IsEnabled="{Binding CommitMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}"/>
             </MenuFlyout>
           </SplitButton.Flyout>
         </SplitButton>
@@ -309,7 +311,6 @@
                 Command="{Binding Commit}"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
-                IsEnabled="{Binding !IsCommitting}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <ToolTip.Tip>
@@ -324,6 +325,13 @@
               </TextBlock>
             </StackPanel>
           </ToolTip.Tip>
+
+          <Button.IsEnabled>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="IsCommitting" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="CommitMessage" Converter="{x:Static c:StringConverters.IsNotNullOrWhitespace}"/>
+            </MultiBinding>
+          </Button.IsEnabled>
         </Button>
 
         <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
@@ -331,8 +339,14 @@
                 Width="0" Height="0"
                 Background="Transparent"
                 Command="{Binding CommitWithAutoStage}"
-                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}"
-                IsEnabled="{Binding !IsCommitting}"/>
+                HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}">
+          <Button.IsEnabled>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="IsCommitting" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="CommitMessage" Converter="{x:Static c:StringConverters.IsNotNullOrWhitespace}"/>
+            </MultiBinding>
+          </Button.IsEnabled>
+        </Button>
 
         <Button Grid.Column="8"
                 Classes="flat"
@@ -342,10 +356,16 @@
                 Padding="8,0"
                 Command="{Binding CommitWithPush}"
                 HotKey="Alt+Enter"
-                IsEnabled="{Binding !IsCommitting}"
                 ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
+          <Button.IsEnabled>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="IsCommitting" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="CommitMessage" Converter="{x:Static c:StringConverters.IsNotNullOrWhitespace}"/>
+            </MultiBinding>
+          </Button.IsEnabled>
+          
           <Button.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="HasRemotes"/>
