@@ -38,7 +38,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock Text="{DynamicResource Text.ConfirmEmptyCommit.Message}" MaxWidth="520" TextWrapping="Wrap"/>
+      <TextBlock Text="{Binding Message}" MaxWidth="520" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->

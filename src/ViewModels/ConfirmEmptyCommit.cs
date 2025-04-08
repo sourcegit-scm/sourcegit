@@ -10,9 +10,16 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public string Message
+        {
+            get;
+            private set;
+        }
+
         public ConfirmEmptyCommit(bool hasLocalChanges, Action<bool> onSure)
         {
             HasLocalChanges = hasLocalChanges;
+            Message = App.Text(hasLocalChanges ? "ConfirmEmptyCommit.WithLocalChanges" : "ConfirmEmptyCommit.NoLocalChanges");
             _onSure = onSure;
         }
 
