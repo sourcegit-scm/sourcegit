@@ -314,6 +314,12 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public void OpenExternalMergeToolAllConflicts()
+        {
+            // No <file> arg, mergetool runs on all files with merge conflicts!
+            UseExternalMergeTool(null);
+        }
+
         public void OpenAssumeUnchanged()
         {
             App.OpenDialog(new Views.AssumeUnchangedManager()
@@ -448,7 +454,8 @@ namespace SourceGit.ViewModels
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
+            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on on every file with merge conflicts!
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, file));
         }
 
         public void ContinueMerge()
