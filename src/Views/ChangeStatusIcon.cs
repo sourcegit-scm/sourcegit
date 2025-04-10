@@ -93,7 +93,7 @@ namespace SourceGit.Views
             string indicator;
             if (IsUnstagedChange)
             {
-                if (Change.IsConflit)
+                if (Change.IsConflict)
                 {
                     background = Brushes.OrangeRed;
                     indicator = "!";
@@ -139,7 +139,7 @@ namespace SourceGit.Views
                 }
 
                 if (isUnstaged)
-                    ToolTip.SetTip(this, c.IsConflit ? "Conflict" : TIPS[(int)c.WorkTree]);
+                    ToolTip.SetTip(this, c.IsConflict ? "Conflict" : TIPS[(int)c.WorkTree]);
                 else
                     ToolTip.SetTip(this, TIPS[(int)c.Index]);
 

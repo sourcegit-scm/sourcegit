@@ -36,7 +36,7 @@ namespace SourceGit.Models
         public string OriginalPath { get; set; } = "";
         public ChangeDataForAmend DataForAmend { get; set; } = null;
 
-        public bool IsConflit
+        public bool IsConflict
         {
             get
             {
