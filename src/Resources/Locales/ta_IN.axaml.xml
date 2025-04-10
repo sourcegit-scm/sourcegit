@@ -1,222 +1,222 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
-  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
-  <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existing Branch</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Create New Branch</x:String>
-  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Location:</x:String>
-  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
-  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Branch Name:</x:String>
-  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracking remote branch</x:String>
-  <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Assistant</x:String>
-  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERATE</x:String>
-  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLY AS COMMIT MESSAGE</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch File:</x:String>
-  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select .patch file to apply</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignore whitespace changes</x:String>
-  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Apply Patch</x:String>
-  <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
-  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Apply Stash</x:String>
-  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Delete after applying</x:String>
-  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Reinstate the index's changes</x:String>
-  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">Stash:</x:String>
-  <x:String x:Key="Text.Archive" xml:space="preserve">Archive...</x:String>
-  <x:String x:Key="Text.Archive.File" xml:space="preserve">Save Archive To:</x:String>
-  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Select archive file path</x:String>
-  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revision:</x:String>
-  <x:String x:Key="Text.Archive.Title" xml:space="preserve">Archive</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
-  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FILES ASSUME UNCHANGED</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NO FILES ASSUMED AS UNCHANGED</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">REMOVE</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">BINARY FILE NOT SUPPORTED!!!</x:String>
-  <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
-  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
-  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copy Branch Name</x:String>
-  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Custom Action</x:String>
-  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Delete selected {0} branches</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Discard all changes</x:String>
-  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward to ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git ஓட்டம் - Finish ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Merge selected {0} branches into current</x:String>
-  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ into ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ on ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rename ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Set Tracking Branch...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Compare</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Invalid upstream!</x:String>
-  <x:String x:Key="Text.Bytes" xml:space="preserve">Bytes</x:String>
-  <x:String x:Key="Text.Cancel" xml:space="preserve">CANCEL</x:String>
-  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Reset to This Revision</x:String>
-  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Reset to Parent Revision</x:String>
-  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generate commit message</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">CHANGE DISPLAY MODE</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Show as File and Dir List</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Show as Path List</x:String>
-  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Show as Filesystem Tree</x:String>
-  <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
-  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warning: By doing a commit checkout, your Head will be detached</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
-  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Local Changes:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
-  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Append source to commit message</x:String>
-  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
-  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit all changes</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Mainline:</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Usually you cannot cherry-pick a merge because you do not know which side of the merge should be considered the mainline. This option allows cherry-pick to replay the change relative to the specified parent.</x:String>
-  <x:String x:Key="Text.ClearStashes" xml:space="preserve">Clear Stashes</x:String>
-  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">You are trying to clear all stashes. Are you sure to continue?</x:String>
-  <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>
-  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Extra Parameters:</x:String>
-  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Additional arguments to clone repository. Optional.</x:String>
-  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Local Name:</x:String>
-  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Repository name. Optional.</x:String>
-  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Parent Folder:</x:String>
-  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Initialize &amp; update submodules</x:String>
-  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
-  <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
-  <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick Commit</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
-  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
-  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
-  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copy Info</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
-  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Custom Action</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactively Rebase ${0}$ on Here</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge to ${0}$</x:String>
-  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ on Here</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>
-  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reword</x:String>
-  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash into Parent</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Children into Here</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CHANGES</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Search Changes...</x:String>
-  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FILES</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS File</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Search Files...</x:String>
-  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
-  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">CHANGED</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">CHILDREN</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Check refs that contains this commit</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT IS CONTAINED BY</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Shows only the first 100 changes. See all changes on the CHANGES tab.</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">MESSAGE</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARENTS</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Enter commit subject</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Description</x:String>
-  <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Content:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository's path; ${BRANCH} - Selected branch; ${SHA} - Selected commit's SHA</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Executable File:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Scope:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Wait for action exit</x:String>
-  <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
-  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
-  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
-  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
-  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
-  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Add Sample Gitee Issue Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Add Sample Gitee Pull Request Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Add Sample Github Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Add Sample GitLab Issue Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Add Sample GitLab Merge Request Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Add Sample Jira Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Add Sample Azure DevOps Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">New Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Issue Regex Expression:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Rule Name:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Result URL:</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Please use $1, $2 to access regex groups values.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Preferred Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">If the 'Preferred Service' is set, SourceGit will only use it in this repository. Otherwise, if there is more than one service available, a context menu to choose one of them will be shown.</x:String>
-  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
-  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy used by this repository</x:String>
-  <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
-  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
-  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restore tabs on startup</x:String>
-  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commit Helper</x:String>
-  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Closed Issue:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Detail Changes:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Scope:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Short Description:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Type of Change:</x:String>
-  <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
-  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copy All Text</x:String>
-  <x:String x:Key="Text.CopyPath" xml:space="preserve">Copy Path</x:String>
-  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Copy Full Path</x:String>
-  <x:String x:Key="Text.CreateBranch" xml:space="preserve">Create Branch...</x:String>
-  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Based On:</x:String>
-  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Check out the created branch</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Local Changes:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">New Branch Name:</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Spaces will be replaced with dashes.</x:String>
-  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
-  <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag...</x:String>
-  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">New Tag At:</x:String>
-  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG signing</x:String>
-  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Tag Message:</x:String>
-  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Tag Name:</x:String>
-  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Recommended format: v1.0.0-alpha</x:String>
-  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push to all remotes after created</x:String>
-  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Create New Tag</x:String>
-  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Kind:</x:String>
+  <x:String x:Key="Text.About" xml:space="preserve">பற்றி</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">மூலஅறிவிலி பற்றி</x:String>
+  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">திறந்தமூல &amp; கட்டற்ற அறிவிலி இடைமுக வாடிக்கயாளர்</x:String>
+  <x:String x:Key="Text.AddWorktree" xml:space="preserve">பணிமரத்தைச் சேர்</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">என்ன சரிபார்க்க வேண்டும்:</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">ஏற்கனவே உள்ள கிளை</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">புதிய கிளையை உருவாக்கு</x:String>
+  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">இடம்:</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">இந்த பணிமரத்திற்கான பாதை. தொடர்புடைய பாதை ஆதரிக்கப்படுகிறது.</x:String>
+  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">கிளை பெயர்:</x:String>
+  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">விருப்பத்தேர்வு. இயல்புநிலை இலக்கு கோப்புறை பெயர்.</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">கிளை கண்காணி:</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">தொலை கிளையைக் கண்காணித்தல்</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">செநு உதவியாளர்</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">மறு-உருவாக்கு</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">உறுதிமொழி செய்தியை உருவாக்க செநுவைப் பயன்படுத்து</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">உறுதிமொழி செய்தி என இடு</x:String>
+  <x:String x:Key="Text.Apply" xml:space="preserve">ஒட்டு</x:String>
+  <x:String x:Key="Text.Apply.File" xml:space="preserve">ஒட்டு கோப்பு:</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">.ஒட்டு இடுவதற்கு கோப்பைத் தேர்ந்தெடு</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">வெள்ளைவெளி மாற்றங்களைப் புறக்கணி</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">ஒட்டு இடு</x:String>
+  <x:String x:Key="Text.Apply.WS" xml:space="preserve">வெள்ளைவெளி:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">பதுக்கிவைத்ததை இடு</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">பயன்படுத்திய பின் நீக்கு</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">குறியீட்டின் மாற்றங்களை மீண்டும் நிறுவு</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">பதுக்கிவை:</x:String>
+  <x:String x:Key="Text.Archive" xml:space="preserve">காப்பகம்...</x:String>
+  <x:String x:Key="Text.Archive.File" xml:space="preserve">இதற்கு காப்பகத்தை சேமி:</x:String>
+  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">காப்பகக் கோப்பு பாதையைத் தேர்ந்தெடு</x:String>
+  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">திருத்தம்:</x:String>
+  <x:String x:Key="Text.Archive.Title" xml:space="preserve">காப்பகம்</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">மூலஅறிவிலி கடவுகேள்</x:String>
+  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">கோப்புகள் மாற்றப்படவில்லை எனக் கருதப்படுகிறது</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">எந்த கோப்புகளும் மாற்றப்படவில்லை எனக் கருதப்படுகிறது</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">நீக்கு</x:String>
+  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">இருமம் கோப்பு ஆதரிக்கப்படவில்லை!!!</x:String>
+  <x:String x:Key="Text.Blame" xml:space="preserve">குற்றச்சாட்டு</x:String>
+  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">இந்த கோப்பில் குற்றம் சாட்ட ஆதரிக்கப்படவில்லை!!!</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ சரிபார்...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">தலையுடன் ஒப்பிடுக</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
+  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">கிளை பெயரை நகலெடு</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
+  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$ ஐ நீக்கு...</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட {0} கிளைகளை நீக்கு</x:String>
+  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">எல்லா மாற்றங்களையும் நிராகரி</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">${0}$ இதற்கு வேகமாக முன்னோக்கிச் செல்</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$ ஐ ${1}$இல் பெறு...</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">அறிவிலி ஓட்டம் - முடி ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">${0}$ ஐ ${1}$இல் இணை...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட {0} கிளைகளை தற்பொதையதில்  இணை</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">இழு ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">இழு ${0}$ஐ ${1}$-க்குள்...</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">தள்ளு ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">மறுதளம் ${0}$ இதன்மேல் ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">மறுபெயரிடு ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">கண்காணிப்பு கிளையை அமை...</x:String>
+  <x:String x:Key="Text.BranchCompare" xml:space="preserve">கிளை ஒப்பிடு</x:String>
+  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">தவறான மேல்ஓடை!</x:String>
+  <x:String x:Key="Text.Bytes" xml:space="preserve">எண்மங்கள்</x:String>
+  <x:String x:Key="Text.Cancel" xml:space="preserve">விடு</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">இந்த திருத்தத்திற்கு மீட்டமை</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">பெற்றோர் திருத்தத்திற்கு மீட்டமை</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">உறுதிமொழி செய்தி உருவாக்கு</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">காட்சி பயன்முறையை மாற்று</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">கோப்பு மற்றும் கோப்புறை பட்டியலாக காட்டு</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">பாதை பட்டியலாகக் காட்டு</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">கோப்பு முறைமை மரமாகக் காட்டு</x:String>
+  <x:String x:Key="Text.Checkout" xml:space="preserve">கிளை சரிபார்</x:String>
+  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">உறுதிமொழி சரிபார்</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">முன்னறிவிப்பு: ஒரு உறுதிமொழி சரிபார்பதன் மூலம், உங்கள் தலை பிரிக்கப்படும்</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">உறுதிமொழி:</x:String>
+  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">கிளை:</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">கனி பறி</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">உறுதிமொழி செய்திக்கு மூலத்தைச் சேர்</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">உறுதிமொழி(கள்):</x:String>
+  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">அனைத்து மாற்றங்களையும் உறுதிமொழி</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">முதன்மைகோடு:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">பொதுவாக நீங்கள் ஒரு ஒன்றிணையை கனி-பறிக்க முடியாது, ஏனெனில் இணைப்பின் எந்தப் பக்கத்தை முதன்மையாகக் கருத வேண்டும் என்பது உங்களுக்குத் தெரியாது. இந்த விருப்பம் குறிப்பிட்ட பெற்றோருடன் தொடர்புடைய மாற்றத்தை மீண்டும் இயக்க கனி-பறி அனுமதிக்கிறது.</x:String>
+  <x:String x:Key="Text.ClearStashes" xml:space="preserve">பதுக்கிவைத்தையும் அழி</x:String>
+  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">நீங்கள் அனைத்து பதுக்கிவைத்தையும் அழிக்க முயற்சிக்கிறீர்கள் தொடர விரும்புகிறீர்களா?</x:String>
+  <x:String x:Key="Text.Clone" xml:space="preserve">நகலி தொலை களஞ்சியம்</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">கூடுதல் அளவுருக்கள்:</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">நகலி களஞ்சியத்திற்கான கூடுதல் வாதங்கள். விருப்பத்தேர்வு.</x:String>
+  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">உள்ளக பெயர்:</x:String>
+  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">களஞ்சியப் பெயர். விருப்பத்தேர்வு.</x:String>
+  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">பெற்றோர் கோப்புறை:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">துவக்கு &amp; துணை தொகுதிகளைப் புதுப்பி</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">களஞ்சிய முகவரி:</x:String>
+  <x:String x:Key="Text.Close" xml:space="preserve">மூடு</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">திருத்தி</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">கனி-பறி உறுதிமொழி</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">கனி-பறி ...</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">உறுதிமொழி சரிபார்</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">தலையுடன் ஒப்பிடுக</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">தகவலை நகலெடு</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">பாகொவ-வை நகலெடு</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">இங்கே ${0}$ ஐ ஊடாடும் வகையில் மறுதளம்</x:String>
+  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ இதற்கு ஒன்றிணை</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">ஒன்றிணை ...</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">இங்கே ${0}$ ஐ மறுதளம்</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$ ஐ இங்கே மீட்டமை</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">உறுதிமொழி திரும்பபெறு</x:String>
+  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">வேறுமொழி</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">ஒட்டாக சேமி...</x:String>
+  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">பெற்றோர்களில் நொறுக்கு</x:String>
+  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">நொறுக்கு குழந்தைகள் இங்கே சேர்</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">மாற்றங்கள்</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">மாற்றங்களைத் தேடு...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">கோப்புகள்</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">பெகோஅ கோப்பு</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">கோப்புகளைத் தேடு...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">துணைத்தொகுதி</x:String>
+  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">தகவல்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">ஆசிரியர்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">மாற்றப்பட்டது</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">குழந்தைகள்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">உறுதிமொழியாளர்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">இந்த உறுதிமொழிடைக் கொண்ட குறிப்புகளைச் சரிபார்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">உறுதிமொழி இதில் உள்ளது</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">முதல் 100 மாற்றங்களை மட்டும் காட்டுகிறது மாற்றங்கள் தாவலில் அனைத்து மாற்றங்களையும் காண்க.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">செய்தி</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">பெற்றோர்கள்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">குறிகள்</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">பாகொவ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">உலாவியில் திற</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">உறுதிமொழி பொருளை உள்ளிடவும்</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">விளக்கம்</x:String>
+  <x:String x:Key="Text.Configure" xml:space="preserve">களஞ்சியம் உள்ளமை</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">உறுதிமொழி வளர்புரு</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">வார்ப்புரு பெயர்:</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">வார்ப்புரு உள்ளடக்கம்:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">வாதங்கள்:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${களஞ்சிய} - களஞ்சியத்தின் பாதை; ${கிளை} - தேர்ந்தெடுக்கப்பட்ட கிளை; ${பாகொவ} - தேர்ந்தெடுக்கப்பட்ட உறுதிமொழிடியின் பாகொவ</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">இயக்கக்கூடிய கோப்பு:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">பெயர்:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">நோக்கம்:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">கிளை</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">உறுதிமொழி</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">களஞ்சியம்</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">செயல்பாட்டிலிருந்து வெளியேற காத்திரு</x:String>
+  <x:String x:Key="Text.Configure.Email" xml:space="preserve">மின்னஞ்சல் முகவரி</x:String>
+  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">மின்னஞ்சல் முகவரி</x:String>
+  <x:String x:Key="Text.Configure.Git" xml:space="preserve">அறிவிலி</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">தொலைகளை தானாக எடு</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">நிமையங்கள்</x:String>
+  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">இயல்புநிலை தொலை</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">சிக்கல் கண்காணி</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">மாதிரி அறிவிலிஈ சிக்கலுக்கான விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">மாதிரி அறிவிலிஈ இழு கோரிக்கை விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">மாதிரி அறிவிலிமையம் விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">மாதிரி அறிவிலிஆய்வு சிக்கலுக்கான விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">மாதிரி அறிவிலிஆய்வு இணைப்பு கோரிக்கை  விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">மாதிரி சீரா விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">மாதிரி அசூர் வளர்பணிகள் விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">புதிய விதி</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">வழக்கவெளி வெளிப்பாடு வெளியீடு:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">விதியின் பெயர்:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">முடிவு முகவரி:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">வழக்கவெளி குழுக்கள் மதிப்புகளை அணுக $1, $2 ஐப் பயன்படுத்து</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">செநு</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">விருப்பமான சேவை:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">'விருப்பமான சேவை' அமைக்கப்பட்டிருந்தால், மூலஅறிவிலி இந்த களஞ்சியத்தில் மட்டுமே அதைப் பயன்படுத்தும். இல்லையெனில், ஒன்றுக்கு மேற்பட்ட சேவைகள் இருந்தால், அவற்றில் ஒன்றைத் தேர்ந்தெடுப்பதற்கான சூழல் பட்டயல் காண்பிக்கப்படும்.</x:String>
+  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">உஉபநெ பதிலாள்</x:String>
+  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">இந்த களஞ்சியத்தால் பயன்படுத்தப்படும் உஉபநெ பதிலாள்</x:String>
+  <x:String x:Key="Text.Configure.User" xml:space="preserve">பயனர் பெயர்</x:String>
+  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">இந்த களஞ்சியத்திற்கான பயனர் பெயர்</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">பணியிடங்கள்</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">நிறம்</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">தாவல்களை மீட்டமை</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">வழக்கமான உறுதிமொழி உதவியாளர்</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">உடைக்கும் மாற்றம்:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">மூடப்பட்ட வெளியீடு சிக்கல்:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">மாற்ற விவரங்கள்:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">நோக்கம்:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">குறுகிய விளக்கம்:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">மாற்ற வகை:</x:String>
+  <x:String x:Key="Text.Copy" xml:space="preserve">நகல்</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">அனைத்து உரையையும் நகலெடு</x:String>
+  <x:String x:Key="Text.CopyPath" xml:space="preserve">நகல் பாதை</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">முழு பாதையை நகலெடு</x:String>
+  <x:String x:Key="Text.CreateBranch" xml:space="preserve">கிளையை உருவாக்கு...</x:String>
+  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">இதன் அடிப்படையில்:</x:String>
+  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">உருவாக்கப்பட்ட கிளையைப் சரிபார்</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">புதிய கிளை பெயர்:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">கிளை பெயரை உள்ளிடவும்.</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">இடைவெளிகள் கோடுகளால் மாற்றப்படும்.</x:String>
+  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">உள்ளக கிளையை உருவாக்கு</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">குறிச்சொல்லை உருவாக்கு...</x:String>
+  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">இங்கு புதிய குறிச்சொல்:</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">சீபிசீ கையொப்பமிடுதல்</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">குறிச்சொல் செய்தி:</x:String>
+  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">விருப்பத்தேர்வு.</x:String>
+  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">குறிச்சொல் பெயர்:</x:String>
+  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">பரிந்துரைக்கப்பட்ட வடிவம்: ப1.0.0-ஆனா</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">உருவாக்கப்பட்ட பிறகு அனைத்து தொலைகளுக்கும் தள்ளு</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">புதிய குறிசொல் உருவாக்கு</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">வகை:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotated</x:String>
-  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
-  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Hold Ctrl to start directly</x:String>
-  <x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
-  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Delete Branch</x:String>
-  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
-  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">You are about to delete a remote branch!!!</x:String>
-  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Also delete remote branch ${0}$</x:String>
-  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Delete Multiple Branches</x:String>
-  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">You are trying to delete multiple branches at one time. Be sure to double-check before taking action!</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">குறைந்தஎடை</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">நேரடியாகத் தொடங்க  கட்டுப்பாட்டை அழுத்திப் பிடி</x:String>
+  <x:String x:Key="Text.Cut" xml:space="preserve">வெட்டு</x:String>
+  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">கிளையை நீக்கு</x:String>
+  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">கிளை:</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">நீங்கள் ஒரு தொலை கிளையை நீக்கப் போகிறீர்கள்!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">தொலை ${0}$ கிளையையும் நீக்கு</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">பல கிளைகளை நீக்கு</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">நீங்கள் ஒரே நேரத்தில் பல கிளைகளை நீக்க முயற்சிக்கிறீர்கள் நடவடிக்கை எடுப்பதற்கு முன் மீண்டும் சரிபார்!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">தொலையை நீக்கு</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">பாதை:</x:String>
