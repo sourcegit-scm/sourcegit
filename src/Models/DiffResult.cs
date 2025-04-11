@@ -656,6 +656,7 @@ namespace SourceGit.Models
 
     public class NoOrEOLChange
     {
+        // The empty class is kept for backward compatibility
     }
 
     public class FileModeDiff

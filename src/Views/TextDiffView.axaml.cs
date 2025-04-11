@@ -745,6 +745,7 @@ namespace SourceGit.Views
                 var val = ShowHiddenSymbols;
                 Options.ShowTabs = val;
                 Options.ShowSpaces = val;
+                Options.ShowEndOfLine = val;
             }
             else if (change.Property == TabWidthProperty)
             {
