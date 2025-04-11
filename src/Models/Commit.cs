@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using Avalonia;
 using Avalonia.Media;
@@ -13,8 +15,15 @@ namespace SourceGit.Models
         ByFile,
     }
 
-    public class Commit
+    public class Commit : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public static double OpacityForNotMerged
         {
             get;
@@ -45,8 +54,34 @@ namespace SourceGit.Models
         public Thickness Margin { get; set; } = new Thickness(0);
         public IBrush Brush => CommitGraph.Pens[Color].Brush;
 
-        public int AddedLines { get; set; } = 0;
-        public int RemovedLines { get; set; } = 0;
+        private int _addedLines = 0;
+        private int _removedLines = 0;
+
+        public int AddedLines 
+        { 
+            get => _addedLines;
+            set
+            {
+                if (_addedLines != value)
+                {
+                    _addedLines = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
+        public int RemovedLines 
+        { 
+            get => _removedLines;
+            set
+            {
+                if (_removedLines != value)
+                {
+                    _removedLines = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public void ParseDecorators(string data)
         {

@@ -8,38 +8,38 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"show --numstat --oneline {sha}";
+            // Use shortstat for faster results, which is enough for our needs
+            Args = $"show --shortstat --oneline {sha}";
+            _pattern = new Regex(@"(\d+) files? changed(?:, (\d+) insertions?\(\+\))?(?:, (\d+) deletions?\(-\))?");
         }
 
         public (int, int) Result()
         {
             _addedLines = 0;
             _removedLines = 0;
-            _firstLine = true;
             Exec();
             return (_addedLines, _removedLines);
         }
 
         protected override void OnReadline(string line)
         {
-            if (_firstLine) {
-                _firstLine = false;
-                return;
-            }
-
-            var parts = Regex.Split(line, @"\s+");
-
-            if (parts.Length >= 2)
+            var match = _pattern.Match(line);
+            if (match.Success)
             {
-                bool canParseAdded = int.TryParse(parts[0], out int addedLines);
-                bool canParseRemoved = int.TryParse(parts[1], out int removedLines);
-                if (canParseAdded) _addedLines += addedLines;
-                if (canParseRemoved) _removedLines += removedLines;
+                if (match.Groups[2].Success)
+                {
+                    _addedLines = int.Parse(match.Groups[2].Value);
+                }
+                
+                if (match.Groups[3].Success)
+                {
+                    _removedLines = int.Parse(match.Groups[3].Value);
+                }
             }
         }
 
+        private readonly Regex _pattern;
         private int _addedLines;
         private int _removedLines;
-        private bool _firstLine;
     }
 }

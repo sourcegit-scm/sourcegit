@@ -581,7 +581,7 @@ namespace SourceGit.ViewModels
 
             menu.Items.Add(resetToThisRevision);
             menu.Items.Add(resetToFirstParent);
-            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(new MenuItem { Header = "-" });
 
             if (File.Exists(Path.Combine(fullPath)))
                 TryToAddContextMenuItemsForGitLFS(menu, file.Path);
@@ -629,19 +629,39 @@ namespace SourceGit.ViewModels
             if (_commit == null)
                 return;
 
+            // Load line count data immediately with higher priority
+            var sha = _commit.SHA;
+            
+            // Check if we already have the line count data cached
+            if (_lineCountCache.TryGetValue(sha, out var lineCount))
+            {
+                // Update immediately in the UI thread
+                _commit.AddedLines = lineCount.added;
+                _commit.RemovedLines = lineCount.removed;
+            }
+            else
+            {
+                // Start loading line count data with high priority
+                Task.Run(() =>
+                {
+                    (var addedLines, var removedLines) = new Commands.QueryCommitChangedLines(_repo.FullPath, sha).Result();
+                    _lineCountCache[sha] = (addedLines, removedLines);
+                    
+                    Dispatcher.UIThread.Invoke(() => {
+                        if (_commit != null && _commit.SHA == sha)
+                        {
+                            _commit.AddedLines = addedLines;
+                            _commit.RemovedLines = removedLines;
+                        }
+                    });
+                });
+            }
+
+            // Continue with other loading tasks...
             Task.Run(() =>
             {
                 var fullMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
                 Dispatcher.UIThread.Invoke(() => FullMessage = fullMessage);
-            });
-
-            Task.Run(() =>
-            {
-                (var addedLines, var removedLines) = new Commands.QueryCommitChangedLines(_repo.FullPath, _commit.SHA).Result();
-                Dispatcher.UIThread.Invoke(() => {
-                    _commit.AddedLines = addedLines;
-                    _commit.RemovedLines = removedLines;
-                });
             });
 
             Task.Run(() =>
@@ -690,6 +710,25 @@ namespace SourceGit.ViewModels
                         Changes = changes;
                         VisibleChanges = visible;
                     });
+                }
+            });
+        }
+
+        // Add a method to preload line count data for visible commits
+        public void PreloadLineCountData(List<string> commitSHAs)
+        {
+            if (commitSHAs == null || commitSHAs.Count == 0)
+                return;
+                
+            Task.Run(() =>
+            {
+                foreach (var sha in commitSHAs)
+                {
+                    if (!_lineCountCache.ContainsKey(sha))
+                    {
+                        var (addedLines, removedLines) = new Commands.QueryCommitChangedLines(_repo.FullPath, sha).Result();
+                        _lineCountCache[sha] = (addedLines, removedLines);
+                    }
                 }
             });
         }
@@ -841,5 +880,6 @@ namespace SourceGit.ViewModels
         private List<string> _revisionFiles = [];
         private string _revisionFileSearchFilter = string.Empty;
         private bool _isRevisionFileSearchSuggestionOpen = false;
+        private Dictionary<string, (int added, int removed)> _lineCountCache = new Dictionary<string, (int added, int removed)>();
     }
 }
