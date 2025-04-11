@@ -66,15 +66,12 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
 
-            // When the DataContext changes, we need to re-evaluate any bindings
-            // This ensures that when the Commit property changes, the UI is updated
             if (DataContext is ViewModels.CommitDetail detail)
             {
                 detail.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(detail.Commit))
                     {
-                        // Force UI update for the commit lines
                         InvalidateVisual();
                     }
                 };

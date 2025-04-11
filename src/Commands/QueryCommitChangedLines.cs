@@ -8,7 +8,6 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            // Use shortstat for faster results, which is enough for our needs
             Args = $"show --shortstat --oneline {sha}";
             _pattern = new Regex(@"(\d+) files? changed(?:, (\d+) insertions?\(\+\))?(?:, (\d+) deletions?\(-\))?");
         }
