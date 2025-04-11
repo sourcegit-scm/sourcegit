@@ -369,7 +369,7 @@ namespace SourceGit.Models
                     builder.Append(' ');
                 }
 
-                builder.Append("--exclude=HEA[D] --branches ");
+                builder.Append("--exclude=HEAD --branches ");
 
                 foreach (var r in excludedRemotes)
                 {
@@ -377,7 +377,7 @@ namespace SourceGit.Models
                     builder.Append(' ');
                 }
 
-                builder.Append("--exclude=origin/HEA[D] --remotes ");
+                builder.Append("--exclude=origin/HEAD --remotes ");
 
                 foreach (var t in excludedTags)
                 {
