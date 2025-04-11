@@ -614,7 +614,8 @@ namespace SourceGit.ViewModels
                 });
             }
 
-            if (_cancellationSource is { IsCancellationRequested: false }) _cancellationSource.Cancel();
+            if (_cancellationSource is { IsCancellationRequested: false })
+                _cancellationSource.Cancel();
 
             _cancellationSource = new CancellationTokenSource();
             var token = _cancellationSource.Token;
