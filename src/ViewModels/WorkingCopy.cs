@@ -243,7 +243,7 @@ namespace SourceGit.ViewModels
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflit) != null;
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflict) != null;
 
                     UpdateDetail();
                     UpdateInProgressState();
@@ -275,7 +275,7 @@ namespace SourceGit.ViewModels
                 if (c.WorkTree != Models.ChangeState.None)
                 {
                     unstaged.Add(c);
-                    hasConflict |= c.IsConflit;
+                    hasConflict |= c.IsConflict;
                 }
             }
 
@@ -312,6 +312,12 @@ namespace SourceGit.ViewModels
                 UpdateDetail();
                 UpdateInProgressState();
             });
+        }
+
+        public void OpenExternalMergeToolAllConflicts()
+        {
+            // No <file> arg, mergetool runs on all files with merge conflicts!
+            UseExternalMergeTool(null);
         }
 
         public void OpenAssumeUnchanged()
@@ -373,7 +379,7 @@ namespace SourceGit.ViewModels
 
             foreach (var change in changes)
             {
-                if (!change.IsConflit)
+                if (!change.IsConflict)
                     continue;
 
                 if (change.WorkTree == Models.ChangeState.Deleted)
@@ -413,7 +419,7 @@ namespace SourceGit.ViewModels
 
             foreach (var change in changes)
             {
-                if (!change.IsConflit)
+                if (!change.IsConflict)
                     continue;
 
                 if (change.Index == Models.ChangeState.Deleted)
@@ -448,7 +454,8 @@ namespace SourceGit.ViewModels
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, change.Path));
+            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on on every file with merge conflicts!
+            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, file));
         }
 
         public void ContinueMerge()
@@ -585,7 +592,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(openWith);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                if (change.IsConflit)
+                if (change.IsConflict)
                 {
                     var useTheirs = new MenuItem();
                     useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
@@ -924,20 +931,20 @@ namespace SourceGit.ViewModels
             else
             {
                 var hasConflicts = false;
-                var hasNoneConflicts = false;
+                var hasNonConflicts = false;
                 foreach (var change in _selectedUnstaged)
                 {
-                    if (change.IsConflit)
+                    if (change.IsConflict)
                         hasConflicts = true;
                     else
-                        hasNoneConflicts = true;
+                        hasNonConflicts = true;
                 }
 
                 if (hasConflicts)
                 {
-                    if (hasNoneConflicts)
+                    if (hasNonConflicts)
                     {
-                        App.RaiseException(_repo.FullPath, "You have selected both non-conflict changes with conflicts!");
+                        App.RaiseException(_repo.FullPath, "Selection contains both conflict and non-conflict changes!");
                         return null;
                     }
 
@@ -1644,7 +1651,7 @@ namespace SourceGit.ViewModels
 
             if (change == null)
                 DetailContext = null;
-            else if (change.IsConflit && isUnstaged)
+            else if (change.IsConflict && isUnstaged)
                 DetailContext = new Conflict(_repo, this, change);
             else
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);

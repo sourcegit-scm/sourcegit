@@ -105,9 +105,9 @@
         </Border>
 
         <StackPanel Margin="0,8,0,0"  Orientation="Horizontal" HorizontalAlignment="Center">
-          <Button Classes="flat" Content="USE THEIRS" Command="{Binding UseTheirs}"/>
-          <Button Classes="flat" Margin="8,0,0,0" Content="USE MINE" Command="{Binding UseMine}"/>
-          <Button Classes="flat" Margin="8,0,0,0" Content="OPEN EXTERNAL MERGETOOL" Command="{Binding OpenExternalMergeTool}"/>
+          <Button Classes="flat" Margin="0,0,0,0" Content="{DynamicResource Text.WorkingCopy.Conflicts.UseTheirs}" Command="{Binding UseTheirs}"/>
+          <Button Classes="flat" Margin="8,0,0,0" Content="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" Command="{Binding UseMine}"/>
+          <Button Classes="flat" Margin="8,0,0,0" Content="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" Command="{Binding OpenExternalMergeTool}"/>
         </StackPanel>
       </StackPanel>
 
