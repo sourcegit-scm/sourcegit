@@ -181,10 +181,10 @@
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作区</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">颜色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">启动时恢复打开的仓库</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)或是自动暂存所有变更并提交？</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)？</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">确认继续</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)？</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自动暂存并提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)或是自动暂存所有变更并提交？</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">规范化提交信息生成</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破坏性更新：</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">关闭的ISSUE：</x:String>
