@@ -15,10 +15,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.WaitForExit
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleAzure
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.Diff.First
 - Text.Diff.Last
@@ -40,10 +40,10 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.WorkingCopy.ConfirmCommitWithFilter
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
@@ -58,10 +58,10 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in fr_FR.axaml</summary>
 
 - Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.WorkingCopy.ConfirmCommitWithFilter
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
@@ -76,10 +76,10 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in it_IT.axaml</summary>
 
 - Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.Preferences.General.ShowTagsInGraph
 - Text.WorkingCopy.ConfirmCommitWithFilter
@@ -96,10 +96,10 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in ja_JP.axaml</summary>
 
 - Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.Repository.FilterCommits
 - Text.Repository.Tags.OrderByNameDes
 - Text.WorkingCopy.ConfirmCommitWithFilter
@@ -134,10 +134,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
@@ -201,11 +201,29 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-98.67%25-yellow)
+
+<details>
+<summary>Missing keys in ta_IN.axaml</summary>
+
+- Text.Configure.Git.PreferredMergeMode
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.UpdateSubmodules.Target
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
