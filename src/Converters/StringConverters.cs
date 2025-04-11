@@ -78,5 +78,11 @@ namespace SourceGit.Converters
                     return v.Substring(13);
                 return v;
             });
+
+        public static readonly FuncValueConverter<string, bool> ContainsSpaces =
+            new FuncValueConverter<string, bool>(v => v != null && v.Contains(' '));
+
+        public static readonly FuncValueConverter<string, bool> IsNotNullOrWhitespace =
+            new FuncValueConverter<string, bool>(v => v != null && v.Trim().Length > 0);
     }
 }

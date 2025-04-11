@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
@@ -13,27 +11,15 @@ using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
-    public partial class CommitMessagePresenter : SelectableTextBlock
+    public class CommitMessagePresenter : SelectableTextBlock
     {
-        [GeneratedRegex(@"\b([0-9a-fA-F]{10,40})\b")]
-        private static partial Regex REG_SHA_FORMAT();
+        public static readonly StyledProperty<Models.CommitFullMessage> FullMessageProperty =
+            AvaloniaProperty.Register<CommitMessagePresenter, Models.CommitFullMessage>(nameof(FullMessage));
 
-        public static readonly StyledProperty<string> MessageProperty =
-            AvaloniaProperty.Register<CommitMessagePresenter, string>(nameof(Message));
-
-        public string Message
+        public Models.CommitFullMessage FullMessage
         {
-            get => GetValue(MessageProperty);
-            set => SetValue(MessageProperty, value);
-        }
-
-        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
-            AvaloniaProperty.Register<CommitMessagePresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
-
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
-        {
-            get => GetValue(IssueTrackerRulesProperty);
-            set => SetValue(IssueTrackerRulesProperty, value);
+            get => GetValue(FullMessageProperty);
+            set => SetValue(FullMessageProperty, value);
         }
 
         protected override Type StyleKeyOverride => typeof(SelectableTextBlock);
@@ -42,69 +28,36 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == MessageProperty || change.Property == IssueTrackerRulesProperty)
+            if (change.Property == FullMessageProperty)
             {
                 Inlines!.Clear();
                 _inlineCommits.Clear();
-                _matches = null;
                 _lastHover = null;
                 ClearHoveredIssueLink();
 
-                var message = Message;
+                var message = FullMessage?.Message;
                 if (string.IsNullOrEmpty(message))
                     return;
 
-                var matches = new List<Models.Hyperlink>();
-                if (IssueTrackerRules is { Count: > 0 } rules)
-                {
-                    foreach (var rule in rules)
-                        rule.Matches(matches, message);
-                }
-
-                var shas = REG_SHA_FORMAT().Matches(message);
-                for (int i = 0; i < shas.Count; i++)
-                {
-                    var sha = shas[i];
-                    if (!sha.Success)
-                        continue;
-
-                    var start = sha.Index;
-                    var len = sha.Length;
-                    var intersect = false;
-                    foreach (var match in matches)
-                    {
-                        if (match.Intersect(start, len))
-                        {
-                            intersect = true;
-                            break;
-                        }
-                    }
-
-                    if (!intersect)
-                        matches.Add(new Models.Hyperlink(start, len, sha.Groups[1].Value, true));
-                }
-
-                if (matches.Count == 0)
+                var links = FullMessage?.Links;
+                if (links == null || links.Count == 0)
                 {
                     Inlines.Add(new Run(message));
                     return;
                 }
 
-                matches.Sort((l, r) => l.Start - r.Start);
-                _matches = matches;
-
                 var inlines = new List<Inline>();
                 var pos = 0;
-                foreach (var match in matches)
+                foreach (var link in links)
                 {
-                    if (match.Start > pos)
-                        inlines.Add(new Run(message.Substring(pos, match.Start - pos)));
+                    if (link.Start > pos)
+                        inlines.Add(new Run(message.Substring(pos, link.Start - pos)));
 
-                    var link = new Run(message.Substring(match.Start, match.Length));
-                    link.Classes.Add(match.IsCommitSHA ? "commit_link" : "issue_link");
-                    inlines.Add(link);
+                    var run = new Run(message.Substring(link.Start, link.Length));
+                    run.Classes.Add(link.IsCommitSHA ? "commit_link" : "issue_link");
+                    inlines.Add(run);
 
-                    pos = match.Start + match.Length;
+                    pos = link.Start + link.Length;
                 }
 
                 if (pos < message.Length)
@@ -134,7 +87,7 @@ namespace SourceGit.Views
                         scrollViewer.LineDown();
                 }
             }
-            else if (_matches != null)
+            else if (FullMessage is { Links: { Count: > 0 } links })
             {
                 var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
                 var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
@@ -142,25 +95,25 @@ namespace SourceGit.Views
                 point = new Point(x, y);
 
                 var pos = TextLayout.HitTestPoint(point).TextPosition;
-                foreach (var match in _matches)
+                foreach (var link in links)
                 {
-                    if (!match.Intersect(pos, 1))
+                    if (!link.Intersect(pos, 1))
                         continue;
 
-                    if (match == _lastHover)
+                    if (link == _lastHover)
                         return;
 
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
 
-                    _lastHover = match;
-                    if (!match.IsCommitSHA)
+                    _lastHover = link;
+                    if (!link.IsCommitSHA)
                     {
-                        ToolTip.SetTip(this, match.Link);
+                        ToolTip.SetTip(this, link.Link);
                         ToolTip.SetIsOpen(this, true);
                     }
                     else
                     {
-                        ProcessHoverCommitLink(match);
+                        ProcessHoverCommitLink(link);
                     }
 
                     return;
@@ -172,8 +125,11 @@ namespace SourceGit.Views
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            var point = e.GetCurrentPoint(this);
+
             if (_lastHover != null)
             {
+                var link = _lastHover.Link;
                 e.Pointer.Capture(null);
 
                 if (_lastHover.IsCommitSHA)
@@ -181,9 +137,6 @@ namespace SourceGit.Views
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
                     {
-                        var point = e.GetCurrentPoint(this);
-                        var link = _lastHover.Link;
-
                         if (point.Properties.IsLeftButtonPressed)
                         {
                             detail.NavigateTo(_lastHover.Link);
@@ -217,9 +170,6 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    var point = e.GetCurrentPoint(this);
-                    var link = _lastHover.Link;
-
                     if (point.Properties.IsLeftButtonPressed)
                     {
                         Native.OS.OpenBrowser(link);
@@ -251,6 +201,49 @@ namespace SourceGit.Views
                     }
                 }
 
+                e.Handled = true;
+                return;
+            }
+
+            if (point.Properties.IsLeftButtonPressed && e.ClickCount == 3)
+            {
+                var text = Inlines?.Text;
+                if (string.IsNullOrEmpty(text))
+                {
+                    e.Handled = true;
+                    return;
+                }
+
+                var position = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
+                var x = Math.Min(Math.Max(position.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
+                var y = Math.Min(Math.Max(position.Y, 0), Math.Max(TextLayout.Height, 0));
+                position = new Point(x, y);
+
+                var textPos = TextLayout.HitTestPoint(position).TextPosition;
+                var lineStart = 0;
+                var lineEnd = text.IndexOf('\n', lineStart);
+                if (lineEnd <= 0)
+                {
+                    lineEnd = text.Length;
+                }
+                else
+                {
+                    while (lineEnd < textPos)
+                    {
+                        lineStart = lineEnd + 1;
+                        lineEnd = text.IndexOf('\n', lineStart);
+                        if (lineEnd == -1)
+                        {
+                            lineEnd = text.Length;
+                            break;
+                        }
+                    }
+                }
+
+                SetCurrentValue(SelectionStartProperty, lineStart);
+                SetCurrentValue(SelectionEndProperty, lineEnd);
+
+                e.Pointer.Capture(this);
                 e.Handled = true;
                 return;
             }
@@ -321,7 +314,6 @@ namespace SourceGit.Views
             }
         }
 
-        private List<Models.Hyperlink> _matches = null;
         private Models.Hyperlink _lastHover = null;
         private Dictionary<string, Models.Commit> _inlineCommits = new();
     }

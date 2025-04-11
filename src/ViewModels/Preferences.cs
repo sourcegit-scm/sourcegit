@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Avalonia.Collections;
@@ -9,10 +8,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Preference : ObservableObject
+    public class Preferences : ObservableObject
     {
         [JsonIgnore]
-        public static Preference Instance
+        public static Preferences Instance
         {
             get
             {
@@ -66,9 +65,8 @@ namespace SourceGit.ViewModels
             get => _defaultFontFamily;
             set
             {
-                var name = FixFontFamilyName(value);
-                if (SetProperty(ref _defaultFontFamily, name) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
+                    App.SetFonts(value, _monospaceFontFamily, _onlyUseMonoFontInEditor);
             }
         }
 
@@ -77,9 +75,8 @@ namespace SourceGit.ViewModels
             get => _monospaceFontFamily;
             set
             {
-                var name = FixFontFamilyName(value);
-                if (SetProperty(ref _monospaceFontFamily, name) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
+                    App.SetFonts(_defaultFontFamily, value, _onlyUseMonoFontInEditor);
             }
         }
 
@@ -109,6 +106,12 @@ namespace SourceGit.ViewModels
         {
             get => _editorFontSize;
             set => SetProperty(ref _editorFontSize, value);
+        }
+
+        public int EditorTabWidth
+        {
+            get => _editorTabWidth;
+            set => SetProperty(ref _editorTabWidth, value);
         }
 
         public LayoutInfo Layout
@@ -178,6 +181,12 @@ namespace SourceGit.ViewModels
         {
             get => _showTagsAsTree;
             set => SetProperty(ref _showTagsAsTree, value);
+        }
+
+        public bool ShowTagsInGraph
+        {
+            get => _showTagsInGraph;
+            set => SetProperty(ref _showTagsInGraph, value);
         }
 
         public bool UseTwoColumnsLayoutInHistories
@@ -336,6 +345,12 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public AvaloniaList<Models.CustomAction> CustomActions
+        {
+            get;
+            set;
+        } = [];
+
         public AvaloniaList<Models.OpenAIService> OpenAIServices
         {
             get;
@@ -479,23 +494,23 @@ namespace SourceGit.ViewModels
                 return;
 
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
-            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preference);
+            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
             File.WriteAllText(file, data);
         }
 
-        private static Preference Load()
+        private static Preferences Load()
         {
             var path = Path.Combine(Native.OS.DataDir, "preference.json");
             if (!File.Exists(path))
-                return new Preference();
+                return new Preferences();
 
             try
             {
-                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preference);
+                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preferences);
             }
             catch
             {
-                return new Preference();
+                return new Preferences();
             }
         }
 
@@ -608,36 +623,7 @@ namespace SourceGit.ViewModels
             return changed;
         }
 
-        private string FixFontFamilyName(string name)
-        {
-            var trimmed = name.Trim();
-            if (string.IsNullOrEmpty(trimmed))
-                return string.Empty;
-
-            var builder = new StringBuilder();
-            var lastIsSpace = false;
-            for (int i = 0; i < trimmed.Length; i++)
-            {
-                var c = trimmed[i];
-                if (char.IsWhiteSpace(c))
-                {
-                    if (lastIsSpace)
-                        continue;
-
-                    lastIsSpace = true;
-                }
-                else
-                {
-                    lastIsSpace = false;
-                }
-
-                builder.Append(c);
-            }
-
-            return builder.ToString();
-        }
-
-        private static Preference _instance = null;
+        private static Preferences _instance = null;
         private static bool _isLoading = false;
 
         private string _locale = "en_US";
@@ -649,6 +635,7 @@ namespace SourceGit.ViewModels
         private bool _useSystemWindowFrame = false;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
+        private int _editorTabWidth = 4;
         private LayoutInfo _layout = new LayoutInfo();
 
         private int _maxHistoryCommits = 20000;
@@ -662,6 +649,7 @@ namespace SourceGit.ViewModels
         private string _ignoreUpdateTag = string.Empty;
 
         private bool _showTagsAsTree = false;
+        private bool _showTagsInGraph = true;
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;

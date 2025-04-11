@@ -43,13 +43,14 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                bool succ = true;
+                var succ = true;
+                var tag = $"refs/tags/{Target.Name}";
                 if (_pushAllRemotes)
                 {
                     foreach (var remote in _repo.Remotes)
                     {
                         SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
-                        succ = new Commands.Push(_repo.FullPath, remote.Name, Target.Name, false).Exec();
+                        succ = new Commands.Push(_repo.FullPath, remote.Name, tag, false).Exec();
                         if (!succ)
                             break;
                     }
@@ -57,7 +58,7 @@ namespace SourceGit.ViewModels
                 else
                 {
                     SetProgressDescription($"Pushing tag to remote {SelectedRemote.Name} ...");
-                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, Target.Name, false).Exec();
+                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Exec();
                 }
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

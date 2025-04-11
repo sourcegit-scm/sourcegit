@@ -12,7 +12,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.MergeMultiple}"/>
-    
+
     <Grid Margin="0,16,0,0" RowDefinitions="Auto,32,32" ColumnDefinitions="100,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
@@ -62,7 +62,7 @@
                 </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>
-          </DataTemplate>          
+          </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
 
@@ -84,7 +84,7 @@
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
-      
+
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.MergeMultiple.CommitChanges}"
                 IsChecked="{Binding AutoCommit, Mode=TwoWay}"/>

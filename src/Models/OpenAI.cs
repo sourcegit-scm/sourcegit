@@ -1,79 +1,99 @@
 ﻿using System;
+using System.ClientModel;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading;
-
+using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
+using OpenAI;
+using OpenAI.Chat;
 
 namespace SourceGit.Models
 {
-    public class OpenAIChatMessage
+    public partial class OpenAIResponse
     {
-        [JsonPropertyName("role")]
-        public string Role
+        public OpenAIResponse(Action<string> onUpdate)
         {
-            get;
-            set;
+            _onUpdate = onUpdate;
         }
 
-        [JsonPropertyName("content")]
-        public string Content
+        public void Append(string text)
         {
-            get;
-            set;
+            var buffer = text;
+
+            if (_thinkTail.Length > 0)
+            {
+                _thinkTail.Append(buffer);
+                buffer = _thinkTail.ToString();
+                _thinkTail.Clear();
+            }
+
+            buffer = REG_COT().Replace(buffer, "");
+
+            var startIdx = buffer.IndexOf('<', StringComparison.Ordinal);
+            if (startIdx >= 0)
+            {
+                if (startIdx > 0)
+                    OnReceive(buffer.Substring(0, startIdx));
+
+                var endIdx = buffer.IndexOf(">", startIdx + 1, StringComparison.Ordinal);
+                if (endIdx <= startIdx)
+                {
+                    if (buffer.Length - startIdx <= 15)
+                        _thinkTail.Append(buffer.Substring(startIdx));
+                    else
+                        OnReceive(buffer.Substring(startIdx));
+                }
+                else if (endIdx < startIdx + 15)
+                {
+                    var tag = buffer.Substring(startIdx + 1, endIdx - startIdx - 1);
+                    if (_thinkTags.Contains(tag))
+                        _thinkTail.Append(buffer.Substring(startIdx));
+                    else
+                        OnReceive(buffer.Substring(startIdx));
+                }
+                else
+                {
+                    OnReceive(buffer.Substring(startIdx));
+                }
+            }
+            else
+            {
+                OnReceive(buffer);
+            }
         }
-    }
 
-    public class OpenAIChatChoice
-    {
-        [JsonPropertyName("index")]
-        public int Index
+        public void End()
         {
-            get;
-            set;
+            if (_thinkTail.Length > 0)
+            {
+                OnReceive(_thinkTail.ToString());
+                _thinkTail.Clear();
+            }
         }
 
-        [JsonPropertyName("message")]
-        public OpenAIChatMessage Message
+        private void OnReceive(string text)
         {
-            get;
-            set;
-        }
-    }
+            if (!_hasTrimmedStart)
+            {
+                text = text.TrimStart();
+                if (string.IsNullOrEmpty(text))
+                    return;
 
-    public class OpenAIChatResponse
-    {
-        [JsonPropertyName("choices")]
-        public List<OpenAIChatChoice> Choices
-        {
-            get;
-            set;
-        } = [];
-    }
+                _hasTrimmedStart = true;
+            }
 
-    public class OpenAIChatRequest
-    {
-        [JsonPropertyName("model")]
-        public string Model
-        {
-            get;
-            set;
+            _onUpdate.Invoke(text);
         }
 
-        [JsonPropertyName("messages")]
-        public List<OpenAIChatMessage> Messages
-        {
-            get;
-            set;
-        } = [];
+        [GeneratedRegex(@"<(think|thought|thinking|thought_chain)>.*?</\1>", RegexOptions.Singleline)]
+        private static partial Regex REG_COT();
 
-        public void AddMessage(string role, string content)
-        {
-            Messages.Add(new OpenAIChatMessage { Role = role, Content = content });
-        }
+        private Action<string> _onUpdate = null;
+        private StringBuilder _thinkTail = new StringBuilder();
+        private HashSet<string> _thinkTags = ["think", "thought", "thinking", "thought_chain"];
+        private bool _hasTrimmedStart = false;
     }
 
     public class OpenAIService : ObservableObject
@@ -100,6 +120,12 @@ namespace SourceGit.Models
         {
             get => _model;
             set => SetProperty(ref _model, value);
+        }
+
+        public bool Streaming
+        {
+            get => _streaming;
+            set => SetProperty(ref _streaming, value);
         }
 
         public string AnalyzeDiffPrompt
@@ -147,45 +173,54 @@ namespace SourceGit.Models
                 """;
         }
 
-        public OpenAIChatResponse Chat(string prompt, string question, CancellationToken cancellation)
+        public void Chat(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
-            var chat = new OpenAIChatRequest() { Model = Model };
-            chat.AddMessage("user", prompt);
-            chat.AddMessage("user", question);
-
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
-            if (!string.IsNullOrEmpty(ApiKey))
+            var server = new Uri(_server);
+            var key = new ApiKeyCredential(_apiKey);
+            var client = null as ChatClient;
+            if (_server.Contains("openai.azure.com/", StringComparison.Ordinal))
             {
-                if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
-                    client.DefaultRequestHeaders.Add("api-key", ApiKey);
-                else
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
+                var azure = new AzureOpenAIClient(server, key);
+                client = azure.GetChatClient(_model);
+            }
+            else
+            {
+                var openai = new OpenAIClient(key, new() { Endpoint = server });
+                client = openai.GetChatClient(_model);
             }
 
-            var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest), Encoding.UTF8, "application/json");
+            var messages = new List<ChatMessage>();
+            messages.Add(_model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt));
+            messages.Add(new UserChatMessage(question));
+
             try
             {
-                var task = client.PostAsync(Server, req, cancellation);
-                task.Wait(cancellation);
+                var rsp = new OpenAIResponse(onUpdate);
 
-                var rsp = task.Result;
-                var reader = rsp.Content.ReadAsStringAsync(cancellation);
-                reader.Wait(cancellation);
-
-                var body = reader.Result;
-                if (!rsp.IsSuccessStatusCode)
+                if (_streaming)
                 {
-                    throw new Exception($"AI service returns error code {rsp.StatusCode}. Body: {body ?? string.Empty}");
+                    var updates = client.CompleteChatStreaming(messages, null, cancellation);
+
+                    foreach (var update in updates)
+                    {
+                        if (update.ContentUpdate.Count > 0)
+                            rsp.Append(update.ContentUpdate[0].Text);
+                    }
+                }
+                else
+                {
+                    var completion = client.CompleteChat(messages, null, cancellation);
+
+                    if (completion.Value.Content.Count > 0)
+                        rsp.Append(completion.Value.Content[0].Text);
                 }
 
-                return JsonSerializer.Deserialize(reader.Result, JsonCodeGen.Default.OpenAIChatResponse);
+                rsp.End();
             }
             catch
             {
-                if (cancellation.IsCancellationRequested)
-                    return null;
-
-                throw;
+                if (!cancellation.IsCancellationRequested)
+                    throw;
             }
         }
 
@@ -193,6 +228,7 @@ namespace SourceGit.Models
         private string _server;
         private string _apiKey;
         private string _model;
+        private bool _streaming = true;
         private string _analyzeDiffPrompt;
         private string _generateSubjectPrompt;
     }

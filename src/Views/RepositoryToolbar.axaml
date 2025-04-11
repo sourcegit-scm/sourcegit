@@ -8,128 +8,128 @@
              x:Class="SourceGit.Views.RepositoryToolbar"
              x:DataType="vm:Repository">
   <Grid ColumnDefinitions="*,Auto,*">
-      <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
-        <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
-        </Button>
+    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
+      <Button Classes="icon_button" Width="32" Command="{Binding OpenInFileManager}" ToolTip.Tip="{DynamicResource Text.Repository.Explore}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
-        </Button>
-        
-        <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
-        </Button>
+      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+        <Path Width="13" Height="13" Data="{StaticResource Icons.OpenWith}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
-          <Path Width="13" Height="13" Data="{StaticResource Icons.Statistics}"/>
-        </Button>
+      <Button Classes="icon_button" Width="32" Command="{Binding OpenInTerminal}" ToolTip.Tip="{DynamicResource Text.Repository.Terminal}">
+        <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Click="OpenConfigure" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
-        </Button>
-      </StackPanel>
+      <Button Classes="icon_button" Width="32" Click="OpenStatistics" ToolTip.Tip="{DynamicResource Text.Repository.Statistics}">
+        <Path Width="13" Height="13" Data="{StaticResource Icons.Statistics}"/>
+      </Button>
 
-      <StackPanel Grid.Column="1" Orientation="Horizontal">
-        <Button Classes="icon_button" Width="32" Click="Fetch" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}">
-          <ToolTip.Tip>
-            <StackPanel Orientation="Vertical">
-              <TextBlock Text="{DynamicResource Text.Fetch}"/>
-              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
-          </ToolTip.Tip>
-          
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
-        </Button>
+      <Button Classes="icon_button" Width="32" Click="OpenConfigure" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
+      </Button>
+    </StackPanel>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}">
-          <ToolTip.Tip>
-            <StackPanel Orientation="Vertical">
-              <TextBlock Text="{DynamicResource Text.Pull}"/>
-              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
-          </ToolTip.Tip>
-          
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
-        </Button>
+    <StackPanel Grid.Column="1" Orientation="Horizontal">
+      <Button Classes="icon_button" Width="32" Click="Fetch" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Vertical">
+            <TextBlock Text="{DynamicResource Text.Fetch}"/>
+            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+          </StackPanel>
+        </ToolTip.Tip>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}">
-          <ToolTip.Tip>
-            <StackPanel Orientation="Vertical">
-              <TextBlock Text="{DynamicResource Text.Push}"/>
-              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
-          </ToolTip.Tip>
-          
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
-        </Button>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="StashAll">
-          <ToolTip.Tip>
-            <StackPanel Orientation="Vertical">
-              <TextBlock Text="{DynamicResource Text.Stash}"/>
-              <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
-          </ToolTip.Tip>
-          
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
-        </Button>
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Vertical">
+            <TextBlock Text="{DynamicResource Text.Pull}"/>
+            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+          </StackPanel>
+        </ToolTip.Tip>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" ToolTip.Tip="{DynamicResource Text.Apply}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Diff}"/>
-        </Button>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
+      </Button>
 
-        <Rectangle Width="1" Height="16"
-                   Margin="16,0,0,0"
-                   VerticalAlignment="Center"
-                   Fill="{DynamicResource Brush.Border2}"/>
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Vertical">
+            <TextBlock Text="{DynamicResource Text.Push}"/>
+            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+          </StackPanel>
+        </ToolTip.Tip>
 
-        <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
-        </Button>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitFlowMenu" ToolTip.Tip="{DynamicResource Text.GitFlow}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.GitFlow}"/>
-        </Button>
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="StashAll" IsVisible="{Binding !IsBare}">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Vertical">
+            <TextBlock Text="{DynamicResource Text.Stash}"/>
+            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
+          </StackPanel>
+        </ToolTip.Tip>
 
-        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitLFSMenu" ToolTip.Tip="{DynamicResource Text.GitLFS}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
-        </Button>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenCustomActionMenu" ToolTip.Tip="{DynamicResource Text.Repository.CustomActions}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.Action}"/>
-        </Button>
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Apply}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Diff}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
-          <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
-        </Button>
-      </StackPanel>
+      <Rectangle Width="1" Height="16"
+                 Margin="16,0,0,0"
+                 VerticalAlignment="Center"
+                 Fill="{DynamicResource Brush.Border2}"/>
 
-      <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
-        <Path Width="13" Height="13" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
+      </Button>
 
-        <ContentControl Margin="6,0,0,0">
-          <ContentControl.Content>
-            <Binding Path="CurrentBranch">
-              <Binding.TargetNullValue>
-                <TextBlock Classes="primary" Text="--"/>
-              </Binding.TargetNullValue>
-            </Binding>
-          </ContentControl.Content>
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitFlowMenu" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.GitFlow}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.GitFlow}"/>
+      </Button>
 
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="m:Branch">
-              <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
-                <TextBlock Classes="primary" Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
-              </Border>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenGitLFSMenu" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.GitLFS}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
+      </Button>
 
-        <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-          <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
-        </Button>
-      </StackPanel>
-    </Grid>
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenCustomActionMenu" ToolTip.Tip="{DynamicResource Text.Repository.CustomActions}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Action}"/>
+      </Button>
+
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+        <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
+      </Button>
+    </StackPanel>
+
+    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
+      <Path Width="13" Height="13" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+
+      <ContentControl Margin="6,0,0,0">
+        <ContentControl.Content>
+          <Binding Path="CurrentBranch">
+            <Binding.TargetNullValue>
+              <TextBlock Classes="primary" Text="--"/>
+            </Binding.TargetNullValue>
+          </Binding>
+        </ContentControl.Content>
+
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:Branch">
+            <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
+              <TextBlock Classes="primary" Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
+            </Border>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+
+      <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+        <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
+      </Button>
+    </StackPanel>
+  </Grid>
 </UserControl>
 

@@ -25,15 +25,10 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
-        public static string DataDir {
-            get;
-            private set;
-        } = string.Empty;
-
-        public static string CustomPathEnv
+        public static string DataDir
         {
             get;
-            set;
+            private set;
         } = string.Empty;
 
         public static string GitExecutable
@@ -61,12 +56,14 @@ namespace SourceGit.Native
             private set;
         } = new Version(0, 0, 0);
 
-        public static string ShellOrTerminal {
+        public static string ShellOrTerminal
+        {
             get;
             set;
         } = string.Empty;
 
-        public static List<Models.ExternalTool> ExternalTools {
+        public static List<Models.ExternalTool> ExternalTools
+        {
             get;
             set;
         } = [];
@@ -163,6 +160,15 @@ namespace SourceGit.Native
         public static void OpenWithDefaultEditor(string file)
         {
             _backend.OpenWithDefaultEditor(file);
+        }
+
+        public static string GetAbsPath(string root, string sub)
+        {
+            var fullpath = Path.Combine(root, sub);
+            if (OperatingSystem.IsWindows())
+                return fullpath.Replace('/', '\\');
+
+            return fullpath;
         }
 
         private static void UpdateGitVersion()

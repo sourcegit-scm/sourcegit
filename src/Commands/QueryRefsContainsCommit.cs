@@ -20,7 +20,7 @@ namespace SourceGit.Commands
             if (!output.IsSuccess)
                 return rs;
 
-            var lines = output.StdOut.Split('\n');
+            var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 if (line.EndsWith("/HEAD", StringComparison.Ordinal))

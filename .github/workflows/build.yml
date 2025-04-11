@@ -19,14 +19,25 @@ jobs:
             os: macos-latest
             runtime: osx-arm64
           - name : Linux
-            os: ubuntu-20.04
+            os: ubuntu-latest
             runtime: linux-x64
+            container: ubuntu:20.04
           - name : Linux (arm64)
-            os: ubuntu-20.04
+            os: ubuntu-latest
             runtime: linux-arm64
+            container: ubuntu:20.04
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container || '' }}
     steps:
+      - name: Install common CLI tools
+        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
+          apt-get update
+          apt-get install -y sudo
+          sudo apt-get install -y curl wget git unzip zip libicu66 tzdata clang
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Setup .NET
@@ -47,7 +58,7 @@ jobs:
         if: ${{ matrix.runtime == 'linux-arm64' }}
         run: |
           sudo apt-get update
-          sudo apt-get install clang llvm gcc-aarch64-linux-gnu zlib1g-dev:arm64
+          sudo apt-get install -y llvm gcc-aarch64-linux-gnu zlib1g-dev:arm64
       - name: Build
         run: dotnet build -c Release
       - name: Publish

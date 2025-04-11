@@ -20,6 +20,8 @@
       <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
       <ResourceInclude x:Key="zh_TW" Source="/Resources/Locales/zh_TW.axaml"/>
       <ResourceInclude x:Key="es_ES" Source="/Resources/Locales/es_ES.axaml"/>
+      <ResourceInclude x:Key="ja_JP" Source="/Resources/Locales/ja_JP.axaml"/>
+      <ResourceInclude x:Key="ta_IN" Source="/Resources/Locales/ta_IN.axaml"/>
     </ResourceDictionary>
   </Application.Resources>
 
@@ -35,7 +37,7 @@
       <NativeMenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}"/>
       <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}" IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"/>
       <NativeMenuItemSeparator/>
-      <NativeMenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" Gesture="⌘+,"/>
+      <NativeMenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" Gesture="⌘+,"/>
       <NativeMenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" Gesture="⌘+Q"/>

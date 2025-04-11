@@ -12,7 +12,7 @@
                     Icon="/App.ico"
                     Title="{Binding Title}"
                     MinWidth="1024" MinHeight="600"
-                    WindowStartupLocation="CenterScreen"> 
+                    WindowStartupLocation="CenterScreen">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #ThisControl.CaptionHeight}"/>
@@ -35,7 +35,7 @@
       <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,2,3" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
-            <MenuItem Header="{DynamicResource Text.Preference}" Command="{x:Static s:App.OpenPreferenceCommand}" InputGesture="Ctrl+Shift+P">
+            <MenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" InputGesture="Ctrl+Shift+P">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
               </MenuItem.Icon>
@@ -62,6 +62,11 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
               </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" InputGesture="Ctrl+Q">
+              <MenuItem.Icon>
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Quit}"/>
+              </MenuItem.Icon>
+            </MenuItem>
           </MenuFlyout>
         </Button.Flyout>
         <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
@@ -75,20 +80,20 @@
             <TextBlock Text="{Binding ActiveWorkspace.Name}"/>
           </StackPanel>
         </ToolTip.Tip>
-        <Path Width="14" Height="14" 
+        <Path Width="14" Height="14"
               Data="{StaticResource Icons.Workspace}"
               Fill="{Binding ActiveWorkspace.Brush}"/>
       </Button>
 
       <!-- Pages Tabs-->
-      <v:LauncherTabBar Grid.Column="2" Height="30" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="2" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
 
       <!-- Caption Buttons (Windows/Linux)-->
-      <Border Grid.Column="3" Margin="32,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
+      <Border Grid.Column="3" Margin="16,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
-    
+
     <!-- Page -->
     <ContentControl Grid.Row="1" Content="{Binding ActivePage}">
       <ContentControl.DataTemplates>

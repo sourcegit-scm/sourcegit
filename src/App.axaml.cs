@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -35,15 +37,14 @@ namespace SourceGit
 
             TaskScheduler.UnobservedTaskException += (_, e) =>
             {
-                LogException(e.Exception);
                 e.SetObserved();
             };
 
             try
             {
-                if (TryLaunchedAsRebaseTodoEditor(args, out int exitTodo))
+                if (TryLaunchAsRebaseTodoEditor(args, out int exitTodo))
                     Environment.Exit(exitTodo);
-                else if (TryLaunchedAsRebaseMessageEditor(args, out int exitMessage))
+                else if (TryLaunchAsRebaseMessageEditor(args, out int exitMessage))
                     Environment.Exit(exitMessage);
                 else
                     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
@@ -74,6 +75,31 @@ namespace SourceGit
 
             Native.OS.SetupApp(builder);
             return builder;
+        }
+
+        private static void LogException(Exception ex)
+        {
+            if (ex == null)
+                return;
+
+            var builder = new StringBuilder();
+            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
+            builder.Append("----------------------------\n");
+            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
+            builder.Append($"OS: {Environment.OSVersion}\n");
+            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
+            builder.Append($"Source: {ex.Source}\n");
+            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
+            builder.Append($"User: {Environment.UserName}\n");
+            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
+            builder.Append($"Exception Time: {DateTime.Now}\n");
+            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
+            builder.Append($"---------------------------\n\n");
+            builder.Append(ex);
+
+            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            File.WriteAllText(file, builder.ToString());
         }
         #endregion
 
@@ -178,6 +204,9 @@ namespace SourceGit
                 app.Resources.MergedDictionaries.Remove(app._fontsOverrides);
                 app._fontsOverrides = null;
             }
+
+            defaultFont = app.FixFontFamilyName(defaultFont);
+            monospaceFont = app.FixFontFamilyName(monospaceFont);
 
             var resDic = new ResourceDictionary();
             if (!string.IsNullOrEmpty(defaultFont))
@@ -298,7 +327,7 @@ namespace SourceGit
         {
             AvaloniaXamlLoader.Load(this);
 
-            var pref = ViewModels.Preference.Instance;
+            var pref = ViewModels.Preferences.Instance;
             pref.PropertyChanged += (_, _) => pref.Save();
 
             SetLocale(pref.Locale);
@@ -312,44 +341,18 @@ namespace SourceGit
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
 
-                if (TryLaunchedAsCoreEditor(desktop))
+                if (TryLaunchAsCoreEditor(desktop))
                     return;
 
-                if (TryLaunchedAsAskpass(desktop))
+                if (TryLaunchAsAskpass(desktop))
                     return;
 
-                TryLaunchedAsNormal(desktop);
+                TryLaunchAsNormal(desktop);
             }
         }
         #endregion
 
-        private static void LogException(Exception ex)
-        {
-            if (ex == null)
-                return;
-
-            var builder = new StringBuilder();
-            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-            builder.Append("----------------------------\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion.ToString()}\n");
-            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-            builder.Append($"Source: {ex.Source}\n");
-            builder.Append($"---------------------------\n\n");
-            builder.Append(ex.StackTrace);
-            while (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-                builder.Append($"\n\nInnerException::: {ex.GetType().FullName}: {ex.Message}\n");
-                builder.Append(ex.StackTrace);
-            }
-
-            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-            File.WriteAllText(file, builder.ToString());
-        }
-
-        private static bool TryLaunchedAsRebaseTodoEditor(string[] args, out int exitCode)
+        private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
 
@@ -402,7 +405,7 @@ namespace SourceGit
             return true;
         }
 
-        private static bool TryLaunchedAsRebaseMessageEditor(string[] args, out int exitCode)
+        private static bool TryLaunchAsRebaseMessageEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
 
@@ -436,7 +439,7 @@ namespace SourceGit
             return true;
         }
 
-        private bool TryLaunchedAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
+        private bool TryLaunchAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
             if (args == null || args.Length <= 1 || !args[0].Equals("--core-editor", StringComparison.Ordinal))
@@ -444,14 +447,18 @@ namespace SourceGit
 
             var file = args[1];
             if (!File.Exists(file))
+            {
                 desktop.Shutdown(-1);
-            else
-                desktop.MainWindow = new Views.StandaloneCommitMessageEditor(file);
+                return true;
+            }
 
+            var editor = new Views.StandaloneCommitMessageEditor();
+            editor.SetFile(file);
+            desktop.MainWindow = editor;
             return true;
         }
 
-        private bool TryLaunchedAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
+        private bool TryLaunchAsAskpass(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var launchAsAskpass = Environment.GetEnvironmentVariable("SOURCEGIT_LAUNCH_AS_ASKPASS");
             if (launchAsAskpass is not "TRUE")
@@ -460,14 +467,16 @@ namespace SourceGit
             var args = desktop.Args;
             if (args?.Length > 0)
             {
-                desktop.MainWindow = new Views.Askpass(args[0]);
+                var askpass = new Views.Askpass();
+                askpass.TxtDescription.Text = args[0];
+                desktop.MainWindow = askpass;
                 return true;
             }
 
             return false;
         }
 
-        private void TryLaunchedAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
+        private void TryLaunchAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Native.OS.SetupEnternalTools();
             Models.AvatarManager.Instance.Start();
@@ -480,7 +489,7 @@ namespace SourceGit
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
 #if !DISABLE_UPDATE_DETECTION
-            var pref = ViewModels.Preference.Instance;
+            var pref = ViewModels.Preferences.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
 #endif
@@ -512,7 +521,7 @@ namespace SourceGit
                     // Should not check ignored tag if this is called manually.
                     if (!manually)
                     {
-                        var pref = ViewModels.Preference.Instance;
+                        var pref = ViewModels.Preferences.Instance;
                         if (ver.TagName == pref.IgnoreUpdateTag)
                             return;
                     }
@@ -522,7 +531,7 @@ namespace SourceGit
                 catch (Exception e)
                 {
                     if (manually)
-                        ShowSelfUpdateResult(e);
+                        ShowSelfUpdateResult(new Models.SelfUpdateFailed(e));
                 }
             });
         }
@@ -537,6 +546,38 @@ namespace SourceGit
                     dialog.ShowDialog(owner);
                 }
             });
+        }
+
+        private string FixFontFamilyName(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var parts = input.Split(',');
+            var trimmed = new List<string>();
+
+            foreach (var part in parts)
+            {
+                var t = part.Trim();
+                if (string.IsNullOrEmpty(t))
+                    continue;
+
+                // Collapse multiple spaces into single space
+                var prevChar = '\0';
+                var sb = new StringBuilder();
+
+                foreach (var c in t)
+                {
+                    if (c == ' ' && prevChar == ' ')
+                        continue;
+                    sb.Append(c);
+                    prevChar = c;
+                }
+
+                trimmed.Add(sb.ToString());
+            }
+
+            return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
         private ViewModels.Launcher _launcher = null;

@@ -11,16 +11,16 @@
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* Deutsch/English/Español/Français/Italiano/Português/Русский/简体中文/繁體中文
+* Deutsch/English/Español/Français/Italiano/Português/Русский/简体中文/繁體中文/日本語/தமிழ் (Tamil)
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
 * Supports SSH access with each remote
 * GIT commands with GUI
   * Clone/Fetch/Pull/Push...
-  * Merge/Rebase/Reset/Revert/Amend/Cherry-pick...
-  * Amend/Reword
-  * Interactive rebase (Basic)
+  * Merge/Rebase/Reset/Revert/Cherry-pick...
+  * Amend/Reword/Squash
+  * Interactive rebase
   * Branches
   * Remotes
   * Tags
@@ -40,6 +40,7 @@
 * Git LFS
 * Issue Link
 * Workspace
+* Custom Action
 * Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
 
 > [!WARNING]
@@ -47,10 +48,7 @@
 
 ## Translation Status
 
-[![en_US](https://img.shields.io/badge/en__US-100%25-brightgreen)](TRANSLATION.md) [![de__DE](https://img.shields.io/badge/de__DE-97.55%25-yellow)](TRANSLATION.md) [![es__ES](https://img.shields.io/badge/es__ES-100.00%25-brightgreen)](TRANSLATION.md) [![fr__FR](https://img.shields.io/badge/fr__FR-92.79%25-yellow)](TRANSLATION.md) [![it__IT](https://img.shields.io/badge/it__IT-93.33%25-yellow)](TRANSLATION.md) [![pt__BR](https://img.shields.io/badge/pt__BR-94.42%25-yellow)](TRANSLATION.md) [![ru__RU](https://img.shields.io/badge/ru__RU-100.00%25-brightgreen)](TRANSLATION.md) [![zh__CN](https://img.shields.io/badge/zh__CN-100.00%25-brightgreen)](TRANSLATION.md) [![zh__TW](https://img.shields.io/badge/zh__TW-100.00%25-brightgreen)](TRANSLATION.md)
-
-> [!NOTE]
-> You can find the missing keys in [TRANSLATION.md](TRANSLATION.md)
+You can find the current translation status in [TRANSLATION.md](https://github.com/sourcegit-scm/sourcegit/blob/develop/TRANSLATION.md)
 
 ## How to Use
 
@@ -62,7 +60,7 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 
 | OS      | PATH                                                |
 |---------|-----------------------------------------------------|
-| Windows | `C:\Users\USER_NAME\AppData\Roaming\SourceGit`      |
+| Windows | `%APPDATA%\SourceGit`                               |
 | Linux   | `${HOME}/.config/SourceGit` or `${HOME}/.sourcegit` |
 | macOS   | `${HOME}/Library/Application Support/SourceGit`     |
 
@@ -79,7 +77,7 @@ For **Windows** users:
   ```
 > [!NOTE]
 > `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
-* You can install the latest stable by `scoope` with follow commands:
+* You can install the latest stable by `scoop` with follow commands:
   ```shell
   scoop bucket add extras
   scoop install sourcegit
@@ -107,7 +105,7 @@ For **Linux** users:
   `deb` how to:
   ```shell
   curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
-  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
+  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc, arch=amd64,arm64] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
   sudo apt update
   sudo apt install sourcegit
   ```
@@ -132,15 +130,15 @@ For **Linux** users:
 
 ## OpenAI
 
-This software supports using OpenAI or other AI service that has an OpenAI comaptible HTTP API to generate commit message. You need configurate the service in `Preference` window.
+This software supports using OpenAI or other AI service that has an OpenAI compatible HTTP API to generate commit message. You need configurate the service in `Preference` window.
 
 For `OpenAI`:
 
-* `Server` must be `https://api.openai.com/v1/chat/completions`
+* `Server` must be `https://api.openai.com/v1`
 
 For other AI service:
 
-* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1/chat/completions`. For example, when using `Ollama`, it should be `http://localhost:11434/v1/chat/completions` instead of `http://localhost:11434/api/generate`
+* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
 * The `API Key` is optional that depends on the service
 
 ## External Tools
@@ -201,3 +199,7 @@ dotnet run --project src/SourceGit.csproj
 Thanks to all the people who contribute.
 
 [![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
+
+## Third-Party Components
+
+For detailed license information, see [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).

@@ -8,11 +8,11 @@
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.Preference"
-                    x:DataType="vm:Preference"
+                    x:Class="SourceGit.Views.Preferences"
+                    x:DataType="vm:Preferences"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="{DynamicResource Text.Preference}"
+                    Title="{DynamicResource Text.Preferences}"
                     SizeToContent="WidthAndHeight"
                     CanResize="False"
                     WindowStartupLocation="CenterScreen">
@@ -30,7 +30,7 @@
             IsVisible="{OnPlatform True, macOS=False}"/>
 
       <TextBlock Classes="bold"
-                 Text="{DynamicResource Text.Preference}"
+                 Text="{DynamicResource Text.Preferences}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
@@ -44,11 +44,11 @@
       <TabControl>
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.General}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.General.Locale}"
+                       Text="{DynamicResource Text.Preferences.General.Locale}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
@@ -60,7 +60,7 @@
                       SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverters.ToLocale}}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.General.DateFormat}"
+                       Text="{DynamicResource Text.Preferences.General.DateFormat}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="1" Grid.Column="1"
@@ -78,9 +78,9 @@
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
-            
+
             <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.DefaultCloneDir}"
+                       Text="{DynamicResource Text.Preferences.Git.DefaultCloneDir}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="2" Grid.Column="1"
@@ -95,7 +95,7 @@
             </TextBox>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.General.SubjectGuideLength}"
+                       Text="{DynamicResource Text.Preferences.General.SubjectGuideLength}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <NumericUpDown Grid.Row="3" Grid.Column="1"
@@ -108,7 +108,7 @@
                            Value="{Binding SubjectGuideLength, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.General.MaxHistoryCommits}"
+                       Text="{DynamicResource Text.Preferences.General.MaxHistoryCommits}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="*,64">
@@ -128,29 +128,34 @@
 
             <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.General.ShowAuthorTime}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=TwoWay}"/>
+                      Content="{DynamicResource Text.Preferences.General.ShowAuthorTime}"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="6" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.General.ShowChildren}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowChildren, Mode=TwoWay}"/>
+                      Content="{DynamicResource Text.Preferences.General.ShowTagsInGraph}"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.General.Check4UpdatesOnStartup}"
+                      Content="{DynamicResource Text.Preferences.General.ShowChildren}"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowChildren, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="8" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.General.Check4UpdatesOnStartup}"
                       IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Check4UpdatesOnStartup, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Appearance}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Appearance.Theme}"
+                       Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
@@ -167,7 +172,7 @@
             </ComboBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Appearance.DefaultFont}"
+                       Text="{DynamicResource Text.Preferences.Appearance.DefaultFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="1" Grid.Column="1"
@@ -176,7 +181,7 @@
                      Text="{Binding DefaultFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Appearance.MonospaceFont}"
+                       Text="{DynamicResource Text.Preferences.Appearance.MonospaceFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="2" Grid.Column="1"
@@ -185,20 +190,20 @@
                      Text="{Binding MonospaceFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Appearance.FontSize}"
+                       Text="{DynamicResource Text.Preferences.Appearance.FontSize}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,8,*">
               <NumericUpDown Grid.Column="0"
-                           Minimum="10" Maximum="18" Increment="0.5"
-                           Height="28"
-                           Padding="4"
-                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
-                           CornerRadius="3"
-                           Value="{Binding DefaultFontSize, Mode=TwoWay}">
+                             Minimum="10" Maximum="18" Increment="0.5"
+                             Height="28"
+                             Padding="4"
+                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                             CornerRadius="3"
+                             Value="{Binding DefaultFontSize, Mode=TwoWay}">
                 <NumericUpDown.InnerLeftContent>
                   <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource Brush.Border1}">
-                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Preference.Appearance.FontSize.Default}"/>
+                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Preferences.Appearance.FontSize.Default}"/>
                   </Border>
                 </NumericUpDown.InnerLeftContent>
               </NumericUpDown>
@@ -211,17 +216,30 @@
                              Value="{Binding EditorFontSize, Mode=TwoWay}">
                 <NumericUpDown.InnerLeftContent>
                   <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource Brush.Border1}">
-                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Preference.Appearance.FontSize.Editor}"/>
+                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Preferences.Appearance.FontSize.Editor}"/>
                   </Border>
                 </NumericUpDown.InnerLeftContent>
               </NumericUpDown>
             </Grid>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Appearance.ThemeOverrides}"
+                       Text="{DynamicResource Text.Preferences.Appearance.EditorTabWidth}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="4" Grid.Column="1"
+            <Grid Grid.Row="4" Grid.Column="1">
+              <NumericUpDown Minimum="1" Maximum="16" Increment="1"
+                             Height="28"
+                             Padding="4"
+                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                             CornerRadius="3"
+                             Value="{Binding EditorTabWidth, Mode=TwoWay}"/>
+            </Grid>
+
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                       Text="{DynamicResource Text.Preferences.Appearance.ThemeOverrides}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <TextBox Grid.Row="5" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding ThemeOverrides, Mode=TwoWay}">
@@ -232,19 +250,19 @@
               </TextBox.InnerRightContent>
             </TextBox>
 
-            <CheckBox Grid.Row="5" Grid.Column="1"
-                      Content="{DynamicResource Text.Preference.Appearance.OnlyUseMonoFontInEditor}"
-                      IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
-
             <CheckBox Grid.Row="6" Grid.Column="1"
-                      Height="32"
-                      Content="{DynamicResource Text.Preference.Appearance.UseFixedTabWidth}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
+                      Content="{DynamicResource Text.Preferences.Appearance.OnlyUseMonoFontInEditor}"
+                      IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.Appearance.UseNativeWindowFrame}"
-                      IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseSystemWindowFrame, Mode=OneTime}"
+                      Content="{DynamicResource Text.Preferences.Appearance.UseFixedTabWidth}"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="8" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Appearance.UseNativeWindowFrame}"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSystemWindowFrame, Mode=OneTime}"
                       IsVisible="{OnPlatform False, Linux=True}"
                       IsCheckedChanged="OnUseNativeWindowFrameChanged"/>
           </Grid>
@@ -252,12 +270,12 @@
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Git}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.Path}"
+                       Text="{DynamicResource Text.Preferences.Git.Path}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="0" Grid.Column="1"
@@ -273,7 +291,7 @@
             </TextBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.Version}"
+                       Text="{DynamicResource Text.Preferences.Git.Version}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
@@ -282,34 +300,34 @@
                          IsVisible="{Binding #ThisControl.GitVersion, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
               <Border Background="Transparent"
-                      ToolTip.Tip="{DynamicResource Text.Preference.Git.Invalid}"
+                      ToolTip.Tip="{DynamicResource Text.Preferences.Git.Invalid}"
                       IsVisible="{Binding #ThisControl.ShowGitVersionWarning}">
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
               </Border>
             </StackPanel>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.User}"
+                       Text="{DynamicResource Text.Preferences.Git.User}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="2" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultUser, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preference.Git.User.Placeholder}"/>
+                     Watermark="{DynamicResource Text.Preferences.Git.User.Placeholder}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.Email}"
+                       Text="{DynamicResource Text.Preferences.Git.Email}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="3" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultEmail, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preference.Git.Email.Placeholder}"/>
+                     Watermark="{DynamicResource Text.Preferences.Git.Email.Placeholder}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.Git.CRLF}"
+                       Text="{DynamicResource Text.Preferences.Git.CRLF}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="4" Grid.Column="1"
@@ -330,19 +348,24 @@
 
             <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preference.Git.SSLVerify}"
+                      Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
+                      IsChecked="{Binding #ThisControl.EnablePruneOnFetch, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="6" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Git.SSLVerify}"
                       IsChecked="{Binding #ThisControl.EnableHTTPSSLVerify, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.GPG}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.GPG}"/>
           </TabItem.Header>
 
           <Grid Margin="8" RowDefinitions="32,Auto,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.GPG.Format}"
+                       Text="{DynamicResource Text.Preferences.GPG.Format}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
@@ -362,7 +385,7 @@
             </ComboBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.GPG.Path}"
+                       Text="{DynamicResource Text.Preferences.GPG.Path}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"
                        IsVisible="{Binding #ThisControl.GPGFormat.NeedFindProgram}"/>
@@ -370,7 +393,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.GPGExecutableFile, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preference.GPG.Path.Placeholder}"
+                     Watermark="{DynamicResource Text.Preferences.GPG.Path.Placeholder}"
                      IsVisible="{Binding #ThisControl.GPGFormat.NeedFindProgram}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectGPGExecutable">
@@ -380,34 +403,34 @@
             </TextBox>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="{DynamicResource Text.Preference.GPG.UserKey}"
+                       Text="{DynamicResource Text.Preferences.GPG.UserKey}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
             <TextBox Grid.Row="2" Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.GPGUserKey, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preference.GPG.UserKey.Placeholder}"/>
+                     Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"/>
 
             <CheckBox Grid.Row="3" Grid.Column="1"
-                      Content="{DynamicResource Text.Preference.GPG.CommitEnabled}"
+                      Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
                       IsChecked="{Binding #ThisControl.EnableGPGCommitSigning, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="4" Grid.Column="1"
-                      Content="{DynamicResource Text.Preference.GPG.TagEnabled}"
+                      Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
                       IsChecked="{Binding #ThisControl.EnableGPGTagSigning, Mode=TwoWay}"/>
           </Grid>
         </TabItem>
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.Integration}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Integration}"/>
           </TabItem.Header>
 
-          <StackPanel Margin="8" MaxWidth="580" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+          <StackPanel Margin="8" Orientation="Vertical" Grid.IsSharedSizeScope="True">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Terminal}"/>
-              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.Shell}"/>
+              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.Shell}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
             <Grid Margin="8,0,0,0" RowDefinitions="32,Auto">
@@ -417,7 +440,7 @@
               </Grid.ColumnDefinitions>
 
               <TextBlock Grid.Row="0" Grid.Column="0"
-                         Text="{DynamicResource Text.Preference.Shell.Type}"
+                         Text="{DynamicResource Text.Preferences.Shell.Type}"
                          HorizontalAlignment="Right"
                          Margin="0,0,16,0"/>
               <ComboBox Grid.Row="0" Grid.Column="1"
@@ -437,7 +460,7 @@
               </ComboBox>
 
               <TextBlock Grid.Row="1" Grid.Column="0"
-                         Text="{DynamicResource Text.Preference.Shell.Path}"
+                         Text="{DynamicResource Text.Preferences.Shell.Path}"
                          HorizontalAlignment="Right"
                          Margin="0,0,16,0"
                          IsVisible="{OnPlatform True, macOS=False}"/>
@@ -456,7 +479,7 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Diff}"/>
-              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preference.DiffMerge}"/>
+              <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.DiffMerge}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
             <Grid Margin="8,0,0,8" RowDefinitions="32,Auto">
@@ -466,7 +489,7 @@
               </Grid.ColumnDefinitions>
 
               <TextBlock Grid.Row="0" Grid.Column="0"
-                         Text="{DynamicResource Text.Preference.DiffMerge.Type}"
+                         Text="{DynamicResource Text.Preferences.DiffMerge.Type}"
                          HorizontalAlignment="Right"
                          Margin="0,0,16,0"/>
               <ComboBox Grid.Row="0" Grid.Column="1"
@@ -489,7 +512,7 @@
               </ComboBox>
 
               <TextBlock Grid.Row="1" Grid.Column="0"
-                         Text="{DynamicResource Text.Preference.DiffMerge.Path}"
+                         Text="{DynamicResource Text.Preferences.DiffMerge.Path}"
                          HorizontalAlignment="Right"
                          Margin="0,0,16,0"
                          IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
@@ -497,7 +520,7 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
-                       Watermark="{DynamicResource Text.Preference.DiffMerge.Path.Placeholder}"
+                       Watermark="{DynamicResource Text.Preferences.DiffMerge.Path.Placeholder}"
                        IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                 <TextBox.InnerRightContent>
                   <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">
@@ -511,10 +534,124 @@
 
         <TabItem>
           <TabItem.Header>
-            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preference.AI}"/>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
           </TabItem.Header>
 
-          <Grid ColumnDefinitions="200,*" Margin="0,8,0,16" MinHeight="400">
+          <Grid MinHeight="340" Margin="0,8,0,16">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="200"/>
+              <ColumnDefinition Width="*" MaxWidth="400"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                    Background="{DynamicResource Brush.Contents}">
+              <Grid RowDefinitions="*,1,Auto">
+                <ListBox Grid.Row="0"
+                         Background="Transparent"
+                         ItemsSource="{Binding CustomActions}"
+                         SelectedItem="{Binding #ThisControl.SelectedCustomAction, Mode=TwoWay}"
+                         SelectionMode="Single">
+                  <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                      <Setter Property="MinHeight" Value="0"/>
+                      <Setter Property="Height" Value="26"/>
+                      <Setter Property="Padding" Value="4,2"/>
+                    </Style>
+                  </ListBox.Styles>
+
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+
+                  <ListBox.ItemTemplate>
+                    <DataTemplate DataType="m:CustomAction">
+                      <Grid Margin="4,0" ColumnDefinitions="Auto,*">
+                        <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Action}" Fill="{DynamicResource Brush.FG1}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"/>
+                      </Grid>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+                  <Button Classes="icon_button" Click="OnAddCustomAction">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+                  </Button>
+
+                  <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+
+                  <Button Classes="icon_button" Click="OnRemoveSelectedCustomAction">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                  </Button>
+
+                  <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <ContentControl Grid.Column="1" Margin="16,0,0,0">
+              <ContentControl.Content>
+                <Binding Path="SelectedCustomAction" ElementName="ThisControl">
+                  <Binding.TargetNullValue>
+                    <Path Width="64" Height="64"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Fill="{DynamicResource Brush.FG2}"
+                          Data="{StaticResource Icons.Empty}"/>
+                  </Binding.TargetNullValue>
+                </Binding>
+              </ContentControl.Content>
+
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="m:CustomAction">
+                  <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{DynamicResource Text.Configure.CustomAction.Name}"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Scope}"/>
+                    <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Scope, Mode=TwoWay}">
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
+                    </ComboBox>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
+                    <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
+                      <TextBox.InnerRightContent>
+                        <Button Classes="icon_button" Width="30" Height="30" Click="SelectExecutableForCustomAction">
+                          <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                        </Button>
+                      </TextBox.InnerRightContent>
+                    </TextBox>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
+                    <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+
+                    <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
+          </Grid>
+        </TabItem>
+
+        <TabItem>
+          <TabItem.Header>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.AI}"/>
+          </TabItem.Header>
+
+          <Grid Margin="0,8,0,16" MinHeight="400">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="200"/>
+              <ColumnDefinition Width="*" MaxWidth="400"/>
+            </Grid.ColumnDefinitions>
+
             <Border Grid.Column="0"
                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                     Background="{DynamicResource Brush.Contents}">
@@ -582,19 +719,19 @@
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="m:OpenAIService">
                   <StackPanel Orientation="Vertical" MaxWidth="680">
-                    <TextBlock Text="{DynamicResource Text.Preference.AI.Name}"/>
+                    <TextBlock Text="{DynamicResource Text.Preferences.AI.Name}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preference.AI.Server}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Server}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Server, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preference.AI.Model}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Model, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preference.AI.ApiKey}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*"/>
-                    
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preference.AI.AnalyzeDiffPrompt}"/>                    
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>
                     <TextBox Height="120"
                              Margin="0,4,0,0"
                              CornerRadius="3"
@@ -603,7 +740,7 @@
                              AcceptsReturn="true"
                              TextWrapping="Wrap"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preference.AI.GenerateSubjectPrompt}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.GenerateSubjectPrompt}"/>
                     <TextBox Height="120"
                              Margin="0,4,0,0"
                              CornerRadius="3"
@@ -611,6 +748,10 @@
                              Text="{Binding GenerateSubjectPrompt, Mode=TwoWay}"
                              AcceptsReturn="true"
                              TextWrapping="Wrap"/>
+
+                    <CheckBox Margin="0,12,0,0"
+                              Content="{DynamicResource Text.Preferences.AI.Streaming}"
+                              IsChecked="{Binding Streaming, Mode=TwoWay}"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>

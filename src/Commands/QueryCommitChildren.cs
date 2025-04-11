@@ -9,10 +9,10 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             _commit = commit;
-            Args = $"rev-list -{max} --parents --branches --remotes ^{commit}";
+            Args = $"rev-list -{max} --parents --branches --remotes --ancestry-path ^{commit}";
         }
 
-        public IEnumerable<string> Result()
+        public List<string> Result()
         {
             Exec();
             return _lines;

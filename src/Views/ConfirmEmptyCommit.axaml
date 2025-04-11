@@ -5,8 +5,8 @@
                     xmlns:v="using:SourceGit.Views"
                     xmlns:vm="using:SourceGit.ViewModels"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.ConfirmCommitWithoutFiles"
-                    x:DataType="vm:ConfirmCommitWithoutFiles"
+                    x:Class="SourceGit.Views.ConfirmEmptyCommit"
+                    x:DataType="vm:ConfirmEmptyCommit"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Warn}"
@@ -38,28 +38,33 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock Text="{DynamicResource Text.WorkingCopy.ConfirmCommitWithoutFiles}"/>
+      <TextBlock Text="{Binding Message}" MaxWidth="520" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->
     <StackPanel Grid.Row="2" Margin="0,0,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
       <Button Classes="flat"
-              Width="80"
               Height="30"
               Margin="4,0"
-              Click="Sure"
-              Content="{DynamicResource Text.Sure}"
-              HorizontalAlignment="Center"
+              IsVisible="{Binding HasLocalChanges}"
+              Click="StageAllThenCommit"
+              Content="{DynamicResource Text.ConfirmEmptyCommit.StageAllThenCommit}"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
-      
+
+      <Button Classes="flat"
+              Height="30"
+              Margin="4,0"
+              Click="Continue"
+              Content="{DynamicResource Text.ConfirmEmptyCommit.Continue}"
+              HorizontalContentAlignment="Center"
+              VerticalContentAlignment="Center"/>
+
       <Button Classes="flat primary"
-              Width="80"
               Height="30"
               Margin="4,0"
               Click="CloseWindow"
               Content="{DynamicResource Text.Cancel}"
-              HorizontalAlignment="Center"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
     </StackPanel>

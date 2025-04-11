@@ -24,7 +24,7 @@ namespace SourceGit.Commands
             if (rs.IsSuccess)
             {
                 var changes = new List<Models.Change>();
-                var lines = rs.StdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     var match = REG_FORMAT2().Match(line);

@@ -52,31 +52,31 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote");
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote", false);
             }
             else if (node.Backend is Models.Branch branch)
             {
                 if (branch.IsCurrent)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Check");
+                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", true);
                 else
-                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", false);
             }
             else
             {
                 if (node.IsExpanded)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open", false);
                 else
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder");
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder", false);
             }
         }
 
-        private void CreateContent(Thickness margin, string iconKey)
+        private void CreateContent(Thickness margin, string iconKey, bool highlight)
         {
             var geo = this.FindResource(iconKey) as StreamGeometry;
             if (geo == null)
                 return;
 
-            Content = new Path()
+            var path = new Path()
             {
                 Width = 12,
                 Height = 12,
@@ -85,6 +85,11 @@ namespace SourceGit.Views
                 Margin = margin,
                 Data = geo,
             };
+
+            if (highlight)
+                path.Fill = Brushes.Green;
+
+            Content = path;
         }
     }
 

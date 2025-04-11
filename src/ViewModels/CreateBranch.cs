@@ -6,7 +6,7 @@ namespace SourceGit.ViewModels
     public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
-        [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(CreateBranch), nameof(ValidateBranchName))]
         public string Name
         {
@@ -19,16 +19,21 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public Models.DealWithLocalChanges PreAction
+        public bool DiscardLocalChanges
         {
-            get => _repo.Settings.DealWithLocalChangesOnCreateBranch;
-            set => _repo.Settings.DealWithLocalChangesOnCreateBranch = value;
+            get;
+            set;
         }
 
         public bool CheckoutAfterCreated
         {
             get => _repo.Settings.CheckoutBranchOnCreateBranch;
             set => _repo.Settings.CheckoutBranchOnCreateBranch = value;
+        }
+
+        public bool IsBareRepository
+        {
+            get => _repo.IsBare;
         }
 
         public CreateBranch(Repository repo, Models.Branch branch)
@@ -42,6 +47,7 @@ namespace SourceGit.ViewModels
             }
 
             BasedOn = branch;
+            DiscardLocalChanges = false;
             View = new Views.CreateBranch() { DataContext = this };
         }
 
@@ -51,6 +57,7 @@ namespace SourceGit.ViewModels
             _baseOnRevision = commit.SHA;
 
             BasedOn = commit;
+            DiscardLocalChanges = false;
             View = new Views.CreateBranch() { DataContext = this };
         }
 
@@ -60,6 +67,7 @@ namespace SourceGit.ViewModels
             _baseOnRevision = tag.SHA;
 
             BasedOn = tag;
+            DiscardLocalChanges = false;
             View = new Views.CreateBranch() { DataContext = this };
         }
 
@@ -69,9 +77,10 @@ namespace SourceGit.ViewModels
             if (creator == null)
                 return new ValidationResult("Missing runtime context to create branch!");
 
+            var fixedName = creator.FixName(name);
             foreach (var b in creator._repo.Branches)
             {
-                if (b.FriendlyName == name)
+                if (b.FriendlyName == fixedName)
                     return new ValidationResult("A branch with same name already exists!");
             }
 
@@ -81,16 +90,23 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+
+            var fixedName = FixName(_name);
             return Task.Run(() =>
             {
                 var succ = false;
-                if (CheckoutAfterCreated)
+                if (CheckoutAfterCreated && !_repo.IsBare)
                 {
                     var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
                     var needPopStash = false;
                     if (changes > 0)
                     {
-                        if (PreAction == Models.DealWithLocalChanges.StashAndReaply)
+                        if (DiscardLocalChanges)
+                        {
+                            SetProgressDescription("Discard local changes...");
+                            Commands.Discard.All(_repo.FullPath, false);
+                        }
+                        else
                         {
                             SetProgressDescription("Stash local changes");
                             succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
@@ -102,15 +118,10 @@ namespace SourceGit.ViewModels
 
                             needPopStash = true;
                         }
-                        else if (PreAction == Models.DealWithLocalChanges.Discard)
-                        {
-                            SetProgressDescription("Discard local changes...");
-                            Commands.Discard.All(_repo.FullPath, false);
-                        }
                     }
 
-                    SetProgressDescription($"Create new branch '{_name}'");
-                    succ = new Commands.Checkout(_repo.FullPath).Branch(_name, _baseOnRevision, SetProgressDescription);
+                    SetProgressDescription($"Create new branch '{fixedName}'");
+                    succ = new Commands.Checkout(_repo.FullPath).Branch(fixedName, _baseOnRevision, SetProgressDescription);
 
                     if (needPopStash)
                     {
@@ -120,15 +131,15 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    SetProgressDescription($"Create new branch '{_name}'");
-                    succ = Commands.Branch.Create(_repo.FullPath, _name, _baseOnRevision);
+                    SetProgressDescription($"Create new branch '{fixedName}'");
+                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision);
                 }
 
                 CallUIThread(() =>
                 {
                     if (succ && CheckoutAfterCreated)
                     {
-                        var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
+                        var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
                         if (BasedOn is Models.Branch based && !based.IsLocal)
                             fake.Upstream = based.FullName;
 
@@ -146,6 +157,15 @@ namespace SourceGit.ViewModels
 
                 return true;
             });
+        }
+
+        private string FixName(string name)
+        {
+            if (!name.Contains(' '))
+                return name;
+
+            var parts = name.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+            return string.Join("-", parts);
         }
 
         private readonly Repository _repo = null;

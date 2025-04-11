@@ -11,7 +11,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitLFS.AddTrackPattern.Title}"/>
-    
+
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

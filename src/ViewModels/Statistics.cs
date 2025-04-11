@@ -33,12 +33,12 @@ namespace SourceGit.ViewModels
 
         public uint SampleColor
         {
-            get => Preference.Instance.StatisticsSampleColor;
+            get => Preferences.Instance.StatisticsSampleColor;
             set
             {
-                if (value != Preference.Instance.StatisticsSampleColor)
+                if (value != Preferences.Instance.StatisticsSampleColor)
                 {
-                    Preference.Instance.StatisticsSampleColor = value;
+                    Preferences.Instance.StatisticsSampleColor = value;
                     OnPropertyChanged(nameof(SampleBrush));
                     _selectedReport?.ChangeColor(value);
                 }
@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
         {
             Task.Run(() =>
             {
-                var result = new Commands.Statistics(repo, Preference.Instance.MaxHistoryCommits).Result();
+                var result = new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     _data = result;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SourceGit.Commands
 {
@@ -8,7 +9,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "stash list --pretty=format:%H%n%ct%n%gd%n%s";
+            Args = "stash list --format=%H%n%P%n%ct%n%gd%n%s";
         }
 
         public List<Models.Stash> Result()
@@ -26,19 +27,30 @@ namespace SourceGit.Commands
                     _stashes.Add(_current);
                     break;
                 case 1:
-                    _current.Time = ulong.Parse(line);
+                    ParseParent(line);
                     break;
                 case 2:
-                    _current.Name = line;
+                    _current.Time = ulong.Parse(line);
                     break;
                 case 3:
+                    _current.Name = line;
+                    break;
+                case 4:
                     _current.Message = line;
                     break;
             }
 
             _nextLineIdx++;
-            if (_nextLineIdx > 3)
+            if (_nextLineIdx > 4)
                 _nextLineIdx = 0;
+        }
+
+        private void ParseParent(string data)
+        {
+            if (data.Length < 8)
+                return;
+
+            _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
 
         private readonly List<Models.Stash> _stashes = new List<Models.Stash>();

@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public ScanRepositories(string rootDir)
         {
-            GetManagedRepositories(Preference.Instance.RepositoryNodes, _managed);
+            GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
 
             RootDir = rootDir;
             View = new Views.ScanRepositories() { DataContext = this };
@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
                 watch.Start();
 
                 var rootDir = new DirectoryInfo(RootDir);
-                var founded = new List<string>();
+                var founded = new List<FoundRepository>();
                 GetUnmanagedRepositories(rootDir, founded, new EnumerationOptions()
                 {
                     AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
@@ -47,20 +47,20 @@ namespace SourceGit.ViewModels
 
                     foreach (var f in founded)
                     {
-                        var parent = new DirectoryInfo(f).Parent!.FullName.Replace("\\", "/");
+                        var parent = new DirectoryInfo(f.Path).Parent!.FullName.Replace("\\", "/");
                         if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                         {
-                            Preference.Instance.FindOrAddNodeByRepositoryPath(f, null, false);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, null, false);
                         }
                         else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                         {
                             var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
-                            var group = FindOrCreateGroupRecursive(Preference.Instance.RepositoryNodes, relative);
-                            Preference.Instance.FindOrAddNodeByRepositoryPath(f, group, false);
+                            var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, group, false);
                         }
                     }
 
-                    Preference.Instance.AutoRemoveInvalidNode();
+                    Preferences.Instance.AutoRemoveInvalidNode();
                     Welcome.Instance.Refresh();
                 });
 
@@ -85,7 +85,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void GetUnmanagedRepositories(DirectoryInfo dir, List<string> outs, EnumerationOptions opts, int depth = 0)
+        private void GetUnmanagedRepositories(DirectoryInfo dir, List<FoundRepository> outs, EnumerationOptions opts, int depth = 0)
         {
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
@@ -111,9 +111,16 @@ namespace SourceGit.ViewModels
                     {
                         var normalized = test.StdOut.Trim().Replace("\\", "/");
                         if (!_managed.Contains(normalized))
-                            outs.Add(normalized);
+                            outs.Add(new FoundRepository(normalized, false));
                     }
 
+                    continue;
+                }
+
+                var isBare = new Commands.IsBareRepository(subdir.FullName).Result();
+                if (isBare)
+                {
+                    outs.Add(new FoundRepository(normalizedSelf, true));
                     continue;
                 }
 
@@ -159,6 +166,12 @@ namespace SourceGit.ViewModels
             });
 
             return added;
+        }
+
+        private record FoundRepository(string path, bool isBare)
+        {
+            public string Path { get; set; } = path;
+            public bool IsBare { get; set; } = isBare;
         }
 
         private HashSet<string> _managed = new HashSet<string>();

@@ -45,6 +45,11 @@ namespace SourceGit.ViewModels
             _data = repo;
         }
 
+        public void ClearNotifications()
+        {
+            Notifications.Clear();
+        }
+
         public void CopyPath()
         {
             if (_node.IsRepository)
@@ -59,12 +64,14 @@ namespace SourceGit.ViewModels
         public void StartPopup(Popup popup)
         {
             Popup = popup;
-            ProcessPopup();
+
+            if (popup.CanStartDirectly())
+                ProcessPopup();
         }
 
         public async void ProcessPopup()
         {
-            if (_popup != null)
+            if (_popup is { InProgress: false })
             {
                 if (!_popup.Check())
                     return;

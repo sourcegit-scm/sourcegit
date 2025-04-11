@@ -13,7 +13,7 @@
     <Product>SourceGit</Product>
     <Description>OpenSource GIT client</Description>
     <Company>sourcegit-scm</Company>
-    <Copyright>Copyright © 2024 sourcegit-scm.</Copyright>
+    <Copyright>Copyright © $([System.DateTime]::Now.Year) sourcegit-scm.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/sourcegit-scm/sourcegit.git</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>
@@ -41,17 +41,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.3" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.3" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc4.5" />
-    <PackageReference Include="TextMateSharp" Version="1.0.65" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.65" />
+    <PackageReference Include="Avalonia" Version="11.2.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.6" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.6" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.6" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.2.0" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.4" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc5.4" />
+    <PackageReference Include="OpenAI" Version="2.2.0-beta.4" />
+    <PackageReference Include="TextMateSharp" Version="1.0.66" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.66" />
   </ItemGroup>
 
   <ItemGroup>

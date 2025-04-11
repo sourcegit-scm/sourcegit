@@ -39,11 +39,11 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public bool PushToAllRemotes
+        public bool PushToRemotes
         {
-            get;
-            set;
-        } = true;
+            get => _repo.Settings.PushToRemoteWhenCreateTag;
+            set => _repo.Settings.PushToRemoteWhenCreateTag = value;
+        }
 
         public CreateTag(Repository repo, Models.Branch branch)
         {
@@ -82,6 +82,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Create tag...";
 
+            var remotes = PushToRemotes ? _repo.Remotes : null;
             return Task.Run(() =>
             {
                 bool succ;
@@ -90,12 +91,12 @@ namespace SourceGit.ViewModels
                 else
                     succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn);
 
-                if (succ && PushToAllRemotes)
+                if (succ && remotes != null)
                 {
-                    foreach (var remote in _repo.Remotes)
+                    foreach (var remote in remotes)
                     {
                         SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
-                        new Commands.Push(_repo.FullPath, remote.Name, _tagName, false).Exec();
+                        new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Exec();
                     }
                 }
 

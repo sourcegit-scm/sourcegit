@@ -2,9 +2,6 @@
 {
     public interface IRepository
     {
-        string FullPath { get; set; }
-        string GitDir { get; set; }
-
         void RefreshBranches();
         void RefreshWorktrees();
         void RefreshTags();

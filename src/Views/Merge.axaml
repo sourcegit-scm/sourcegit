@@ -60,15 +60,32 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:MergeMode.Supported}}"
-                SelectedItem="{Binding SelectedMode, Mode=TwoWay}">
+                SelectedItem="{Binding Mode, Mode=TwoWay}"
+                Grid.IsSharedSizeScope="True">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:MergeMode">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Name}"/>
-              <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-            </StackPanel>
+            <Grid Height="20">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeNameColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeDescriptionColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeOptionColumn"/>
+              </Grid.ColumnDefinitions>
+
+              <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
+
+        <ComboBox.SelectionBoxItemTemplate>
+          <DataTemplate DataType="m:MergeMode">
+            <Grid ColumnDefinitions="Auto,*">
+              <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0,0,8,0"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
+          </DataTemplate>
+        </ComboBox.SelectionBoxItemTemplate>
       </ComboBox>
     </Grid>
   </StackPanel>

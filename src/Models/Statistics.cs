@@ -18,9 +18,9 @@ namespace SourceGit.Models
         ThisWeek,
     }
 
-    public class StaticsticsAuthor(string name, int count)
+    public class StaticsticsAuthor(User user, int count)
     {
-        public string Name { get; set; } = name;
+        public User User { get; set; } = user;
         public int Count { get; set; } = count;
     }
 
@@ -73,7 +73,7 @@ namespace SourceGit.Models
             }
         }
 
-        public void AddCommit(DateTime time, string author)
+        public void AddCommit(DateTime time, User author)
         {
             Total++;
 
@@ -126,7 +126,7 @@ namespace SourceGit.Models
         }
 
         private StaticsticsMode _mode = StaticsticsMode.All;
-        private Dictionary<string, int> _mapUsers = new Dictionary<string, int>();
+        private Dictionary<User, int> _mapUsers = new Dictionary<User, int>();
         private Dictionary<DateTime, int> _mapSamples = new Dictionary<DateTime, int>();
     }
 
@@ -150,14 +150,16 @@ namespace SourceGit.Models
 
         public void AddCommit(string author, double timestamp)
         {
+            var user = User.FindOrAdd(author);
+
             var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             if (time >= _thisWeekStart)
-                Week.AddCommit(time, author);
+                Week.AddCommit(time, user);
 
             if (time >= _thisMonthStart)
-                Month.AddCommit(time, author);
+                Month.AddCommit(time, user);
 
-            All.AddCommit(time, author);
+            All.AddCommit(time, user);
         }
 
         public void Complete()

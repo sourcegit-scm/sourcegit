@@ -1,0 +1,100 @@
+{
+  "information_for_contributors": [
+    "This file has been copied from https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355/syntaxes/jsp.tmLanguage.json",
+    "The original file was licensed under the MIT License",
+    "https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355/LICENSE"
+  ],
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Jakarta Server Pages",
+  "fileTypes": ["jsp", "jspf", "tag"],
+  "scopeName": "text.html.jsp",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#directive" },
+    { "include": "#expression" },
+    { "include": "text.html.derivative" }
+  ],
+  "injections": {
+    "L:text.html.jsp -comment -meta.tag.directive.jsp -meta.tag.scriptlet.jsp": {
+      "patterns": [
+        { "include": "#scriptlet" }
+      ],
+      "comment": "allow scriptlets anywhere except comments and nested"
+    },
+    "L:meta.attribute (string.quoted.single.html | string.quoted.double.html) -string.template.expression.jsp": {
+      "patterns": [
+        { "include": "#expression" },
+        { "include": "text.html.derivative" }
+      ],
+      "comment": "allow expressions and tags within HTML attributes (not nested)"
+    }
+  },
+  "repository": {
+    "comment": {
+      "name": "comment.block.jsp",
+      "begin": "<%--",
+      "end": "--%>"
+    },
+    "directive": {
+      "name": "meta.tag.directive.jsp",
+      "begin": "(<)(%@)",
+      "end": "(%)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.jsp" },
+        "2": { "name": "entity.name.tag.jsp" }
+      },
+      "endCaptures": {
+        "1": { "name": "entity.name.tag.jsp" },
+        "2": { "name": "punctuation.definition.tag.jsp" }
+      },
+      "patterns": [
+        {
+          "match": "\\b(attribute|include|page|tag|taglib|variable)\\b(?!\\s*=)",
+          "name": "keyword.control.directive.jsp"
+        },
+        { "include": "text.html.basic#attribute" }
+      ]
+    },
+    "scriptlet": {
+      "name": "meta.tag.scriptlet.jsp",
+      "contentName": "meta.embedded.block.java",
+      "begin": "(<)(%[\\s!=])",
+      "end": "(%)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.jsp" },
+        "2": { "name": "entity.name.tag.jsp" }
+      },
+      "endCaptures": {
+        "1": { "name": "entity.name.tag.jsp" },
+        "2": { "name": "punctuation.definition.tag.jsp" }
+      },
+      "patterns": [
+        {
+          "match": "\\{(?=\\s*(%>|$))",
+          "comment": "consume trailing curly brackets for fragmented scriptlets"
+        },
+        { "include": "source.java" }
+      ]
+    },
+    "expression": {
+      "name": "string.template.expression.jsp",
+      "contentName": "meta.embedded.block.java",
+      "begin": "[$#]\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.template-expression.begin.jsp" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.template-expression.end.jsp" }
+      },
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "source.java" }
+      ]
+    },
+    "escape": {
+      "match": "\\\\.",
+      "name": "constant.character.escape.jsp"
+    }
+  }
+}

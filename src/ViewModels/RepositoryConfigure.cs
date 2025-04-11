@@ -36,6 +36,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int PreferredMergeMode
+        {
+            get => _repo.Settings.PreferredMergeMode;
+            set
+            {
+                if (_repo.Settings.PreferredMergeMode != value)
+                {
+                    _repo.Settings.PreferredMergeMode = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool GPGCommitSigningEnabled
         {
             get;
@@ -60,16 +73,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
-        public bool EnableSignOffForCommit
-        {
-            get => _repo.Settings.EnableSignOffForCommit;
-            set => _repo.Settings.EnableSignOffForCommit = value;
-        }
-
         public bool EnablePruneOnFetch
         {
-            get => _repo.Settings.EnablePruneOnFetch;
-            set => _repo.Settings.EnablePruneOnFetch = value;
+            get;
+            set;
         }
 
         public bool EnableAutoFetch
@@ -146,7 +153,7 @@ namespace SourceGit.ViewModels
                 Remotes.Add(remote.Name);
 
             AvailableOpenAIServices = new List<string>() { "---" };
-            foreach (var service in Preference.Instance.OpenAIServices)
+            foreach (var service in Preferences.Instance.OpenAIServices)
                 AvailableOpenAIServices.Add(service.Name);
 
             if (AvailableOpenAIServices.IndexOf(PreferedOpenAIService) == -1)
@@ -165,6 +172,8 @@ namespace SourceGit.ViewModels
                 GPGUserSigningKey = signingKey;
             if (_cached.TryGetValue("http.proxy", out var proxy))
                 HttpProxy = proxy;
+            if (_cached.TryGetValue("fetch.prune", out var prune))
+                EnablePruneOnFetch = (prune == "true");
         }
 
         public void ClearHttpProxy()
@@ -205,6 +214,11 @@ namespace SourceGit.ViewModels
         public void AddSampleJiraIssueTracker()
         {
             SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", "PROJ-(\\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
+        }
+
+        public void AddSampleAzureWorkItemTracker()
+        {
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", "#(\\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
         }
 
         public void AddSampleGitLabIssueTracker()
@@ -298,6 +312,7 @@ namespace SourceGit.ViewModels
             SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
             SetIfChanged("user.signingkey", GPGUserSigningKey, "");
             SetIfChanged("http.proxy", HttpProxy, "");
+            SetIfChanged("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
         }
 
         private void SetIfChanged(string key, string value, string defValue)

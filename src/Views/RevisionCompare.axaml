@@ -15,7 +15,7 @@
         <TextBlock Text="{DynamicResource Text.Worktree}" Classes="primary" Margin="4,2" Foreground="#FFDDDDDD"/>
       </Border>
     </DataTemplate>
-    
+
     <DataTemplate DataType="m:Commit">
       <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
@@ -32,7 +32,7 @@
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
-  
+
   <Grid RowDefinitions="50,*" Margin="4">
     <!-- Compare Revision Info -->
     <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
@@ -91,14 +91,15 @@
           <v:ChangeViewModeSwitcher Grid.Column="1"
                                     Width="14" Height="14"
                                     HorizontalAlignment="Right"
-                                    ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
+                                    ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
         </Grid>
 
         <!-- Changes -->
         <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-          <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preference.Instance}, Path=CommitChangeViewMode}"
+          <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
                                   Changes="{Binding VisibleChanges}"
                                   SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                  AutoSelectFirstChange="True"
                                   ContextRequested="OnChangeContextRequested"/>
         </Border>
       </Grid>

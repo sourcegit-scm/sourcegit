@@ -1,6 +1,8 @@
 {
     "information_for_contributors": [
-        "This file has been copied from https://github.com/eclipse/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/org.eclipse.buildship.kotlindsl.provider/kotlin.tmLanguage.json"
+        "This file has been copied from https://github.com/eclipse/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/org.eclipse.buildship.kotlindsl.provider/kotlin.tmLanguage.json",
+        "The original file was licensed under the Eclipse Public License, Version 1.0",
+        "https://github.com/eclipse-buildship/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/README.md"
     ],
     "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
     "name": "Kotlin",

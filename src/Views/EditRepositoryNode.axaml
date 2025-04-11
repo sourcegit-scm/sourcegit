@@ -43,7 +43,7 @@
                     Fill="{Binding Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
                     HorizontalAlignment="Center" VerticalAlignment="Center"
                     Data="{StaticResource Icons.Bookmark}"/>
-            </Border>            
+            </Border>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>

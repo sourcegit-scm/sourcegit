@@ -175,12 +175,21 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             Cursor = Cursor.Parse("Hand");
+
+                            if (DataContext is ViewModels.Blame blame)
+                            {
+                                var msg = blame.GetCommitMessage(info.CommitSHA);
+                                ToolTip.SetTip(this, msg);
+                                ToolTip.SetIsOpen(this, true);
+                            }
+
                             return;
                         }
                     }
-                }
 
-                Cursor = Cursor.Default;
+                    Cursor = Cursor.Default;
+                    ToolTip.SetIsOpen(this, false);
+                }
             }
 
             protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -230,9 +239,9 @@ namespace SourceGit.Views
             private readonly BlameTextEditor _editor = null;
         }
 
-        public class VerticalSeperatorMargin : AbstractMargin
+        public class VerticalSeparatorMargin : AbstractMargin
         {
-            public VerticalSeperatorMargin(BlameTextEditor editor)
+            public VerticalSeparatorMargin(BlameTextEditor editor)
             {
                 _editor = editor;
             }
@@ -260,6 +269,15 @@ namespace SourceGit.Views
             set => SetValue(BlameDataProperty, value);
         }
 
+        public static readonly StyledProperty<int> TabWidthProperty =
+            AvaloniaProperty.Register<BlameTextEditor, int>(nameof(TabWidth), 4);
+
+        public int TabWidth
+        {
+            get => GetValue(TabWidthProperty);
+            set => SetValue(TabWidthProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public BlameTextEditor() : base(new TextArea(), new TextDocument())
@@ -268,20 +286,22 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             WordWrap = false;
 
+            Options.IndentationSize = TabWidth;
+            Options.EnableHyperlinks = false;
+            Options.EnableEmailHyperlinks = false;
+
             _textMate = Models.TextMateHelper.CreateForEditor(this);
 
             TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeperatorMargin(this));
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
             TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
             TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
         }
 
         public override void Render(DrawingContext context)
@@ -349,6 +369,10 @@ namespace SourceGit.Views
                 {
                     Text = string.Empty;
                 }
+            }
+            else if (change.Property == TabWidthProperty)
+            {
+                Options.IndentationSize = TabWidth;
             }
             else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
             {

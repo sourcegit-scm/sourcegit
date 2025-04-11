@@ -7,7 +7,7 @@ namespace SourceGit.Commands
 {
     public partial class LFS
     {
-        [GeneratedRegex(@"^(.+)\s+(\w+)\s+\w+:(\d+)$")]
+        [GeneratedRegex(@"^(.+)\s+([\w.]+)\s+\w+:(\d+)$")]
         private static partial Regex REG_LOCK();
 
         class SubCmd : Command
@@ -82,7 +82,7 @@ namespace SourceGit.Commands
             var rs = cmd.ReadToEnd();
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     var match = REG_LOCK().Match(line);

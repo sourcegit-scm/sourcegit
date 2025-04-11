@@ -8,6 +8,7 @@ using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 
 namespace SourceGit.Native
 {
@@ -152,7 +153,7 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            var info = new ProcessStartInfo("cmd", $"/c start {url}");
+            var info = new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"");
             info.CreateNoWindow = true;
             Process.Start(info);
         }
@@ -214,12 +215,17 @@ namespace SourceGit.Native
 
         private void FixWindowFrameOnWin10(Window w)
         {
-            var platformHandle = w.TryGetPlatformHandle();
-            if (platformHandle == null)
-                return;
+            // Schedule the DWM frame extension to run in the next render frame
+            // to ensure proper timing with the window initialization sequence
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                var platformHandle = w.TryGetPlatformHandle();
+                if (platformHandle == null)
+                    return;
 
-            var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-            DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
+                var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+                DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
+            }, DispatcherPriority.Render);
         }
 
         #region EXTERNAL_EDITOR_FINDER

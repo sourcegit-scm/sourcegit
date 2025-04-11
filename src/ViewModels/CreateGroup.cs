@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
-            Preference.Instance.AddNode(new RepositoryNode()
+            Preferences.Instance.AddNode(new RepositoryNode()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = _name,

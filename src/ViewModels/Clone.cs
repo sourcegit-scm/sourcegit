@@ -53,6 +53,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
+        public bool InitAndUpdateSubmodules
+        {
+            get;
+            set;
+        } = true;
+
         public Clone(string pageId)
         {
             _pageId = pageId;
@@ -127,9 +133,20 @@ namespace SourceGit.ViewModels
                     config.Set("remote.origin.sshkey", _sshKey);
                 }
 
+                // individually update submodule (if any)
+                if (InitAndUpdateSubmodules)
+                {
+                    var submoduleList = new Commands.QuerySubmodules(path).Result();
+                    foreach (var submodule in submoduleList)
+                    {
+                        var update = new Commands.Submodule(path);
+                        update.Update(submodule.Path, true, true, false, SetProgressDescription);
+                    }
+                }
+
                 CallUIThread(() =>
                 {
-                    var node = Preference.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
                     var launcher = App.GetLauncer();
                     var page = null as LauncherPage;
                     foreach (var one in launcher.Pages)
@@ -153,7 +170,7 @@ namespace SourceGit.ViewModels
         private string _remote = string.Empty;
         private bool _useSSH = false;
         private string _sshKey = string.Empty;
-        private string _parentFolder = Preference.Instance.GitDefaultCloneDir;
+        private string _parentFolder = Preferences.Instance.GitDefaultCloneDir;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
     }

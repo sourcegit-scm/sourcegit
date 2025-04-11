@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -21,12 +20,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _ignoreWhiteSpace, value);
         }
 
-        public List<Models.ApplyWhiteSpaceMode> WhiteSpaceModes
-        {
-            get;
-            private set;
-        }
-
         public Models.ApplyWhiteSpaceMode SelectedWhiteSpaceMode
         {
             get;
@@ -37,23 +30,14 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
 
-            WhiteSpaceModes = new List<Models.ApplyWhiteSpaceMode> {
-                new Models.ApplyWhiteSpaceMode("Apply.NoWarn", "Apply.NoWarn.Desc", "nowarn"),
-                new Models.ApplyWhiteSpaceMode("Apply.Warn", "Apply.Warn.Desc", "warn"),
-                new Models.ApplyWhiteSpaceMode("Apply.Error", "Apply.Error.Desc", "error"),
-                new Models.ApplyWhiteSpaceMode("Apply.ErrorAll", "Apply.ErrorAll.Desc", "error-all")
-            };
-            SelectedWhiteSpaceMode = WhiteSpaceModes[0];
-
+            SelectedWhiteSpaceMode = Models.ApplyWhiteSpaceMode.Supported[0];
             View = new Views.Apply() { DataContext = this };
         }
 
         public static ValidationResult ValidatePatchFile(string file, ValidationContext _)
         {
             if (File.Exists(file))
-            {
                 return ValidationResult.Success;
-            }
 
             return new ValidationResult($"File '{file}' can NOT be found!!!");
         }

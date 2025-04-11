@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Branch name is required!!!")]
-        [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(RenameBranch), nameof(ValidateBranchName))]
         public string Name
         {
@@ -32,9 +32,10 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is RenameBranch rename)
             {
+                var fixedName = rename.FixName(name);
                 foreach (var b in rename._repo.Branches)
                 {
-                    if (b.IsLocal && b != rename.Target && b.Name == name)
+                    if (b.IsLocal && b != rename.Target && b.Name == fixedName)
                     {
                         return new ValidationResult("A branch with same name already exists!!!");
                     }
@@ -46,7 +47,8 @@ namespace SourceGit.ViewModels
 
         public override Task<bool> Sure()
         {
-            if (_name == Target.Name)
+            var fixedName = FixName(_name);
+            if (fixedName == Target.Name)
                 return null;
 
             _repo.SetWatcherEnabled(false);
@@ -55,7 +57,7 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var oldName = Target.FullName;
-                var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, _name);
+                var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, fixedName);
                 CallUIThread(() =>
                 {
                     if (succ)
@@ -65,7 +67,7 @@ namespace SourceGit.ViewModels
                             if (filter.Type == Models.FilterType.LocalBranch &&
                                 filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                             {
-                                filter.Pattern = $"refs/heads/{_name}";
+                                filter.Pattern = $"refs/heads/{fixedName}";
                                 break;
                             }
                         }
@@ -76,6 +78,15 @@ namespace SourceGit.ViewModels
                 });
                 return succ;
             });
+        }
+
+        private string FixName(string name)
+        {
+            if (!name.Contains(' '))
+                return name;
+
+            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            return string.Join("-", parts);
         }
 
         private readonly Repository _repo;

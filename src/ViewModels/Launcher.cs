@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             if (string.IsNullOrEmpty(startupRepo))
             {
                 ActiveWorkspace = pref.GetActiveWorkspace();
@@ -117,7 +117,7 @@ namespace SourceGit.ViewModels
 
         public void Quit(double width, double height)
         {
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             pref.Layout.LauncherWidth = width;
             pref.Layout.LauncherHeight = height;
             pref.Save();
@@ -275,24 +275,19 @@ namespace SourceGit.ViewModels
 
             if (!Path.Exists(node.Id))
             {
-                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                App.RaiseException(ctx, "Repository does NOT exists any more. Please remove it.");
+                App.RaiseException(node.Id, "Repository does NOT exists any more. Please remove it.");
                 return;
             }
 
-            var gitDir = new Commands.QueryGitDir(node.Id).Result();
+            var isBare = new Commands.IsBareRepository(node.Id).Result();
+            var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
             if (string.IsNullOrEmpty(gitDir))
             {
-                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                App.RaiseException(ctx, "Given path is not a valid git repository!");
+                App.RaiseException(node.Id, "Given path is not a valid git repository!");
                 return;
             }
 
-            var repo = new Repository()
-            {
-                FullPath = node.Id,
-                GitDir = gitDir,
-            };
+            var repo = new Repository(isBare, node.Id, gitDir);
             repo.Open();
 
             if (page == null)
@@ -355,7 +350,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateContextForWorkspace()
         {
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             var menu = new ContextMenu();
 
             for (var i = 0; i < pref.Workspaces.Count; i++)
@@ -468,6 +463,37 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private string GetRepositoryGitDir(string repo)
+        {
+            var fullpath = Path.Combine(repo, ".git");
+            if (Directory.Exists(fullpath))
+            {
+                if (Directory.Exists(Path.Combine(fullpath, "refs")) &&
+                    Directory.Exists(Path.Combine(fullpath, "objects")) &&
+                    File.Exists(Path.Combine(fullpath, "HEAD")))
+                    return fullpath;
+
+                return null;
+            }
+
+            if (File.Exists(fullpath))
+            {
+                var redirect = File.ReadAllText(fullpath).Trim();
+                if (redirect.StartsWith("gitdir: ", StringComparison.Ordinal))
+                    redirect = redirect.Substring(8);
+
+                if (!Path.IsPathRooted(redirect))
+                    redirect = Path.GetFullPath(Path.Combine(repo, redirect));
+
+                if (Directory.Exists(redirect))
+                    return redirect;
+
+                return null;
+            }
+
+            return new Commands.QueryGitDir(repo).Result();
+        }
+
         private void SwitchWorkspace(Workspace to)
         {
             foreach (var one in Pages)
@@ -481,7 +507,7 @@ namespace SourceGit.ViewModels
 
             _ignoreIndexChange = true;
 
-            var pref = Preference.Instance;
+            var pref = Preferences.Instance;
             foreach (var w in pref.Workspaces)
                 w.IsActive = false;
 
@@ -524,6 +550,7 @@ namespace SourceGit.ViewModels
             }
 
             _ignoreIndexChange = false;
+            Preferences.Instance.Save();
             GC.Collect();
         }
 

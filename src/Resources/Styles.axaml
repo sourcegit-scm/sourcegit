@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:s="using:SourceGit"
         xmlns:vm="using:SourceGit.ViewModels"
+        xmlns:v="using:SourceGit.Views"
         xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
         xmlns:aee="using:AvaloniaEdit.Editing"
@@ -159,7 +160,7 @@
 
   <Style Selector="ContentPresenter">
     <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
   <Style Selector="ToolTip">
@@ -280,10 +281,10 @@
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize}"/>
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
   </Style>
   <Style Selector="TextBlock.small">
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"/>
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"/>
   </Style>
   <Style Selector="TextBlock.bold">
     <Setter Property="FontWeight" Value="Bold"/>
@@ -413,7 +414,7 @@
     <Setter Property="BorderBrush" Value="Transparent"/>
   </Style>
   <Style Selector="TextBlock.tab_header">
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preference.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Opacity" Value=".56"/>
@@ -844,7 +845,19 @@
                          HorizontalAlignment="Right"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                         FontSize="11"/>
+                         FontSize="11"
+                         IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+
+              <TextBlock x:Name="PART_CommandTip"
+                         Grid.Column="2"
+                         Classes="CaptionTextBlockStyle"
+                         Margin="{DynamicResource MenuInputGestureTextMargin}"
+                         Text="{TemplateBinding (v:MenuItemExtension.Command)}"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         FontSize="11"
+                         IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
               
               <Path Name="PART_ChevronPath"
                     Width="6"
@@ -1286,6 +1299,8 @@
       <Setter Property="MinHeight" Value="0"/>
       <Setter Property="Height" Value="28"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
     </Style>
     <Style Selector="^:focus-within /template/ ButtonSpinner#PART_Spinner">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>

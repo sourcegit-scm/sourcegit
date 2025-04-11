@@ -27,7 +27,7 @@
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>
-      
+
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -67,15 +67,15 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-      </ComboBox> 
+      </ComboBox>
 
-      <Border Grid.Row="3" Grid.Column="0" 
+      <Border Grid.Row="3" Grid.Column="0"
               Height="32"
               IsVisible="{Binding SetTrackingBranch, Mode=OneWay}">
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
                    Margin="0,0,8,0"
-                   Text="{DynamicResource Text.AddWorktree.Tracking}"/>        
-      </Border>      
+                   Text="{DynamicResource Text.AddWorktree.Tracking}"/>
+      </Border>
       <ComboBox Grid.Row="3" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"

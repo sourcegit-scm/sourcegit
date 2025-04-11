@@ -36,6 +36,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.KeepIndexWhenStash = value;
         }
 
+        public bool AutoRestore
+        {
+            get => _repo.Settings.AutoRestoreAfterStash;
+            set => _repo.Settings.AutoRestoreAfterStash = value;
+        }
+
         public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
         {
             _repo = repo;
@@ -58,7 +64,7 @@ namespace SourceGit.ViewModels
                 {
                     if (OnlyStaged)
                     {
-                        if (Native.OS.GitVersion >= Models.GitVersions.STASH_ONLY_STAGED)
+                        if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                         {
                             succ = new Commands.Stash(_repo.FullPath).PushOnlyStaged(Message, KeepIndex);
                         }
@@ -76,16 +82,16 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (IncludeUntracked)
-                            AddUntracked(_changes);
-                        succ = StashWithChanges(_changes);
+                        succ = new Commands.Stash(_repo.FullPath).Push(Message, IncludeUntracked, KeepIndex);
                     }
                 }
                 else
                 {
-                    AddUntracked(_changes);
                     succ = StashWithChanges(_changes);
                 }
+
+                if (AutoRestore && succ)
+                    succ = new Commands.Stash(_repo.FullPath).Apply("stash@{0}", true);
 
                 CallUIThread(() =>
                 {
@@ -97,47 +103,13 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private void AddUntracked(List<Models.Change> changes)
-        {
-            var toBeAdded = new List<Models.Change>();
-            foreach (var c in changes)
-            {
-                if (c.WorkTree == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
-                    toBeAdded.Add(c);
-            }
-
-            if (toBeAdded.Count == 0)
-                return;
-
-            if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
-            {
-                var paths = new List<string>();
-                foreach (var c in toBeAdded)
-                    paths.Add(c.Path);
-
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, paths);
-                new Commands.Add(_repo.FullPath, tmpFile).Exec();
-                File.Delete(tmpFile);
-            }
-            else
-            {
-                for (int i = 0; i < toBeAdded.Count; i += 10)
-                {
-                    var count = Math.Min(10, toBeAdded.Count - i);
-                    var step = toBeAdded.GetRange(i, count);
-                    new Commands.Add(_repo.FullPath, step).Exec();
-                }
-            }
-        }
-
         private bool StashWithChanges(List<Models.Change> changes)
         {
             if (changes.Count == 0)
                 return true;
 
             var succ = false;
-            if (Native.OS.GitVersion >= Models.GitVersions.STASH_WITH_PATHSPECFILE)
+            if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_WITH_PATHSPECFILE)
             {
                 var paths = new List<string>();
                 foreach (var c in changes)

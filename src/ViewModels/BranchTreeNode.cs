@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-
 using Avalonia;
-using Avalonia.Media;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -40,9 +37,14 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch;
         }
 
-        public FontWeight NameFontWeight
+        public bool IsCurrent
         {
-            get => Backend is Models.Branch { IsCurrent: true } ? FontWeight.Bold : FontWeight.Regular;
+            get => Backend is Models.Branch { IsCurrent: true };
+        }
+
+        public bool ShowUpstreamGoneTip
+        {
+            get => Backend is Models.Branch { IsUpsteamGone: true };
         }
 
         public string Tooltip

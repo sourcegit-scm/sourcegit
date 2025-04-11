@@ -17,14 +17,14 @@
           <DataTemplate DataType="vm:Welcome">
             <v:WelcomeToolbar/>
           </DataTemplate>
-          
+
           <DataTemplate DataType="vm:Repository">
             <v:RepositoryToolbar/>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
     </Border>
-    
+
     <!-- Body -->
     <Border Grid.Row="1">
       <ContentControl Content="{Binding Data}">
@@ -32,7 +32,7 @@
           <DataTemplate DataType="vm:Welcome">
             <v:Welcome/>
           </DataTemplate>
-          
+
           <DataTemplate DataType="vm:Repository">
             <v:Repository/>
           </DataTemplate>
@@ -53,7 +53,7 @@
               PointerPressed="OnMaskClicked"
               IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-      <Grid RowDefinitions="Auto,*" Width="512" HorizontalAlignment="Center">
+      <Grid RowDefinitions="Auto,Auto,*" Width="512" HorizontalAlignment="Center">
         <!-- Popup -->
         <Border Grid.Row="0"
                 Margin="6,0"
@@ -104,8 +104,24 @@
           </ContentControl>
         </Border>
 
+        <!-- Notifications Clear Button -->
+        <Button Grid.Row="1"
+                Classes="flat primary"
+                Margin="0,8,0,0"
+                Padding="16,0"
+                Height="24"
+                CornerRadius="12"
+                HorizontalAlignment="Center"
+                Command="{Binding ClearNotifications}"
+                IsVisible="{Binding Notifications.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Path Width="14" Height="14" Data="{StaticResource Icons.ClearNotifications}" Fill="White"/>
+            <TextBlock Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Notifications.Clear}" Foreground="White"/>
+          </StackPanel>
+        </Button>
+
         <!-- Notifications -->
-        <ScrollViewer Grid.Row="1" Margin="0,6,0,0" VerticalAlignment="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" VerticalAlignment="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
           <ItemsControl ItemsSource="{Binding Notifications}">
             <ItemsControl.ItemTemplate>
               <DataTemplate DataType="m:Notification">
@@ -122,7 +138,7 @@
                         </Button>
                         <Button Grid.Column="3" Classes="icon_button" Width="16" Height="16" Margin="8,0,0,0" Click="OnDismissNotification">
                           <Path Width="10" Height="10" Data="{StaticResource Icons.Window.Close}"/>
-                        </Button> 
+                        </Button>
                       </Grid>
 
                       <ScrollViewer Grid.Row="1" Margin="8" MaxHeight="200" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

@@ -10,21 +10,21 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:LayoutableGrid UseHorizontal="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories}">
-    <v:LayoutableGrid.RowDefinitions>
+  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+    <v:HistoriesLayout.RowDefinitions>
       <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>
       <RowDefinition Height="{Binding BottomArea, Mode=TwoWay}" MinHeight="200"/>
-    </v:LayoutableGrid.RowDefinitions>
+    </v:HistoriesLayout.RowDefinitions>
 
-    <v:LayoutableGrid.ColumnDefinitions>
+    <v:HistoriesLayout.ColumnDefinitions>
       <ColumnDefinition Width="{Binding LeftArea, Mode=TwoWay}" MinWidth="100"/>
       <ColumnDefinition Width="3"/>
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
-    </v:LayoutableGrid.ColumnDefinitions>
-    
+    </v:HistoriesLayout.ColumnDefinitions>
+
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <Grid RowDefinitions="24,*">
+      <Grid RowDefinitions="24,*" Grid.IsSharedSizeScope="True">
         <!-- Headers -->
         <Border Grid.Row="0"
                 Background="{DynamicResource Brush.Window}"
@@ -35,8 +35,8 @@
               <ColumnDefinition Width="*" MinWidth="100"/>
               <ColumnDefinition Width="3"/>
               <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
-              <ColumnDefinition Width="100" MaxWidth="100" MinWidth="100"/>
-              <ColumnDefinition Width="170" MaxWidth="170" MinWidth="170"/>
+              <ColumnDefinition SharedSizeGroup="SHA"/>
+              <ColumnDefinition SharedSizeGroup="Time"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
@@ -51,11 +51,11 @@
               <TextBlock Classes="table_header"
                          Margin="6,0,0,0"
                          Text="{DynamicResource Text.Histories.Header.Time}"
-                         IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
+                         IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
               <TextBlock Classes="table_header"
                          Margin="6,0,0,0"
                          Text="{DynamicResource Text.Histories.Header.AuthorTime}"
-                         IsVisible="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"/>
+                         IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"/>
             </StackPanel>
           </Grid>
         </Border>
@@ -121,14 +121,18 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
-                    <ColumnDefinition Width="100" MaxWidth="100" MinWidth="100"/>
-                    <ColumnDefinition Width="170" MaxWidth="170" MinWidth="170"/>
+                    <ColumnDefinition SharedSizeGroup="SHA" Width="Auto" MinWidth="100"/>
+                    <ColumnDefinition SharedSizeGroup="Time" Width="Auto" MinWidth="160"/>
                   </Grid.ColumnDefinitions>
 
                   <!-- Subject & REFS -->
-                  <Border Grid.Column="0" Padding="{Binding Margin}" ClipToBounds="True">
+                  <Border Grid.Column="0"
+                          Padding="{Binding Margin}"
+                          ClipToBounds="True"
+                          Background="Transparent"
+                          ToolTip.Tip="{Binding Subject}">
                     <Grid ColumnDefinitions="Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
-                      <v:CommitStatusIndicator Grid.Column="0" 
+                      <v:CommitStatusIndicator Grid.Column="0"
                                                CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
                                                AheadBrush="{DynamicResource Brush.Accent}"
                                                BehindBrush="{DynamicResource Brush.FG1}"
@@ -136,9 +140,9 @@
 
                       <v:CommitRefsPresenter Grid.Column="1"
                                              Background="{DynamicResource Brush.Contents}"
-                                             TagBackground="{DynamicResource Brush.DecoratorTag}"
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
+                                             ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                              FontSize="11"
                                              VerticalAlignment="Center">
                         <v:CommitRefsPresenter.UseGraphColor>
@@ -159,7 +163,10 @@
                   </Border>
 
                   <!-- Author -->
-                  <Grid Grid.Column="1" ColumnDefinitions="20,*" IsHitTestVisible="False">
+                  <Grid Grid.Column="1"
+                        ColumnDefinitions="20,*"
+                        Background="Transparent"
+                        ToolTip.Tip="{Binding Author}">
                     <v:Avatar Grid.Column="0"
                               Width="16" Height="16"
                               Margin="4,0,0,0"
@@ -170,7 +177,7 @@
                               Opacity="{Binding Opacity}"/>
 
                     <Border Grid.Column="1" Padding="8,0,0,0" ClipToBounds="True">
-                      <TextBlock Classes="primary" 
+                      <TextBlock Classes="primary"
                                  Text="{Binding Author.Name}"
                                  FontWeight="{Binding FontWeight}"
                                  HorizontalAlignment="Left"
@@ -188,14 +195,14 @@
                   </Border>
 
                   <!-- TIME -->
-                  <Border Grid.Column="3" Padding="4,0" ClipToBounds="True" IsHitTestVisible="False">
+                  <Border Grid.Column="3" Padding="4,0,8,0" ClipToBounds="True" IsHitTestVisible="False">
                     <v:CommitTimeTextBlock Classes="primary"
                                            HorizontalAlignment="Center"
                                            FontWeight="{Binding FontWeight}"
                                            Opacity="{Binding Opacity}"
-                                           UseAuthorTime="{Binding Source={x:Static vm:Preference.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
-                                           ShowAsDateTime="{Binding Source={x:Static vm:Preference.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
-                                           DateTimeFormat="{Binding Source={x:Static vm:Preference.Instance}, Path=DateTimeFormat}"/>
+                                           UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
+                                           ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
+                                           DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat}"/>
                   </Border>
                 </Grid>
               </DataTemplate>
@@ -211,7 +218,7 @@
                          ClipToBounds="True"/>
         </Grid>
       </Grid>
-      
+
       <!-- Fix memory leak -->
       <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
     </Grid>
@@ -221,7 +228,7 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="{DynamicResource Brush.Window}"
                   BorderBrush="{DynamicResource Brush.Border0}"/>
-    
+
     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <Grid IsVisible="{Binding DetailContext, Converter={x:Static ObjectConverters.IsNull}}">
         <Path Width="128" Height="128"
@@ -236,7 +243,7 @@
           <TextBlock Text="{DynamicResource Text.Histories.Tips.MacOS}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform False, macOS=True}"/>
         </StackPanel>
       </Grid>
-      
+
       <ContentControl Content="{Binding DetailContext}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:CommitDetail">
@@ -264,5 +271,5 @@
         </ContentControl.DataTemplates>
       </ContentControl>
     </Grid>
-  </v:LayoutableGrid>
+  </v:HistoriesLayout>
 </UserControl>
