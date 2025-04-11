@@ -919,11 +919,7 @@ namespace SourceGit.ViewModels
         private CancellationTokenSource _cancellationSource = null;
         private List<string> _revisionFiles = null;
         private string _revisionFileSearchFilter = string.Empty;
-<<<<<<< HEAD
-        private bool _isRevisionFileSearchSuggestionOpen = false;
         private Dictionary<string, (int added, int removed)> _lineCountCache = new Dictionary<string, (int added, int removed)>();
-=======
         private List<string> _revisionFileSearchSuggestion = null;
->>>>>>> develop
     }
 }
