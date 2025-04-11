@@ -71,24 +71,24 @@
                     Classes="icon_button"
                     Width="26" Height="14"
                     Padding="0"
+                    ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchaged}"
+                    Command="{Binding OpenAssumeUnchanged}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
+            </Button>
+            <ToggleButton Grid.Column="6"
+                          Classes="toggle_untracked"
+                          Width="26" Height="14"
+                          ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
+                          IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
+            <Button Grid.Column="7"
+                    Classes="icon_button"
+                    Width="26" Height="14"
+                    Padding="0"
                     IsVisible="{Binding HasUnsolvedConflicts}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts}"
                     Command="{Binding OpenExternalMergeToolAllConflicts}">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
             </Button>
-            <Button Grid.Column="6"
-                    Classes="icon_button"
-                    Width="26" Height="14"
-                    Padding="0"
-                    ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchaged}"
-                    Command="{Binding OpenAssumeUnchanged}">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
-            </Button>
-            <ToggleButton Grid.Column="7"
-                          Classes="toggle_untracked"
-                          Width="26" Height="14"
-                          ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
-                          IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
             <Button Grid.Column="8"
                     Classes="icon_button"
                     Width="26" Height="14"
