@@ -23,7 +23,7 @@
   <x:String x:Key="Text.Apply" xml:space="preserve">Appliquer</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Fichier de patch :</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selectionner le fichier .patch à appliquer</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorer les changements d'espaces blancs</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorer les changements d'espaces blancs et EOF</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Appliquer le patch</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espaces blancs :</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Appliquer le Stash</x:String>
@@ -241,7 +241,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copier</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Mode de fichier changé</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Première différence</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorer les changements d'espaces</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorer les changements d'espaces et EOF</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Dernière différence</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">CHANGEMENT D'OBJET LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Différence suivante</x:String>
