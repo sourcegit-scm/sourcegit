@@ -309,127 +309,80 @@ namespace SourceGit.Models
 
         public string BuildHistoriesFilter()
         {
+            var includedRefs = new List<string>();
             var excludedBranches = new List<string>();
             var excludedRemotes = new List<string>();
             var excludedTags = new List<string>();
-            var includedBranches = new List<string>();
-            var includedRemotes = new List<string>();
-            var includedTags = new List<string>();
             foreach (var filter in HistoriesFilters)
             {
                 if (filter.Type == FilterType.LocalBranch)
                 {
-                    var name = filter.Pattern.Substring(11);
-                    var b = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
-
                     if (filter.Mode == FilterMode.Included)
-                        includedBranches.Add(b);
+                        includedRefs.Add(filter.Pattern);
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add(b);
+                        excludedBranches.Add($"--exclude=\"{filter.Pattern.Substring(11)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
                 }
                 else if (filter.Type == FilterType.LocalBranchFolder)
                 {
                     if (filter.Mode == FilterMode.Included)
-                        includedBranches.Add($"{filter.Pattern.Substring(11)}/*");
+                        includedRefs.Add($"--branches={filter.Pattern.Substring(11)}/*");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"{filter.Pattern.Substring(11)}/*");
+                        excludedBranches.Add($"--exclude=\"{filter.Pattern.Substring(11)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
                 }
                 else if (filter.Type == FilterType.RemoteBranch)
                 {
-                    var name = filter.Pattern.Substring(13);
-                    var r = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
-
                     if (filter.Mode == FilterMode.Included)
-                        includedRemotes.Add(r);
+                        includedRefs.Add(filter.Pattern);
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add(r);
+                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.Substring(13)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
                 }
                 else if (filter.Type == FilterType.RemoteBranchFolder)
                 {
                     if (filter.Mode == FilterMode.Included)
-                        includedRemotes.Add($"{filter.Pattern.Substring(13)}/*");
+                        includedRefs.Add($"--remotes={filter.Pattern.Substring(13)}/*");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"{filter.Pattern.Substring(13)}/*");
+                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.Substring(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
                 }
                 else if (filter.Type == FilterType.Tag)
                 {
-                    var name = filter.Pattern;
-                    var t = $"{name.Substring(0, name.Length - 1)}[{name[^1]}]";
-
                     if (filter.Mode == FilterMode.Included)
-                        includedTags.Add(t);
+                        includedRefs.Add($"refs/tags/{filter.Pattern}");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedTags.Add(t);
+                        excludedTags.Add($"--exclude=\"{filter.Pattern}\" --decorate-refs-exclude=\"refs/tags/{filter.Pattern}\"");
                 }
             }
 
-            bool hasIncluded = includedBranches.Count > 0 || includedRemotes.Count > 0 || includedTags.Count > 0;
-            bool hasExcluded = excludedBranches.Count > 0 || excludedRemotes.Count > 0 || excludedTags.Count > 0;
-
             var builder = new StringBuilder();
-            if (hasIncluded)
+            if (includedRefs.Count > 0)
             {
-                foreach (var b in includedBranches)
+                foreach (var r in includedRefs)
                 {
-                    builder.Append("--branches=");
+                    builder.Append(r);
+                    builder.Append(' ');
+                }
+            }
+            else if (excludedBranches.Count + excludedRemotes.Count + excludedTags.Count > 0)
+            {
+                foreach (var b in excludedBranches)
+                {
                     builder.Append(b);
                     builder.Append(' ');
                 }
 
-                foreach (var r in includedRemotes)
+                builder.Append("--exclude=HEA[D] --branches ");
+
+                foreach (var r in excludedRemotes)
                 {
-                    builder.Append("--remotes=");
                     builder.Append(r);
                     builder.Append(' ');
                 }
 
-                foreach (var t in includedTags)
-                {
-                    builder.Append("--tags=");
-                    builder.Append(t);
-                    builder.Append(' ');
-                }
-            }
-            else if (hasExcluded)
-            {
-                if (excludedBranches.Count > 0)
-                {
-                    foreach (var b in excludedBranches)
-                    {
-                        builder.Append("--exclude=");
-                        builder.Append(b);
-                        builder.Append(" --decorate-refs-exclude=refs/heads/");
-                        builder.Append(b);
-                        builder.Append(' ');
-                    }
-                }
-
-                builder.Append("--exclude=HEA[D] --branches ");
-
-                if (excludedRemotes.Count > 0)
-                {
-                    foreach (var r in excludedRemotes)
-                    {
-                        builder.Append("--exclude=");
-                        builder.Append(r);
-                        builder.Append(" --decorate-refs-exclude=refs/remotes/");
-                        builder.Append(r);
-                        builder.Append(' ');
-                    }
-                }
-
                 builder.Append("--exclude=origin/HEA[D] --remotes ");
 
-                if (excludedTags.Count > 0)
+                foreach (var t in excludedTags)
                 {
-                    foreach (var t in excludedTags)
-                    {
-                        builder.Append("--exclude=");
-                        builder.Append(t);
-                        builder.Append(" --decorate-refs-exclude=refs/tags/");
-                        builder.Append(t);
-                        builder.Append(' ');
-                    }
+                    builder.Append(t);
+                    builder.Append(' ');
                 }
 
                 builder.Append("--tags ");
