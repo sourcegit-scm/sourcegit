@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -283,10 +283,12 @@ namespace SourceGit
 
         public static Avalonia.Controls.Shapes.Path CreateMenuIcon(string key)
         {
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 12;
-            icon.Height = 12;
-            icon.Stretch = Stretch.Uniform;
+            var icon = new Avalonia.Controls.Shapes.Path
+            {
+                Width = 12,
+                Height = 12,
+                Stretch = Stretch.Uniform
+            };
 
             var geo = Current?.FindResource(key) as StreamGeometry;
             if (geo != null)
@@ -429,7 +431,7 @@ namespace SourceGit
             if (!File.Exists(doneFile))
                 return true;
 
-            var done = File.ReadAllText(doneFile).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var done = File.ReadAllText(doneFile).Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
             if (done.Length > collection.Jobs.Count)
                 return true;
 

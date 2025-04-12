@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Input;
 using Avalonia.Controls;
 
@@ -37,16 +37,15 @@ namespace SourceGit
             }
         }
 
-        public static readonly Command OpenPreferencesCommand = new Command(_ => OpenDialog(new Views.Preferences()));
-        public static readonly Command OpenHotkeysCommand = new Command(_ => OpenDialog(new Views.Hotkeys()));
-        public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
-        public static readonly Command OpenAboutCommand = new Command(_ => OpenDialog(new Views.About()));
-        public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
-        public static readonly Command QuitCommand = new Command(_ => Quit(0));
-        public static readonly Command CopyTextBlockCommand = new Command(p =>
+        public static readonly Command OpenPreferencesCommand = new(_ => OpenDialog(new Views.Preferences()));
+        public static readonly Command OpenHotkeysCommand = new(_ => OpenDialog(new Views.Hotkeys()));
+        public static readonly Command OpenAppDataDirCommand = new(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
+        public static readonly Command OpenAboutCommand = new(_ => OpenDialog(new Views.About()));
+        public static readonly Command CheckForUpdateCommand = new(_ => (Current as App)?.Check4Update(true));
+        public static readonly Command QuitCommand = new(_ => Quit(0));
+        public static readonly Command CopyTextBlockCommand = new(p =>
         {
-            var textBlock = p as TextBlock;
-            if (textBlock == null)
+            if (p is not TextBlock textBlock)
                 return;
 
             if (textBlock.Inlines is { Count: > 0 } inlines)
