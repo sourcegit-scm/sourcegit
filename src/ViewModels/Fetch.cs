@@ -34,14 +34,14 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableForceOnFetch = value;
         }
 
-        public Fetch(Repository repo, Models.Remote preferedRemote = null)
+        public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
-            _fetchAllRemotes = preferedRemote == null;
+            _fetchAllRemotes = preferredRemote == null;
 
-            if (preferedRemote != null)
+            if (preferredRemote != null)
             {
-                SelectedRemote = preferedRemote;
+                SelectedRemote = preferredRemote;
             }
             else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
             {
@@ -83,6 +83,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
+                    _repo.SetNeedNavigateToUpstreamHead();
                     _repo.MarkFetched();
                     _repo.SetWatcherEnabled(true);
                 });

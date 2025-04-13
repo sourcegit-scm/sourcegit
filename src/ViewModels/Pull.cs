@@ -192,7 +192,11 @@ namespace SourceGit.ViewModels
                     rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
                 }
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.SetNeedNavigateToUpstreamHead();
+                    _repo.SetWatcherEnabled(true);
+                });
                 return rs;
             });
         }

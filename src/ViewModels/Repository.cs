@@ -717,6 +717,11 @@ namespace SourceGit.ViewModels
             _watcher?.SetEnabled(enabled);
         }
 
+        public void SetNeedNavigateToUpstreamHead()
+        {
+            _needNavigateToUpstreamHead = true;
+        }
+
         public void MarkBranchesDirtyManually()
         {
             if (_watcher == null)
@@ -771,6 +776,15 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch != null)
                 NavigateToCommit(_currentBranch.Head);
+        }
+
+        public void NavigateToCurrentUpstreamHead()
+        {
+            if (_currentBranch == null || string.IsNullOrEmpty(_currentBranch.Upstream))
+                return;
+            var branch = _branches.Find(x => x.FullName == _currentBranch.Upstream);
+            if (branch != null)
+                NavigateToCommit(branch.Head);
         }
 
         public void ClearHistoriesFilter()
@@ -991,6 +1005,11 @@ namespace SourceGit.ViewModels
                     _histories.IsLoading = false;
                     _histories.Commits = commits;
                     _histories.Graph = graph;
+                    if (_needNavigateToUpstreamHead)
+                    {
+                        NavigateToCurrentUpstreamHead();
+                        _needNavigateToUpstreamHead = false;
+                    }
                 }
             });
         }
@@ -2588,5 +2607,6 @@ namespace SourceGit.ViewModels
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
+        private bool _needNavigateToUpstreamHead = false;
     }
 }

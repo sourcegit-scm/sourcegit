@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
 
         public bool ShowUpstreamGoneTip
         {
-            get => Backend is Models.Branch { IsUpsteamGone: true };
+            get => Backend is Models.Branch { IsUpstreamGone: true };
         }
 
         public string Tooltip
