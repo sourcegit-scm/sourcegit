@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Media.Imaging;
@@ -8,9 +9,11 @@ using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
+using SourceGit.Models;
+
 namespace SourceGit.ViewModels
 {
-    public class DiffContext : ObservableObject
+    public partial class DiffContext : ObservableObject
     {
         public string Title
         {
@@ -51,6 +54,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _unifiedLines, value);
         }
 
+        [ObservableProperty]
+        private int _addedLines;
+
+        [ObservableProperty]
+        private int _removedLines;
+
         public DiffContext(string repo, Models.DiffOption option, DiffContext previous = null)
         {
             _repo = repo;
@@ -71,6 +80,48 @@ namespace SourceGit.ViewModels
             else
                 _title = $"{_option.OrgPath} → {_option.Path}";
 
+            AddedLines = 0;
+            RemovedLines = 0;
+
+            Task.Run(() =>
+            {
+                string oldRevision = "";
+                string newRevision = "";
+                string filePath = option.Path;
+                
+                if (option.Revisions.Count == 2)
+                {
+                    oldRevision = option.Revisions[0];
+                    newRevision = option.Revisions[1];
+
+                    if (string.IsNullOrEmpty(oldRevision) || string.IsNullOrEmpty(newRevision))
+                    {
+                        var result = new Commands.QueryFileChangedLines(repo, oldRevision, newRevision, filePath).Result();
+                        
+                        Dispatcher.UIThread.Invoke(() => 
+                        {
+                            AddedLines = result.Item1;
+                            RemovedLines = result.Item2;
+                        });
+                        return;
+                    }
+                }
+
+                if (option.Revisions.Count == 1 && option.Revisions[0] == "STAGE")
+                {
+                    oldRevision = "HEAD";
+                    newRevision = "--staged";
+                }
+
+                var lineChanges = new Commands.QueryFileChangedLines(repo, oldRevision, newRevision, filePath).Result();
+                
+                Dispatcher.UIThread.Invoke(() => 
+                {
+                    AddedLines = lineChanges.Item1;
+                    RemovedLines = lineChanges.Item2;
+                });
+            });
+            
             LoadDiffContent();
         }
 
