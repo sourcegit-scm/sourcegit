@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -37,7 +37,6 @@ namespace SourceGit
 
             TaskScheduler.UnobservedTaskException += (_, e) =>
             {
-                LogException(e.Exception);
                 e.SetObserved();
             };
 
@@ -284,10 +283,12 @@ namespace SourceGit
 
         public static Avalonia.Controls.Shapes.Path CreateMenuIcon(string key)
         {
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 12;
-            icon.Height = 12;
-            icon.Stretch = Stretch.Uniform;
+            var icon = new Avalonia.Controls.Shapes.Path
+            {
+                Width = 12,
+                Height = 12,
+                Stretch = Stretch.Uniform
+            };
 
             var geo = Current?.FindResource(key) as StreamGeometry;
             if (geo != null)
@@ -430,7 +431,7 @@ namespace SourceGit
             if (!File.Exists(doneFile))
                 return true;
 
-            var done = File.ReadAllText(doneFile).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var done = File.ReadAllText(doneFile).Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
             if (done.Length > collection.Jobs.Count)
                 return true;
 
@@ -560,8 +561,22 @@ namespace SourceGit
             foreach (var part in parts)
             {
                 var t = part.Trim();
-                if (!string.IsNullOrEmpty(t))
-                    trimmed.Add(t);
+                if (string.IsNullOrEmpty(t))
+                    continue;
+
+                // Collapse multiple spaces into single space
+                var prevChar = '\0';
+                var sb = new StringBuilder();
+
+                foreach (var c in t)
+                {
+                    if (c == ' ' && prevChar == ' ')
+                        continue;
+                    sb.Append(c);
+                    prevChar = c;
+                }
+
+                trimmed.Add(sb.ToString());
             }
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;

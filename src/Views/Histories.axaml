@@ -195,7 +195,7 @@
                   </Border>
 
                   <!-- TIME -->
-                  <Border Grid.Column="3" Padding="4,0" ClipToBounds="True" IsHitTestVisible="False">
+                  <Border Grid.Column="3" Padding="4,0,8,0" ClipToBounds="True" IsHitTestVisible="False">
                     <v:CommitTimeTextBlock Classes="primary"
                                            HorizontalAlignment="Center"
                                            FontWeight="{Binding FontWeight}"

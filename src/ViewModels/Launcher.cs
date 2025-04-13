@@ -48,7 +48,7 @@ namespace SourceGit.ViewModels
         {
             _ignoreIndexChange = true;
 
-            Pages = new AvaloniaList<LauncherPage>();
+            Pages = [];
             AddNewTab();
 
             var pref = Preferences.Instance;
@@ -205,8 +205,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (page == null)
-                page = _activePage;
+            page ??= _activePage;
 
             var removeIdx = Pages.IndexOf(page);
             var activeIdx = Pages.IndexOf(_activePage);
@@ -239,7 +238,7 @@ namespace SourceGit.ViewModels
                     CloseRepositoryInTab(one);
             }
 
-            Pages = new AvaloniaList<LauncherPage> { ActivePage };
+            Pages = [ActivePage];
             ActiveWorkspace.ActiveIdx = 0;
             OnPropertyChanged(nameof(Pages));
 
@@ -275,22 +274,16 @@ namespace SourceGit.ViewModels
 
             if (!Path.Exists(node.Id))
             {
-                var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                App.RaiseException(ctx, "Repository does NOT exists any more. Please remove it.");
+                App.RaiseException(node.Id, "Repository does NOT exists any more. Please remove it.");
                 return;
             }
 
             var isBare = new Commands.IsBareRepository(node.Id).Result();
-            var gitDir = node.Id;
-            if (!isBare)
+            var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
+            if (string.IsNullOrEmpty(gitDir))
             {
-                gitDir = new Commands.QueryGitDir(node.Id).Result();
-                if (string.IsNullOrEmpty(gitDir))
-                {
-                    var ctx = page == null ? ActivePage.Node.Id : page.Node.Id;
-                    App.RaiseException(ctx, "Given path is not a valid git repository!");
-                    return;
-                }
+                App.RaiseException(node.Id, "Given path is not a valid git repository!");
+                return;
             }
 
             var repo = new Repository(isBare, node.Id, gitDir);
@@ -366,9 +359,11 @@ namespace SourceGit.ViewModels
                 var icon = App.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
                 icon.Fill = workspace.Brush;
 
-                var item = new MenuItem();
-                item.Header = workspace.Name;
-                item.Icon = icon;
+                var item = new MenuItem
+                {
+                    Header = workspace.Name,
+                    Icon = icon
+                };
                 item.Click += (_, e) =>
                 {
                     if (!workspace.IsActive)
@@ -382,8 +377,10 @@ namespace SourceGit.ViewModels
 
             menu.Items.Add(new MenuItem() { Header = "-" });
 
-            var configure = new MenuItem();
-            configure.Header = App.Text("Workspace.Configure");
+            var configure = new MenuItem
+            {
+                Header = App.Text("Workspace.Configure")
+            };
             configure.Click += (_, e) =>
             {
                 App.OpenDialog(new Views.ConfigureWorkspace() { DataContext = new ConfigureWorkspace() });
@@ -400,9 +397,11 @@ namespace SourceGit.ViewModels
                 return null;
 
             var menu = new ContextMenu();
-            var close = new MenuItem();
-            close.Header = App.Text("PageTabBar.Tab.Close");
-            close.InputGesture = KeyGesture.Parse(OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W");
+            var close = new MenuItem
+            {
+                Header = App.Text("PageTabBar.Tab.Close"),
+                InputGesture = KeyGesture.Parse(OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W")
+            };
             close.Click += (_, e) =>
             {
                 CloseTab(page);
@@ -410,8 +409,10 @@ namespace SourceGit.ViewModels
             };
             menu.Items.Add(close);
 
-            var closeOthers = new MenuItem();
-            closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
+            var closeOthers = new MenuItem
+            {
+                Header = App.Text("PageTabBar.Tab.CloseOther")
+            };
             closeOthers.Click += (_, e) =>
             {
                 CloseOtherTabs();
@@ -419,8 +420,10 @@ namespace SourceGit.ViewModels
             };
             menu.Items.Add(closeOthers);
 
-            var closeRight = new MenuItem();
-            closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
+            var closeRight = new MenuItem
+            {
+                Header = App.Text("PageTabBar.Tab.CloseRight")
+            };
             closeRight.Click += (_, e) =>
             {
                 CloseRightTabs();
@@ -430,9 +433,11 @@ namespace SourceGit.ViewModels
 
             if (page.Node.IsRepository)
             {
-                var bookmark = new MenuItem();
-                bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
-                bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
+                var bookmark = new MenuItem
+                {
+                    Header = App.Text("PageTabBar.Tab.Bookmark"),
+                    Icon = App.CreateMenuIcon("Icons.Bookmark")
+                };
 
                 for (int i = 0; i < Models.Bookmarks.Supported.Count; i++)
                 {
@@ -442,8 +447,10 @@ namespace SourceGit.ViewModels
                         icon.Fill = Models.Bookmarks.Brushes[i];
 
                     var dupIdx = i;
-                    var setter = new MenuItem();
-                    setter.Header = icon;
+                    var setter = new MenuItem
+                    {
+                        Header = icon
+                    };
                     setter.Click += (_, e) =>
                     {
                         page.Node.Bookmark = dupIdx;
@@ -454,9 +461,11 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(bookmark);
 
-                var copyPath = new MenuItem();
-                copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
-                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                var copyPath = new MenuItem
+                {
+                    Header = App.Text("PageTabBar.Tab.CopyPath"),
+                    Icon = App.CreateMenuIcon("Icons.Copy")
+                };
                 copyPath.Click += (_, e) =>
                 {
                     page.CopyPath();
@@ -467,6 +476,37 @@ namespace SourceGit.ViewModels
             }
 
             return menu;
+        }
+
+        private string GetRepositoryGitDir(string repo)
+        {
+            var fullpath = Path.Combine(repo, ".git");
+            if (Directory.Exists(fullpath))
+            {
+                if (Directory.Exists(Path.Combine(fullpath, "refs")) &&
+                    Directory.Exists(Path.Combine(fullpath, "objects")) &&
+                    File.Exists(Path.Combine(fullpath, "HEAD")))
+                    return fullpath;
+
+                return null;
+            }
+
+            if (File.Exists(fullpath))
+            {
+                var redirect = File.ReadAllText(fullpath).Trim();
+                if (redirect.StartsWith("gitdir: ", StringComparison.Ordinal))
+                    redirect = redirect.Substring(8);
+
+                if (!Path.IsPathRooted(redirect))
+                    redirect = Path.GetFullPath(Path.Combine(repo, redirect));
+
+                if (Directory.Exists(redirect))
+                    return redirect;
+
+                return null;
+            }
+
+            return new Commands.QueryGitDir(repo).Result();
         }
 
         private void SwitchWorkspace(Workspace to)

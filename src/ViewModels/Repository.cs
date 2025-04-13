@@ -2513,30 +2513,37 @@ namespace SourceGit.ViewModels
 
         private void AutoFetchImpl(object sender)
         {
-            if (!_settings.EnableAutoFetch || _isAutoFetching)
-                return;
-
-            var lockFile = Path.Combine(_gitDir, "index.lock");
-            if (File.Exists(lockFile))
-                return;
-
-            var now = DateTime.Now;
-            var desire = _lastFetchTime.AddMinutes(_settings.AutoFetchInterval);
-            if (desire > now)
-                return;
-
-            var remotes = new List<string>();
-            lock (_lockRemotes)
+            try
             {
-                foreach (var remote in _remotes)
-                    remotes.Add(remote.Name);
-            }
+                if (!_settings.EnableAutoFetch || _isAutoFetching)
+                    return;
 
-            Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
-            foreach (var remote in remotes)
-                new Commands.Fetch(_fullpath, remote, false, false, null) { RaiseError = false }.Exec();
-            _lastFetchTime = DateTime.Now;
-            Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
+                var lockFile = Path.Combine(_gitDir, "index.lock");
+                if (File.Exists(lockFile))
+                    return;
+
+                var now = DateTime.Now;
+                var desire = _lastFetchTime.AddMinutes(_settings.AutoFetchInterval);
+                if (desire > now)
+                    return;
+
+                var remotes = new List<string>();
+                lock (_lockRemotes)
+                {
+                    foreach (var remote in _remotes)
+                        remotes.Add(remote.Name);
+                }
+
+                Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
+                foreach (var remote in remotes)
+                    new Commands.Fetch(_fullpath, remote, false, false, null) { RaiseError = false }.Exec();
+                _lastFetchTime = DateTime.Now;
+                Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
+            }
+            catch
+            {
+                // DO nothing, but prevent `System.AggregateException`
+            }
         }
 
         private string _fullpath = string.Empty;
