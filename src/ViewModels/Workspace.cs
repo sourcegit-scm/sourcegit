@@ -46,6 +46,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _restoreOnStartup, value);
         }
 
+        public string DefaultCloneDir
+        {
+            get => _defaultCloneDir;
+            set => SetProperty(ref _defaultCloneDir, value);
+        }
+
         public IBrush Brush
         {
             get => new SolidColorBrush(_color);
@@ -55,5 +61,6 @@ namespace SourceGit.ViewModels
         private uint _color = 4278221015;
         private bool _isActive = false;
         private bool _restoreOnStartup = true;
+        private string _defaultCloneDir = string.Empty;
     }
 }

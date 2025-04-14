@@ -64,6 +64,17 @@ namespace SourceGit.ViewModels
             _pageId = pageId;
             View = new Views.Clone() { DataContext = this };
 
+            // Use workspace-specific DefaultCloneDir if available
+            var activeWorkspace = Preferences.Instance.GetActiveWorkspace();
+            if (activeWorkspace != null && !string.IsNullOrEmpty(activeWorkspace.DefaultCloneDir))
+            {
+                ParentFolder = activeWorkspace.DefaultCloneDir;
+            }
+            else
+            {
+                ParentFolder = Preferences.Instance.GitDefaultCloneDir;
+            }
+
             Task.Run(async () =>
             {
                 try
@@ -170,7 +181,7 @@ namespace SourceGit.ViewModels
         private string _remote = string.Empty;
         private bool _useSSH = false;
         private string _sshKey = string.Empty;
-        private string _parentFolder = Preferences.Instance.GitDefaultCloneDir;
+        private string _parentFolder = string.Empty;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
     }
