@@ -499,6 +499,12 @@
   <Style Selector="Button.flat:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
+  <Style Selector="Button.flat:disabled">
+    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.Background}"/>
+  </Style>
+  <Style Selector="Button.flat:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
   <Style Selector="Button.flat.primary">
     <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}"/>
     <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
@@ -509,17 +515,14 @@
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
+  <Style Selector="Button.flat.primary:disabled">
+    <Setter Property="Opacity" Value=".65"/>
+  </Style>
   <Style Selector="Button.flat.primary TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
   </Style>
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-  </Style>
-  <Style Selector="Button.flat:disabled /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  <Style Selector="Button.flat:disabled">
-    <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.Background}"/>
   </Style>
   
   <Style Selector="SplitButton">
