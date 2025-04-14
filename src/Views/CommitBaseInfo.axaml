@@ -203,6 +203,13 @@
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap">
+            <ToolTip.IsOpen>
+              <MultiBinding Converter="{x:Static BoolConverters.And}">
+                <Binding Path="$self.IsPointerOver"/>
+                <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+              </MultiBinding>
+            </ToolTip.IsOpen>
+            
             <v:CommitMessagePresenter.DataTemplates>
               <DataTemplate DataType="m:Commit">
                 <StackPanel MinWidth="400" Orientation="Vertical">

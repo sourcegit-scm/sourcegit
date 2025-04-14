@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Data;
-using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -25,21 +23,6 @@ namespace SourceGit.Views
         }
 
         protected override Type StyleKeyOverride => typeof(SelectableTextBlock);
-
-        public CommitMessagePresenter()
-        {
-            var bindings = new MultiBinding()
-            {
-                Converter = BoolConverters.And,
-                Bindings = new[]
-                {
-                    new Binding() { Path = "IsPointerOver", Source = this },
-                    new Binding() { Path = "(ToolTip.Tip)", Source = this, TypeResolver = (_, name) => name == "ToolTip" ? typeof(ToolTip) : null, Converter = ObjectConverters.IsNotNull },
-                }
-            };
-
-            Bind(ToolTip.IsOpenProperty, bindings);
-        }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
