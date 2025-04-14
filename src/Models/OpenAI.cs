@@ -107,15 +107,7 @@ namespace SourceGit.Models
         public string Server
         {
             get => _server;
-            set
-            {
-                // migrate old server value
-                if (!string.IsNullOrEmpty(value) && value.EndsWith("/chat/completions", StringComparison.Ordinal))
-                {
-                    value = value.Substring(0, value.Length - "/chat/completions".Length);
-                }
-                SetProperty(ref _server, value);
-            }
+            set => SetProperty(ref _server, value);
         }
 
         public string ApiKey

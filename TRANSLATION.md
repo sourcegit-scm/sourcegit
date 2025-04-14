@@ -6,14 +6,19 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.65%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.34%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.BranchUpstreamInvalid
 - Text.Configure.CustomAction.WaitForExit
+- Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleAzure
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.Diff.First
 - Text.Diff.Last
@@ -21,34 +26,91 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.General.ShowTagsInGraph
 - Text.StashCM.SaveAsPatch
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.67%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-99.73%25-yellow)
+- Text.Configure.Git.PreferredMergeMode
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-98.67%25-yellow)
+
+<details>
+<summary>Missing keys in fr_FR.axaml</summary>
+
+- Text.Configure.Git.PreferredMergeMode
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
+
+</details>
+
+### ![it__IT](https://img.shields.io/badge/it__IT-98.40%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.Configure.Git.PreferredMergeMode
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.Preferences.General.ShowTagsInGraph
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-99.73%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-98.40%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.Configure.Git.PreferredMergeMode
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.Repository.FilterCommits
 - Text.Repository.Tags.OrderByNameDes
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-90.98%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-89.76%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -69,8 +131,13 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Children
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
+- Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.CreateBranch.Name.WarnSpace
 - Text.DeleteRepositoryNode.Path
@@ -119,11 +186,34 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.AutoRestore.Tip
 - Text.StashCM.SaveAsPatch
 - Text.WorkingCopy.CommitToEdit
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
 - Text.WorkingCopy.SignOff
 
 </details>
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-98.67%25-yellow)
+
+<details>
+<summary>Missing keys in ta_IN.axaml</summary>
+
+- Text.Configure.Git.PreferredMergeMode
+- Text.ConfirmEmptyCommit.Continue
+- Text.ConfirmEmptyCommit.NoLocalChanges
+- Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.UpdateSubmodules.Target
+- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
+
+</details>
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 

@@ -69,9 +69,14 @@ namespace SourceGit.ViewModels
 
         private Models.MergeMode AutoSelectMergeMode()
         {
+            var preferredMergeModeIdx = _repo.Settings.PreferredMergeMode;
+            if (preferredMergeModeIdx < 0 || preferredMergeModeIdx > Models.MergeMode.Supported.Length)
+                preferredMergeModeIdx = 0;
+
+            var defaultMergeMode = Models.MergeMode.Supported[preferredMergeModeIdx];
             var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
             if (string.IsNullOrEmpty(config))
-                return Models.MergeMode.Supported[0];
+                return defaultMergeMode;
             if (config.Equals("--ff-only", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[1];
             if (config.Equals("--no-ff", StringComparison.Ordinal))
@@ -81,7 +86,7 @@ namespace SourceGit.ViewModels
             if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
                 return Models.MergeMode.Supported[4];
 
-            return Models.MergeMode.Supported[0];
+            return defaultMergeMode;
         }
 
         private readonly Repository _repo = null;

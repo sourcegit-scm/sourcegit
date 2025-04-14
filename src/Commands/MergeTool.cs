@@ -13,9 +13,12 @@ namespace SourceGit.Commands
             cmd.Context = repo;
             cmd.RaiseError = true;
 
+            // NOTE: If no <file> names are specified, 'git mergetool' will run the merge tool program on every file with merge conflicts.
+            var fileArg = string.IsNullOrEmpty(file) ? "" : $"\"{file}\"";
+
             if (toolType == 0)
             {
-                cmd.Args = $"mergetool \"{file}\"";
+                cmd.Args = $"mergetool {fileArg}";
                 return cmd.Exec();
             }
 
@@ -32,7 +35,7 @@ namespace SourceGit.Commands
                 return false;
             }
 
-            cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit \"{file}\"";
+            cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {fileArg}";
             return cmd.Exec();
         }
 

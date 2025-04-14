@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -88,8 +88,44 @@
           <TextBlock Grid.Row="3" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Configure.Git.PreferredMergeMode}"/>
+          <ComboBox Grid.Row="3" Grid.Column="1"
+                    Height="28" Padding="8,0"
+                    VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Source={x:Static m:MergeMode.Supported}}"
+                    SelectedIndex="{Binding PreferredMergeMode, Mode=TwoWay}"
+                    Grid.IsSharedSizeScope="True">
+            <ComboBox.ItemTemplate>
+              <DataTemplate DataType="m:MergeMode">
+                <Grid Height="20">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeNameColumn"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeDescriptionColumn"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeOptionColumn"/>
+                  </Grid.ColumnDefinitions>
+
+                  <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                </Grid>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+
+            <ComboBox.SelectionBoxItemTemplate>
+              <DataTemplate DataType="m:MergeMode">
+                <Grid ColumnDefinitions="Auto,*">
+                  <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0,0,8,0"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Desc}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                </Grid>
+              </DataTemplate>
+            </ComboBox.SelectionBoxItemTemplate>
+          </ComboBox>
+
+          <TextBlock Grid.Row="4" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
                      Text="{DynamicResource Text.Configure.Proxy}"/>
-          <TextBox Grid.Row="3" Grid.Column="1"
+          <TextBox Grid.Row="4" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
                    Watermark="{DynamicResource Text.Configure.Proxy.Placeholder}"
@@ -101,29 +137,29 @@
             </TextBox.InnerRightContent>
           </TextBox>
 
-          <TextBlock Grid.Row="4" Grid.Column="0"
+          <TextBlock Grid.Row="5" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
                      Text="{DynamicResource Text.Preferences.GPG.UserKey}"/>
-          <TextBox Grid.Row="4" Grid.Column="1"
+          <TextBox Grid.Row="5" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
                    Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
-          <CheckBox Grid.Row="5" Grid.Column="1"
+          <CheckBox Grid.Row="6" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
                     IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
 
-          <CheckBox Grid.Row="6" Grid.Column="1"
+          <CheckBox Grid.Row="7" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
 
-          <CheckBox Grid.Row="7" Grid.Column="1"
+          <CheckBox Grid.Row="8" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
                     IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
 
-          <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
+          <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>

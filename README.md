@@ -11,7 +11,7 @@
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* Deutsch/English/Español/Français/Italiano/Português/Русский/简体中文/繁體中文/日本語
+* Deutsch/English/Español/Français/Italiano/Português/Русский/简体中文/繁體中文/日本語/தமிழ் (Tamil)
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
@@ -48,7 +48,7 @@
 
 ## Translation Status
 
-You can find the current translation status in [TRANSLATION.md](TRANSLATION.md)
+You can find the current translation status in [TRANSLATION.md](https://github.com/sourcegit-scm/sourcegit/blob/develop/TRANSLATION.md)
 
 ## How to Use
 

@@ -33,9 +33,28 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Exec();
+                var autoStashed = false;
+                var succ = false;
+
+                if (_repo.LocalChangesCount > 0)
+                {
+                    succ = new Commands.Stash(_repo.FullPath).Push("SQUASH_AUTO_STASH");
+                    if (!succ)
+                    {
+                        CallUIThread(() => _repo.SetWatcherEnabled(true));
+                        return false;
+                    }
+
+                    autoStashed = true;
+                }
+
+                succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Exec();
                 if (succ)
                     succ = new Commands.Commit(_repo.FullPath, _message, true, _repo.Settings.EnableSignOffForCommit).Run();
+
+                if (succ && autoStashed)
+                    new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

@@ -136,7 +136,7 @@
         <DataTemplate DataType="m:StatisticsReport">
           <Grid ColumnDefinitions="256,*">
             <Grid Grid.Column="0" RowDefinitions="*,16">
-              <!-- Table By Committer -->
+              <!-- Table By Autor -->
               <ListBox Grid.Column="0"
                        ItemsSource="{Binding Authors}"
                        SelectionMode="Single"
@@ -162,11 +162,15 @@
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="m:StaticsticsAuthor">
                     <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
-                      <Grid ColumnDefinitions="*,100">
-                        <Border Grid.Column="0" Padding="8,0" ClipToBounds="True">
-                          <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                      <Grid ColumnDefinitions="26,*,100">
+                        <v:Avatar Grid.Column="0"
+                                  Width="16" Height="16"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  User="{Binding User}"/>
+                        <Border Grid.Column="1" Padding="4,0,8,0" ClipToBounds="True">
+                          <TextBlock Text="{Binding User.Name}" HorizontalAlignment="Left"/>
                         </Border>
-                        <Border Grid.Column="1" Padding="8,0" ClipToBounds="True">
+                        <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
                           <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
                         </Border>
                       </Grid>
@@ -177,7 +181,7 @@
 
               <!-- Summary -->
               <Grid Grid.Row="1" ColumnDefinitions="*,*">
-                <!-- Total Committers -->
+                <!-- Total Authors -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
                   <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                   <TextBlock Classes="primary" Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>

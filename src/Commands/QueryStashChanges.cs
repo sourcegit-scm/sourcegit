@@ -14,7 +14,7 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^R[0-9]{0,4}\s+(.+)$")]
         private static partial Regex REG_RENAME_FORMAT();
 
-        public QueryStashChanges(string repo, string stash) 
+        public QueryStashChanges(string repo, string stash)
         {
             WorkingDirectory = repo;
             Context = repo;
