@@ -1253,11 +1253,12 @@ namespace SourceGit.Views
                     {
                         builder.Append(line.Content.Substring(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} character trimmed)");
-                        builder.AppendLine();
+                        builder.Append('\n');
                     }
                     else
                     {
-                        builder.AppendLine(line.Content);
+                        builder.Append(line.Content);
+                        builder.Append('\n');
                     }
                 }
 
@@ -1492,11 +1493,12 @@ namespace SourceGit.Views
                     {
                         builder.Append(line.Content.Substring(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
-                        builder.AppendLine();
+                        builder.Append('\n');
                     }
                     else
                     {
-                        builder.AppendLine(line.Content);
+                        builder.Append(line.Content);
+                        builder.Append('\n');
                     }
                 }
 

@@ -35,7 +35,26 @@ namespace SourceGit.Commands
 
         public Models.DiffResult Result()
         {
-            Exec();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+            {
+                _result.TextDiff = null;
+                return _result;
+            }
+
+            var start = 0;
+            var end = rs.StdOut.IndexOf('\n', start);
+            while (end > 0)
+            {
+                var line = rs.StdOut.Substring(start, end - start);
+                ParseLine(line);
+
+                start = end + 1;
+                end = rs.StdOut.IndexOf('\n', start);
+            }
+
+            if (start < rs.StdOut.Length)
+                ParseLine(rs.StdOut.Substring(start));
 
             if (_result.IsBinary || _result.IsLFS)
             {
@@ -54,8 +73,11 @@ namespace SourceGit.Commands
             return _result;
         }
 
-        protected override void OnReadline(string line)
+        private void ParseLine(string line)
         {
+            if (_result.IsBinary)
+                return;
+
             if (line.StartsWith("old mode ", StringComparison.Ordinal))
             {
                 _result.OldMode = line.Substring(9);
@@ -79,9 +101,6 @@ namespace SourceGit.Commands
                 _result.NewMode = line.Substring(14);
                 return;
             }
-
-            if (_result.IsBinary)
-                return;
 
             if (_result.IsLFS)
             {
