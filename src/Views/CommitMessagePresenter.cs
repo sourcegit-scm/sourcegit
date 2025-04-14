@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -23,6 +25,21 @@ namespace SourceGit.Views
         }
 
         protected override Type StyleKeyOverride => typeof(SelectableTextBlock);
+
+        public CommitMessagePresenter()
+        {
+            var bindings = new MultiBinding()
+            {
+                Converter = BoolConverters.And,
+                Bindings = new[]
+                {
+                    new Binding() { Path = "IsPointerOver", Source = this },
+                    new Binding() { Path = "(ToolTip.Tip)", Source = this, TypeResolver = (_, name) => name == "ToolTip" ? typeof(ToolTip) : null, Converter = ObjectConverters.IsNotNull },
+                }
+            };
+
+            Bind(ToolTip.IsOpenProperty, bindings);
+        }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
@@ -107,14 +124,9 @@ namespace SourceGit.Views
 
                     _lastHover = link;
                     if (!link.IsCommitSHA)
-                    {
                         ToolTip.SetTip(this, link.Link);
-                        ToolTip.SetIsOpen(this, true);
-                    }
                     else
-                    {
                         ProcessHoverCommitLink(link);
-                    }
 
                     return;
                 }
@@ -264,12 +276,7 @@ namespace SourceGit.Views
             // If we have already queried this SHA, just use it.
             if (_inlineCommits.TryGetValue(sha, out var exist))
             {
-                if (exist != null)
-                {
-                    ToolTip.SetTip(this, exist);
-                    ToolTip.SetIsOpen(this, true);
-                }
-
+                ToolTip.SetTip(this, exist);
                 return;
             }
 
@@ -294,10 +301,7 @@ namespace SourceGit.Views
 
                             // Make sure user still hovers the target SHA.
                             if (_lastHover == link && c != null)
-                            {
                                 ToolTip.SetTip(this, c);
-                                ToolTip.SetIsOpen(this, true);
-                            }
                         }
                     });
                 });

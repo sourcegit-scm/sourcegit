@@ -114,6 +114,13 @@
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed"
                            ToolTip.ShowDelay="0">
+                  <ToolTip.IsOpen>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="$self.IsPointerOver"/>
+                      <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                    </MultiBinding>
+                  </ToolTip.IsOpen>
+                  
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -152,6 +159,13 @@
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed"
                            ToolTip.ShowDelay="0">
+                  <ToolTip.IsOpen>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="$self.IsPointerOver"/>
+                      <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                    </MultiBinding>
+                  </ToolTip.IsOpen>
+                  
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">

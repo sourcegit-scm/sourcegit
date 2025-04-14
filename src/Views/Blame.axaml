@@ -59,7 +59,14 @@
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                          TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
-                         BlameData="{Binding Data}"/>
+                         BlameData="{Binding Data}">
+        <ToolTip.IsOpen>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="$self.IsPointerOver"/>
+            <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+          </MultiBinding>
+        </ToolTip.IsOpen>
+      </v:BlameTextEditor>
 
       <!-- Not supported mask (for binary files) -->
       <StackPanel Orientation="Vertical"

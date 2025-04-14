@@ -180,7 +180,6 @@ namespace SourceGit.Views
                             {
                                 var msg = blame.GetCommitMessage(info.CommitSHA);
                                 ToolTip.SetTip(this, msg);
-                                ToolTip.SetIsOpen(this, true);
                             }
 
                             return;
@@ -188,7 +187,7 @@ namespace SourceGit.Views
                     }
 
                     Cursor = Cursor.Default;
-                    ToolTip.SetIsOpen(this, false);
+                    ToolTip.SetTip(this, null);
                 }
             }
 
