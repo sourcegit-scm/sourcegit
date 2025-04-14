@@ -180,6 +180,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nom d'utilisateur pour ce dépôt</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Espaces de travail</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Couleur</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restaurer les onglets au démarrage</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Assistant Commits Conventionnels</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Changement Radical :</x:String>

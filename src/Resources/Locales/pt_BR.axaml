@@ -161,6 +161,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nome de usuário para este repositório</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Cor</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restaurar abas ao inicializar</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Assistente de Conventional Commit</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>

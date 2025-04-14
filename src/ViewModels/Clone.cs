@@ -62,18 +62,13 @@ namespace SourceGit.ViewModels
         public Clone(string pageId)
         {
             _pageId = pageId;
-            View = new Views.Clone() { DataContext = this };
 
-            // Use workspace-specific DefaultCloneDir if available
             var activeWorkspace = Preferences.Instance.GetActiveWorkspace();
-            if (activeWorkspace != null && !string.IsNullOrEmpty(activeWorkspace.DefaultCloneDir))
-            {
-                ParentFolder = activeWorkspace.DefaultCloneDir;
-            }
-            else
-            {
-                ParentFolder = Preferences.Instance.GitDefaultCloneDir;
-            }
+            _parentFolder = activeWorkspace?.DefaultCloneDir;
+            if (string.IsNullOrEmpty(ParentFolder))
+                _parentFolder = Preferences.Instance.GitDefaultCloneDir;
+
+            View = new Views.Clone() { DataContext = this };
 
             Task.Run(async () =>
             {
@@ -81,9 +76,7 @@ namespace SourceGit.ViewModels
                 {
                     var text = await App.GetClipboardTextAsync();
                     if (Models.Remote.IsValidURL(text))
-                    {
                         Dispatcher.UIThread.Invoke(() => Remote = text);
-                    }
                 }
                 catch
                 {
