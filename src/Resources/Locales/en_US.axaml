@@ -752,5 +752,4 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Lock</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
-  <x:String x:Key="Text.Preferences.General.OpenReposInNewTab" xml:space="preserve">Open repositories in new tab instead of new window</x:String>
 </ResourceDictionary>

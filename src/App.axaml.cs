@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Pipes;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -48,8 +46,6 @@ namespace SourceGit
                     Environment.Exit(exitTodo);
                 else if (TryLaunchAsRebaseMessageEditor(args, out int exitMessage))
                     Environment.Exit(exitMessage);
-                else if (TrySendArgsToExistingInstance(args))
-                    Environment.Exit(0);
                 else
                     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
@@ -79,44 +75,6 @@ namespace SourceGit
 
             Native.OS.SetupApp(builder);
             return builder;
-        }
-
-        private static bool TrySendArgsToExistingInstance(string[] args)
-        {
-            if (args == null || args.Length != 1 || !Directory.Exists(args[0]))
-                return false;
-
-            var pref = ViewModels.Preferences.Instance;
-
-            if (!pref.OpenReposInNewTab)
-                return false;
-
-            try
-            {
-                var processes = Process.GetProcessesByName("SourceGit");
-
-                if (processes.Length <= 1)
-                    return false;
-
-                using var client = new NamedPipeClientStream(".", "SourceGitIPC", PipeDirection.Out);
-
-                client.Connect(1000);
-
-                if (client.IsConnected)
-                {
-                    using var writer = new StreamWriter(client);
-
-                    writer.WriteLine(args[0]);
-                    writer.Flush();
-
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            return false;
         }
 
         private static void LogException(Exception ex)
@@ -370,13 +328,7 @@ namespace SourceGit
             AvaloniaXamlLoader.Load(this);
 
             var pref = ViewModels.Preferences.Instance;
-
-            pref.PropertyChanged += (s, e) => {
-                pref.Save();
-                
-                if (e.PropertyName.Equals(nameof(ViewModels.Preferences.OpenReposInNewTab)))
-                    HandleOpenReposInNewTabChanged();
-            };
+            pref.PropertyChanged += (_, _) => pref.Save();
 
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
@@ -395,7 +347,17 @@ namespace SourceGit
                 if (TryLaunchAsAskpass(desktop))
                     return;
 
-                TryLaunchAsNormal(desktop);
+                _ipcChannel = new Models.IpcChannel();
+                if (!_ipcChannel.IsFirstInstance)
+                {
+                    _ipcChannel.SendToFirstInstance(desktop.Args is { Length: 1 } ? desktop.Args[0] : string.Empty);
+                    Quit(0);
+                }
+                else
+                {
+                    _ipcChannel.MessageReceived += TryOpenRepository;
+                    TryLaunchAsNormal(desktop);
+                }
             }
         }
         #endregion
@@ -533,12 +495,12 @@ namespace SourceGit
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
                 startupRepo = desktop.Args[0];
 
+            var pref = ViewModels.Preferences.Instance;
+            pref.SetCanModify();
+
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
-
-            var pref = ViewModels.Preferences.Instance;
-
-            HandleOpenReposInNewTabChanged();
+            desktop.Exit += (_, _) => _ipcChannel.Dispose();
 
 #if !DISABLE_UPDATE_DETECTION
             if (pref.ShouldCheck4UpdateOnStartup())
@@ -546,91 +508,20 @@ namespace SourceGit
 #endif
         }
 
-        private void HandleOpenReposInNewTabChanged()
+        private void TryOpenRepository(string repo)
         {
-            var pref = ViewModels.Preferences.Instance;
-            
-            if (pref.OpenReposInNewTab)
+            if (string.IsNullOrEmpty(repo) || !Directory.Exists(repo))
+                return;
+
+            var test = new Commands.QueryRepositoryRootPath(repo).ReadToEnd();
+            if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
             {
-                if (_ipcServerTask == null || _ipcServerTask.IsCompleted)
+                Dispatcher.UIThread.Invoke(() =>
                 {
-                    // Start IPC server
-                    _ipcServerCts = new CancellationTokenSource();
-                    _ipcServerTask = Task.Run(() => StartIPCServer(_ipcServerCts.Token));
-                }
-            }
-            else
-            {
-                // Stop IPC server if running
-                if (_ipcServerCts != null && !_ipcServerCts.IsCancellationRequested)
-                {
-                    _ipcServerCts.Cancel();
-                    _ipcServerCts.Dispose();
-                    _ipcServerCts = null;
-                }
-                _ipcServerTask = null;
-            }
-        }
-
-        private void StartIPCServer(CancellationToken cancellationToken)
-        {
-            try
-            {
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    using var server = new NamedPipeServerStream("SourceGitIPC", PipeDirection.In);
-                    
-                    // Use WaitForConnectionAsync with cancellation token
-                    try
-                    {
-                        Task connectionTask = server.WaitForConnectionAsync(cancellationToken);
-                        connectionTask.Wait(cancellationToken);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        return;
-                    }
-                    catch (AggregateException ae) when (ae.InnerExceptions.Any(e => e is OperationCanceledException))
-                    {
-                        return;
-                    }
-
-                    // Process the connection
-                    using var reader = new StreamReader(server);
-                    var repoPath = reader.ReadLine();
-
-                    if (!string.IsNullOrEmpty(repoPath) && Directory.Exists(repoPath))
-                    {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            try
-                            {
-                                var test = new Commands.QueryRepositoryRootPath(repoPath).ReadToEnd();
-
-                                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
-                                {
-                                    var repoRootPath = test.StdOut.Trim();
-                                    var pref = ViewModels.Preferences.Instance;
-                                    var node = pref.FindOrAddNodeByRepositoryPath(repoRootPath, null, false);
-
-                                    ViewModels.Welcome.Instance.Refresh();
-
-                                    _launcher?.OpenRepositoryInTab(node, null);
-
-                                    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && desktop.MainWindow != null)
-                                        desktop.MainWindow.Activate();
-                                }
-                            }
-                            catch (Exception)
-                            {
-                            }
-                        });
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Pipe server failed, we can just exit the thread
+                    var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
+                    ViewModels.Welcome.Instance.Refresh();
+                    _launcher?.OpenRepositoryInTab(node, null);
+                });
             }
         }
 
@@ -719,11 +610,10 @@ namespace SourceGit
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
+        private Models.IpcChannel _ipcChannel = null;
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
         private ResourceDictionary _themeOverrides = null;
         private ResourceDictionary _fontsOverrides = null;
-        private Task _ipcServerTask = null;
-        private CancellationTokenSource _ipcServerCts = null;
     }
 }
