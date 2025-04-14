@@ -19,7 +19,12 @@ namespace SourceGit.Models
         {
             try
             {
-                _server = new NamedPipeServerStream("SourceGitIPCChannel", PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+                _server = new NamedPipeServerStream(
+                    "SourceGitIPCChannel", 
+                    PipeDirection.In,
+                    1,
+                    PipeTransmissionMode.Byte,
+                    PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly | PipeOptions.FirstPipeInstance);
                 _cancellationTokenSource = new CancellationTokenSource();
                 Task.Run(StartServer);
             }
