@@ -90,6 +90,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool OpenReposInNewTab
+        {
+            get => _openReposInNewTab;
+            set => SetProperty(ref _openReposInNewTab, value);
+        }
+
         public bool UseSystemWindowFrame
         {
             get => _useSystemWindowFrame;
@@ -632,6 +638,7 @@ namespace SourceGit.ViewModels
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
         private bool _onlyUseMonoFontInEditor = false;
+        private bool _openReposInNewTab = false;
         private bool _useSystemWindowFrame = false;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
