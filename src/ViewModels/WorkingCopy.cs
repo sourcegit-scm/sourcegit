@@ -94,6 +94,7 @@ namespace SourceGit.ViewModels
                     }
 
                     Staged = GetStagedChanges();
+                    VisibleStaged = GetVisibleChanges(_staged);
                     SelectedStaged = [];
                 }
             }
