@@ -773,6 +773,11 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
+        public void NavigateToBranchDelayed(string branch)
+        {
+            _navigateToBranchDelayed = branch;
+        }
+
         public void ClearHistoriesFilter()
         {
             _settings.HistoriesFilters.Clear();
@@ -991,7 +996,16 @@ namespace SourceGit.ViewModels
                     _histories.IsLoading = false;
                     _histories.Commits = commits;
                     _histories.Graph = graph;
+
+                    if (!string.IsNullOrEmpty(_navigateToBranchDelayed))
+                    {
+                        var branch = _branches.Find(x => x.FullName == _navigateToBranchDelayed);
+                        if (branch != null)
+                            NavigateToCommit(branch.Head);
+                    }
                 }
+
+                _navigateToBranchDelayed = string.Empty;
             });
         }
 
@@ -2588,5 +2602,7 @@ namespace SourceGit.ViewModels
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
+
+        private string _navigateToBranchDelayed = string.Empty;
     }
 }

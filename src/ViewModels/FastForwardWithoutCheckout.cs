@@ -32,7 +32,11 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 new Commands.UpdateRef(_repo.FullPath, Local.FullName, To.FullName, SetProgressDescription).Exec();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.NavigateToCommit(To.Head);
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }

@@ -133,12 +133,7 @@ namespace SourceGit.Views
                     Dispatcher.UIThread.Invoke(() =>
                     {
                         if (ctl.IsEffectivelyVisible && ctl.DataContext is string newSHA && newSHA == sha)
-                        {
                             ToolTip.SetTip(ctl, c);
-
-                            if (ctl.IsPointerOver)
-                                ToolTip.SetIsOpen(ctl, true);
-                        }
                     });
                 });
             }

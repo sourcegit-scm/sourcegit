@@ -195,23 +195,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.67%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.Continue
-- Text.ConfirmEmptyCommit.NoLocalChanges
-- Text.ConfirmEmptyCommit.StageAllThenCommit
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.WorkingCopy.ConfirmCommitWithFilter
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
-- Text.WorkingCopy.Conflicts.UseMine
-- Text.WorkingCopy.Conflicts.UseTheirs
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-98.67%25-yellow)
 

@@ -32,7 +32,11 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 new Commands.Fetch(_repo.FullPath, Local, Upstream, SetProgressDescription).Exec();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.NavigateToBranchDelayed(Upstream.FullName);
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }

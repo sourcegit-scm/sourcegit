@@ -157,6 +157,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автозагрузка изменений</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Внешний репозиторий по умолчанию</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Предпочтительный режим слияния</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Добавить пример правила Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Добавить пример правила для тем в Gitea</x:String>
@@ -181,6 +182,10 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Цвет</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Имя</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Восстанавливать вкладки при запуске</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty)?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">Подготовить все и зафиксировать ревизию</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty) или отложить все, затем зафиксировать ревизию?</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Общепринятый помощник по ревизии</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Кардинальные изменения:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Закрытая тема:</x:String>
@@ -725,8 +730,13 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Запустить событие щелчка</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Зафиксировать (Редактировать)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Подготовить все изменения и зафиксировать</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Вы подготовили {0} файл(ов), но отображается только {1} файл(ов) ({2} файл(ов) отфильтровано). Вы хотите продолжить?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">ОТКРЫТЬ ВНЕШНИЙ ИНСТРУМЕНТ СЛИЯНИЯ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ОТКРЫТЬ ВСЕ КОНФЛИКТЫ ВО ВНЕШНЕМ ИНСТРУМЕНТЕ СЛИЯНИЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">ИСПОЛЬЗОВАТЬ МОИ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">ИСПОЛЬЗОВАТЬ ИХ</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТЬ НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">НЕТ ПОСЛЕДНИХ ВХОДНЫХ СООБЩЕНИЙ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">НЕТ ШАБЛОНОВ РЕВИЗИИ</x:String>
