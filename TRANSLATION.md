@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.34%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.21%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -31,10 +31,11 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.67%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.54%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -49,10 +50,11 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-98.67%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-98.54%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -67,10 +69,11 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-98.41%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-98.28%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -87,10 +90,11 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-98.41%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-98.28%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -107,10 +111,11 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-89.77%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-89.66%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -192,12 +197,20 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
 - Text.WorkingCopy.SignOff
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.87%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-98.67%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Preferences.General.OpenReposInNewTab
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-98.54%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -212,9 +225,24 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.Preferences.General.OpenReposInNewTab
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.87%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.Preferences.General.OpenReposInNewTab
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.87%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.Preferences.General.OpenReposInNewTab
+
+</details>
