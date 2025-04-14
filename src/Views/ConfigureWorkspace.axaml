@@ -98,20 +98,25 @@
       <ContentControl Grid.Column="2" Content="{Binding Selected}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Workspace">
-            <Grid RowDefinitions="32,32,32,32,Auto,Auto">
-              <TextBox Grid.Row="0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
-              <CheckBox Grid.Row="1"
+            <Grid RowDefinitions="30,32,30,32,30,Auto,32">
+              <TextBlock Grid.Row="0" Margin="0,0,0,4" Text="{DynamicResource Text.ConfigureWorkspace.Name}" VerticalAlignment="Bottom"/>
+              <TextBox Grid.Row="1" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
+              
+              <TextBlock Grid.Row="2" Margin="0,0,0,4" Text="{DynamicResource Text.Preferences.Git.DefaultCloneDir}" VerticalAlignment="Bottom"/>
+              <TextBox Grid.Row="3" CornerRadius="3" Height="28" Text="{Binding DefaultCloneDir, Mode=TwoWay}">
+                <TextBox.InnerRightContent>
+                  <Button Classes="icon_button" Width="30" Height="30" Click="SelectDefaultCloneDir">
+                    <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                </TextBox.InnerRightContent>
+              </TextBox>
+              
+              <TextBlock Grid.Row="4" Margin="0,0,0,4" Text="{DynamicResource Text.ConfigureWorkspace.Color}" VerticalAlignment="Bottom"/>
+              <v:ColorPicker Grid.Row="5" HorizontalAlignment="Left" Value="{Binding Color, Mode=TwoWay}"/>
+              
+              <CheckBox Grid.Row="6"
                         Content="{DynamicResource Text.ConfigureWorkspace.Restore}"
                         IsChecked="{Binding RestoreOnStartup, Mode=TwoWay}"/>
-              <TextBlock Grid.Row="2" Margin="0,16,0,4" Text="{DynamicResource Text.Preferences.Git.DefaultCloneDir}"/>
-              <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
-                <TextBox Grid.Column="0" CornerRadius="3" Height="28" Text="{Binding DefaultCloneDir, Mode=TwoWay}"/>
-                <Button Grid.Column="1" Classes="icon_button" Width="30" Height="30" Click="SelectDefaultCloneDir">
-                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-                </Button>
-              </Grid>
-              <TextBlock Grid.Row="4" Margin="0,16,0,4" Text="{DynamicResource Text.ConfigureWorkspace.Color}"/>
-              <v:ColorPicker Grid.Row="5" HorizontalAlignment="Left" Value="{Binding Color, Mode=TwoWay}"/>
             </Grid>
           </DataTemplate>
         </ContentControl.DataTemplates>

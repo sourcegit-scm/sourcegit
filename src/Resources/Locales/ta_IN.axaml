@@ -179,6 +179,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">இந்த களஞ்சியத்திற்கான பயனர் பெயர்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">பணியிடங்கள்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">நிறம்</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">தாவல்களை மீட்டமை</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">வழக்கமான உறுதிமொழி உதவியாளர்</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">உடைக்கும் மாற்றம்:</x:String>
