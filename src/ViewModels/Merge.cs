@@ -64,18 +64,7 @@ namespace SourceGit.ViewModels
                 new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, SetProgressDescription).Exec();
                 CallUIThread(() =>
                 {
-                    switch (Source)
-                    {
-                        case Models.Branch branch:
-                            _repo.NavigateToCommit(branch.Head);
-                            break;
-                        case Models.Commit commit:
-                            _repo.NavigateToCommit(commit.SHA);
-                            break;
-                        case Models.Tag tag:
-                            _repo.NavigateToCommit(tag.SHA);
-                            break;
-                    }
+                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);
                     _repo.SetWatcherEnabled(true);
                 });
                 return true;

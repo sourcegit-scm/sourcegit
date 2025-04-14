@@ -194,7 +194,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    _repo.SetNeedNavigateToUpstreamHead();
+                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);
                     _repo.SetWatcherEnabled(true);
                 });
                 return rs;

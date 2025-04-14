@@ -717,11 +717,6 @@ namespace SourceGit.ViewModels
             _watcher?.SetEnabled(enabled);
         }
 
-        public void SetNeedNavigateToUpstreamHead()
-        {
-            _needNavigateToUpstreamHead = true;
-        }
-
         public void MarkBranchesDirtyManually()
         {
             if (_watcher == null)
@@ -778,13 +773,9 @@ namespace SourceGit.ViewModels
                 NavigateToCommit(_currentBranch.Head);
         }
 
-        public void NavigateToCurrentUpstreamHead()
+        public void NavigateToBranchDelayed(string branch)
         {
-            if (_currentBranch == null || string.IsNullOrEmpty(_currentBranch.Upstream))
-                return;
-            var branch = _branches.Find(x => x.FullName == _currentBranch.Upstream);
-            if (branch != null)
-                NavigateToCommit(branch.Head);
+            _navigateToBranchDelayed = branch;
         }
 
         public void ClearHistoriesFilter()
@@ -1005,12 +996,16 @@ namespace SourceGit.ViewModels
                     _histories.IsLoading = false;
                     _histories.Commits = commits;
                     _histories.Graph = graph;
-                    if (_needNavigateToUpstreamHead)
+
+                    if (!string.IsNullOrEmpty(_navigateToBranchDelayed))
                     {
-                        NavigateToCurrentUpstreamHead();
-                        _needNavigateToUpstreamHead = false;
+                        var branch = _branches.Find(x => x.FullName == _navigateToBranchDelayed);
+                        if (branch != null)
+                            NavigateToCommit(branch.Head);
                     }
                 }
+
+                _navigateToBranchDelayed = string.Empty;
             });
         }
 
@@ -2607,6 +2602,7 @@ namespace SourceGit.ViewModels
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
-        private bool _needNavigateToUpstreamHead = false;
+
+        private string _navigateToBranchDelayed = string.Empty;
     }
 }

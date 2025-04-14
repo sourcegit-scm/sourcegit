@@ -83,7 +83,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
-                    _repo.SetNeedNavigateToUpstreamHead();
+                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.Upstream);
                     _repo.MarkFetched();
                     _repo.SetWatcherEnabled(true);
                 });
