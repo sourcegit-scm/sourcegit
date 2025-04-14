@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +40,7 @@ namespace SourceGit.Models
                     {
                         using (var writer = new StreamWriter(client))
                         {
-                            writer.Write(Encoding.UTF8.GetBytes(cmd));
+                            writer.WriteLine(cmd);
                             writer.Flush();
                         }
                     }
@@ -55,34 +54,22 @@ namespace SourceGit.Models
 
         public void Dispose()
         {
-            _server?.Close();
+            _cancellationTokenSource?.Cancel();
         }
 
         private async void StartServer()
         {
-            var buffer = new byte[1024];
+            using var reader = new StreamReader(_server);
 
-            while (true)
+            while (!_cancellationTokenSource.IsCancellationRequested)
             {
                 try
                 {
                     await _server.WaitForConnectionAsync(_cancellationTokenSource.Token);
-
-                    using (var stream = new MemoryStream())
-                    {
-                        while (true)
-                        {
-                            var readed = await _server.ReadAsync(buffer.AsMemory(0, 1024), _cancellationTokenSource.Token);
-                            if (readed == 0)
-                                break;
-
-                            stream.Write(buffer, 0, readed);
-                        }
-
-                        stream.Seek(0, SeekOrigin.Begin);
-                        MessageReceived?.Invoke(Encoding.UTF8.GetString(stream.ToArray()).Trim());
-                        _server.Disconnect();
-                    }
+                    
+                    var line = (await reader.ReadLineAsync(_cancellationTokenSource.Token))?.Trim();
+                    MessageReceived?.Invoke(line);
+                    _server.Disconnect();
                 }
                 catch
                 {
