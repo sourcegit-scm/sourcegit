@@ -162,7 +162,15 @@ namespace SourceGit.ViewModels
         public Models.Branch CurrentBranch
         {
             get => _currentBranch;
-            private set => SetProperty(ref _currentBranch, value);
+            private set
+            {
+                var oldHead = _currentBranch?.Head;
+                if (SetProperty(ref _currentBranch, value))
+                {
+                    if (oldHead != _currentBranch.Head && _workingCopy is { UseAmend: true })
+                        _workingCopy.UseAmend = false;
+                }
+            }
         }
 
         public List<BranchTreeNode> LocalBranchTrees
