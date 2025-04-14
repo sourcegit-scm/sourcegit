@@ -246,7 +246,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое различие</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменение пробелов</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменение пробелов и EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Последнее различие</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ИЗМЕНЕНИЕ ОБЪЕКТА LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее различие</x:String>

@@ -207,7 +207,50 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    rs = new Models.NoOrEOLChange();
+                    // Check if old and new hashes differ but no text changes found
+                    if (!string.IsNullOrEmpty(latest.OldHash) &&
+                        !string.IsNullOrEmpty(latest.NewHash) && 
+                        latest.OldHash != latest.NewHash)
+                    {
+                        // If hashes differ but no text diff found, it's likely an EOL change
+                        // Create a text diff to show the file content
+                        var textDiff = new Models.TextDiff()
+                        {
+                            Repo = _repo,
+                            Option = _option,
+                            File = _option.Path
+                        };
+                        // Query the file content to show
+                        var fileContent = Commands.QueryFileContent.Run(_repo, "HEAD", _option.Path);
+                        using var reader = new StreamReader(fileContent);
+                        var line = string.Empty;
+                        int lineNumber = 1;
+                        
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            textDiff.Lines.Add(new Models.TextDiffLine(
+                                Models.TextDiffLineType.Normal, 
+                                line, 
+                                lineNumber, 
+                                lineNumber));
+                            
+                            lineNumber++;
+                        }
+                        
+                        if (textDiff.Lines.Count > 0)
+                        {
+                            textDiff.MaxLineNumber = lineNumber - 1;
+                            rs = textDiff;
+                        }
+                        else
+                        {
+                            rs = new Models.NoOrEOLChange();
+                        }
+                    }
+                    else
+                    {
+                        rs = new Models.NoOrEOLChange();
+                    }
                 }
 
                 Dispatcher.UIThread.Post(() =>

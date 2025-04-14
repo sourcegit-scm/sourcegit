@@ -30,7 +30,7 @@ namespace SourceGit.Commands
             if (ignoreWhitespace)
                 Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-cr-at-eol --ignore-all-space --unified={unified} {opt}";
             else
-                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
+                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
         public Models.DiffResult Result()
