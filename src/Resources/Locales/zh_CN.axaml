@@ -23,7 +23,7 @@
   <x:String x:Key="Text.Apply" xml:space="preserve">应用补丁(apply)</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">补丁文件 ：</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">选择补丁文件</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号和EOF</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">应用补丁</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白符号处理 ：</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">应用贮藏</x:String>
@@ -245,7 +245,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化和EOF</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化和EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最后一个差异</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS对象变更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一个差异</x:String>

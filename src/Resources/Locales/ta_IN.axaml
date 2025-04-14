@@ -23,7 +23,7 @@
   <x:String x:Key="Text.Apply" xml:space="preserve">ஒட்டு</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">ஒட்டு கோப்பு:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">.ஒட்டு இடுவதற்கு கோப்பைத் தேர்ந்தெடு</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">வெள்ளைவெளி மாற்றங்களையும் EOF-ஐயும் புறக்கணி</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">வெள்ளைவெளி மாற்றங்களைப் புறக்கணி</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">ஒட்டு இடு</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">வெள்ளைவெளி:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">பதுக்கிவைத்ததை இடு</x:String>
@@ -240,7 +240,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">நகல்</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">கோப்பு முறை மாற்றப்பட்டது</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">முதல் வேறுபாடு</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">வெள்ளைவெளி மாற்றத்தை மற்றும் EOF புறக்கணி</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">வெள்ளைவெளி மாற்றத்தை மற்றும் EOL புறக்கணி</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">கடைசி வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">பெகோஅ பொருள் மாற்றம்</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">அடுத்த வேறுபாடு</x:String>

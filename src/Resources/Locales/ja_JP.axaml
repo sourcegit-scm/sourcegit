@@ -23,7 +23,7 @@
   <x:String x:Key="Text.Apply" xml:space="preserve">適用</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">パッチファイル:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patchファイルを選択</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">空白文字の変更とEOFを無視</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">空白文字の変更を無視</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">パッチを適用</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白文字:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">スタッシュを適用</x:String>
@@ -240,7 +240,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">ファイルモードが変更されました</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">先頭の差分</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更とEOFを無視</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更とEOLを無視</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後の差分</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFSオブジェクトの変更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">次の差分</x:String>
