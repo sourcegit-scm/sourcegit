@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using Avalonia.Threading;
 
 namespace SourceGit.Commands
 {
@@ -39,11 +42,29 @@ namespace SourceGit.Commands
             Args += $"{remote} {refname}";
         }
 
+        public new bool Exec()
+        {
+            if (!base.Exec())
+            {
+                return false;
+            }
+            if (_remoteMessage.Count > 0)
+            {
+                Dispatcher.UIThread.Post(() => App.SendNotification(Context, string.Join("\n", _remoteMessage)));
+            }
+            return true;
+        }
+
         protected override void OnReadline(string line)
         {
+            if (line.StartsWith("remote: "))
+            {
+                _remoteMessage.Add(line.Substring(8));
+            }
             _outputHandler?.Invoke(line);
         }
 
         private readonly Action<string> _outputHandler = null;
+        private List<string> _remoteMessage = new List<string>();
     }
 }
