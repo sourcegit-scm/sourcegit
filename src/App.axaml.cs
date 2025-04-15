@@ -351,7 +351,7 @@ namespace SourceGit
                 if (!_ipcChannel.IsFirstInstance)
                 {
                     _ipcChannel.SendToFirstInstance(desktop.Args is { Length: 1 } ? desktop.Args[0] : string.Empty);
-                    Quit(0);
+                    Environment.Exit(0);
                 }
                 else
                 {
