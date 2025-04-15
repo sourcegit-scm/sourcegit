@@ -58,7 +58,7 @@ namespace SourceGit.Commands
             {
                 ProcessInlineHighlights();
                 _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
-            }               
+            }
 
             return _result;
         }

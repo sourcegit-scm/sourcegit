@@ -79,7 +79,7 @@ namespace SourceGit.Models
                 try
                 {
                     await _server.WaitForConnectionAsync(_cancellationTokenSource.Token);
-                    
+
                     if (!_cancellationTokenSource.IsCancellationRequested)
                     {
                         var line = await reader.ReadToEndAsync(_cancellationTokenSource.Token);
