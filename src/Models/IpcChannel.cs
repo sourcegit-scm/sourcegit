@@ -46,14 +46,19 @@ namespace SourceGit.Models
                 using (var client = new NamedPipeClientStream(".", "SourceGitIPCChannel", PipeDirection.Out))
                 {
                     client.Connect(1000);
-                    if (client.IsConnected)
+                    if (!client.IsConnected)
+                        return;
+
+                    using (var writer = new StreamWriter(client))
                     {
-                        using (var writer = new StreamWriter(client))
-                        {
-                            writer.WriteLine(cmd);
-                            writer.Flush();
-                        }
+                        writer.WriteLine(cmd);
+                        writer.Flush();
                     }
+
+                    if (OperatingSystem.IsWindows())
+                        client.WaitForPipeDrain();
+                    else
+                        Thread.Sleep(1000);
                 }
             }
             catch
@@ -78,13 +83,18 @@ namespace SourceGit.Models
                 {
                     await _server.WaitForConnectionAsync(_cancellationTokenSource.Token);
                     
-                    var line = (await reader.ReadLineAsync(_cancellationTokenSource.Token))?.Trim();
-                    MessageReceived?.Invoke(line);
+                    if (!_cancellationTokenSource.IsCancellationRequested)
+                    {
+                        var line = await reader.ReadToEndAsync(_cancellationTokenSource.Token);
+                        MessageReceived?.Invoke(line?.Trim());
+                    }
+
                     _server.Disconnect();
                 }
                 catch
                 {
-                    // IGNORE
+                    if (!_cancellationTokenSource.IsCancellationRequested && _server.IsConnected)
+                        _server.Disconnect();
                 }
             }
         }

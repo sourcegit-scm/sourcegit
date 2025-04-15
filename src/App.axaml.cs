@@ -510,19 +510,30 @@ namespace SourceGit
 
         private void TryOpenRepository(string repo)
         {
-            if (string.IsNullOrEmpty(repo) || !Directory.Exists(repo))
-                return;
-
-            var test = new Commands.QueryRepositoryRootPath(repo).ReadToEnd();
-            if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
+            if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
-                Dispatcher.UIThread.Invoke(() =>
+                var test = new Commands.QueryRepositoryRootPath(repo).ReadToEnd();
+                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                 {
-                    var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
-                    ViewModels.Welcome.Instance.Refresh();
-                    _launcher?.OpenRepositoryInTab(node, null);
-                });
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
+                        ViewModels.Welcome.Instance.Refresh();
+                        _launcher?.OpenRepositoryInTab(node, null);
+
+                        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: Views.Launcher wnd })
+                            wnd.BringToTop();
+                    });
+
+                    return;
+                }
             }
+
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: Views.Launcher launcher })
+                    launcher.BringToTop();
+            });
         }
 
         private void Check4Update(bool manually = false)

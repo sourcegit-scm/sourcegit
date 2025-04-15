@@ -18,9 +18,8 @@ namespace SourceGit.ViewModels
                 if (_instance != null)
                     return _instance;
 
-                _isLoading = true;
                 _instance = Load();
-                _isLoading = false;
+                _instance._isLoading = false;
 
                 _instance.PrepareGit();
                 _instance.PrepareShellOrTerminal();
@@ -629,8 +628,8 @@ namespace SourceGit.ViewModels
         }
 
         private static Preferences _instance = null;
-        private static bool _isLoading = false;
 
+        private bool _isLoading = true;
         private bool _isReadonly = true;
         private string _locale = "en_US";
         private string _theme = "Default";
