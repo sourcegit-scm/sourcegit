@@ -36,12 +36,6 @@ namespace SourceGit.Commands
         public Models.DiffResult Result()
         {
             var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-            {
-                _result.TextDiff = null;
-                return _result;
-            }
-
             var start = 0;
             var end = rs.StdOut.IndexOf('\n', start);
             while (end > 0)
@@ -56,19 +50,15 @@ namespace SourceGit.Commands
             if (start < rs.StdOut.Length)
                 ParseLine(rs.StdOut.Substring(start));
 
-            if (_result.IsBinary || _result.IsLFS)
+            if (_result.IsBinary || _result.IsLFS || _result.TextDiff.Lines.Count == 0)
             {
                 _result.TextDiff = null;
             }
             else
             {
                 ProcessInlineHighlights();
-
-                if (_result.TextDiff.Lines.Count == 0)
-                    _result.TextDiff = null;
-                else
-                    _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
-            }
+                _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
+            }               
 
             return _result;
         }
