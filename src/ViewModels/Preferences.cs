@@ -212,6 +212,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useSyntaxHighlighting, value);
         }
 
+        public bool IgnoreWhitespaceChangesInDiff
+        {
+            get => _ignoreWhitespaceChangesInDiff;
+            set => SetProperty(ref _ignoreWhitespaceChangesInDiff, value);
+        }
+
         public bool EnableDiffViewWordWrap
         {
             get => _enableDiffViewWordWrap;
@@ -658,6 +664,7 @@ namespace SourceGit.ViewModels
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;
+        private bool _ignoreWhitespaceChangesInDiff = false;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;

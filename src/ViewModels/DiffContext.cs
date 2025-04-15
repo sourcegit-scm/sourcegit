@@ -19,11 +19,15 @@ namespace SourceGit.ViewModels
 
         public bool IgnoreWhitespace
         {
-            get => _ignoreWhitespace;
+            get => Preferences.Instance.IgnoreWhitespaceChangesInDiff;
             set
             {
-                if (SetProperty(ref _ignoreWhitespace, value))
+                if (value != Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
+                    OnPropertyChanged();
                     LoadDiffContent();
+                }
             }
         }
 
@@ -62,7 +66,6 @@ namespace SourceGit.ViewModels
                 _content = previous._content;
                 _fileModeChange = previous._fileModeChange;
                 _unifiedLines = previous._unifiedLines;
-                _ignoreWhitespace = previous._ignoreWhitespace;
                 _info = previous._info;
             }
 
@@ -114,8 +117,9 @@ namespace SourceGit.ViewModels
                 // There is no way to tell a git-diff to use "ALL lines of context",
                 // so instead we set a very high number for the "lines of context" parameter.
                 var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
-                var latest = new Commands.Diff(_repo, _option, numLines, _ignoreWhitespace).Result();
-                var info = new Info(_option, numLines, _ignoreWhitespace, latest);
+                var ignoreWS = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWS).Result();
+                var info = new Info(_option, numLines, ignoreWS, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
@@ -287,7 +291,6 @@ namespace SourceGit.ViewModels
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
         private bool _isTextDiff = false;
-        private bool _ignoreWhitespace = false;
         private object _content = null;
         private Info _info = null;
     }

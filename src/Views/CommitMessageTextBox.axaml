@@ -66,10 +66,9 @@
               CornerRadius="0,0,4,4">
         <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,4">
           <StackPanel Grid.Column="0"
-                      Margin="8,0"
                       VerticalAlignment="Center"
                       Orientation="Horizontal">
-            <TextBlock Classes="info_label" FontSize="13" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
+            <TextBlock Classes="info_label" FontSize="13" HorizontalAlignment="Left" Margin="4,0,0,0" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
             <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}" VerticalAlignment="Center"/>
             <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}" VerticalAlignment="Center"/>
             <TextBlock Classes="primary" FontSize="11" Text="/" VerticalAlignment="Center"/>
