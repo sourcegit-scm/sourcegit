@@ -19,23 +19,20 @@ namespace SourceGit.Models
         {
             try
             {
-                _singletonMutex = new Mutex(false, "SourceGit_2994509B-4906-4A48-9A45-55C1836A8208", out _isFirstInstance);
-
-                if (_isFirstInstance)
-                {
-                    _server = new NamedPipeServerStream(
-                        "SourceGitIPCChannel",
-                        PipeDirection.In,
-                        -1,
-                        PipeTransmissionMode.Byte,
-                        PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
-                    _cancellationTokenSource = new CancellationTokenSource();
-                    Task.Run(StartServer);
-                }
+                _singletoneLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _isFirstInstance = true;
+                _server = new NamedPipeServerStream(
+                    "SourceGitIPCChannel",
+                    PipeDirection.In,
+                    -1,
+                    PipeTransmissionMode.Byte,
+                    PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+                _cancellationTokenSource = new CancellationTokenSource();
+                Task.Run(StartServer);
             }
             catch
             {
-                // IGNORE
+                _isFirstInstance = false;
             }
         }
 
@@ -70,7 +67,7 @@ namespace SourceGit.Models
         public void Dispose()
         {
             _cancellationTokenSource?.Cancel();
-            _singletonMutex.Dispose();
+            _singletoneLock?.Dispose();
         }
 
         private async void StartServer()
@@ -99,7 +96,7 @@ namespace SourceGit.Models
             }
         }
 
-        private Mutex _singletonMutex = null;
+        private FileStream _singletoneLock = null;
         private bool _isFirstInstance = false;
         private NamedPipeServerStream _server = null;
         private CancellationTokenSource _cancellationTokenSource = null;
