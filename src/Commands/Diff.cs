@@ -15,6 +15,7 @@ namespace SourceGit.Commands
         private const string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
+        private const int MAX_INLINE_HIGHLIGHT_LENGTH = 10240;
 
         public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
         {
@@ -217,45 +218,53 @@ namespace SourceGit.Commands
 
         private void ProcessInlineHighlights()
         {
-            if (_deleted.Count > 0)
+            if (_deleted.Count > 0 && _added.Count > 0)
             {
-                if (_added.Count == _deleted.Count)
+                // Compare changes between multiple lines
+                var oldContent = ConcatLineContents(_deleted);
+                var newContent = ConcatLineContents(_added);
+        
+                // Skip inline highlights for large content to improve performance
+                if (oldContent.Length <= MAX_INLINE_HIGHLIGHT_LENGTH && newContent.Length <= MAX_INLINE_HIGHLIGHT_LENGTH)
                 {
-                    for (int i = _added.Count - 1; i >= 0; i--)
+                    var chunks = Models.TextInlineChange.CompareMultiLine(oldContent, newContent, _deleted, _added);
+            
+                    // Apply highlights to corresponding lines
+                    foreach (var chunk in chunks)
                     {
-                        var left = _deleted[i];
-                        var right = _added[i];
-
-                        if (left.Content.Length > 1024 || right.Content.Length > 1024)
-                            continue;
-
-                        var chunks = Models.TextInlineChange.Compare(left.Content, right.Content);
-                        if (chunks.Count > 4)
-                            continue;
-
-                        foreach (var chunk in chunks)
-                        {
-                            if (chunk.DeletedCount > 0)
-                            {
-                                left.Highlights.Add(new Models.TextInlineRange(chunk.DeletedStart, chunk.DeletedCount));
-                            }
-
-                            if (chunk.AddedCount > 0)
-                            {
-                                right.Highlights.Add(new Models.TextInlineRange(chunk.AddedStart, chunk.AddedCount));
-                            }
-                        }
+                        ApplyHighlight(_deleted, chunk.DeletedLine, chunk.DeletedStart, chunk.DeletedCount);
+                        ApplyHighlight(_added, chunk.AddedLine, chunk.AddedStart, chunk.AddedCount);
                     }
                 }
-
-                _result.TextDiff.Lines.AddRange(_deleted);
-                _deleted.Clear();
             }
 
-            if (_added.Count > 0)
+            // Add all processed lines to the result
+            _result.TextDiff.Lines.AddRange(_deleted);
+            _deleted.Clear();
+    
+            _result.TextDiff.Lines.AddRange(_added);
+            _added.Clear();
+        }
+
+        private string ConcatLineContents(List<Models.TextDiffLine> lines)
+        {
+            if (lines.Count == 0)
+                return string.Empty;
+            var result = new System.Text.StringBuilder();
+            for (var i = 0; i < lines.Count; i++)
             {
-                _result.TextDiff.Lines.AddRange(_added);
-                _added.Clear();
+                if (i > 0)
+                    result.Append('\n');
+                result.Append(lines[i].Content);
+            }
+            return result.ToString();
+        }
+
+        private void ApplyHighlight(List<Models.TextDiffLine> lines, int lineIndex, int start, int count)
+        {
+            if (lineIndex >= 0 && lineIndex < lines.Count && count > 0)
+            {
+                lines[lineIndex].Highlights.Add(new Models.TextInlineRange(start, count));
             }
         }
 

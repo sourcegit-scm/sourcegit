@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
@@ -8,42 +9,20 @@ namespace SourceGit.Models
         public int DeletedCount { get; set; }
         public int AddedStart { get; set; }
         public int AddedCount { get; set; }
+        public int DeletedLine { get; set; }
+        public int AddedLine { get; set; }
 
-        class Chunk
+        private TextInlineChange(int deletedLine, int dp, int dc, int addedLine, int ap, int ac)
         {
-            public int Hash;
-            public bool Modified;
-            public int Start;
-            public int Size;
-
-            public Chunk(int hash, int start, int size)
-            {
-                Hash = hash;
-                Modified = false;
-                Start = start;
-                Size = size;
-            }
+            DeletedLine = deletedLine;
+            DeletedStart = dp;
+            DeletedCount = dc;
+            AddedLine = addedLine;
+            AddedStart = ap;
+            AddedCount = ac;
         }
 
-        enum Edit
-        {
-            None,
-            DeletedRight,
-            DeletedLeft,
-            AddedRight,
-            AddedLeft,
-        }
-
-        class EditResult
-        {
-            public Edit State;
-            public int DeleteStart;
-            public int DeleteEnd;
-            public int AddStart;
-            public int AddEnd;
-        }
-
-        public TextInlineChange(int dp, int dc, int ap, int ac)
+        private TextInlineChange(int dp, int dc, int ap, int ac)
         {
             DeletedStart = dp;
             DeletedCount = dc;
@@ -51,278 +30,441 @@ namespace SourceGit.Models
             AddedCount = ac;
         }
 
-        public static List<TextInlineChange> Compare(string oldValue, string newValue)
+        private static List<string> Tokenize(string text)
         {
-            var hashes = new Dictionary<string, int>();
-            var chunksOld = MakeChunks(hashes, oldValue);
-            var chunksNew = MakeChunks(hashes, newValue);
-            var sizeOld = chunksOld.Count;
-            var sizeNew = chunksNew.Count;
-            var max = sizeOld + sizeNew + 2;
-            var forward = new int[max];
-            var reverse = new int[max];
-            CheckModified(chunksOld, 0, sizeOld, chunksNew, 0, sizeNew, forward, reverse);
+            if (string.IsNullOrEmpty(text))
+                return new List<string>();
 
-            var ret = new List<TextInlineChange>();
-            var posOld = 0;
-            var posNew = 0;
-            var last = null as TextInlineChange;
-            do
-            {
-                while (posOld < sizeOld && posNew < sizeNew && !chunksOld[posOld].Modified && !chunksNew[posNew].Modified)
-                {
-                    posOld++;
-                    posNew++;
-                }
-
-                var beginOld = posOld;
-                var beginNew = posNew;
-                var countOld = 0;
-                var countNew = 0;
-                for (; posOld < sizeOld && chunksOld[posOld].Modified; posOld++)
-                    countOld += chunksOld[posOld].Size;
-                for (; posNew < sizeNew && chunksNew[posNew].Modified; posNew++)
-                    countNew += chunksNew[posNew].Size;
-
-                if (countOld + countNew == 0)
-                    continue;
-
-                var diff = new TextInlineChange(
-                    countOld > 0 ? chunksOld[beginOld].Start : 0,
-                    countOld,
-                    countNew > 0 ? chunksNew[beginNew].Start : 0,
-                    countNew);
-                if (last != null)
-                {
-                    var midSizeOld = diff.DeletedStart - last.DeletedStart - last.DeletedCount;
-                    var midSizeNew = diff.AddedStart - last.AddedStart - last.AddedCount;
-                    if (midSizeOld == 1 && midSizeNew == 1)
-                    {
-                        last.DeletedCount += (1 + countOld);
-                        last.AddedCount += (1 + countNew);
-                        continue;
-                    }
-                }
-
-                last = diff;
-                ret.Add(diff);
-            } while (posOld < sizeOld && posNew < sizeNew);
-
-            return ret;
-        }
-
-        private static List<Chunk> MakeChunks(Dictionary<string, int> hashes, string text)
-        {
-            var start = 0;
-            var size = text.Length;
-            var chunks = new List<Chunk>();
+            var tokens = new List<string>();
             var delims = new HashSet<char>(" \t+-*/=!,:;.'\"/?|&#@%`<>()[]{}\\".ToCharArray());
 
-            for (int i = 0; i < size; i++)
+            var start = 0;
+            for (var i = 0; i < text.Length; i++)
             {
-                var ch = text[i];
-                if (delims.Contains(ch))
-                {
-                    if (start != i)
-                        AddChunk(chunks, hashes, text.Substring(start, i - start), start);
-                    AddChunk(chunks, hashes, text.Substring(i, 1), i);
-                    start = i + 1;
-                }
+                if (!delims.Contains(text[i]))
+                    continue;
+
+                if (start != i)
+                    tokens.Add(text.Substring(start, i - start));
+
+                tokens.Add(text.Substring(i, 1));
+                start = i + 1;
             }
 
-            if (start < size)
-                AddChunk(chunks, hashes, text.Substring(start), start);
-            return chunks;
+            if (start < text.Length)
+                tokens.Add(text.Substring(start));
+
+            return tokens;
         }
 
-        private static void CheckModified(List<Chunk> chunksOld, int startOld, int endOld, List<Chunk> chunksNew, int startNew, int endNew, int[] forward, int[] reverse)
+        private static List<EditOperation> ComputeDiff(List<string> oldTokens, List<string> newTokens)
         {
-            while (startOld < endOld && startNew < endNew && chunksOld[startOld].Hash == chunksNew[startNew].Hash)
-            {
-                startOld++;
-                startNew++;
-            }
+            var operations = new List<EditOperation>();
 
-            while (startOld < endOld && startNew < endNew && chunksOld[endOld - 1].Hash == chunksNew[endNew - 1].Hash)
-            {
-                endOld--;
-                endNew--;
-            }
+            // Implementation of Myers diff algorithm
+            var n = oldTokens.Count;
+            var m = newTokens.Count;
+            var max = n + m;
+            var trace = new List<Dictionary<int, int>>();
+            var v = new Dictionary<int, int> { { 1, 0 } };
 
-            var lenOld = endOld - startOld;
-            var lenNew = endNew - startNew;
-            if (lenOld > 0 && lenNew > 0)
+            for (var d = 0; d <= max; d++)
             {
-                var rs = CheckModifiedEdit(chunksOld, startOld, endOld, chunksNew, startNew, endNew, forward, reverse);
-                if (rs.State == Edit.None)
-                    return;
+                trace.Add(new Dictionary<int, int>(v));
 
-                if (rs.State == Edit.DeletedRight && rs.DeleteStart - 1 > startOld)
+                for (var k = -d; k <= d; k += 2)
                 {
-                    chunksOld[--rs.DeleteStart].Modified = true;
-                }
-                else if (rs.State == Edit.DeletedLeft && rs.DeleteEnd < endOld)
-                {
-                    chunksOld[rs.DeleteEnd++].Modified = true;
-                }
-                else if (rs.State == Edit.AddedRight && rs.AddStart - 1 > startNew)
-                {
-                    chunksNew[--rs.AddStart].Modified = true;
-                }
-                else if (rs.State == Edit.AddedLeft && rs.AddEnd < endNew)
-                {
-                    chunksNew[rs.AddEnd++].Modified = true;
-                }
+                    int x;
+                    if (k == -d || (k != d && v.GetValueOrDefault(k - 1, 0) < v.GetValueOrDefault(k + 1, 0)))
+                        x = v.GetValueOrDefault(k + 1, 0);
+                    else
+                        x = v.GetValueOrDefault(k - 1, 0) + 1;
 
-                CheckModified(chunksOld, startOld, rs.DeleteStart, chunksNew, startNew, rs.AddStart, forward, reverse);
-                CheckModified(chunksOld, rs.DeleteEnd, endOld, chunksNew, rs.AddEnd, endNew, forward, reverse);
-            }
-            else if (lenOld > 0)
-            {
-                for (int i = startOld; i < endOld; i++)
-                    chunksOld[i].Modified = true;
-            }
-            else if (lenNew > 0)
-            {
-                for (int i = startNew; i < endNew; i++)
-                    chunksNew[i].Modified = true;
-            }
-        }
+                    int y = x - k;
 
-        private static EditResult CheckModifiedEdit(List<Chunk> chunksOld, int startOld, int endOld, List<Chunk> chunksNew, int startNew, int endNew, int[] forward, int[] reverse)
-        {
-            var lenOld = endOld - startOld;
-            var lenNew = endNew - startNew;
-            var max = lenOld + lenNew + 1;
-            var half = max / 2;
-            var delta = lenOld - lenNew;
-            var deltaEven = delta % 2 == 0;
-            var rs = new EditResult() { State = Edit.None };
-
-            forward[1 + half] = 0;
-            reverse[1 + half] = lenOld + 1;
-
-            for (int i = 0; i <= half; i++)
-            {
-
-                for (int j = -i; j <= i; j += 2)
-                {
-                    var idx = j + half;
-                    int o, n;
-                    if (j == -i || (j != i && forward[idx - 1] < forward[idx + 1]))
+                    while (x < n && y < m && oldTokens[x].Equals(newTokens[y]))
                     {
-                        o = forward[idx + 1];
-                        rs.State = Edit.AddedRight;
+                        x++;
+                        y++;
+                    }
+
+                    v[k] = x;
+
+                    if (x >= n && y >= m)
+                    {
+                        // Backtrack edit path
+                        BacktrackEditPath(trace, operations, n, m, d);
+                        return operations;
+                    }
+                }
+            }
+
+            return operations;
+        }
+
+        private static void BacktrackEditPath(
+            List<Dictionary<int, int>> trace, 
+            List<EditOperation> operations, 
+            int n, int m, int d)
+        {
+            int px = n, py = m;
+            for (int i = d; i > 0; i--)
+            {
+                var kk = px - py;
+                int prevK;
+
+                if (kk == -i || (kk != i && trace[i].GetValueOrDefault(kk - 1, 0) <
+                        trace[i].GetValueOrDefault(kk + 1, 0)))
+                    prevK = kk + 1;
+                else
+                    prevK = kk - 1;
+
+                int prevX = trace[i][prevK];
+                int prevY = prevX - prevK;
+
+                while (px > prevX && py > prevY)
+                {
+                    operations.Add(new EditOperation(EditType.Equal, px - 1, py - 1));
+                    px--;
+                    py--;
+                }
+
+                operations.Add(px == prevX ?
+                    new EditOperation(EditType.Insert, px, py - 1) :
+                    new EditOperation(EditType.Delete, px - 1, py));
+
+                px = prevX;
+                py = prevY;
+            }
+
+            while (px > 0 && py > 0)
+            {
+                operations.Add(new EditOperation(EditType.Equal, px - 1, py - 1));
+                px--;
+                py--;
+            }
+
+            while (px > 0)
+            {
+                operations.Add(new EditOperation(EditType.Delete, px - 1, 0));
+                px--;
+            }
+
+            while (py > 0)
+            {
+                operations.Add(new EditOperation(EditType.Insert, 0, py - 1));
+                py--;
+            }
+
+            operations.Reverse();
+        }
+
+        private static int[] CalculateOffsets(List<string> tokens, string text)
+        {
+            var offsets = new int[tokens.Count];
+            var pos = 0;
+
+            for (var i = 0; i < tokens.Count; i++)
+            {
+                // Find position of token in original string
+                while (pos < text.Length && pos + tokens[i].Length <= text.Length && 
+                       !text.Substring(pos, tokens[i].Length).Equals(tokens[i]))
+                {
+                    pos++;
+                }
+
+                offsets[i] = pos;
+                pos += tokens[i].Length;
+            }
+
+            return offsets;
+        }
+
+        // Merge adjacent or overlapping changes
+        private static List<TextInlineChange> MergeChanges(List<TextInlineChange> changes)
+        {
+            if (changes.Count <= 1)
+                return changes;
+
+            var result = new List<TextInlineChange>();
+            var current = changes[0];
+            const int MERGE_THRESHOLD = 3; // Distance threshold to merge changes
+
+            for (var i = 1; i < changes.Count; i++)
+            {
+                var next = changes[i];
+
+                // If distance between changes is small, merge them
+                if ((next.DeletedStart - (current.DeletedStart + current.DeletedCount) <= MERGE_THRESHOLD) ||
+                    (next.AddedStart - (current.AddedStart + current.AddedCount) <= MERGE_THRESHOLD))
+                {
+                    // Calculate merged range
+                    int deleteEnd = Math.Max(current.DeletedStart + current.DeletedCount,
+                        next.DeletedStart + next.DeletedCount);
+                    int insertEnd = Math.Max(current.AddedStart + current.AddedCount,
+                        next.AddedStart + next.AddedCount);
+
+                    current = new TextInlineChange(
+                        Math.Min(current.DeletedStart, next.DeletedStart),
+                        deleteEnd - Math.Min(current.DeletedStart, next.DeletedStart),
+                        Math.Min(current.AddedStart, next.AddedStart),
+                        insertEnd - Math.Min(current.AddedStart, next.AddedStart));
+                }
+                else
+                {
+                    result.Add(current);
+                    current = next;
+                }
+            }
+
+            result.Add(current);
+            return result;
+        }
+
+        public static List<TextInlineChange> CompareMultiLine(
+            string oldValue, string newValue,
+            List<TextDiffLine> oldLines, List<TextDiffLine> newLines)
+        {
+            var changes = new List<TextInlineChange>();
+
+            // Tokenize multi-line text
+            var oldTokens = TokenizeMultiLine(oldValue);
+            var newTokens = TokenizeMultiLine(newValue);
+
+            // Map tokens to their lines and positions
+            var oldLineMap = MapTokensToLines(oldTokens, oldLines);
+            var newLineMap = MapTokensToLines(newTokens, newLines);
+
+            // Calculate differences
+            var operations = ComputeDiff(oldTokens, newTokens);
+
+            // Process operations to generate inline changes
+            ProcessMultiLineOperations(operations, oldTokens, newTokens, oldLineMap, newLineMap, changes);
+
+            return changes;
+        }
+
+        private static void ProcessMultiLineOperations(
+            List<EditOperation> operations, 
+            List<string> oldTokens, 
+            List<string> newTokens,
+            TokenLocation[] oldLineMap, 
+            TokenLocation[] newLineMap,
+            List<TextInlineChange> changes)
+        {
+            var deleteStart = -1;
+            var deleteSize = 0;
+            var deleteLine = -1;
+
+            var insertStart = -1;
+            var insertSize = 0;
+            var insertLine = -1;
+
+            foreach (var op in operations)
+            {
+                switch (op.Type)
+                {
+                    case EditType.Delete:
+                        ProcessDeleteOperation(op, oldTokens, oldLineMap, ref deleteStart, ref deleteSize, 
+                            ref deleteLine, ref insertStart, ref insertSize, 
+                            ref insertLine, changes);
+                        break;
+
+                    case EditType.Insert:
+                        ProcessInsertOperation(op, newTokens, newLineMap, ref deleteStart, ref deleteSize, 
+                            ref deleteLine, ref insertStart, ref insertSize, 
+                            ref insertLine, changes);
+                        break;
+
+                    case EditType.Equal:
+                        // If there are pending changes, add them to result
+                        if (deleteStart != -1 || insertStart != -1)
+                        {
+                            changes.Add(new TextInlineChange(
+                                deleteLine, deleteStart, deleteSize,
+                                insertLine, insertStart, insertSize));
+
+                            deleteStart = -1;
+                            deleteSize = 0;
+                            deleteLine = -1;
+
+                            insertStart = -1;
+                            insertSize = 0;
+                            insertLine = -1;
+                        }
+                        break;
+                }
+            }
+
+            // Process final changes
+            if (deleteStart != -1 || insertStart != -1)
+            {
+                changes.Add(new TextInlineChange(
+                    deleteLine, deleteStart, deleteSize,
+                    insertLine, insertStart, insertSize));
+            }
+        }
+
+        private static void ProcessDeleteOperation(
+            EditOperation op, 
+            List<string> oldTokens, 
+            TokenLocation[] oldLineMap,
+            ref int deleteStart, 
+            ref int deleteSize, 
+            ref int deleteLine,
+            ref int insertStart, 
+            ref int insertSize, 
+            ref int insertLine,
+            List<TextInlineChange> changes)
+        {
+            if (deleteStart == -1)
+            {
+                deleteStart = oldLineMap[op.OldIndex].Position;
+                deleteLine = oldLineMap[op.OldIndex].Line;
+            }
+            // If deletion is in a different line, process previous changes and start new ones
+            else if (deleteLine != oldLineMap[op.OldIndex].Line)
+            {
+                if (insertStart != -1)
+                {
+                    changes.Add(new TextInlineChange(
+                        deleteLine, deleteStart, deleteSize,
+                        insertLine, insertStart, insertSize));
+                }
+                else
+                {
+                    changes.Add(new TextInlineChange(
+                        deleteLine, deleteStart, deleteSize,
+                        -1, 0, 0));
+                }
+
+                deleteStart = oldLineMap[op.OldIndex].Position;
+                deleteLine = oldLineMap[op.OldIndex].Line;
+                deleteSize = 0;
+
+                insertStart = -1;
+                insertSize = 0;
+                insertLine = -1;
+            }
+
+            deleteSize += oldTokens[op.OldIndex].Length;
+        }
+
+        private static void ProcessInsertOperation(
+            EditOperation op, 
+            List<string> newTokens, 
+            TokenLocation[] newLineMap,
+            ref int deleteStart, 
+            ref int deleteSize, 
+            ref int deleteLine,
+            ref int insertStart, 
+            ref int insertSize, 
+            ref int insertLine,
+            List<TextInlineChange> changes)
+        {
+            if (insertStart == -1)
+            {
+                insertStart = newLineMap[op.NewIndex].Position;
+                insertLine = newLineMap[op.NewIndex].Line;
+            }
+            // If insertion is in a different line, process previous changes and start new ones
+            else if (insertLine != newLineMap[op.NewIndex].Line)
+            {
+                if (deleteStart != -1)
+                {
+                    changes.Add(new TextInlineChange(
+                        deleteLine, deleteStart, deleteSize,
+                        insertLine, insertStart, insertSize));
+                }
+                else
+                {
+                    changes.Add(new TextInlineChange(
+                        -1, 0, 0,
+                        insertLine, insertStart, insertSize));
+                }
+
+                insertStart = newLineMap[op.NewIndex].Position;
+                insertLine = newLineMap[op.NewIndex].Line;
+                insertSize = 0;
+
+                deleteStart = -1;
+                deleteSize = 0;
+                deleteLine = -1;
+            }
+
+            insertSize += newTokens[op.NewIndex].Length;
+        }
+
+        private static List<string> TokenizeMultiLine(string text)
+        {
+            var tokens = new List<string>();
+            var lines = text.Split('\n');
+
+            foreach (var line in lines)
+            {
+                var lineTokens = Tokenize(line);
+                tokens.AddRange(lineTokens);
+                tokens.Add("\n"); // Add newline as special token
+            }
+
+            // Remove trailing newline token if present
+            if (tokens.Count > 0 && tokens[tokens.Count - 1] == "\n")
+            {
+                tokens.RemoveAt(tokens.Count - 1);
+            }
+
+            return tokens;
+        }
+
+        private static TokenLocation[] MapTokensToLines(List<string> tokens, List<TextDiffLine> lines)
+        {
+            var map = new TokenLocation[tokens.Count];
+            var currentLine = 0;
+            var posInLine = 0;
+
+            for (var i = 0; i < tokens.Count; i++)
+            {
+                if (tokens[i] == "\n")
+                {
+                    currentLine++;
+                    posInLine = 0;
+                    map[i] = new TokenLocation { Line = -1, Position = -1 }; // Newlines don't belong to any position
+                }
+                else
+                {
+                    if (currentLine < lines.Count)
+                    {
+                        map[i] = new TokenLocation { Line = currentLine, Position = posInLine };
+                        posInLine += tokens[i].Length;
                     }
                     else
                     {
-                        o = forward[idx - 1] + 1;
-                        rs.State = Edit.DeletedRight;
-                    }
-
-                    n = o - j;
-
-                    var startX = o;
-                    var startY = n;
-                    while (o < lenOld && n < lenNew && chunksOld[o + startOld].Hash == chunksNew[n + startNew].Hash)
-                    {
-                        o++;
-                        n++;
-                    }
-
-                    forward[idx] = o;
-
-                    if (!deltaEven && j - delta >= -i + 1 && j - delta <= i - 1)
-                    {
-                        var revIdx = (j - delta) + half;
-                        var revOld = reverse[revIdx];
-                        int revNew = revOld - j;
-                        if (revOld <= o && revNew <= n)
-                        {
-                            if (i == 0)
-                            {
-                                rs.State = Edit.None;
-                            }
-                            else
-                            {
-                                rs.DeleteStart = startX + startOld;
-                                rs.DeleteEnd = o + startOld;
-                                rs.AddStart = startY + startNew;
-                                rs.AddEnd = n + startNew;
-                            }
-                            return rs;
-                        }
-                    }
-                }
-
-                for (int j = -i; j <= i; j += 2)
-                {
-                    var idx = j + half;
-                    int o, n;
-                    if (j == -i || (j != i && reverse[idx + 1] <= reverse[idx - 1]))
-                    {
-                        o = reverse[idx + 1] - 1;
-                        rs.State = Edit.DeletedLeft;
-                    }
-                    else
-                    {
-                        o = reverse[idx - 1];
-                        rs.State = Edit.AddedLeft;
-                    }
-
-                    n = o - (j + delta);
-
-                    var endX = o;
-                    var endY = n;
-                    while (o > 0 && n > 0 && chunksOld[startOld + o - 1].Hash == chunksNew[startNew + n - 1].Hash)
-                    {
-                        o--;
-                        n--;
-                    }
-
-                    reverse[idx] = o;
-
-                    if (deltaEven && j + delta >= -i && j + delta <= i)
-                    {
-                        var forIdx = (j + delta) + half;
-                        var forOld = forward[forIdx];
-                        int forNew = forOld - (j + delta);
-                        if (forOld >= o && forNew >= n)
-                        {
-                            if (i == 0)
-                            {
-                                rs.State = Edit.None;
-                            }
-                            else
-                            {
-                                rs.DeleteStart = o + startOld;
-                                rs.DeleteEnd = endX + startOld;
-                                rs.AddStart = n + startNew;
-                                rs.AddEnd = endY + startNew;
-                            }
-                            return rs;
-                        }
+                        map[i] = new TokenLocation { Line = -1, Position = -1 };
                     }
                 }
             }
 
-            rs.State = Edit.None;
-            return rs;
+            return map;
         }
 
-        private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start)
+        private class TokenLocation
         {
-            int hash;
-            if (hashes.TryGetValue(data, out hash))
-            {
-                chunks.Add(new Chunk(hash, start, data.Length));
-            }
-            else
-            {
-                hash = hashes.Count;
-                hashes.Add(data, hash);
-                chunks.Add(new Chunk(hash, start, data.Length));
-            }
+            public int Line { get; init; }
+            public int Position { get; init; }
+        }
+
+        private enum EditType
+        {
+            Equal,
+            Insert,
+            Delete
+        }
+
+        private class EditOperation(EditType type, int oldIndex, int newIndex)
+        {
+            public EditType Type { get; } = type;
+            public int OldIndex { get; } = oldIndex;
+            public int NewIndex { get; } = newIndex;
         }
     }
 }
