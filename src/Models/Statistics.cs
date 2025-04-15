@@ -32,6 +32,8 @@ namespace SourceGit.Models
 
     public class StatisticsReport
     {
+        private const float OPACITY_DIMMED = 0.3f;
+
         public static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
         public int Total { get; set; } = 0;
@@ -39,6 +41,18 @@ namespace SourceGit.Models
         public List<ISeries> Series { get; set; } = new List<ISeries>();
         public List<Axis> XAxes { get; set; } = new List<Axis>();
         public List<Axis> YAxes { get; set; } = new List<Axis>();
+        
+        private StaticsticsAuthor _selectedAuthor = null;
+        public StaticsticsAuthor SelectedAuthor
+        {
+            get => _selectedAuthor;
+            set
+            {
+                _selectedAuthor = value;
+
+                UpdateHighlighting();
+            }
+        }
 
         public StatisticsReport(StaticsticsMode mode, DateTime start)
         {
@@ -92,6 +106,18 @@ namespace SourceGit.Models
                 _mapUsers[author] = vu + 1;
             else
                 _mapUsers.Add(author, 1);
+                
+            if (!_authorCommitsByDate.TryGetValue(author, out var authorDates))
+            {
+                authorDates = new Dictionary<DateTime, int>();
+
+                _authorCommitsByDate.Add(author, authorDates);
+            }
+            
+            if (authorDates.TryGetValue(normalized, out var authorDateCount))
+                authorDates[normalized] = authorDateCount + 1;
+            else
+                authorDates.Add(normalized, 1);
         }
 
         public void Complete()
@@ -121,13 +147,73 @@ namespace SourceGit.Models
 
         public void ChangeColor(uint color)
         {
-            if (Series is [ColumnSeries<DateTimePoint> series])
-                series.Fill = new SolidColorPaint(new SKColor(color));
+            _currentColor = color;
+
+            UpdateHighlighting();
+        }
+        
+        private void UpdateHighlighting()
+        {
+            if (Series.Count == 0)
+                return;
+            
+            var skColor = new SKColor(_currentColor);
+            
+            if (_selectedAuthor == null)
+            {
+                if (Series.Count > 1)
+                    Series.RemoveAt(1);
+                
+                if (Series is [ColumnSeries<DateTimePoint> series])
+                    series.Fill = new SolidColorPaint(skColor);
+            }
+            else
+            {
+                var dimmedColor = new SKColor(skColor.Red, skColor.Green, skColor.Blue, (byte)(255 * OPACITY_DIMMED));
+                
+                if (Series is [ColumnSeries<DateTimePoint> series, ..])
+                    series.Fill = new SolidColorPaint(dimmedColor);
+                
+                if (_authorCommitsByDate.TryGetValue(_selectedAuthor.User, out var authorData))
+                {
+                    var highlightSamples = new List<DateTimePoint>();
+
+                    foreach (var kv in authorData)
+                        highlightSamples.Add(new DateTimePoint(kv.Key, kv.Value));
+                    
+                    highlightSamples.Sort((a, b) => a.DateTime.CompareTo(b.DateTime));
+                    
+                    if (Series.Count > 1)
+                    {
+                        if (Series[1] is ColumnSeries<DateTimePoint> highlightSeries)
+                            highlightSeries.Values = highlightSamples;
+                    }
+                    else
+                    {
+                        Series.Add(new ColumnSeries<DateTimePoint>
+                        {
+                            Values = highlightSamples,
+                            Stroke = null,
+                            Fill = new SolidColorPaint(skColor),
+                            Padding = 1,
+                        });
+                    }
+                }
+            }
+        }
+        
+        public void ResetSelection()
+        {
+            _selectedAuthor = null;
+
+            UpdateHighlighting();
         }
 
         private StaticsticsMode _mode = StaticsticsMode.All;
         private Dictionary<User, int> _mapUsers = new Dictionary<User, int>();
         private Dictionary<DateTime, int> _mapSamples = new Dictionary<DateTime, int>();
+        private Dictionary<User, Dictionary<DateTime, int>> _authorCommitsByDate = new Dictionary<User, Dictionary<DateTime, int>>();
+        private uint _currentColor;
     }
 
     public class Statistics

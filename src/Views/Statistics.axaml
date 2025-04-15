@@ -139,6 +139,7 @@
               <!-- Table By Autor -->
               <ListBox Grid.Column="0"
                        ItemsSource="{Binding Authors}"
+                       SelectedItem="{Binding $parent[ContentControl].((vm:Statistics)DataContext).SelectedAuthor, Mode=TwoWay}"
                        SelectionMode="Single"
                        BorderThickness="1"
                        BorderBrush="{DynamicResource Brush.Border2}"

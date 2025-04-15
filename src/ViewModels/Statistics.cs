@@ -50,6 +50,20 @@ namespace SourceGit.ViewModels
             get => new SolidColorBrush(SampleColor);
         }
 
+        public Models.StaticsticsAuthor SelectedAuthor
+        {
+            get => _selectedAuthor;
+            set
+            {
+                if (SetProperty(ref _selectedAuthor, value))
+                {
+                    _selectedReport?.ResetSelection();
+                    
+                    _selectedReport.SelectedAuthor = value;
+                }
+            }
+        }
+
         public Statistics(string repo)
         {
             Task.Run(() =>
@@ -69,6 +83,8 @@ namespace SourceGit.ViewModels
             if (_data == null)
                 return;
 
+            SetProperty(ref _selectedAuthor, null);
+
             var report = _selectedIndex switch
             {
                 0 => _data.All,
@@ -76,6 +92,7 @@ namespace SourceGit.ViewModels
                 _ => _data.Week,
             };
 
+            report.ResetSelection();
             report.ChangeColor(SampleColor);
             SelectedReport = report;
         }
@@ -84,5 +101,6 @@ namespace SourceGit.ViewModels
         private Models.Statistics _data = null;
         private Models.StatisticsReport _selectedReport = null;
         private int _selectedIndex = 0;
+        private Models.StaticsticsAuthor _selectedAuthor = null;
     }
 }
