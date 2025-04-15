@@ -185,8 +185,8 @@
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Modifica Sostanziale:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Issue Chiusa:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Dettaglio Modifiche:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Descrizione Breve:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Ambito:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Descrizione Breve:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipo di Modifica:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copia Tutto il Testo</x:String>

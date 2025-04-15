@@ -470,8 +470,8 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Перевизначення теми</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Використовувати фіксовану ширину вкладки в заголовку</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Використовувати системну рамку вікна</x:String>
-  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Шлях встановлення</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ІНСТРУМЕНТ DIFF/MERGE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Шлях встановлення</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Введіть шлях до інструменту diff/merge</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Інструмент</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">ЗАГАЛЬНІ</x:String>

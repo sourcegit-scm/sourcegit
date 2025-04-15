@@ -185,8 +185,8 @@
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壊的変更:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">閉じたIssue:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">詳細な変更:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">短い説明:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">スコープ:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">短い説明:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">変更の種類:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">すべてのテキストをコピー</x:String>
@@ -509,8 +509,8 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">`$GIT_DIR/worktrees` の作業ツリー情報を削除</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">プル</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">ブランチ:</x:String>
-  <x:String x:Key="Text.Pull.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">すべてのブランチをフェッチ</x:String>
+  <x:String x:Key="Text.Pull.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>

@@ -183,8 +183,8 @@
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Geschlossenes Ticket:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Änderungen im Detail:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Gültigkeitsbereich:</x:String>
-  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Typ der Änderung:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Kurzbeschreibung:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Typ der Änderung:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Kopiere gesamten Text</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Pfad kopieren</x:String>
