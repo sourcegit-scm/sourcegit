@@ -144,20 +144,5 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
-
-        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.WorkingCopy vm)
-            {
-                var dialog = new ConventionalCommitMessageBuilder()
-                {
-                    DataContext = new ViewModels.ConventionalCommitMessageBuilder(vm)
-                };
-
-                App.OpenDialog(dialog);
-            }
-
-            e.Handled = true;
-        }
     }
 }

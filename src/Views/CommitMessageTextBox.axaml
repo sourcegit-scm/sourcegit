@@ -12,42 +12,22 @@
           BorderThickness="1"
           BorderBrush="{DynamicResource Brush.Border2}"
           CornerRadius="4">
-    <Grid RowDefinitions="Auto,1,*">
-      <Grid Grid.Row="0" ColumnDefinitions="*,1,Auto">
-        <v:EnhancedTextBox Grid.Column="0"
-                           x:Name="SubjectEditor"
-                           Classes="no_border"
-                           Margin="0"
-                           Padding="4"
-                           CornerRadius="4,4,0,0"
-                           BorderThickness="0"
-                           Background="Transparent"
-                           AcceptsReturn="False"
-                           TextWrapping="Wrap"
-                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                           Text="{Binding #ThisControl.Subject, Mode=TwoWay}"
-                           Watermark="{DynamicResource Text.CommitMessageTextBox.SubjectPlaceholder}"
-                           PreviewKeyDown="OnSubjectTextBoxPreviewKeyDown"/>
-
-        <Rectangle Grid.Column="1"
-                   Width="1"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Stretch"
-                   IsHitTestVisible="False"
-                   Fill="{DynamicResource Brush.Border2}"/>
-
-        <StackPanel Grid.Column="2"
-                    Margin="8,0"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-          <TextBlock Classes="primary" Margin="2,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}"/>
-          <TextBlock Classes="primary" Margin="2,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
-          <TextBlock Classes="primary" FontSize="11" Text="/"/>
-          <TextBlock Classes="primary" FontSize="11" Text="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength}"/>
-          <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
-        </StackPanel>
-      </Grid>
+    <Grid RowDefinitions="Auto,1,*,1,24">
+      <v:EnhancedTextBox Grid.Row="0"
+                         x:Name="SubjectEditor"
+                         Classes="no_border"
+                         Margin="0"
+                         Padding="4"
+                         CornerRadius="4,4,0,0"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         AcceptsReturn="False"
+                         TextWrapping="Wrap"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         Text="{Binding #ThisControl.Subject, Mode=TwoWay}"
+                         Watermark="{DynamicResource Text.CommitMessageTextBox.SubjectPlaceholder}"
+                         PreviewKeyDown="OnSubjectTextBoxPreviewKeyDown"/>
 
       <Rectangle Grid.Row="1"
                  Height="1"
@@ -61,7 +41,6 @@
                          Classes="no_border"
                          Margin="0"
                          Padding="4"
-                         CornerRadius="0,0,4,4"
                          BorderThickness="0"
                          Background="Transparent"
                          VerticalContentAlignment="Top"
@@ -73,6 +52,40 @@
                          Text="{Binding #ThisControl.Description, Mode=TwoWay}"
                          Watermark="{DynamicResource Text.CommitMessageTextBox.MessagePlaceholder}"
                          PreviewKeyDown="OnDescriptionTextBoxPreviewKeyDown"/>
+
+      <Rectangle Grid.Row="3"
+                 Height="1"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Center"
+                 IsHitTestVisible="False"
+                 Fill="{DynamicResource Brush.Border2}"/>
+
+      <Border Grid.Row="4"
+              Background="{DynamicResource Brush.Window}"
+              BorderThickness="1,0,0,0"
+              CornerRadius="0,0,4,4">
+        <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,4">
+          <StackPanel Grid.Column="0"
+                      Margin="8,0"
+                      VerticalAlignment="Center"
+                      Orientation="Horizontal">
+            <TextBlock Classes="info_label" FontSize="13" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
+            <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}" VerticalAlignment="Center"/>
+            <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}" VerticalAlignment="Center"/>
+            <TextBlock Classes="primary" FontSize="11" Text="/" VerticalAlignment="Center"/>
+            <TextBlock Classes="primary" FontSize="11" Text="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength}" VerticalAlignment="Center"/>
+            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
+          </StackPanel>
+
+          <Button Grid.Column="1" Width="20" Margin="0,0,4,0" Padding="0" Classes="icon_button" Click="OnOpenConventionalCommitHelper" ToolTip.Tip="{DynamicResource Text.ConventionalCommit}">
+            <Path Width="13" Height="13" Margin="0,1,0,0" Data="{StaticResource Icons.CommitMessageGenerator}"/>
+          </Button>
+
+          <Button Grid.Column="2" Width="20" Margin="0,0,4,0" Padding="0" Classes="icon_button" Click="CopyAllText" ToolTip.Tip="{DynamicResource Text.CopyAllText}">
+            <Path Width="13" Height="13" Data="{StaticResource Icons.Copy}"/>
+          </Button>
+        </Grid>
+      </Border>
     </Grid>
   </Border>
 </UserControl>

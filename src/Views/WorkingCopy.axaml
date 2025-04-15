@@ -233,7 +233,7 @@
       <v:CommitMessageTextBox Grid.Row="2" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <Button Grid.Column="0"
                 Classes="icon_button"
                 Margin="4,0,0,0" Padding="0"
@@ -254,17 +254,7 @@
           <Path Width="15" Height="15" Data="{StaticResource Icons.AIAssist}"/>
         </Button>
 
-        <Button Grid.Column="2"
-                Classes="icon_button"
-                Margin="0,2,0,0"
-                Click="OnOpenConventionalCommitHelper"
-                ToolTip.Tip="{DynamicResource Text.ConventionalCommit}"
-                ToolTip.Placement="Top"
-                ToolTip.VerticalOffset="0">
-          <Path Width="15" Height="15" Data="{StaticResource Icons.CommitMessageGenerator}"/>
-        </Button>
-
-        <CheckBox Grid.Column="3"
+        <CheckBox Grid.Column="2"
                   Height="24"
                   Margin="8,0,0,0"
                   HorizontalAlignment="Left"
@@ -274,7 +264,7 @@
                   ToolTip.Placement="Top"
                   ToolTip.VerticalOffset="0"/>
 
-        <CheckBox Grid.Column="4"
+        <CheckBox Grid.Column="3"
                   Height="24"
                   Margin="12,0,0,0"
                   HorizontalAlignment="Left"
@@ -284,12 +274,12 @@
                   ToolTip.Placement="Top"
                   ToolTip.VerticalOffset="0"/>
 
-        <v:LoadingIcon Grid.Column="5"
+        <v:LoadingIcon Grid.Column="4"
                        Width="18" Height="18"
                        HorizontalAlignment="Right"
                        IsVisible="{Binding IsCommitting}"/>
 
-        <SplitButton Grid.Column="6"
+        <SplitButton Grid.Column="5"
                      Content="{DynamicResource Text.Repository.Continue}"
                      Height="28"
                      Margin="8,0,0,0"
@@ -311,7 +301,7 @@
           </SplitButton.Flyout>
         </SplitButton>
 
-        <Button Grid.Column="6"
+        <Button Grid.Column="5"
                 Classes="flat primary"
                 Content="{DynamicResource Text.WorkingCopy.Commit}"
                 Height="28"
@@ -344,7 +334,7 @@
         </Button>
 
         <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
-        <Button Grid.Column="7"
+        <Button Grid.Column="6"
                 Width="0" Height="0"
                 Background="Transparent"
                 Command="{Binding CommitWithAutoStage}"
@@ -357,7 +347,7 @@
           </Button.IsEnabled>
         </Button>
 
-        <Button Grid.Column="8"
+        <Button Grid.Column="7"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
                 Height="28"

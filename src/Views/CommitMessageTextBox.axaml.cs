@@ -167,6 +167,23 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
+        {
+            var dialog = new ConventionalCommitMessageBuilder()
+            {
+                DataContext = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text)
+            };
+
+            App.OpenDialog(dialog);
+            e.Handled = true;
+        }
+
+        private void CopyAllText(object sender, RoutedEventArgs e)
+        {
+            App.CopyText(Text);
+            e.Handled = true;
+        }
+
         private TextChangeWay _changingWay = TextChangeWay.None;
     }
 }
