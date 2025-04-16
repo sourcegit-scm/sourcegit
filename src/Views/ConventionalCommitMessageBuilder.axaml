@@ -63,7 +63,7 @@
         
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ConventionalCommitType">
-            <Grid Height="24">
+            <Grid Height="22">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="TypeColumn"/>
