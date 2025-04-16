@@ -149,7 +149,8 @@ namespace SourceGit.Commands
 
                     _oldLine = int.Parse(match.Groups[1].Value);
                     _newLine = int.Parse(match.Groups[2].Value);
-                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0);
+                    _result.TextDiff.Lines.Add(_last);
                 }
             }
             else
@@ -157,7 +158,8 @@ namespace SourceGit.Commands
                 if (line.Length == 0)
                 {
                     ProcessInlineHighlights();
-                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", _oldLine, _newLine));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", _oldLine, _newLine);
+                    _result.TextDiff.Lines.Add(_last);
                     _oldLine++;
                     _newLine++;
                     return;
@@ -173,7 +175,8 @@ namespace SourceGit.Commands
                         return;
                     }
 
-                    _deleted.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0);
+                    _deleted.Add(_last);
                     _oldLine++;
                 }
                 else if (ch == '+')
@@ -185,7 +188,8 @@ namespace SourceGit.Commands
                         return;
                     }
 
-                    _added.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine);
+                    _added.Add(_last);
                     _newLine++;
                 }
                 else if (ch != '\\')
@@ -196,7 +200,8 @@ namespace SourceGit.Commands
                     {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);
-                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0);
+                        _result.TextDiff.Lines.Add(_last);
                     }
                     else
                     {
@@ -207,10 +212,15 @@ namespace SourceGit.Commands
                             return;
                         }
 
-                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), _oldLine, _newLine));
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), _oldLine, _newLine);
+                        _result.TextDiff.Lines.Add(_last);
                         _oldLine++;
                         _newLine++;
                     }
+                }
+                else if (line.Equals("\\ No newline at end of file", StringComparison.Ordinal))
+                {
+                    _last.NoNewLineEndOfFile = true;
                 }
             }
         }
@@ -262,6 +272,7 @@ namespace SourceGit.Commands
         private readonly Models.DiffResult _result = new Models.DiffResult();
         private readonly List<Models.TextDiffLine> _deleted = new List<Models.TextDiffLine>();
         private readonly List<Models.TextDiffLine> _added = new List<Models.TextDiffLine>();
+        private Models.TextDiffLine _last = null;
         private int _oldLine = 0;
         private int _newLine = 0;
     }

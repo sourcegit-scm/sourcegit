@@ -1253,13 +1253,16 @@ namespace SourceGit.Views
                     {
                         builder.Append(line.Content.Substring(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} character trimmed)");
-                        builder.Append('\n');
                     }
                     else
                     {
                         builder.Append(line.Content);
-                        builder.Append('\n');
                     }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+                    
+                    builder.Append('\n');
                 }
 
                 Text = builder.ToString();
@@ -1493,13 +1496,16 @@ namespace SourceGit.Views
                     {
                         builder.Append(line.Content.Substring(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
-                        builder.Append('\n');
                     }
                     else
                     {
                         builder.Append(line.Content);
-                        builder.Append('\n');
                     }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.Append('\n');
                 }
 
                 Text = builder.ToString();
