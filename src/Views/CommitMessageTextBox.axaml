@@ -64,25 +64,57 @@
               Background="{DynamicResource Brush.Window}"
               BorderThickness="1,0,0,0"
               CornerRadius="0,0,4,4">
-        <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,4">
-          <StackPanel Grid.Column="0"
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*" Margin="0,4">
+          <Button Grid.Column="0"
+                  Classes="icon_button"
+                  Width="24" 
+                  Margin="0,0,4,0" Padding="0"
+                  Click="OnOpenCommitMessagePicker"
+                  IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
+                  ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
+          </Button>
+
+          <Button Grid.Column="1"
+                  Classes="icon_button"
+                  Width="24"
+                  Margin="0,0,4,0" Padding="0"
+                  Click="OnOpenOpenAIHelper"
+                  IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
+                  ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}">
+            <Path Width="13" Height="13" Data="{StaticResource Icons.AIAssist}"/>
+          </Button>
+
+          <Button Grid.Column="2"
+                  Classes="icon_button"
+                  Width="24"
+                  Margin="0,0,4,0" Padding="0"
+                  Click="OnOpenConventionalCommitHelper"
+                  ToolTip.Tip="{DynamicResource Text.ConventionalCommit}">
+            <Path Width="13" Height="13" Margin="0,1,0,0" Data="{StaticResource Icons.CommitMessageGenerator}"/>
+          </Button>
+
+          <Button Grid.Column="3"
+                  Classes="icon_button"
+                  Width="24"
+                  Margin="0,0,4,0" Padding="0"
+                  Click="CopyAllText"
+                  ToolTip.Tip="{DynamicResource Text.CopyAllText}">
+            <Path Width="13" Height="13" Data="{StaticResource Icons.Copy}"/>
+          </Button>
+
+          <StackPanel Grid.Column="4"
+                      Margin="0,0,6,0"
+                      HorizontalAlignment="Right"
                       VerticalAlignment="Center"
                       Orientation="Horizontal">
-            <TextBlock Classes="info_label" FontSize="13" HorizontalAlignment="Left" Margin="4,0,0,0" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
+            <TextBlock Classes="info_label" FontSize="13" HorizontalAlignment="Left" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
             <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}" VerticalAlignment="Center"/>
             <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}" VerticalAlignment="Center"/>
             <TextBlock Classes="primary" FontSize="11" Text="/" VerticalAlignment="Center"/>
             <TextBlock Classes="primary" FontSize="11" Text="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength}" VerticalAlignment="Center"/>
             <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
           </StackPanel>
-
-          <Button Grid.Column="1" Width="20" Margin="0,0,4,0" Padding="0" Classes="icon_button" Click="OnOpenConventionalCommitHelper" ToolTip.Tip="{DynamicResource Text.ConventionalCommit}">
-            <Path Width="13" Height="13" Margin="0,1,0,0" Data="{StaticResource Icons.CommitMessageGenerator}"/>
-          </Button>
-
-          <Button Grid.Column="2" Width="20" Margin="0,0,4,0" Padding="0" Classes="icon_button" Click="CopyAllText" ToolTip.Tip="{DynamicResource Text.CopyAllText}">
-            <Path Width="13" Height="13" Data="{StaticResource Icons.Copy}"/>
-          </Button>
         </Grid>
       </Border>
     </Grid>
