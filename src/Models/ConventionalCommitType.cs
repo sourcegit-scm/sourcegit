@@ -12,6 +12,7 @@ namespace SourceGit.Models
         {
             new ConventionalCommitType("Features", "feat", "Adding a new feature"),
             new ConventionalCommitType("Bug Fixes", "fix", "Fixing a bug"),
+            new ConventionalCommitType("Work In Progress", "wip", "Still being developed and not yet complete"),
             new ConventionalCommitType("Reverts", "revert", "Undoing a previous commit"),
             new ConventionalCommitType("Code Refactoring", "refactor", "Restructuring code without changing its external behavior"),
             new ConventionalCommitType("Performance Improvements", "pref", "Improves performance"),
