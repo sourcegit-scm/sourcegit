@@ -230,6 +230,12 @@ namespace SourceGit.Models
             set;
         } = 0;
 
+        public string LastCommitMessage
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
             var map = new Dictionary<string, FilterMode>();

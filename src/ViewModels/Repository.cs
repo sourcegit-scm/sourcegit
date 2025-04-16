@@ -464,6 +464,7 @@ namespace SourceGit.ViewModels
             _selectedView = _histories;
             _selectedViewIndex = 0;
 
+            _workingCopy.CommitMessage = _settings.LastCommitMessage;
             _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
             RefreshAll();
         }
@@ -471,6 +472,7 @@ namespace SourceGit.ViewModels
         public void Close()
         {
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
+            _settings.LastCommitMessage = _workingCopy.CommitMessage;
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
             try
