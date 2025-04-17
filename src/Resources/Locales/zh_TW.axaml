@@ -703,6 +703,7 @@
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">啟用 [--remote] 選項</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">日誌清單</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清除所有日誌</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">起始頁</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新增群組</x:String>

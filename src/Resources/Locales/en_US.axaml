@@ -699,6 +699,7 @@
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Logs</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">CLEAR ALL</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">Welcome Page</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>

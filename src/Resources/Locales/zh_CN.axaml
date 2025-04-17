@@ -703,6 +703,7 @@
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">启用 '--remote'</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">日志列表</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清空日志</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">起始页</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新建分组</x:String>

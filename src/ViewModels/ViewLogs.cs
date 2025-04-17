@@ -21,6 +21,12 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
+        public void ClearAll()
+        {
+            SelectedLog = null;
+            Logs.Clear();
+        }
+
         private Repository _repo = null;
         private CommandLog _selectedLog = null;
     }

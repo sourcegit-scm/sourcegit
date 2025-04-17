@@ -62,8 +62,7 @@ async function calculateTranslationRate() {
 
         // Add an empty line before the first x:String
         xmlStr = xmlStr.replace('  <x:String', '\n  <x:String');
-
-        await fs.writeFile(filePath, xmlStr, 'utf8');
+        await fs.writeFile(filePath, xmlStr + '\n', 'utf8');
 
         if (missingKeys.length > 0) {
             const progress = ((enUSKeys.size - missingKeys.length) / enUSKeys.size) * 100;

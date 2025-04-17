@@ -4,6 +4,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.ViewLogs"
                     x:DataType="vm:ViewLogs"
@@ -13,7 +14,7 @@
                     Width="800" Height="500"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,*">
+  <Grid RowDefinitions="Auto,*,Auto">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
@@ -107,6 +108,14 @@
         <v:LogContentPresenter Log="{Binding SelectedLog}"
                                FontFamily="{DynamicResource Fonts.Monospace}"/>
       </Border>
+    </Grid>
+
+    <Grid Grid.Row="2" Margin="0,0,0,8">
+      <Button Classes="flat primary"
+              Content="{DynamicResource Text.ViewLogs.Clear}"
+              HorizontalAlignment="Center"
+              Command="{Binding ClearAll}"
+              IsEnabled="{Binding Logs.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
     </Grid>
   </Grid>
 </v:ChromelessWindow>
