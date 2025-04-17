@@ -1735,7 +1735,7 @@ namespace SourceGit.ViewModels
                         CommitMessage = string.Empty;
                         UseAmend = false;
 
-                        if (autoPush)
+                        if (autoPush && _repo.Remotes.Count > 0)
                             _repo.ShowAndStartPopup(new Push(_repo, null));
                     }
 
