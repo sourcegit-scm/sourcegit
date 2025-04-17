@@ -713,6 +713,16 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            var copySubject = new MenuItem();
+            copySubject.Header = App.Text("CommitCM.CopySubject");
+            copySubject.Icon = App.CreateMenuIcon("Icons.Copy");
+            copySubject.Click += (_, e) =>
+            {
+                App.CopyText(commit.Subject);
+                e.Handled = true;
+            };
+            menu.Items.Add(copySubject);
+
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Icon = App.CreateMenuIcon("Icons.Copy");
