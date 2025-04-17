@@ -4,16 +4,39 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
+using AvaloniaEdit.Rendering;
 using AvaloniaEdit.TextMate;
 
 namespace SourceGit.Views
 {
     public class LogContentPresenter : TextEditor
     {
+        public class LineStyleTransformer : DocumentColorizingTransformer
+        {
+            protected override void ColorizeLine(DocumentLine line)
+            {
+                var content = CurrentContext.Document.GetText(line);
+                if (content.StartsWith("$ git ", StringComparison.Ordinal))
+                {
+                    ChangeLinePart(line.Offset, line.Offset + 1, v =>
+                    {
+                        v.TextRunProperties.SetForegroundBrush(Brushes.Orange);
+                    });
+
+                    ChangeLinePart(line.Offset + 2, line.EndOffset, v =>
+                    {
+                        var old = v.TextRunProperties.Typeface;
+                        v.TextRunProperties.SetTypeface(new Typeface(old.FontFamily, old.Style, FontWeight.Bold));
+                    });
+                }
+            }
+        }
+
         public static readonly StyledProperty<ViewModels.CommandLog> LogProperty =
             AvaloniaProperty.Register<LogContentPresenter, ViewModels.CommandLog>(nameof(Log));
 
@@ -46,6 +69,7 @@ namespace SourceGit.Views
             {
                 _textMate = Models.TextMateHelper.CreateForEditor(this);
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, "Log.log");
+                TextArea.TextView.LineTransformers.Add(new LineStyleTransformer());
             }
         }
 
