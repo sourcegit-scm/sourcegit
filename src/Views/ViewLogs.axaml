@@ -100,8 +100,8 @@
               BorderBrush="{DynamicResource Brush.Border2}"
               BorderThickness="1"
               Background="{DynamicResource Brush.Contents}">
-        <v:LogContentPresenter Log="{Binding SelectedLog}"
-                               FontFamily="{DynamicResource Fonts.Monospace}"/>
+        <v:CommandLogContentPresenter Log="{Binding SelectedLog}"
+                                      FontFamily="{DynamicResource Fonts.Monospace}"/>
       </Border>
     </Grid>
 
