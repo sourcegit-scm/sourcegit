@@ -105,6 +105,7 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Копіювати інформацію</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Копіювати SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Копіювати заголовок</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Інтерактивно перебазувати ${0}$ сюди</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Злиття в ${0}$</x:String>
