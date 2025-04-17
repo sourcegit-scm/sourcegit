@@ -75,7 +75,7 @@
               </Grid.ColumnDefinitions>
               <v:LoadingIcon Grid.Column="0"
                              Width="14" Height="14"
-                             Margin="4,0,0,0"
+                             Margin="4,0,4,0"
                              IsVisible="{Binding !IsComplete}"/>
               
               <TextBlock Grid.Column="1"
