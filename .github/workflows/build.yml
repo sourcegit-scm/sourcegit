@@ -58,7 +58,7 @@ jobs:
         if: ${{ matrix.runtime == 'linux-arm64' }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y llvm gcc-aarch64-linux-gnu zlib1g-dev:arm64
+          sudo apt-get install -y llvm gcc-aarch64-linux-gnu
       - name: Build
         run: dotnet build -c Release
       - name: Publish
