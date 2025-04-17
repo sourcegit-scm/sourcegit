@@ -1261,7 +1261,7 @@ namespace SourceGit.Views
 
                     if (line.NoNewLineEndOfFile)
                         builder.Append("\u26D4");
-                    
+
                     builder.Append('\n');
                 }
 

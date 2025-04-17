@@ -82,6 +82,6 @@ namespace SourceGit.ViewModels
 
         private string _content = string.Empty;
         private StringBuilder _builder = new StringBuilder();
-        private event Action<string> _onNewLineReceived; 
+        private event Action<string> _onNewLineReceived;
     }
 }
