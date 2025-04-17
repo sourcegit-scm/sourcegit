@@ -181,6 +181,8 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Couleur</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restaurer les onglets au démarrage</x:String>
+  <x:String x:Key="Text.ConflictDialog.Title">Conflits non résolus</x:String>
+  <x:String x:Key="Text.ConflictDialog.Message">Il y a des conflits non résolus dans votre copie de travail !</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Assistant Commits Conventionnels</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Changement Radical :</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Incident Clos :</x:String>

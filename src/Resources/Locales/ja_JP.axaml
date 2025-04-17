@@ -181,6 +181,8 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">起動時にタブを復元</x:String>
+  <x:String x:Key="Text.ConflictDialog.Title">未解決の競合</x:String>
+  <x:String x:Key="Text.ConflictDialog.Message">作業コピーに未解決の競合があります！</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commitヘルパー</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壊的変更:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">閉じたIssue:</x:String>

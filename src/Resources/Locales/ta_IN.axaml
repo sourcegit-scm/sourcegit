@@ -181,6 +181,8 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">நிறம்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">தாவல்களை மீட்டமை</x:String>
+  <x:String x:Key="Text.ConflictDialog.Title">தீர்க்கப்படாத மோதல்கள்</x:String>
+  <x:String x:Key="Text.ConflictDialog.Message">உங்கள் வேலை நகலில் தீர்க்கப்படாத மோதல்கள் உள்ளன!</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">வழக்கமான உறுதிமொழி உதவியாளர்</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">உடைக்கும் மாற்றம்:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">மூடப்பட்ட வெளியீடு சிக்கல்:</x:String>

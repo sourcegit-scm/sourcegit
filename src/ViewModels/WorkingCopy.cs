@@ -9,6 +9,8 @@ using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
+using SourceGit.Views;
+
 namespace SourceGit.ViewModels
 {
     public class WorkingCopy : ObservableObject
@@ -300,6 +302,15 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() =>
             {
+                if((visibleUnstaged.Count > 0) && (hasConflict))
+                {
+                    _repo.RefreshBranches();
+                    _repo.RefreshCommits();
+                    _repo.SelectedViewIndex = 1;
+                    selectedUnstaged.Add(visibleUnstaged[0]);
+                    App.OpenDialog(new ConflictDialog());
+                }
+
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
@@ -310,8 +321,8 @@ namespace SourceGit.ViewModels
                 SelectedStaged = selectedStaged;
                 _isLoadingData = false;
 
-                UpdateDetail();
                 UpdateInProgressState();
+                UpdateDetail();
             });
         }
 

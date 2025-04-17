@@ -185,6 +185,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Виявлено порожній коміт! Продовжити (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">ІНДЕКСУВАТИ ВСЕ ТА ЗАКОМІТИТИ</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Виявлено порожній коміт! Продовжити (--allow-empty) чи індексувати все та закомітити?</x:String>
+  <x:String x:Key="Text.ConflictDialog.Title">Невирішені конфлікти</x:String>
+  <x:String x:Key="Text.ConflictDialog.Message">У вашій робочій копії є невирішені конфлікти!</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Допомога Conventional Commit</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Зворотньо несумісні зміни:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Закрите завдання:</x:String>

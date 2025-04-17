@@ -187,6 +187,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">HACER STAGE A TODO &amp; COMMIT</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty) o hacer stage a todo y después commit?</x:String>
+  <x:String x:Key="Text.ConflictDialog.Title">Conflictos sin resolver</x:String>
+  <x:String x:Key="Text.ConflictDialog.Message">¡Hay conflictos sin resolver en tu copia de trabajo!</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Asistente de Commit Convencional</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Cambio Importante:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Incidencia Cerrada:</x:String>
