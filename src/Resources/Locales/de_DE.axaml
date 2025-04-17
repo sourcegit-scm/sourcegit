@@ -102,8 +102,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Mehrere cherry-picken</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Mit HEAD vergleichen</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Mit Worktree vergleichen</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Info kopieren</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Information</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactives Rebase von ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge in ${0}$ hinein</x:String>

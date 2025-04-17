@@ -99,8 +99,11 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copy Info</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Author</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Information</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Subject</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactively Rebase ${0}$ on Here</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge to ${0}$</x:String>

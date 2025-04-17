@@ -103,8 +103,11 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">揀選 (cherry-pick)...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">複製摘要資訊</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">摘要資訊</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交編號</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合併 (merge) 此提交到 ${0}$</x:String>

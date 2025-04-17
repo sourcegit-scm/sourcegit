@@ -103,8 +103,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Применить несколько ревизий ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Сравнить c ГОЛОВОЙ (HEAD)</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Копировать информацию</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Информацию</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>

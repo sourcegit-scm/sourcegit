@@ -330,7 +330,7 @@ namespace SourceGit.ViewModels
 
                 var copyMultipleSHAs = new MenuItem();
                 copyMultipleSHAs.Header = App.Text("CommitCM.CopySHA");
-                copyMultipleSHAs.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultipleSHAs.Icon = App.CreateMenuIcon("Icons.Fingerprint");
                 copyMultipleSHAs.Click += (_, e) =>
                 {
                     var builder = new StringBuilder();
@@ -340,11 +340,10 @@ namespace SourceGit.ViewModels
                     App.CopyText(builder.ToString());
                     e.Handled = true;
                 };
-                multipleMenu.Items.Add(copyMultipleSHAs);
 
                 var copyMultipleInfo = new MenuItem();
                 copyMultipleInfo.Header = App.Text("CommitCM.CopyInfo");
-                copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Info");
                 copyMultipleInfo.Click += (_, e) =>
                 {
                     var builder = new StringBuilder();
@@ -354,7 +353,13 @@ namespace SourceGit.ViewModels
                     App.CopyText(builder.ToString());
                     e.Handled = true;
                 };
-                multipleMenu.Items.Add(copyMultipleInfo);
+
+                var copyMultiple = new MenuItem();
+                copyMultiple.Header = App.Text("Copy");
+                copyMultiple.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMultiple.Items.Add(copyMultipleSHAs);
+                copyMultiple.Items.Add(copyMultipleInfo);
+                multipleMenu.Items.Add(copyMultiple);
 
                 return multipleMenu;
             }
@@ -715,23 +720,58 @@ namespace SourceGit.ViewModels
 
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
-            copySHA.Icon = App.CreateMenuIcon("Icons.Copy");
+            copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
             copySHA.Click += (_, e) =>
             {
                 App.CopyText(commit.SHA);
                 e.Handled = true;
             };
-            menu.Items.Add(copySHA);
+
+            var copySubject = new MenuItem();
+            copySubject.Header = App.Text("CommitCM.CopySubject");
+            copySubject.Icon = App.CreateMenuIcon("Icons.Subject");
+            copySubject.Click += (_, e) =>
+            {
+                App.CopyText(commit.Subject);
+                e.Handled = true;
+            };
 
             var copyInfo = new MenuItem();
             copyInfo.Header = App.Text("CommitCM.CopyInfo");
-            copyInfo.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
             copyInfo.Click += (_, e) =>
             {
                 App.CopyText($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
                 e.Handled = true;
             };
-            menu.Items.Add(copyInfo);
+
+            var copyAuthor = new MenuItem();
+            copyAuthor.Header = App.Text("CommitCM.CopyAuthor");
+            copyAuthor.Icon = App.CreateMenuIcon("Icons.User");
+            copyAuthor.Click += (_, e) =>
+            {
+                App.CopyText(commit.Author.ToString());
+                e.Handled = true;
+            };
+
+            var copyCommitter = new MenuItem();
+            copyCommitter.Header = App.Text("CommitCM.CopyCommitter");
+            copyCommitter.Icon = App.CreateMenuIcon("Icons.User");
+            copyCommitter.Click += (_, e) =>
+            {
+                App.CopyText(commit.Committer.ToString());
+                e.Handled = true;
+            };
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Items.Add(copySHA);
+            copy.Items.Add(copySubject);
+            copy.Items.Add(copyInfo);
+            copy.Items.Add(copyAuthor);
+            copy.Items.Add(copyCommitter);
+            menu.Items.Add(copy);
 
             return menu;
         }
