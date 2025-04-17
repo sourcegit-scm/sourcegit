@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGit.Commands
@@ -12,19 +11,15 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Branch(string branch, Action<string> onProgress)
+        public bool Branch(string branch)
         {
             Args = $"checkout --recurse-submodules --progress {branch}";
-            TraitErrorAsOutput = true;
-            _outputHandler = onProgress;
             return Exec();
         }
 
-        public bool Branch(string branch, string basedOn, Action<string> onProgress)
+        public bool Branch(string branch, string basedOn)
         {
             Args = $"checkout --recurse-submodules --progress -b {branch} {basedOn}";
-            TraitErrorAsOutput = true;
-            _outputHandler = onProgress;
             return Exec();
         }
 
@@ -62,19 +57,10 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Commit(string commitId, Action<string> onProgress)
+        public bool Commit(string commitId)
         {
             Args = $"checkout --detach --progress {commitId}";
-            TraitErrorAsOutput = true;
-            _outputHandler = onProgress;
             return Exec();
         }
-
-        protected override void OnReadline(string line)
-        {
-            _outputHandler?.Invoke(line);
-        }
-
-        private Action<string> _outputHandler;
     }
 }

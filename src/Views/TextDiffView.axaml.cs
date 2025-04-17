@@ -1972,7 +1972,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                Commands.Discard.Changes(repo.FullPath, [change]);
+                Commands.Discard.Changes(repo.FullPath, [change], null);
             }
             else
             {

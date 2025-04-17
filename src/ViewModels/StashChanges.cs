@@ -56,6 +56,9 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Stash changes ...";
 
+            var log = _repo.CreateLog("Stash Local Changes");
+            Use(log);
+
             return Task.Run(() =>
             {
                 var succ = false;
@@ -66,7 +69,7 @@ namespace SourceGit.ViewModels
                     {
                         if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                         {
-                            succ = new Commands.Stash(_repo.FullPath).PushOnlyStaged(Message, KeepIndex);
+                            succ = new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStaged(Message, KeepIndex);
                         }
                         else
                         {
@@ -77,22 +80,23 @@ namespace SourceGit.ViewModels
                                     staged.Add(c);
                             }
 
-                            succ = StashWithChanges(staged);
+                            succ = StashWithChanges(staged, log);
                         }
                     }
                     else
                     {
-                        succ = new Commands.Stash(_repo.FullPath).Push(Message, IncludeUntracked, KeepIndex);
+                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, IncludeUntracked, KeepIndex);
                     }
                 }
                 else
                 {
-                    succ = StashWithChanges(_changes);
+                    succ = StashWithChanges(_changes, log);
                 }
 
                 if (AutoRestore && succ)
-                    succ = new Commands.Stash(_repo.FullPath).Apply("stash@{0}", true);
+                    succ = new Commands.Stash(_repo.FullPath).Use(log).Apply("stash@{0}", true);
 
+                log.Complete();
                 CallUIThread(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
@@ -103,7 +107,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private bool StashWithChanges(List<Models.Change> changes)
+        private bool StashWithChanges(List<Models.Change> changes, CommandLog log)
         {
             if (changes.Count == 0)
                 return true;
@@ -117,7 +121,7 @@ namespace SourceGit.ViewModels
 
                 var tmpFile = Path.GetTempFileName();
                 File.WriteAllLines(tmpFile, paths);
-                succ = new Commands.Stash(_repo.FullPath).Push(Message, tmpFile, KeepIndex);
+                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, tmpFile, KeepIndex);
                 File.Delete(tmpFile);
             }
             else
@@ -126,7 +130,7 @@ namespace SourceGit.ViewModels
                 {
                     var count = Math.Min(10, changes.Count - i);
                     var step = changes.GetRange(i, count);
-                    succ = new Commands.Stash(_repo.FullPath).Push(Message, step, KeepIndex);
+                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, step, KeepIndex);
                     if (!succ)
                         break;
                 }

@@ -23,9 +23,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting submodule ...";
 
+            var log = _repo.CreateLog("Delete Submodule");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Submodule(_repo.FullPath).Delete(Submodule);
+                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Delete(Submodule);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

@@ -59,9 +59,14 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Merging '{_sourceName}' into '{Into}' ...";
 
+            var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, SetProgressDescription).Exec();
+                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg).Use(log).Exec();
+                log.Complete();
+
                 CallUIThread(() =>
                 {
                     _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);

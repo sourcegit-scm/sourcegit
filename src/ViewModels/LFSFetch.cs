@@ -24,9 +24,14 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Fetching LFS objects from remote ...";
+
+            var log = _repo.CreateLog("LFS Fetch");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.LFS(_repo.FullPath).Fetch(SelectedRemote.Name, SetProgressDescription);
+                new Commands.LFS(_repo.FullPath).Fetch(SelectedRemote.Name, log);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

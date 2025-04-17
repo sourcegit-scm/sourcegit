@@ -302,17 +302,20 @@ namespace SourceGit.ViewModels
                         var picker = await storageProvider.OpenFolderPickerAsync(options);
                         if (picker.Count == 1)
                         {
+                            var log = _repo.CreateLog("Save as Patch");
                             var succ = false;
                             for (var i = 0; i < selected.Count; i++)
                             {
                                 var saveTo = GetPatchFileName(picker[0].Path.LocalPath, selected[i], i);
-                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Exec());
+                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Use(log).Exec());
                                 if (!succ)
                                     break;
                             }
 
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+
+                            log.Complete();
                         }
                     }
                     catch (Exception exception)

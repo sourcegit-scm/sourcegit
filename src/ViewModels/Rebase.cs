@@ -47,9 +47,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Rebasing ...";
 
+            var log = _repo.CreateLog("Rebase");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Exec();
+                new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Use(log).Exec();
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

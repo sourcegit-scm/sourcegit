@@ -12,21 +12,13 @@ namespace SourceGit.Commands
 
         class SubCmd : Command
         {
-            public SubCmd(string repo, string args, Action<string> onProgress)
+            public SubCmd(string repo, string args, Models.ICommandLog log)
             {
                 WorkingDirectory = repo;
                 Context = repo;
                 Args = args;
-                TraitErrorAsOutput = true;
-                _outputHandler = onProgress;
+                Log = log;
             }
-
-            protected override void OnReadline(string line)
-            {
-                _outputHandler?.Invoke(line);
-            }
-
-            private readonly Action<string> _outputHandler;
         }
 
         public LFS(string repo)
@@ -49,30 +41,30 @@ namespace SourceGit.Commands
             return new SubCmd(_repo, "lfs install --local", null).Exec();
         }
 
-        public bool Track(string pattern, bool isFilenameMode = false)
+        public bool Track(string pattern, bool isFilenameMode, Models.ICommandLog log)
         {
             var opt = isFilenameMode ? "--filename" : "";
-            return new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", null).Exec();
+            return new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", log).Exec();
         }
 
-        public void Fetch(string remote, Action<string> outputHandler)
+        public void Fetch(string remote, Models.ICommandLog log)
         {
-            new SubCmd(_repo, $"lfs fetch {remote}", outputHandler).Exec();
+            new SubCmd(_repo, $"lfs fetch {remote}", log).Exec();
         }
 
-        public void Pull(string remote, Action<string> outputHandler)
+        public void Pull(string remote, Models.ICommandLog log)
         {
-            new SubCmd(_repo, $"lfs pull {remote}", outputHandler).Exec();
+            new SubCmd(_repo, $"lfs pull {remote}", log).Exec();
         }
 
-        public void Push(string remote, Action<string> outputHandler)
+        public void Push(string remote, Models.ICommandLog log)
         {
-            new SubCmd(_repo, $"lfs push {remote}", outputHandler).Exec();
+            new SubCmd(_repo, $"lfs push {remote}", log).Exec();
         }
 
-        public void Prune(Action<string> outputHandler)
+        public void Prune(Models.ICommandLog log)
         {
-            new SubCmd(_repo, "lfs prune", outputHandler).Exec();
+            new SubCmd(_repo, "lfs prune", log).Exec();
         }
 
         public List<Models.LFSLock> Locks(string remote)

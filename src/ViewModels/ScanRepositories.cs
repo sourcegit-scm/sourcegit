@@ -97,7 +97,7 @@ namespace SourceGit.ViewModels
                     subdir.Name.Equals(".idea", StringComparison.Ordinal))
                     continue;
 
-                SetProgressDescription($"Scanning {subdir.FullName}...");
+                CallUIThread(() => ProgressDescription = $"Scanning {subdir.FullName}...");
 
                 var normalizedSelf = subdir.FullName.Replace("\\", "/");
                 if (_managed.Contains(normalizedSelf))

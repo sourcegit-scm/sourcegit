@@ -29,9 +29,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Fast-Forward ...";
 
+            var log = _repo.CreateLog("Fast-Forward (No checkout)");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.UpdateRef(_repo.FullPath, Local.FullName, To.FullName, SetProgressDescription).Exec();
+                new Commands.UpdateRef(_repo.FullPath, Local.FullName, To.FullName).Use(log).Exec();
+                log.Complete();
                 CallUIThread(() =>
                 {
                     _repo.NavigateToCommit(To.Head);

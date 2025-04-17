@@ -114,10 +114,15 @@ namespace SourceGit.ViewModels
 
             var branchName = _selectedBranch;
             var tracking = _setTrackingBranch ? SelectedTrackingBranch : string.Empty;
+            var log = _repo.CreateLog("Add Worktree");
+
+            Use(log);
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Worktree(_repo.FullPath).Add(_path, branchName, _createNewBranch, tracking, SetProgressDescription);
+                var succ = new Commands.Worktree(_repo.FullPath).Use(log).Add(_path, branchName, _createNewBranch, tracking);
+                log.Complete();
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

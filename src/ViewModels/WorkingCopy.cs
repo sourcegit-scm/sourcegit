@@ -711,7 +711,9 @@ namespace SourceGit.ViewModels
                     assumeUnchanged.IsVisible = change.WorkTree != Models.ChangeState.Untracked;
                     assumeUnchanged.Click += (_, e) =>
                     {
-                        new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
+                        var log = _repo.CreateLog("Assume File Unchanged");
+                        new Commands.AssumeUnchanged(_repo.FullPath, change.Path, true).Use(log).Exec();
+                        log.Complete();
                         e.Handled = true;
                     };
 
@@ -805,10 +807,12 @@ namespace SourceGit.ViewModels
                             lfsTrackThisFile.Header = App.Text("GitLFS.Track", filename);
                             lfsTrackThisFile.Click += async (_, e) =>
                             {
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true));
+                                var log = _repo.CreateLog("Track LFS");
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true, log));
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
 
+                                log.Complete();
                                 e.Handled = true;
                             };
                             lfs.Items.Add(lfsTrackThisFile);
@@ -819,10 +823,12 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Header = App.Text("GitLFS.TrackByExtension", extension);
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension));
+                                    var log = _repo.CreateLog("Track LFS");
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension, false, log));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
+                                    log.Complete();
                                     e.Handled = true;
                                 };
                                 lfs.Items.Add(lfsTrackByExtension);
@@ -1581,9 +1587,11 @@ namespace SourceGit.ViewModels
 
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
+
+            var log = _repo.CreateLog("Stage");
             if (count == _unstaged.Count)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec());
             }
             else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
             {
@@ -1593,7 +1601,7 @@ namespace SourceGit.ViewModels
 
                 var tmpFile = Path.GetTempFileName();
                 File.WriteAllLines(tmpFile, paths);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Use(log).Exec());
                 File.Delete(tmpFile);
             }
             else
@@ -1605,9 +1613,10 @@ namespace SourceGit.ViewModels
                 for (int i = 0; i < count; i += 10)
                 {
                     var step = paths.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
+                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Use(log).Exec());
                 }
             }
+            log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsStaging = false;
@@ -1624,22 +1633,26 @@ namespace SourceGit.ViewModels
 
             IsUnstaging = true;
             _repo.SetWatcherEnabled(false);
+
+            var log = _repo.CreateLog("Unstage");
             if (_useAmend)
             {
+                log.AppendLine("$ git update-index --index-info ");
                 await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
             }
             else if (count == _staged.Count)
             {
-                await Task.Run(() => new Commands.Reset(_repo.FullPath).Exec());
+                await Task.Run(() => new Commands.Reset(_repo.FullPath).Use(log).Exec());
             }
             else
             {
                 for (int i = 0; i < count; i += 10)
                 {
                     var step = changes.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Exec());
+                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Use(log).Exec());
                 }
             }
+            log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsUnstaging = false;
@@ -1703,14 +1716,17 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
+            var log = _repo.CreateLog("Commit");
             Task.Run(() =>
             {
                 var succ = true;
                 if (autoStage && _unstaged.Count > 0)
-                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec();
+                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
+
+                log.Complete();
 
                 Dispatcher.UIThread.Post(() =>
                 {

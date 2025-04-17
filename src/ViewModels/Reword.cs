@@ -37,9 +37,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Editing head commit message ...";
 
+            var log = _repo.CreateLog("Reword HEAD");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Commit(_repo.FullPath, _message, true, _repo.Settings.EnableSignOffForCommit).Run();
+                var succ = new Commands.Commit(_repo.FullPath, _message, true, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

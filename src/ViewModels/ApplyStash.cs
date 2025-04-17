@@ -22,7 +22,7 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public ApplyStash(string repo, Models.Stash stash)
+        public ApplyStash(Repository repo, Models.Stash stash)
         {
             _repo = repo;
             Stash = stash;
@@ -33,16 +33,18 @@ namespace SourceGit.ViewModels
         {
             ProgressDescription = $"Applying stash: {Stash.Name}";
 
+            var log = _repo.CreateLog("Apply Stash");
             return Task.Run(() =>
             {
-                var succ = new Commands.Stash(_repo).Apply(Stash.Name, RestoreIndex);
+                var succ = new Commands.Stash(_repo.FullPath).Use(log).Apply(Stash.Name, RestoreIndex);
                 if (succ && DropAfterApply)
-                    new Commands.Stash(_repo).Drop(Stash.Name);
+                    new Commands.Stash(_repo.FullPath).Use(log).Drop(Stash.Name);
 
+                log.Complete();
                 return true;
             });
         }
 
-        private readonly string _repo;
+        private readonly Repository _repo;
     }
 }

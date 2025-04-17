@@ -65,21 +65,22 @@ namespace SourceGit.ViewModels
 
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
+            var log = _repo.CreateLog("Fetch");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (FetchAllRemotes)
                 {
                     foreach (var remote in _repo.Remotes)
-                    {
-                        SetProgressDescription($"Fetching remote: {remote.Name}");
-                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, SetProgressDescription).Exec();
-                    }
+                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force).Use(log).Exec();
                 }
                 else
                 {
-                    SetProgressDescription($"Fetching remote: {SelectedRemote.Name}");
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, SetProgressDescription).Exec();
+                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force).Use(log).Exec();
                 }
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

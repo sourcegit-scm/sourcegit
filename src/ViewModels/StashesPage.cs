@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
             apply.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new ApplyStash(_repo.FullPath, stash));
+                    _repo.ShowPopup(new ApplyStash(_repo, stash));
 
                 ev.Handled = true;
             };
@@ -157,7 +157,7 @@ namespace SourceGit.ViewModels
             drop.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new DropStash(_repo.FullPath, stash));
+                    _repo.ShowPopup(new DropStash(_repo, stash));
 
                 ev.Handled = true;
             };

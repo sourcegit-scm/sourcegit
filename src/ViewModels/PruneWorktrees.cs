@@ -15,9 +15,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Prune worktrees ...";
 
+            var log = _repo.CreateLog("Prune Worktrees");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Worktree(_repo.FullPath).Prune(SetProgressDescription);
+                new Commands.Worktree(_repo.FullPath).Use(log).Prune();
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

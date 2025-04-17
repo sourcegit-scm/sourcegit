@@ -23,24 +23,23 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting multiple branches...";
 
+            var log = _repo.CreateLog("Delete Multiple Branches");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (_isLocal)
                 {
                     foreach (var target in Targets)
-                    {
-                        SetProgressDescription($"Deleting local branch : {target.Name}");
-                        Commands.Branch.DeleteLocal(_repo.FullPath, target.Name);
-                    }
+                        Commands.Branch.DeleteLocal(_repo.FullPath, target.Name, log);
                 }
                 else
                 {
                     foreach (var target in Targets)
-                    {
-                        SetProgressDescription($"Deleting remote branch : {target.FriendlyName}");
-                        Commands.Branch.DeleteRemote(_repo.FullPath, target.Remote, target.Name);
-                    }
+                        Commands.Branch.DeleteRemote(_repo.FullPath, target.Remote, target.Name, log);
                 }
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

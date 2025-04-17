@@ -93,15 +93,19 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding remote ...";
 
+            var log = _repo.CreateLog("Add Remote");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Remote(_repo.FullPath).Add(_name, _url);
+                var succ = new Commands.Remote(_repo.FullPath).Use(log).Add(_name, _url);
                 if (succ)
                 {
-                    SetProgressDescription("Fetching from added remote ...");
-                    new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-                    new Commands.Fetch(_repo.FullPath, _name, false, false, SetProgressDescription).Exec();
+                    new Commands.Config(_repo.FullPath).Use(log).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+                    new Commands.Fetch(_repo.FullPath, _name, false, false).Use(log).Exec();
                 }
+
+                log.Complete();
                 CallUIThread(() =>
                 {
                     _repo.MarkFetched();

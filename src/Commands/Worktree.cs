@@ -56,7 +56,7 @@ namespace SourceGit.Commands
             return worktrees;
         }
 
-        public bool Add(string fullpath, string name, bool createNew, string tracking, Action<string> outputHandler)
+        public bool Add(string fullpath, string name, bool createNew, string tracking)
         {
             Args = "worktree add ";
 
@@ -78,14 +78,12 @@ namespace SourceGit.Commands
             else if (!string.IsNullOrEmpty(name) && !createNew)
                 Args += name;
 
-            _outputHandler = outputHandler;
             return Exec();
         }
 
-        public bool Prune(Action<string> outputHandler)
+        public bool Prune()
         {
             Args = "worktree prune -v";
-            _outputHandler = outputHandler;
             return Exec();
         }
 
@@ -101,22 +99,14 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Remove(string fullpath, bool force, Action<string> outputHandler)
+        public bool Remove(string fullpath, bool force)
         {
             if (force)
                 Args = $"worktree remove -f \"{fullpath}\"";
             else
                 Args = $"worktree remove \"{fullpath}\"";
 
-            _outputHandler = outputHandler;
             return Exec();
         }
-
-        protected override void OnReadline(string line)
-        {
-            _outputHandler?.Invoke(line);
-        }
-
-        private Action<string> _outputHandler = null;
     }
 }

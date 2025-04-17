@@ -50,10 +50,15 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Git Flow - starting {_type} {_name} ...";
+
+            var log = _repo.CreateLog("Gitflow - Start");
+            Use(log);
+
             return Task.Run(() =>
             {
-                SetProgressDescription($"Git Flow - starting {_type} {_name} ...");
-                var succ = Commands.GitFlow.Start(_repo.FullPath, _type, _name);
+                var succ = Commands.GitFlow.Start(_repo.FullPath, _type, _name, log);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

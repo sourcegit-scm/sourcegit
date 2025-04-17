@@ -92,6 +92,9 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
 
             var fixedName = FixName(_name);
+            var log = _repo.CreateLog($"Create Branch '{fixedName}'");
+            Use(log);
+
             return Task.Run(() =>
             {
                 var succ = false;
@@ -103,15 +106,14 @@ namespace SourceGit.ViewModels
                     {
                         if (DiscardLocalChanges)
                         {
-                            SetProgressDescription("Discard local changes...");
-                            Commands.Discard.All(_repo.FullPath, false);
+                            Commands.Discard.All(_repo.FullPath, false, log);
                         }
                         else
                         {
-                            SetProgressDescription("Stash local changes");
-                            succ = new Commands.Stash(_repo.FullPath).Push("CREATE_BRANCH_AUTO_STASH");
+                            succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CREATE_BRANCH_AUTO_STASH");
                             if (!succ)
                             {
+                                log.Complete();
                                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                                 return false;
                             }
@@ -120,20 +122,16 @@ namespace SourceGit.ViewModels
                         }
                     }
 
-                    SetProgressDescription($"Create new branch '{fixedName}'");
-                    succ = new Commands.Checkout(_repo.FullPath).Branch(fixedName, _baseOnRevision, SetProgressDescription);
-
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision);
                     if (needPopStash)
-                    {
-                        SetProgressDescription("Re-apply local changes...");
-                        new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
-                    }
+                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
                 }
                 else
                 {
-                    SetProgressDescription($"Create new branch '{fixedName}'");
-                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision);
+                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision, log);
                 }
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

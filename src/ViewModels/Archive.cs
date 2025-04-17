@@ -51,9 +51,14 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Archiving ...";
 
+            var log = _repo.CreateLog("Archive");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile, SetProgressDescription).Exec();
+                var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).Exec();
+                log.Complete();
+
                 CallUIThread(() =>
                 {
                     _repo.SetWatcherEnabled(true);

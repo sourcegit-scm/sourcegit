@@ -46,15 +46,18 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Merge head(s) ...";
 
+            var log = _repo.CreateLog("Merge Multiple Heads");
+            Use(log);
+
             return Task.Run(() =>
             {
                 var succ = new Commands.Merge(
                     _repo.FullPath,
                     ConvertTargetToMergeSources(),
                     AutoCommit,
-                    Strategy.Arg,
-                    SetProgressDescription).Exec();
+                    Strategy.Arg).Use(log).Exec();
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

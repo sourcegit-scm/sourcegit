@@ -103,9 +103,13 @@ namespace SourceGit.ViewModels
         {
             ProgressDescription = "Clone ...";
 
+            // Create a temp log.
+            var log = new CommandLog("Clone");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs, SetProgressDescription);
+                var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
                 if (!cmd.Exec())
                     return false;
 
@@ -142,11 +146,10 @@ namespace SourceGit.ViewModels
                 {
                     var submoduleList = new Commands.QuerySubmodules(path).Result();
                     foreach (var submodule in submoduleList)
-                    {
-                        var update = new Commands.Submodule(path);
-                        update.Update(submodule.Path, true, true, false, SetProgressDescription);
-                    }
+                        new Commands.Submodule(path).Use(log).Update(submodule.Path, true, true, false);
                 }
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

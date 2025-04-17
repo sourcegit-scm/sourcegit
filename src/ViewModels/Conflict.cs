@@ -46,7 +46,7 @@
             _wc = wc;
             _change = change;
 
-            IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).ReadToEnd().IsSuccess;
+            IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
 
             var context = wc.InProgressContext;
             if (context is CherryPickInProgress cherryPick)

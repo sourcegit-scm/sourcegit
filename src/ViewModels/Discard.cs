@@ -65,12 +65,17 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
 
+            var log = _repo.CreateLog("Discard all");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (Mode is DiscardAllMode all)
-                    Commands.Discard.All(_repo.FullPath, all.IncludeIgnored);
+                    Commands.Discard.All(_repo.FullPath, all.IncludeIgnored, log);
                 else
-                    Commands.Discard.Changes(_repo.FullPath, _changes);
+                    Commands.Discard.Changes(_repo.FullPath, _changes, log);
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

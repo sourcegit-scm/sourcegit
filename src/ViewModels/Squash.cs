@@ -31,6 +31,9 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Squashing ...";
 
+            var log = _repo.CreateLog("Squash");
+            Use(log);
+
             return Task.Run(() =>
             {
                 var autoStashed = false;
@@ -38,9 +41,10 @@ namespace SourceGit.ViewModels
 
                 if (_repo.LocalChangesCount > 0)
                 {
-                    succ = new Commands.Stash(_repo.FullPath).Push("SQUASH_AUTO_STASH");
+                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push("SQUASH_AUTO_STASH");
                     if (!succ)
                     {
+                        log.Complete();
                         CallUIThread(() => _repo.SetWatcherEnabled(true));
                         return false;
                     }
@@ -48,13 +52,14 @@ namespace SourceGit.ViewModels
                     autoStashed = true;
                 }
 
-                succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Exec();
+                succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).Exec();
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _message, true, _repo.Settings.EnableSignOffForCommit).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _message, true, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
 
                 if (succ && autoStashed)
-                    new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
+                    new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

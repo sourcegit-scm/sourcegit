@@ -52,9 +52,9 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(action);
         }
 
-        protected void SetProgressDescription(string description)
+        protected void Use(CommandLog log)
         {
-            CallUIThread(() => ProgressDescription = description);
+            log.Register(newline => ProgressDescription = newline.Trim());
         }
 
         private bool _inProgress = false;

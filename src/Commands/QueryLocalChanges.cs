@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands
@@ -18,21 +19,23 @@ namespace SourceGit.Commands
 
         public List<Models.Change> Result()
         {
-            Exec();
-            return _changes;
-        }
+            var outs = new List<Models.Change>();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return outs;
 
-        protected override void OnReadline(string line)
-        {
-            var match = REG_FORMAT().Match(line);
-            if (!match.Success)
-                return;
-
-            var change = new Models.Change() { Path = match.Groups[2].Value };
-            var status = match.Groups[1].Value;
-
-            switch (status)
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
+                var match = REG_FORMAT().Match(line);
+                if (!match.Success)
+                    continue;
+
+                var change = new Models.Change() { Path = match.Groups[2].Value };
+                var status = match.Groups[1].Value;
+
+                switch (status)
+                {
                 case " M":
                     change.Set(Models.ChangeState.None, Models.ChangeState.Modified);
                     break;
@@ -145,12 +148,14 @@ namespace SourceGit.Commands
                     change.Set(Models.ChangeState.Untracked, Models.ChangeState.Untracked);
                     break;
                 default:
-                    return;
+                    break;
+                }
+
+                if (change.Index != Models.ChangeState.None || change.WorkTree != Models.ChangeState.None)
+                    outs.Add(change);
             }
 
-            _changes.Add(change);
+            return outs;
         }
-
-        private readonly List<Models.Change> _changes = new List<Models.Change>();
     }
 }

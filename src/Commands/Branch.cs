@@ -11,29 +11,32 @@
             return cmd.ReadToEnd().StdOut.Trim();
         }
 
-        public static bool Create(string repo, string name, string basedOn)
+        public static bool Create(string repo, string name, string basedOn, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch {name} {basedOn}";
+            cmd.Log = log;
             return cmd.Exec();
         }
 
-        public static bool Rename(string repo, string name, string to)
+        public static bool Rename(string repo, string name, string to, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -M {name} {to}";
+            cmd.Log = log;
             return cmd.Exec();
         }
 
-        public static bool SetUpstream(string repo, string name, string upstream)
+        public static bool SetUpstream(string repo, string name, string upstream, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
+            cmd.Log = log;
 
             if (string.IsNullOrEmpty(upstream))
                 cmd.Args = $"branch {name} --unset-upstream";
@@ -43,25 +46,27 @@
             return cmd.Exec();
         }
 
-        public static bool DeleteLocal(string repo, string name)
+        public static bool DeleteLocal(string repo, string name, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -D {name}";
+            cmd.Log = log;
             return cmd.Exec();
         }
 
-        public static bool DeleteRemote(string repo, string remote, string name)
+        public static bool DeleteRemote(string repo, string remote, string name, Models.ICommandLog log)
         {
             bool exists = new Remote(repo).HasBranch(remote, name);
             if (exists)
-                return new Push(repo, remote, $"refs/heads/{name}", true).Exec();
+                return new Push(repo, remote, $"refs/heads/{name}", true).Use(log).Exec();
 
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -D -r {remote}/{name}";
+            cmd.Log = log;
             return cmd.Exec();
         }
     }

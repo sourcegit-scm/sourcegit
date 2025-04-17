@@ -612,6 +612,7 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Use relative time in histories</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">View Logs</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ADD WORKTREE</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>
@@ -697,6 +698,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Logs</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Warning</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">Welcome Page</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Create Group</x:String>

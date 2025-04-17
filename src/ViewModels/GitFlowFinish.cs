@@ -33,11 +33,17 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+
+            var name = Branch.Name.StartsWith(_prefix) ? Branch.Name.Substring(_prefix.Length) : Branch.Name;
+            ProgressDescription = $"Git Flow - finishing {_type} {name} ...";
+
+            var log = _repo.CreateLog("Gitflow - Finish");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var name = Branch.Name.StartsWith(_prefix) ? Branch.Name.Substring(_prefix.Length) : Branch.Name;
-                SetProgressDescription($"Git Flow - finishing {_type} {name} ...");
-                var succ = Commands.GitFlow.Finish(_repo.FullPath, _type, name, KeepBranch);
+                var succ = Commands.GitFlow.Finish(_repo.FullPath, _type, name, KeepBranch, log);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

@@ -70,6 +70,9 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Cherry-Pick commit(s) ...";
 
+            var log = _repo.CreateLog("Cherry-Pick");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (IsMergeCommit)
@@ -79,7 +82,7 @@ namespace SourceGit.ViewModels
                         Targets[0].SHA,
                         !AutoCommit,
                         AppendSourceToMessage,
-                        $"-m {MainlineForMergeCommit + 1}").Exec();
+                        $"-m {MainlineForMergeCommit + 1}").Use(log).Exec();
                 }
                 else
                 {
@@ -88,9 +91,10 @@ namespace SourceGit.ViewModels
                         string.Join(' ', Targets.ConvertAll(c => c.SHA)),
                         !AutoCommit,
                         AppendSourceToMessage,
-                        string.Empty).Exec();
+                        string.Empty).Use(log).Exec();
                 }
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

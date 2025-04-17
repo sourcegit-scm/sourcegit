@@ -1,16 +1,11 @@
-﻿using System;
-
-namespace SourceGit.Commands
+﻿namespace SourceGit.Commands
 {
     public class Push : Command
     {
-        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, Action<string> onProgress)
+        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force)
         {
-            _outputHandler = onProgress;
-
             WorkingDirectory = repo;
             Context = repo;
-            TraitErrorAsOutput = true;
             SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
             Args = "push --progress --verbose ";
 
@@ -38,12 +33,5 @@ namespace SourceGit.Commands
 
             Args += $"{remote} {refname}";
         }
-
-        protected override void OnReadline(string line)
-        {
-            _outputHandler?.Invoke(line);
-        }
-
-        private readonly Action<string> _outputHandler = null;
     }
 }

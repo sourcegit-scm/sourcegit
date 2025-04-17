@@ -29,9 +29,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Fast-Forward ...";
 
+            var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Fetch(_repo.FullPath, Local, Upstream, SetProgressDescription).Exec();
+                new Commands.Fetch(_repo.FullPath, Local, Upstream).Use(log).Exec();
+                log.Complete();
                 CallUIThread(() =>
                 {
                     _repo.NavigateToBranchDelayed(Upstream.FullName);

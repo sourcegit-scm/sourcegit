@@ -22,7 +22,6 @@ namespace SourceGit.Models
             new ConventionalCommitType("Styles", "style", "Elements or code styles without changing the code logic"),
             new ConventionalCommitType("Tests", "test", "Adding or updating tests"),
             new ConventionalCommitType("Chores", "chore", "Other changes that don't modify src or test files"),
-
         };
 
         public ConventionalCommitType(string name, string type, string description)

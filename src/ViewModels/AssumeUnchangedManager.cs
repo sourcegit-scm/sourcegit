@@ -16,11 +16,8 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var collect = new Commands.AssumeUnchanged(_repo).View();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    Files.AddRange(collect);
-                });
+                var collect = new Commands.QueryAssumeUnchangedFiles(_repo).Result();
+                Dispatcher.UIThread.Invoke(() => Files.AddRange(collect));
             });
         }
 
@@ -28,7 +25,7 @@ namespace SourceGit.ViewModels
         {
             if (!string.IsNullOrEmpty(file))
             {
-                new Commands.AssumeUnchanged(_repo).Remove(file);
+                new Commands.AssumeUnchanged(_repo, file, false).Exec();
                 Files.Remove(file);
             }
         }

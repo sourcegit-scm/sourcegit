@@ -43,7 +43,7 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 if (CustomAction.WaitForExit)
-                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, _args, SetProgressDescription);
+                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, _args, output => CallUIThread(() => ProgressDescription = output));
                 else
                     Commands.ExecuteCustomAction.Run(_repo.FullPath, CustomAction.Executable, _args);
 

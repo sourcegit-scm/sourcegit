@@ -118,6 +118,9 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
 
+            var log = _repo.CreateLog("Pull");
+            Use(log);
+
             return Task.Run(() =>
             {
                 var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
@@ -126,15 +129,14 @@ namespace SourceGit.ViewModels
                 {
                     if (DiscardLocalChanges)
                     {
-                        SetProgressDescription("Discard local changes ...");
-                        Commands.Discard.All(_repo.FullPath, false);
+                        Commands.Discard.All(_repo.FullPath, false, log);
                     }
                     else
                     {
-                        SetProgressDescription("Stash local changes...");
-                        var succ = new Commands.Stash(_repo.FullPath).Push("PULL_AUTO_STASH");
+                        var succ = new Commands.Stash(_repo.FullPath).Use(log).Push("PULL_AUTO_STASH");
                         if (!succ)
                         {
+                            log.Complete();
                             CallUIThread(() => _repo.SetWatcherEnabled(true));
                             return false;
                         }
@@ -146,16 +148,14 @@ namespace SourceGit.ViewModels
                 bool rs;
                 if (FetchAllBranches)
                 {
-                    SetProgressDescription($"Fetching remote: {_selectedRemote.Name}...");
                     rs = new Commands.Fetch(
                         _repo.FullPath,
                         _selectedRemote.Name,
                         NoTags,
-                        false,
-                        SetProgressDescription).Exec();
-
+                        false).Use(log).Exec();
                     if (!rs)
                     {
+                        log.Complete();
                         CallUIThread(() => _repo.SetWatcherEnabled(true));
                         return false;
                     }
@@ -164,39 +164,31 @@ namespace SourceGit.ViewModels
 
                     // Use merge/rebase instead of pull as fetch is done manually.
                     if (UseRebase)
-                    {
-                        SetProgressDescription($"Rebase {_current.Name} on {_selectedBranch.FriendlyName} ...");
-                        rs = new Commands.Rebase(_repo.FullPath, _selectedBranch.FriendlyName, false).Exec();
-                    }
+                        rs = new Commands.Rebase(_repo.FullPath, _selectedBranch.FriendlyName, false).Use(log).Exec();
                     else
-                    {
-                        SetProgressDescription($"Merge {_selectedBranch.FriendlyName} into {_current.Name} ...");
-                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "", SetProgressDescription).Exec();
-                    }
+                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "").Use(log).Exec();
                 }
                 else
                 {
-                    SetProgressDescription($"Pull {_selectedRemote.Name}/{_selectedBranch.Name}...");
                     rs = new Commands.Pull(
                         _repo.FullPath,
                         _selectedRemote.Name,
                         _selectedBranch.Name,
                         UseRebase,
-                        NoTags,
-                        SetProgressDescription).Exec();
+                        NoTags).Use(log).Exec();
                 }
 
                 if (rs && needPopStash)
-                {
-                    SetProgressDescription("Re-apply local changes...");
-                    rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
-                }
+                    rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {
                     _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);
                     _repo.SetWatcherEnabled(true);
                 });
+
                 return rs;
             });
         }

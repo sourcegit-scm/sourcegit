@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -409,6 +410,12 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
+        public AvaloniaList<CommandLog> Logs
+        {
+            get;
+            private set;
+        } = new AvaloniaList<CommandLog>();
+
         public Repository(bool isBare, string path, string gitDir)
         {
             IsBare = isBare;
@@ -472,6 +479,8 @@ namespace SourceGit.ViewModels
         public void Close()
         {
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
+            Logs.Clear();
+
             _settings.LastCommitMessage = _workingCopy.CommitMessage;
 
             var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
@@ -536,6 +545,13 @@ namespace SourceGit.ViewModels
         public void ShowAndStartPopup(Popup popup)
         {
             GetOwnerPage()?.StartPopup(popup);
+        }
+
+        public CommandLog CreateLog(string name)
+        {
+            var log = new CommandLog(name);
+            Logs.Insert(0, log);
+            return log;
         }
 
         public void RefreshAll()
@@ -2560,7 +2576,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
                 foreach (var remote in remotes)
-                    new Commands.Fetch(_fullpath, remote, false, false, null) { RaiseError = false }.Exec();
+                    new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.Exec();
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }

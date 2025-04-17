@@ -30,19 +30,24 @@ namespace SourceGit.ViewModels
         {
             ProgressDescription = $"Initialize git repository at: '{_targetPath}'";
 
+            var log = new CommandLog("Initialize");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Init(_pageId, _targetPath).Exec();
-                if (!succ)
-                    return false;
+                var succ = new Commands.Init(_pageId, _targetPath).Use(log).Exec();
+                log.Complete();
 
-                CallUIThread(() =>
+                if (succ)
                 {
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
-                    Welcome.Instance.Refresh();
-                });
+                    CallUIThread(() =>
+                    {
+                        Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                        Welcome.Instance.Refresh();
+                    });
+                }
 
-                return true;
+                return succ;
             });
         }
 
