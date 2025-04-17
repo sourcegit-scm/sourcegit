@@ -37,24 +37,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.28%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.74%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.Continue
-- Text.ConfirmEmptyCommit.NoLocalChanges
-- Text.ConfirmEmptyCommit.StageAllThenCommit
-- Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.Repository.ViewLogs
 - Text.ViewLogs
-- Text.WorkingCopy.ConfirmCommitWithFilter
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
-- Text.WorkingCopy.Conflicts.UseMine
-- Text.WorkingCopy.Conflicts.UseTheirs
 
 </details>
 
