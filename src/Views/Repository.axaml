@@ -129,7 +129,7 @@
               </ListBoxItem>
 
               <ListBoxItem IsVisible="{Binding !IsBare}">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <v:CounterPresenter Grid.Column="2"
@@ -140,6 +140,12 @@
                                       FontSize="10"
                                       Foreground="{DynamicResource Brush.BadgeFG}"
                                       Background="{DynamicResource Brush.Badge}"/>
+                  <Path Grid.Column="3"
+                        Width="12" Height="12"
+                        Margin="0,0,6,0"
+                        Data="{StaticResource Icons.Info}"
+                        Fill="DarkOrange"
+                        IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                 </Grid>
               </ListBoxItem>
 
