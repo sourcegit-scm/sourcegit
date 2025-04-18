@@ -35,6 +35,7 @@
   * Revision Diffs
   * Branch Diff
   * Image Diff - Side-By-Side/Swipe/Blend
+* Git command logs
 * Search commits
 * GitFlow
 * Git LFS
