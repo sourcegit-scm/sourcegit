@@ -162,6 +162,8 @@ namespace SourceGit.ViewModels
 
             var saveFile = Path.Combine(_repo.GitDir, "sourcegit_rebase_jobs.json");
             var collection = new Models.InteractiveRebaseJobCollection();
+            collection.OrigHead = _repo.CurrentBranch.Head;
+            collection.Onto = On.SHA;
             for (int i = Items.Count - 1; i >= 0; i--)
             {
                 var item = Items[i];
@@ -178,9 +180,6 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 var succ = new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).Exec();
-                if (succ)
-                    File.Delete(saveFile);
-
                 log.Complete();
                 Dispatcher.UIThread.Invoke(() => _repo.SetWatcherEnabled(true));
                 return succ;

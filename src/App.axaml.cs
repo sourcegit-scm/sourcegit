@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -431,21 +432,37 @@ namespace SourceGit
                 return true;
 
             var gitDir = Path.GetDirectoryName(file)!;
-            var jobsFile = Path.Combine(gitDir, "sourcegit_rebase_jobs.json");
-            if (!File.Exists(jobsFile))
-                return true;
-
-            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            var origHeadFile = Path.Combine(gitDir, "rebase-merge", "orig-head");
+            var ontoFile = Path.Combine(gitDir, "rebase-merge", "onto");
             var doneFile = Path.Combine(gitDir, "rebase-merge", "done");
-            if (!File.Exists(doneFile))
+            var jobsFile = Path.Combine(gitDir, "sourcegit_rebase_jobs.json");
+            if (!File.Exists(ontoFile) || !File.Exists(origHeadFile) || !File.Exists(doneFile) || !File.Exists(jobsFile))
                 return true;
 
-            var done = File.ReadAllText(doneFile).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            if (done.Length > collection.Jobs.Count)
+            var origHead = File.ReadAllText(origHeadFile).Trim();
+            var onto = File.ReadAllText(ontoFile).Trim();
+            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            if (!collection.Onto.Equals(onto) || !collection.OrigHead.Equals(origHead))
                 return true;
 
-            var job = collection.Jobs[done.Length - 1];
-            File.WriteAllText(file, job.Message);
+            var done = File.ReadAllText(doneFile).Trim().Split([ '\r', '\n' ], StringSplitOptions.RemoveEmptyEntries);
+            if (done.Length == 0)
+                return true;
+
+            var current = done[^1].Trim();
+            var match = REG_REBASE_TODO().Match(current);
+            if (!match.Success)
+                return true;
+
+            var sha = match.Groups[1].Value;
+            foreach (var job in collection.Jobs)
+            {
+                if (job.SHA.StartsWith(sha))
+                {
+                    File.WriteAllText(file, job.Message);
+                    break;
+                }
+            }
 
             return true;
         }
@@ -620,6 +637,9 @@ namespace SourceGit
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
+
+        [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,40})(\s+.*)?$")]
+        private static partial Regex REG_REBASE_TODO();
 
         private Models.IpcChannel _ipcChannel = null;
         private ViewModels.Launcher _launcher = null;

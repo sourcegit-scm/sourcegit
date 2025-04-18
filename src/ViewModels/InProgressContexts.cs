@@ -105,8 +105,6 @@ namespace SourceGit.ViewModels
 
         public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
         {
-            _gitDir = repo.GitDir;
-
             HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
             if (HeadName.StartsWith("refs/heads/"))
                 HeadName = HeadName.Substring(11);
@@ -129,34 +127,14 @@ namespace SourceGit.ViewModels
 
         public override bool Continue()
         {
-            var succ = new Commands.Command()
+            return new Commands.Command()
             {
                 WorkingDirectory = _repo,
                 Context = _repo,
                 Editor = Commands.Command.EditorType.RebaseEditor,
                 Args = $"rebase --continue",
             }.Exec();
-
-            if (succ)
-            {
-                var jobsFile = Path.Combine(_gitDir, "sourcegit_rebase_jobs.json");
-                var rebaseMergeHead = Path.Combine(_gitDir, "REBASE_HEAD");
-                var rebaseMergeFolder = Path.Combine(_gitDir, "rebase-merge");
-                var rebaseApplyFolder = Path.Combine(_gitDir, "rebase-apply");
-                if (File.Exists(jobsFile))
-                    File.Delete(jobsFile);
-                if (File.Exists(rebaseMergeHead))
-                    File.Delete(rebaseMergeHead);
-                if (Directory.Exists(rebaseMergeFolder))
-                    Directory.Delete(rebaseMergeFolder);
-                if (Directory.Exists(rebaseApplyFolder))
-                    Directory.Delete(rebaseApplyFolder);
-            }
-
-            return succ;
         }
-
-        private string _gitDir;
     }
 
     public class RevertInProgress : InProgressContext
