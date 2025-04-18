@@ -297,12 +297,14 @@ namespace SourceGit.ViewModels
                         return;
 
                     var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+                    var log = null as CommandLog;
                     try
                     {
                         var picker = await storageProvider.OpenFolderPickerAsync(options);
                         if (picker.Count == 1)
                         {
-                            var log = _repo.CreateLog("Save as Patch");
+                            log = _repo.CreateLog("Save as Patch");
+                            
                             var succ = false;
                             for (var i = 0; i < selected.Count; i++)
                             {
@@ -314,8 +316,6 @@ namespace SourceGit.ViewModels
 
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
-
-                            log.Complete();
                         }
                     }
                     catch (Exception exception)
@@ -323,6 +323,7 @@ namespace SourceGit.ViewModels
                         App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
                     }
 
+                    log?.Complete();
                     e.Handled = true;
                 };
                 multipleMenu.Items.Add(saveToPatchMultiple);
@@ -658,13 +659,16 @@ namespace SourceGit.ViewModels
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+                var log = null as CommandLog;
                 try
                 {
                     var selected = await storageProvider.OpenFolderPickerAsync(options);
                     if (selected.Count == 1)
                     {
+                        log = _repo.CreateLog("Save as Patch");
+
                         var saveTo = GetPatchFileName(selected[0].Path.LocalPath, commit);
-                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Exec();
+                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).Exec();
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -674,6 +678,7 @@ namespace SourceGit.ViewModels
                     App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
+                log?.Complete();
                 e.Handled = true;
             };
             menu.Items.Add(saveToPatch);

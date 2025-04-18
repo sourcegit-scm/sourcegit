@@ -36,9 +36,9 @@ namespace SourceGit.Commands
             return content.Contains("git lfs pre-push");
         }
 
-        public bool Install()
+        public bool Install(Models.ICommandLog log)
         {
-            return new SubCmd(_repo, "lfs install --local", null).Exec();
+            return new SubCmd(_repo, "lfs install --local", log).Exec();
         }
 
         public bool Track(string pattern, bool isFilenameMode, Models.ICommandLog log)
@@ -93,21 +93,21 @@ namespace SourceGit.Commands
             return locks;
         }
 
-        public bool Lock(string remote, string file)
+        public bool Lock(string remote, string file, Models.ICommandLog log)
         {
-            return new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", null).Exec();
+            return new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", log).Exec();
         }
 
-        public bool Unlock(string remote, string file, bool force)
+        public bool Unlock(string remote, string file, bool force, Models.ICommandLog log)
         {
             var opt = force ? "-f" : "";
-            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", null).Exec();
+            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", log).Exec();
         }
 
-        public bool Unlock(string remote, long id, bool force)
+        public bool Unlock(string remote, long id, bool force, Models.ICommandLog log)
         {
             var opt = force ? "-f" : "";
-            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} --id={id}", null).Exec();
+            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} --id={id}", log).Exec();
         }
 
         private readonly string _repo;

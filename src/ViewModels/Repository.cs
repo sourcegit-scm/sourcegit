@@ -1405,7 +1405,7 @@ namespace SourceGit.ViewModels
                 {
                     locks.Click += (_, e) =>
                     {
-                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, _remotes[0].Name) };
+                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(this, _remotes[0].Name) };
                         App.OpenDialog(dialog);
                         e.Handled = true;
                     };
@@ -1419,7 +1419,7 @@ namespace SourceGit.ViewModels
                         lockRemote.Header = remoteName;
                         lockRemote.Click += (_, e) =>
                         {
-                            var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(_fullpath, remoteName) };
+                            var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(this, remoteName) };
                             App.OpenDialog(dialog);
                             e.Handled = true;
                         };
@@ -1437,10 +1437,12 @@ namespace SourceGit.ViewModels
                 install.Icon = App.CreateMenuIcon("Icons.Init");
                 install.Click += (_, e) =>
                 {
-                    var succ = new Commands.LFS(_fullpath).Install();
+                    var log = CreateLog("Install LFS");
+                    var succ = new Commands.LFS(_fullpath).Install(log);
                     if (succ)
                         App.SendNotification(_fullpath, $"LFS enabled successfully!");
 
+                    log.Complete();
                     e.Handled = true;
                 };
                 menu.Items.Add(install);
@@ -2249,9 +2251,11 @@ namespace SourceGit.ViewModels
                 unlock.Click += (_, ev) =>
                 {
                     SetWatcherEnabled(false);
-                    var succ = new Commands.Worktree(_fullpath).Unlock(worktree.FullPath);
+                    var log = CreateLog("Unlock Worktree");
+                    var succ = new Commands.Worktree(_fullpath).Use(log).Unlock(worktree.FullPath);
                     if (succ)
                         worktree.IsLocked = false;
+                    log.Complete();
                     SetWatcherEnabled(true);
                     ev.Handled = true;
                 };
@@ -2265,9 +2269,11 @@ namespace SourceGit.ViewModels
                 loc.Click += (_, ev) =>
                 {
                     SetWatcherEnabled(false);
-                    var succ = new Commands.Worktree(_fullpath).Lock(worktree.FullPath);
+                    var log = CreateLog("Lock Worktree");
+                    var succ = new Commands.Worktree(_fullpath).Use(log).Lock(worktree.FullPath);
                     if (succ)
                         worktree.IsLocked = true;
+                    log.Complete();
                     SetWatcherEnabled(true);
                     ev.Handled = true;
                 };

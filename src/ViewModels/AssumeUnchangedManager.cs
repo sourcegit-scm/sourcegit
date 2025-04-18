@@ -9,14 +9,14 @@ namespace SourceGit.ViewModels
     {
         public AvaloniaList<string> Files { get; private set; }
 
-        public AssumeUnchangedManager(string repo)
+        public AssumeUnchangedManager(Repository repo)
         {
             _repo = repo;
             Files = new AvaloniaList<string>();
 
             Task.Run(() =>
             {
-                var collect = new Commands.QueryAssumeUnchangedFiles(_repo).Result();
+                var collect = new Commands.QueryAssumeUnchangedFiles(_repo.FullPath).Result();
                 Dispatcher.UIThread.Invoke(() => Files.AddRange(collect));
             });
         }
@@ -25,11 +25,13 @@ namespace SourceGit.ViewModels
         {
             if (!string.IsNullOrEmpty(file))
             {
-                new Commands.AssumeUnchanged(_repo, file, false).Exec();
+                var log = _repo.CreateLog("Remove Assue Unchanged File");
+                new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).Exec();
+                log.Complete();
                 Files.Remove(file);
             }
         }
 
-        private readonly string _repo;
+        private readonly Repository _repo;
     }
 }

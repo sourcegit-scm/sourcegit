@@ -174,12 +174,14 @@ namespace SourceGit.ViewModels
             }
             File.WriteAllText(saveFile, JsonSerializer.Serialize(collection, JsonCodeGen.Default.InteractiveRebaseJobCollection));
 
+            var log = _repo.CreateLog("Interactive Rebase");
             return Task.Run(() =>
             {
-                var succ = new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Exec();
+                var succ = new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).Exec();
                 if (succ)
                     File.Delete(saveFile);
 
+                log.Complete();
                 Dispatcher.UIThread.Invoke(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
