@@ -7,8 +7,8 @@ namespace SourceGit.Commands
     {
         public static void All(string repo, bool includeIgnored, Models.ICommandLog log)
         {
-            new Restore(repo).Use(log).Exec();
-            new Clean(repo, includeIgnored).Use(log).Exec();
+            new Restore(repo) { Log = log }.Exec();
+            new Clean(repo, includeIgnored) { Log = log }.Exec();
         }
 
         public static void Changes(string repo, List<Models.Change> changes, Models.ICommandLog log)
@@ -27,13 +27,13 @@ namespace SourceGit.Commands
             for (int i = 0; i < needClean.Count; i += 10)
             {
                 var count = Math.Min(10, needClean.Count - i);
-                new Clean(repo, needClean.GetRange(i, count)).Use(log).Exec();
+                new Clean(repo, needClean.GetRange(i, count)) { Log = log }.Exec();
             }
 
             for (int i = 0; i < needCheckout.Count; i += 10)
             {
                 var count = Math.Min(10, needCheckout.Count - i);
-                new Restore(repo, needCheckout.GetRange(i, count), "--worktree --recurse-submodules").Use(log).Exec();
+                new Restore(repo, needCheckout.GetRange(i, count), "--worktree --recurse-submodules") { Log = log }.Exec();
             }
         }
     }

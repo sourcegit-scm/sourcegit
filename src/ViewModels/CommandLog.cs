@@ -84,4 +84,13 @@ namespace SourceGit.ViewModels
         private StringBuilder _builder = new StringBuilder();
         private event Action<string> _onNewLineReceived;
     }
+
+    public static class CommandExtensions
+    {
+        public static T Use<T>(this T cmd, CommandLog log) where T : Commands.Command
+        {
+            cmd.Log = log;
+            return cmd;
+        }
+    }
 }

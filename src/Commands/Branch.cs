@@ -60,7 +60,7 @@
         {
             bool exists = new Remote(repo).HasBranch(remote, name);
             if (exists)
-                return new Push(repo, remote, $"refs/heads/{name}", true).Use(log).Exec();
+                return new Push(repo, remote, $"refs/heads/{name}", true) { Log = log }.Exec();
 
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
