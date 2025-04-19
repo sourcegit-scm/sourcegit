@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -59,6 +60,22 @@ namespace SourceGit.Views
         public CommitBaseInfo()
         {
             InitializeComponent();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.CommitDetail detail)
+            {
+                detail.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(detail.Commit))
+                    {
+                        InvalidateVisual();
+                    }
+                };
+            }
         }
 
         private void OnCopyCommitSHA(object sender, RoutedEventArgs e)

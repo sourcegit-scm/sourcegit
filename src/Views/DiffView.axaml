@@ -34,6 +34,8 @@
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+            <v:LinesChanged Grid.Row="4" Grid.Column="1" AddedCount="{Binding AddedLines}" RemovedCount="{Binding RemovedLines}" />
+            
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"

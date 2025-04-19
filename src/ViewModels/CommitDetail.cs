@@ -556,7 +556,7 @@ namespace SourceGit.ViewModels
 
             menu.Items.Add(resetToThisRevision);
             menu.Items.Add(resetToFirstParent);
-            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(new MenuItem { Header = "-" });
 
             if (File.Exists(Path.Combine(fullPath)))
                 TryToAddContextMenuItemsForGitLFS(menu, file.Path);
@@ -597,6 +597,30 @@ namespace SourceGit.ViewModels
 
             if (_commit == null)
                 return;
+
+            var sha = _commit.SHA;
+            
+            if (_lineCountCache.TryGetValue(sha, out var lineCount))
+            {
+                _commit.AddedLines = lineCount.added;
+                _commit.RemovedLines = lineCount.removed;
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    (var addedLines, var removedLines) = new Commands.QueryCommitChangedLines(_repo.FullPath, sha).Result();
+                    _lineCountCache[sha] = (addedLines, removedLines);
+                    
+                    Dispatcher.UIThread.Invoke(() => {
+                        if (_commit != null && _commit.SHA == sha)
+                        {
+                            _commit.AddedLines = addedLines;
+                            _commit.RemovedLines = removedLines;
+                        }
+                    });
+                });
+            }
 
             if (_cancellationSource is { IsCancellationRequested: false })
                 _cancellationSource.Cancel();
@@ -658,6 +682,24 @@ namespace SourceGit.ViewModels
                         if (visible.Count == 0)
                             SelectedChanges = null;
                     });
+                }
+            });
+        }
+
+        public void PreloadLineCountData(List<string> commitSHAs)
+        {
+            if (commitSHAs == null || commitSHAs.Count == 0)
+                return;
+                
+            Task.Run(() =>
+            {
+                foreach (var sha in commitSHAs)
+                {
+                    if (!_lineCountCache.ContainsKey(sha))
+                    {
+                        var (addedLines, removedLines) = new Commands.QueryCommitChangedLines(_repo.FullPath, sha).Result();
+                        _lineCountCache[sha] = (addedLines, removedLines);
+                    }
                 }
             });
         }
@@ -894,6 +936,7 @@ namespace SourceGit.ViewModels
         private CancellationTokenSource _cancellationSource = null;
         private List<string> _revisionFiles = null;
         private string _revisionFileSearchFilter = string.Empty;
+        private Dictionary<string, (int added, int removed)> _lineCountCache = new Dictionary<string, (int added, int removed)>();
         private List<string> _revisionFileSearchSuggestion = null;
     }
 }
