@@ -29,7 +29,6 @@ namespace SourceGit.ViewModels
             Current = current;
             On = on;
             AutoStash = true;
-            View = new Views.Rebase() { DataContext = this };
         }
 
         public Rebase(Repository repo, Models.Branch current, Models.Commit on)
@@ -39,7 +38,6 @@ namespace SourceGit.ViewModels
             Current = current;
             On = on;
             AutoStash = true;
-            View = new Views.Rebase() { DataContext = this };
         }
 
         public override Task<bool> Sure()

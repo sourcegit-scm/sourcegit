@@ -148,8 +148,6 @@ namespace SourceGit.ViewModels
 
             // Auto select preferred remote branch.
             AutoSelectBranchByRemote();
-
-            View = new Views.Push() { DataContext = this };
         }
 
         public override bool CanStartDirectly()

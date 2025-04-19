@@ -39,8 +39,6 @@ namespace SourceGit.ViewModels
                 if (TrackingRemoteBranch != null)
                     DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
             }
-
-            View = new Views.DeleteBranch() { DataContext = this };
         }
 
         public override Task<bool> Sure()

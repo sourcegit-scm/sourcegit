@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public ClearStashes(Repository repo)
         {
             _repo = repo;
-            View = new Views.ClearStashes() { DataContext = this };
         }
 
         public override Task<bool> Sure()

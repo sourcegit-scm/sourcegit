@@ -50,7 +50,6 @@ namespace SourceGit.ViewModels
             MainlineForMergeCommit = 0;
             AppendSourceToMessage = true;
             AutoCommit = true;
-            View = new Views.CherryPick() { DataContext = this };
         }
 
         public CherryPick(Repository repo, Models.Commit merge, List<Models.Commit> parents)
@@ -62,7 +61,6 @@ namespace SourceGit.ViewModels
             MainlineForMergeCommit = 0;
             AppendSourceToMessage = true;
             AutoCommit = true;
-            View = new Views.CherryPick() { DataContext = this };
         }
 
         public override Task<bool> Sure()

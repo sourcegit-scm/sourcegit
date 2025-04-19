@@ -7,8 +7,7 @@ namespace SourceGit.ViewModels
         public Models.Branch Branch
         {
             get;
-            set;
-        } = null;
+        }
 
         public bool IsFeature => _type == "feature";
         public bool IsRelease => _type == "release";
@@ -25,9 +24,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _type = type;
             _prefix = prefix;
-
             Branch = branch;
-            View = new Views.GitFlowFinish() { DataContext = this };
         }
 
         public override Task<bool> Sure()

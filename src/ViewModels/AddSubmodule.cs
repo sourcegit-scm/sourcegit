@@ -31,7 +31,6 @@ namespace SourceGit.ViewModels
         public AddSubmodule(Repository repo)
         {
             _repo = repo;
-            View = new Views.AddSubmodule() { DataContext = this };
         }
 
         public static ValidationResult ValidateURL(string url, ValidationContext ctx)

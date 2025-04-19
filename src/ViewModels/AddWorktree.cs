@@ -78,8 +78,6 @@ namespace SourceGit.ViewModels
                 SelectedTrackingBranch = RemoteBranches[0];
             else
                 SelectedTrackingBranch = string.Empty;
-
-            View = new Views.AddWorktree() { DataContext = this };
         }
 
         public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)

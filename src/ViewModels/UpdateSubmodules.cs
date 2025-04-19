@@ -8,8 +8,7 @@ namespace SourceGit.ViewModels
         public List<string> Submodules
         {
             get;
-            private set;
-        } = new List<string>();
+        } = [];
 
         public string SelectedSubmodule
         {
@@ -49,7 +48,6 @@ namespace SourceGit.ViewModels
                 Submodules.Add(submodule.Path);
 
             SelectedSubmodule = Submodules.Count > 0 ? Submodules[0] : string.Empty;
-            View = new Views.UpdateSubmodules() { DataContext = this };
         }
 
         public override Task<bool> Sure()

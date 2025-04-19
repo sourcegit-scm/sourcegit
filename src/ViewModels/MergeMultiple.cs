@@ -8,7 +8,6 @@ namespace SourceGit.ViewModels
         public List<object> Targets
         {
             get;
-            private set;
         } = [];
 
         public bool AutoCommit
@@ -29,7 +28,6 @@ namespace SourceGit.ViewModels
             Targets.AddRange(commits);
             AutoCommit = true;
             Strategy = Models.MergeStrategy.ForMultiple[0];
-            View = new Views.MergeMultiple() { DataContext = this };
         }
 
         public MergeMultiple(Repository repo, List<Models.Branch> branches)
@@ -38,7 +36,6 @@ namespace SourceGit.ViewModels
             Targets.AddRange(branches);
             AutoCommit = true;
             Strategy = Models.MergeStrategy.ForMultiple[0];
-            View = new Views.MergeMultiple() { DataContext = this };
         }
 
         public override Task<bool> Sure()

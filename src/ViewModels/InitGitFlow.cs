@@ -78,8 +78,6 @@ namespace SourceGit.ViewModels
                 _master = localBranches[0];
             else
                 _master = "master";
-
-            View = new Views.InitGitFlow() { DataContext = this };
         }
 
         public static ValidationResult ValidateBaseBranch(string _, ValidationContext ctx)

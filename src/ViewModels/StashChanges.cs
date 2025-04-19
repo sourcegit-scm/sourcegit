@@ -47,8 +47,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _changes = changes;
             HasSelectedFiles = hasSelectedFiles;
-
-            View = new Views.StashChanges() { DataContext = this };
         }
 
         public override Task<bool> Sure()

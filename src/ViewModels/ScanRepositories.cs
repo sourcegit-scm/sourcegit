@@ -13,15 +13,12 @@ namespace SourceGit.ViewModels
         public string RootDir
         {
             get;
-            private set;
         }
 
         public ScanRepositories(string rootDir)
         {
             GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
-
             RootDir = rootDir;
-            View = new Views.ScanRepositories() { DataContext = this };
         }
 
         public override Task<bool> Sure()

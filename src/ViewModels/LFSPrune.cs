@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public LFSPrune(Repository repo)
         {
             _repo = repo;
-            View = new Views.LFSPrune() { DataContext = this };
         }
 
         public override Task<bool> Sure()

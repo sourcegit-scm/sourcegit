@@ -7,14 +7,12 @@ namespace SourceGit.ViewModels
         public Models.Remote Remote
         {
             get;
-            private set;
         }
 
         public PruneRemote(Repository repo, Models.Remote remote)
         {
             _repo = repo;
             Remote = remote;
-            View = new Views.PruneRemote() { DataContext = this };
         }
 
         public override Task<bool> Sure()

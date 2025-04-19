@@ -56,8 +56,6 @@ namespace SourceGit.ViewModels
             {
                 SSHKey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
             }
-
-            View = new Views.EditRemote() { DataContext = this };
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)

@@ -21,7 +21,6 @@ namespace SourceGit.ViewModels
         public LFSTrackCustomPattern(Repository repo)
         {
             _repo = repo;
-            View = new Views.LFSTrackCustomPattern() { DataContext = this };
         }
 
         public override Task<bool> Sure()

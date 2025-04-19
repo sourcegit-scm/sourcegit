@@ -68,8 +68,6 @@ namespace SourceGit.ViewModels
             if (string.IsNullOrEmpty(ParentFolder))
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
 
-            View = new Views.Clone() { DataContext = this };
-
             Task.Run(async () =>
             {
                 try

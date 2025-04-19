@@ -48,7 +48,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = branch;
             DiscardLocalChanges = false;
-            View = new Views.CreateBranch() { DataContext = this };
         }
 
         public CreateBranch(Repository repo, Models.Commit commit)
@@ -58,7 +57,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = commit;
             DiscardLocalChanges = false;
-            View = new Views.CreateBranch() { DataContext = this };
         }
 
         public CreateBranch(Repository repo, Models.Tag tag)
@@ -68,7 +66,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = tag;
             DiscardLocalChanges = false;
-            View = new Views.CreateBranch() { DataContext = this };
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -97,7 +94,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = false;
+                bool succ;
                 if (CheckoutAfterCreated && !_repo.IsBare)
                 {
                     var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();

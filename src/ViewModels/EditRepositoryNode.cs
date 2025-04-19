@@ -37,8 +37,6 @@ namespace SourceGit.ViewModels
             _name = node.Name;
             _isRepository = node.IsRepository;
             _bookmark = node.Bookmark;
-
-            View = new Views.EditRepositoryNode() { DataContext = this };
         }
 
         public override Task<bool> Sure()

@@ -42,7 +42,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        }
+        } = false;
 
         public bool UseRebase
         {
@@ -110,8 +110,6 @@ namespace SourceGit.ViewModels
                 PostRemoteSelected();
                 HasSpecifiedRemoteBranch = false;
             }
-
-            View = new Views.Pull() { DataContext = this };
         }
 
         public override Task<bool> Sure()

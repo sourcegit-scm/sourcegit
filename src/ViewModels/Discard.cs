@@ -40,9 +40,7 @@ namespace SourceGit.ViewModels
         public Discard(Repository repo)
         {
             _repo = repo;
-
             Mode = new DiscardAllMode();
-            View = new Views.Discard { DataContext = this };
         }
 
         public Discard(Repository repo, List<Models.Change> changes)
@@ -56,8 +54,6 @@ namespace SourceGit.ViewModels
                 Mode = new DiscardSingleFile() { Path = _changes[0].Path };
             else
                 Mode = new DiscardMultipleFiles() { Count = _changes.Count };
-
-            View = new Views.Discard() { DataContext = this };
         }
 
         public override Task<bool> Sure()

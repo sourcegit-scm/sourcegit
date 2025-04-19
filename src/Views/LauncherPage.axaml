@@ -67,7 +67,7 @@
                 <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
                   <!-- Popup Widget -->
                   <ContentPresenter Margin="8,16,8,8"
-                                    Content="{Binding View}"
+                                    DataContextChanged="OnPopupDataContextChanged"
                                     IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
 
                   <!-- Options -->

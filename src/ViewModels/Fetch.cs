@@ -55,8 +55,6 @@ namespace SourceGit.ViewModels
             {
                 SelectedRemote = _repo.Remotes[0];
             }
-
-            View = new Views.Fetch() { DataContext = this };
         }
 
         public override Task<bool> Sure()

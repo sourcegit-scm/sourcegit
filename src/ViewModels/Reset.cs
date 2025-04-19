@@ -7,13 +7,11 @@ namespace SourceGit.ViewModels
         public Models.Branch Current
         {
             get;
-            private set;
         }
 
         public Models.Commit To
         {
             get;
-            private set;
         }
 
         public Models.ResetMode SelectedMode
@@ -28,7 +26,6 @@ namespace SourceGit.ViewModels
             Current = current;
             To = to;
             SelectedMode = Models.ResetMode.Supported[1];
-            View = new Views.Reset() { DataContext = this };
         }
 
         public override Task<bool> Sure()

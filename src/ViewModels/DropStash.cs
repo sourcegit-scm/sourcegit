@@ -4,13 +4,12 @@ namespace SourceGit.ViewModels
 {
     public class DropStash : Popup
     {
-        public Models.Stash Stash { get; private set; }
+        public Models.Stash Stash { get; }
 
         public DropStash(Repository repo, Models.Stash stash)
         {
             _repo = repo;
             Stash = stash;
-            View = new Views.DropStash() { DataContext = this };
         }
 
         public override Task<bool> Sure()

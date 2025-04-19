@@ -10,12 +10,6 @@ namespace SourceGit.ViewModels
 {
     public class Popup : ObservableValidator
     {
-        public object View
-        {
-            get;
-            set;
-        }
-
         public bool InProgress
         {
             get => _inProgress;

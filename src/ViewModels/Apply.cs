@@ -31,7 +31,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
 
             SelectedWhiteSpaceMode = Models.ApplyWhiteSpaceMode.Supported[0];
-            View = new Views.Apply() { DataContext = this };
         }
 
         public static ValidationResult ValidatePatchFile(string file, ValidationContext _)

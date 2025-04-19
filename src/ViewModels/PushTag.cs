@@ -8,7 +8,6 @@ namespace SourceGit.ViewModels
         public Models.Tag Target
         {
             get;
-            private set;
         }
 
         public List<Models.Remote> Remotes
@@ -33,7 +32,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Target = target;
             SelectedRemote = _repo.Remotes[0];
-            View = new Views.PushTag() { DataContext = this };
         }
 
         public override Task<bool> Sure()

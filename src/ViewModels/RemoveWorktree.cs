@@ -7,8 +7,7 @@ namespace SourceGit.ViewModels
         public Models.Worktree Target
         {
             get;
-            private set;
-        } = null;
+        }
 
         public bool Force
         {
@@ -20,7 +19,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Target = target;
-            View = new Views.RemoveWorktree() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -40,6 +38,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

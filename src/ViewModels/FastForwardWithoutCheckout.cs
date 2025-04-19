@@ -7,13 +7,11 @@ namespace SourceGit.ViewModels
         public Models.Branch Local
         {
             get;
-            private set;
         }
 
         public Models.Branch To
         {
             get;
-            private set;
         }
 
         public FastForwardWithoutCheckout(Repository repo, Models.Branch local, Models.Branch upstream)
@@ -21,7 +19,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Local = local;
             To = upstream;
-            View = new Views.FastForwardWithoutCheckout() { DataContext = this };
         }
 
         public override Task<bool> Sure()

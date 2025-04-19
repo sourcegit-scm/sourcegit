@@ -4,7 +4,6 @@ namespace SourceGit.ViewModels
 {
     public class DeleteSubmodule : Popup
     {
-
         public string Submodule
         {
             get;
@@ -15,7 +14,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Submodule = submodule;
-            View = new Views.DeleteSubmodule() { DataContext = this };
         }
 
         public override Task<bool> Sure()

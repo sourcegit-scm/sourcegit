@@ -20,7 +20,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Target = tag;
-            View = new Views.DeleteTag() { DataContext = this };
         }
 
         public override Task<bool> Sure()

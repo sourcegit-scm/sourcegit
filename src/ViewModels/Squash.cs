@@ -7,7 +7,7 @@ namespace SourceGit.ViewModels
     {
         public Models.Commit Target
         {
-            get => _target;
+            get;
         }
 
         [Required(ErrorMessage = "Commit message is required!!!")]
@@ -20,10 +20,8 @@ namespace SourceGit.ViewModels
         public Squash(Repository repo, Models.Commit target, string shaToGetPreferMessage)
         {
             _repo = repo;
-            _target = target;
             _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).Result();
-
-            View = new Views.Squash() { DataContext = this };
+            Target = target;
         }
 
         public override Task<bool> Sure()
@@ -66,7 +64,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private Models.Commit _target;
         private string _message;
     }
 }

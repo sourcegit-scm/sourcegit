@@ -14,7 +14,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Remote = remote;
-            View = new Views.DeleteRemote() { DataContext = this };
         }
 
         public override Task<bool> Sure()

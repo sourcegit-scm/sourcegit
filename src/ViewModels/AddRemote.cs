@@ -47,7 +47,6 @@ namespace SourceGit.ViewModels
         public AddRemote(Repository repo)
         {
             _repo = repo;
-            View = new Views.AddRemote() { DataContext = this };
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)

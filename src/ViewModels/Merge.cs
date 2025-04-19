@@ -29,7 +29,6 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = forceFastForward ? Models.MergeMode.Supported[1] : AutoSelectMergeMode();
-            View = new Views.Merge() { DataContext = this };
         }
 
         public Merge(Repository repo, Models.Commit source, string into)
@@ -40,7 +39,6 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = AutoSelectMergeMode();
-            View = new Views.Merge() { DataContext = this };
         }
 
         public Merge(Repository repo, Models.Tag source, string into)
@@ -51,7 +49,6 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = AutoSelectMergeMode();
-            View = new Views.Merge() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -99,6 +96,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private readonly string _sourceName = string.Empty;
+        private readonly string _sourceName;
     }
 }

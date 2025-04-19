@@ -6,23 +6,19 @@ namespace SourceGit.ViewModels
     {
         public RepositoryNode Node
         {
-            get => _node;
-            set => SetProperty(ref _node, value);
+            get;
         }
 
         public DeleteRepositoryNode(RepositoryNode node)
         {
-            _node = node;
-            View = new Views.DeleteRepositoryNode() { DataContext = this };
+            Node = node;
         }
 
         public override Task<bool> Sure()
         {
-            Preferences.Instance.RemoveNode(_node, true);
+            Preferences.Instance.RemoveNode(Node, true);
             Welcome.Instance.Refresh();
             return null;
         }
-
-        private RepositoryNode _node = null;
     }
 }

@@ -25,7 +25,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _name = target.Name;
             Target = target;
-            View = new Views.RenameBranch() { DataContext = this };
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)

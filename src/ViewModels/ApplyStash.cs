@@ -26,7 +26,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Stash = stash;
-            View = new Views.ApplyStash() { DataContext = this };
         }
 
         public override Task<bool> Sure()

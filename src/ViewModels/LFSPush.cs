@@ -17,7 +17,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             SelectedRemote = _repo.Remotes[0];
-            View = new Views.LFSPush() { DataContext = this };
         }
 
         public override Task<bool> Sure()

@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public Models.Commit Target
         {
             get;
-            private set;
         }
 
         public bool AutoCommit
@@ -21,7 +20,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Target = target;
             AutoCommit = true;
-            View = new Views.Revert() { DataContext = this };
         }
 
         public override Task<bool> Sure()

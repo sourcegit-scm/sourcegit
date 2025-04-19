@@ -8,7 +8,6 @@ namespace SourceGit.ViewModels
         public Models.Branch Local
         {
             get;
-            private set;
         }
 
         public List<Models.Branch> RemoteBranches
@@ -49,8 +48,6 @@ namespace SourceGit.ViewModels
                 if (upstream != null)
                     SelectedRemoteBranch = upstream;
             }
-
-            View = new Views.SetUpstream() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -75,7 +72,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Repository _repo;
+        private readonly Repository _repo;
         private bool _unset = false;
     }
 }

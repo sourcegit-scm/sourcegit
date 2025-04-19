@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public Cleanup(Repository repo)
         {
             _repo = repo;
-            View = new Views.Cleanup() { DataContext = this };
         }
 
         public override Task<bool> Sure()

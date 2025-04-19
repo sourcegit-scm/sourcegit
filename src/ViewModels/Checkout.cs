@@ -20,7 +20,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Branch = branch;
             DiscardLocalChanges = false;
-            View = new Views.Checkout() { DataContext = this };
         }
 
         public override Task<bool> Sure()

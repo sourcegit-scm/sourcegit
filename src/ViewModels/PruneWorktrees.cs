@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public PruneWorktrees(Repository repo)
         {
             _repo = repo;
-            View = new Views.PruneWorktrees() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -27,6 +26,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

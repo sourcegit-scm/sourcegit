@@ -28,8 +28,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _type = type;
             _prefix = Commands.GitFlow.GetPrefix(repo.FullPath, type);
-
-            View = new Views.GitFlowStart() { DataContext = this };
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)

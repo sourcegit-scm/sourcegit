@@ -7,13 +7,11 @@ namespace SourceGit.ViewModels
         public Models.Branch Local
         {
             get;
-            private set;
         }
 
         public Models.Branch Upstream
         {
             get;
-            private set;
         }
 
         public FetchInto(Repository repo, Models.Branch local, Models.Branch upstream)
@@ -21,7 +19,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Local = local;
             Upstream = upstream;
-            View = new Views.FetchInto() { DataContext = this };
         }
 
         public override Task<bool> Sure()

@@ -21,9 +21,7 @@ namespace SourceGit.ViewModels
             _pageId = pageId;
             _targetPath = path;
             _parentNode = parent;
-
             Reason = string.IsNullOrEmpty(reason) ? "Invalid repository detected!" : reason;
-            View = new Views.Init() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -51,8 +49,8 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private string _pageId = null;
+        private readonly string _pageId = null;
         private string _targetPath = null;
-        private RepositoryNode _parentNode = null;
+        private readonly RepositoryNode _parentNode = null;
     }
 }
