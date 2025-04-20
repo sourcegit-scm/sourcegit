@@ -7,16 +7,14 @@ namespace SourceGit.ViewModels
         public Models.Branch Target
         {
             get;
-            private set;
         }
 
         public Models.Branch TrackingRemoteBranch
         {
             get;
-            private set;
         }
 
-        public object DeleteTrackingRemoteTip
+        public string DeleteTrackingRemoteTip
         {
             get;
             private set;
@@ -37,7 +35,7 @@ namespace SourceGit.ViewModels
             {
                 TrackingRemoteBranch = repo.Branches.Find(x => x.FullName == branch.Upstream);
                 if (TrackingRemoteBranch != null)
-                    DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
+                    DeleteTrackingRemoteTip = App.Text("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
             }
         }
 

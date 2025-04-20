@@ -838,7 +838,13 @@
                                 ContentTemplate="{TemplateBinding HeaderTemplate}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Stretch"
-                                RecognizesAccessKey="False"/>
+                                RecognizesAccessKey="False">
+                <ContentPresenter.DataTemplates>
+                  <DataTemplate DataType="x:String">
+                    <v:NameHighlightedTextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                  </DataTemplate>
+                </ContentPresenter.DataTemplates>
+              </ContentPresenter>
               
               <TextBlock x:Name="PART_InputGestureText"
                          Grid.Column="2"

@@ -628,23 +628,23 @@ namespace SourceGit.ViewModels
 
                     if (_inProgressContext is CherryPickInProgress cherryPick)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is RebaseInProgress rebase)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
 
                     menu.Items.Add(useTheirs);
@@ -987,23 +987,23 @@ namespace SourceGit.ViewModels
 
                     if (_inProgressContext is CherryPickInProgress cherryPick)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is RebaseInProgress rebase)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
 
                     menu.Items.Add(useTheirs);
@@ -1406,7 +1406,7 @@ namespace SourceGit.ViewModels
                 {
                     var template = _repo.Settings.CommitTemplates[i];
                     var item = new MenuItem();
-                    item.Header = new Views.NameHighlightedTextBlock("WorkingCopy.UseCommitTemplate", template.Name);
+                    item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
                     item.Icon = App.CreateMenuIcon("Icons.Code");
                     item.Click += (_, e) =>
                     {
@@ -1428,7 +1428,7 @@ namespace SourceGit.ViewModels
                     }
 
                     var gitTemplateItem = new MenuItem();
-                    gitTemplateItem.Header = new Views.NameHighlightedTextBlock("WorkingCopy.UseCommitTemplate", friendlyName);
+                    gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
                     gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
                     gitTemplateItem.Click += (_, e) =>
                     {

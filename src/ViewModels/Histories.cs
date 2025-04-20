@@ -411,7 +411,7 @@ namespace SourceGit.ViewModels
                 if (current.Head != commit.SHA)
                 {
                     var reset = new MenuItem();
-                    reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name);
+                    reset.Header = App.Text("CommitCM.Reset", current.Name);
                     reset.Icon = App.CreateMenuIcon("Icons.Reset");
                     reset.Click += (_, e) =>
                     {
@@ -476,7 +476,7 @@ namespace SourceGit.ViewModels
                 if (!commit.IsMerged)
                 {
                     var rebase = new MenuItem();
-                    rebase.Header = new Views.NameHighlightedTextBlock("CommitCM.Rebase", current.Name);
+                    rebase.Header = App.Text("CommitCM.Rebase", current.Name);
                     rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                     rebase.Click += (_, e) =>
                     {
@@ -489,7 +489,7 @@ namespace SourceGit.ViewModels
                     if (!commit.HasDecorators)
                     {
                         var merge = new MenuItem();
-                        merge.Header = new Views.NameHighlightedTextBlock("CommitCM.Merge", current.Name);
+                        merge.Header = App.Text("CommitCM.Merge", current.Name);
                         merge.Icon = App.CreateMenuIcon("Icons.Merge");
                         merge.Click += (_, e) =>
                         {
@@ -560,7 +560,7 @@ namespace SourceGit.ViewModels
                     };
 
                     var interactiveRebase = new MenuItem();
-                    interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
+                    interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase", current.Name);
                     interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                     interactiveRebase.Click += (_, e) =>
                     {
@@ -897,7 +897,7 @@ namespace SourceGit.ViewModels
                 var upstream = current.Upstream.Substring(13);
 
                 var fastForward = new MenuItem();
-                fastForward.Header = new Views.NameHighlightedTextBlock("BranchCM.FastForward", upstream);
+                fastForward.Header = App.Text("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = current.TrackStatus.Ahead.Count == 0;
                 fastForward.Click += (_, e) =>
@@ -914,7 +914,7 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(fastForward);
 
                 var pull = new MenuItem();
-                pull.Header = new Views.NameHighlightedTextBlock("BranchCM.Pull", upstream);
+                pull.Header = App.Text("BranchCM.Pull", upstream);
                 pull.Icon = App.CreateMenuIcon("Icons.Pull");
                 pull.Click += (_, e) =>
                 {
@@ -926,7 +926,7 @@ namespace SourceGit.ViewModels
             }
 
             var push = new MenuItem();
-            push.Header = new Views.NameHighlightedTextBlock("BranchCM.Push", current.Name);
+            push.Header = App.Text("BranchCM.Push", current.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _repo.Remotes.Count > 0;
             push.Click += (_, e) =>
@@ -938,7 +938,7 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(push);
 
             var rename = new MenuItem();
-            rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", current.Name);
+            rename.Header = App.Text("BranchCM.Rename", current.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
             rename.Click += (_, e) =>
             {
@@ -955,7 +955,7 @@ namespace SourceGit.ViewModels
                 if (detect.IsGitFlowBranch)
                 {
                     var finish = new MenuItem();
-                    finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", current.Name);
+                    finish.Header = App.Text("BranchCM.Finish", current.Name);
                     finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                     finish.Click += (_, e) =>
                     {
@@ -992,7 +992,7 @@ namespace SourceGit.ViewModels
             if (!_repo.IsBare)
             {
                 var checkout = new MenuItem();
-                checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", branch.Name);
+                checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
                 checkout.Click += (_, e) =>
                 {
@@ -1002,7 +1002,7 @@ namespace SourceGit.ViewModels
                 submenu.Items.Add(checkout);
 
                 var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", branch.Name, current.Name);
+                merge.Header = App.Text("BranchCM.Merge", branch.Name, current.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
                 merge.IsEnabled = !merged;
                 merge.Click += (_, e) =>
@@ -1015,7 +1015,7 @@ namespace SourceGit.ViewModels
             }
 
             var rename = new MenuItem();
-            rename.Header = new Views.NameHighlightedTextBlock("BranchCM.Rename", branch.Name);
+            rename.Header = App.Text("BranchCM.Rename", branch.Name);
             rename.Icon = App.CreateMenuIcon("Icons.Rename");
             rename.Click += (_, e) =>
             {
@@ -1026,7 +1026,7 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(rename);
 
             var delete = new MenuItem();
-            delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", branch.Name);
+            delete.Header = App.Text("BranchCM.Delete", branch.Name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
@@ -1043,7 +1043,7 @@ namespace SourceGit.ViewModels
                 if (detect.IsGitFlowBranch)
                 {
                     var finish = new MenuItem();
-                    finish.Header = new Views.NameHighlightedTextBlock("BranchCM.Finish", branch.Name);
+                    finish.Header = App.Text("BranchCM.Finish", branch.Name);
                     finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
                     finish.Click += (_, e) =>
                     {
@@ -1080,7 +1080,7 @@ namespace SourceGit.ViewModels
             FillBranchVisibilityMenu(submenu, branch);
 
             var checkout = new MenuItem();
-            checkout.Header = new Views.NameHighlightedTextBlock("BranchCM.Checkout", name);
+            checkout.Header = App.Text("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
             checkout.Click += (_, e) =>
             {
@@ -1090,7 +1090,7 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(checkout);
 
             var merge = new MenuItem();
-            merge.Header = new Views.NameHighlightedTextBlock("BranchCM.Merge", name, current.Name);
+            merge.Header = App.Text("BranchCM.Merge", name, current.Name);
             merge.Icon = App.CreateMenuIcon("Icons.Merge");
             merge.IsEnabled = !merged;
             merge.Click += (_, e) =>
@@ -1103,7 +1103,7 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(merge);
 
             var delete = new MenuItem();
-            delete.Header = new Views.NameHighlightedTextBlock("BranchCM.Delete", name);
+            delete.Header = App.Text("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
@@ -1137,7 +1137,7 @@ namespace SourceGit.ViewModels
             FillTagVisibilityMenu(submenu, tag);
 
             var push = new MenuItem();
-            push.Header = new Views.NameHighlightedTextBlock("TagCM.Push", tag.Name);
+            push.Header = App.Text("TagCM.Push", tag.Name);
             push.Icon = App.CreateMenuIcon("Icons.Push");
             push.IsEnabled = _repo.Remotes.Count > 0;
             push.Click += (_, e) =>
@@ -1151,7 +1151,7 @@ namespace SourceGit.ViewModels
             if (!_repo.IsBare && !merged)
             {
                 var merge = new MenuItem();
-                merge.Header = new Views.NameHighlightedTextBlock("TagCM.Merge", tag.Name, current.Name);
+                merge.Header = App.Text("TagCM.Merge", tag.Name, current.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
                 merge.Click += (_, e) =>
                 {
@@ -1163,7 +1163,7 @@ namespace SourceGit.ViewModels
             }
 
             var delete = new MenuItem();
-            delete.Header = new Views.NameHighlightedTextBlock("TagCM.Delete", tag.Name);
+            delete.Header = App.Text("TagCM.Delete", tag.Name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
