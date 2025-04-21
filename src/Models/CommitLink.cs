@@ -21,7 +21,7 @@ namespace SourceGit.Models
             string Name,
             string HostPrefix,
             Func<string, string> ExtractRepo,
-            Func<string, string, string> BuildCommitUrl)
+            Func<string, string> BuildCommitUrlPrefix)
         {
             public bool IsMatch(string url) => url.StartsWith(HostPrefix, StringComparison.Ordinal);
         }
@@ -32,7 +32,7 @@ namespace SourceGit.Models
                 "Github",
                 "https://github.com/",
                 url => url.EndsWith(".git") ? url[19..^4] : url[19..],
-                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+                baseUrl => $"{baseUrl}/commit/"
             ),
             new ProviderInfo(
                 "GitLab",
@@ -42,37 +42,37 @@ namespace SourceGit.Models
                     int idx = trimmed.IndexOf('/') + 1;
                     return trimmed[idx..];
                 },
-                (baseUrl, commit) => $"{baseUrl}/-/commit/{commit}"
+                baseUrl => $"{baseUrl}/-/commit/"
             ),
             new ProviderInfo(
                 "Gitee",
                 "https://gitee.com/",
                 url => url.EndsWith(".git") ? url[18..^4] : url[18..],
-                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+                baseUrl => $"{baseUrl}/commit/"
             ),
             new ProviderInfo(
                 "BitBucket",
                 "https://bitbucket.org/",
                 url => url.EndsWith(".git") ? url[22..^4] : url[22..],
-                (baseUrl, commit) => $"{baseUrl}/commits/{commit}"
+                baseUrl => $"{baseUrl}/commits/"
             ),
             new ProviderInfo(
                 "Codeberg",
                 "https://codeberg.org/",
                 url => url.EndsWith(".git") ? url[21..^4] : url[21..],
-                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+                baseUrl => $"{baseUrl}/commit/"
             ),
             new ProviderInfo(
                 "Gitea",
                 "https://gitea.org/",
                 url => url.EndsWith(".git") ? url[18..^4] : url[18..],
-                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+                baseUrl => $"{baseUrl}/commit/"
             ),
             new ProviderInfo(
                 "sourcehut",
                 "https://git.sr.ht/",
                 url => url.EndsWith(".git") ? url[18..^4] : url[18..],
-                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+                baseUrl => $"{baseUrl}/commit/"
             )
         };
 
@@ -89,7 +89,7 @@ namespace SourceGit.Models
                         if (provider.IsMatch(url))
                         {
                             string repoName = provider.ExtractRepo(url);
-                            outs.Add(new CommitLink($"{provider.Name} ({repoName})", provider.BuildCommitUrl(url, "")));
+                            outs.Add(new CommitLink($"{provider.Name} ({repoName})", provider.BuildCommitUrlPrefix(url)));
                             break;
                         }
                     }
