@@ -134,7 +134,7 @@ namespace SourceGit.ViewModels
         public CommitDetail(Repository repo)
         {
             _repo = repo;
-            WebLinks = Models.CommitLink.Get(repo.Remotes);
+            WebLinks = Models.CommitLinkDetails.Get(repo.Remotes);
         }
 
         public void Cleanup()

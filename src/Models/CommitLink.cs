@@ -8,79 +8,72 @@ namespace SourceGit.Models
     /// <summary>
     /// Represents a commit link for a remote repository.
     /// </summary>
-    public class CommitLink
+    public readonly record struct CommitLink(string Name, string URLPrefix)
     {
-        public string Name { get; set; }
-        public string URLPrefix { get; set; }
-
-        public CommitLink(string name, string prefix)
+    }
+    public readonly record struct ProviderInfo(
+        string Name,
+        string HostPrefix,
+        Func<string, string> ExtractRepo,
+        Func<string, string> BuildCommitUrlPrefix)
+    {
+        public bool IsMatch(string url) => url.StartsWith(HostPrefix, StringComparison.Ordinal);
+    }
+    public static class CommitLinkDetails // Changed from private to internal to fix CS1527  
+    {
+        static readonly ProviderInfo[] Providers = new[]
         {
-            Name = name;
-            URLPrefix = prefix;
-        }
+           new ProviderInfo(
+               "Github",
+               "https://github.com/",
+               url => url.EndsWith(".git") ? url[19..^4] : url[19..],
+               baseUrl => $"{baseUrl}/commit/"
+           ),
+           new ProviderInfo(
+               "GitLab",
+               "https://gitlab.",
+               url => {
+                   var trimmed = url.EndsWith(".git") ? url[15..^4] : url[15..];
+                   int idx = trimmed.IndexOf('/') + 1;
+                   return trimmed[idx..];
+               },
+               baseUrl => $"{baseUrl}/-/commit/"
+           ),
+           new ProviderInfo(
+               "Gitee",
+               "https://gitee.com/",
+               url => url.EndsWith(".git") ? url[18..^4] : url[18..],
+               baseUrl => $"{baseUrl}/commit/"
+           ),
+           new ProviderInfo(
+               "BitBucket",
+               "https://bitbucket.org/",
+               url => url.EndsWith(".git") ? url[22..^4] : url[22..],
+               baseUrl => $"{baseUrl}/commits/"
+           ),
+           new ProviderInfo(
+               "Codeberg",
+               "https://codeberg.org/",
+               url => url.EndsWith(".git") ? url[21..^4] : url[21..],
+               baseUrl => $"{baseUrl}/commit/"
+           ),
+           new ProviderInfo(
+               "Gitea",
+               "https://gitea.org/",
+               url => url.EndsWith(".git") ? url[18..^4] : url[18..],
+               baseUrl => $"{baseUrl}/commit/"
+           ),
+           new ProviderInfo(
+               "sourcehut",
+               "https://git.sr.ht/",
+               url => url.EndsWith(".git") ? url[18..^4] : url[18..],
+               baseUrl => $"{baseUrl}/commit/"
+           )
+       };
 
-        public readonly record struct ProviderInfo(
-            string Name,
-            string HostPrefix,
-            Func<string, string> ExtractRepo,
-            Func<string, string> BuildCommitUrlPrefix)
-        {
-            public bool IsMatch(string url) => url.StartsWith(HostPrefix, StringComparison.Ordinal);
-        }
-
-        private static readonly ProviderInfo[] Providers = new[]
-        {
-            new ProviderInfo(
-                "Github",
-                "https://github.com/",
-                url => url.EndsWith(".git") ? url[19..^4] : url[19..],
-                baseUrl => $"{baseUrl}/commit/"
-            ),
-            new ProviderInfo(
-                "GitLab",
-                "https://gitlab.",
-                url => {
-                    var trimmed = url.EndsWith(".git") ? url[15..^4] : url[15..];
-                    int idx = trimmed.IndexOf('/') + 1;
-                    return trimmed[idx..];
-                },
-                baseUrl => $"{baseUrl}/-/commit/"
-            ),
-            new ProviderInfo(
-                "Gitee",
-                "https://gitee.com/",
-                url => url.EndsWith(".git") ? url[18..^4] : url[18..],
-                baseUrl => $"{baseUrl}/commit/"
-            ),
-            new ProviderInfo(
-                "BitBucket",
-                "https://bitbucket.org/",
-                url => url.EndsWith(".git") ? url[22..^4] : url[22..],
-                baseUrl => $"{baseUrl}/commits/"
-            ),
-            new ProviderInfo(
-                "Codeberg",
-                "https://codeberg.org/",
-                url => url.EndsWith(".git") ? url[21..^4] : url[21..],
-                baseUrl => $"{baseUrl}/commit/"
-            ),
-            new ProviderInfo(
-                "Gitea",
-                "https://gitea.org/",
-                url => url.EndsWith(".git") ? url[18..^4] : url[18..],
-                baseUrl => $"{baseUrl}/commit/"
-            ),
-            new ProviderInfo(
-                "sourcehut",
-                "https://git.sr.ht/",
-                url => url.EndsWith(".git") ? url[18..^4] : url[18..],
-                baseUrl => $"{baseUrl}/commit/"
-            )
-        };
-
-        /// <summary>
-        /// Attempts to create a CommitLink for a given remote by matching a provider.
-        /// </summary>
+        /// <summary>  
+        /// Attempts to create a CommitLink for a given remote by matching a provider.  
+        /// </summary>  
         private static CommitLink? TryCreateCommitLink(Remote remote)
         {
             if (!remote.TryGetVisitURL(out var url))
@@ -92,17 +85,17 @@ namespace SourceGit.Models
             return new CommitLink($"{provider.Name} ({repoName})", provider.BuildCommitUrlPrefix(url));
         }
 
-        /// <summary>
-        /// Translates remotes to CommitLinks. TODO: rename
-        /// </summary>
+        /// <summary>  
+        /// Translates remotes to CommitLinks. TODO: rename  
+        /// </summary>  
         public static List<CommitLink> Get(List<Remote> remotes)
         {
-            return remotes.Select(remote =>
+            return remotes.Select(static remote =>
             {
 
                 var rr = TryCreateCommitLink(remote);
 #if DEBUG
-                /// Inplace Test
+                /// Inplace Test  
 
                 if (remote.TryGetVisitURL(out var url))
                 {
@@ -111,14 +104,15 @@ namespace SourceGit.Models
                 }
 #endif
                 return rr;
-            }).Where(cl => cl != null).ToList();
+            }).Select(cl => cl.Value) // Convert nullable CommitLink to non-nullable CommitLink
+        .Where(cl => cl != null).ToList();
         }
 
 #if DEBUG
-        // Minimal stub for Remote for testing
+        // Minimal stub for Remote for testing  
 
 
-        // TODO : delete this after checking the implementation
+        // TODO : delete this after checking the implementation  
         private static CommitLink? GetCommitLinkOriginalImplementionForTestPurposes(string url)
         {
             var outs = new List<CommitLink>();
@@ -144,18 +138,18 @@ namespace SourceGit.Models
 
             return outs.FirstOrDefault();
         }
-        static CommitLink()
+        static CommitLinkDetails()
         {
 
-            //Unit tests , TODO: make normal UnitTests, delete this code.
-            // Test Github
+            //Unit tests , TODO: make normal UnitTests, delete this code.  
+            // Test Github  
             var githubRemote = new Remote() { URL = "https://github.com/user/repo.git" };
             var links = Get(new List<Remote> { githubRemote });
             Debug.Assert(links.Count == 1, "Should find one CommitLink for Github");
             Debug.Assert(links[0].Name.StartsWith("Github"), "Provider should be Github");
             Debug.Assert(links[0].URLPrefix == "https://github.com/user/repo/commit/", "URLPrefix should be correct for Github");
 
-            // Test BitBucket
+            // Test BitBucket  
             var bitbucketRemote = new Remote() { URL = "https://bitbucket.org/team/project" };
             links = Get(new List<Remote> { bitbucketRemote });
             Debug.Assert(links.Count == 1, "Should find one CommitLink for BitBucket");

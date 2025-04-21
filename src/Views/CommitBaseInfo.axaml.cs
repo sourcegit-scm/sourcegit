@@ -37,7 +37,7 @@ namespace SourceGit.Views
             get => GetValue(SupportsContainsInProperty);
             set => SetValue(SupportsContainsInProperty, value);
         }
-
+        //TODO: Maybe some observable container instead List? Add a comment for explanation.
         public static readonly StyledProperty<List<Models.CommitLink>> WebLinksProperty =
             AvaloniaProperty.Register<CommitBaseInfo, List<Models.CommitLink>>(nameof(WebLinks));
 
