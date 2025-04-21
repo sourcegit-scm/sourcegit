@@ -67,6 +67,14 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        public void BringToTop()
+        {
+            if (WindowState == WindowState.Minimized)
+                WindowState = _lastWindowState;
+            else
+                Activate();
+        }
+
         public bool HasKeyModifier(KeyModifiers modifier)
         {
             return _unhandledModifiers.HasFlag(modifier);
@@ -92,6 +100,8 @@ namespace SourceGit.Views
 
             if (change.Property == WindowStateProperty)
             {
+                _lastWindowState = (WindowState)change.OldValue;
+
                 var state = (WindowState)change.NewValue!;
                 if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
                     CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
@@ -291,5 +301,6 @@ namespace SourceGit.Views
         }
 
         private KeyModifiers _unhandledModifiers = KeyModifiers.None;
+        private WindowState _lastWindowState = WindowState.Normal;
     }
 }

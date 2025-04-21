@@ -31,7 +31,6 @@ namespace SourceGit.ViewModels
         public AddSubmodule(Repository repo)
         {
             _repo = repo;
-            View = new Views.AddSubmodule() { DataContext = this };
         }
 
         public static ValidationResult ValidateURL(string url, ValidationContext ctx)
@@ -61,9 +60,14 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding submodule...";
 
+            var log = _repo.CreateLog("Add Submodule");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Submodule(_repo.FullPath).Add(_url, _relativePath, Recursive, SetProgressDescription);
+                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Add(_url, _relativePath, Recursive);
+                log.Complete();
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

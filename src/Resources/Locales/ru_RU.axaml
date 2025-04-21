@@ -103,8 +103,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Применить несколько ревизий ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Сравнить c ГОЛОВОЙ (HEAD)</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Копировать информацию</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Информацию</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>
@@ -210,7 +210,7 @@
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Создать метку...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Новая метка у:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG подпись</x:String>
-  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Сообщение с&#13;меткой:</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Сообщение с&#xD;меткой:</x:String>
   <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Необязательно.</x:String>
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Имя метки:</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Рекомендуемый формат: v1.0.0-alpha</x:String>
@@ -246,7 +246,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое различие</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменение пробелов</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменение пробелов и EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Последнее различие</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ИЗМЕНЕНИЕ ОБЪЕКТА LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее различие</x:String>
@@ -577,7 +577,6 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Не установлен (по умолчанию)</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Скрыть в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фильтр в графе ревизии</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Prefix" xml:space="preserve">ОТФИЛЬТРОВАНО:</x:String>
   <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Включить опцию (--first-parent)</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">РАСПОЛОЖЕНИЕ</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Горизонтально</x:String>

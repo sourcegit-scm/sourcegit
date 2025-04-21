@@ -103,8 +103,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">チェリーピック...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">HEADと比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">情報をコピー</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHAをコピー</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">情報</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">${0}$ ブランチをここにインタラクティブリベース</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ にマージ</x:String>
@@ -179,6 +179,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">このリポジトリにおけるユーザー名</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">ワークスペース</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">色</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">起動時にタブを復元</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commitヘルパー</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壊的変更:</x:String>
@@ -240,7 +241,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">ファイルモードが変更されました</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">先頭の差分</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更を無視</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更とEOLを無視</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後の差分</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFSオブジェクトの変更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">次の差分</x:String>
@@ -604,7 +605,6 @@
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新しいタグを作成</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">作成者日時</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">名前 (昇順)</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDesc" xml:space="preserve">名前 (降順)</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">ソート</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">ターミナルで開く</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">履歴に相対時間を使用</x:String>

@@ -56,8 +56,6 @@ namespace SourceGit.ViewModels
             {
                 SSHKey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
             }
-
-            View = new Views.EditRemote() { DataContext = this };
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)
@@ -127,7 +125,6 @@ namespace SourceGit.ViewModels
                 if (pushURL != _url)
                     new Commands.Remote(_repo.FullPath).SetURL(_name, _url, true);
 
-                SetProgressDescription("Post processing ...");
                 new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

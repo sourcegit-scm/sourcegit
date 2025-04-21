@@ -18,9 +18,8 @@ namespace SourceGit.ViewModels
                 if (_instance != null)
                     return _instance;
 
-                _isLoading = true;
                 _instance = Load();
-                _isLoading = false;
+                _instance._isLoading = false;
 
                 _instance.PrepareGit();
                 _instance.PrepareShellOrTerminal();
@@ -213,6 +212,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useSyntaxHighlighting, value);
         }
 
+        public bool IgnoreWhitespaceChangesInDiff
+        {
+            get => _ignoreWhitespaceChangesInDiff;
+            set => SetProperty(ref _ignoreWhitespaceChangesInDiff, value);
+        }
+
         public bool EnableDiffViewWordWrap
         {
             get => _enableDiffViewWordWrap;
@@ -363,6 +368,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _lastCheckUpdateTime, value);
         }
 
+        public void SetCanModify()
+        {
+            _isReadonly = false;
+        }
+
         public bool IsGitConfigured()
         {
             var path = GitInstallPath;
@@ -490,7 +500,7 @@ namespace SourceGit.ViewModels
 
         public void Save()
         {
-            if (_isLoading)
+            if (_isLoading || _isReadonly)
                 return;
 
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
@@ -624,8 +634,9 @@ namespace SourceGit.ViewModels
         }
 
         private static Preferences _instance = null;
-        private static bool _isLoading = false;
 
+        private bool _isLoading = true;
+        private bool _isReadonly = true;
         private string _locale = "en_US";
         private string _theme = "Default";
         private string _themeOverrides = string.Empty;
@@ -653,6 +664,7 @@ namespace SourceGit.ViewModels
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;
+        private bool _ignoreWhitespaceChangesInDiff = false;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;

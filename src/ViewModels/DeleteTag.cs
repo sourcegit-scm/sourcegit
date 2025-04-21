@@ -20,7 +20,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Target = tag;
-            View = new Views.DeleteTag() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -28,10 +27,21 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Deleting tag '{Target.Name}' ...";
 
-            var remotes = PushToRemotes ? _repo.Remotes : null;
+            var remotes = PushToRemotes ? _repo.Remotes : [];
+            var log = _repo.CreateLog("Delete Tag");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = Commands.Tag.Delete(_repo.FullPath, Target.Name, remotes);
+                var succ = Commands.Tag.Delete(_repo.FullPath, Target.Name, log);
+                if (succ)
+                {
+                    foreach (var r in remotes)
+                        new Commands.Push(_repo.FullPath, r.Name, $"refs/tags/{Target.Name}", true).Use(log).Exec();
+                }
+
+                log.Complete();
+
                 CallUIThread(() =>
                 {
                     _repo.MarkTagsDirtyManually();

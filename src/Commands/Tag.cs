@@ -1,26 +1,27 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace SourceGit.Commands
 {
     public static class Tag
     {
-        public static bool Add(string repo, string name, string basedOn)
+        public static bool Add(string repo, string name, string basedOn, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"tag {name} {basedOn}";
+            cmd.Log = log;
             return cmd.Exec();
         }
 
-        public static bool Add(string repo, string name, string basedOn, string message, bool sign)
+        public static bool Add(string repo, string name, string basedOn, string message, bool sign, Models.ICommandLog log)
         {
             var param = sign ? "--sign -a" : "--no-sign -a";
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"tag {param} {name} {basedOn} ";
+            cmd.Log = log;
 
             if (!string.IsNullOrEmpty(message))
             {
@@ -36,22 +37,14 @@ namespace SourceGit.Commands
             return cmd.Exec();
         }
 
-        public static bool Delete(string repo, string name, List<Models.Remote> remotes)
+        public static bool Delete(string repo, string name, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"tag --delete {name}";
-            if (!cmd.Exec())
-                return false;
-
-            if (remotes != null)
-            {
-                foreach (var r in remotes)
-                    new Push(repo, r.Name, $"refs/tags/{name}", true).Exec();
-            }
-
-            return true;
+            cmd.Log = log;
+            return cmd.Exec();
         }
     }
 }

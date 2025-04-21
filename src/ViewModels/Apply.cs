@@ -31,7 +31,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
 
             SelectedWhiteSpaceMode = Models.ApplyWhiteSpaceMode.Supported[0];
-            View = new Views.Apply() { DataContext = this };
         }
 
         public static ValidationResult ValidatePatchFile(string file, ValidationContext _)
@@ -47,9 +46,12 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Apply patch...";
 
+            var log = _repo.CreateLog("Apply Patch");
             return Task.Run(() =>
             {
-                var succ = new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null).Exec();
+                var succ = new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null).Use(log).Exec();
+                log.Complete();
+
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

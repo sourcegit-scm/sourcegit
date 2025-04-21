@@ -37,17 +37,17 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _visibleLocks, value);
         }
 
-        public LFSLocks(string repo, string remote)
+        public LFSLocks(Repository repo, string remote)
         {
             _repo = repo;
             _remote = remote;
-            _userName = new Commands.Config(repo).Get("user.name");
+            _userName = new Commands.Config(repo.FullPath).Get("user.name");
 
             HasValidUserName = !string.IsNullOrEmpty(_userName);
 
             Task.Run(() =>
             {
-                _cachedLocks = new Commands.LFS(_repo).Locks(_remote);
+                _cachedLocks = new Commands.LFS(_repo.FullPath).Locks(_remote);
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     UpdateVisibleLocks();
@@ -62,9 +62,13 @@ namespace SourceGit.ViewModels
                 return;
 
             IsLoading = true;
+
+            var log = _repo.CreateLog("Unlock LFS File");
             Task.Run(() =>
             {
-                var succ = new Commands.LFS(_repo).Unlock(_remote, lfsLock.ID, force);
+                var succ = new Commands.LFS(_repo.FullPath).Unlock(_remote, lfsLock.ID, force, log);
+                log.Complete();
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (succ)
@@ -99,7 +103,7 @@ namespace SourceGit.ViewModels
             VisibleLocks = visible;
         }
 
-        private string _repo;
+        private Repository _repo;
         private string _remote;
         private bool _isLoading = true;
         private List<Models.LFSLock> _cachedLocks = [];

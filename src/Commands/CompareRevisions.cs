@@ -31,12 +31,19 @@ namespace SourceGit.Commands
 
         public List<Models.Change> Result()
         {
-            Exec();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return _changes;
+
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+                ParseLine(line);
+
             _changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
             return _changes;
         }
 
-        protected override void OnReadline(string line)
+        private void ParseLine(string line)
         {
             var match = REG_FORMAT().Match(line);
             if (!match.Success)

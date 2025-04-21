@@ -78,8 +78,6 @@ namespace SourceGit.ViewModels
                 _master = localBranches[0];
             else
                 _master = "master";
-
-            View = new Views.InitGitFlow() { DataContext = this };
         }
 
         public static ValidationResult ValidateBaseBranch(string _, ValidationContext ctx)
@@ -106,9 +104,23 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Init git-flow ...";
 
+            var log = _repo.CreateLog("Gitflow - Init");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = Commands.GitFlow.Init(_repo.FullPath, _repo.Branches, _master, _develop, _featurePrefix, _releasePrefix, _hotfixPrefix, _tagPrefix);
+                var succ = Commands.GitFlow.Init(
+                    _repo.FullPath,
+                    _repo.Branches,
+                    _master,
+                    _develop,
+                    _featurePrefix,
+                    _releasePrefix,
+                    _hotfixPrefix,
+                    _tagPrefix,
+                    log);
+
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

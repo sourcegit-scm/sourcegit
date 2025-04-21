@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public PruneWorktrees(Repository repo)
         {
             _repo = repo;
-            View = new Views.PruneWorktrees() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -15,14 +14,18 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Prune worktrees ...";
 
+            var log = _repo.CreateLog("Prune Worktrees");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Worktree(_repo.FullPath).Prune(SetProgressDescription);
+                new Commands.Worktree(_repo.FullPath).Use(log).Prune();
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

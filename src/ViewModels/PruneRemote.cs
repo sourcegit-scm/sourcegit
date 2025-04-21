@@ -7,14 +7,12 @@ namespace SourceGit.ViewModels
         public Models.Remote Remote
         {
             get;
-            private set;
         }
 
         public PruneRemote(Repository repo, Models.Remote remote)
         {
             _repo = repo;
             Remote = remote;
-            View = new Views.PruneRemote() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -22,9 +20,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Run `prune` on remote ...";
 
+            var log = _repo.CreateLog($"Prune Remote '{Remote.Name}'");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Remote(_repo.FullPath).Prune(Remote.Name);
+                var succ = new Commands.Remote(_repo.FullPath).Use(log).Prune(Remote.Name);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

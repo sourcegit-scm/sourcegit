@@ -745,6 +745,7 @@ namespace SourceGit.Views
                 var val = ShowHiddenSymbols;
                 Options.ShowTabs = val;
                 Options.ShowSpaces = val;
+                Options.ShowEndOfLine = val;
             }
             else if (change.Property == TabWidthProperty)
             {
@@ -1252,12 +1253,16 @@ namespace SourceGit.Views
                     {
                         builder.Append(line.Content.Substring(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} character trimmed)");
-                        builder.AppendLine();
                     }
                     else
                     {
-                        builder.AppendLine(line.Content);
+                        builder.Append(line.Content);
                     }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.Append('\n');
                 }
 
                 Text = builder.ToString();
@@ -1491,12 +1496,16 @@ namespace SourceGit.Views
                     {
                         builder.Append(line.Content.Substring(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
-                        builder.AppendLine();
                     }
                     else
                     {
-                        builder.AppendLine(line.Content);
+                        builder.Append(line.Content);
                     }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.Append('\n');
                 }
 
                 Text = builder.ToString();
@@ -1963,7 +1972,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                Commands.Discard.Changes(repo.FullPath, [change]);
+                Commands.Discard.Changes(repo.FullPath, [change], null);
             }
             else
             {

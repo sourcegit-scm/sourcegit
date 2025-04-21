@@ -32,7 +32,7 @@ namespace SourceGit.Commands
         public string SSHKey { get; set; } = string.Empty;
         public string Args { get; set; } = string.Empty;
         public bool RaiseError { get; set; } = true;
-        public bool TraitErrorAsOutput { get; set; } = false;
+        public Models.ICommandLog Log { get; set; } = null;
 
         public bool Exec()
         {
@@ -40,10 +40,14 @@ namespace SourceGit.Commands
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
 
+            Log?.AppendLine($"$ git {Args}\n");
+
             proc.OutputDataReceived += (_, e) =>
             {
-                if (e.Data != null)
-                    OnReadline(e.Data);
+                if (e.Data == null)
+                    return;
+
+                Log?.AppendLine(e.Data);
             };
 
             proc.ErrorDataReceived += (_, e) =>
@@ -54,8 +58,7 @@ namespace SourceGit.Commands
                     return;
                 }
 
-                if (TraitErrorAsOutput)
-                    OnReadline(e.Data);
+                Log?.AppendLine(e.Data);
 
                 // Ignore progress messages
                 if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal))
@@ -97,6 +100,7 @@ namespace SourceGit.Commands
                 if (RaiseError)
                     Dispatcher.UIThread.Post(() => App.RaiseException(Context, e.Message));
 
+                Log?.AppendLine(string.Empty);
                 return false;
             }
 
@@ -114,6 +118,7 @@ namespace SourceGit.Commands
 
             int exitCode = proc.ExitCode;
             proc.Close();
+            Log?.AppendLine(string.Empty);
 
             if (!CancellationToken.IsCancellationRequested && exitCode != 0)
             {
@@ -160,11 +165,6 @@ namespace SourceGit.Commands
             proc.Close();
 
             return rs;
-        }
-
-        protected virtual void OnReadline(string line)
-        {
-            // Implemented by derived class
         }
 
         private ProcessStartInfo CreateGitStartInfo()

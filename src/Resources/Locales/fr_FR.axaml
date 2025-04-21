@@ -86,7 +86,6 @@
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit tous les changements</x:String>
   <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Ligne principale :</x:String>
   <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Habituellement, on ne peut pas cherry-pick un commit car on ne sait pas quel côté devrait être considéré comme principal. Cette option permet de rejouer les changements relatifs au parent spécifié.</x:String>
-  <x:String x:Key="Text.CherryPick.Title" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Supprimer les stashes</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Vous essayez de supprimer tous les stashes. Êtes-vous sûr de vouloir continuer ?</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">Cloner repository distant</x:String>
@@ -104,8 +103,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Comparer avec HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Comparer avec le worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copier les informations</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copier le SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Informations</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Action personnalisée</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase interactif de ${0}$ ici</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Fusionner dans ${0}$</x:String>
@@ -180,6 +179,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nom d'utilisateur pour ce dépôt</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Espaces de travail</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Couleur</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restaurer les onglets au démarrage</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Assistant Commits Conventionnels</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Changement Radical :</x:String>
@@ -241,7 +241,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copier</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Mode de fichier changé</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Première différence</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorer les changements d'espaces</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorer les changements d'espaces et EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Dernière différence</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">CHANGEMENT D'OBJET LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Différence suivante</x:String>
@@ -456,8 +456,6 @@
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Activer le streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.DefaultFontSize" xml:space="preserve">Taille de police par défaut</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.EditorFontSize" xml:space="preserve">Taille de police de l'éditeur</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Largeur de tab dans l'éditeur</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Taille de police</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Défaut</x:String>

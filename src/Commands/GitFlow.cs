@@ -35,17 +35,17 @@ namespace SourceGit.Commands
                 config.ContainsKey("gitflow.prefix.hotfix");
         }
 
-        public static bool Init(string repo, List<Models.Branch> branches, string master, string develop, string feature, string release, string hotfix, string version)
+        public static bool Init(string repo, List<Models.Branch> branches, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
         {
             var current = branches.Find(x => x.IsCurrent);
 
             var masterBranch = branches.Find(x => x.Name == master);
             if (masterBranch == null && current != null)
-                Branch.Create(repo, master, current.Head);
+                Branch.Create(repo, master, current.Head, log);
 
             var devBranch = branches.Find(x => x.Name == develop);
             if (devBranch == null && current != null)
-                Branch.Create(repo, develop, current.Head);
+                Branch.Create(repo, develop, current.Head, log);
 
             var config = new Config(repo);
             config.Set("gitflow.branch.master", master);
@@ -61,6 +61,7 @@ namespace SourceGit.Commands
             init.WorkingDirectory = repo;
             init.Context = repo;
             init.Args = "flow init -d";
+            init.Log = log;
             return init.Exec();
         }
 
@@ -113,7 +114,7 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        public static bool Start(string repo, string type, string name)
+        public static bool Start(string repo, string type, string name, Models.ICommandLog log)
         {
             if (!SUPPORTED_BRANCH_TYPES.Contains(type))
             {
@@ -129,10 +130,11 @@ namespace SourceGit.Commands
             start.WorkingDirectory = repo;
             start.Context = repo;
             start.Args = $"flow {type} start {name}";
+            start.Log = log;
             return start.Exec();
         }
 
-        public static bool Finish(string repo, string type, string name, bool keepBranch)
+        public static bool Finish(string repo, string type, string name, bool keepBranch, Models.ICommandLog log)
         {
             if (!SUPPORTED_BRANCH_TYPES.Contains(type))
             {
@@ -149,6 +151,7 @@ namespace SourceGit.Commands
             finish.WorkingDirectory = repo;
             finish.Context = repo;
             finish.Args = $"flow {type} finish {option} {name}";
+            finish.Log = log;
             return finish.Exec();
         }
 

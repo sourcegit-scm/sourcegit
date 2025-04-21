@@ -103,8 +103,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">கனி-பறி ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">தலையுடன் ஒப்பிடுக</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">தகவலை நகலெடு</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">பாகொவ-வை நகலெடு</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">தகவலை</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">பாகொவ-வை</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">இங்கே ${0}$ ஐ ஊடாடும் வகையில் மறுதளம்</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ இதற்கு ஒன்றிணை</x:String>
@@ -179,6 +179,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">இந்த களஞ்சியத்திற்கான பயனர் பெயர்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">பணியிடங்கள்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">நிறம்</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">தாவல்களை மீட்டமை</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">வழக்கமான உறுதிமொழி உதவியாளர்</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">உடைக்கும் மாற்றம்:</x:String>
@@ -240,7 +241,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">நகல்</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">கோப்பு முறை மாற்றப்பட்டது</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">முதல் வேறுபாடு</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">வெள்ளைவெளி மாற்றத்தை புறக்கணி</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">வெள்ளைவெளி மாற்றத்தை மற்றும் EOL புறக்கணி</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">கடைசி வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">பெகோஅ பொருள் மாற்றம்</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">அடுத்த வேறுபாடு</x:String>
@@ -465,8 +466,8 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">கருப்பொருள் மேலெழுதப்படுகிறது</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">தலைப்புப்பட்டியில் நிலையான தாவல் அகலத்தைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">சொந்த சாளர சட்டத்தைப் பயன்படுத்து</x:String>
-  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">நிறுவல் பாதை</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">வேறு/ஒன்றிணை கருவி</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">நிறுவல் பாதை</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">வேறு/ஒன்றிணை கருவிக்கான பாதை உள்ளிடு</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">கருவி</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">பொது</x:String>
@@ -723,7 +724,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">உறுதிமொழி (திருத்து)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">அனைத்து மாற்றங்களையும் நிலைப்படுத்தி உறுதிமொழி</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">நீங்கள் {0} கோப்புகளை நிலைப்படுத்தியுள்ளீர்கள், ஆனால் {1} கோப்புகள் மட்டுமே காட்டப்பட்டுள்ளன ({2} கோப்புகள் வடிகட்டப்பட்டுள்ளன). தொடர விரும்புகிறீர்களா?</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithoutFiles" xml:space="preserve">காலி உறுதிமொழி கண்டறியப்பட்டது! தொடர விரும்புகிறீர்களா(--allow-empty)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">மோதல்கள் கண்டறியப்பட்டது</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">கோப்பு மோதல்கள் தீர்க்கப்பட்டது</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">கண்காணிக்கப்படாத கோப்புகளைச் சேர்</x:String>

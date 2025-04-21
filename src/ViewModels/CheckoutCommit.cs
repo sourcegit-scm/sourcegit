@@ -20,13 +20,15 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Commit = commit;
             DiscardLocalChanges = false;
-            View = new Views.CheckoutCommit() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout Commit '{Commit.SHA}' ...";
+
+            var log = _repo.CreateLog("Checkout Commit");
+            Use(log);
 
             return Task.Run(() =>
             {
@@ -36,15 +38,14 @@ namespace SourceGit.ViewModels
                 {
                     if (DiscardLocalChanges)
                     {
-                        SetProgressDescription("Discard local changes ...");
-                        Commands.Discard.All(_repo.FullPath, false);
+                        Commands.Discard.All(_repo.FullPath, false, log);
                     }
                     else
                     {
-                        SetProgressDescription("Stash local changes ...");
-                        var succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
+                        var succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CHECKOUT_AUTO_STASH");
                         if (!succ)
                         {
+                            log.Complete();
                             CallUIThread(() => _repo.SetWatcherEnabled(true));
                             return false;
                         }
@@ -53,15 +54,11 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                SetProgressDescription("Checkout commit ...");
-                var rs = new Commands.Checkout(_repo.FullPath).Commit(Commit.SHA, SetProgressDescription);
-
+                var rs = new Commands.Checkout(_repo.FullPath).Use(log).Commit(Commit.SHA);
                 if (needPopStash)
-                {
-                    SetProgressDescription("Re-apply local changes...");
-                    rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
-                }
+                    rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return rs;
             });

@@ -7,16 +7,14 @@ namespace SourceGit.ViewModels
         public Models.Branch Target
         {
             get;
-            private set;
         }
 
         public Models.Branch TrackingRemoteBranch
         {
             get;
-            private set;
         }
 
-        public object DeleteTrackingRemoteTip
+        public string DeleteTrackingRemoteTip
         {
             get;
             private set;
@@ -37,10 +35,8 @@ namespace SourceGit.ViewModels
             {
                 TrackingRemoteBranch = repo.Branches.Find(x => x.FullName == branch.Upstream);
                 if (TrackingRemoteBranch != null)
-                    DeleteTrackingRemoteTip = new Views.NameHighlightedTextBlock("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
+                    DeleteTrackingRemoteTip = App.Text("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
             }
-
-            View = new Views.DeleteBranch() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -48,22 +44,24 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting branch...";
 
+            var log = _repo.CreateLog("Delete Branch");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (Target.IsLocal)
                 {
-                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name);
+                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name, log);
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
-                    {
-                        SetProgressDescription("Deleting remote-tracking branch...");
-                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name);
-                    }
+                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
                 }
                 else
                 {
-                    Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name);
+                    Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name, log);
                 }
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

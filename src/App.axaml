@@ -16,6 +16,7 @@
       <ResourceInclude x:Key="fr_FR" Source="/Resources/Locales/fr_FR.axaml"/>
       <ResourceInclude x:Key="it_IT" Source="/Resources/Locales/it_IT.axaml"/>
       <ResourceInclude x:Key="pt_BR" Source="/Resources/Locales/pt_BR.axaml"/>
+      <ResourceInclude x:Key="uk_UA" Source="/Resources/Locales/uk_UA.axaml"/>
       <ResourceInclude x:Key="ru_RU" Source="/Resources/Locales/ru_RU.axaml"/>
       <ResourceInclude x:Key="zh_CN" Source="/Resources/Locales/zh_CN.axaml"/>
       <ResourceInclude x:Key="zh_TW" Source="/Resources/Locales/zh_TW.axaml"/>

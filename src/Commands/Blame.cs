@@ -21,10 +21,17 @@ namespace SourceGit.Commands
 
         public Models.BlameData Result()
         {
-            var succ = Exec();
-            if (!succ)
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return _result;
+
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
-                return new Models.BlameData();
+                ParseLine(line);
+
+                if (_result.IsBinary)
+                    break;
             }
 
             if (_needUnifyCommitSHA)
@@ -42,13 +49,8 @@ namespace SourceGit.Commands
             return _result;
         }
 
-        protected override void OnReadline(string line)
+        private void ParseLine(string line)
         {
-            if (_result.IsBinary)
-                return;
-            if (string.IsNullOrEmpty(line))
-                return;
-
             if (line.IndexOf('\0', StringComparison.Ordinal) >= 0)
             {
                 _result.IsBinary = true;

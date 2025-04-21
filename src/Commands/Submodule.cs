@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SourceGit.Commands
+﻿namespace SourceGit.Commands
 {
     public class Submodule : Command
     {
@@ -10,9 +8,8 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Add(string url, string relativePath, bool recursive, Action<string> outputHandler)
+        public bool Add(string url, string relativePath, bool recursive)
         {
-            _outputHandler = outputHandler;
             Args = $"submodule add {url} \"{relativePath}\"";
             if (!Exec())
                 return false;
@@ -29,7 +26,7 @@ namespace SourceGit.Commands
             }
         }
 
-        public bool Update(string module, bool init, bool recursive, bool useRemote, Action<string> outputHandler)
+        public bool Update(string module, bool init, bool recursive, bool useRemote)
         {
             Args = "submodule update";
 
@@ -42,7 +39,6 @@ namespace SourceGit.Commands
             if (!string.IsNullOrEmpty(module))
                 Args += $" -- \"{module}\"";
 
-            _outputHandler = outputHandler;
             return Exec();
         }
 
@@ -55,12 +51,5 @@ namespace SourceGit.Commands
             Args = $"rm -rf \"{relativePath}\"";
             return Exec();
         }
-
-        protected override void OnReadline(string line)
-        {
-            _outputHandler?.Invoke(line);
-        }
-
-        private Action<string> _outputHandler;
     }
 }

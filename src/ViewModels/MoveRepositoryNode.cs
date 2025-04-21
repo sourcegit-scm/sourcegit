@@ -9,13 +9,11 @@ namespace SourceGit.ViewModels
         public RepositoryNode Target
         {
             get;
-            private set;
         } = null;
 
         public List<RepositoryNode> Rows
         {
             get;
-            private set;
         } = [];
 
         public RepositoryNode Selected
@@ -34,8 +32,6 @@ namespace SourceGit.ViewModels
                 Id = Guid.NewGuid().ToString()
             });
             MakeRows(Preferences.Instance.RepositoryNodes, 1);
-
-            View = new Views.MoveRepositoryNode() { DataContext = this };
         }
 
         public override Task<bool> Sure()

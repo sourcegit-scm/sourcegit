@@ -391,7 +391,9 @@ namespace SourceGit.ViewModels
                 resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += (_, ev) =>
                 {
-                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}");
+                    var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
+                    new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_commit.SHA}");
+                    log.Complete();
                     ev.Handled = true;
                 };
 
@@ -401,10 +403,12 @@ namespace SourceGit.ViewModels
                 resetToFirstParent.IsEnabled = _commit.Parents.Count > 0;
                 resetToFirstParent.Click += (_, ev) =>
                 {
+                    var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
                     if (change.Index == Models.ChangeState.Renamed)
-                        new Commands.Checkout(_repo.FullPath).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
+                        new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
 
-                    new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_commit.SHA}~1");
+                    new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_commit.SHA}~1");
+                    log.Complete();
                     ev.Handled = true;
                 };
 
@@ -530,7 +534,9 @@ namespace SourceGit.ViewModels
             resetToThisRevision.IsEnabled = File.Exists(fullPath);
             resetToThisRevision.Click += (_, ev) =>
             {
-                new Commands.Checkout(_repo.FullPath).FileWithRevision(file.Path, $"{_commit.SHA}");
+                var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
+                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(file.Path, $"{_commit.SHA}");
+                log.Complete();
                 ev.Handled = true;
             };
 
@@ -542,7 +548,9 @@ namespace SourceGit.ViewModels
             resetToFirstParent.IsEnabled = _commit.Parents.Count > 0 && fileIndex != Models.ChangeState.Renamed;
             resetToFirstParent.Click += (_, ev) =>
             {
-                new Commands.Checkout(_repo.FullPath).FileWithRevision(file.Path, $"{_commit.SHA}~1");
+                var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
+                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(file.Path, $"{_commit.SHA}~1");
+                log.Complete();
                 ev.Handled = true;
             };
 
@@ -737,10 +745,12 @@ namespace SourceGit.ViewModels
             {
                 lfsLock.Click += async (_, e) =>
                 {
-                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, path));
+                    var log = _repo.CreateLog("Lock LFS file");
+                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, path, log));
                     if (succ)
                         App.SendNotification(_repo.FullPath, $"Lock file \"{path}\" successfully!");
 
+                    log.Complete();
                     e.Handled = true;
                 };
             }
@@ -753,10 +763,12 @@ namespace SourceGit.ViewModels
                     lockRemote.Header = remoteName;
                     lockRemote.Click += async (_, e) =>
                     {
-                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, path));
+                        var log = _repo.CreateLog("Lock LFS file");
+                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, path, log));
                         if (succ)
                             App.SendNotification(_repo.FullPath, $"Lock file \"{path}\" successfully!");
 
+                        log.Complete();
                         e.Handled = true;
                     };
                     lfsLock.Items.Add(lockRemote);
@@ -772,10 +784,12 @@ namespace SourceGit.ViewModels
             {
                 lfsUnlock.Click += async (_, e) =>
                 {
-                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, path, false));
+                    var log = _repo.CreateLog("Unlock LFS file");
+                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, path, false, log));
                     if (succ)
                         App.SendNotification(_repo.FullPath, $"Unlock file \"{path}\" successfully!");
 
+                    log.Complete();
                     e.Handled = true;
                 };
             }
@@ -788,10 +802,12 @@ namespace SourceGit.ViewModels
                     unlockRemote.Header = remoteName;
                     unlockRemote.Click += async (_, e) =>
                     {
-                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, path, false));
+                        var log = _repo.CreateLog("Unlock LFS file");
+                        var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, path, false, log));
                         if (succ)
                             App.SendNotification(_repo.FullPath, $"Unlock file \"{path}\" successfully!");
 
+                        log.Complete();
                         e.Handled = true;
                     };
                     lfsUnlock.Items.Add(unlockRemote);

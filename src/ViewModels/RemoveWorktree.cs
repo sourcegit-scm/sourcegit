@@ -7,8 +7,7 @@ namespace SourceGit.ViewModels
         public Models.Worktree Target
         {
             get;
-            private set;
-        } = null;
+        }
 
         public bool Force
         {
@@ -20,22 +19,25 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Target = target;
-            View = new Views.RemoveWorktree() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = "Remove worktrees ...";
+            ProgressDescription = "Remove worktree ...";
+
+            var log = _repo.CreateLog("Remove worktree");
+            Use(log);
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Worktree(_repo.FullPath).Remove(Target.FullPath, Force, SetProgressDescription);
+                var succ = new Commands.Worktree(_repo.FullPath).Use(log).Remove(Target.FullPath, Force);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo = null;
     }
 }

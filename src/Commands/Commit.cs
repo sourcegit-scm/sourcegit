@@ -11,7 +11,6 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            TraitErrorAsOutput = true;
             Args = $"commit --allow-empty --file=\"{_tmpFile}\"";
             if (amend)
                 Args += " --amend --no-edit";

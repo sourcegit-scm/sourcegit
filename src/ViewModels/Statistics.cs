@@ -28,7 +28,11 @@ namespace SourceGit.ViewModels
         public Models.StatisticsReport SelectedReport
         {
             get => _selectedReport;
-            private set => SetProperty(ref _selectedReport, value);
+            private set
+            {
+                value?.ChangeAuthor(null);
+                SetProperty(ref _selectedReport, value);
+            }
         }
 
         public uint SampleColor

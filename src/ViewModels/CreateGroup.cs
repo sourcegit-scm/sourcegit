@@ -16,7 +16,6 @@ namespace SourceGit.ViewModels
         public CreateGroup(RepositoryNode parent)
         {
             _parent = parent;
-            View = new Views.CreateGroup() { DataContext = this };
         }
 
         public override Task<bool> Sure()

@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
             apply.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new ApplyStash(_repo.FullPath, stash));
+                    _repo.ShowPopup(new ApplyStash(_repo, stash));
 
                 ev.Handled = true;
             };
@@ -157,7 +157,7 @@ namespace SourceGit.ViewModels
             drop.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new DropStash(_repo.FullPath, stash));
+                    _repo.ShowPopup(new DropStash(_repo, stash));
 
                 ev.Handled = true;
             };
@@ -238,7 +238,9 @@ namespace SourceGit.ViewModels
             resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
             resetToThisRevision.Click += (_, ev) =>
             {
-                new Commands.Checkout(_repo.FullPath).FileWithRevision(change.Path, $"{_selectedStash.SHA}");
+                var log = _repo.CreateLog($"Reset File to '{_selectedStash.SHA}'");
+                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_selectedStash.SHA}");
+                log.Complete();
                 ev.Handled = true;
             };
 

@@ -139,6 +139,7 @@
               <!-- Table By Autor -->
               <ListBox Grid.Column="0"
                        ItemsSource="{Binding Authors}"
+                       SelectedItem="{Binding SelectedAuthor, Mode=TwoWay}"
                        SelectionMode="Single"
                        BorderThickness="1"
                        BorderBrush="{DynamicResource Brush.Border2}"
@@ -160,7 +161,7 @@
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
-                  <DataTemplate DataType="m:StaticsticsAuthor">
+                  <DataTemplate DataType="m:StatisticsAuthor">
                     <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
                       <Grid ColumnDefinitions="26,*,100">
                         <v:Avatar Grid.Column="0"

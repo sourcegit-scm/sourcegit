@@ -40,9 +40,7 @@ namespace SourceGit.ViewModels
         public Discard(Repository repo)
         {
             _repo = repo;
-
             Mode = new DiscardAllMode();
-            View = new Views.Discard { DataContext = this };
         }
 
         public Discard(Repository repo, List<Models.Change> changes)
@@ -56,8 +54,6 @@ namespace SourceGit.ViewModels
                 Mode = new DiscardSingleFile() { Path = _changes[0].Path };
             else
                 Mode = new DiscardMultipleFiles() { Count = _changes.Count };
-
-            View = new Views.Discard() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -65,12 +61,17 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
 
+            var log = _repo.CreateLog("Discard all");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (Mode is DiscardAllMode all)
-                    Commands.Discard.All(_repo.FullPath, all.IncludeIgnored);
+                    Commands.Discard.All(_repo.FullPath, all.IncludeIgnored, log);
                 else
-                    Commands.Discard.Changes(_repo.FullPath, _changes);
+                    Commands.Discard.Changes(_repo.FullPath, _changes, log);
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

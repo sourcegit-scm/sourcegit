@@ -7,13 +7,11 @@ namespace SourceGit.ViewModels
         public Models.Branch Local
         {
             get;
-            private set;
         }
 
         public Models.Branch To
         {
             get;
-            private set;
         }
 
         public FastForwardWithoutCheckout(Repository repo, Models.Branch local, Models.Branch upstream)
@@ -21,7 +19,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Local = local;
             To = upstream;
-            View = new Views.FastForwardWithoutCheckout() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -29,10 +26,18 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Fast-Forward ...";
 
+            var log = _repo.CreateLog("Fast-Forward (No checkout)");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.UpdateRef(_repo.FullPath, Local.FullName, To.FullName, SetProgressDescription).Exec();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                new Commands.UpdateRef(_repo.FullPath, Local.FullName, To.FullName).Use(log).Exec();
+                log.Complete();
+                CallUIThread(() =>
+                {
+                    _repo.NavigateToCommit(To.Head);
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }

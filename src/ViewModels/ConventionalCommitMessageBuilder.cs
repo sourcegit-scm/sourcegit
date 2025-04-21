@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -46,9 +47,9 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _closedIssue, value);
         }
 
-        public ConventionalCommitMessageBuilder(WorkingCopy wc)
+        public ConventionalCommitMessageBuilder(Action<string> onApply)
         {
-            _wc = wc;
+            _onApply = onApply;
         }
 
         [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
@@ -98,11 +99,11 @@ namespace SourceGit.ViewModels
                 builder.Append(_closedIssue);
             }
 
-            _wc.CommitMessage = builder.ToString();
+            _onApply?.Invoke(builder.ToString());
             return true;
         }
 
-        private WorkingCopy _wc = null;
+        private Action<string> _onApply = null;
         private Models.ConventionalCommitType _type = Models.ConventionalCommitType.Supported[0];
         private string _scope = string.Empty;
         private string _description = string.Empty;

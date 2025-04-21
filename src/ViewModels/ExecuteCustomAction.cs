@@ -8,7 +8,6 @@ namespace SourceGit.ViewModels
         public Models.CustomAction CustomAction
         {
             get;
-            private set;
         }
 
         public ExecuteCustomAction(Repository repo, Models.CustomAction action)
@@ -16,7 +15,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _args = action.Arguments.Replace("${REPO}", GetWorkdir());
             CustomAction = action;
-            View = new Views.ExecuteCustomAction() { DataContext = this };
         }
 
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Branch branch)
@@ -24,7 +22,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _args = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${BRANCH}", branch.FriendlyName);
             CustomAction = action;
-            View = new Views.ExecuteCustomAction() { DataContext = this };
         }
 
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
@@ -32,7 +29,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _args = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${SHA}", commit.SHA);
             CustomAction = action;
-            View = new Views.ExecuteCustomAction() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -43,7 +39,7 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 if (CustomAction.WaitForExit)
-                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, _args, SetProgressDescription);
+                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, _args, output => CallUIThread(() => ProgressDescription = output));
                 else
                     Commands.ExecuteCustomAction.Run(_repo.FullPath, CustomAction.Executable, _args);
 
@@ -58,6 +54,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private string _args = string.Empty;
+        private readonly string _args;
     }
 }

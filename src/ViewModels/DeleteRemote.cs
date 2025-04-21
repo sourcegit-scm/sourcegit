@@ -14,7 +14,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Remote = remote;
-            View = new Views.DeleteRemote() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -22,9 +21,14 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting remote ...";
 
+            var log = _repo.CreateLog("Delete Remote");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Remote(_repo.FullPath).Delete(Remote.Name);
+                var succ = new Commands.Remote(_repo.FullPath).Use(log).Delete(Remote.Name);
+                log.Complete();
+
                 CallUIThread(() =>
                 {
                     _repo.MarkBranchesDirtyManually();

@@ -4,7 +4,6 @@ on:
     branches: [ develop ]
     paths:
       - 'src/Resources/Locales/**'
-      - 'README.md'
   workflow_dispatch:
   workflow_call:
 
@@ -32,8 +31,8 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           if [ -n "$(git status --porcelain)" ]; then
-            git add README.md TRANSLATION.md
-            git commit -m 'doc: Update translation status and missing keys'
+            git add TRANSLATION.md src/Resources/Locales/*.axaml
+            git commit -m 'doc: Update translation status and sort locale files'
             git push
           else
             echo "No changes to commit"

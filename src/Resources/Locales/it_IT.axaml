@@ -103,8 +103,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Confronta con HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copia Info</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copia SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Informazioni</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Azione Personalizzata</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Riallinea Interattivamente ${0}$ fino a Qui</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Unisci a ${0}$</x:String>
@@ -179,6 +179,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nome utente per questo repository</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Spazi di Lavoro</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Colore</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Ripristina schede all'avvio</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Guida Commit Convenzionali</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Modifica Sostanziale:</x:String>
@@ -239,7 +240,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modalità File Modificata</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Prima differenza</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi e EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Ultima differenza</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MODIFICA OGGETTO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Differenza Successiva</x:String>
@@ -300,7 +301,6 @@
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Cronologia File</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">MODIFICA</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">CONTENUTO</x:String>
-  <x:String x:Key="Text.Filter" xml:space="preserve">FILTRO</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Branch di Sviluppo:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
@@ -566,7 +566,6 @@
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Abilita opzione '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Apri nell'Esplora File</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Cerca Branch/Tag/Sottomodulo</x:String>
-  <x:String x:Key="Text.Repository.FilterCommitPrefix" xml:space="preserve">FILTRATO DA:</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilità nel grafico</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Non impostato</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Nascondi nel grafico dei commit</x:String>

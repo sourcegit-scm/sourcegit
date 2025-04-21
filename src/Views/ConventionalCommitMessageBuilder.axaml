@@ -48,12 +48,33 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:ConventionalCommitType.Supported}}"
-                SelectedItem="{Binding Type, Mode=TwoWay}">
+                SelectedItem="{Binding Type, Mode=TwoWay}"
+                Grid.IsSharedSizeScope="True">
+        <ComboBox.SelectionBoxItemTemplate>
+          <DataTemplate DataType="m:ConventionalCommitType">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Name}" Margin="0,0,8,0"/>
+              <Border Height="16" CornerRadius="8" Padding="8,0" VerticalAlignment="Center" Background="Green">
+                <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontSize="11" Foreground="White"/>
+              </Border>              
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.SelectionBoxItemTemplate>
+        
         <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type m:ConventionalCommitType}">
-            <Grid Height="20" ColumnDefinitions="64,Auto" VerticalAlignment="Center">
-              <TextBlock Grid.Column="0" Text="{Binding Type}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Description}" Foreground="{DynamicResource Brush.FG2}"/>
+          <DataTemplate DataType="m:ConventionalCommitType">
+            <Grid Height="22">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="TypeColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="DescriptionColumn"/>
+              </Grid.ColumnDefinitions>
+
+              <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+              <Border Grid.Column="1" Height="16" CornerRadius="8" Padding="8,0" Margin="8,0,16,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Green">
+                <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontSize="11" Foreground="White"/>
+              </Border>
+              <TextBlock Grid.Column="2" Text="{Binding Description}" Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>

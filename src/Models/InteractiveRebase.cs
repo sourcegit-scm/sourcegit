@@ -27,6 +27,8 @@ namespace SourceGit.Models
 
     public class InteractiveRebaseJobCollection
     {
+        public string OrigHead { get; set; } = string.Empty;
+        public string Onto { get; set; } = string.Empty;
         public List<InteractiveRebaseJob> Jobs { get; set; } = new List<InteractiveRebaseJob>();
     }
 }

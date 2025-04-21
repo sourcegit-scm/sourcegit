@@ -34,14 +34,14 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableForceOnFetch = value;
         }
 
-        public Fetch(Repository repo, Models.Remote preferedRemote = null)
+        public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
-            _fetchAllRemotes = preferedRemote == null;
+            _fetchAllRemotes = preferredRemote == null;
 
-            if (preferedRemote != null)
+            if (preferredRemote != null)
             {
-                SelectedRemote = preferedRemote;
+                SelectedRemote = preferredRemote;
             }
             else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
             {
@@ -55,8 +55,6 @@ namespace SourceGit.ViewModels
             {
                 SelectedRemote = _repo.Remotes[0];
             }
-
-            View = new Views.Fetch() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -65,24 +63,26 @@ namespace SourceGit.ViewModels
 
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
+            var log = _repo.CreateLog("Fetch");
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (FetchAllRemotes)
                 {
                     foreach (var remote in _repo.Remotes)
-                    {
-                        SetProgressDescription($"Fetching remote: {remote.Name}");
-                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, SetProgressDescription).Exec();
-                    }
+                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force).Use(log).Exec();
                 }
                 else
                 {
-                    SetProgressDescription($"Fetching remote: {SelectedRemote.Name}");
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, SetProgressDescription).Exec();
+                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force).Use(log).Exec();
                 }
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {
+                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.Upstream);
                     _repo.MarkFetched();
                     _repo.SetWatcherEnabled(true);
                 });
