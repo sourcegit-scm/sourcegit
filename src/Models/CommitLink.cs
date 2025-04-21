@@ -19,8 +19,9 @@ namespace SourceGit.Models
     {
         public bool IsMatch(string url) => url.StartsWith(HostPrefix, StringComparison.Ordinal);
     }
-    public static class CommitLinkDetails // Changed from private to internal to fix CS1527  
+    public static class CommitLinkDetails
     {
+        //TODO: use Regex with submatches or better some existing url parsing classes instead 
         static readonly ProviderInfo[] Providers = new[]
         {
            new ProviderInfo(
