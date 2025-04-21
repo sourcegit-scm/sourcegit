@@ -144,7 +144,6 @@ namespace SourceGit.Views
                     _lastHover = match;
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
                     ToolTip.SetTip(this, match.Link);
-                    ToolTip.SetIsOpen(this, true);
                     e.Handled = true;
                     return;
                 }

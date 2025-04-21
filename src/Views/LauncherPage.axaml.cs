@@ -1,4 +1,6 @@
+using System;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
@@ -47,6 +49,36 @@ namespace SourceGit.Views
                 page.Notifications.Remove(notice);
 
             e.Handled = true;
+        }
+
+        private void OnPopupDataContextChanged(object sender, EventArgs e)
+        {
+            if (sender is ContentPresenter presenter)
+            {
+                if (presenter.DataContext == null || presenter.DataContext is not ViewModels.Popup)
+                {
+                    presenter.Content = null;
+                    return;
+                }
+
+                var dataTypeName = presenter.DataContext.GetType().FullName;
+                if (string.IsNullOrEmpty(dataTypeName))
+                {
+                    presenter.Content = null;
+                    return;
+                }
+                
+                var viewTypeName = dataTypeName.Replace("ViewModels", "Views");
+                var viewType = Type.GetType(viewTypeName);
+                if (viewType == null)
+                {
+                    presenter.Content = null;
+                    return;
+                }
+                
+                var view = Activator.CreateInstance(viewType);
+                presenter.Content = view;
+            }
         }
     }
 }

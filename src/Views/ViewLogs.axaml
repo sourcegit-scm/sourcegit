@@ -1,0 +1,116 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.ViewLogs"
+                    x:DataType="vm:ViewLogs"
+                    x:Name="ThisControl"
+                    Title="{DynamicResource Text.ViewLogs}"
+                    Icon="/App.ico"
+                    Width="800" Height="500"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="14" Height="14"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Logs}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.ViewLogs}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Body -->
+    <Grid Grid.Row="1" ColumnDefinitions="300,4,*" Margin="8">
+      <ListBox Grid.Column="0"
+               Padding="4"
+               Background="{DynamicResource Brush.Contents}"
+               BorderThickness="1"
+               BorderBrush="{DynamicResource Brush.Border2}"
+               ItemsSource="{Binding Logs}"
+               SelectedItem="{Binding SelectedLog, Mode=TwoWay}"
+               SelectionMode="Single"
+               Grid.IsSharedSizeScope="True"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+               ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="CornerRadius" Value="4"/>
+          </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="vm:CommandLog">
+            <Grid Background="Transparent" ContextRequested="OnLogContextRequested">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="SearchCommitTimeColumn"/>
+              </Grid.ColumnDefinitions>
+              <v:LoadingIcon Grid.Column="0"
+                             Width="14" Height="14"
+                             Margin="4,0,4,0"
+                             IsVisible="{Binding !IsComplete}"/>
+              
+              <TextBlock Grid.Column="1"
+                         Classes="primary"
+                         Margin="4,0,0,0"
+                         Text="{Binding Name}"
+                         VerticalAlignment="Center"
+                         TextTrimming="CharacterEllipsis"/>
+              
+              <TextBlock Grid.Column="2"
+                         Classes="primary"
+                         Margin="4,0"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         Text="{Binding TimeStr}"
+                         HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <Border Grid.Column="2"
+              BorderBrush="{DynamicResource Brush.Border2}"
+              BorderThickness="1"
+              Background="{DynamicResource Brush.Contents}">
+        <v:CommandLogContentPresenter Log="{Binding SelectedLog}"
+                                      FontFamily="{DynamicResource Fonts.Monospace}"/>
+      </Border>
+    </Grid>
+
+    <Grid Grid.Row="2" Margin="0,0,0,8">
+      <Button Classes="flat primary"
+              Content="{DynamicResource Text.ViewLogs.Clear}"
+              HorizontalAlignment="Center"
+              Command="{Binding ClearAll}"
+              IsEnabled="{Binding Logs.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+    </Grid>
+  </Grid>
+</v:ChromelessWindow>

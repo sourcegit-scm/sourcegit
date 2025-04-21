@@ -29,7 +29,6 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = forceFastForward ? Models.MergeMode.Supported[1] : AutoSelectMergeMode();
-            View = new Views.Merge() { DataContext = this };
         }
 
         public Merge(Repository repo, Models.Commit source, string into)
@@ -40,7 +39,6 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = AutoSelectMergeMode();
-            View = new Views.Merge() { DataContext = this };
         }
 
         public Merge(Repository repo, Models.Tag source, string into)
@@ -51,7 +49,6 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = AutoSelectMergeMode();
-            View = new Views.Merge() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -59,10 +56,19 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Merging '{_sourceName}' into '{Into}' ...";
 
+            var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, SetProgressDescription).Exec();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg).Use(log).Exec();
+                log.Complete();
+
+                CallUIThread(() =>
+                {
+                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }
@@ -90,6 +96,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private readonly string _sourceName = string.Empty;
+        private readonly string _sourceName;
     }
 }

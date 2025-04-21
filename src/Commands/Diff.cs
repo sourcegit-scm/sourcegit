@@ -30,32 +30,44 @@ namespace SourceGit.Commands
             if (ignoreWhitespace)
                 Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-cr-at-eol --ignore-all-space --unified={unified} {opt}";
             else
-                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
+                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
         public Models.DiffResult Result()
         {
-            Exec();
+            var rs = ReadToEnd();
+            var start = 0;
+            var end = rs.StdOut.IndexOf('\n', start);
+            while (end > 0)
+            {
+                var line = rs.StdOut.Substring(start, end - start);
+                ParseLine(line);
 
-            if (_result.IsBinary || _result.IsLFS)
+                start = end + 1;
+                end = rs.StdOut.IndexOf('\n', start);
+            }
+
+            if (start < rs.StdOut.Length)
+                ParseLine(rs.StdOut.Substring(start));
+
+            if (_result.IsBinary || _result.IsLFS || _result.TextDiff.Lines.Count == 0)
             {
                 _result.TextDiff = null;
             }
             else
             {
                 ProcessInlineHighlights();
-
-                if (_result.TextDiff.Lines.Count == 0)
-                    _result.TextDiff = null;
-                else
-                    _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
+                _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
             }
 
             return _result;
         }
 
-        protected override void OnReadline(string line)
+        private void ParseLine(string line)
         {
+            if (_result.IsBinary)
+                return;
+
             if (line.StartsWith("old mode ", StringComparison.Ordinal))
             {
                 _result.OldMode = line.Substring(9);
@@ -79,9 +91,6 @@ namespace SourceGit.Commands
                 _result.NewMode = line.Substring(14);
                 return;
             }
-
-            if (_result.IsBinary)
-                return;
 
             if (_result.IsLFS)
             {
@@ -140,7 +149,8 @@ namespace SourceGit.Commands
 
                     _oldLine = int.Parse(match.Groups[1].Value);
                     _newLine = int.Parse(match.Groups[2].Value);
-                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0);
+                    _result.TextDiff.Lines.Add(_last);
                 }
             }
             else
@@ -148,7 +158,8 @@ namespace SourceGit.Commands
                 if (line.Length == 0)
                 {
                     ProcessInlineHighlights();
-                    _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", _oldLine, _newLine));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", _oldLine, _newLine);
+                    _result.TextDiff.Lines.Add(_last);
                     _oldLine++;
                     _newLine++;
                     return;
@@ -164,7 +175,8 @@ namespace SourceGit.Commands
                         return;
                     }
 
-                    _deleted.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0);
+                    _deleted.Add(_last);
                     _oldLine++;
                 }
                 else if (ch == '+')
@@ -176,7 +188,8 @@ namespace SourceGit.Commands
                         return;
                     }
 
-                    _added.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine));
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine);
+                    _added.Add(_last);
                     _newLine++;
                 }
                 else if (ch != '\\')
@@ -187,7 +200,8 @@ namespace SourceGit.Commands
                     {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);
-                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0));
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0);
+                        _result.TextDiff.Lines.Add(_last);
                     }
                     else
                     {
@@ -198,10 +212,15 @@ namespace SourceGit.Commands
                             return;
                         }
 
-                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), _oldLine, _newLine));
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), _oldLine, _newLine);
+                        _result.TextDiff.Lines.Add(_last);
                         _oldLine++;
                         _newLine++;
                     }
+                }
+                else if (line.Equals("\\ No newline at end of file", StringComparison.Ordinal))
+                {
+                    _last.NoNewLineEndOfFile = true;
                 }
             }
         }
@@ -253,6 +272,7 @@ namespace SourceGit.Commands
         private readonly Models.DiffResult _result = new Models.DiffResult();
         private readonly List<Models.TextDiffLine> _deleted = new List<Models.TextDiffLine>();
         private readonly List<Models.TextDiffLine> _added = new List<Models.TextDiffLine>();
+        private Models.TextDiffLine _last = null;
         private int _oldLine = 0;
         private int _newLine = 0;
     }

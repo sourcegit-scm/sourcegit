@@ -30,6 +30,7 @@ namespace SourceGit.Models
         public int OldLineNumber { get; set; } = 0;
         public int NewLineNumber { get; set; } = 0;
         public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
+        public bool NoNewLineEndOfFile { get; set; } = false;
 
         public string OldLine => OldLineNumber == 0 ? string.Empty : OldLineNumber.ToString();
         public string NewLine => NewLineNumber == 0 ? string.Empty : NewLineNumber.ToString();

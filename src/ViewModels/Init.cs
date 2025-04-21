@@ -21,33 +21,36 @@ namespace SourceGit.ViewModels
             _pageId = pageId;
             _targetPath = path;
             _parentNode = parent;
-
             Reason = string.IsNullOrEmpty(reason) ? "Invalid repository detected!" : reason;
-            View = new Views.Init() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             ProgressDescription = $"Initialize git repository at: '{_targetPath}'";
 
+            var log = new CommandLog("Initialize");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Init(_pageId, _targetPath).Exec();
-                if (!succ)
-                    return false;
+                var succ = new Commands.Init(_pageId, _targetPath).Use(log).Exec();
+                log.Complete();
 
-                CallUIThread(() =>
+                if (succ)
                 {
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
-                    Welcome.Instance.Refresh();
-                });
+                    CallUIThread(() =>
+                    {
+                        Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                        Welcome.Instance.Refresh();
+                    });
+                }
 
-                return true;
+                return succ;
             });
         }
 
-        private string _pageId = null;
+        private readonly string _pageId = null;
         private string _targetPath = null;
-        private RepositoryNode _parentNode = null;
+        private readonly RepositoryNode _parentNode = null;
     }
 }

@@ -50,7 +50,6 @@ namespace SourceGit.ViewModels
             MainlineForMergeCommit = 0;
             AppendSourceToMessage = true;
             AutoCommit = true;
-            View = new Views.CherryPick() { DataContext = this };
         }
 
         public CherryPick(Repository repo, Models.Commit merge, List<Models.Commit> parents)
@@ -62,13 +61,15 @@ namespace SourceGit.ViewModels
             MainlineForMergeCommit = 0;
             AppendSourceToMessage = true;
             AutoCommit = true;
-            View = new Views.CherryPick() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Cherry-Pick commit(s) ...";
+
+            var log = _repo.CreateLog("Cherry-Pick");
+            Use(log);
 
             return Task.Run(() =>
             {
@@ -79,7 +80,7 @@ namespace SourceGit.ViewModels
                         Targets[0].SHA,
                         !AutoCommit,
                         AppendSourceToMessage,
-                        $"-m {MainlineForMergeCommit + 1}").Exec();
+                        $"-m {MainlineForMergeCommit + 1}").Use(log).Exec();
                 }
                 else
                 {
@@ -88,9 +89,10 @@ namespace SourceGit.ViewModels
                         string.Join(' ', Targets.ConvertAll(c => c.SHA)),
                         !AutoCommit,
                         AppendSourceToMessage,
-                        string.Empty).Exec();
+                        string.Empty).Use(log).Exec();
                 }
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

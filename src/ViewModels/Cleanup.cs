@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public Cleanup(Repository repo)
         {
             _repo = repo;
-            View = new Views.Cleanup() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -15,9 +14,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Cleanup (GC & prune) ...";
 
+            var log = _repo.CreateLog("Cleanup (GC & prune)");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.GC(_repo.FullPath, SetProgressDescription).Exec();
+                new Commands.GC(_repo.FullPath).Use(log).Exec();
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

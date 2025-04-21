@@ -148,8 +148,6 @@ namespace SourceGit.ViewModels
 
             // Auto select preferred remote branch.
             AutoSelectBranchByRemote();
-
-            View = new Views.Push() { DataContext = this };
         }
 
         public override bool CanStartDirectly()
@@ -164,6 +162,9 @@ namespace SourceGit.ViewModels
             var remoteBranchName = _selectedRemoteBranch.Name;
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
 
+            var log = _repo.CreateLog("Push");
+            Use(log);
+
             return Task.Run(() =>
             {
                 var succ = new Commands.Push(
@@ -174,8 +175,9 @@ namespace SourceGit.ViewModels
                     PushAllTags,
                     _repo.Submodules.Count > 0 && CheckSubmodules,
                     _isSetTrackOptionVisible && Tracking,
-                    ForcePush,
-                    SetProgressDescription).Exec();
+                    ForcePush).Use(log).Exec();
+
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

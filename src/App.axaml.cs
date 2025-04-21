@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -347,7 +348,18 @@ namespace SourceGit
                 if (TryLaunchAsAskpass(desktop))
                     return;
 
-                TryLaunchAsNormal(desktop);
+                _ipcChannel = new Models.IpcChannel();
+                if (!_ipcChannel.IsFirstInstance)
+                {
+                    _ipcChannel.SendToFirstInstance(desktop.Args is { Length: 1 } ? desktop.Args[0] : string.Empty);
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    _ipcChannel.MessageReceived += TryOpenRepository;
+                    desktop.Exit += (_, _) => _ipcChannel.Dispose();
+                    TryLaunchAsNormal(desktop);
+                }
             }
         }
         #endregion
@@ -420,21 +432,37 @@ namespace SourceGit
                 return true;
 
             var gitDir = Path.GetDirectoryName(file)!;
-            var jobsFile = Path.Combine(gitDir, "sourcegit_rebase_jobs.json");
-            if (!File.Exists(jobsFile))
-                return true;
-
-            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            var origHeadFile = Path.Combine(gitDir, "rebase-merge", "orig-head");
+            var ontoFile = Path.Combine(gitDir, "rebase-merge", "onto");
             var doneFile = Path.Combine(gitDir, "rebase-merge", "done");
-            if (!File.Exists(doneFile))
+            var jobsFile = Path.Combine(gitDir, "sourcegit_rebase_jobs.json");
+            if (!File.Exists(ontoFile) || !File.Exists(origHeadFile) || !File.Exists(doneFile) || !File.Exists(jobsFile))
                 return true;
 
-            var done = File.ReadAllText(doneFile).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            if (done.Length > collection.Jobs.Count)
+            var origHead = File.ReadAllText(origHeadFile).Trim();
+            var onto = File.ReadAllText(ontoFile).Trim();
+            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            if (!collection.Onto.Equals(onto) || !collection.OrigHead.Equals(origHead))
                 return true;
 
-            var job = collection.Jobs[done.Length - 1];
-            File.WriteAllText(file, job.Message);
+            var done = File.ReadAllText(doneFile).Trim().Split([ '\r', '\n' ], StringSplitOptions.RemoveEmptyEntries);
+            if (done.Length == 0)
+                return true;
+
+            var current = done[^1].Trim();
+            var match = REG_REBASE_TODO().Match(current);
+            if (!match.Success)
+                return true;
+
+            var sha = match.Groups[1].Value;
+            foreach (var job in collection.Jobs)
+            {
+                if (job.SHA.StartsWith(sha))
+                {
+                    File.WriteAllText(file, job.Message);
+                    break;
+                }
+            }
 
             return true;
         }
@@ -485,14 +513,44 @@ namespace SourceGit
             if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
                 startupRepo = desktop.Args[0];
 
+            var pref = ViewModels.Preferences.Instance;
+            pref.SetCanModify();
+
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
 #if !DISABLE_UPDATE_DETECTION
-            var pref = ViewModels.Preferences.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
 #endif
+        }
+
+        private void TryOpenRepository(string repo)
+        {
+            if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
+            {
+                var test = new Commands.QueryRepositoryRootPath(repo).ReadToEnd();
+                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
+                {
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
+                        ViewModels.Welcome.Instance.Refresh();
+                        _launcher?.OpenRepositoryInTab(node, null);
+
+                        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: Views.Launcher wnd })
+                            wnd.BringToTop();
+                    });
+
+                    return;
+                }
+            }
+
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: Views.Launcher launcher })
+                    launcher.BringToTop();
+            });
         }
 
         private void Check4Update(bool manually = false)
@@ -580,6 +638,10 @@ namespace SourceGit
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
+        [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,40})(\s+.*)?$")]
+        private static partial Regex REG_REBASE_TODO();
+
+        private Models.IpcChannel _ipcChannel = null;
         private ViewModels.Launcher _launcher = null;
         private ResourceDictionary _activeLocale = null;
         private ResourceDictionary _themeOverrides = null;

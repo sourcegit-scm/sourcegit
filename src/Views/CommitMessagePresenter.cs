@@ -107,14 +107,9 @@ namespace SourceGit.Views
 
                     _lastHover = link;
                     if (!link.IsCommitSHA)
-                    {
                         ToolTip.SetTip(this, link.Link);
-                        ToolTip.SetIsOpen(this, true);
-                    }
                     else
-                    {
                         ProcessHoverCommitLink(link);
-                    }
 
                     return;
                 }
@@ -264,12 +259,7 @@ namespace SourceGit.Views
             // If we have already queried this SHA, just use it.
             if (_inlineCommits.TryGetValue(sha, out var exist))
             {
-                if (exist != null)
-                {
-                    ToolTip.SetTip(this, exist);
-                    ToolTip.SetIsOpen(this, true);
-                }
-
+                ToolTip.SetTip(this, exist);
                 return;
             }
 
@@ -294,10 +284,7 @@ namespace SourceGit.Views
 
                             // Make sure user still hovers the target SHA.
                             if (_lastHover == link && c != null)
-                            {
                                 ToolTip.SetTip(this, c);
-                                ToolTip.SetIsOpen(this, true);
-                            }
                         }
                     });
                 });

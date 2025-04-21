@@ -25,7 +25,6 @@ namespace SourceGit.ViewModels
             _revision = branch.Head;
             _saveFile = $"archive-{Path.GetFileName(branch.Name)}.zip";
             BasedOn = branch;
-            View = new Views.Archive() { DataContext = this };
         }
 
         public Archive(Repository repo, Models.Commit commit)
@@ -34,7 +33,6 @@ namespace SourceGit.ViewModels
             _revision = commit.SHA;
             _saveFile = $"archive-{commit.SHA.Substring(0, 10)}.zip";
             BasedOn = commit;
-            View = new Views.Archive() { DataContext = this };
         }
 
         public Archive(Repository repo, Models.Tag tag)
@@ -43,7 +41,6 @@ namespace SourceGit.ViewModels
             _revision = tag.SHA;
             _saveFile = $"archive-{Path.GetFileName(tag.Name)}.zip";
             BasedOn = tag;
-            View = new Views.Archive() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -51,9 +48,14 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Archiving ...";
 
+            var log = _repo.CreateLog("Archive");
+            Use(log);
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile, SetProgressDescription).Exec();
+                var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).Exec();
+                log.Complete();
+
                 CallUIThread(() =>
                 {
                     _repo.SetWatcherEnabled(true);

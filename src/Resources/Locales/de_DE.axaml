@@ -102,8 +102,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Mehrere cherry-picken</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Mit HEAD vergleichen</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Mit Worktree vergleichen</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Info kopieren</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Information</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactives Rebase von ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge in ${0}$ hinein</x:String>
@@ -176,6 +176,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Benutzername für dieses Repository</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Name</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Zuletzt geöffnete Tabs beim Starten wiederherstellen</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Konventionelle Commit-Hilfe</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
@@ -235,7 +236,7 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">ALT</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Dateimodus geändert</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignoriere Leerzeichenänderungen</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignoriere Leerzeichenänderungen und EOL</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJEKT ÄNDERUNG</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Nächste Änderung</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">KEINE ÄNDERUNG ODER NUR ZEILEN-ENDE ÄNDERUNGEN</x:String>

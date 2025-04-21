@@ -52,7 +52,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = branch;
             SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
-            View = new Views.CreateTag() { DataContext = this };
         }
 
         public CreateTag(Repository repo, Models.Commit commit)
@@ -62,7 +61,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = commit;
             SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
-            View = new Views.CreateTag() { DataContext = this };
         }
 
         public static ValidationResult ValidateTagName(string name, ValidationContext ctx)
@@ -83,23 +81,24 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Create tag...";
 
             var remotes = PushToRemotes ? _repo.Remotes : null;
+            var log = _repo.CreateLog("Create Tag");
+            Use(log);
+
             return Task.Run(() =>
             {
                 bool succ;
                 if (_annotated)
-                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag);
+                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log);
                 else
-                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn);
+                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, log);
 
                 if (succ && remotes != null)
                 {
                     foreach (var remote in remotes)
-                    {
-                        SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
-                        new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Exec();
-                    }
+                        new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Use(log).Exec();
                 }
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

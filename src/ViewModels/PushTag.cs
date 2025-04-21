@@ -8,7 +8,6 @@ namespace SourceGit.ViewModels
         public Models.Tag Target
         {
             get;
-            private set;
         }
 
         public List<Models.Remote> Remotes
@@ -33,13 +32,15 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Target = target;
             SelectedRemote = _repo.Remotes[0];
-            View = new Views.PushTag() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Pushing tag ...";
+
+            var log = _repo.CreateLog("Push Tag");
+            Use(log);
 
             return Task.Run(() =>
             {
@@ -49,18 +50,17 @@ namespace SourceGit.ViewModels
                 {
                     foreach (var remote in _repo.Remotes)
                     {
-                        SetProgressDescription($"Pushing tag to remote {remote.Name} ...");
-                        succ = new Commands.Push(_repo.FullPath, remote.Name, tag, false).Exec();
+                        succ = new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).Exec();
                         if (!succ)
                             break;
                     }
                 }
                 else
                 {
-                    SetProgressDescription($"Pushing tag to remote {SelectedRemote.Name} ...");
-                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Exec();
+                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).Exec();
                 }
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });

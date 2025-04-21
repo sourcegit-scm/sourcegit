@@ -103,8 +103,11 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">揀選 (cherry-pick)...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">複製摘要資訊</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">摘要資訊</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交編號</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合併 (merge) 此提交到 ${0}$</x:String>
@@ -136,6 +139,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">詳細描述</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填寫提交訊息標題</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
@@ -180,6 +184,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">用於本存放庫的使用者名稱</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名稱</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">确认继续</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
@@ -245,7 +250,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">檔案權限已變更</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化和EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後一個差異</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS 物件變更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
@@ -614,6 +619,7 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端機中開啟</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相對時間</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 GIT 指令的日誌</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>
@@ -699,6 +705,10 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模組:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">啟用 [--remote] 選項</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">日誌清單</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清除所有日誌</x:String>
+  <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">複製</x:String>
+  <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">刪除</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">起始頁</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">新增群組</x:String>

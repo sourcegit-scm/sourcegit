@@ -11,22 +11,16 @@ using SkiaSharp;
 
 namespace SourceGit.Models
 {
-    public enum StaticsticsMode
+    public enum StatisticsMode
     {
         All,
         ThisMonth,
         ThisWeek,
     }
 
-    public class StaticsticsAuthor(User user, int count)
+    public class StatisticsAuthor(User user, int count)
     {
         public User User { get; set; } = user;
-        public int Count { get; set; } = count;
-    }
-
-    public class StaticsticsSample(DateTime time, int count)
-    {
-        public DateTime Time { get; set; } = time;
         public int Count { get; set; } = count;
     }
 
@@ -35,12 +29,13 @@ namespace SourceGit.Models
         public static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
         public int Total { get; set; } = 0;
-        public List<StaticsticsAuthor> Authors { get; set; } = new List<StaticsticsAuthor>();
+        public List<StatisticsAuthor> Authors { get; set; } = new List<StatisticsAuthor>();
         public List<ISeries> Series { get; set; } = new List<ISeries>();
         public List<Axis> XAxes { get; set; } = new List<Axis>();
         public List<Axis> YAxes { get; set; } = new List<Axis>();
+        public StatisticsAuthor SelectedAuthor { get => _selectedAuthor; set => ChangeAuthor(value); }
 
-        public StatisticsReport(StaticsticsMode mode, DateTime start)
+        public StatisticsReport(StatisticsMode mode, DateTime start)
         {
             _mode = mode;
 
@@ -51,14 +46,14 @@ namespace SourceGit.Models
                 SeparatorsPaint = new SolidColorPaint(new SKColor(0x40808080)) { StrokeThickness = 1 }
             }];
 
-            if (mode == StaticsticsMode.ThisWeek)
+            if (mode == StatisticsMode.ThisWeek)
             {
                 for (int i = 0; i < 7; i++)
                     _mapSamples.Add(start.AddDays(i), 0);
 
                 XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(1), v => WEEKDAYS[(int)v.DayOfWeek]) { TextSize = 10 });
             }
-            else if (mode == StaticsticsMode.ThisMonth)
+            else if (mode == StatisticsMode.ThisMonth)
             {
                 var now = DateTime.Now;
                 var maxDays = DateTime.DaysInMonth(now.Year, now.Month);
@@ -78,7 +73,7 @@ namespace SourceGit.Models
             Total++;
 
             var normalized = DateTime.MinValue;
-            if (_mode == StaticsticsMode.ThisWeek || _mode == StaticsticsMode.ThisMonth)
+            if (_mode == StatisticsMode.ThisWeek || _mode == StatisticsMode.ThisMonth)
                 normalized = time.Date;
             else
                 normalized = new DateTime(time.Year, time.Month, 1).ToLocalTime();
@@ -92,10 +87,30 @@ namespace SourceGit.Models
                 _mapUsers[author] = vu + 1;
             else
                 _mapUsers.Add(author, 1);
+
+            if (_mapUserSamples.TryGetValue(author, out var vus))
+            {
+                if (vus.TryGetValue(normalized, out var n))
+                    vus[normalized] = n + 1;
+                else
+                    vus.Add(normalized, 1);
+            }
+            else
+            {
+                _mapUserSamples.Add(author, new Dictionary<DateTime, int>
+                {
+                    { normalized, 1 }
+                });
+            }
         }
 
         public void Complete()
         {
+            foreach (var kv in _mapUsers)
+                Authors.Add(new StatisticsAuthor(kv.Key, kv.Value));
+
+            Authors.Sort((l, r) => r.Count - l.Count);
+
             var samples = new List<DateTimePoint>();
             foreach (var kv in _mapSamples)
                 samples.Add(new DateTimePoint(kv.Key, kv.Value));
@@ -110,24 +125,59 @@ namespace SourceGit.Models
                 }
             );
 
-            foreach (var kv in _mapUsers)
-                Authors.Add(new StaticsticsAuthor(kv.Key, kv.Value));
-
-            Authors.Sort((l, r) => r.Count - l.Count);
-
             _mapUsers.Clear();
             _mapSamples.Clear();
         }
 
         public void ChangeColor(uint color)
         {
-            if (Series is [ColumnSeries<DateTimePoint> series])
-                series.Fill = new SolidColorPaint(new SKColor(color));
+            _fillColor = color;
+
+            var fill = new SKColor(color);
+
+            if (Series.Count > 0 && Series[0] is ColumnSeries<DateTimePoint> total)
+                total.Fill = new SolidColorPaint(_selectedAuthor == null ? fill : fill.WithAlpha(51));
+
+            if (Series.Count > 1 && Series[1] is ColumnSeries<DateTimePoint> user)
+                user.Fill = new SolidColorPaint(fill);
         }
 
-        private StaticsticsMode _mode = StaticsticsMode.All;
+        public void ChangeAuthor(StatisticsAuthor author)
+        {
+            if (author == _selectedAuthor)
+                return;
+
+            _selectedAuthor = author;
+            Series.RemoveRange(1, Series.Count - 1);
+            if (author == null || !_mapUserSamples.TryGetValue(author.User, out var userSamples))
+            {
+                ChangeColor(_fillColor);
+                return;
+            }
+
+            var samples = new List<DateTimePoint>();
+            foreach (var kv in userSamples)
+                samples.Add(new DateTimePoint(kv.Key, kv.Value));
+
+            Series.Add(
+                new ColumnSeries<DateTimePoint>()
+                {
+                    Values = samples,
+                    Stroke = null,
+                    Fill = null,
+                    Padding = 1,
+                }
+            );
+
+            ChangeColor(_fillColor);
+        }
+
+        private StatisticsMode _mode = StatisticsMode.All;
         private Dictionary<User, int> _mapUsers = new Dictionary<User, int>();
         private Dictionary<DateTime, int> _mapSamples = new Dictionary<DateTime, int>();
+        private Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new Dictionary<User, Dictionary<DateTime, int>>();
+        private StatisticsAuthor _selectedAuthor = null;
+        private uint _fillColor = 255;
     }
 
     public class Statistics
@@ -143,9 +193,9 @@ namespace SourceGit.Models
             _thisWeekStart = _today.AddDays(-weekOffset);
             _thisMonthStart = _today.AddDays(1 - _today.Day);
 
-            All = new StatisticsReport(StaticsticsMode.All, DateTime.MinValue);
-            Month = new StatisticsReport(StaticsticsMode.ThisMonth, _thisMonthStart);
-            Week = new StatisticsReport(StaticsticsMode.ThisWeek, _thisWeekStart);
+            All = new StatisticsReport(StatisticsMode.All, DateTime.MinValue);
+            Month = new StatisticsReport(StatisticsMode.ThisMonth, _thisMonthStart);
+            Week = new StatisticsReport(StatisticsMode.ThisWeek, _thisWeekStart);
         }
 
         public void AddCommit(string author, double timestamp)

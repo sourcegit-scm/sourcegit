@@ -128,6 +128,16 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private async void OpenGitLogs(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
+            {
+                var dialog = new ViewLogs() { DataContext = new ViewModels.ViewLogs(repo) };
+                await dialog.ShowDialog(owner);
+                e.Handled = true;
+            }
+        }
     }
 }
 

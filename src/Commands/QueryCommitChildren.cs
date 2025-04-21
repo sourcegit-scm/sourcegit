@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SourceGit.Commands
 {
@@ -14,17 +15,21 @@ namespace SourceGit.Commands
 
         public List<string> Result()
         {
-            Exec();
-            return _lines;
-        }
+            var rs = ReadToEnd();
+            var outs = new List<string>();
+            if (rs.IsSuccess)
+            {
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    if (line.Contains(_commit))
+                        outs.Add(line.Substring(0, 40));
+                }
+            }
 
-        protected override void OnReadline(string line)
-        {
-            if (line.Contains(_commit))
-                _lines.Add(line.Substring(0, 40));
+            return outs;
         }
 
         private string _commit;
-        private List<string> _lines = new List<string>();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SourceGit.Commands
@@ -17,27 +18,31 @@ namespace SourceGit.Commands
 
         public List<Models.Remote> Result()
         {
-            Exec();
-            return _loaded;
-        }
+            var outs = new List<Models.Remote>();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return outs;
 
-        protected override void OnReadline(string line)
-        {
-            var match = REG_REMOTE().Match(line);
-            if (!match.Success)
-                return;
-
-            var remote = new Models.Remote()
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
-                Name = match.Groups[1].Value,
-                URL = match.Groups[2].Value,
-            };
+                var match = REG_REMOTE().Match(line);
+                if (!match.Success)
+                    continue;
 
-            if (_loaded.Find(x => x.Name == remote.Name) != null)
-                return;
-            _loaded.Add(remote);
+                var remote = new Models.Remote()
+                {
+                    Name = match.Groups[1].Value,
+                    URL = match.Groups[2].Value,
+                };
+
+                if (outs.Find(x => x.Name == remote.Name) != null)
+                    continue;
+
+                outs.Add(remote);
+            }
+
+            return outs;
         }
-
-        private readonly List<Models.Remote> _loaded = new List<Models.Remote>();
     }
 }

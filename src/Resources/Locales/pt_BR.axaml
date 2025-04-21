@@ -93,8 +93,8 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Comparar com HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Comparar com Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Copiar Informações</x:String>
-  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Informações</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Ação customizada</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interativo ${0}$ até Aqui</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ até Aqui</x:String>
@@ -161,6 +161,7 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nome de usuário para este repositório</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Cor</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restaurar abas ao inicializar</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Assistente de Conventional Commit</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
@@ -216,7 +217,7 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">ANTIGO</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modo de Arquivo Alterado</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar mudanças de espaço em branco e EOL</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MUDANÇA DE OBJETO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Próxima Diferença</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SEM MUDANÇAS OU APENAS MUDANÇAS DE EOL</x:String>

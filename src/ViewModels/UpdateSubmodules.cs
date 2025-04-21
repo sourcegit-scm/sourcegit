@@ -8,8 +8,7 @@ namespace SourceGit.ViewModels
         public List<string> Submodules
         {
             get;
-            private set;
-        } = new List<string>();
+        } = [];
 
         public string SelectedSubmodule
         {
@@ -49,7 +48,6 @@ namespace SourceGit.ViewModels
                 Submodules.Add(submodule.Path);
 
             SelectedSubmodule = Submodules.Count > 0 ? Submodules[0] : string.Empty;
-            View = new Views.UpdateSubmodules() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -62,19 +60,21 @@ namespace SourceGit.ViewModels
             else
                 targets = [SelectedSubmodule];
 
+            var log = _repo.CreateLog("Update Submodule");
+            Use(log);
+
             return Task.Run(() =>
             {
                 foreach (var submodule in targets)
                 {
-                    ProgressDescription = $"Updating submodule {submodule} ...";
-                    new Commands.Submodule(_repo.FullPath).Update(
+                    new Commands.Submodule(_repo.FullPath).Use(log).Update(
                         submodule,
                         EnableInit,
                         EnableRecursive,
-                        EnableRemote,
-                        SetProgressDescription);
+                        EnableRemote);
                 }
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

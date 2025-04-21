@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SourceGit.Commands
 {
@@ -40,7 +40,7 @@ namespace SourceGit.Commands
             if (dateEndIdx == -1)
                 return;
 
-            var dateStr = line.Substring(0, dateEndIdx);
+            var dateStr = line.AsSpan().Slice(0, dateEndIdx);
             if (double.TryParse(dateStr, out var date))
                 statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
         }

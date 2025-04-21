@@ -25,17 +25,6 @@ namespace SourceGit.Views
                 layout.WorkingCopyLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
         }
 
-        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
-            {
-                var menu = vm.CreateContextMenuForCommitMessages();
-                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu?.Open(button);
-                e.Handled = true;
-            }
-        }
-
         private void OnUnstagedContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
@@ -129,32 +118,6 @@ namespace SourceGit.Views
                 var next = StagedChangesView.GetNextChangeWithoutSelection();
                 vm.UnstageSelected(next);
                 StagedChangesView.Focus();
-            }
-
-            e.Handled = true;
-        }
-
-        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
-            {
-                var menu = vm.CreateContextForOpenAI();
-                menu?.Open(control);
-            }
-
-            e.Handled = true;
-        }
-
-        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.WorkingCopy vm)
-            {
-                var dialog = new ConventionalCommitMessageBuilder()
-                {
-                    DataContext = new ViewModels.ConventionalCommitMessageBuilder(vm)
-                };
-
-                App.OpenDialog(dialog);
             }
 
             e.Handled = true;

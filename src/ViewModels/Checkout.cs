@@ -20,13 +20,15 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Branch = branch;
             DiscardLocalChanges = false;
-            View = new Views.Checkout() { DataContext = this };
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout '{Branch}' ...";
+
+            var log = _repo.CreateLog($"Checkout '{Branch}'");
+            Use(log);
 
             return Task.Run(() =>
             {
@@ -36,15 +38,14 @@ namespace SourceGit.ViewModels
                 {
                     if (DiscardLocalChanges)
                     {
-                        SetProgressDescription("Discard local changes ...");
-                        Commands.Discard.All(_repo.FullPath, false);
+                        Commands.Discard.All(_repo.FullPath, false, log);
                     }
                     else
                     {
-                        SetProgressDescription("Stash local changes ...");
-                        var succ = new Commands.Stash(_repo.FullPath).Push("CHECKOUT_AUTO_STASH");
+                        var succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CHECKOUT_AUTO_STASH");
                         if (!succ)
                         {
+                            log.Complete();
                             CallUIThread(() => _repo.SetWatcherEnabled(true));
                             return false;
                         }
@@ -53,14 +54,11 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                SetProgressDescription("Checkout branch ...");
-                var rs = new Commands.Checkout(_repo.FullPath).Branch(Branch, SetProgressDescription);
-
+                var rs = new Commands.Checkout(_repo.FullPath).Use(log).Branch(Branch);
                 if (needPopStash)
-                {
-                    SetProgressDescription("Re-apply local changes...");
-                    rs = new Commands.Stash(_repo.FullPath).Pop("stash@{0}");
-                }
+                    rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+
+                log.Complete();
 
                 CallUIThread(() =>
                 {

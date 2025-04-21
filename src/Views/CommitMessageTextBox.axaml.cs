@@ -56,6 +56,9 @@ namespace SourceGit.Views
             FromEditor,
         }
 
+        public static readonly StyledProperty<bool> ShowAdvancedOptionsProperty =
+            AvaloniaProperty.Register<CommitMessageTextBox, bool>(nameof(ShowAdvancedOptions), false);
+
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Text), string.Empty);
 
@@ -64,6 +67,12 @@ namespace SourceGit.Views
 
         public static readonly StyledProperty<string> DescriptionProperty =
             AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Description), string.Empty);
+
+        public bool ShowAdvancedOptions
+        {
+            get => GetValue(ShowAdvancedOptionsProperty);
+            set => SetValue(ShowAdvancedOptionsProperty, value);
+        }
 
         public string Text
         {
@@ -165,6 +174,46 @@ namespace SourceGit.Views
                 SubjectEditor.CaretIndex = Subject.Length;
                 e.Handled = true;
             }
+        }
+
+        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
+            {
+                var menu = vm.CreateContextMenuForCommitMessages();
+                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu?.Open(button);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
+            {
+                var menu = vm.CreateContextForOpenAI();
+                menu?.Open(control);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
+        {
+            var dialog = new ConventionalCommitMessageBuilder()
+            {
+                DataContext = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text)
+            };
+
+            App.OpenDialog(dialog);
+            e.Handled = true;
+        }
+
+        private void CopyAllText(object sender, RoutedEventArgs e)
+        {
+            App.CopyText(Text);
+            e.Handled = true;
         }
 
         private TextChangeWay _changingWay = TextChangeWay.None;

@@ -14,35 +14,50 @@ namespace SourceGit.Commands
 
         public List<Models.Stash> Result()
         {
-            Exec();
-            return _stashes;
-        }
+            var outs = new List<Models.Stash>();
+            var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return outs;
 
-        protected override void OnReadline(string line)
-        {
-            switch (_nextLineIdx)
+            var nextPartIdx = 0;
+            var start = 0;
+            var end = rs.StdOut.IndexOf('\n', start);
+            while (end > 0)
             {
-                case 0:
-                    _current = new Models.Stash() { SHA = line };
-                    _stashes.Add(_current);
-                    break;
-                case 1:
-                    ParseParent(line);
-                    break;
-                case 2:
-                    _current.Time = ulong.Parse(line);
-                    break;
-                case 3:
-                    _current.Name = line;
-                    break;
-                case 4:
-                    _current.Message = line;
-                    break;
+                var line = rs.StdOut.Substring(start, end - start);
+
+                switch (nextPartIdx)
+                {
+                    case 0:
+                        _current = new Models.Stash() { SHA = line };
+                        outs.Add(_current);
+                        break;
+                    case 1:
+                        ParseParent(line);
+                        break;
+                    case 2:
+                        _current.Time = ulong.Parse(line);
+                        break;
+                    case 3:
+                        _current.Name = line;
+                        break;
+                    case 4:
+                        _current.Message = line;
+                        break;
+                }
+
+                nextPartIdx++;
+                if (nextPartIdx > 4)
+                    nextPartIdx = 0;
+
+                start = end + 1;
+                end = rs.StdOut.IndexOf('\n', start);
             }
 
-            _nextLineIdx++;
-            if (_nextLineIdx > 4)
-                _nextLineIdx = 0;
+            if (start < rs.StdOut.Length)
+                _current.Message = rs.StdOut.Substring(start);
+
+            return outs;
         }
 
         private void ParseParent(string data)
@@ -53,8 +68,6 @@ namespace SourceGit.Commands
             _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private readonly List<Models.Stash> _stashes = new List<Models.Stash>();
         private Models.Stash _current = null;
-        private int _nextLineIdx = 0;
     }
 }

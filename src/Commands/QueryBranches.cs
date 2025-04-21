@@ -40,7 +40,7 @@ namespace SourceGit.Commands
             foreach (var b in branches)
             {
                 if (b.IsLocal && !string.IsNullOrEmpty(b.Upstream))
-                    b.IsUpsteamGone = !remoteBranches.Contains(b.Upstream);
+                    b.IsUpstreamGone = !remoteBranches.Contains(b.Upstream);
             }
 
             return branches;
@@ -86,7 +86,7 @@ namespace SourceGit.Commands
             branch.Head = parts[1];
             branch.IsCurrent = parts[2] == "*";
             branch.Upstream = parts[3];
-            branch.IsUpsteamGone = false;
+            branch.IsUpstreamGone = false;
 
             if (branch.IsLocal && !string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=", StringComparison.Ordinal))
                 branch.TrackStatus = new QueryTrackStatus(WorkingDirectory, branch.Name, branch.Upstream).Result();

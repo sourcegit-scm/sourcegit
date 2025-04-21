@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public LFSPrune(Repository repo)
         {
             _repo = repo;
-            View = new Views.LFSPrune() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -15,9 +14,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "LFS prune ...";
 
+            var log = _repo.CreateLog("LFS Prune");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.LFS(_repo.FullPath).Prune(SetProgressDescription);
+                new Commands.LFS(_repo.FullPath).Prune(log);
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

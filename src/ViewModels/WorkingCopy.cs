@@ -94,6 +94,7 @@ namespace SourceGit.ViewModels
                     }
 
                     Staged = GetStagedChanges();
+                    VisibleStaged = GetVisibleChanges(_staged);
                     SelectedStaged = [];
                 }
             }
@@ -324,7 +325,7 @@ namespace SourceGit.ViewModels
         {
             App.OpenDialog(new Views.AssumeUnchangedManager()
             {
-                DataContext = new AssumeUnchangedManager(_repo.FullPath)
+                DataContext = new AssumeUnchangedManager(_repo)
             });
         }
 
@@ -376,6 +377,7 @@ namespace SourceGit.ViewModels
 
             var files = new List<string>();
             var needStage = new List<string>();
+            var log = _repo.CreateLog("Use Theirs");
 
             foreach (var change in changes)
             {
@@ -398,14 +400,15 @@ namespace SourceGit.ViewModels
 
             if (files.Count > 0)
             {
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseTheirs(files));
+                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).Use(log).UseTheirs(files));
                 if (succ)
                     needStage.AddRange(files);
             }
 
             if (needStage.Count > 0)
-                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Use(log).Exec());
 
+            log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
         }
@@ -416,6 +419,7 @@ namespace SourceGit.ViewModels
 
             var files = new List<string>();
             var needStage = new List<string>();
+            var log = _repo.CreateLog("Use Mine");
 
             foreach (var change in changes)
             {
@@ -438,14 +442,15 @@ namespace SourceGit.ViewModels
 
             if (files.Count > 0)
             {
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).UseMine(files));
+                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).Use(log).UseMine(files));
                 if (succ)
                     needStage.AddRange(files);
             }
 
             if (needStage.Count > 0)
-                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Use(log).Exec());
 
+            log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
         }
@@ -623,23 +628,23 @@ namespace SourceGit.ViewModels
 
                     if (_inProgressContext is CherryPickInProgress cherryPick)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is RebaseInProgress rebase)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
 
                     menu.Items.Add(useTheirs);
@@ -710,7 +715,9 @@ namespace SourceGit.ViewModels
                     assumeUnchanged.IsVisible = change.WorkTree != Models.ChangeState.Untracked;
                     assumeUnchanged.Click += (_, e) =>
                     {
-                        new Commands.AssumeUnchanged(_repo.FullPath).Add(change.Path);
+                        var log = _repo.CreateLog("Assume File Unchanged");
+                        new Commands.AssumeUnchanged(_repo.FullPath, change.Path, true).Use(log).Exec();
+                        log.Complete();
                         e.Handled = true;
                     };
 
@@ -804,10 +811,12 @@ namespace SourceGit.ViewModels
                             lfsTrackThisFile.Header = App.Text("GitLFS.Track", filename);
                             lfsTrackThisFile.Click += async (_, e) =>
                             {
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true));
+                                var log = _repo.CreateLog("Track LFS");
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true, log));
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
 
+                                log.Complete();
                                 e.Handled = true;
                             };
                             lfs.Items.Add(lfsTrackThisFile);
@@ -818,10 +827,12 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Header = App.Text("GitLFS.TrackByExtension", extension);
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension));
+                                    var log = _repo.CreateLog("Track LFS");
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension, false, log));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
+                                    log.Complete();
                                     e.Handled = true;
                                 };
                                 lfs.Items.Add(lfsTrackByExtension);
@@ -838,10 +849,12 @@ namespace SourceGit.ViewModels
                         {
                             lfsLock.Click += async (_, e) =>
                             {
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path));
+                                var log = _repo.CreateLog("Lock LFS File");
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path, log));
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
+                                log.Complete();
                                 e.Handled = true;
                             };
                         }
@@ -854,10 +867,12 @@ namespace SourceGit.ViewModels
                                 lockRemote.Header = remoteName;
                                 lockRemote.Click += async (_, e) =>
                                 {
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path));
+                                    var log = _repo.CreateLog("Lock LFS File");
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path, log));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
+                                    log.Complete();
                                     e.Handled = true;
                                 };
                                 lfsLock.Items.Add(lockRemote);
@@ -873,10 +888,12 @@ namespace SourceGit.ViewModels
                         {
                             lfsUnlock.Click += async (_, e) =>
                             {
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false));
+                                var log = _repo.CreateLog("Unlock LFS File");
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false, log));
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
+                                log.Complete();
                                 e.Handled = true;
                             };
                         }
@@ -889,10 +906,12 @@ namespace SourceGit.ViewModels
                                 unlockRemote.Header = remoteName;
                                 unlockRemote.Click += async (_, e) =>
                                 {
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false));
+                                    var log = _repo.CreateLog("Unlock LFS File");
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false, log));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
+                                    log.Complete();
                                     e.Handled = true;
                                 };
                                 lfsUnlock.Items.Add(unlockRemote);
@@ -968,23 +987,23 @@ namespace SourceGit.ViewModels
 
                     if (_inProgressContext is CherryPickInProgress cherryPick)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is RebaseInProgress rebase)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
 
                     menu.Items.Add(useTheirs);
@@ -1204,10 +1223,12 @@ namespace SourceGit.ViewModels
                     {
                         lfsLock.Click += async (_, e) =>
                         {
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path));
+                            var log = _repo.CreateLog("Lock LFS File");
+                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path, log));
                             if (succ)
                                 App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
+                            log.Complete();
                             e.Handled = true;
                         };
                     }
@@ -1220,10 +1241,12 @@ namespace SourceGit.ViewModels
                             lockRemote.Header = remoteName;
                             lockRemote.Click += async (_, e) =>
                             {
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path));
+                                var log = _repo.CreateLog("Lock LFS File");
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path, log));
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
+                                log.Complete();
                                 e.Handled = true;
                             };
                             lfsLock.Items.Add(lockRemote);
@@ -1239,10 +1262,12 @@ namespace SourceGit.ViewModels
                     {
                         lfsUnlock.Click += async (_, e) =>
                         {
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false));
+                            var log = _repo.CreateLog("Unlock LFS File");
+                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false, log));
                             if (succ)
                                 App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
+                            log.Complete();
                             e.Handled = true;
                         };
                     }
@@ -1255,10 +1280,12 @@ namespace SourceGit.ViewModels
                             unlockRemote.Header = remoteName;
                             unlockRemote.Click += async (_, e) =>
                             {
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false));
+                                var log = _repo.CreateLog("Unlock LFS File");
+                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false, log));
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
+                                log.Complete();
                                 e.Handled = true;
                             };
                             lfsUnlock.Items.Add(unlockRemote);
@@ -1379,7 +1406,7 @@ namespace SourceGit.ViewModels
                 {
                     var template = _repo.Settings.CommitTemplates[i];
                     var item = new MenuItem();
-                    item.Header = new Views.NameHighlightedTextBlock("WorkingCopy.UseCommitTemplate", template.Name);
+                    item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
                     item.Icon = App.CreateMenuIcon("Icons.Code");
                     item.Click += (_, e) =>
                     {
@@ -1401,7 +1428,7 @@ namespace SourceGit.ViewModels
                     }
 
                     var gitTemplateItem = new MenuItem();
-                    gitTemplateItem.Header = new Views.NameHighlightedTextBlock("WorkingCopy.UseCommitTemplate", friendlyName);
+                    gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
                     gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
                     gitTemplateItem.Click += (_, e) =>
                     {
@@ -1580,9 +1607,11 @@ namespace SourceGit.ViewModels
 
             IsStaging = true;
             _repo.SetWatcherEnabled(false);
+
+            var log = _repo.CreateLog("Stage");
             if (count == _unstaged.Count)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec());
             }
             else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
             {
@@ -1592,7 +1621,7 @@ namespace SourceGit.ViewModels
 
                 var tmpFile = Path.GetTempFileName();
                 File.WriteAllLines(tmpFile, paths);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Exec());
+                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Use(log).Exec());
                 File.Delete(tmpFile);
             }
             else
@@ -1604,9 +1633,10 @@ namespace SourceGit.ViewModels
                 for (int i = 0; i < count; i += 10)
                 {
                     var step = paths.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Exec());
+                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Use(log).Exec());
                 }
             }
+            log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsStaging = false;
@@ -1623,22 +1653,26 @@ namespace SourceGit.ViewModels
 
             IsUnstaging = true;
             _repo.SetWatcherEnabled(false);
+
+            var log = _repo.CreateLog("Unstage");
             if (_useAmend)
             {
+                log.AppendLine("$ git update-index --index-info ");
                 await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
             }
             else if (count == _staged.Count)
             {
-                await Task.Run(() => new Commands.Reset(_repo.FullPath).Exec());
+                await Task.Run(() => new Commands.Reset(_repo.FullPath).Use(log).Exec());
             }
             else
             {
                 for (int i = 0; i < count; i += 10)
                 {
                     var step = changes.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Exec());
+                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Use(log).Exec());
                 }
             }
+            log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsUnstaging = false;
@@ -1702,14 +1736,17 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
+            var log = _repo.CreateLog("Commit");
             Task.Run(() =>
             {
                 var succ = true;
                 if (autoStage && _unstaged.Count > 0)
-                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Exec();
+                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
+
+                log.Complete();
 
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -1718,7 +1755,7 @@ namespace SourceGit.ViewModels
                         CommitMessage = string.Empty;
                         UseAmend = false;
 
-                        if (autoPush)
+                        if (autoPush && _repo.Remotes.Count > 0)
                             _repo.ShowAndStartPopup(new Push(_repo, null));
                     }
 

@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
         public Models.Commit Target
         {
             get;
-            private set;
         }
 
         public bool AutoCommit
@@ -21,7 +20,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Target = target;
             AutoCommit = true;
-            View = new Views.Revert() { DataContext = this };
         }
 
         public override Task<bool> Sure()
@@ -29,9 +27,13 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Revert commit '{Target.SHA}' ...";
 
+            var log = _repo.CreateLog($"Revert '{Target.SHA}'");
+            Use(log);
+
             return Task.Run(() =>
             {
-                new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Exec();
+                new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Use(log).Exec();
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

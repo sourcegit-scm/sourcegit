@@ -9,8 +9,14 @@
              x:Class="SourceGit.Views.Welcome"
              x:DataType="vm:Welcome">
   <Grid RowDefinitions="*,36">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="2*" MinWidth="600"/>
+      <ColumnDefinition Width="1*"/>
+    </Grid.ColumnDefinitions>
+    
     <!-- Managed Repositories -->
-    <Grid Grid.Column="1" MinWidth="600" Margin="8" RowDefinitions="Auto,*" HorizontalAlignment="Center">
+    <Grid Grid.Row="0" Grid.Column="1" Margin="8" RowDefinitions="Auto,*">
       <!-- Search Box -->
       <TextBox Grid.Row="0"
                x:Name="SearchBox"
@@ -154,7 +160,7 @@
     </Grid>
 
     <!-- Tips -->
-    <TextBlock Grid.Row="1"
+    <TextBlock Grid.Row="1" Grid.Column="1"
                Classes="italic"
                Margin="0,0,8,0"
                HorizontalAlignment="Center" VerticalAlignment="Center"

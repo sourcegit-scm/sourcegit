@@ -10,5 +10,10 @@
             Context = repo;
             Args = $"diff -a --ignore-cr-at-eol --check {opt}";
         }
+
+        public bool Result()
+        {
+            return ReadToEnd().IsSuccess;
+        }
     }
 }
