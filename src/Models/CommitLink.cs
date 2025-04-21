@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace SourceGit.Models
 {
@@ -99,8 +100,36 @@ namespace SourceGit.Models
             return remotes
                 .Select(TryCreateCommitLink)
                 .Where(cl => cl != null)
-                .Cast<CommitLink>()
                 .ToList();
         }
+
+#if DEBUG
+        // Minimal stub for Remote for testing
+        public class DebugRemote : Remote
+        {
+            private readonly string _url;
+            public DebugRemote(string url) { _url = url; }
+            public new bool TryGetVisitURL(out string url) { url = _url; return true; }
+        }
+
+        static CommitLink()
+        {
+
+            //Unit tests , TODO: make normal UnitTests.
+            // Test Github
+            var githubRemote = new DebugRemote("https://github.com/user/repo.git");
+            var links = Get(new List<Remote> { githubRemote });
+            Debug.Assert(links.Count == 1, "Should find one CommitLink for Github");
+            Debug.Assert(links[0].Name.StartsWith("Github"), "Provider should be Github");
+            Debug.Assert(links[0].URLPrefix == "https://github.com/user/repo/commit/", "URLPrefix should be correct for Github");
+
+            // Test BitBucket
+            var bitbucketRemote = new DebugRemote("https://bitbucket.org/team/project");
+            links = Get(new List<Remote> { bitbucketRemote });
+            Debug.Assert(links.Count == 1, "Should find one CommitLink for BitBucket");
+            Debug.Assert(links[0].Name.StartsWith("BitBucket"), "Provider should be BitBucket");
+            Debug.Assert(links[0].URLPrefix == "https://bitbucket.org/team/project/commits/", "URLPrefix should be correct for BitBucket");
+        }
+#endif
     }
 }
