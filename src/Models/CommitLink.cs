@@ -75,7 +75,11 @@ namespace SourceGit.Models
                 baseUrl => $"{baseUrl}/commit/"
             )
         };
-
+    /// <summary>
+    /// translate remotes to CommitLink-s . TODO: rename
+    /// </summary>
+    /// <param name="remotes"></param>
+    /// <returns></returns>
         public static List<CommitLink> Get(List<Remote> remotes)
         {
             var outs = new List<CommitLink>();
