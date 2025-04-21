@@ -141,7 +141,7 @@ namespace SourceGit.Models
         }
         static CommitLinkDetails()
         {
-
+#if DEBUG
             //Unit tests , TODO: make normal UnitTests, delete this code.  
             // Test Github  
             var githubRemote = new Remote() { URL = "https://github.com/user/repo.git" };
@@ -163,7 +163,7 @@ namespace SourceGit.Models
             Debug.Assert(links.Count == 1, "Should find one CommitLink for GitLab");
             Debug.Assert(links[0].Name.StartsWith("GitLab"), "Provider should be GitLab");
             Debug.Assert(links[0].URLPrefix == "https://gitlab.com/group/project/-/commit/", "URLPrefix should be correct for GitLab");
-        }
 #endif
+        }
     }
 }
