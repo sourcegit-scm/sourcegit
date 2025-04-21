@@ -17,17 +17,63 @@ namespace SourceGit.Models
             URLPrefix = prefix;
         }
 
-        public readonly record struct ProviderInfo(string Host, string Display, string CommitPath, int NameStart);
+        public readonly record struct ProviderInfo(
+            string Name,
+            string HostPrefix,
+            Func<string, string> ExtractRepo,
+            Func<string, string, string> BuildCommitUrl)
+        {
+            public bool IsMatch(string url) => url.StartsWith(HostPrefix, StringComparison.Ordinal);
+        }
 
         private static readonly ProviderInfo[] Providers = new[]
         {
-            new ProviderInfo("https://github.com/", "Github", "/commit/", 19),
-            new ProviderInfo("https://gitlab.", "GitLab", "/-/commit/", 15),
-            new ProviderInfo("https://gitee.com/", "Gitee", "/commit/", 18),
-            new ProviderInfo("https://bitbucket.org/", "BitBucket", "/commits/", 22),
-            new ProviderInfo("https://codeberg.org/", "Codeberg", "/commit/", 21),
-            new ProviderInfo("https://gitea.org/", "Gitea", "/commit/", 18),
-            new ProviderInfo("https://git.sr.ht/", "sourcehut", "/commit/", 18)
+            new ProviderInfo(
+                "Github",
+                "https://github.com/",
+                url => url.EndsWith(".git") ? url[19..^4] : url[19..],
+                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+            ),
+            new ProviderInfo(
+                "GitLab",
+                "https://gitlab.",
+                url => {
+                    var trimmed = url.EndsWith(".git") ? url[15..^4] : url[15..];
+                    int idx = trimmed.IndexOf('/') + 1;
+                    return trimmed[idx..];
+                },
+                (baseUrl, commit) => $"{baseUrl}/-/commit/{commit}"
+            ),
+            new ProviderInfo(
+                "Gitee",
+                "https://gitee.com/",
+                url => url.EndsWith(".git") ? url[18..^4] : url[18..],
+                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+            ),
+            new ProviderInfo(
+                "BitBucket",
+                "https://bitbucket.org/",
+                url => url.EndsWith(".git") ? url[22..^4] : url[22..],
+                (baseUrl, commit) => $"{baseUrl}/commits/{commit}"
+            ),
+            new ProviderInfo(
+                "Codeberg",
+                "https://codeberg.org/",
+                url => url.EndsWith(".git") ? url[21..^4] : url[21..],
+                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+            ),
+            new ProviderInfo(
+                "Gitea",
+                "https://gitea.org/",
+                url => url.EndsWith(".git") ? url[18..^4] : url[18..],
+                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+            ),
+            new ProviderInfo(
+                "sourcehut",
+                "https://git.sr.ht/",
+                url => url.EndsWith(".git") ? url[18..^4] : url[18..],
+                (baseUrl, commit) => $"{baseUrl}/commit/{commit}"
+            )
         };
 
         public static List<CommitLink> Get(List<Remote> remotes)
@@ -38,23 +84,12 @@ namespace SourceGit.Models
             {
                 if (remote.TryGetVisitURL(out var url))
                 {
-                    var trimmedUrl = url.EndsWith(".git") ? url[..^4] : url;
                     foreach (var provider in Providers)
                     {
-                        if (url.StartsWith(provider.Host, StringComparison.Ordinal))
+                        if (provider.IsMatch(url))
                         {
-                            string repoName;
-                            if (provider.Host == "https://gitlab.")
-                            {
-                                // GitLab: find the first '/' after host
-                                int idx = trimmedUrl[provider.NameStart..].IndexOf('/') + provider.NameStart + 1;
-                                repoName = trimmedUrl[idx..];
-                            }
-                            else
-                            {
-                                repoName = trimmedUrl[provider.NameStart..];
-                            }
-                            outs.Add(new CommitLink($"{provider.Display} ({repoName})", $"{url}{provider.CommitPath}"));
+                            string repoName = provider.ExtractRepo(url);
+                            outs.Add(new CommitLink($"{provider.Name} ({repoName})", provider.BuildCommitUrl(url, "")));
                             break;
                         }
                     }
