@@ -97,10 +97,18 @@ namespace SourceGit.Models
         /// </summary>
         public static List<CommitLink> Get(List<Remote> remotes)
         {
-            return remotes
-                .Select(TryCreateCommitLink)
-                .Where(cl => cl != null)
-                .ToList();
+            return remotes.Select(remote =>
+            {
+
+                var rr = TryCreateCommitLink(remote);
+#if DEBUG
+                /// Inplace Test
+                
+                if (!remote.TryGetVisitURL(out var url))
+                    Debug.Assert(GetCommitLinkOriginalImplementionForTestPurposes(url) == rr, " checking comparing with initial implementation failed, TODO: delete in future");
+#endif
+                return rr;
+            }).Where(cl => cl != null   ).ToList();
         }
 
 #if DEBUG
@@ -112,6 +120,32 @@ namespace SourceGit.Models
             public new bool TryGetVisitURL(out string url) { url = _url; return true; }
         }
 
+        // TODO : delete this after checking the implementation
+        private static CommitLink? GetCommitLinkOriginalImplementionForTestPurposes(string url)
+        {
+            var outs = new List<CommitLink>();
+
+            var trimmedUrl = url;
+            if (url.EndsWith(".git"))
+                trimmedUrl = url.Substring(0, url.Length - 4);
+
+            if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
+                outs.Add(new($"Github ({trimmedUrl.Substring(19)})", $"{url}/commit/"));
+            else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
+                outs.Add(new($"GitLab ({trimmedUrl.Substring(trimmedUrl.Substring(15).IndexOf('/') + 16)})", $"{url}/-/commit/"));
+            else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
+                outs.Add(new($"Gitee ({trimmedUrl.Substring(18)})", $"{url}/commit/"));
+            else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
+                outs.Add(new($"BitBucket ({trimmedUrl.Substring(22)})", $"{url}/commits/"));
+            else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
+                outs.Add(new($"Codeberg ({trimmedUrl.Substring(21)})", $"{url}/commit/"));
+            else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
+                outs.Add(new($"Gitea ({trimmedUrl.Substring(18)})", $"{url}/commit/"));
+            else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
+                outs.Add(new($"sourcehut ({trimmedUrl.Substring(18)})", $"{url}/commit/"));
+
+            return outs.FirstOrDefault();
+        }
         static CommitLink()
         {
 
