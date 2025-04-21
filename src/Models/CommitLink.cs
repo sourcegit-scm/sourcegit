@@ -1,18 +1,32 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
+    /// <summary>
+    /// Represents a commit link for a remote repository.
+    /// </summary>
     public class CommitLink
     {
-        public string Name { get; set; } = null;
-        public string URLPrefix { get; set; } = null;
+        public string Name { get; set; }
+        public string URLPrefix { get; set; }
 
         public CommitLink(string name, string prefix)
         {
             Name = name;
             URLPrefix = prefix;
         }
+
+        private static readonly (string Host, string Display, string CommitPath, int NameStart)[] Providers = new[]
+        {
+            ("https://github.com/", "Github", "/commit/", 19),
+            ("https://gitlab.", "GitLab", "/-/commit/", 15),
+            ("https://gitee.com/", "Gitee", "/commit/", 18),
+            ("https://bitbucket.org/", "BitBucket", "/commits/", 22),
+            ("https://codeberg.org/", "Codeberg", "/commit/", 21),
+            ("https://gitea.org/", "Gitea", "/commit/", 18),
+            ("https://git.sr.ht/", "sourcehut", "/commit/", 18)
+        };
 
         public static List<CommitLink> Get(List<Remote> remotes)
         {
@@ -22,24 +36,26 @@ namespace SourceGit.Models
             {
                 if (remote.TryGetVisitURL(out var url))
                 {
-                    var trimmedUrl = url;
-                    if (url.EndsWith(".git"))
-                        trimmedUrl = url.Substring(0, url.Length - 4);
-
-                    if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        outs.Add(new($"Github ({trimmedUrl.Substring(19)})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
-                        outs.Add(new($"GitLab ({trimmedUrl.Substring(trimmedUrl.Substring(15).IndexOf('/') + 16)})", $"{url}/-/commit/"));
-                    else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        outs.Add(new($"Gitee ({trimmedUrl.Substring(18)})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
-                        outs.Add(new($"BitBucket ({trimmedUrl.Substring(22)})", $"{url}/commits/"));
-                    else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
-                        outs.Add(new($"Codeberg ({trimmedUrl.Substring(21)})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
-                        outs.Add(new($"Gitea ({trimmedUrl.Substring(18)})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
-                        outs.Add(new($"sourcehut ({trimmedUrl.Substring(18)})", $"{url}/commit/"));
+                    var trimmedUrl = url.EndsWith(".git") ? url[..^4] : url;
+                    foreach (var provider in Providers)
+                    {
+                        if (url.StartsWith(provider.Host, StringComparison.Ordinal))
+                        {
+                            string repoName;
+                            if (provider.Host == "https://gitlab.")
+                            {
+                                // GitLab: find the first '/' after host
+                                int idx = trimmedUrl[provider.NameStart..].IndexOf('/') + provider.NameStart + 1;
+                                repoName = trimmedUrl[idx..];
+                            }
+                            else
+                            {
+                                repoName = trimmedUrl[provider.NameStart..];
+                            }
+                            outs.Add(new CommitLink($"{provider.Display} ({repoName})", $"{url}{provider.CommitPath}"));
+                            break;
+                        }
+                    }
                 }
             }
 
