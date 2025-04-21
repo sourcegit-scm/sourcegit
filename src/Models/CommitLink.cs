@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SourceGit.Models
 {
@@ -75,32 +76,31 @@ namespace SourceGit.Models
                 baseUrl => $"{baseUrl}/commit/"
             )
         };
-    /// <summary>
-    /// translate remotes to CommitLink-s . TODO: rename
-    /// </summary>
-    /// <param name="remotes"></param>
-    /// <returns></returns>
+
+        /// <summary>
+        /// Attempts to create a CommitLink for a given remote by matching a provider.
+        /// </summary>
+        private static CommitLink? TryCreateCommitLink(Remote remote)
+        {
+            if (!remote.TryGetVisitURL(out var url))
+                return null;
+            var provider = Providers.FirstOrDefault(p => p.IsMatch(url));
+            if (provider.Name == null)
+                return null;
+            string repoName = provider.ExtractRepo(url);
+            return new CommitLink($"{provider.Name} ({repoName})", provider.BuildCommitUrlPrefix(url));
+        }
+
+        /// <summary>
+        /// Translates remotes to CommitLinks. TODO: rename
+        /// </summary>
         public static List<CommitLink> Get(List<Remote> remotes)
         {
-            var outs = new List<CommitLink>();
-
-            foreach (var remote in remotes)
-            {
-                if (remote.TryGetVisitURL(out var url))
-                {
-                    foreach (var provider in Providers)
-                    {
-                        if (provider.IsMatch(url))
-                        {
-                            string repoName = provider.ExtractRepo(url);
-                            outs.Add(new CommitLink($"{provider.Name} ({repoName})", provider.BuildCommitUrlPrefix(url)));
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return outs;
+            return remotes
+                .Select(TryCreateCommitLink)
+                .Where(cl => cl != null)
+                .Cast<CommitLink>()
+                .ToList();
         }
     }
 }
