@@ -332,8 +332,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new FileHistories(_repo, change.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -343,8 +342,7 @@ namespace SourceGit.ViewModels
             blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
             blame.Click += (_, ev) =>
             {
-                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new Blame(_repo.FullPath, change.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -508,8 +506,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new FileHistories(_repo, file.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -519,8 +516,7 @@ namespace SourceGit.ViewModels
             blame.IsEnabled = file.Type == Models.ObjectType.Blob;
             blame.Click += (_, ev) =>
             {
-                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, file.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new Blame(_repo.FullPath, file.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 

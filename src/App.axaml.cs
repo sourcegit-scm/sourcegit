@@ -105,10 +105,36 @@ namespace SourceGit
         #endregion
 
         #region Utility Functions
-        public static void OpenDialog(Window window)
+        public static void ShowWindow(object data, bool showAsDialog)
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                window.ShowDialog(owner);
+            if (data is Views.ChromelessWindow window)
+            {
+                if (showAsDialog && Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                    window.ShowDialog(owner);
+                else
+                    window.Show();
+
+                return;
+            }
+
+            var dataTypeName = data.GetType().FullName;
+            if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
+                return;
+
+            var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
+            var viewType = Type.GetType(viewTypeName);
+            if (viewType == null || !viewType.IsSubclassOf(typeof(Views.ChromelessWindow)))
+                return;
+
+            window = Activator.CreateInstance(viewType) as Views.ChromelessWindow;
+            if (window != null)
+            {
+                window.DataContext = data;
+                if (showAsDialog && Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                    window.ShowDialog(owner);
+                else
+                    window.Show();
+            }
         }
 
         public static void RaiseException(string context, string message)
@@ -598,11 +624,7 @@ namespace SourceGit
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                {
-                    var dialog = new Views.SelfUpdate() { DataContext = new ViewModels.SelfUpdate() { Data = data } };
-                    dialog.ShowDialog(owner);
-                }
+                ShowWindow(new ViewModels.SelfUpdate() { Data = data }, true);
             });
         }
 

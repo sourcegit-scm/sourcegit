@@ -323,10 +323,7 @@ namespace SourceGit.ViewModels
 
         public void OpenAssumeUnchanged()
         {
-            App.OpenDialog(new Views.AssumeUnchangedManager()
-            {
-                DataContext = new AssumeUnchangedManager(_repo)
-            });
+            App.ShowWindow(new AssumeUnchangedManager(_repo), true);
         }
 
         public void StashAll(bool autoStart)
@@ -726,8 +723,7 @@ namespace SourceGit.ViewModels
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
-                        window.Show();
+                        App.ShowWindow(new FileHistories(_repo, change.Path), false);
                         e.Handled = true;
                     };
 
@@ -1093,8 +1089,7 @@ namespace SourceGit.ViewModels
                 {
                     ai.Click += (_, e) =>
                     {
-                        var dialog = new Views.AIAssistant(services[0], _repo.FullPath, this, _selectedStaged);
-                        App.OpenDialog(dialog);
+                        App.ShowWindow(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t), true);
                         e.Handled = true;
                     };
                 }
@@ -1108,8 +1103,7 @@ namespace SourceGit.ViewModels
                         item.Header = service.Name;
                         item.Click += (_, e) =>
                         {
-                            var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _selectedStaged);
-                            App.OpenDialog(dialog);
+                            App.ShowWindow(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t), true);
                             e.Handled = true;
                         };
 
@@ -1193,8 +1187,7 @@ namespace SourceGit.ViewModels
                 history.Icon = App.CreateMenuIcon("Icons.Histories");
                 history.Click += (_, e) =>
                 {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
-                    window.Show();
+                    App.ShowWindow(new FileHistories(_repo, change.Path), false);
                     e.Handled = true;
                 };
 
@@ -1490,8 +1483,7 @@ namespace SourceGit.ViewModels
 
             if (services.Count == 1)
             {
-                var dialog = new Views.AIAssistant(services[0], _repo.FullPath, this, _staged);
-                App.OpenDialog(dialog);
+                App.ShowWindow(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t), true);
                 return null;
             }
 
@@ -1503,8 +1495,7 @@ namespace SourceGit.ViewModels
                 item.Header = service.Name;
                 item.Click += (_, e) =>
                 {
-                    var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _staged);
-                    App.OpenDialog(dialog);
+                    App.ShowWindow(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t), true);
                     e.Handled = true;
                 };
 
@@ -1705,14 +1696,7 @@ namespace SourceGit.ViewModels
             if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && !confirmWithFilter)
             {
                 var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                App.OpenDialog(new Views.ConfirmCommit()
-                {
-                    DataContext = new ConfirmCommit(confirmMessage, () =>
-                    {
-                        DoCommit(autoStage, autoPush, allowEmpty, true);
-                    })
-                });
-
+                App.ShowWindow(new ConfirmCommit(confirmMessage, () => DoCommit(autoStage, autoPush, allowEmpty, true)), true);
                 return;
             }
 
@@ -1720,14 +1704,7 @@ namespace SourceGit.ViewModels
             {
                 if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
                 {
-                    App.OpenDialog(new Views.ConfirmEmptyCommit()
-                    {
-                        DataContext = new ConfirmEmptyCommit(_count > 0, stageAll =>
-                        {
-                            DoCommit(stageAll, autoPush, true, confirmWithFilter);
-                        })
-                    });
-
+                    App.ShowWindow(new ConfirmEmptyCommit(_count > 0, stageAll => DoCommit(stageAll, autoPush, true, confirmWithFilter)), true);
                     return;
                 }
             }

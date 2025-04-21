@@ -68,7 +68,7 @@ namespace SourceGit.Views
                     return;
                 }
                 
-                var viewTypeName = dataTypeName.Replace("ViewModels", "Views");
+                var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
                 var viewType = Type.GetType(viewTypeName);
                 if (viewType == null)
                 {

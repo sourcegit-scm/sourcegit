@@ -570,11 +570,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        App.OpenDialog(new Views.InteractiveRebase()
-                        {
-                            DataContext = new InteractiveRebase(_repo, current, commit)
-                        });
-
+                        App.ShowWindow(new InteractiveRebase(_repo, current, commit), true);
                         e.Handled = true;
                     };
 

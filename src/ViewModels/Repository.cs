@@ -1405,8 +1405,7 @@ namespace SourceGit.ViewModels
                 {
                     locks.Click += (_, e) =>
                     {
-                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(this, _remotes[0].Name) };
-                        App.OpenDialog(dialog);
+                        App.ShowWindow(new LFSLocks(this, _remotes[0].Name), true);
                         e.Handled = true;
                     };
                 }
@@ -1419,8 +1418,7 @@ namespace SourceGit.ViewModels
                         lockRemote.Header = remoteName;
                         lockRemote.Click += (_, e) =>
                         {
-                            var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(this, remoteName) };
-                            App.OpenDialog(dialog);
+                            App.ShowWindow(new LFSLocks(this, remoteName), true);
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);
@@ -1706,10 +1704,7 @@ namespace SourceGit.ViewModels
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.OpenDialog(new Views.BranchCompare()
-                    {
-                        DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
-                    });
+                    App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithHead);
@@ -1989,10 +1984,7 @@ namespace SourceGit.ViewModels
             compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
             compareWithHead.Click += (_, _) =>
             {
-                App.OpenDialog(new Views.BranchCompare()
-                {
-                    DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
-                });
+                App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
             };
             menu.Items.Add(compareWithHead);
 
