@@ -103,22 +103,20 @@ namespace SourceGit.Models
                 var rr = TryCreateCommitLink(remote);
 #if DEBUG
                 /// Inplace Test
-                
-                if (!remote.TryGetVisitURL(out var url))
-                    Debug.Assert(GetCommitLinkOriginalImplementionForTestPurposes(url) == rr, " checking comparing with initial implementation failed, TODO: delete in future");
+
+                if (remote.TryGetVisitURL(out var url))
+                {
+                    var commitLink = GetCommitLinkOriginalImplementionForTestPurposes(url);
+                    Debug.Assert(commitLink == rr, " checking comparing with initial implementation failed, TODO: delete in future");
+                }
 #endif
                 return rr;
-            }).Where(cl => cl != null   ).ToList();
+            }).Where(cl => cl != null).ToList();
         }
 
 #if DEBUG
         // Minimal stub for Remote for testing
-        public class DebugRemote : Remote
-        {
-            private readonly string _url;
-            public DebugRemote(string url) { _url = url; }
-            public new bool TryGetVisitURL(out string url) { url = _url; return true; }
-        }
+
 
         // TODO : delete this after checking the implementation
         private static CommitLink? GetCommitLinkOriginalImplementionForTestPurposes(string url)
@@ -149,16 +147,16 @@ namespace SourceGit.Models
         static CommitLink()
         {
 
-            //Unit tests , TODO: make normal UnitTests.
+            //Unit tests , TODO: make normal UnitTests, delete this code.
             // Test Github
-            var githubRemote = new DebugRemote("https://github.com/user/repo.git");
+            var githubRemote = new Remote() { URL = "https://github.com/user/repo.git" };
             var links = Get(new List<Remote> { githubRemote });
             Debug.Assert(links.Count == 1, "Should find one CommitLink for Github");
             Debug.Assert(links[0].Name.StartsWith("Github"), "Provider should be Github");
             Debug.Assert(links[0].URLPrefix == "https://github.com/user/repo/commit/", "URLPrefix should be correct for Github");
 
             // Test BitBucket
-            var bitbucketRemote = new DebugRemote("https://bitbucket.org/team/project");
+            var bitbucketRemote = new Remote() { URL = "https://bitbucket.org/team/project" };
             links = Get(new List<Remote> { bitbucketRemote });
             Debug.Assert(links.Count == 1, "Should find one CommitLink for BitBucket");
             Debug.Assert(links[0].Name.StartsWith("BitBucket"), "Provider should be BitBucket");
