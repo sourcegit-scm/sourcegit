@@ -96,6 +96,13 @@
         </ListBox.ItemTemplate>
       </ListBox>
 
+      <Path Grid.Column="0"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Width="48" Height="48"
+            Data="{StaticResource Icons.Empty}"
+            Fill="{DynamicResource Brush.FG2}"
+            IsVisible="{Binding Logs.Count, Converter={x:Static c:IntConverters.IsZero}}"/>
+
       <Border Grid.Column="2"
               BorderBrush="{DynamicResource Brush.Border2}"
               BorderThickness="1"
