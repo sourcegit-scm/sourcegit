@@ -155,6 +155,13 @@ namespace SourceGit.Models
             Debug.Assert(links.Count == 1, "Should find one CommitLink for BitBucket");
             Debug.Assert(links[0].Name.StartsWith("BitBucket"), "Provider should be BitBucket");
             Debug.Assert(links[0].URLPrefix == "https://bitbucket.org/team/project/commits/", "URLPrefix should be correct for BitBucket");
+
+            // Test GitLab  
+            var gitlabRemote = new Remote() { URL = "https://gitlab.com/group/project.git" };
+            links = Get(new List<Remote> { gitlabRemote });
+            Debug.Assert(links.Count == 1, "Should find one CommitLink for GitLab");
+            Debug.Assert(links[0].Name.StartsWith("GitLab"), "Provider should be GitLab");
+            Debug.Assert(links[0].URLPrefix == "https://gitlab.com/group/project/-/commit/", "URLPrefix should be correct for GitLab");
         }
 #endif
     }
