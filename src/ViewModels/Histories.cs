@@ -304,7 +304,7 @@ namespace SourceGit.ViewModels
                         if (picker.Count == 1)
                         {
                             log = _repo.CreateLog("Save as Patch");
-                            
+
                             var succ = false;
                             for (var i = 0; i < selected.Count; i++)
                             {

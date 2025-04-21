@@ -471,7 +471,7 @@ namespace SourceGit
             if (!collection.Onto.Equals(onto) || !collection.OrigHead.Equals(origHead))
                 return true;
 
-            var done = File.ReadAllText(doneFile).Trim().Split([ '\r', '\n' ], StringSplitOptions.RemoveEmptyEntries);
+            var done = File.ReadAllText(doneFile).Trim().Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             if (done.Length == 0)
                 return true;
 
