@@ -17,15 +17,17 @@ namespace SourceGit.Models
             URLPrefix = prefix;
         }
 
-        private static readonly (string Host, string Display, string CommitPath, int NameStart)[] Providers = new[]
+        public readonly record struct ProviderInfo(string Host, string Display, string CommitPath, int NameStart);
+
+        private static readonly ProviderInfo[] Providers = new[]
         {
-            ("https://github.com/", "Github", "/commit/", 19),
-            ("https://gitlab.", "GitLab", "/-/commit/", 15),
-            ("https://gitee.com/", "Gitee", "/commit/", 18),
-            ("https://bitbucket.org/", "BitBucket", "/commits/", 22),
-            ("https://codeberg.org/", "Codeberg", "/commit/", 21),
-            ("https://gitea.org/", "Gitea", "/commit/", 18),
-            ("https://git.sr.ht/", "sourcehut", "/commit/", 18)
+            new ProviderInfo("https://github.com/", "Github", "/commit/", 19),
+            new ProviderInfo("https://gitlab.", "GitLab", "/-/commit/", 15),
+            new ProviderInfo("https://gitee.com/", "Gitee", "/commit/", 18),
+            new ProviderInfo("https://bitbucket.org/", "BitBucket", "/commits/", 22),
+            new ProviderInfo("https://codeberg.org/", "Codeberg", "/commit/", 21),
+            new ProviderInfo("https://gitea.org/", "Gitea", "/commit/", 18),
+            new ProviderInfo("https://git.sr.ht/", "sourcehut", "/commit/", 18)
         };
 
         public static List<CommitLink> Get(List<Remote> remotes)
