@@ -965,9 +965,9 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (!succ)
-                        App.RaiseException(_fullpath, log.Content);
+                        App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
                     else if (log.Content.Contains("is the first bad commit"))
-                        App.SendNotification(_fullpath, log.Content);
+                        App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
 
                     MarkBranchesDirtyManually();
                     SetWatcherEnabled(true);
