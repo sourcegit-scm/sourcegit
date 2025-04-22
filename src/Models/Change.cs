@@ -26,6 +26,7 @@ namespace SourceGit.Models
     {
         public string FileMode { get; set; } = "";
         public string ObjectHash { get; set; } = "";
+        public string ParentSHA { get; set; } = "";
     }
 
     public class Change

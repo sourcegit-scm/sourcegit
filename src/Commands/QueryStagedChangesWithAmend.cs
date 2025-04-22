@@ -16,6 +16,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             Args = $"diff-index --cached -M {parent}";
+            _parent = parent;
         }
 
         public List<Models.Change> Result()
@@ -37,6 +38,7 @@ namespace SourceGit.Commands
                             {
                                 FileMode = match.Groups[1].Value,
                                 ObjectHash = match.Groups[2].Value,
+                                ParentSHA = _parent,
                             },
                         };
                         change.Set(Models.ChangeState.Renamed);
@@ -54,6 +56,7 @@ namespace SourceGit.Commands
                             {
                                 FileMode = match.Groups[1].Value,
                                 ObjectHash = match.Groups[2].Value,
+                                ParentSHA = _parent,
                             },
                         };
 
@@ -88,5 +91,7 @@ namespace SourceGit.Commands
 
             return [];
         }
+
+        private string _parent = string.Empty;
     }
 }

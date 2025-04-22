@@ -40,7 +40,7 @@ namespace SourceGit.Models
             else
             {
                 if (change.DataForAmend != null)
-                    _extra = "--cached HEAD^";
+                    _extra = $"--cached {change.DataForAmend.ParentSHA}";
                 else
                     _extra = "--cached";
 
