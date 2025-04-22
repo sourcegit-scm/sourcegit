@@ -45,7 +45,7 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}"/>
               </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}">
+            <MenuItem Header="{DynamicResource Text.Hotkeys}" Command="{x:Static s:App.OpenHotkeysCommand}" InputGesture="F1">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Hotkeys}"/>
               </MenuItem.Icon>
