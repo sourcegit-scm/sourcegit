@@ -368,6 +368,14 @@ namespace SourceGit
             {
                 BindingPlugins.DataValidators.RemoveAt(0);
 
+                // Disable tooltip if window is not active.
+                ToolTip.ToolTipOpeningEvent.AddClassHandler<Control>((c, e) =>
+                {
+                    var topLevel = TopLevel.GetTopLevel(c);
+                    if (topLevel is not Window { IsActive: true })
+                        e.Cancel = true;
+                });
+
                 if (TryLaunchAsCoreEditor(desktop))
                     return;
 
