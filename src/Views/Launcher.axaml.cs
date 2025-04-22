@@ -141,6 +141,13 @@ namespace SourceGit.Views
                 return;
             }
 
+            // F1 opens preference dialog (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
+            {
+                App.ShowWindow(new Hotkeys(), true);
+                return;
+            }
+
             // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control && e.Key == Key.Q)
             {
