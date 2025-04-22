@@ -116,6 +116,21 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void StartBisect(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
+                repo.InProgressContext == null &&
+                repo.CanCreatePopup())
+            {
+                if (repo.LocalChangesCount > 0)
+                    App.RaiseException(repo.FullPath, "You have un-committed local changes. Please discard or stash them first.");
+                else
+                    repo.Bisect("start");
+            }
+
+            e.Handled = true;
+        }
+
         private void OpenCustomActionMenu(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)

@@ -585,7 +585,7 @@
                   BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*">
+    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
       <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
@@ -665,7 +665,73 @@
                 Command="{Binding AbortMerge}"/>
       </Grid>
 
-      <Border Grid.Row="1" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+      <Grid Grid.Row="1"
+            Height="28"
+            ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto"
+            Background="{DynamicResource Brush.Conflict}"
+            IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:BisectState.None}}">
+        <TextBlock Grid.Column="0"
+                   FontWeight="Bold"
+                   Margin="8,0"
+                   Foreground="{DynamicResource Brush.ConflictForeground}"
+                   Text="{DynamicResource Text.Bisect.WaitingForRange}"
+                   IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.WaitingForRange}}"/>
+
+        <TextBlock Grid.Column="0"
+                   FontWeight="Bold"
+                   Margin="8,0"
+                   Foreground="{DynamicResource Brush.ConflictForeground}"
+                   Text="{DynamicResource Text.Bisect.Detecting}"
+                   IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.Detecting}}"/>
+
+        <v:LoadingIcon Grid.Column="1"
+                       Width="14" Height="14"
+                       Margin="4,0"
+                       IsVisible="{Binding IsBisectCommandRunning}"/>
+
+        <Button Grid.Column="2"
+                Classes="flat"
+                Margin="4,0"
+                FontWeight="Regular"
+                BorderThickness="0"
+                Content="{DynamicResource Text.Bisect.Good}"
+                IsEnabled="{Binding !IsBisectCommandRunning}"
+                Padding="8,2"
+                Click="OnBisectCommand"
+                Tag="good"/>
+        <Button Grid.Column="3"
+                Classes="flat"
+                Margin="4,0"
+                FontWeight="Regular"
+                BorderThickness="0"
+                Content="{DynamicResource Text.Bisect.Bad}"
+                IsEnabled="{Binding !IsBisectCommandRunning}"
+                Padding="8,2"
+                Click="OnBisectCommand"
+                Tag="bad"/>
+        <Button Grid.Column="4"
+                Classes="flat"
+                Margin="4,0"
+                FontWeight="Regular"
+                BorderThickness="0"
+                Content="{DynamicResource Text.Bisect.Skip}"
+                IsEnabled="{Binding !IsBisectCommandRunning}"
+                Padding="8,2"
+                Click="OnBisectCommand"
+                Tag="skip"/>
+        <Button Grid.Column="5"
+                Classes="flat"
+                Margin="4,0"
+                FontWeight="Regular"
+                BorderThickness="0"
+                Content="{DynamicResource Text.Bisect.Abort}"
+                IsEnabled="{Binding !IsBisectCommandRunning}"
+                Padding="8,2"
+                Click="OnBisectCommand"
+                Tag="reset"/>
+      </Grid>
+      
+      <Border Grid.Row="2" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
@@ -721,10 +787,11 @@
         </Grid>
       </Border>
 
-      <ContentControl Grid.Row="2" Content="{Binding SelectedView}">
+      <ContentControl Grid.Row="3" Content="{Binding SelectedView}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
             <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
+                         Bisect="{Binding Bisect}"
                          AuthorNameColumnWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
                          IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
                          OnlyHighlightCurrentBranch="{Binding Repo.OnlyHighlightCurrentBranchInHistories}"

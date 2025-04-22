@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,6 +63,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _detailContext, value);
         }
 
+        public Models.Bisect Bisect
+        {
+            get => _bisect;
+            private set => SetProperty(ref _bisect, value);
+        }
+
         public GridLength LeftArea
         {
             get => _leftArea;
@@ -109,6 +116,37 @@ namespace SourceGit.ViewModels
             }
 
             _detailContext = null;
+        }
+
+        public Models.BisectState UpdateBisectInfo()
+        {
+            var test = Path.Combine(_repo.GitDir, "BISECT_START");
+            if (!File.Exists(test))
+            {
+                Bisect = null;
+                return Models.BisectState.None;
+            }
+
+            var info = new Models.Bisect();
+            var dir = Path.Combine(_repo.GitDir, "refs", "bisect");
+            if (Directory.Exists(dir))
+            {
+                var files = new DirectoryInfo(dir).GetFiles();
+                foreach (var file in files)
+                {
+                    if (file.Name.StartsWith("bad"))
+                        info.Bads.Add(File.ReadAllText(file.FullName).Trim());
+                    else if (file.Name.StartsWith("good"))
+                        info.Goods.Add(File.ReadAllText(file.FullName).Trim());
+                }
+            }
+
+            Bisect = info;
+
+            if (info.Bads.Count == 0 || info.Goods.Count == 0)
+                return Models.BisectState.WaitingForRange;
+            else
+                return Models.BisectState.Detecting;
         }
 
         public void NavigateTo(string commitSHA)
@@ -1209,7 +1247,7 @@ namespace SourceGit.ViewModels
             }
             builder.Append(".patch");
 
-            return System.IO.Path.Combine(dir, builder.ToString());
+            return Path.Combine(dir, builder.ToString());
         }
 
         private Repository _repo = null;
@@ -1219,6 +1257,8 @@ namespace SourceGit.ViewModels
         private Models.Commit _autoSelectedCommit = null;
         private long _navigationId = 0;
         private object _detailContext = null;
+
+        private Models.Bisect _bisect = null;
 
         private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
         private GridLength _rightArea = new GridLength(1, GridUnitType.Star);

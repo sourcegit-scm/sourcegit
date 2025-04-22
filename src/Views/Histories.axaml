@@ -131,14 +131,20 @@
                           ClipToBounds="True"
                           Background="Transparent"
                           ToolTip.Tip="{Binding Subject}">
-                    <Grid ColumnDefinitions="Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
                       <v:CommitStatusIndicator Grid.Column="0"
                                                CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
                                                AheadBrush="{DynamicResource Brush.Accent}"
                                                BehindBrush="{DynamicResource Brush.FG1}"
                                                VerticalAlignment="Center"/>
+                      
+                      <v:BisectStateIndicator Grid.Column="1"
+                                              Background="{DynamicResource Brush.Contents}"
+                                              Foreground="{DynamicResource Brush.FG1}"
+                                              Bisect="{Binding $parent[v:Histories].Bisect}"
+                                              VerticalAlignment="Center"/>
 
-                      <v:CommitRefsPresenter Grid.Column="1"
+                      <v:CommitRefsPresenter Grid.Column="2"
                                              Background="{DynamicResource Brush.Contents}"
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
@@ -153,7 +159,7 @@
                         </v:CommitRefsPresenter.UseGraphColor>
                       </v:CommitRefsPresenter>
 
-                      <v:CommitSubjectPresenter Grid.Column="2"
+                      <v:CommitSubjectPresenter Grid.Column="3"
                                                 Classes="primary"
                                                 Subject="{Binding Subject}"
                                                 IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
