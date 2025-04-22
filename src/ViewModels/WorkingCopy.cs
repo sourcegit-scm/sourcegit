@@ -1733,7 +1733,18 @@ namespace SourceGit.ViewModels
                         UseAmend = false;
 
                         if (autoPush && _repo.Remotes.Count > 0)
-                            _repo.ShowAndStartPopup(new Push(_repo, null));
+                        {
+                            if (_repo.CurrentBranch == null)
+                            {
+                                var currentBranchName = Commands.Branch.ShowCurrent(_repo.FullPath);
+                                var tmp = new Models.Branch() { Name = currentBranchName };
+                                _repo.ShowAndStartPopup(new Push(_repo, tmp));
+                            }
+                            else
+                            {
+                                _repo.ShowAndStartPopup(new Push(_repo, null));
+                            }
+                        }
                     }
 
                     _repo.MarkBranchesDirtyManually();
