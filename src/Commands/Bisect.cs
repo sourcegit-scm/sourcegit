@@ -6,6 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
+            RaiseError = false;
             Args = $"bisect {subcmd}";
         }
     }
