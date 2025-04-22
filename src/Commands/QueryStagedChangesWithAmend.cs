@@ -11,11 +11,11 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} R\d{0,6}\t(.*\t.*)$")]
         private static partial Regex REG_FORMAT2();
 
-        public QueryStagedChangesWithAmend(string repo)
+        public QueryStagedChangesWithAmend(string repo, string parent)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "diff-index --cached -M HEAD^";
+            Args = $"diff-index --cached -M {parent}";
         }
 
         public List<Models.Change> Result()
