@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -103,7 +103,7 @@ namespace SourceGit.Commands
                     }
                     else if (line.StartsWith("-size ", StringComparison.Ordinal))
                     {
-                        _result.LFSDiff.Old.Size = long.Parse(line.Substring(6));
+                        _result.LFSDiff.Old.Size = long.Parse(line.AsSpan().Slice(6));
                     }
                 }
                 else if (ch == '+')
@@ -114,12 +114,12 @@ namespace SourceGit.Commands
                     }
                     else if (line.StartsWith("+size ", StringComparison.Ordinal))
                     {
-                        _result.LFSDiff.New.Size = long.Parse(line.Substring(6));
+                        _result.LFSDiff.New.Size = long.Parse(line.AsSpan().Slice(6));
                     }
                 }
                 else if (line.StartsWith(" size ", StringComparison.Ordinal))
                 {
-                    _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.Substring(6));
+                    _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.AsSpan().Slice(6));
                 }
                 return;
             }
