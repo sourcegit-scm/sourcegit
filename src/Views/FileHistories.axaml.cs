@@ -1,3 +1,5 @@
+using System;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -55,6 +57,23 @@ namespace SourceGit.Views
 
                 NotifyDonePanel.IsVisible = true;
                 e.Handled = true;
+            }
+        }
+
+        private void OnCommitSubjectDataContextChanged(object sender, EventArgs e)
+        {
+            if (sender is TextBlock textBlock)
+                ToolTip.SetTip(textBlock, null);
+        }
+
+        private void OnCommitSubjectPointerMoved(object sender, PointerEventArgs e)
+        {
+            if (sender is TextBlock { DataContext: Models.Commit commit } textBlock &&
+                DataContext is ViewModels.FileHistories vm)
+            {
+                var tooltip = ToolTip.GetTip(textBlock);
+                if (tooltip == null)
+                    ToolTip.SetTip(textBlock, vm.GetCommitFullMessage(commit));
             }
         }
     }
