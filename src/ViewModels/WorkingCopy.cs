@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -638,7 +638,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan().Slice(0, 10)} (revert)");
                         useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -775,7 +775,7 @@ namespace SourceGit.ViewModels
                             byExtension.Header = App.Text("WorkingCopy.AddToGitIgnore.Extension", extension);
                             byExtension.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, "*" + extension);
+                                Commands.GitIgnore.Add(_repo.FullPath, $"*{extension}");
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtension);
@@ -786,7 +786,7 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
                                 var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
-                                Commands.GitIgnore.Add(_repo.FullPath, dir + "/*" + extension);
+                                Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtensionInSameFolder);
@@ -828,7 +828,7 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Track LFS");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension, false, log));
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track($"*{extension}", false, log));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
@@ -997,7 +997,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan().Slice(0, 10)} (revert)");
                         useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -1424,7 +1424,7 @@ namespace SourceGit.ViewModels
                         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                         var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                         if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
-                            friendlyName = "~" + gitTemplate.Substring(prefixLen);
+                            friendlyName = $"~{gitTemplate.AsSpan().Slice(prefixLen)}";
                     }
 
                     var gitTemplateItem = new MenuItem();
