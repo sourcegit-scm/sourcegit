@@ -497,6 +497,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">User Email</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Enable --prune on fetch</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Enable --ignore-cr-at-eol in diff</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) is required by this app</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Install Path</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Enable HTTP SSL Verify</x:String>

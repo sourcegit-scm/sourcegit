@@ -273,7 +273,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.Path}"
                        HorizontalAlignment="Right"
@@ -352,6 +352,11 @@
                       IsChecked="{Binding #ThisControl.EnablePruneOnFetch, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="6" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Git.IgnoreCRAtEOLInDiff}"
+                      IsChecked="{Binding IgnoreCRAtEOLInDiff, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Git.SSLVerify}"
                       IsChecked="{Binding #ThisControl.EnableHTTPSSLVerify, Mode=TwoWay}"/>

@@ -29,6 +29,8 @@ namespace SourceGit.Commands
 
             if (ignoreWhitespace)
                 Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-all-space --unified={unified} {opt}";
+            else if (Models.DiffOption.IgnoreCRAtEOL)
+                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
             else
                 Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --unified={unified} {opt}";
         }
