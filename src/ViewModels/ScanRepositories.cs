@@ -87,7 +87,7 @@ namespace SourceGit.ViewModels
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
             {
-                if (subdir.Name.StartsWith(".", StringComparison.Ordinal) || 
+                if (subdir.Name.StartsWith(".", StringComparison.Ordinal) ||
                     subdir.Name.Equals("node_modules", StringComparison.Ordinal))
                     continue;
 

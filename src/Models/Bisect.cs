@@ -13,7 +13,7 @@ namespace SourceGit.Models
     {
         None = 0,
         Good = 1,
-        Bad  = 2,
+        Bad = 2,
     }
 
     public class Bisect
