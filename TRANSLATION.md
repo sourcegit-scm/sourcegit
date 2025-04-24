@@ -51,29 +51,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-97.92%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Bisect
-- Text.Bisect.Abort
-- Text.Bisect.Bad
-- Text.Bisect.Detecting
-- Text.Bisect.Good
-- Text.Bisect.Skip
-- Text.Bisect.WaitingForRange
-- Text.CommitCM.CopyAuthor
-- Text.CommitCM.CopyCommitter
-- Text.CommitCM.CopySubject
-- Text.Preferences.Git.IgnoreCRAtEOLInDiff
-- Text.Repository.ViewLogs
-- Text.ViewLogs
-- Text.ViewLogs.Clear
-- Text.ViewLogs.CopyLog
-- Text.ViewLogs.Delete
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-96.49%25-yellow)
 
