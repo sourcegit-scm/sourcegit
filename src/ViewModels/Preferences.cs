@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Avalonia.Collections;
@@ -381,6 +382,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _lastCheckUpdateTime, value);
         }
 
+        public List<string> Fonts { get; private set; } = [string.Empty, ..systemFonts.Value];
+
+        public List<string> MonoFonts { get; private set; } = [string.Empty, ..systemFonts.Value];
+
         public void SetCanModify()
         {
             _isReadonly = false;
@@ -695,5 +700,9 @@ namespace SourceGit.ViewModels
         private string _externalMergeToolPath = string.Empty;
 
         private uint _statisticsSampleColor = 0xFF00FF00;
+
+        private static readonly Lazy<List<string>> systemFonts = new(
+            () => [..Avalonia.Media.FontManager.Current.SystemFonts.Select(e => e.Name).OrderBy(e => e)],
+            System.Threading.LazyThreadSafetyMode.PublicationOnly);
     }
 }

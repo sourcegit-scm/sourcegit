@@ -175,19 +175,38 @@
                        Text="{DynamicResource Text.Preferences.Appearance.DefaultFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding DefaultFontFamily, Mode=TwoWay}"/>
+
+            <ComboBox Grid.Row="1" Grid.Column="1"
+                      MinHeight="28"
+                      Padding="8,0"
+                      CornerRadius="3"
+                      HorizontalAlignment="Stretch"
+                      SelectedItem="{Binding DefaultFontFamily, Mode=TwoWay}"
+                      ItemsSource="{Binding Fonts}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" FontFamily="{Binding}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.MonospaceFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding MonospaceFontFamily, Mode=TwoWay}"/>
+            <ComboBox Grid.Row="2" Grid.Column="1"
+                      MinHeight="28"
+                      Padding="8,0"
+                      CornerRadius="3"
+                      HorizontalAlignment="Stretch"
+                      SelectedItem="{Binding MonospaceFontFamily, Mode=TwoWay}"
+                      ItemsSource="{Binding Fonts}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" FontFamily="{Binding}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.FontSize}"
