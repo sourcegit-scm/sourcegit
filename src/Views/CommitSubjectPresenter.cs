@@ -47,6 +47,15 @@ namespace SourceGit.Views
             get => GetValue(FontWeightProperty);
             set => SetValue(FontWeightProperty, value);
         }
+        
+        public static readonly StyledProperty<IBrush> InlineCodeBackgroundProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(InlineCodeBackground), Brushes.Transparent);
+
+        public IBrush InlineCodeBackground
+        {
+            get => GetValue(InlineCodeBackgroundProperty);
+            set => SetValue(InlineCodeBackgroundProperty, value);
+        }
 
         public static readonly StyledProperty<IBrush> ForegroundProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(Foreground), Brushes.White);
@@ -106,7 +115,7 @@ namespace SourceGit.Views
                 {
                     var rect = new Rect(inline.X, (height - inline.Text.Height - 2) * 0.5, inline.Text.WidthIncludingTrailingWhitespace + 8, inline.Text.Height + 2);
                     var roundedRect = new RoundedRect(rect, new CornerRadius(4));
-                    context.DrawRectangle(new SolidColorBrush(new Color(52, 101, 108, 118)), null, roundedRect);
+                    context.DrawRectangle(InlineCodeBackground, null, roundedRect);
                     context.DrawText(inline.Text, new Point(inline.X + 4, (height - inline.Text.Height) * 0.5));
                 }
                 else
@@ -180,6 +189,10 @@ namespace SourceGit.Views
                 change.Property == LinkForegroundProperty)
             {
                 _needRebuildInlines = true;
+                InvalidateVisual();
+            }
+            else if (change.Property == InlineCodeBackgroundProperty)
+            {
                 InvalidateVisual();
             }
         }

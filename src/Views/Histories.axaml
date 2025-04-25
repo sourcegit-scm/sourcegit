@@ -158,6 +158,7 @@
                       <v:CommitSubjectPresenter Grid.Column="3"
                                                 FontFamily="{DynamicResource Fonts.Primary}"
                                                 CodeFontFamily="{DynamicResource Fonts.Monospace}"
+                                                InlineCodeBackground="{DynamicResource Brush.InlineCode}"
                                                 Foreground="{DynamicResource Brush.FG1}"
                                                 LinkForeground="{DynamicResource Brush.Link}"
                                                 Subject="{Binding Subject}"
