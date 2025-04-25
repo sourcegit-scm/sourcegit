@@ -62,18 +62,18 @@ namespace SourceGit.Views
 
         private void OnCommitSubjectDataContextChanged(object sender, EventArgs e)
         {
-            if (sender is TextBlock textBlock)
-                ToolTip.SetTip(textBlock, null);
+            if (sender is Border border)
+                ToolTip.SetTip(border, null);
         }
 
         private void OnCommitSubjectPointerMoved(object sender, PointerEventArgs e)
         {
-            if (sender is TextBlock { DataContext: Models.Commit commit } textBlock &&
+            if (sender is Border { DataContext: Models.Commit commit } border &&
                 DataContext is ViewModels.FileHistories vm)
             {
-                var tooltip = ToolTip.GetTip(textBlock);
+                var tooltip = ToolTip.GetTip(border);
                 if (tooltip == null)
-                    ToolTip.SetTip(textBlock, vm.GetCommitFullMessage(commit));
+                    ToolTip.SetTip(border, vm.GetCommitFullMessage(commit));
             }
         }
     }

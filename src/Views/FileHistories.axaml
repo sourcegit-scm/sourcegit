@@ -93,12 +93,9 @@
                   <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
                 </Grid>
 
-                <TextBlock Grid.Row="1"
-                           Classes="primary"
-                           Text="{Binding Subject}"
-                           VerticalAlignment="Bottom"
-                           DataContextChanged="OnCommitSubjectDataContextChanged"
-                           PointerMoved="OnCommitSubjectPointerMoved"/>
+                <Border Grid.Row="1" Background="Transparent" DataContextChanged="OnCommitSubjectDataContextChanged" PointerMoved="OnCommitSubjectPointerMoved">
+                  <TextBlock Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                </Border>
               </Grid>
             </Border>
           </DataTemplate>
