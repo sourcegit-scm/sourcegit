@@ -578,10 +578,10 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var message = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
-                var links = ParseLinksInMessage(message);
+                var inlines = ParseInlinesInMessage(message);
 
                 if (!token.IsCancellationRequested)
-                    Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Links = links });
+                    Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Inlines = inlines });
             });
 
             Task.Run(() =>
@@ -633,13 +633,13 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private List<Models.Hyperlink> ParseLinksInMessage(string message)
+        private List<Models.InlineElement> ParseInlinesInMessage(string message)
         {
-            var links = new List<Models.Hyperlink>();
+            var inlines = new List<Models.InlineElement>();
             if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
-                    rule.Matches(links, message);
+                    rule.Matches(inlines, message);
             }
 
             var matches = REG_SHA_FORMAT().Matches(message);
@@ -652,7 +652,7 @@ namespace SourceGit.ViewModels
                 var start = match.Index;
                 var len = match.Length;
                 var intersect = false;
-                foreach (var link in links)
+                foreach (var link in inlines)
                 {
                     if (link.Intersect(start, len))
                     {
@@ -667,13 +667,13 @@ namespace SourceGit.ViewModels
                 var sha = match.Groups[1].Value;
                 var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
                 if (isCommitSHA)
-                    links.Add(new Models.Hyperlink(start, len, sha, true));
+                    inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
 
-            if (links.Count > 0)
-                links.Sort((l, r) => l.Start - r.Start);
+            if (inlines.Count > 0)
+                inlines.Sort((l, r) => l.Start - r.Start);
 
-            return links;
+            return inlines;
         }
 
         private void RefreshVisibleChanges()

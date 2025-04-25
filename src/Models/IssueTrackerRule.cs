@@ -46,7 +46,7 @@ namespace SourceGit.Models
             set => SetProperty(ref _urlTemplate, value);
         }
 
-        public void Matches(List<Hyperlink> outs, string message)
+        public void Matches(List<InlineElement> outs, string message)
         {
             if (_regex == null || string.IsNullOrEmpty(_urlTemplate))
                 return;
@@ -81,8 +81,7 @@ namespace SourceGit.Models
                         link = link.Replace($"${j}", group.Value);
                 }
 
-                var range = new Hyperlink(start, len, link);
-                outs.Add(range);
+                outs.Add(new InlineElement(InlineElementType.Link, start, len, link));
             }
         }
 

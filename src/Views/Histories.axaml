@@ -160,7 +160,10 @@
                       </v:CommitRefsPresenter>
 
                       <v:CommitSubjectPresenter Grid.Column="3"
-                                                Classes="primary"
+                                                FontFamily="{DynamicResource Fonts.Primary}"
+                                                CodeFontFamily="{DynamicResource Fonts.Monospace}"
+                                                Foreground="{DynamicResource Brush.FG1}"
+                                                LinkForeground="{DynamicResource Brush.Link}"
                                                 Subject="{Binding Subject}"
                                                 IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
                                                 FontWeight="{Binding FontWeight}"
