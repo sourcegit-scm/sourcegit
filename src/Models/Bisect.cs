@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
@@ -9,6 +10,7 @@ namespace SourceGit.Models
         Detecting,
     }
 
+    [Flags]
     public enum BisectCommitFlag
     {
         None = 0,

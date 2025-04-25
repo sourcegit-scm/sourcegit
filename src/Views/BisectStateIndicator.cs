@@ -65,6 +65,12 @@ namespace SourceGit.Views
                 RenderImpl(context, Brushes.Red, _bad, x);
         }
 
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            InvalidateMeasure();
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             var desiredFlags = Models.BisectCommitFlag.None;
