@@ -97,8 +97,12 @@ namespace SourceGit.Views
                 return;
 
             var height = Bounds.Height;
+            var width = Bounds.Width;
             foreach (var inline in _inlines)
             {
+                if (inline.X > width)
+                    return;
+
                 if (inline.Element is { Type: Models.InlineElementType.Code})
                 {
                     var rect = new Rect(inline.X, (height - inline.Text.Height - 2) * 0.5, inline.Text.WidthIncludingTrailingWhitespace + 8, inline.Text.Height + 2);
