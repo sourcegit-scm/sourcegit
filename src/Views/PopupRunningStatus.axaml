@@ -15,8 +15,7 @@
       <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
     </StackPanel>
 
-    <TextBlock x:Name="TxtDesc"
-               HorizontalAlignment="Stretch"
+    <TextBlock HorizontalAlignment="Stretch"
                TextWrapping="Wrap"
                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                FontStyle="Italic"

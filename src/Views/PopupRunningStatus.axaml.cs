@@ -21,17 +21,9 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            if (IsVisible)
-                StartAnim();
-        }
-
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            StopAnim();
+            _isUnloading = true;
             base.OnUnloaded(e);
         }
 
@@ -41,7 +33,7 @@ namespace SourceGit.Views
 
             if (change.Property == IsVisibleProperty)
             {
-                if (IsVisible)
+                if (IsVisible && !_isUnloading)
                     StartAnim();
                 else
                     StopAnim();
@@ -61,5 +53,7 @@ namespace SourceGit.Views
             Icon.Content = null;
             ProgressBar.IsIndeterminate = false;
         }
+
+        private bool _isUnloading = false;
     }
 }
