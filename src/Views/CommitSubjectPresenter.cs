@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -91,7 +90,7 @@ namespace SourceGit.Views
             {
                 _needRebuildInlines = false;
                 GenerateFormattedTextElements();
-            }    
+            }
 
             if (_inlines.Count == 0)
                 return;
@@ -103,7 +102,7 @@ namespace SourceGit.Views
                 if (inline.X > width)
                     return;
 
-                if (inline.Element is { Type: Models.InlineElementType.Code})
+                if (inline.Element is { Type: Models.InlineElementType.Code })
                 {
                     var rect = new Rect(inline.X, (height - inline.Text.Height - 2) * 0.5, inline.Text.WidthIncludingTrailingWhitespace + 8, inline.Text.Height + 2);
                     var roundedRect = new RoundedRect(rect, new CornerRadius(4));
@@ -129,7 +128,7 @@ namespace SourceGit.Views
                 var subject = Subject;
                 if (string.IsNullOrEmpty(subject))
                 {
-                    _inlines.Clear();
+                    _needRebuildInlines = true;
                     InvalidateVisual();
                     return;
                 }
