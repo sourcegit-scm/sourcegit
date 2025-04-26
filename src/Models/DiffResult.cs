@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -147,9 +148,10 @@ namespace SourceGit.Models
         public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
-            var fileGuid = isTracked ? fileBlobGuid.Substring(0, 8) : "00000000";
 
-            var builder = new StringBuilder();
+            var fileGuid = isTracked ? fileBlobGuid.AsSpan().Slice(0, 8) : "00000000".AsSpan();
+
+            var builder = new StringBuilder(512);
             builder.Append("diff --git a/").Append(change.Path).Append(" b/").Append(change.Path).Append('\n');
             if (!revert && !isTracked)
                 builder.Append("new file mode 100644\n");

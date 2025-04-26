@@ -1047,7 +1047,8 @@ namespace SourceGit.Views
                 // The first selected line (partial selection)
                 if (i == startIdx && startPosition.Column > 1)
                 {
-                    builder.AppendLine(line.Content.Substring(startPosition.Column - 1));
+                    builder.Append(line.Content.AsSpan().Slice(startPosition.Column - 1));
+                    builder.Append(Environment.NewLine);
                     continue;
                 }
 
@@ -1061,7 +1062,14 @@ namespace SourceGit.Views
                 // For the last line (selection range is within original source)
                 if (i == endIdx)
                 {
-                    builder.Append(endPosition.Column - 1 < line.Content.Length ? line.Content.Substring(0, endPosition.Column - 1) : line.Content);
+                    if (endPosition.Column - 1 < line.Content.Length)
+                    {
+                        builder.Append(line.Content.AsSpan().Slice(0, endPosition.Column - 1));
+                    }
+                    else
+                    {
+                        builder.Append(line.Content);
+                    }
                     break;
                 }
 
@@ -1246,12 +1254,12 @@ namespace SourceGit.Views
             var textDiff = DataContext as Models.TextDiff;
             if (textDiff != null)
             {
-                var builder = new StringBuilder();
+                var builder = new StringBuilder(512);
                 foreach (var line in textDiff.Lines)
                 {
                     if (line.Content.Length > 10000)
                     {
-                        builder.Append(line.Content.Substring(0, 1000));
+                        builder.Append(line.Content.AsSpan().Slice(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} character trimmed)");
                     }
                     else
