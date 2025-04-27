@@ -40,13 +40,13 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">沒有不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二進位檔案不支援該操作!</x:String>
-  <x:String x:Key="Text.Bisect">二元搜尋 (bisect)</x:String>
+  <x:String x:Key="Text.Bisect">二分搜尋 (bisect)</x:String>
   <x:String x:Key="Text.Bisect.Abort">中止</x:String>
   <x:String x:Key="Text.Bisect.Bad">標記為錯誤</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">二元搜尋進行中。目前的提交是「良好」是「錯誤」？</x:String>
+  <x:String x:Key="Text.Bisect.Detecting">二分搜尋進行中。目前的提交是「良好」是「錯誤」?</x:String>
   <x:String x:Key="Text.Bisect.Good">標記為良好</x:String>
   <x:String x:Key="Text.Bisect.Skip">無法確認</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">二元搜尋進行中。請標記目前的提交為「良好」或「錯誤」，然後簽出另一個提交。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForRange">二分搜尋進行中。請標記目前的提交為「良好」或「錯誤」，然後簽出另一個提交。</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行溯源 (blame)</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">所選擇的檔案不支援該操作!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">簽出 (checkout) ${0}$...</x:String>
@@ -69,7 +69,7 @@
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重新命名 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切換上游分支...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比較</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">追蹤上游分支不存在或已刪除！</x:String>
+  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">追蹤上游分支不存在或已刪除!</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">位元組</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取  消</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重設檔案到上一版本</x:String>
@@ -168,7 +168,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
-  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">首選合併模式</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">預設合併模式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增符合 Azure DevOps 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增符合 Gitee 議題規則</x:String>
@@ -193,10 +193,10 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名稱</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">确认继续</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">確認繼續</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自动暂存并提交</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)或者自動暫存全部變更並提交?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自動暫存並提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty) 或者自動暫存全部變更並提交?</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">產生約定式提交訊息</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壞性變更:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">關閉的 Issue:</x:String>
@@ -257,7 +257,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">檔案權限已變更</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化和EOL</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化和 EOL</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後一個差異</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS 物件變更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
@@ -313,8 +313,8 @@
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">取消暫存</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">從暫存中移除 {0} 個檔案</x:String>
   <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">取消暫存選取的變更</x:String>
-  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">使用我方版本 (checkout --ours)</x:String>
-  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用對方版本 (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">使用我方版本 (ours)</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">檔案歷史</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">檔案變更</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">檔案内容</x:String>
@@ -472,7 +472,7 @@
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">啟用串流輸出</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">編輯器制表符寬度</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">編輯器 Tab 寬度</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">字型大小</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">預設</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">程式碼</x:String>
@@ -627,7 +627,7 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端機中開啟</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相對時間</x:String>
-  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 GIT 指令的日誌</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 Git 指令記錄</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>
@@ -713,8 +713,8 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模組:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">啟用 [--remote] 選項</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
-  <x:String x:Key="Text.ViewLogs" xml:space="preserve">日誌清單</x:String>
-  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清除所有日誌</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">記錄</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清除所有記錄</x:String>
   <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">刪除</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
@@ -746,13 +746,13 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交 (修改原始提交)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">您已暫存 {0} 檔案，但只顯示 {1} 檔案 ({2} 檔案被篩選器隱藏)。您要繼續嗎？</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">檢測到衝突</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">您已暫存 {0} 個檔案，但只顯示 {1} 個檔案 ({2} 個檔案被篩選器隱藏)。您確定要繼續提交嗎?</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">偵測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">使用外部合併工具開啟</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">使用外部合併工具開啟</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">檔案衝突已解決</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用 MINE</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用 THEIRS</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用我方版本 (ours)</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交訊息記錄</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">沒有可套用的提交訊息範本</x:String>
