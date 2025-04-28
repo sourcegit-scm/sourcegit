@@ -1,18 +1,27 @@
 ﻿namespace SourceGit.Models
 {
-    public class Hyperlink
+    public enum InlineElementType
     {
+        None = 0,
+        Keyword,
+        Link,
+        CommitSHA,
+        Code,
+    }
+
+    public class InlineElement
+    {
+        public InlineElementType Type { get; set; } = InlineElementType.None;
         public int Start { get; set; } = 0;
         public int Length { get; set; } = 0;
         public string Link { get; set; } = "";
-        public bool IsCommitSHA { get; set; } = false;
 
-        public Hyperlink(int start, int length, string link, bool isCommitSHA = false)
+        public InlineElement(InlineElementType type, int start, int length, string link)
         {
+            Type = type;
             Start = start;
             Length = length;
             Link = link;
-            IsCommitSHA = isCommitSHA;
         }
 
         public bool Intersect(int start, int length)

@@ -1,18 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 
 namespace SourceGit.Views
 {
-    public partial class CommitSubjectPresenter : TextBlock
+    public partial class CommitSubjectPresenter : Control
     {
+        public static readonly StyledProperty<FontFamily> FontFamilyProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, FontFamily>(nameof(FontFamily));
+
+        public FontFamily FontFamily
+        {
+            get => GetValue(FontFamilyProperty);
+            set => SetValue(FontFamilyProperty, value);
+        }
+
+        public static readonly StyledProperty<FontFamily> CodeFontFamilyProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, FontFamily>(nameof(CodeFontFamily));
+
+        public FontFamily CodeFontFamily
+        {
+            get => GetValue(CodeFontFamilyProperty);
+            set => SetValue(CodeFontFamilyProperty, value);
+        }
+
+        public static readonly StyledProperty<double> FontSizeProperty =
+           TextBlock.FontSizeProperty.AddOwner<CommitSubjectPresenter>();
+
+        public double FontSize
+        {
+            get => GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
+        }
+
+        public static readonly StyledProperty<FontWeight> FontWeightProperty =
+           TextBlock.FontWeightProperty.AddOwner<CommitSubjectPresenter>();
+
+        public FontWeight FontWeight
+        {
+            get => GetValue(FontWeightProperty);
+            set => SetValue(FontWeightProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> InlineCodeBackgroundProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(InlineCodeBackground), Brushes.Transparent);
+
+        public IBrush InlineCodeBackground
+        {
+            get => GetValue(InlineCodeBackgroundProperty);
+            set => SetValue(InlineCodeBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> ForegroundProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(Foreground), Brushes.White);
+
+        public IBrush Foreground
+        {
+            get => GetValue(ForegroundProperty);
+            set => SetValue(ForegroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> LinkForegroundProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(LinkForeground), Brushes.White);
+
+        public IBrush LinkForeground
+        {
+            get => GetValue(LinkForegroundProperty);
+            set => SetValue(LinkForegroundProperty, value);
+        }
+
         public static readonly StyledProperty<string> SubjectProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(Subject));
 
@@ -31,7 +93,37 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
-        protected override Type StyleKeyOverride => typeof(TextBlock);
+        public override void Render(DrawingContext context)
+        {
+            if (_needRebuildInlines)
+            {
+                _needRebuildInlines = false;
+                GenerateFormattedTextElements();
+            }
+
+            if (_inlines.Count == 0)
+                return;
+
+            var height = Bounds.Height;
+            var width = Bounds.Width;
+            foreach (var inline in _inlines)
+            {
+                if (inline.X > width)
+                    return;
+
+                if (inline.Element is { Type: Models.InlineElementType.Code })
+                {
+                    var rect = new Rect(inline.X, (height - inline.Text.Height - 2) * 0.5, inline.Text.WidthIncludingTrailingWhitespace + 8, inline.Text.Height + 2);
+                    var roundedRect = new RoundedRect(rect, new CornerRadius(4));
+                    context.DrawRectangle(InlineCodeBackground, null, roundedRect);
+                    context.DrawText(inline.Text, new Point(inline.X + 4, (height - inline.Text.Height) * 0.5));
+                }
+                else
+                {
+                    context.DrawText(inline.Text, new Point(inline.X, (height - inline.Text.Height) * 0.5));
+                }
+            }
+        }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
@@ -39,85 +131,69 @@ namespace SourceGit.Views
 
             if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
             {
-                Inlines!.Clear();
-                _matches = null;
+                _elements.Clear();
                 ClearHoveredIssueLink();
 
                 var subject = Subject;
                 if (string.IsNullOrEmpty(subject))
+                {
+                    _needRebuildInlines = true;
+                    InvalidateVisual();
                     return;
+                }
 
                 var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
                 if (!keywordMatch.Success)
                     keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
 
+                if (keywordMatch.Success)
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+
+                var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
+                for (var i = 0; i < codeMatches.Count; i++)
+                {
+                    var match = codeMatches[i];
+                    if (!match.Success)
+                        continue;
+
+                    var start = match.Index;
+                    var len = match.Length;
+                    var intersect = false;
+                    foreach (var exist in _elements)
+                    {
+                        if (exist.Intersect(start, len))
+                        {
+                            intersect = true;
+                            break;
+                        }
+                    }
+
+                    if (intersect)
+                        continue;
+
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
+                }
+
                 var rules = IssueTrackerRules ?? [];
-                var matches = new List<Models.Hyperlink>();
                 foreach (var rule in rules)
-                    rule.Matches(matches, subject);
+                    rule.Matches(_elements, subject);
 
-                if (matches.Count == 0)
-                {
-                    if (keywordMatch.Success)
-                    {
-                        Inlines.Add(new Run(subject.Substring(0, keywordMatch.Length)) { FontWeight = FontWeight.Bold });
-                        Inlines.Add(new Run(subject.Substring(keywordMatch.Length)));
-                    }
-                    else
-                    {
-                        Inlines.Add(new Run(subject));
-                    }
-                    return;
-                }
-
-                matches.Sort((l, r) => l.Start - r.Start);
-                _matches = matches;
-
-                var inlines = new List<Inline>();
-                var pos = 0;
-                foreach (var match in matches)
-                {
-                    if (match.Start > pos)
-                    {
-                        if (keywordMatch.Success && pos < keywordMatch.Length)
-                        {
-                            if (keywordMatch.Length < match.Start)
-                            {
-                                inlines.Add(new Run(subject.Substring(pos, keywordMatch.Length - pos)) { FontWeight = FontWeight.Bold });
-                                inlines.Add(new Run(subject.Substring(keywordMatch.Length, match.Start - keywordMatch.Length)));
-                            }
-                            else
-                            {
-                                inlines.Add(new Run(subject.Substring(pos, match.Start - pos)) { FontWeight = FontWeight.Bold });
-                            }
-                        }
-                        else
-                        {
-                            inlines.Add(new Run(subject.Substring(pos, match.Start - pos)));
-                        }
-                    }
-
-                    var link = new Run(subject.Substring(match.Start, match.Length));
-                    link.Classes.Add("issue_link");
-                    inlines.Add(link);
-
-                    pos = match.Start + match.Length;
-                }
-
-                if (pos < subject.Length)
-                {
-                    if (keywordMatch.Success && pos < keywordMatch.Length)
-                    {
-                        inlines.Add(new Run(subject.Substring(pos, keywordMatch.Length - pos)) { FontWeight = FontWeight.Bold });
-                        inlines.Add(new Run(subject.Substring(keywordMatch.Length)));
-                    }
-                    else
-                    {
-                        inlines.Add(new Run(subject.Substring(pos)));
-                    }
-                }
-
-                Inlines.AddRange(inlines);
+                _needRebuildInlines = true;
+                InvalidateVisual();
+            }
+            else if (change.Property == FontFamilyProperty ||
+                change.Property == CodeFontFamilyProperty ||
+                change.Property == FontSizeProperty ||
+                change.Property == FontWeightProperty ||
+                change.Property == ForegroundProperty ||
+                change.Property == LinkForegroundProperty)
+            {
+                _needRebuildInlines = true;
+                InvalidateVisual();
+            }
+            else if (change.Property == InlineCodeBackgroundProperty)
+            {
+                InvalidateVisual();
             }
         }
 
@@ -125,31 +201,23 @@ namespace SourceGit.Views
         {
             base.OnPointerMoved(e);
 
-            if (_matches != null)
+            var point = e.GetPosition(this);
+            foreach (var inline in _inlines)
             {
-                var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
-                var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
-                var y = Math.Min(Math.Max(point.Y, 0), Math.Max(TextLayout.Height, 0));
-                point = new Point(x, y);
+                if (inline.Element is not { Type: Models.InlineElementType.Link } link)
+                    continue;
 
-                var textPosition = TextLayout.HitTestPoint(point).TextPosition;
-                foreach (var match in _matches)
-                {
-                    if (!match.Intersect(textPosition, 1))
-                        continue;
+                if (inline.X > point.X || inline.X + inline.Text.WidthIncludingTrailingWhitespace < point.X)
+                    continue;
 
-                    if (match == _lastHover)
-                        return;
-
-                    _lastHover = match;
-                    SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
-                    ToolTip.SetTip(this, match.Link);
-                    e.Handled = true;
-                    return;
-                }
-
-                ClearHoveredIssueLink();
+                _lastHover = link;
+                SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
+                ToolTip.SetTip(this, link.Link);
+                e.Handled = true;
+                return;
             }
+
+            ClearHoveredIssueLink();
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -166,6 +234,94 @@ namespace SourceGit.Views
             ClearHoveredIssueLink();
         }
 
+        private void GenerateFormattedTextElements()
+        {
+            _inlines.Clear();
+
+            var subject = Subject;
+            if (string.IsNullOrEmpty(subject))
+                return;
+
+            var fontFamily = FontFamily;
+            var codeFontFamily = CodeFontFamily;
+            var fontSize = FontSize;
+            var foreground = Foreground;
+            var linkForeground = LinkForeground;
+            var typeface = new Typeface(fontFamily, FontStyle.Normal, FontWeight);
+            var codeTypeface = new Typeface(codeFontFamily, FontStyle.Normal, FontWeight);
+            var pos = 0;
+            var x = 0.0;
+            foreach (var elem in _elements)
+            {
+                if (elem.Start > pos)
+                {
+                    var normal = new FormattedText(
+                        subject.Substring(pos, elem.Start - pos),
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        foreground);
+
+                    _inlines.Add(new Inline(x, normal, null));
+                    x += normal.WidthIncludingTrailingWhitespace;
+                }
+
+                if (elem.Type == Models.InlineElementType.Keyword)
+                {
+                    var keyword = new FormattedText(
+                        subject.Substring(elem.Start, elem.Length),
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(fontFamily, FontStyle.Normal, FontWeight.Bold),
+                        fontSize,
+                        foreground);
+                    _inlines.Add(new Inline(x, keyword, elem));
+                    x += keyword.WidthIncludingTrailingWhitespace;
+                }
+                else if (elem.Type == Models.InlineElementType.Link)
+                {
+                    var link = new FormattedText(
+                        subject.Substring(elem.Start, elem.Length),
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        linkForeground);
+                    _inlines.Add(new Inline(x, link, elem));
+                    x += link.WidthIncludingTrailingWhitespace;
+                }
+                else if (elem.Type == Models.InlineElementType.Code)
+                {
+                    var link = new FormattedText(
+                        subject.Substring(elem.Start + 1, elem.Length - 2),
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        codeTypeface,
+                        fontSize,
+                        foreground);
+                    _inlines.Add(new Inline(x, link, elem));
+                    x += link.WidthIncludingTrailingWhitespace + 8;
+                }
+
+                pos = elem.Start + elem.Length;
+            }
+
+            if (pos < subject.Length)
+            {
+                var normal = new FormattedText(
+                        subject.Substring(pos),
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        foreground);
+
+                _inlines.Add(new Inline(x, normal, null));
+                x += normal.WidthIncludingTrailingWhitespace;
+            }
+        }
+
         private void ClearHoveredIssueLink()
         {
             if (_lastHover != null)
@@ -176,13 +332,32 @@ namespace SourceGit.Views
             }
         }
 
+        [GeneratedRegex(@"`.*?`")]
+        private static partial Regex REG_INLINECODE_FORMAT();
+
         [GeneratedRegex(@"^\[[\w\s]+\]")]
         private static partial Regex REG_KEYWORD_FORMAT1();
 
         [GeneratedRegex(@"^\S+([\<\(][\w\s_\-\*,]+[\>\)])?\!?\s?:\s")]
         private static partial Regex REG_KEYWORD_FORMAT2();
 
-        private List<Models.Hyperlink> _matches = null;
-        private Models.Hyperlink _lastHover = null;
+        private class Inline
+        {
+            public double X { get; set; } = 0;
+            public FormattedText Text { get; set; } = null;
+            public Models.InlineElement Element { get; set; } = null;
+
+            public Inline(double x, FormattedText text, Models.InlineElement elem)
+            {
+                X = x;
+                Text = text;
+                Element = elem;
+            }
+        }
+
+        private List<Models.InlineElement> _elements = [];
+        private List<Inline> _inlines = [];
+        private Models.InlineElement _lastHover = null;
+        private bool _needRebuildInlines = false;
     }
 }

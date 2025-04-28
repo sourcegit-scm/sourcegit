@@ -87,11 +87,8 @@ namespace SourceGit.ViewModels
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
             {
-                if (subdir.Name.Equals("node_modules", StringComparison.Ordinal) ||
-                    subdir.Name.Equals(".svn", StringComparison.Ordinal) ||
-                    subdir.Name.Equals(".vs", StringComparison.Ordinal) ||
-                    subdir.Name.Equals(".vscode", StringComparison.Ordinal) ||
-                    subdir.Name.Equals(".idea", StringComparison.Ordinal))
+                if (subdir.Name.StartsWith(".", StringComparison.Ordinal) ||
+                    subdir.Name.Equals("node_modules", StringComparison.Ordinal))
                     continue;
 
                 CallUIThread(() => ProgressDescription = $"Scanning {subdir.FullName}...");

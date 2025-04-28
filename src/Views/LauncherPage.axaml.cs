@@ -67,15 +67,15 @@ namespace SourceGit.Views
                     presenter.Content = null;
                     return;
                 }
-                
-                var viewTypeName = dataTypeName.Replace("ViewModels", "Views");
+
+                var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
                 var viewType = Type.GetType(viewTypeName);
                 if (viewType == null)
                 {
                     presenter.Content = null;
                     return;
                 }
-                
+
                 var view = Activator.CreateInstance(viewType);
                 presenter.Content = view;
             }

@@ -40,6 +40,13 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">没有不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二进制文件不支持该操作!!!</x:String>
+  <x:String x:Key="Text.Bisect">二分定位(bisect)</x:String>
+  <x:String x:Key="Text.Bisect.Abort">终止</x:String>
+  <x:String x:Key="Text.Bisect.Bad">标记错误</x:String>
+  <x:String x:Key="Text.Bisect.Detecting">二分定位进行中。当前提交是 '正确' 还是 '错误' ？</x:String>
+  <x:String x:Key="Text.Bisect.Good">标记正确</x:String>
+  <x:String x:Key="Text.Bisect.Skip">无法判定</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForRange">二分定位进行中。请标记当前的提交是 '正确' 还是 '错误'，然后检出另一个提交。</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
@@ -494,6 +501,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">邮箱</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">默认GIT用户邮箱</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">拉取更新时启用修剪（--prune）</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">对比文件时，默认忽略换行符变更 (--ignore-cr-at-eol)</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">本软件要求GIT最低版本为2.23.0</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">启用HTTP SSL验证</x:String>

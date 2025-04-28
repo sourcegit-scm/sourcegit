@@ -39,6 +39,7 @@
 * Search commits
 * GitFlow
 * Git LFS
+* Bisect
 * Issue Link
 * Workspace
 * Custom Action

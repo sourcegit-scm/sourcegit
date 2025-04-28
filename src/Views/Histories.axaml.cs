@@ -91,6 +91,15 @@ namespace SourceGit.Views
             set => SetValue(CurrentBranchProperty, value);
         }
 
+        public static readonly StyledProperty<Models.Bisect> BisectProperty =
+            AvaloniaProperty.Register<Histories, Models.Bisect>(nameof(Bisect));
+
+        public Models.Bisect Bisect
+        {
+            get => GetValue(BisectProperty);
+            set => SetValue(BisectProperty, value);
+        }
+
         public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
             AvaloniaProperty.Register<Histories, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
 

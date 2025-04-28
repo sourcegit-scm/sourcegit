@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Threading;
+
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
@@ -101,76 +99,16 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public AIAssistant(Models.OpenAIService service, string repo, ViewModels.WorkingCopy wc, List<Models.Change> changes)
-        {
-            _service = service;
-            _repo = repo;
-            _wc = wc;
-            _changes = changes;
-
-            InitializeComponent();
-        }
-
-        protected override void OnOpened(EventArgs e)
-        {
-            base.OnOpened(e);
-            Generate();
-        }
-
         protected override void OnClosing(WindowClosingEventArgs e)
         {
             base.OnClosing(e);
-            _cancel?.Cancel();
+            (DataContext as ViewModels.AIAssistant)?.Cancel();
         }
 
-        private void OnGenerateCommitMessage(object sender, RoutedEventArgs e)
+        private void OnApply(object sender, RoutedEventArgs e)
         {
-            if (_wc != null)
-                _wc.CommitMessage = TxtResponse.Text;
-
+            (DataContext as ViewModels.AIAssistant)?.Apply();
             Close();
         }
-
-        private void OnRegen(object sender, RoutedEventArgs e)
-        {
-            TxtResponse.Text = string.Empty;
-            Generate();
-            e.Handled = true;
-        }
-
-        private void Generate()
-        {
-            if (_repo == null)
-                return;
-
-            IconInProgress.IsVisible = true;
-            BtnGenerateCommitMessage.IsEnabled = false;
-            BtnRegenerate.IsEnabled = false;
-
-            _cancel = new CancellationTokenSource();
-            Task.Run(() =>
-            {
-                new Commands.GenerateCommitMessage(_service, _repo, _changes, _cancel.Token, message =>
-                {
-                    Dispatcher.UIThread.Invoke(() => TxtResponse.Text = message);
-                }).Exec();
-
-                if (!_cancel.IsCancellationRequested)
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        IconInProgress.IsVisible = false;
-                        BtnGenerateCommitMessage.IsEnabled = true;
-                        BtnRegenerate.IsEnabled = true;
-                    });
-                }
-            }, _cancel.Token);
-        }
-
-        private Models.OpenAIService _service;
-        private string _repo;
-        private ViewModels.WorkingCopy _wc;
-        private List<Models.Change> _changes;
-        private CancellationTokenSource _cancel;
     }
 }

@@ -11,11 +11,12 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} R\d{0,6}\t(.*\t.*)$")]
         private static partial Regex REG_FORMAT2();
 
-        public QueryStagedChangesWithAmend(string repo)
+        public QueryStagedChangesWithAmend(string repo, string parent)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "diff-index --cached -M HEAD^";
+            Args = $"diff-index --cached -M {parent}";
+            _parent = parent;
         }
 
         public List<Models.Change> Result()
@@ -37,6 +38,7 @@ namespace SourceGit.Commands
                             {
                                 FileMode = match.Groups[1].Value,
                                 ObjectHash = match.Groups[2].Value,
+                                ParentSHA = _parent,
                             },
                         };
                         change.Set(Models.ChangeState.Renamed);
@@ -54,6 +56,7 @@ namespace SourceGit.Commands
                             {
                                 FileMode = match.Groups[1].Value,
                                 ObjectHash = match.Groups[2].Value,
+                                ParentSHA = _parent,
                             },
                         };
 
@@ -88,5 +91,7 @@ namespace SourceGit.Commands
 
             return [];
         }
+
+        private string _parent = string.Empty;
     }
 }

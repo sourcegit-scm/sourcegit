@@ -126,19 +126,21 @@
                   </Grid.ColumnDefinitions>
 
                   <!-- Subject & REFS -->
-                  <Border Grid.Column="0"
-                          Padding="{Binding Margin}"
-                          ClipToBounds="True"
-                          Background="Transparent"
-                          ToolTip.Tip="{Binding Subject}">
-                    <Grid ColumnDefinitions="Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
+                  <Border Grid.Column="0" Padding="{Binding Margin}" ClipToBounds="True" Background="Transparent">
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
                       <v:CommitStatusIndicator Grid.Column="0"
                                                CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
                                                AheadBrush="{DynamicResource Brush.Accent}"
                                                BehindBrush="{DynamicResource Brush.FG1}"
                                                VerticalAlignment="Center"/>
+                      
+                      <v:BisectStateIndicator Grid.Column="1"
+                                              Background="{DynamicResource Brush.Contents}"
+                                              Foreground="{DynamicResource Brush.FG1}"
+                                              Bisect="{Binding $parent[v:Histories].Bisect}"
+                                              VerticalAlignment="Center"/>
 
-                      <v:CommitRefsPresenter Grid.Column="1"
+                      <v:CommitRefsPresenter Grid.Column="2"
                                              Background="{DynamicResource Brush.Contents}"
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
@@ -153,8 +155,12 @@
                         </v:CommitRefsPresenter.UseGraphColor>
                       </v:CommitRefsPresenter>
 
-                      <v:CommitSubjectPresenter Grid.Column="2"
-                                                Classes="primary"
+                      <v:CommitSubjectPresenter Grid.Column="3"
+                                                FontFamily="{DynamicResource Fonts.Primary}"
+                                                CodeFontFamily="{DynamicResource Fonts.Monospace}"
+                                                InlineCodeBackground="{DynamicResource Brush.InlineCode}"
+                                                Foreground="{DynamicResource Brush.FG1}"
+                                                LinkForeground="{DynamicResource Brush.Link}"
                                                 Subject="{Binding Subject}"
                                                 IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
                                                 FontWeight="{Binding FontWeight}"
@@ -163,10 +169,7 @@
                   </Border>
 
                   <!-- Author -->
-                  <Grid Grid.Column="1"
-                        ColumnDefinitions="20,*"
-                        Background="Transparent"
-                        ToolTip.Tip="{Binding Author}">
+                  <Grid Grid.Column="1" ColumnDefinitions="20,*" Background="Transparent">
                     <v:Avatar Grid.Column="0"
                               Width="16" Height="16"
                               Margin="4,0,0,0"

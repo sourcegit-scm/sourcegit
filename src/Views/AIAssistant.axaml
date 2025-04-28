@@ -7,6 +7,7 @@
                     xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120"
                     x:Class="SourceGit.Views.AIAssistant"
+                    x:DataType="vm:AIAssistant"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.AIAssistant}"
@@ -48,20 +49,22 @@
     <!-- Options -->
     <Border Grid.Row="2" Margin="0,0,0,8">
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <v:LoadingIcon x:Name="IconInProgress" Width="14" Height="14" Margin="0,0,8,0"/>
+        <v:LoadingIcon Width="14" Height="14"
+                       Margin="0,0,8,0"
+                       IsVisible="{Binding IsGenerating}"/>
         <Button Classes="flat"
-                x:Name="BtnGenerateCommitMessage"
                 Height="28"
                 Margin="0,0,8,0"
                 Padding="12,0"
                 Content="{DynamicResource Text.AIAssistant.Use}"
-                Click="OnGenerateCommitMessage"/>
+                IsEnabled="{Binding !IsGenerating}"
+                Click="OnApply"/>
         <Button Classes="flat"
-                x:Name="BtnRegenerate"
                 Height="28"
                 Padding="12,0"
                 Content="{DynamicResource Text.AIAssistant.Regen}"
-                Click="OnRegen"/>
+                IsEnabled="{Binding !IsGenerating}"
+                Command="{Binding Regen}"/>
       </StackPanel>
     </Border>
   </Grid>

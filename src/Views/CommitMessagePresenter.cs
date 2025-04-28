@@ -39,7 +39,7 @@ namespace SourceGit.Views
                 if (string.IsNullOrEmpty(message))
                     return;
 
-                var links = FullMessage?.Links;
+                var links = FullMessage?.Inlines;
                 if (links == null || links.Count == 0)
                 {
                     Inlines.Add(new Run(message));
@@ -54,7 +54,7 @@ namespace SourceGit.Views
                         inlines.Add(new Run(message.Substring(pos, link.Start - pos)));
 
                     var run = new Run(message.Substring(link.Start, link.Length));
-                    run.Classes.Add(link.IsCommitSHA ? "commit_link" : "issue_link");
+                    run.Classes.Add(link.Type == Models.InlineElementType.CommitSHA ? "commit_link" : "issue_link");
                     inlines.Add(run);
 
                     pos = link.Start + link.Length;
@@ -87,7 +87,7 @@ namespace SourceGit.Views
                         scrollViewer.LineDown();
                 }
             }
-            else if (FullMessage is { Links: { Count: > 0 } links })
+            else if (FullMessage is { Inlines: { Count: > 0 } links })
             {
                 var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
                 var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
@@ -106,7 +106,7 @@ namespace SourceGit.Views
                     SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
 
                     _lastHover = link;
-                    if (!link.IsCommitSHA)
+                    if (link.Type == Models.InlineElementType.Link)
                         ToolTip.SetTip(this, link.Link);
                     else
                         ProcessHoverCommitLink(link);
@@ -127,7 +127,7 @@ namespace SourceGit.Views
                 var link = _lastHover.Link;
                 e.Pointer.Capture(null);
 
-                if (_lastHover.IsCommitSHA)
+                if (_lastHover.Type == Models.InlineElementType.CommitSHA)
                 {
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
@@ -252,7 +252,7 @@ namespace SourceGit.Views
             ClearHoveredIssueLink();
         }
 
-        private void ProcessHoverCommitLink(Models.Hyperlink link)
+        private void ProcessHoverCommitLink(Models.InlineElement link)
         {
             var sha = link.Link;
 
@@ -301,7 +301,7 @@ namespace SourceGit.Views
             }
         }
 
-        private Models.Hyperlink _lastHover = null;
+        private Models.InlineElement _lastHover = null;
         private Dictionary<string, Models.Commit> _inlineCommits = new();
     }
 }

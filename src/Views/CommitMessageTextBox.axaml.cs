@@ -201,12 +201,7 @@ namespace SourceGit.Views
 
         private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
-            var dialog = new ConventionalCommitMessageBuilder()
-            {
-                DataContext = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text)
-            };
-
-            App.OpenDialog(dialog);
+            App.ShowWindow(new ViewModels.ConventionalCommitMessageBuilder(text => Text = text), true);
             e.Handled = true;
         }
 

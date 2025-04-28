@@ -22,7 +22,7 @@ namespace SourceGit.Models
                 _singletoneLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 _isFirstInstance = true;
                 _server = new NamedPipeServerStream(
-                    "SourceGitIPCChannel",
+                    "SourceGitIPCChannel" + Environment.UserName,
                     PipeDirection.In,
                     -1,
                     PipeTransmissionMode.Byte,
@@ -40,7 +40,7 @@ namespace SourceGit.Models
         {
             try
             {
-                using (var client = new NamedPipeClientStream(".", "SourceGitIPCChannel", PipeDirection.Out))
+                using (var client = new NamedPipeClientStream(".", "SourceGitIPCChannel" + Environment.UserName, PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly))
                 {
                     client.Connect(1000);
                     if (!client.IsConnected)
