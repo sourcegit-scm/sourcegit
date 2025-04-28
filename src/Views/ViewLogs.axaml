@@ -12,7 +12,7 @@
                     Title="{DynamicResource Text.ViewLogs}"
                     Icon="/App.ico"
                     Width="800" Height="500"
-                    CanResize="False"
+                    CanResize="True"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*,Auto">
     <!-- TitleBar -->
@@ -38,7 +38,13 @@
     </Grid>
 
     <!-- Body -->
-    <Grid Grid.Row="1" ColumnDefinitions="300,4,*" Margin="8">
+    <Grid Grid.Row="1" Margin="8">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="300" MaxWidth="500" MinWidth="250"/>
+        <ColumnDefinition Width="4"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      
       <ListBox Grid.Column="0"
                Padding="4"
                Background="{DynamicResource Brush.Contents}"
@@ -89,7 +95,7 @@
                          Classes="primary"
                          Margin="4,0"
                          Foreground="{DynamicResource Brush.FG2}"
-                         Text="{Binding TimeStr}"
+                         Text="{Binding StartTime, StringFormat='{}{0:T}'}"
                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
             </Grid>
           </DataTemplate>
@@ -102,6 +108,12 @@
             Data="{StaticResource Icons.Empty}"
             Fill="{DynamicResource Brush.FG2}"
             IsVisible="{Binding Logs.Count, Converter={x:Static c:IntConverters.IsZero}}"/>
+
+      <GridSplitter Grid.Column="1"
+                    MinWidth="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"/>
 
       <Border Grid.Column="2"
               BorderBrush="{DynamicResource Brush.Border2}"

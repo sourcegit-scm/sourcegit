@@ -13,15 +13,10 @@ namespace SourceGit.ViewModels
             private set;
         } = string.Empty;
 
-        public DateTime Time
+        public DateTime StartTime
         {
             get;
         } = DateTime.Now;
-
-        public string TimeStr
-        {
-            get => Time.ToString("T");
-        }
 
         public bool IsComplete
         {
