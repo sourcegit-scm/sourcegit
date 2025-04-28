@@ -398,6 +398,18 @@ namespace SourceGit.ViewModels
             get => _workingCopy?.InProgressContext;
         }
 
+        public Models.BisectState BisectState
+        {
+            get => _bisectState;
+            private set => SetProperty(ref _bisectState, value);
+        }
+
+        public bool IsBisectCommandRunning
+        {
+            get => _isBisectCommandRunning;
+            private set => SetProperty(ref _isBisectCommandRunning, value);
+        }
+
         public bool IsAutoFetching
         {
             get => _isAutoFetching;
@@ -939,6 +951,31 @@ namespace SourceGit.ViewModels
             return actions;
         }
 
+        public void Bisect(string subcmd)
+        {
+            IsBisectCommandRunning = true;
+            SetWatcherEnabled(false);
+
+            var log = CreateLog($"Bisect({subcmd})");
+            Task.Run(() =>
+            {
+                var succ = new Commands.Bisect(_fullpath, subcmd).Use(log).Exec();
+                log.Complete();
+
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    if (!succ)
+                        App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+                    else if (log.Content.Contains("is the first bad commit"))
+                        App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+
+                    MarkBranchesDirtyManually();
+                    SetWatcherEnabled(true);
+                    IsBisectCommandRunning = false;
+                });
+            });
+        }
+
         public void RefreshBranches()
         {
             var branches = new Commands.QueryBranches(_fullpath).Result();
@@ -1022,6 +1059,8 @@ namespace SourceGit.ViewModels
                     _histories.IsLoading = false;
                     _histories.Commits = commits;
                     _histories.Graph = graph;
+
+                    BisectState = _histories.UpdateBisectInfo();
 
                     if (!string.IsNullOrEmpty(_navigateToBranchDelayed))
                     {
@@ -1405,8 +1444,7 @@ namespace SourceGit.ViewModels
                 {
                     locks.Click += (_, e) =>
                     {
-                        var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(this, _remotes[0].Name) };
-                        App.OpenDialog(dialog);
+                        App.ShowWindow(new LFSLocks(this, _remotes[0].Name), true);
                         e.Handled = true;
                     };
                 }
@@ -1419,8 +1457,7 @@ namespace SourceGit.ViewModels
                         lockRemote.Header = remoteName;
                         lockRemote.Click += (_, e) =>
                         {
-                            var dialog = new Views.LFSLocks() { DataContext = new LFSLocks(this, remoteName) };
-                            App.OpenDialog(dialog);
+                            App.ShowWindow(new LFSLocks(this, remoteName), true);
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);
@@ -1706,10 +1743,7 @@ namespace SourceGit.ViewModels
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.OpenDialog(new Views.BranchCompare()
-                    {
-                        DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
-                    });
+                    App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithHead);
@@ -1989,10 +2023,7 @@ namespace SourceGit.ViewModels
             compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
             compareWithHead.Click += (_, _) =>
             {
-                App.OpenDialog(new Views.BranchCompare()
-                {
-                    DataContext = new BranchCompare(_fullpath, branch, _currentBranch)
-                });
+                App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
             };
             menu.Items.Add(compareWithHead);
 
@@ -2634,6 +2665,9 @@ namespace SourceGit.ViewModels
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
+
+        private Models.BisectState _bisectState = Models.BisectState.None;
+        private bool _isBisectCommandRunning = false;
 
         private string _navigateToBranchDelayed = string.Empty;
     }

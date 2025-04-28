@@ -429,5 +429,15 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private void OnBisectCommand(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button &&
+                DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
+                repo.CanCreatePopup())
+                repo.Bisect(button.Tag as string);
+
+            e.Handled = true;
+        }
     }
 }

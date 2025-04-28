@@ -134,31 +134,7 @@ namespace SourceGit.ViewModels
         public CommitDetail(Repository repo)
         {
             _repo = repo;
-
-            foreach (var remote in repo.Remotes)
-            {
-                if (remote.TryGetVisitURL(out var url))
-                {
-                    var trimmedUrl = url;
-                    if (url.EndsWith(".git"))
-                        trimmedUrl = url.Substring(0, url.Length - 4);
-
-                    if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"Github ({trimmedUrl.Substring(19)})", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"GitLab ({trimmedUrl.Substring(trimmedUrl.Substring(15).IndexOf('/') + 16)})", URLPrefix = $"{url}/-/commit/" });
-                    else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"Gitee ({trimmedUrl.Substring(18)})", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"BitBucket ({trimmedUrl.Substring(22)})", URLPrefix = $"{url}/commits/" });
-                    else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"Codeberg ({trimmedUrl.Substring(21)})", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"Gitea ({trimmedUrl.Substring(18)})", URLPrefix = $"{url}/commit/" });
-                    else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
-                        WebLinks.Add(new Models.CommitLink() { Name = $"sourcehut ({trimmedUrl.Substring(18)})", URLPrefix = $"{url}/commit/" });
-                }
-            }
+            WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 
         public void Cleanup()
@@ -173,7 +149,6 @@ namespace SourceGit.ViewModels
             _diffContext = null;
             _viewRevisionFileContent = null;
             _cancellationSource = null;
-            WebLinks.Clear();
             _revisionFiles = null;
             _revisionFileSearchSuggestion = null;
         }
@@ -332,8 +307,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new FileHistories(_repo, change.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -343,8 +317,7 @@ namespace SourceGit.ViewModels
             blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
             blame.Click += (_, ev) =>
             {
-                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, change.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new Blame(_repo.FullPath, change.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -508,8 +481,7 @@ namespace SourceGit.ViewModels
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, file.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new FileHistories(_repo, file.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -519,8 +491,7 @@ namespace SourceGit.ViewModels
             blame.IsEnabled = file.Type == Models.ObjectType.Blob;
             blame.Click += (_, ev) =>
             {
-                var window = new Views.Blame() { DataContext = new Blame(_repo.FullPath, file.Path, _commit.SHA) };
-                window.Show();
+                App.ShowWindow(new Blame(_repo.FullPath, file.Path, _commit.SHA), false);
                 ev.Handled = true;
             };
 
@@ -607,10 +578,10 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var message = new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).Result();
-                var links = ParseLinksInMessage(message);
+                var inlines = ParseInlinesInMessage(message);
 
                 if (!token.IsCancellationRequested)
-                    Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Links = links });
+                    Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Inlines = inlines });
             });
 
             Task.Run(() =>
@@ -662,13 +633,13 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private List<Models.Hyperlink> ParseLinksInMessage(string message)
+        private List<Models.InlineElement> ParseInlinesInMessage(string message)
         {
-            var links = new List<Models.Hyperlink>();
+            var inlines = new List<Models.InlineElement>();
             if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
-                    rule.Matches(links, message);
+                    rule.Matches(inlines, message);
             }
 
             var matches = REG_SHA_FORMAT().Matches(message);
@@ -681,7 +652,7 @@ namespace SourceGit.ViewModels
                 var start = match.Index;
                 var len = match.Length;
                 var intersect = false;
-                foreach (var link in links)
+                foreach (var link in inlines)
                 {
                     if (link.Intersect(start, len))
                     {
@@ -696,13 +667,13 @@ namespace SourceGit.ViewModels
                 var sha = match.Groups[1].Value;
                 var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
                 if (isCommitSHA)
-                    links.Add(new Models.Hyperlink(start, len, sha, true));
+                    inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
 
-            if (links.Count > 0)
-                links.Sort((l, r) => l.Start - r.Start);
+            if (inlines.Count > 0)
+                inlines.Sort((l, r) => l.Start - r.Start);
 
-            return links;
+            return inlines;
         }
 
         private void RefreshVisibleChanges()

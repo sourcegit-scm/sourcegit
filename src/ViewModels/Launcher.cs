@@ -380,7 +380,7 @@ namespace SourceGit.ViewModels
             configure.Header = App.Text("Workspace.Configure");
             configure.Click += (_, e) =>
             {
-                App.OpenDialog(new Views.ConfigureWorkspace() { DataContext = new ConfigureWorkspace() });
+                App.ShowWindow(new ConfigureWorkspace(), true);
                 e.Handled = true;
             };
             menu.Items.Add(configure);

@@ -114,6 +114,9 @@ namespace SourceGit.ViewModels
             // Set default selected local branch.
             if (localBranch != null)
             {
+                if (LocalBranches.Count == 0)
+                    LocalBranches.Add(localBranch);
+
                 _selectedLocalBranch = localBranch;
                 HasSpecifiedLocalBranch = true;
             }

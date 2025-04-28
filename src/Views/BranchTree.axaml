@@ -32,61 +32,63 @@
 
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:BranchTreeNode">
-        <Grid Height="24"
-              Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-              ColumnDefinitions="16,*"
-              ToolTip.Tip="{Binding Tooltip}">
+        <Border Background="Transparent" PointerPressed="OnNodePointerPressed">
+          <Grid Height="24"
+                Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                ColumnDefinitions="16,*"
+                ToolTip.Tip="{Binding Tooltip}">
 
-          <!-- Tree Expander -->
-          <v:BranchTreeNodeToggleButton Grid.Column="0"
-                                        Classes="tree_expander"
-                                        Focusable="False"
-                                        HorizontalAlignment="Center"
-                                        IsChecked="{Binding IsExpanded, Mode=OneWay}"
-                                        IsVisible="{Binding !IsBranch}"/>
+            <!-- Tree Expander -->
+            <v:BranchTreeNodeToggleButton Grid.Column="0"
+                                          Classes="tree_expander"
+                                          Focusable="False"
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                          IsVisible="{Binding !IsBranch}"/>
 
-          <!-- Content Area (allows double-click) -->
-          <Grid Grid.Column="1"
-                Background="Transparent"
-                ColumnDefinitions="18,*,Auto,Auto"
-                DoubleTapped="OnDoubleTappedBranchNode">
+            <!-- Content Area (allows double-click) -->
+            <Grid Grid.Column="1"
+                  Background="Transparent"
+                  ColumnDefinitions="18,*,Auto,Auto"
+                  DoubleTapped="OnDoubleTappedBranchNode">
 
-            <!-- Icon -->
-            <v:BranchTreeNodeIcon Grid.Column="0"
-                                  Node="{Binding}"
-                                  IsExpanded="{Binding IsExpanded}"/>
+              <!-- Icon -->
+              <v:BranchTreeNodeIcon Grid.Column="0"
+                                    Node="{Binding}"
+                                    IsExpanded="{Binding IsExpanded}"/>
 
-            <!-- Name -->
-            <TextBlock Grid.Column="1"
-                       Classes="primary"
-                       Text="{Binding Name}"
-                       FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
-                       TextTrimming="CharacterEllipsis"/>
+              <!-- Name -->
+              <TextBlock Grid.Column="1"
+                         Classes="primary"
+                         Text="{Binding Name}"
+                         FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                         TextTrimming="CharacterEllipsis"/>
 
-            <!-- Upstream invalid tip -->
-            <Border Grid.Column="2"
-                    Width="12" Height="12"
-                    Margin="8,0"
-                    Background="Transparent"
-                    ToolTip.Tip="{DynamicResource Text.BranchUpstreamInvalid}"
-                    IsVisible="{Binding ShowUpstreamGoneTip}">
-              <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
-            </Border>
+              <!-- Upstream invalid tip -->
+              <Border Grid.Column="2"
+                      Width="12" Height="12"
+                      Margin="8,0"
+                      Background="Transparent"
+                      ToolTip.Tip="{DynamicResource Text.BranchUpstreamInvalid}"
+                      IsVisible="{Binding ShowUpstreamGoneTip}">
+                <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
+              </Border>
 
-            <!-- Tracking status -->
-            <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
-                                                  VerticalAlignment="Center"
-                                                  FontFamily="{DynamicResource Fonts.Monospace}"
-                                                  FontSize="10"
-                                                  Foreground="{DynamicResource Brush.BadgeFG}"
-                                                  Background="{DynamicResource Brush.Badge}"/>
+              <!-- Tracking status -->
+              <v:BranchTreeNodeTrackStatusPresenter Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    FontFamily="{DynamicResource Fonts.Monospace}"
+                                                    FontSize="10"
+                                                    Foreground="{DynamicResource Brush.BadgeFG}"
+                                                    Background="{DynamicResource Brush.Badge}"/>
 
-            <!-- Filter Mode Switcher -->
-            <v:FilterModeSwitchButton Grid.Column="3"
-                                      Margin="0,0,12,0"
-                                      Mode="{Binding FilterMode}"/>
+              <!-- Filter Mode Switcher -->
+              <v:FilterModeSwitchButton Grid.Column="3"
+                                        Margin="0,0,12,0"
+                                        Mode="{Binding FilterMode}"/>
+            </Grid>
           </Grid>
-        </Grid>
+        </Border>
       </DataTemplate>
     </ListBox.ItemTemplate>
   </ListBox>

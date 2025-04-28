@@ -1,3 +1,5 @@
+using Avalonia.Input;
+
 namespace SourceGit.Views
 {
     public partial class Hotkeys : ChromelessWindow
@@ -5,6 +7,14 @@ namespace SourceGit.Views
         public Hotkeys()
         {
             InitializeComponent();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (!e.Handled && e.Key == Key.Escape)
+                Close();
         }
     }
 }

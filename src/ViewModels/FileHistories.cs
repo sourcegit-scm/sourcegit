@@ -305,11 +305,23 @@ namespace SourceGit.ViewModels
             _repo.NavigateToCommit(commit.SHA);
         }
 
+        public string GetCommitFullMessage(Models.Commit commit)
+        {
+            var sha = commit.SHA;
+            if (_fullCommitMessages.TryGetValue(sha, out var msg))
+                return msg;
+
+            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).Result();
+            _fullCommitMessages[sha] = msg;
+            return msg;
+        }
+
         private readonly Repository _repo = null;
         private readonly string _file = null;
         private bool _isLoading = true;
         private bool _prevIsDiffMode = true;
         private List<Models.Commit> _commits = null;
+        private Dictionary<string, string> _fullCommitMessages = new Dictionary<string, string>();
         private object _viewContent = null;
     }
 }

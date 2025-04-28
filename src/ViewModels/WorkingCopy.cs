@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -323,10 +323,7 @@ namespace SourceGit.ViewModels
 
         public void OpenAssumeUnchanged()
         {
-            App.OpenDialog(new Views.AssumeUnchangedManager()
-            {
-                DataContext = new AssumeUnchangedManager(_repo)
-            });
+            App.ShowWindow(new AssumeUnchangedManager(_repo), true);
         }
 
         public void StashAll(bool autoStart)
@@ -638,7 +635,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan().Slice(0, 10)} (revert)");
                         useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -726,8 +723,7 @@ namespace SourceGit.ViewModels
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
-                        window.Show();
+                        App.ShowWindow(new FileHistories(_repo, change.Path), false);
                         e.Handled = true;
                     };
 
@@ -775,7 +771,7 @@ namespace SourceGit.ViewModels
                             byExtension.Header = App.Text("WorkingCopy.AddToGitIgnore.Extension", extension);
                             byExtension.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, "*" + extension);
+                                Commands.GitIgnore.Add(_repo.FullPath, $"*{extension}");
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtension);
@@ -786,7 +782,7 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
                                 var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
-                                Commands.GitIgnore.Add(_repo.FullPath, dir + "/*" + extension);
+                                Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(byExtensionInSameFolder);
@@ -828,7 +824,7 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Track LFS");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track("*" + extension, false, log));
+                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track($"*{extension}", false, log));
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
@@ -997,7 +993,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan().Slice(0, 10)} (revert)");
                         useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -1093,8 +1089,7 @@ namespace SourceGit.ViewModels
                 {
                     ai.Click += (_, e) =>
                     {
-                        var dialog = new Views.AIAssistant(services[0], _repo.FullPath, this, _selectedStaged);
-                        App.OpenDialog(dialog);
+                        App.ShowWindow(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t), true);
                         e.Handled = true;
                     };
                 }
@@ -1108,8 +1103,7 @@ namespace SourceGit.ViewModels
                         item.Header = service.Name;
                         item.Click += (_, e) =>
                         {
-                            var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _selectedStaged);
-                            App.OpenDialog(dialog);
+                            App.ShowWindow(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t), true);
                             e.Handled = true;
                         };
 
@@ -1193,8 +1187,7 @@ namespace SourceGit.ViewModels
                 history.Icon = App.CreateMenuIcon("Icons.Histories");
                 history.Click += (_, e) =>
                 {
-                    var window = new Views.FileHistories() { DataContext = new FileHistories(_repo, change.Path) };
-                    window.Show();
+                    App.ShowWindow(new FileHistories(_repo, change.Path), false);
                     e.Handled = true;
                 };
 
@@ -1424,7 +1417,7 @@ namespace SourceGit.ViewModels
                         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                         var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                         if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
-                            friendlyName = "~" + gitTemplate.Substring(prefixLen);
+                            friendlyName = $"~{gitTemplate.AsSpan().Slice(prefixLen)}";
                     }
 
                     var gitTemplateItem = new MenuItem();
@@ -1456,9 +1449,11 @@ namespace SourceGit.ViewModels
             {
                 for (int i = 0; i < historiesCount; i++)
                 {
-                    var message = _repo.Settings.CommitMessages[i];
+                    var message = _repo.Settings.CommitMessages[i].Trim().ReplaceLineEndings("\n");
+                    var subjectEndIdx = message.IndexOf('\n');
+                    var subject = subjectEndIdx > 0 ? message.Substring(0, subjectEndIdx) : message;
                     var item = new MenuItem();
-                    item.Header = message;
+                    item.Header = subject;
                     item.Icon = App.CreateMenuIcon("Icons.Histories");
                     item.Click += (_, e) =>
                     {
@@ -1490,8 +1485,7 @@ namespace SourceGit.ViewModels
 
             if (services.Count == 1)
             {
-                var dialog = new Views.AIAssistant(services[0], _repo.FullPath, this, _staged);
-                App.OpenDialog(dialog);
+                App.ShowWindow(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t), true);
                 return null;
             }
 
@@ -1503,8 +1497,7 @@ namespace SourceGit.ViewModels
                 item.Header = service.Name;
                 item.Click += (_, e) =>
                 {
-                    var dialog = new Views.AIAssistant(dup, _repo.FullPath, this, _staged);
-                    App.OpenDialog(dialog);
+                    App.ShowWindow(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t), true);
                     e.Handled = true;
                 };
 
@@ -1533,7 +1526,10 @@ namespace SourceGit.ViewModels
         private List<Models.Change> GetStagedChanges()
         {
             if (_useAmend)
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath).Result();
+            {
+                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").Result();
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{head.SHA}^").Result();
+            }
 
             var rs = new List<Models.Change>();
             foreach (var c in _cached)
@@ -1705,14 +1701,7 @@ namespace SourceGit.ViewModels
             if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && !confirmWithFilter)
             {
                 var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                App.OpenDialog(new Views.ConfirmCommit()
-                {
-                    DataContext = new ConfirmCommit(confirmMessage, () =>
-                    {
-                        DoCommit(autoStage, autoPush, allowEmpty, true);
-                    })
-                });
-
+                App.ShowWindow(new ConfirmCommit(confirmMessage, () => DoCommit(autoStage, autoPush, allowEmpty, true)), true);
                 return;
             }
 
@@ -1720,14 +1709,7 @@ namespace SourceGit.ViewModels
             {
                 if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
                 {
-                    App.OpenDialog(new Views.ConfirmEmptyCommit()
-                    {
-                        DataContext = new ConfirmEmptyCommit(_count > 0, stageAll =>
-                        {
-                            DoCommit(stageAll, autoPush, true, confirmWithFilter);
-                        })
-                    });
-
+                    App.ShowWindow(new ConfirmEmptyCommit(_count > 0, stageAll => DoCommit(stageAll, autoPush, true, confirmWithFilter)), true);
                     return;
                 }
             }
@@ -1756,7 +1738,18 @@ namespace SourceGit.ViewModels
                         UseAmend = false;
 
                         if (autoPush && _repo.Remotes.Count > 0)
-                            _repo.ShowAndStartPopup(new Push(_repo, null));
+                        {
+                            if (_repo.CurrentBranch == null)
+                            {
+                                var currentBranchName = Commands.Branch.ShowCurrent(_repo.FullPath);
+                                var tmp = new Models.Branch() { Name = currentBranchName };
+                                _repo.ShowAndStartPopup(new Push(_repo, tmp));
+                            }
+                            else
+                            {
+                                _repo.ShowAndStartPopup(new Push(_repo, null));
+                            }
+                        }
                     }
 
                     _repo.MarkBranchesDirtyManually();

@@ -199,13 +199,25 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedNode(object sender, TappedEventArgs e)
         {
-            if (sender is Grid { DataContext: ViewModels.TagTreeNode node })
-            {
-                if (node.IsFolder)
-                    ToggleNodeIsExpanded(node);
-            }
+            if (sender is Control { DataContext: ViewModels.TagTreeNode { IsFolder: true } node })
+                ToggleNodeIsExpanded(node);
 
             e.Handled = true;
+        }
+
+        private void OnRowPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            var p = e.GetCurrentPoint(this);
+            if (!p.Properties.IsLeftButtonPressed)
+                return;
+
+            if (DataContext is not ViewModels.Repository repo)
+                return;
+
+            if (sender is Control { DataContext: Models.Tag tag })
+                repo.NavigateToCommit(tag.SHA);
+            else if (sender is Control { DataContext: ViewModels.TagTreeNode { Tag: { } nodeTag } })
+                repo.NavigateToCommit(nodeTag.SHA);
         }
 
         private void OnRowContextRequested(object sender, ContextRequestedEventArgs e)
@@ -240,11 +252,8 @@ namespace SourceGit.Views
             else if (selected is Models.Tag tag)
                 selectedTag = tag;
 
-            if (selectedTag != null && DataContext is ViewModels.Repository repo)
-            {
+            if (selectedTag != null)
                 RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
-                repo.NavigateToCommit(selectedTag.SHA);
-            }
         }
 
         private void MakeTreeRows(List<ViewModels.TagTreeNode> rows, List<ViewModels.TagTreeNode> nodes)

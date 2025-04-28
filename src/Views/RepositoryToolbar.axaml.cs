@@ -22,22 +22,20 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OpenStatistics(object _, RoutedEventArgs e)
+        private void OpenStatistics(object _, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
+            if (DataContext is ViewModels.Repository repo)
             {
-                var dialog = new Statistics() { DataContext = new ViewModels.Statistics(repo.FullPath) };
-                await dialog.ShowDialog(owner);
+                App.ShowWindow(new ViewModels.Statistics(repo.FullPath), true);
                 e.Handled = true;
             }
         }
 
-        private async void OpenConfigure(object sender, RoutedEventArgs e)
+        private void OpenConfigure(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
+            if (DataContext is ViewModels.Repository repo)
             {
-                var dialog = new RepositoryConfigure() { DataContext = new ViewModels.RepositoryConfigure(repo) };
-                await dialog.ShowDialog(owner);
+                App.ShowWindow(new ViewModels.RepositoryConfigure(repo), true);
                 e.Handled = true;
             }
         }
@@ -118,6 +116,21 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void StartBisect(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
+                repo.InProgressContext == null &&
+                repo.CanCreatePopup())
+            {
+                if (repo.LocalChangesCount > 0)
+                    App.RaiseException(repo.FullPath, "You have un-committed local changes. Please discard or stash them first.");
+                else
+                    repo.Bisect("start");
+            }
+
+            e.Handled = true;
+        }
+
         private void OpenCustomActionMenu(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
@@ -129,12 +142,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OpenGitLogs(object sender, RoutedEventArgs e)
+        private void OpenGitLogs(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && TopLevel.GetTopLevel(this) is Window owner)
+            if (DataContext is ViewModels.Repository repo)
             {
-                var dialog = new ViewLogs() { DataContext = new ViewModels.ViewLogs(repo) };
-                await dialog.ShowDialog(owner);
+                App.ShowWindow(new ViewModels.ViewLogs(repo), true);
                 e.Handled = true;
             }
         }

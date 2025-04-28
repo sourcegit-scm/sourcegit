@@ -212,6 +212,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useSyntaxHighlighting, value);
         }
 
+        public bool IgnoreCRAtEOLInDiff
+        {
+            get => Models.DiffOption.IgnoreCRAtEOL;
+            set
+            {
+                if (Models.DiffOption.IgnoreCRAtEOL != value)
+                {
+                    Models.DiffOption.IgnoreCRAtEOL = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool IgnoreWhitespaceChangesInDiff
         {
             get => _ignoreWhitespaceChangesInDiff;

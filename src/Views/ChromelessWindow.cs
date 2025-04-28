@@ -18,6 +18,8 @@ namespace SourceGit.Views
 
         public ChromelessWindow()
         {
+            Focusable = true;
+
             if (OperatingSystem.IsLinux())
             {
                 if (UseSystemWindowFrame)

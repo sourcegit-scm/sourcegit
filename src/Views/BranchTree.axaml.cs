@@ -318,6 +318,31 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnNodePointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            var p = e.GetCurrentPoint(this);
+            if (!p.Properties.IsLeftButtonPressed)
+                return;
+
+            if (DataContext is not ViewModels.Repository repo)
+                return;
+
+            if (sender is not Border { DataContext: ViewModels.BranchTreeNode node })
+                return;
+
+            if (node.Backend is not Models.Branch branch)
+                return;
+
+            if (BranchesPresenter.SelectedItems is { Count: > 0 })
+            {
+                var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+                if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    return;
+            }
+
+            repo.NavigateToCommit(branch.Head);
+        }
+
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
         {
             if (_disableSelectionChangingEvent)
@@ -342,9 +367,6 @@ namespace SourceGit.Views
             var selected = BranchesPresenter.SelectedItems;
             if (selected == null || selected.Count == 0)
                 return;
-
-            if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
-                repo.NavigateToCommit(branch.Head);
 
             var prev = null as ViewModels.BranchTreeNode;
             foreach (var row in Rows)

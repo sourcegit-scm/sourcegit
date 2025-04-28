@@ -349,9 +349,7 @@ namespace SourceGit.Views
             if (sender is CheckBox box)
             {
                 ViewModels.Preferences.Instance.UseSystemWindowFrame = box.IsChecked == true;
-
-                var dialog = new ConfirmRestart();
-                App.OpenDialog(dialog);
+                App.ShowWindow(new ConfirmRestart(), true);
             }
 
             e.Handled = true;
