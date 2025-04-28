@@ -47,7 +47,7 @@ namespace SourceGit.Views
             get => GetValue(FontWeightProperty);
             set => SetValue(FontWeightProperty, value);
         }
-        
+
         public static readonly StyledProperty<IBrush> InlineCodeBackgroundProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(InlineCodeBackground), Brushes.Transparent);
 
