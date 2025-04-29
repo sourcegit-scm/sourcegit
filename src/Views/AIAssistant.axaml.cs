@@ -15,6 +15,15 @@ namespace SourceGit.Views
 {
     public class AIResponseView : TextEditor
     {
+        public static readonly StyledProperty<string> ContentProperty =
+            AvaloniaProperty.Register<AIResponseView, string>(nameof(Content), string.Empty);
+
+        public string Content
+        {
+            get => GetValue(ContentProperty);
+            set => SetValue(ContentProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public AIResponseView() : base(new TextArea(), new TextDocument())
@@ -56,6 +65,16 @@ namespace SourceGit.Views
             }
 
             GC.Collect();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ContentProperty)
+            {
+                Text = Content;
+            }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
