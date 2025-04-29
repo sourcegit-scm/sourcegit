@@ -155,7 +155,6 @@
             <ToggleButton Classes="line_path"
                           Width="28"
                           IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
-                          IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}">
               <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
             </ToggleButton>
