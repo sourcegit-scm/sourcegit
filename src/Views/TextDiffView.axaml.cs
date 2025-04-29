@@ -126,7 +126,7 @@ namespace SourceGit.Views
                             typeface,
                             presenter.FontSize,
                             presenter.Foreground);
-                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - txt.Height * 0.5));
+                        context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - (txt.Height * 0.5)));
                     }
                 }
             }
@@ -212,7 +212,7 @@ namespace SourceGit.Views
                         }
 
                         if (indicator != null)
-                            context.DrawText(indicator, new Point(0, y - indicator.Height * 0.5));
+                            context.DrawText(indicator, new Point(0, y - (indicator.Height * 0.5)));
                     }
                 }
             }
@@ -1047,7 +1047,8 @@ namespace SourceGit.Views
                 // The first selected line (partial selection)
                 if (i == startIdx && startPosition.Column > 1)
                 {
-                    builder.AppendLine(line.Content.Substring(startPosition.Column - 1));
+                    builder.Append(line.Content.AsSpan().Slice(startPosition.Column - 1));
+                    builder.Append(Environment.NewLine);
                     continue;
                 }
 
@@ -1061,7 +1062,14 @@ namespace SourceGit.Views
                 // For the last line (selection range is within original source)
                 if (i == endIdx)
                 {
-                    builder.Append(endPosition.Column - 1 < line.Content.Length ? line.Content.Substring(0, endPosition.Column - 1) : line.Content);
+                    if (endPosition.Column - 1 < line.Content.Length)
+                    {
+                        builder.Append(line.Content.AsSpan().Slice(0, endPosition.Column - 1));
+                    }
+                    else
+                    {
+                        builder.Append(line.Content);
+                    }
                     break;
                 }
 
@@ -1246,12 +1254,12 @@ namespace SourceGit.Views
             var textDiff = DataContext as Models.TextDiff;
             if (textDiff != null)
             {
-                var builder = new StringBuilder();
+                var builder = new StringBuilder(512);
                 foreach (var line in textDiff.Lines)
                 {
                     if (line.Content.Length > 10000)
                     {
-                        builder.Append(line.Content.Substring(0, 1000));
+                        builder.Append(line.Content.AsSpan().Slice(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} character trimmed)");
                     }
                     else
@@ -1741,7 +1749,7 @@ namespace SourceGit.Views
                 }
 
                 var top = chunk.Y + (chunk.Height >= 36 ? 16 : 4);
-                var right = (chunk.Combined || !chunk.IsOldSide) ? 16 : v.Bounds.Width * 0.5f + 16;
+                var right = (chunk.Combined || !chunk.IsOldSide) ? 16 : (v.Bounds.Width * 0.5f) + 16;
                 v.Popup.Margin = new Thickness(0, top, right, 0);
                 v.Popup.IsVisible = true;
             });
