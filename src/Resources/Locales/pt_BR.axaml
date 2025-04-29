@@ -217,7 +217,7 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">ANTIGO</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modo de Arquivo Alterado</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar mudanças de espaço em branco e EOL</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MUDANÇA DE OBJETO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Próxima Diferença</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SEM MUDANÇAS OU APENAS MUDANÇAS DE EOL</x:String>
