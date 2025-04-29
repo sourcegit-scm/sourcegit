@@ -18,6 +18,12 @@ namespace SourceGit.ViewModels
             get;
         } = DateTime.Now;
 
+        public DateTime EndTime
+        {
+            get;
+            private set;
+        } = DateTime.Now;
+
         public bool IsComplete
         {
             get;
@@ -63,6 +69,8 @@ namespace SourceGit.ViewModels
                 _content = _builder.ToString();
                 _builder.Clear();
                 _builder = null;
+
+                EndTime = DateTime.Now;
 
                 OnPropertyChanged(nameof(IsComplete));
 
