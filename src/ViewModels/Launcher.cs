@@ -584,7 +584,7 @@ namespace SourceGit.ViewModels
                     var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                     var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                     if (path.StartsWith(home, StringComparison.Ordinal))
-                        path = $"~{path.AsSpan().Slice(prefixLen)}";
+                        path = $"~{path.AsSpan(prefixLen)}";
                 }
 
                 Title = $"[{workspace}] {name} ({path})";

@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _revision = commit.SHA;
-            _saveFile = $"archive-{commit.SHA.AsSpan().Slice(0, 10)}.zip";
+            _saveFile = $"archive-{commit.SHA.AsSpan(0, 10)}.zip";
             BasedOn = commit;
         }
 

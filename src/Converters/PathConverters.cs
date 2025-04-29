@@ -22,7 +22,7 @@ namespace SourceGit.Converters
                 var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                 if (v.StartsWith(home, StringComparison.Ordinal))
-                    return $"~{v.AsSpan().Slice(prefixLen)}";
+                    return $"~{v.AsSpan(prefixLen)}";
 
                 return v;
             });
