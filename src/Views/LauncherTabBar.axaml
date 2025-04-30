@@ -68,14 +68,29 @@
                         Data="{StaticResource Icons.Repositories}"
                         IsVisible="{Binding !Node.IsRepository}"
                         IsHitTestVisible="False"/>
-                  <TextBlock Grid.Column="1"
-                             Classes="primary"
-                             HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                             TextAlignment="Center"
-                             Text="{Binding Node.Name}"
-                             IsVisible="{Binding Node.IsRepository}"
-                             IsHitTestVisible="False"/>
+
+                  <Grid Grid.Column="1"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        ColumnDefinitions="Auto,*"
+                        IsHitTestVisible="False"
+                        IsVisible="{Binding Node.IsRepository}">
+                    <Ellipse Grid.Column="0"
+                             Width="8" Height="8"
+                             Margin="0,0,6,0"
+                             VerticalAlignment="Center"
+                             IsVisible="{Binding DirtyBrush, Converter={x:Static ObjectConverters.IsNotNull}}"
+                             Fill="{Binding DirtyBrush}"/>
+                    
+                    <TextBlock Grid.Column="1"
+                               Classes="primary"
+                               VerticalAlignment="Center"
+                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                               TextAlignment="Center"
+                               Text="{Binding Node.Name}"
+                               IsVisible="{Binding Node.IsRepository}"
+                               IsHitTestVisible="False"/>
+                  </Grid>
+                  
                   <TextBlock Grid.Column="1"
                              Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"

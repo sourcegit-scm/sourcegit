@@ -994,6 +994,8 @@ namespace SourceGit.ViewModels
 
                 if (_workingCopy != null)
                     _workingCopy.HasRemotes = remotes.Count > 0;
+
+                GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !CurrentBranch.TrackStatus.IsVisible);
             });
         }
 
@@ -1101,6 +1103,7 @@ namespace SourceGit.ViewModels
             {
                 LocalChangesCount = changes.Count;
                 OnPropertyChanged(nameof(InProgressContext));
+                GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasLocalChanges, changes.Count == 0);
             });
         }
 
