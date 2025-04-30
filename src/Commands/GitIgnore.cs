@@ -8,7 +8,14 @@ namespace SourceGit.Commands
         {
             var file = Path.Combine(repo, ".gitignore");
             if (!File.Exists(file))
+            {
                 File.WriteAllLines(file, [pattern]);
+                return;
+            }
+
+            var org = File.ReadAllText(file);
+            if (!org.EndsWith('\n'))
+                File.AppendAllLines(file, ["", pattern]);
             else
                 File.AppendAllLines(file, [pattern]);
         }
