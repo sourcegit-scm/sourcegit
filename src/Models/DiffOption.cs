@@ -12,7 +12,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        } = true;
 
         public Change WorkingCopyChange => _workingCopyChange;
         public bool IsUnstaged => _isUnstaged;
