@@ -26,11 +26,7 @@ namespace SourceGit.Commands
             {
                 search += $"-i --committer=\"{filter}\"";
             }
-            else if (method == Models.CommitSearchMethod.ByFile)
-            {
-                search += $"-- \"{filter}\"";
-            }
-            else
+            else if (method == Models.CommitSearchMethod.ByMessage)
             {
                 var argsBuilder = new StringBuilder();
                 argsBuilder.Append(search);
@@ -45,10 +41,18 @@ namespace SourceGit.Commands
 
                 search = argsBuilder.ToString();
             }
+            else if (method == Models.CommitSearchMethod.ByFile)
+            {
+                search += $"-- \"{filter}\"";
+            }
+            else
+            {
+                search = $"-G\"{filter}\"";
+            }
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -1000 --date-order --no-show-signature --decorate=full --format=%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s " + search;
+            Args = $"log -1000 --date-order --no-show-signature --decorate=full --format=%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s {search}";
             _findFirstMerged = false;
         }
 

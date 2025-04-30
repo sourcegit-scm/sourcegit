@@ -495,6 +495,7 @@
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByCommitter}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByContent}"/>
             </ComboBox.Items>
           </ComboBox>
 
