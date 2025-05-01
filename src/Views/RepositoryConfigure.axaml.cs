@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
@@ -32,6 +33,14 @@ namespace SourceGit.Views
                 action.Executable = selected[0].Path.LocalPath;
 
             e.Handled = true;
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (!e.Handled && e.Key == Key.Escape)
+                Close();
         }
     }
 }
