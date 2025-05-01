@@ -21,7 +21,7 @@
         <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Command="{Binding OpenInBrowser}" ToolTip.Tip="{DynamicResource Text.RemoteCM.OpenInBrowser}" IsVisible="{Binding HasRemotes}">
+      <Button Classes="icon_button" Width="32" Command="{Binding OpenInBrowser}" IsVisible="{Binding HasRemotes}" ToolTip.Tip="{DynamicResource Text.RemoteCM.OpenInBrowser}">
         <Path Width="13" Height="13" Data="{StaticResource Icons.Browser}"/>
       </Button>
 
