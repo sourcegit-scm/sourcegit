@@ -151,7 +151,13 @@ namespace SourceGit.ViewModels
         public List<Models.Remote> Remotes
         {
             get => _remotes;
-            private set => SetProperty(ref _remotes, value);
+            private set 
+            {
+                if (SetProperty(ref _remotes, value))
+                {
+                    OnPropertyChanged(nameof(HasRemotes));  // Notify when Remotes changes
+                }
+            }
         }
 
         public List<Models.Branch> Branches
@@ -591,6 +597,20 @@ namespace SourceGit.ViewModels
         public void OpenInTerminal()
         {
             Native.OS.OpenTerminal(_fullpath);
+        }
+
+        public bool HasRemotes => _remotes.Count > 0;
+
+        public void OpenInBrowser()
+        {
+            if (_remotes[0].TryGetVisitURL(out string visitURL))
+            {
+                Native.OS.OpenBrowser(visitURL);
+            }
+            else
+            {
+                App.RaiseException(_fullpath, "No valid URL for the remote!");
+            }
         }
 
         public ContextMenu CreateContextMenuForExternalTools()
