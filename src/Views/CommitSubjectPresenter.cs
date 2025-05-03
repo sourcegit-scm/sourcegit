@@ -177,7 +177,7 @@ namespace SourceGit.Views
                 var rules = IssueTrackerRules ?? [];
                 foreach (var rule in rules)
                     rule.Matches(_elements, subject);
-                
+
                 _elements.Sort((l, r) => l.Start - r.Start);
                 _needRebuildInlines = true;
                 InvalidateVisual();
@@ -319,7 +319,6 @@ namespace SourceGit.Views
                         foreground);
 
                 _inlines.Add(new Inline(x, normal, null));
-                x += normal.WidthIncludingTrailingWhitespace;
             }
         }
 

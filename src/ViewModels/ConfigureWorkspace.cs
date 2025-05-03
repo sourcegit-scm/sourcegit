@@ -54,13 +54,13 @@ namespace SourceGit.ViewModels
         {
             if (_selected == null)
                 return;
-            
+
             var idx = Workspaces.IndexOf(_selected);
             if (idx == 0)
                 return;
-            
+
             Workspaces.Move(idx - 1, idx);
-            
+
             Preferences.Instance.Workspaces.RemoveAt(idx);
             Preferences.Instance.Workspaces.Insert(idx - 1, _selected);
         }
@@ -69,13 +69,13 @@ namespace SourceGit.ViewModels
         {
             if (_selected == null)
                 return;
-            
+
             var idx = Workspaces.IndexOf(_selected);
             if (idx == Workspaces.Count - 1)
                 return;
-            
+
             Workspaces.Move(idx + 1, idx);
-            
+
             Preferences.Instance.Workspaces.RemoveAt(idx);
             Preferences.Instance.Workspaces.Insert(idx + 1, _selected);
         }
