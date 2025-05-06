@@ -28,12 +28,31 @@ namespace SourceGit.ViewModels
         public bool CheckoutAfterCreated
         {
             get => _repo.Settings.CheckoutBranchOnCreateBranch;
-            set => _repo.Settings.CheckoutBranchOnCreateBranch = value;
+            set
+            {
+                if (_repo.Settings.CheckoutBranchOnCreateBranch != value)
+                {
+                    _repo.Settings.CheckoutBranchOnCreateBranch = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsBareRepository
         {
             get => _repo.IsBare;
+        }
+
+        public bool IsRecurseSubmoduleVisible
+        {
+            get;
+            private set;
+        }
+
+        public bool RecurseSubmodules
+        {
+            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
+            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
         }
 
         public CreateBranch(Repository repo, Models.Branch branch)
@@ -48,6 +67,7 @@ namespace SourceGit.ViewModels
 
             BasedOn = branch;
             DiscardLocalChanges = false;
+            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public CreateBranch(Repository repo, Models.Commit commit)
@@ -57,6 +77,7 @@ namespace SourceGit.ViewModels
 
             BasedOn = commit;
             DiscardLocalChanges = false;
+            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public CreateBranch(Repository repo, Models.Tag tag)
@@ -66,6 +87,7 @@ namespace SourceGit.ViewModels
 
             BasedOn = tag;
             DiscardLocalChanges = false;
+            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -92,6 +114,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Create Branch '{fixedName}'");
             Use(log);
 
+            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
                 bool succ;
@@ -119,7 +142,7 @@ namespace SourceGit.ViewModels
                         }
                     }
 
-                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision);
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, updateSubmodules);
                     if (needPopStash)
                         new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
                 }

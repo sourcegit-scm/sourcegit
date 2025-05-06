@@ -11,15 +11,17 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Branch(string branch)
+        public bool Branch(string branch, bool recurseSubmodules)
         {
-            Args = $"checkout --recurse-submodules --progress {branch}";
+            var options = recurseSubmodules ? "--recurse-submodules" : string.Empty;
+            Args = $"checkout {options} --progress {branch}";
             return Exec();
         }
 
-        public bool Branch(string branch, string basedOn)
+        public bool Branch(string branch, string basedOn, bool recurseSubmodules)
         {
-            Args = $"checkout --recurse-submodules --progress -b {branch} {basedOn}";
+            var options = recurseSubmodules ? "--recurse-submodules" : string.Empty;
+            Args = $"checkout {options} --progress -b {branch} {basedOn}";
             return Exec();
         }
 

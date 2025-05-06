@@ -15,11 +15,24 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool IsRecurseSubmoduleVisible
+        {
+            get;
+            private set;
+        }
+
+        public bool RecurseSubmodules
+        {
+            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
+            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
+        }
+
         public Checkout(Repository repo, string branch)
         {
             _repo = repo;
             Branch = branch;
             DiscardLocalChanges = false;
+            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public override Task<bool> Sure()
@@ -30,6 +43,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Checkout '{Branch}'");
             Use(log);
 
+            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
                 var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
@@ -54,7 +68,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var rs = new Commands.Checkout(_repo.FullPath).Use(log).Branch(Branch);
+                var rs = new Commands.Checkout(_repo.FullPath).Use(log).Branch(Branch, updateSubmodules);
                 if (needPopStash)
                     rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
 

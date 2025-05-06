@@ -110,6 +110,12 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        public bool UpdateSubmodulesOnCheckoutBranch
+        {
+            get;
+            set;
+        } = true;
+
         public AvaloniaList<Filter> HistoriesFilters
         {
             get;
