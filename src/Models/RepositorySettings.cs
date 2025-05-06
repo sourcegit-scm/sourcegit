@@ -38,6 +38,18 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public BranchSortMode LocalBranchSortMode
+        {
+            get;
+            set;
+        } = BranchSortMode.Name;
+
+        public BranchSortMode RemoteBranchSortMode
+        {
+            get;
+            set;
+        } = BranchSortMode.Name;
+
         public TagSortMode TagSortMode
         {
             get;

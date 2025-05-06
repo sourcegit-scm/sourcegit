@@ -23,10 +23,17 @@ namespace SourceGit.Models
         }
     }
 
+    public enum BranchSortMode
+    {
+        Name = 0,
+        CommitterDate,
+    }
+
     public class Branch
     {
         public string Name { get; set; }
         public string FullName { get; set; }
+        public ulong CommitterDate { get; set; }
         public string Head { get; set; }
         public bool IsLocal { get; set; }
         public bool IsCurrent { get; set; }

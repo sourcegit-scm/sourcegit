@@ -403,6 +403,28 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnOpenSortLocalBranchMenu(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForBranchSortMode(true);
+                menu?.Open(button);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnOpenSortRemoteBranchMenu(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            {
+                var menu = repo.CreateContextMenuForBranchSortMode(false);
+                menu?.Open(button);
+            }
+
+            e.Handled = true;
+        }
+
         private void OnOpenSortTagMenu(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)

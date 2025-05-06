@@ -576,6 +576,9 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">中止</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">自動提取遠端變更中...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">排序</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">依建立時間</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">依名稱升序</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本存放庫 (GC)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作將執行 `git gc` 命令。</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空篩選規則</x:String>
