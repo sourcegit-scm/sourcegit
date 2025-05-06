@@ -552,6 +552,7 @@ namespace SourceGit
 
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
+            desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
 #if !DISABLE_UPDATE_DETECTION
             if (pref.ShouldCheck4UpdateOnStartup())

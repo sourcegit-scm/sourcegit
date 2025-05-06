@@ -24,7 +24,7 @@
     </v:HistoriesLayout.ColumnDefinitions>
 
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <Grid RowDefinitions="24,*" Grid.IsSharedSizeScope="True">
+      <Grid RowDefinitions="24,*" Grid.IsSharedSizeScope="True" ClipToBounds="True">
         <!-- Headers -->
         <Border Grid.Row="0"
                 Background="{DynamicResource Brush.Window}"
@@ -32,11 +32,11 @@
                 BorderBrush="{DynamicResource Brush.Border0}">
           <Grid>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" MinWidth="100"/>
+              <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="3"/>
               <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
-              <ColumnDefinition SharedSizeGroup="SHA"/>
-              <ColumnDefinition SharedSizeGroup="Time"/>
+              <ColumnDefinition SharedSizeGroup="SHA" MinWidth="100"/>
+              <ColumnDefinition SharedSizeGroup="Time" MinWidth="160"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
@@ -121,8 +121,8 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
-                    <ColumnDefinition SharedSizeGroup="SHA" Width="Auto" MinWidth="100"/>
-                    <ColumnDefinition SharedSizeGroup="Time" Width="Auto" MinWidth="160"/>
+                    <ColumnDefinition SharedSizeGroup="SHA" Width="Auto"/>
+                    <ColumnDefinition SharedSizeGroup="Time" Width="Auto"/>
                   </Grid.ColumnDefinitions>
 
                   <!-- Subject & REFS -->

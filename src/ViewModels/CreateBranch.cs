@@ -150,6 +150,12 @@ namespace SourceGit.ViewModels
                     _repo.SetWatcherEnabled(true);
                 });
 
+                if (CheckoutAfterCreated)
+                {
+                    CallUIThread(() => ProgressDescription = "Waiting for branch updated...");
+                    Task.Delay(400).Wait();
+                }
+
                 return true;
             });
         }

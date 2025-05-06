@@ -205,7 +205,7 @@ namespace SourceGit.Views
                     foreach (var item in selected)
                     {
                         if (item is Models.Commit commit)
-                            builder.AppendLine($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                            builder.AppendLine($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
                     }
 
                     App.CopyText(builder.ToString());

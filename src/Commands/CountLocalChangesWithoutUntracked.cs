@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "--no-optional-locks status -uno --ignore-submodules=dirty --porcelain";
+            Args = "--no-optional-locks status -uno --ignore-submodules=all --porcelain";
         }
 
         public int Result()

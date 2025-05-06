@@ -236,7 +236,7 @@
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">ALT</x:String>
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Dateimodus geändert</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignoriere Leerzeichenänderungen und EOL</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignoriere Leerzeichenänderungen</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJEKT ÄNDERUNG</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Nächste Änderung</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">KEINE ÄNDERUNG ODER NUR ZEILEN-ENDE ÄNDERUNGEN</x:String>

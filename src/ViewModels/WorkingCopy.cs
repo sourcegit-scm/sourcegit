@@ -635,7 +635,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan().Slice(0, 10)} (revert)");
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
                         useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -993,7 +993,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan().Slice(0, 10)} (revert)");
+                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
                         useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -1417,7 +1417,7 @@ namespace SourceGit.ViewModels
                         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                         var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                         if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
-                            friendlyName = $"~{gitTemplate.AsSpan().Slice(prefixLen)}";
+                            friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
                     }
 
                     var gitTemplateItem = new MenuItem();

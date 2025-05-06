@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 using Avalonia.Collections;
@@ -584,7 +584,7 @@ namespace SourceGit.ViewModels
                     var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                     var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
                     if (path.StartsWith(home, StringComparison.Ordinal))
-                        path = "~" + path.Substring(prefixLen);
+                        path = $"~{path.AsSpan(prefixLen)}";
                 }
 
                 Title = $"[{workspace}] {name} ({path})";

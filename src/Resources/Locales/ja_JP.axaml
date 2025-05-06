@@ -241,7 +241,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">ファイルモードが変更されました</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">先頭の差分</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更とEOLを無視</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更を無視</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後の差分</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFSオブジェクトの変更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">次の差分</x:String>

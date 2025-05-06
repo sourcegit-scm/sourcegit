@@ -642,10 +642,37 @@ namespace SourceGit.ViewModels
                     rule.Matches(inlines, message);
             }
 
-            var matches = REG_SHA_FORMAT().Matches(message);
-            for (int i = 0; i < matches.Count; i++)
+            var urlMatches = REG_URL_FORMAT().Matches(message);
+            for (int i = 0; i < urlMatches.Count; i++)
             {
-                var match = matches[i];
+                var match = urlMatches[i];
+                if (!match.Success)
+                    continue;
+
+                var start = match.Index;
+                var len = match.Length;
+                var intersect = false;
+                foreach (var link in inlines)
+                {
+                    if (link.Intersect(start, len))
+                    {
+                        intersect = true;
+                        break;
+                    }
+                }
+
+                if (intersect)
+                    continue;
+
+                var url = message.Substring(start, len);
+                if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
+                    inlines.Add(new Models.InlineElement(Models.InlineElementType.Link, start, len, url));
+            }
+
+            var shaMatches = REG_SHA_FORMAT().Matches(message);
+            for (int i = 0; i < shaMatches.Count; i++)
+            {
+                var match = shaMatches[i];
                 if (!match.Success)
                     continue;
 
@@ -839,6 +866,9 @@ namespace SourceGit.ViewModels
 
             RevisionFileSearchSuggestion = suggestion;
         }
+
+        [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
+        private static partial Regex REG_URL_FORMAT();
 
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();

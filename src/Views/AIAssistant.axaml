@@ -39,12 +39,12 @@
 
     <!-- AI response -->
     <v:AIResponseView Grid.Row="1"
-                      x:Name="TxtResponse"
                       Margin="8"
                       Height="320"
                       BorderThickness="1"
                       BorderBrush="{DynamicResource Brush.Border2}"
-                      Background="{DynamicResource Brush.Contents}"/>
+                      Background="{DynamicResource Brush.Contents}"
+                      Content="{Binding Text}"/>
 
     <!-- Options -->
     <Border Grid.Row="2" Margin="0,0,0,8">

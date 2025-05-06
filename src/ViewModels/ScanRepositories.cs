@@ -38,6 +38,12 @@ namespace SourceGit.ViewModels
                     IgnoreInaccessible = true,
                 });
 
+                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
+                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
+                watch.Stop();
+                if (remain > 0)
+                    Task.Delay(remain).Wait();
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     var normalizedRoot = rootDir.FullName.Replace("\\", "/");
@@ -60,12 +66,6 @@ namespace SourceGit.ViewModels
                     Preferences.Instance.AutoRemoveInvalidNode();
                     Welcome.Instance.Refresh();
                 });
-
-                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
-                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
-                watch.Stop();
-                if (remain > 0)
-                    Task.Delay(remain).Wait();
 
                 return true;
             });

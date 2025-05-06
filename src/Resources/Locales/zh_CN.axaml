@@ -257,7 +257,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化和EOL</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最后一个差异</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS对象变更</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一个差异</x:String>
@@ -609,6 +609,7 @@
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">变更内容</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">文件</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>

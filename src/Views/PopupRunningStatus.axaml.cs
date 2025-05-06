@@ -21,6 +21,15 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            _isUnloading = false;
+            if (IsVisible)
+                StartAnim();
+        }
+
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             _isUnloading = true;

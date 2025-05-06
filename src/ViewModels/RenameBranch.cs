@@ -58,12 +58,15 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                var isCurrent = Target.IsCurrent;
                 var oldName = Target.FullName;
                 var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, fixedName, log);
                 log.Complete();
 
                 CallUIThread(() =>
                 {
+                    ProgressDescription = "Waiting for branch updated...";
+
                     if (succ)
                     {
                         foreach (var filter in _repo.Settings.HistoriesFilters)
@@ -80,6 +83,10 @@ namespace SourceGit.ViewModels
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
+
+                if (isCurrent)
+                    Task.Delay(400).Wait();
+
                 return succ;
             });
         }

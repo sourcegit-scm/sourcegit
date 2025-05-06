@@ -14,8 +14,8 @@ namespace SourceGit.Models
     public enum BisectCommitFlag
     {
         None = 0,
-        Good = 1,
-        Bad = 2,
+        Good = 1 << 0,
+        Bad = 1 << 1,
     }
 
     public class Bisect

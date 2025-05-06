@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _revision = commit.SHA;
-            _saveFile = $"archive-{commit.SHA.Substring(0, 10)}.zip";
+            _saveFile = $"archive-{commit.SHA.AsSpan(0, 10)}.zip";
             BasedOn = commit;
         }
 

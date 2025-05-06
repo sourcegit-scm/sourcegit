@@ -240,7 +240,7 @@
   <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modalità File Modificata</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Prima differenza</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi e EOL</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Ultima differenza</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MODIFICA OGGETTO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Differenza Successiva</x:String>

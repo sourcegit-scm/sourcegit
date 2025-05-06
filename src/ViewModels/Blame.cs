@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -30,7 +31,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
 
-            Title = $"{file} @ {revision.Substring(0, 10)}";
+            Title = $"{file} @ {revision.AsSpan(0, 10)}";
             Task.Run(() =>
             {
                 var result = new Commands.Blame(repo, file, revision).Result();

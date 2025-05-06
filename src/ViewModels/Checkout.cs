@@ -62,6 +62,8 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() =>
                 {
+                    ProgressDescription = "Waiting for branch updated...";
+
                     var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
                     if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
                         _repo.SetBranchFilterMode(b, Models.FilterMode.Included, true, false);
@@ -70,6 +72,7 @@ namespace SourceGit.ViewModels
                     _repo.SetWatcherEnabled(true);
                 });
 
+                Task.Delay(400).Wait();
                 return rs;
             });
         }

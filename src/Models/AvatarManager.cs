@@ -196,7 +196,7 @@ namespace SourceGit.Models
         private string GetEmailHash(string email)
         {
             var lowered = email.ToLower(CultureInfo.CurrentCulture).Trim();
-            var hash = MD5.HashData(Encoding.Default.GetBytes(lowered).AsSpan());
+            var hash = MD5.HashData(Encoding.Default.GetBytes(lowered));
             var builder = new StringBuilder(hash.Length * 2);
             foreach (var c in hash)
                 builder.Append(c.ToString("x2"));

@@ -13,6 +13,7 @@ namespace SourceGit.Models
         ByCommitter,
         ByMessage,
         ByFile,
+        ByContent,
     }
 
     public class Commit

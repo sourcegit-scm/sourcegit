@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
@@ -22,12 +23,12 @@ namespace SourceGit.Models
             get
             {
                 if (IsDetached)
-                    return $"deteched HEAD at {Head.Substring(10)}";
+                    return $"deteched HEAD at {Head.AsSpan(10)}";
 
-                if (Branch.StartsWith("refs/heads/", System.StringComparison.Ordinal))
+                if (Branch.StartsWith("refs/heads/", StringComparison.Ordinal))
                     return Branch.Substring(11);
 
-                if (Branch.StartsWith("refs/remotes/", System.StringComparison.Ordinal))
+                if (Branch.StartsWith("refs/remotes/", StringComparison.Ordinal))
                     return Branch.Substring(13);
 
                 return Branch;

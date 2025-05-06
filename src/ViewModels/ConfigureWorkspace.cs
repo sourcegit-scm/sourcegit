@@ -9,7 +9,6 @@ namespace SourceGit.ViewModels
         public AvaloniaList<Workspace> Workspaces
         {
             get;
-            private set;
         }
 
         public Workspace Selected
@@ -49,6 +48,36 @@ namespace SourceGit.ViewModels
 
             Preferences.Instance.Workspaces.Remove(_selected);
             Workspaces.Remove(_selected);
+        }
+
+        public void MoveSelectedUp()
+        {
+            if (_selected == null)
+                return;
+
+            var idx = Workspaces.IndexOf(_selected);
+            if (idx == 0)
+                return;
+
+            Workspaces.Move(idx - 1, idx);
+
+            Preferences.Instance.Workspaces.RemoveAt(idx);
+            Preferences.Instance.Workspaces.Insert(idx - 1, _selected);
+        }
+
+        public void MoveSelectedDown()
+        {
+            if (_selected == null)
+                return;
+
+            var idx = Workspaces.IndexOf(_selected);
+            if (idx == Workspaces.Count - 1)
+                return;
+
+            Workspaces.Move(idx + 1, idx);
+
+            Preferences.Instance.Workspaces.RemoveAt(idx);
+            Preferences.Instance.Workspaces.Insert(idx + 1, _selected);
         }
 
         private Workspace _selected = null;
