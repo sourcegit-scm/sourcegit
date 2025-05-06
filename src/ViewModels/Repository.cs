@@ -583,44 +583,86 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshStashes);
         }
 
-        public void OpenInFileManager()
-        {
-            Native.OS.OpenInFileManager(_fullpath);
-        }
-
-        public void OpenInTerminal()
-        {
-            Native.OS.OpenTerminal(_fullpath);
-        }
-
         public ContextMenu CreateContextMenuForExternalTools()
         {
-            var tools = Native.OS.ExternalTools;
-            if (tools.Count == 0)
-            {
-                App.RaiseException(_fullpath, "No available external editors found!");
-                return null;
-            }
-
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
             RenderOptions.SetBitmapInterpolationMode(menu, BitmapInterpolationMode.HighQuality);
+            RenderOptions.SetEdgeMode(menu, EdgeMode.Antialias);
+            RenderOptions.SetTextRenderingMode(menu, TextRenderingMode.Antialias);
 
-            foreach (var tool in tools)
+            var explore = new MenuItem();
+            explore.Header = App.Text("Repository.Explore");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.Click += (_, e) =>
             {
-                var dupTool = tool;
+                Native.OS.OpenInFileManager(_fullpath);
+                e.Handled = true;
+            };
 
-                var item = new MenuItem();
-                item.Header = App.Text("Repository.OpenIn", dupTool.Name);
-                item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
-                item.Click += (_, e) =>
+            var terminal = new MenuItem();
+            terminal.Header = App.Text("Repository.Terminal");
+            terminal.Icon = App.CreateMenuIcon("Icons.Terminal");
+            terminal.Click += (_, e) =>
+            {
+                Native.OS.OpenTerminal(_fullpath);
+                e.Handled = true;
+            };
+
+            menu.Items.Add(explore);
+            menu.Items.Add(terminal);
+
+            var tools = Native.OS.ExternalTools;
+            if (tools.Count > 0)
+            {
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                foreach (var tool in Native.OS.ExternalTools)
                 {
-                    dupTool.Open(_fullpath);
-                    e.Handled = true;
-                };
+                    var dupTool = tool;
 
-                menu.Items.Add(item);
+                    var item = new MenuItem();
+                    item.Header = App.Text("Repository.OpenIn", dupTool.Name);
+                    item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
+                    item.Click += (_, e) =>
+                    {
+                        dupTool.Open(_fullpath);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
             }
+
+            var urls = new Dictionary<string, string>();
+            foreach (var r in _remotes)
+            {
+                if (r.TryGetVisitURL(out var visit))
+                    urls.Add(r.Name, visit);
+            }
+
+            if (urls.Count > 0)
+            {
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                foreach (var url in urls)
+                {
+                    var name = url.Key;
+                    var addr = url.Value;
+
+                    var item = new MenuItem();
+                    item.Header = App.Text("Repository.Visit", name);
+                    item.Icon = App.CreateMenuIcon("Icons.Remotes");
+                    item.Click += (_, e) =>
+                    {
+                        Native.OS.OpenBrowser(addr);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+            }            
 
             return menu;
         }

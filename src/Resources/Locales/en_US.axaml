@@ -626,6 +626,7 @@
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Use relative time in histories</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">View Logs</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visit '{0}' in Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ADD WORKTREE</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>
