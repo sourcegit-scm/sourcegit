@@ -299,7 +299,7 @@ namespace SourceGit.Views
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         codeTypeface,
-                        fontSize,
+                        fontSize - 0.5,
                         foreground);
                     _inlines.Add(new Inline(x, link, elem));
                     x += link.WidthIncludingTrailingWhitespace + 8;
