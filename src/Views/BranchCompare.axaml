@@ -46,7 +46,7 @@
     <!-- Compare Targets -->
     <Border Grid.Row="1">
       <Grid Margin="48,8,48,8" ColumnDefinitions="*,48,*">
-        <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+        <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
           <Grid RowDefinitions="Auto,*">
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
               <v:Avatar Width="16" Height="16"
@@ -67,10 +67,10 @@
 
         <!-- Swap Button -->
         <Button Grid.Column="1" Classes="icon_button" Command="{Binding Swap}" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
-          <Path Width="16" Height="16" Fill="{DynamicResource Brush.FG2}" Data="{DynamicResource Icons.Compare}"/>
+          <Path Width="16" Height="16" Data="{DynamicResource Icons.Compare}"/>
         </Button>
 
-        <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+        <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Diff.AddedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
           <Grid RowDefinitions="Auto,*">
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
               <v:Avatar Width="16" Height="16"

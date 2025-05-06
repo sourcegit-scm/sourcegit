@@ -37,7 +37,7 @@
     <!-- Compare Revision Info -->
     <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
       <!-- Base Revision -->
-      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding StartPoint}"/>
       </Border>
 
@@ -47,7 +47,7 @@
       </Button>
 
       <!-- Right Revision -->
-      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Diff.AddedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding EndPoint}"/>
       </Border>
 
