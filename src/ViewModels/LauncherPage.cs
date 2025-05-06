@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
                     {
                         App.LogException(e);
                     }
-                    
+
                     dump.InProgress = false;
                     if (finished)
                         Popup = null;

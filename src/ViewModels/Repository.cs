@@ -662,7 +662,7 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(item);
                 }
-            }            
+            }
 
             return menu;
         }
