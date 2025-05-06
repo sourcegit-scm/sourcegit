@@ -120,28 +120,19 @@ namespace SourceGit.ViewModels
                 folders.Clear();
 
                 if (_localSortMode == Models.BranchSortMode.Name)
-                {
                     SortNodesByName(_locals);
-                }
                 else
-                {
-                    SetTimeToSortRecusive(_locals);
                     SortNodesByTime(_locals);
-                }
 
                 if (_remoteSortMode == Models.BranchSortMode.Name)
-                {
                     SortNodesByName(_remotes);
-                }
                 else
-                {
-                    SetTimeToSortRecusive(_remotes);
                     SortNodesByTime(_remotes);
-                }
             }
 
             private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded)
             {
+                var time = branch.CommitterDate;
                 var fullpath = $"{prefix}/{branch.Name}";
                 var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1 || branch.IsDetachedHead)
@@ -152,7 +143,7 @@ namespace SourceGit.ViewModels
                         Path = fullpath,
                         Backend = branch,
                         IsExpanded = false,
-                        TimeToSort = branch.CommitterDate,
+                        TimeToSort = time,
                     });
                     return;
                 }
@@ -167,6 +158,7 @@ namespace SourceGit.ViewModels
                     if (folders.TryGetValue(folder, out var val))
                     {
                         lastFolder = val;
+                        lastFolder.TimeToSort = Math.Max(lastFolder.TimeToSort, time);
                         if (!lastFolder.IsExpanded)
                             lastFolder.IsExpanded |= (branch.IsCurrent || _expanded.Contains(folder));
                     }
@@ -177,6 +169,7 @@ namespace SourceGit.ViewModels
                             Name = name,
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
+                            TimeToSort = time,
                         };
                         roots.Add(lastFolder);
                         folders.Add(folder, lastFolder);
@@ -188,6 +181,7 @@ namespace SourceGit.ViewModels
                             Name = name,
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
+                            TimeToSort = time,
                         };
                         lastFolder.Children.Add(cur);
                         folders.Add(folder, cur);
@@ -204,7 +198,7 @@ namespace SourceGit.ViewModels
                     Path = fullpath,
                     Backend = branch,
                     IsExpanded = false,
-                    TimeToSort = branch.CommitterDate,
+                    TimeToSort = time,
                 });
             }
 
@@ -251,28 +245,6 @@ namespace SourceGit.ViewModels
 
                 foreach (var node in nodes)
                     SortNodesByTime(node.Children);
-            }
-
-            private ulong SetTimeToSortRecusive(List<BranchTreeNode> nodes)
-            {
-                var recent = (ulong)0;
-
-                foreach (var node in nodes)
-                {
-                    if (node.Backend is Models.Branch)
-                    {
-                        recent = Math.Max(recent, node.TimeToSort);
-                        continue;
-                    }
-
-                    var time = SetTimeToSortRecusive(node.Children);
-                    recent = Math.Max(recent, time);
-
-                    if (node.Backend is not Models.Remote)
-                        node.TimeToSort = time;
-                }
-
-                return recent;
             }
 
             private readonly Models.BranchSortMode _localSortMode = Models.BranchSortMode.Name;
