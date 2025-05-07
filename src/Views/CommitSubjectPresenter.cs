@@ -104,23 +104,32 @@ namespace SourceGit.Views
             if (_inlines.Count == 0)
                 return;
 
-            var height = Bounds.Height;
-            var width = Bounds.Width;
-            foreach (var inline in _inlines)
+            var ro = new RenderOptions()
             {
-                if (inline.X > width)
-                    return;
+                TextRenderingMode = TextRenderingMode.SubpixelAntialias,
+                EdgeMode = EdgeMode.Antialias
+            };
 
-                if (inline.Element is { Type: Models.InlineElementType.Code })
+            using (context.PushRenderOptions(ro))
+            {
+                var height = Bounds.Height;
+                var width = Bounds.Width;
+                foreach (var inline in _inlines)
                 {
-                    var rect = new Rect(inline.X, (height - inline.Text.Height - 2) * 0.5, inline.Text.WidthIncludingTrailingWhitespace + 8, inline.Text.Height + 2);
-                    var roundedRect = new RoundedRect(rect, new CornerRadius(4));
-                    context.DrawRectangle(InlineCodeBackground, null, roundedRect);
-                    context.DrawText(inline.Text, new Point(inline.X + 4, (height - inline.Text.Height) * 0.5));
-                }
-                else
-                {
-                    context.DrawText(inline.Text, new Point(inline.X, (height - inline.Text.Height) * 0.5));
+                    if (inline.X > width)
+                        return;
+
+                    if (inline.Element is { Type: Models.InlineElementType.Code })
+                    {
+                        var rect = new Rect(inline.X, (height - inline.Text.Height - 2) * 0.5, inline.Text.WidthIncludingTrailingWhitespace + 8, inline.Text.Height + 2);
+                        var roundedRect = new RoundedRect(rect, new CornerRadius(4));
+                        context.DrawRectangle(InlineCodeBackground, null, roundedRect);
+                        context.DrawText(inline.Text, new Point(inline.X + 4, (height - inline.Text.Height) * 0.5));
+                    }
+                    else
+                    {
+                        context.DrawText(inline.Text, new Point(inline.X, (height - inline.Text.Height) * 0.5));
+                    }
                 }
             }
         }
