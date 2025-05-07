@@ -11,50 +11,6 @@ This document shows the translation status of each locale file in the repository
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
-- Text.Bisect
-- Text.Bisect.Abort
-- Text.Bisect.Bad
-- Text.Bisect.Detecting
-- Text.Bisect.Good
-- Text.Bisect.Skip
-- Text.Bisect.WaitingForRange
-- Text.BranchUpstreamInvalid
-- Text.Checkout.RecurseSubmodules
-- Text.CommitCM.CopyAuthor
-- Text.CommitCM.CopyCommitter
-- Text.CommitCM.CopySubject
-- Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.CustomAction.WaitForExit
-- Text.Configure.Git.PreferredMergeMode
-- Text.Configure.IssueTracker.AddSampleAzure
-- Text.ConfirmEmptyCommit.Continue
-- Text.ConfirmEmptyCommit.NoLocalChanges
-- Text.ConfirmEmptyCommit.StageAllThenCommit
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.CopyFullPath
-- Text.Diff.First
-- Text.Diff.Last
-- Text.Preferences.AI.Streaming
-- Text.Preferences.Appearance.EditorTabWidth
-- Text.Preferences.General.ShowTagsInGraph
-- Text.Preferences.Git.IgnoreCRAtEOLInDiff
-- Text.Repository.BranchSort
-- Text.Repository.BranchSort.ByCommitterDate
-- Text.Repository.BranchSort.ByName
-- Text.Repository.Search.ByContent
-- Text.Repository.ViewLogs
-- Text.Repository.Visit
-- Text.StashCM.SaveAsPatch
-- Text.ViewLogs
-- Text.ViewLogs.Clear
-- Text.ViewLogs.CopyLog
-- Text.ViewLogs.Delete
-- Text.WorkingCopy.ConfirmCommitWithFilter
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
-- Text.WorkingCopy.Conflicts.UseMine
-- Text.WorkingCopy.Conflicts.UseTheirs
-
 </details>
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-99.36%25-yellow)
