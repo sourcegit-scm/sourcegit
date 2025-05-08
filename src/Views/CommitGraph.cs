@@ -55,11 +55,6 @@ namespace SourceGit.Views
             if (list == null)
                 return;
 
-            // Calculate drawing area.
-            var width = histories.CommitListHeader.ColumnDefinitions[0].ActualWidth;
-            var height = Bounds.Height;
-
-            // Calculate row height
             var container = list.ItemsPanelRoot as VirtualizingStackPanel;
             if (container == null)
                 return;
@@ -68,15 +63,15 @@ namespace SourceGit.Views
             if (item == null)
                 return;
 
+            var width = histories.CommitListHeader.ColumnDefinitions[0].ActualWidth;
+            var height = Bounds.Height;
             var rowHeight = item.Bounds.Height;
             var startY = container.FirstRealizedIndex * rowHeight - item.TranslatePoint(new Point(0, 0), list).Value!.Y;
             var endY = startY + height + 28;
 
-            // Apply scroll offset and clip.
             using (context.PushClip(new Rect(0, 0, width, height)))
             using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
-                // Draw contents
                 DrawCurves(context, graph, startY, endY, rowHeight);
                 DrawAnchors(context, graph, startY, endY, rowHeight);
             }
