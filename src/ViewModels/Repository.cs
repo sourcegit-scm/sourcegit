@@ -398,6 +398,11 @@ namespace SourceGit.ViewModels
             get => _workingCopy?.InProgressContext;
         }
 
+        public bool HasUnresolvedConflicts
+        {
+            get => _workingCopy?.HasUnsolvedConflicts ?? false;
+        }
+
         public Models.BisectState BisectState
         {
             get => _bisectState;
