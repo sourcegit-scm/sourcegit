@@ -53,10 +53,11 @@ namespace SourceGit.ViewModels
                 new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Use(log).Exec();
 
                 log.Complete();
+
+                _repo.RefreshWorkingCopyChanges();
+
                 CallUIThread(() =>
                 {
-                    _repo.RefreshWorkingCopyChanges();
-
                     if (_repo.HasUnresolvedConflicts)
                     {
                         _repo.SelectedViewIndex = 1;
