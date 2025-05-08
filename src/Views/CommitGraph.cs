@@ -56,22 +56,33 @@ namespace SourceGit.Views
                 return;
 
             // Calculate drawing area.
-            double width = Bounds.Width - 273 - histories.AuthorNameColumnWidth.Value;
-            double height = Bounds.Height;
-            double startY = list.Scroll?.Offset.Y ?? 0;
-            double endY = startY + height + 28;
+            var width = Bounds.Width - 273 - histories.AuthorNameColumnWidth.Value;
+            var height = Bounds.Height;
+
+            // Calculate row height
+            var container = list.ItemsPanelRoot as VirtualizingStackPanel;
+            if (container == null)
+                return;
+
+            var item = list.ContainerFromIndex(container.FirstRealizedIndex);
+            if (item == null)
+                return;
+
+            var rowHeight = item.Bounds.Height;
+            var startY = container.FirstRealizedIndex * rowHeight - item.TranslatePoint(new Point(0, 0), list).Value!.Y;
+            var endY = startY + height + 28;
 
             // Apply scroll offset and clip.
             using (context.PushClip(new Rect(0, 0, width, height)))
             using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
                 // Draw contents
-                DrawCurves(context, graph, startY, endY);
-                DrawAnchors(context, graph, startY, endY);
+                DrawCurves(context, graph, startY, endY, rowHeight);
+                DrawAnchors(context, graph, startY, endY, rowHeight);
             }
         }
 
-        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
+        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
             var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
@@ -82,16 +93,20 @@ namespace SourceGit.Views
                 {
                     if (link.IsMerged)
                         continue;
-                    if (link.End.Y < top)
+
+                    var startY = link.Start.Y * rowHeight;
+                    var endY = link.End.Y * rowHeight;
+
+                    if (endY < top)
                         continue;
-                    if (link.Start.Y > bottom)
+                    if (startY > bottom)
                         break;
 
                     var geo = new StreamGeometry();
                     using (var ctx = geo.Open())
                     {
-                        ctx.BeginFigure(link.Start, false);
-                        ctx.QuadraticBezierTo(link.Control, link.End);
+                        ctx.BeginFigure(new Point(link.Start.X, startY), false);
+                        ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
                     }
 
                     context.DrawGeometry(null, grayedPen, geo);
@@ -100,10 +115,11 @@ namespace SourceGit.Views
 
             foreach (var line in graph.Paths)
             {
-                var last = line.Points[0];
+                var last = new Point(line.Points[0].X, line.Points[0].Y * rowHeight);
                 var size = line.Points.Count;
+                var endY = line.Points[size - 1].Y * rowHeight;
 
-                if (line.Points[size - 1].Y < top)
+                if (endY < top)
                     continue;
                 if (last.Y > bottom)
                     break;
@@ -117,7 +133,7 @@ namespace SourceGit.Views
                     var ended = false;
                     for (int i = 1; i < size; i++)
                     {
-                        var cur = line.Points[i];
+                        var cur = new Point(line.Points[i].X, line.Points[i].Y * rowHeight);
                         if (cur.Y < top)
                         {
                             last = cur;
@@ -173,23 +189,27 @@ namespace SourceGit.Views
             {
                 if (onlyHighlightCurrentBranch && !link.IsMerged)
                     continue;
-                if (link.End.Y < top)
+
+                var startY = link.Start.Y * rowHeight;
+                var endY = link.End.Y * rowHeight;
+
+                if (endY < top)
                     continue;
-                if (link.Start.Y > bottom)
+                if (startY > bottom)
                     break;
 
                 var geo = new StreamGeometry();
                 using (var ctx = geo.Open())
                 {
-                    ctx.BeginFigure(link.Start, false);
-                    ctx.QuadraticBezierTo(link.Control, link.End);
+                    ctx.BeginFigure(new Point(link.Start.X, startY), false);
+                    ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
                 }
 
                 context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
             }
         }
 
-        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom)
+        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var dotFill = DotBrush;
             var dotFillPen = new Pen(dotFill, 2);
@@ -198,9 +218,11 @@ namespace SourceGit.Views
 
             foreach (var dot in graph.Dots)
             {
-                if (dot.Center.Y < top)
+                var center = new Point(dot.Center.X, dot.Center.Y * rowHeight);
+
+                if (center.Y < top)
                     continue;
-                if (dot.Center.Y > bottom)
+                if (center.Y > bottom)
                     break;
 
                 var pen = Models.CommitGraph.Pens[dot.Color];
@@ -210,16 +232,16 @@ namespace SourceGit.Views
                 switch (dot.Type)
                 {
                     case Models.CommitGraph.DotType.Head:
-                        context.DrawEllipse(dotFill, pen, dot.Center, 6, 6);
-                        context.DrawEllipse(pen.Brush, null, dot.Center, 3, 3);
+                        context.DrawEllipse(dotFill, pen, center, 6, 6);
+                        context.DrawEllipse(pen.Brush, null, center, 3, 3);
                         break;
                     case Models.CommitGraph.DotType.Merge:
-                        context.DrawEllipse(pen.Brush, null, dot.Center, 6, 6);
-                        context.DrawLine(dotFillPen, new Point(dot.Center.X, dot.Center.Y - 3), new Point(dot.Center.X, dot.Center.Y + 3));
-                        context.DrawLine(dotFillPen, new Point(dot.Center.X - 3, dot.Center.Y), new Point(dot.Center.X + 3, dot.Center.Y));
+                        context.DrawEllipse(pen.Brush, null, center, 6, 6);
+                        context.DrawLine(dotFillPen, new Point(center.X, center.Y - 3), new Point(center.X, center.Y + 3));
+                        context.DrawLine(dotFillPen, new Point(center.X - 3, center.Y), new Point(center.X + 3, center.Y));
                         break;
                     default:
-                        context.DrawEllipse(dotFill, pen, dot.Center, 3, 3);
+                        context.DrawEllipse(dotFill, pen, center, 3, 3);
                         break;
                 }
             }

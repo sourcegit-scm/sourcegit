@@ -76,7 +76,7 @@
               <Style Selector="ListBoxItem">
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="Height" Value="28"/>
+                <Setter Property="Height" Value="26"/>
                 <Setter Property="Template">
                   <ControlTemplate>
                     <Grid>
