@@ -51,8 +51,19 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Use(log).Exec();
+
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                CallUIThread(() =>
+                {
+                    _repo.RefreshWorkingCopyChanges();
+
+                    if (_repo.HasUnresolvedConflicts)
+                    {
+                        _repo.SelectedViewIndex = 1;
+                    }
+
+                    _repo.SetWatcherEnabled(true);
+                });
                 return true;
             });
         }
