@@ -56,7 +56,7 @@ namespace SourceGit.Views
                 return;
 
             // Calculate drawing area.
-            var width = Bounds.Width - 273 - histories.AuthorNameColumnWidth.Value;
+            var width = histories.CommitListHeader.ColumnDefinitions[0].ActualWidth;
             var height = Bounds.Height;
 
             // Calculate row height

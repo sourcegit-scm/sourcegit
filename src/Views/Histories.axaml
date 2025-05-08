@@ -30,7 +30,7 @@
                 Background="{DynamicResource Brush.Window}"
                 BorderThickness="0,0,0,1"
                 BorderBrush="{DynamicResource Brush.Border0}">
-          <Grid>
+          <Grid x:Name="CommitListHeader">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="3"/>
