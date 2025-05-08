@@ -145,7 +145,7 @@
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
                                              ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
-                                             FontSize="11"
+                                             FontSize="12"
                                              VerticalAlignment="Center">
                         <v:CommitRefsPresenter.UseGraphColor>
                           <MultiBinding Converter="{x:Static BoolConverters.Or}">
