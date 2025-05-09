@@ -141,8 +141,8 @@ namespace SourceGit.ViewModels
                 if (InitAndUpdateSubmodules)
                 {
                     var submodules = new Commands.QuerySubmodules(path).Result();
-                    foreach (var submodule in submodules)
-                        new Commands.Submodule(path).Use(log).Update(submodule.Path, true, true, false);
+                    if (submodules.Count > 0)
+                        new Commands.Submodule(path).Use(log).Update(submodules, true, true, false);
                 }
 
                 log.Complete();

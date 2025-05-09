@@ -11,15 +11,24 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Branch(string branch)
+        public bool Branch(string branch, bool force)
         {
-            Args = $"checkout --progress {branch}";
+            var option = force ? "--force" : string.Empty;
+            Args = $"checkout {option} --progress {branch}";
             return Exec();
         }
 
-        public bool Branch(string branch, string basedOn)
+        public bool Branch(string branch, string basedOn, bool force)
         {
+            var option = force ? "--force" : string.Empty;
             Args = $"checkout --progress -b {branch} {basedOn}";
+            return Exec();
+        }
+
+        public bool Commit(string commitId, bool force)
+        {
+            var option = force ? "--force" : string.Empty;
+            Args = $"checkout {option} --detach --progress {commitId}";
             return Exec();
         }
 
@@ -54,12 +63,6 @@ namespace SourceGit.Commands
         public bool FileWithRevision(string file, string revision)
         {
             Args = $"checkout --no-overlay {revision} -- \"{file}\"";
-            return Exec();
-        }
-
-        public bool Commit(string commitId)
-        {
-            Args = $"checkout --detach --progress {commitId}";
             return Exec();
         }
     }

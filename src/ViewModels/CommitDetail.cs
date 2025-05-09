@@ -864,7 +864,7 @@ namespace SourceGit.ViewModels
             {
                 new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(path, $"{_commit.SHA}");
                 log.Complete();
-            });            
+            });
         }
 
         private Task ResetToParentRevision(Models.Change change)
