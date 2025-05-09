@@ -291,7 +291,7 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var fullPath = Path.Combine(_repo.FullPath, change.Path);
+            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
             explore.Icon = App.CreateMenuIcon("Icons.Explore");
@@ -362,11 +362,9 @@ namespace SourceGit.ViewModels
                 var resetToThisRevision = new MenuItem();
                 resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
                 resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-                resetToThisRevision.Click += (_, ev) =>
+                resetToThisRevision.Click += async (_, ev) =>
                 {
-                    var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
-                    new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_commit.SHA}");
-                    log.Complete();
+                    await ResetToThisRevision(change.Path);
                     ev.Handled = true;
                 };
 
@@ -374,14 +372,9 @@ namespace SourceGit.ViewModels
                 resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
                 resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
                 resetToFirstParent.IsEnabled = _commit.Parents.Count > 0;
-                resetToFirstParent.Click += (_, ev) =>
+                resetToFirstParent.Click += async (_, ev) =>
                 {
-                    var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
-                    if (change.Index == Models.ChangeState.Renamed)
-                        new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
-
-                    new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_commit.SHA}~1");
-                    log.Complete();
+                    await ResetToParentRevision(change);
                     ev.Handled = true;
                 };
 
@@ -389,8 +382,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(resetToFirstParent);
                 menu.Items.Add(new MenuItem { Header = "-" });
 
-                if (File.Exists(Path.Combine(fullPath)))
-                    TryToAddContextMenuItemsForGitLFS(menu, change.Path);
+                TryToAddContextMenuItemsForGitLFS(menu, fullPath, change.Path);
             }
 
             var copyPath = new MenuItem();
@@ -407,7 +399,7 @@ namespace SourceGit.ViewModels
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
             copyFullPath.Click += (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
+                App.CopyText(fullPath);
                 e.Handled = true;
             };
 
@@ -419,7 +411,7 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateRevisionFileContextMenu(Models.Object file)
         {
             var menu = new ContextMenu();
-            var fullPath = Path.Combine(_repo.FullPath, file.Path);
+            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file.Path);
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
             explore.Icon = App.CreateMenuIcon("Icons.Explore");
@@ -499,38 +491,34 @@ namespace SourceGit.ViewModels
             menu.Items.Add(blame);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
-            var resetToThisRevision = new MenuItem();
-            resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-            resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-            resetToThisRevision.IsEnabled = File.Exists(fullPath);
-            resetToThisRevision.Click += (_, ev) =>
+            if (!_repo.IsBare)
             {
-                var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
-                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(file.Path, $"{_commit.SHA}");
-                log.Complete();
-                ev.Handled = true;
-            };
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += async (_, ev) =>
+                {
+                    await ResetToThisRevision(file.Path);
+                    ev.Handled = true;
+                };
 
-            var resetToFirstParent = new MenuItem();
-            resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
-            resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-            var fileInChanges = _changes.Find(x => x.Path == file.Path);
-            var fileIndex = fileInChanges?.Index;
-            resetToFirstParent.IsEnabled = _commit.Parents.Count > 0 && fileIndex != Models.ChangeState.Renamed;
-            resetToFirstParent.Click += (_, ev) =>
-            {
-                var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
-                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(file.Path, $"{_commit.SHA}~1");
-                log.Complete();
-                ev.Handled = true;
-            };
+                var change = _changes.Find(x => x.Path == file.Path) ?? new Models.Change() { Index = Models.ChangeState.None, Path = file.Path };
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = _commit.Parents.Count > 0;
+                resetToFirstParent.Click += async (_, ev) =>
+                {
+                    await ResetToParentRevision(change);
+                    ev.Handled = true;
+                };
 
-            menu.Items.Add(resetToThisRevision);
-            menu.Items.Add(resetToFirstParent);
-            menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
-            if (File.Exists(Path.Combine(fullPath)))
-                TryToAddContextMenuItemsForGitLFS(menu, file.Path);
+                TryToAddContextMenuItemsForGitLFS(menu, fullPath, file.Path);
+            }
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
@@ -546,7 +534,7 @@ namespace SourceGit.ViewModels
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
             copyFullPath.Click += (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, file.Path));
+                App.CopyText(fullPath);
                 e.Handled = true;
             };
 
@@ -725,8 +713,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void TryToAddContextMenuItemsForGitLFS(ContextMenu menu, string path)
+        private void TryToAddContextMenuItemsForGitLFS(ContextMenu menu, string fullPath, string path)
         {
+            if (_repo.Remotes.Count == 0 || !File.Exists(fullPath))
+                return;
+
             var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
             if (!lfsEnabled)
                 return;
@@ -738,7 +729,6 @@ namespace SourceGit.ViewModels
             var lfsLock = new MenuItem();
             lfsLock.Header = App.Text("GitLFS.Locks.Lock");
             lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
-            lfsLock.IsEnabled = _repo.Remotes.Count > 0;
             if (_repo.Remotes.Count == 1)
             {
                 lfsLock.Click += async (_, e) =>
@@ -777,7 +767,6 @@ namespace SourceGit.ViewModels
             var lfsUnlock = new MenuItem();
             lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
             lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
-            lfsUnlock.IsEnabled = _repo.Remotes.Count > 0;
             if (_repo.Remotes.Count == 1)
             {
                 lfsUnlock.Click += async (_, e) =>
@@ -865,6 +854,31 @@ namespace SourceGit.ViewModels
             }
 
             RevisionFileSearchSuggestion = suggestion;
+        }
+
+        private Task ResetToThisRevision(string path)
+        {
+            var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
+
+            return Task.Run(() =>
+            {
+                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(path, $"{_commit.SHA}");
+                log.Complete();
+            });            
+        }
+
+        private Task ResetToParentRevision(Models.Change change)
+        {
+            var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
+
+            return Task.Run(() =>
+            {
+                if (change.Index == Models.ChangeState.Renamed)
+                    new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.OriginalPath, $"{_commit.SHA}~1");
+
+                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_commit.SHA}~1");
+                log.Complete();
+            });
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
