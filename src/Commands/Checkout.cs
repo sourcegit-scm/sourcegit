@@ -13,13 +13,13 @@ namespace SourceGit.Commands
 
         public bool Branch(string branch)
         {
-            Args = $"checkout --force --progress {branch}";
+            Args = $"checkout --progress {branch}";
             return Exec();
         }
 
         public bool Branch(string branch, string basedOn)
         {
-            Args = $"checkout --force --progress -b {branch} {basedOn}";
+            Args = $"checkout --progress -b {branch} {basedOn}";
             return Exec();
         }
 
