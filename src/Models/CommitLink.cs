@@ -24,7 +24,7 @@ namespace SourceGit.Models
                 {
                     var trimmedUrl = url.AsSpan();
                     if (url.EndsWith(".git"))
-                        trimmedUrl = url.AsSpan().Slice(0, url.Length - 4);
+                        trimmedUrl = url.AsSpan(0, url.Length - 4);
 
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
                         outs.Add(new($"Github ({trimmedUrl.Slice(19)})", $"{url}/commit/"));

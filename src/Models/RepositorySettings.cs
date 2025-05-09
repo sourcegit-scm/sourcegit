@@ -344,28 +344,28 @@ namespace SourceGit.Models
                     if (filter.Mode == FilterMode.Included)
                         includedRefs.Add(filter.Pattern);
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan().Slice(11)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
+                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan(11)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
                 }
                 else if (filter.Type == FilterType.LocalBranchFolder)
                 {
                     if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"--branches={filter.Pattern.AsSpan().Slice(11)}/*");
+                        includedRefs.Add($"--branches={filter.Pattern.AsSpan(11)}/*");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan().Slice(11)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
+                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan(11)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
                 }
                 else if (filter.Type == FilterType.RemoteBranch)
                 {
                     if (filter.Mode == FilterMode.Included)
                         includedRefs.Add(filter.Pattern);
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan().Slice(13)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
+                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
                 }
                 else if (filter.Type == FilterType.RemoteBranchFolder)
                 {
                     if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"--remotes={filter.Pattern.AsSpan().Slice(13)}/*");
+                        includedRefs.Add($"--remotes={filter.Pattern.AsSpan(13)}/*");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan().Slice(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
+                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
                 }
                 else if (filter.Type == FilterType.Tag)
                 {
