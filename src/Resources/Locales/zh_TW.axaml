@@ -327,6 +327,8 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">完成修復分支</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">完成發行分支</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">目標分支:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">完成後自動推送</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">壓縮為單一提交後合併</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">修復分支:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">修復分支前置詞:</x:String>
   <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">初始化 Git 工作流</x:String>

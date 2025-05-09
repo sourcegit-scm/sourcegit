@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 using Avalonia.Threading;
 
@@ -134,7 +135,7 @@ namespace SourceGit.Commands
             return start.Exec();
         }
 
-        public static bool Finish(string repo, string type, string name, bool keepBranch, Models.ICommandLog log)
+        public static bool Finish(string repo, string type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
         {
             if (!SUPPORTED_BRANCH_TYPES.Contains(type))
             {
@@ -146,11 +147,22 @@ namespace SourceGit.Commands
                 return false;
             }
 
-            var option = keepBranch ? "-k" : string.Empty;
+            var builder = new StringBuilder();
+            builder.Append("flow ");
+            builder.Append(type);
+            builder.Append(" finish ");
+            if (squash)
+                builder.Append("--squash ");
+            if (push)
+                builder.Append("--push ");
+            if (keepBranch)
+                builder.Append("-k ");
+            builder.Append(name);
+
             var finish = new Command();
             finish.WorkingDirectory = repo;
             finish.Context = repo;
-            finish.Args = $"flow {type} finish {option} {name}";
+            finish.Args = builder.ToString();
             finish.Log = log;
             return finish.Exec();
         }
