@@ -142,8 +142,15 @@ namespace SourceGit.ViewModels
                         }
                     }
 
-                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, updateSubmodules);
-                    if (needPopStash)
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision);
+                    if (succ && updateSubmodules)
+                    {
+                        var submodules = new Commands.QuerySubmodules(_repo.FullPath).Result();
+                        foreach (var submodule in submodules)
+                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodule.Path, true, true, false);
+                    }
+
+                    if (succ && needPopStash)
                         new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
                 }
                 else

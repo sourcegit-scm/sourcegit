@@ -101,7 +101,6 @@ namespace SourceGit.ViewModels
         {
             ProgressDescription = "Clone ...";
 
-            // Create a temp log.
             var log = new CommandLog("Clone");
             Use(log);
 
@@ -139,11 +138,10 @@ namespace SourceGit.ViewModels
                     config.Set("remote.origin.sshkey", _sshKey);
                 }
 
-                // individually update submodule (if any)
                 if (InitAndUpdateSubmodules)
                 {
-                    var submoduleList = new Commands.QuerySubmodules(path).Result();
-                    foreach (var submodule in submoduleList)
+                    var submodules = new Commands.QuerySubmodules(path).Result();
+                    foreach (var submodule in submodules)
                         new Commands.Submodule(path).Use(log).Update(submodule.Path, true, true, false);
                 }
 
