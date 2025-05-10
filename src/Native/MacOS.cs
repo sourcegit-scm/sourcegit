@@ -59,6 +59,8 @@ namespace SourceGit.Native
                     return "Warp";
                 case "ghostty":
                     return "Ghostty";
+                case "kitty":
+                    return "kitty";
             }
 
             return string.Empty;
