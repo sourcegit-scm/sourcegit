@@ -13,6 +13,18 @@ namespace SourceGit.ViewModels
         public bool IsRelease => _type == "release";
         public bool IsHotfix => _type == "hotfix";
 
+        public bool Squash
+        {
+            get;
+            set;
+        } = false;
+
+        public bool AutoPush
+        {
+            get;
+            set;
+        } = false;
+
         public bool KeepBranch
         {
             get;
@@ -39,7 +51,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = Commands.GitFlow.Finish(_repo.FullPath, _type, name, KeepBranch, log);
+                var succ = Commands.GitFlow.Finish(_repo.FullPath, _type, name, Squash, AutoPush, KeepBranch, log);
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

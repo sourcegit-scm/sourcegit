@@ -15,11 +15,24 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool IsRecurseSubmoduleVisible
+        {
+            get;
+            private set;
+        }
+
+        public bool RecurseSubmodules
+        {
+            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
+            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
+        }
+
         public Checkout(Repository repo, string branch)
         {
             _repo = repo;
             Branch = branch;
             DiscardLocalChanges = false;
+            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public override Task<bool> Sure()
@@ -30,19 +43,22 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Checkout '{Branch}'");
             Use(log);
 
+            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
-                var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
+                var succ = false;
                 var needPopStash = false;
-                if (changes > 0)
+
+                if (DiscardLocalChanges)
                 {
-                    if (DiscardLocalChanges)
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(Branch, true);
+                }
+                else
+                {
+                    var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
+                    if (changes > 0)
                     {
-                        Commands.Discard.All(_repo.FullPath, false, log);
-                    }
-                    else
-                    {
-                        var succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CHECKOUT_AUTO_STASH");
+                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CHECKOUT_AUTO_STASH");
                         if (!succ)
                         {
                             log.Complete();
@@ -52,11 +68,22 @@ namespace SourceGit.ViewModels
 
                         needPopStash = true;
                     }
+
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(Branch, false);
                 }
 
-                var rs = new Commands.Checkout(_repo.FullPath).Use(log).Branch(Branch);
-                if (needPopStash)
-                    rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                if (succ)
+                {
+                    if (updateSubmodules)
+                    {
+                        var submodules = new Commands.QuerySubmodules(_repo.FullPath).Result();
+                        if (submodules.Count > 0)
+                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true, false);
+                    }
+
+                    if (needPopStash)
+                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                }
 
                 log.Complete();
 
@@ -73,7 +100,7 @@ namespace SourceGit.ViewModels
                 });
 
                 Task.Delay(400).Wait();
-                return rs;
+                return succ;
             });
         }
 

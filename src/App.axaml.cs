@@ -78,7 +78,7 @@ namespace SourceGit
             return builder;
         }
 
-        private static void LogException(Exception ex)
+        public static void LogException(Exception ex)
         {
             if (ex == null)
                 return;

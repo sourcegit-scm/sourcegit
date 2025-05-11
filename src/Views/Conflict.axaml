@@ -52,7 +52,7 @@
                 <v:CommitRefsPresenter Margin="8,0,0,0"
                                        Foreground="{DynamicResource Brush.FG1}"
                                        FontFamily="{DynamicResource Fonts.Primary}"
-                                       FontSize="11"
+                                       FontSize="12"
                                        VerticalAlignment="Center"
                                        UseGraphColor="False"/>
                 <TextBlock Margin="4,0,0,0"

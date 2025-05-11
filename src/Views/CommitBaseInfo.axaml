@@ -189,7 +189,7 @@
           <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
-                                   FontSize="11"
+                                   FontSize="12"
                                    AllowWrap="True"
                                    Margin="0,4,0,0"
                                    UseGraphColor="False"/>

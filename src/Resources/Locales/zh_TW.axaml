@@ -86,6 +86,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交資訊中追加來源資訊</x:String>
@@ -326,6 +327,8 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">完成修復分支</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">完成發行分支</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">目標分支:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">完成後自動推送</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">壓縮為單一提交後合併</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">修復分支:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">修復分支前置詞:</x:String>
   <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">初始化 Git 工作流</x:String>
@@ -575,6 +578,9 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">中止</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">自動提取遠端變更中...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">排序</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">依建立時間</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">依名稱升序</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本存放庫 (GC)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作將執行 `git gc` 命令。</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空篩選規則</x:String>
@@ -629,6 +635,7 @@
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端機中開啟</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相對時間</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 Git 指令記錄</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">檢視遠端存放庫 '{0}'</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>

@@ -14,7 +14,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
+            Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
         }
 
         public List<Models.Branch> Result()
@@ -49,7 +49,7 @@ namespace SourceGit.Commands
         private Models.Branch ParseLine(string line)
         {
             var parts = line.Split('\0');
-            if (parts.Length != 5)
+            if (parts.Length != 6)
                 return null;
 
             var branch = new Models.Branch();
@@ -83,12 +83,13 @@ namespace SourceGit.Commands
             }
 
             branch.FullName = refName;
-            branch.Head = parts[1];
-            branch.IsCurrent = parts[2] == "*";
-            branch.Upstream = parts[3];
+            branch.CommitterDate = ulong.Parse(parts[1]);
+            branch.Head = parts[2];
+            branch.IsCurrent = parts[3] == "*";
+            branch.Upstream = parts[4];
             branch.IsUpstreamGone = false;
 
-            if (branch.IsLocal && !string.IsNullOrEmpty(parts[4]) && !parts[4].Equals("=", StringComparison.Ordinal))
+            if (branch.IsLocal && !string.IsNullOrEmpty(parts[5]) && !parts[5].Equals("=", StringComparison.Ordinal))
                 branch.TrackStatus = new QueryTrackStatus(WorkingDirectory, branch.Name, branch.Upstream).Result();
             else
                 branch.TrackStatus = new Models.BranchTrackStatus();
