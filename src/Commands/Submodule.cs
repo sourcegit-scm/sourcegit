@@ -1,4 +1,7 @@
-﻿namespace SourceGit.Commands
+﻿using System.Collections.Generic;
+using System.Text;
+
+namespace SourceGit.Commands
 {
     public class Submodule : Command
     {
@@ -39,6 +42,28 @@
             if (!string.IsNullOrEmpty(module))
                 Args += $" -- \"{module}\"";
 
+            return Exec();
+        }
+
+        public bool Update(List<Models.Submodule> modules, bool init, bool recursive, bool useRemote)
+        {
+            var builder = new StringBuilder();
+            builder.Append("submodule update");
+
+            if (init)
+                builder.Append(" --init");
+            if (recursive)
+                builder.Append(" --recursive");
+            if (useRemote)
+                builder.Append(" --remote");
+            if (modules.Count > 0)
+            {
+                builder.Append(" --");
+                foreach (var module in modules)
+                    builder.Append($" \"{module.Path}\"");
+            }
+
+            Args = builder.ToString();
             return Exec();
         }
 

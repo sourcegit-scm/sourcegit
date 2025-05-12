@@ -28,11 +28,11 @@ namespace SourceGit.Commands
             Context = repo;
 
             if (ignoreWhitespace)
-                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-all-space --unified={unified} {opt}";
+                Args = $"diff --no-ext-diff --patch --ignore-all-space --unified={unified} {opt}";
             else if (Models.DiffOption.IgnoreCRAtEOL)
-                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
+                Args = $"diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
             else
-                Args = $"-c core.autocrlf=false diff --no-ext-diff --patch --unified={unified} {opt}";
+                Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
         public Models.DiffResult Result()

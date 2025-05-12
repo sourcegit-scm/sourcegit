@@ -30,7 +30,7 @@
                 Background="{DynamicResource Brush.Window}"
                 BorderThickness="0,0,0,1"
                 BorderBrush="{DynamicResource Brush.Border0}">
-          <Grid>
+          <Grid x:Name="CommitListHeader">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="3"/>
@@ -76,7 +76,7 @@
               <Style Selector="ListBoxItem">
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="Height" Value="28"/>
+                <Setter Property="Height" Value="26"/>
                 <Setter Property="Template">
                   <ControlTemplate>
                     <Grid>
@@ -145,7 +145,7 @@
                                              Foreground="{DynamicResource Brush.FG1}"
                                              FontFamily="{DynamicResource Fonts.Primary}"
                                              ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
-                                             FontSize="11"
+                                             FontSize="12"
                                              VerticalAlignment="Center">
                         <v:CommitRefsPresenter.UseGraphColor>
                           <MultiBinding Converter="{x:Static BoolConverters.Or}">

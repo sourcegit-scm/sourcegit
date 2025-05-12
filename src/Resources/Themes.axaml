@@ -25,7 +25,7 @@
       <Color x:Key="Color.Diff.AddedHighlight">#A7E1A7</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#F19B9D</Color>
       <Color x:Key="Color.Link">#0000EE</Color>
-      <Color x:Key="Color.InlineCode">#FFE5E5E5</Color>
+      <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -52,7 +52,7 @@
       <Color x:Key="Color.Diff.AddedHighlight">#A0308D3C</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#A09F4247</Color>
       <Color x:Key="Color.Link">#4DAAFC</Color>
-      <Color x:Key="Color.InlineCode">#FF2E2E2E</Color>
+      <Color x:Key="Color.InlineCode">#FF383838</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
   

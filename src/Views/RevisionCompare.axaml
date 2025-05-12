@@ -28,16 +28,16 @@
           <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
         </Grid>
 
-        <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+        <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" Margin="0,6,0,0"/>
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
 
-  <Grid RowDefinitions="50,*" Margin="4">
+  <Grid RowDefinitions="Auto,*" Margin="4">
     <!-- Compare Revision Info -->
     <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
       <!-- Base Revision -->
-      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding StartPoint}"/>
       </Border>
 
@@ -47,7 +47,7 @@
       </Button>
 
       <!-- Right Revision -->
-      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Diff.AddedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding EndPoint}"/>
       </Border>
 

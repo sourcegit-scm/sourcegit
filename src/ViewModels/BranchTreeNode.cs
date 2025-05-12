@@ -10,6 +10,7 @@ namespace SourceGit.ViewModels
         public string Name { get; private set; } = string.Empty;
         public string Path { get; private set; } = string.Empty;
         public object Backend { get; private set; } = null;
+        public ulong TimeToSort { get; private set; } = 0;
         public int Depth { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
@@ -62,6 +63,12 @@ namespace SourceGit.ViewModels
             public List<BranchTreeNode> Remotes => _remotes;
             public List<string> InvalidExpandedNodes => _invalidExpandedNodes;
 
+            public Builder(Models.BranchSortMode localSortMode, Models.BranchSortMode remoteSortMode)
+            {
+                _localSortMode = localSortMode;
+                _remoteSortMode = remoteSortMode;
+            }
+
             public void SetExpandedNodes(List<string> expanded)
             {
                 foreach (var node in expanded)
@@ -72,6 +79,7 @@ namespace SourceGit.ViewModels
             {
                 var folders = new Dictionary<string, BranchTreeNode>();
 
+                var fakeRemoteTime = (ulong)remotes.Count;
                 foreach (var remote in remotes)
                 {
                     var path = $"refs/remotes/{remote.Name}";
@@ -81,8 +89,10 @@ namespace SourceGit.ViewModels
                         Path = path,
                         Backend = remote,
                         IsExpanded = bForceExpanded || _expanded.Contains(path),
+                        TimeToSort = fakeRemoteTime,
                     };
 
+                    fakeRemoteTime--;
                     folders.Add(path, node);
                     _remotes.Add(node);
                 }
@@ -108,12 +118,21 @@ namespace SourceGit.ViewModels
                 }
 
                 folders.Clear();
-                SortNodes(_locals);
-                SortNodes(_remotes);
+
+                if (_localSortMode == Models.BranchSortMode.Name)
+                    SortNodesByName(_locals);
+                else
+                    SortNodesByTime(_locals);
+
+                if (_remoteSortMode == Models.BranchSortMode.Name)
+                    SortNodesByName(_remotes);
+                else
+                    SortNodesByTime(_remotes);
             }
 
             private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded)
             {
+                var time = branch.CommitterDate;
                 var fullpath = $"{prefix}/{branch.Name}";
                 var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1 || branch.IsDetachedHead)
@@ -124,6 +143,7 @@ namespace SourceGit.ViewModels
                         Path = fullpath,
                         Backend = branch,
                         IsExpanded = false,
+                        TimeToSort = time,
                     });
                     return;
                 }
@@ -138,6 +158,7 @@ namespace SourceGit.ViewModels
                     if (folders.TryGetValue(folder, out var val))
                     {
                         lastFolder = val;
+                        lastFolder.TimeToSort = Math.Max(lastFolder.TimeToSort, time);
                         if (!lastFolder.IsExpanded)
                             lastFolder.IsExpanded |= (branch.IsCurrent || _expanded.Contains(folder));
                     }
@@ -148,6 +169,7 @@ namespace SourceGit.ViewModels
                             Name = name,
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
+                            TimeToSort = time,
                         };
                         roots.Add(lastFolder);
                         folders.Add(folder, lastFolder);
@@ -159,6 +181,7 @@ namespace SourceGit.ViewModels
                             Name = name,
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
+                            TimeToSort = time,
                         };
                         lastFolder.Children.Add(cur);
                         folders.Add(folder, cur);
@@ -175,10 +198,11 @@ namespace SourceGit.ViewModels
                     Path = fullpath,
                     Backend = branch,
                     IsExpanded = false,
+                    TimeToSort = time,
                 });
             }
 
-            private void SortNodes(List<BranchTreeNode> nodes)
+            private void SortNodesByName(List<BranchTreeNode> nodes)
             {
                 nodes.Sort((l, r) =>
                 {
@@ -192,9 +216,39 @@ namespace SourceGit.ViewModels
                 });
 
                 foreach (var node in nodes)
-                    SortNodes(node.Children);
+                    SortNodesByName(node.Children);
             }
 
+            private void SortNodesByTime(List<BranchTreeNode> nodes)
+            {
+                nodes.Sort((l, r) =>
+                {
+                    if (l.Backend is Models.Branch { IsDetachedHead: true })
+                        return -1;
+
+                    if (l.Backend is Models.Branch)
+                    {
+                        if (r.Backend is Models.Branch)
+                            return r.TimeToSort == l.TimeToSort ? Models.NumericSort.Compare(l.Name, r.Name) : r.TimeToSort.CompareTo(l.TimeToSort);
+                        else
+                            return 1;
+                    }
+
+                    if (r.Backend is Models.Branch)
+                        return -1;
+
+                    if (r.TimeToSort == l.TimeToSort)
+                        return Models.NumericSort.Compare(l.Name, r.Name);
+
+                    return r.TimeToSort.CompareTo(l.TimeToSort);
+                });
+
+                foreach (var node in nodes)
+                    SortNodesByTime(node.Children);
+            }
+
+            private readonly Models.BranchSortMode _localSortMode = Models.BranchSortMode.Name;
+            private readonly Models.BranchSortMode _remoteSortMode = Models.BranchSortMode.Name;
             private readonly List<BranchTreeNode> _locals = new List<BranchTreeNode>();
             private readonly List<BranchTreeNode> _remotes = new List<BranchTreeNode>();
             private readonly List<string> _invalidExpandedNodes = new List<string>();

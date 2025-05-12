@@ -86,6 +86,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
+  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Обновить все подкаталоги</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для ревизии сообщения</x:String>
@@ -326,6 +327,8 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">ПРОЦЕСС - Закончить исправление</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">ПРОЦЕСС - Завершить выпуск</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Цель:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Выложить на удалённый(ые) после завершения</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Втиснуть при слиянии</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Исправление:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Префикс исправлений:</x:String>
   <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Создать Git-процесс</x:String>
@@ -575,6 +578,9 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">Отказ</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Автоматическое извлечение изменений с внешних репозиторий...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Сортировать</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">По дате ревизора (исполнителя)</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">По имени</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Очистить (Сбор мусора и удаление) </x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Запустить команду (git gc) для данного репозитория.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Очистить всё</x:String>
@@ -628,7 +634,8 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Сортировать</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Открыть в терминале</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Использовать относительное время в историях</x:String>
-  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Просмотр логов</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Просмотр журналов</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Посетить '{0}' в браузере</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ КАТАЛОГИ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОБАВИТЬ РАБОЧИЙ КАТАЛОГ</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">ОБРЕЗАТЬ</x:String>
@@ -714,7 +721,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Подмодуль:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Использовать опцию (--remote)</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>
-  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Логи</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Журналы</x:String>
   <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">ОЧИСТИТЬ ВСЁ</x:String>
   <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">Удалить</x:String>

@@ -64,8 +64,8 @@ namespace SourceGit.Models
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
-            const double unitHeight = 28;
-            const double halfHeight = 14;
+            const double unitHeight = 1;
+            const double halfHeight = 0.5;
 
             var temp = new CommitGraph();
             var unsolved = new List<PathHelper>();

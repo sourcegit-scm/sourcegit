@@ -86,6 +86,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
+  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同时更新所有子模块</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选提交</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交信息中追加来源信息</x:String>
@@ -326,6 +327,8 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">结束修复分支</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">结束版本分支</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">目标分支 ：</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">完成后自动推送</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">压缩变更为单一提交后合并分支</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">修复分支 ：</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">修复分支名前缀 ：</x:String>
   <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">初始化GIT工作流</x:String>
@@ -575,6 +578,9 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支 ：</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">终止合并</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">自动拉取远端变更中...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">排序方式</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">按提交时间</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">按名称</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">清理本仓库(GC)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">本操作将执行`git gc`命令。</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">清空过滤规则</x:String>
@@ -629,6 +635,7 @@
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在终端中打开</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相对时间</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">查看命令日志</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">访问远程仓库 '{0}'</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作树列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作树</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>

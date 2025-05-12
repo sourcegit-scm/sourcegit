@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -37,6 +37,18 @@ namespace SourceGit.Models
             get;
             set;
         } = false;
+
+        public BranchSortMode LocalBranchSortMode
+        {
+            get;
+            set;
+        } = BranchSortMode.Name;
+
+        public BranchSortMode RemoteBranchSortMode
+        {
+            get;
+            set;
+        } = BranchSortMode.Name;
 
         public TagSortMode TagSortMode
         {
@@ -105,6 +117,12 @@ namespace SourceGit.Models
         } = false;
 
         public bool CheckoutBranchOnCreateBranch
+        {
+            get;
+            set;
+        } = true;
+
+        public bool UpdateSubmodulesOnCheckoutBranch
         {
             get;
             set;
@@ -326,28 +344,28 @@ namespace SourceGit.Models
                     if (filter.Mode == FilterMode.Included)
                         includedRefs.Add(filter.Pattern);
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"--exclude=\"{filter.Pattern.Substring(11)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
+                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan(11)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
                 }
                 else if (filter.Type == FilterType.LocalBranchFolder)
                 {
                     if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"--branches={filter.Pattern.Substring(11)}/*");
+                        includedRefs.Add($"--branches={filter.Pattern.AsSpan(11)}/*");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"--exclude=\"{filter.Pattern.Substring(11)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
+                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan(11)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
                 }
                 else if (filter.Type == FilterType.RemoteBranch)
                 {
                     if (filter.Mode == FilterMode.Included)
                         includedRefs.Add(filter.Pattern);
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.Substring(13)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
+                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
                 }
                 else if (filter.Type == FilterType.RemoteBranchFolder)
                 {
                     if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"--remotes={filter.Pattern.Substring(13)}/*");
+                        includedRefs.Add($"--remotes={filter.Pattern.AsSpan(13)}/*");
                     else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.Substring(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
+                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
                 }
                 else if (filter.Type == FilterType.Tag)
                 {
