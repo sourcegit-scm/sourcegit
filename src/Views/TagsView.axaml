@@ -42,10 +42,11 @@
                                    Node="{Binding .}"
                                    IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-                <TextBlock Grid.Column="2"
-                           Classes="primary"
-                           Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"
-                           Margin="8,0,0,0"/>
+                <Border Grid.Column="2" Background="Transparent">
+                  <TextBlock Classes="primary"
+                             Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"
+                             Margin="8,0,0,0"/>
+                </Border>
 
                 <ContentControl Grid.Column="3" Content="{Binding Tag}">
                   <ContentControl.DataTemplates>
@@ -76,11 +77,12 @@
                       Width="12" Height="12"
                       Data="{StaticResource Icons.Tag}"/>
 
-                <TextBlock Grid.Column="1"
-                           Classes="primary"
-                           Text="{Binding Name}"
-                           Margin="8,0,0,0"
-                           TextTrimming="CharacterEllipsis"/>
+                <Border Grid.Column="1" Background="Transparent">
+                  <TextBlock Classes="primary"
+                             Text="{Binding Name}"
+                             Margin="8,0,0,0"
+                             TextTrimming="CharacterEllipsis"/>
+                </Border>
 
                 <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
               </Grid>
