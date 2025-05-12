@@ -42,7 +42,8 @@ namespace SourceGit.Models
                     new ShellOrTerminal("mac-terminal", "Terminal", ""),
                     new ShellOrTerminal("iterm2", "iTerm", ""),
                     new ShellOrTerminal("warp", "Warp", ""),
-                    new ShellOrTerminal("ghostty", "Ghostty", "")
+                    new ShellOrTerminal("ghostty", "Ghostty", ""),
+                    new ShellOrTerminal("kitty", "kitty", "")
                 };
             }
             else
@@ -58,6 +59,7 @@ namespace SourceGit.Models
                     new ShellOrTerminal("foot", "Foot", "foot"),
                     new ShellOrTerminal("wezterm", "WezTerm", "wezterm"),
                     new ShellOrTerminal("ptyxis", "Ptyxis", "ptyxis"),
+                    new ShellOrTerminal("kitty", "kitty", "kitty"),
                     new ShellOrTerminal("custom", "Custom", ""),
                 };
             }
