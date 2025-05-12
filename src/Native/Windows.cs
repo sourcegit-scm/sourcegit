@@ -112,6 +112,11 @@ namespace SourceGit.Native
                 // Custom WM_NCHITTEST
                 if (msg == 0x0084)
                 {
+                    handled = true;
+
+                    if (window.WindowState == WindowState.FullScreen || window.WindowState == WindowState.Maximized)
+                        return (IntPtr)HitTest.HTCLIENT;
+
                     var p = IntPtrToPixelPoint(lParam);
                     GetWindowRect(hWnd, out var rcWindow);
 
@@ -135,7 +140,6 @@ namespace SourceGit.Native
                         HitTest.HTBOTTOMLEFT, HitTest.HTBOTTOM, HitTest.HTBOTTOMRIGHT
                     };
 
-                    handled = true;
                     return (IntPtr)(zones[row * 3 + col]);
                 }
 
