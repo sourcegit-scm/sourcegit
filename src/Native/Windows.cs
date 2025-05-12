@@ -27,6 +27,42 @@ namespace SourceGit.Native
             internal string szCSDVersion;
         }
 
+        internal struct RECT
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+
+        internal enum HitTest
+        {
+            HTERROR = -2,
+            HTTRANSPARENT = -1,
+            HTNOWHERE = 0,
+            HTCLIENT = 1,
+            HTCAPTION = 2,
+            HTSYSMENU = 3,
+            HTGROWBOX = 4,
+            HTMENU = 5,
+            HTHSCROLL = 6,
+            HTVSCROLL = 7,
+            HTMINBUTTON = 8,
+            HTMAXBUTTON = 9,
+            HTLEFT = 10,
+            HTRIGHT = 11,
+            HTTOP = 12,
+            HTTOPLEFT = 13,
+            HTTOPRIGHT = 14,
+            HTBOTTOM = 15,
+            HTBOTTOMLEFT = 16,
+            HTBOTTOMRIGHT = 17,
+            HTBORDER = 18,
+            HTOBJECT = 19,
+            HTCLOSE = 20,
+            HTHELP = 21
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct MARGINS
         {
@@ -54,6 +90,9 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
@@ -64,6 +103,44 @@ namespace SourceGit.Native
                 Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
                 Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
             }
+        }
+
+        public void SetupWindow(Window window)
+        {
+            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            {
+                // Custom WM_NCHITTEST
+                if (msg == 0x0084)
+                {
+                    var p = IntPtrToPixelPoint(lParam);
+                    GetWindowRect(hWnd, out var rcWindow);
+
+                    var borderThinkness = (int)(4 * window.RenderScaling);
+                    int row = 1;
+                    int col = 1;
+                    if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThinkness)
+                        col = 0;
+                    else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThinkness)
+                        col = 2;
+
+                    if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThinkness)
+                        row = 0;
+                    else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThinkness)
+                        row = 2;
+
+                    ReadOnlySpan<HitTest> zones = stackalloc HitTest[]
+                    {
+                        HitTest.HTTOPLEFT, HitTest.HTTOP, HitTest.HTTOPRIGHT,
+                        HitTest.HTLEFT, HitTest.HTCLIENT, HitTest.HTRIGHT,
+                        HitTest.HTBOTTOMLEFT, HitTest.HTBOTTOM, HitTest.HTBOTTOMRIGHT
+                    };
+
+                    handled = true;
+                    return (IntPtr)(zones[row * 3 + col]);
+                }
+
+                return IntPtr.Zero;
+            });
         }
 
         public string FindGitExecutable()
@@ -226,6 +303,12 @@ namespace SourceGit.Native
                 var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
                 DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
             }, DispatcherPriority.Render);
+        }
+
+        private PixelPoint IntPtrToPixelPoint(IntPtr param)
+        {
+            var v = IntPtr.Size == 4 ? param.ToInt32() : (int)(param.ToInt64() & 0xFFFFFFFF);
+            return new PixelPoint((short)(v & 0xffff), (short)(v >> 16));
         }
 
         #region EXTERNAL_EDITOR_FINDER

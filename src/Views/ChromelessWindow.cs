@@ -45,6 +45,8 @@ namespace SourceGit.Views
                 ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome;
                 ExtendClientAreaToDecorationsHint = true;
             }
+
+            Native.OS.SetupForWindow(this);
         }
 
         public void BeginMoveWindow(object _, PointerPressedEventArgs e)

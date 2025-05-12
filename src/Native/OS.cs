@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Avalonia;
+using Avalonia.Controls;
 
 namespace SourceGit.Native
 {
@@ -14,6 +15,7 @@ namespace SourceGit.Native
         public interface IBackend
         {
             void SetupApp(AppBuilder builder);
+            void SetupWindow(Window window);
 
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
@@ -119,6 +121,11 @@ namespace SourceGit.Native
         public static void SetupEnternalTools()
         {
             ExternalTools = _backend.FindExternalTools();
+        }
+
+        public static void SetupForWindow(Window window)
+        {
+            _backend.SetupWindow(window);
         }
 
         public static string FindGitExecutable()

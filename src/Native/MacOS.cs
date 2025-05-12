@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Versioning;
 
 using Avalonia;
+using Avalonia.Controls;
 
 namespace SourceGit.Native
 {
@@ -34,6 +35,11 @@ namespace SourceGit.Native
             }
 
             Environment.SetEnvironmentVariable("PATH", path);
+        }
+
+        public void SetupWindow(Window window)
+        {
+            // Do Nothing.
         }
 
         public string FindGitExecutable()

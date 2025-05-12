@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Versioning;
 
 using Avalonia;
+using Avalonia.Controls;
 
 namespace SourceGit.Native
 {
@@ -14,6 +15,11 @@ namespace SourceGit.Native
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new X11PlatformOptions() { EnableIme = true });
+        }
+
+        public void SetupWindow(Window window)
+        {
+            // Do Nothing.
         }
 
         public string FindGitExecutable()
