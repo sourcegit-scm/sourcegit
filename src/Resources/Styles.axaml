@@ -40,7 +40,7 @@
   </Style>
   
   <Style Selector="Window[WindowState=Maximized].fix_maximized_padding">
-    <Setter Property="Padding" Value="6"/>
+    <Setter Property="Padding" Value="8,6,8,8"/>
   </Style>
 
   <Style Selector="Window.custom_window_frame">
