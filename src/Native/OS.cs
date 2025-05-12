@@ -70,6 +70,12 @@ namespace SourceGit.Native
             set;
         } = [];
 
+        public static bool UseSystemWindowFrame
+        {
+            get => OperatingSystem.IsLinux() && _enableSystemWindowFrame;
+            set => _enableSystemWindowFrame = value;
+        }
+
         static OS()
         {
             if (OperatingSystem.IsWindows())
@@ -232,5 +238,6 @@ namespace SourceGit.Native
 
         private static IBackend _backend = null;
         private static string _gitExecutable = string.Empty;
+        private static bool _enableSystemWindowFrame = false;
     }
 }

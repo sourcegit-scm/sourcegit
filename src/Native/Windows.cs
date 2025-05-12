@@ -8,6 +8,7 @@ using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Avalonia.Threading;
 
 namespace SourceGit.Native
@@ -15,18 +16,6 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct RTL_OSVERSIONINFOEX
-        {
-            internal uint dwOSVersionInfoSize;
-            internal uint dwMajorVersion;
-            internal uint dwMinorVersion;
-            internal uint dwBuildNumber;
-            internal uint dwPlatformId;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            internal string szCSDVersion;
-        }
-
         internal struct RECT
         {
             public int left;
@@ -72,9 +61,6 @@ namespace SourceGit.Native
             public int cyBottomHeight;
         }
 
-        [DllImport("ntdll.dll")]
-        private static extern int RtlGetVersion(ref RTL_OSVERSIONINFOEX lpVersionInformation);
-
         [DllImport("dwmapi.dll")]
         private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
 
@@ -96,9 +82,7 @@ namespace SourceGit.Native
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
-            RTL_OSVERSIONINFOEX v = new RTL_OSVERSIONINFOEX();
-            v.dwOSVersionInfoSize = (uint)Marshal.SizeOf<RTL_OSVERSIONINFOEX>();
-            if (RtlGetVersion(ref v) == 0 && (v.dwMajorVersion < 10 || v.dwBuildNumber < 22000))
+            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 22000, 0))
             {
                 Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
                 Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
@@ -107,6 +91,10 @@ namespace SourceGit.Native
 
         public void SetupWindow(Window window)
         {
+            window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+            window.ExtendClientAreaToDecorationsHint = true;
+            window.Classes.Add("fix_maximized_padding");
+
             Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
             {
                 // Custom WM_NCHITTEST
