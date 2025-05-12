@@ -1165,7 +1165,7 @@ namespace SourceGit.ViewModels
         {
             var submenu = new MenuItem();
             submenu.Header = tag.Name;
-            submenu.Icon = App.CreateMenuIcon("Icons.Tag");
+            submenu.Icon = App.CreateMenuIcon(tag.IsLightweight ? "Icons.Tag" : "Icons.Tag.Annotated");
             submenu.MinWidth = 200;
 
             FillTagVisibilityMenu(submenu, tag);

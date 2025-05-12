@@ -18,7 +18,8 @@
                  Text="{DynamicResource Text.PushTag.Tag}"/>
 
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}" IsVisible="{Binding Target.IsLightweight}"/>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Tag.Annotated}" IsVisible="{Binding !Target.IsLightweight}"/>
         <TextBlock Text="{Binding Target.Name}" Margin="8,0,0,0"/>
       </StackPanel>
 

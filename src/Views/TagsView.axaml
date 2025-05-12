@@ -72,10 +72,7 @@
           <DataTemplate DataType="m:Tag">
             <Border Height="24" Background="Transparent" PointerPressed="OnRowPointerPressed" ContextRequested="OnRowContextRequested">
               <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center" ToolTip.Tip="{Binding Message}">
-                <Path Grid.Column="0"
-                      Margin="8,0,0,0"
-                      Width="12" Height="12"
-                      Data="{StaticResource Icons.Tag}"/>
+                <v:TagIcon Grid.Column="0" Node="{Binding .}"/>
 
                 <Border Grid.Column="1" Background="Transparent">
                   <TextBlock Classes="primary"

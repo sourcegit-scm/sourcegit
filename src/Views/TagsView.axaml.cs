@@ -65,11 +65,57 @@ namespace SourceGit.Views
             }
 
             if (node.Tag != null)
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Tag");
+                CreateContent(new Thickness(0, 0, 0, 0), node.Tag.IsLightweight ? "Icons.Tag" : "Icons.Tag.Annotated");
             else if (node.IsExpanded)
                 CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
             else
                 CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder");
+        }
+
+        private void CreateContent(Thickness margin, string iconKey)
+        {
+            var geo = this.FindResource(iconKey) as StreamGeometry;
+            if (geo == null)
+                return;
+
+            Content = new Avalonia.Controls.Shapes.Path()
+            {
+                Width = 12,
+                Height = 12,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = margin,
+                Data = geo,
+            };
+        }
+    }
+
+    public class TagIcon : UserControl
+    {
+        public static readonly StyledProperty<Models.Tag> NodeProperty =
+            AvaloniaProperty.Register<TagIcon, Models.Tag>(nameof(Node));
+
+        public Models.Tag Node
+        {
+            get => GetValue(NodeProperty);
+            set => SetValue(NodeProperty, value);
+        }
+
+        static TagIcon()
+        {
+            NodeProperty.Changed.AddClassHandler<TagIcon>((icon, _) => icon.UpdateContent());
+        }
+
+        private void UpdateContent()
+        {
+            var node = Node;
+            if (node == null)
+            {
+                Content = null;
+                return;
+            }
+
+            CreateContent(new Thickness(8, 0, 0, 0), node.IsLightweight ? "Icons.Tag" : "Icons.Tag.Annotated");
         }
 
         private void CreateContent(Thickness margin, string iconKey)

@@ -38,7 +38,8 @@
 
           <DataTemplate DataType="m:Tag">
             <StackPanel Orientation="Horizontal">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}" IsVisible="{Binding IsLightweight}"/>
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag.Annotated}" IsVisible="{Binding !IsLightweight}"/>
               <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
             </StackPanel>
           </DataTemplate>
