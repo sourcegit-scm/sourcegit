@@ -31,7 +31,13 @@ namespace SourceGit.Views
 
         public bool HasRightCaptionButton
         {
-            get => OperatingSystem.IsWindows() || !Native.OS.UseSystemWindowFrame;
+            get
+            {
+                if (OperatingSystem.IsLinux())
+                    return !Native.OS.UseSystemWindowFrame;
+
+                return OperatingSystem.IsWindows();
+            }
         }
 
         public Launcher()
