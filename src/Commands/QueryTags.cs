@@ -28,13 +28,14 @@ namespace SourceGit.Commands
                 if (subs.Length != 5)
                     continue;
 
+                var name = subs[0].Substring(10);
                 var message = subs[4].Trim();
                 tags.Add(new Models.Tag()
                 {
-                    Name = subs[0].Substring(10),
+                    Name = name,
                     SHA = string.IsNullOrEmpty(subs[2]) ? subs[1] : subs[2],
                     CreatorDate = ulong.Parse(subs[3]),
-                    Message = string.IsNullOrEmpty(message) ? null : message,
+                    Message = string.IsNullOrEmpty(message) ? name : message,
                 });
             }
 
