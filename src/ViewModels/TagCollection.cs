@@ -26,6 +26,7 @@ namespace SourceGit.ViewModels
         public Models.Tag Tag { get; private set; } = null;
         public TagTreeNodeToolTip ToolTip { get; private set; } = null;
         public List<TagTreeNode> Children { get; private set; } = [];
+        public int Counter { get; set; } = 0;
 
         public bool IsFolder
         {
@@ -36,6 +37,11 @@ namespace SourceGit.ViewModels
         {
             get => _isExpanded;
             set => SetProperty(ref _isExpanded, value);
+        }
+
+        public string TagsCount
+        {
+            get => Counter > 0 ? $"({Counter})" : string.Empty;
         }
 
         public TagTreeNode(Models.Tag t, int depth)
@@ -52,6 +58,7 @@ namespace SourceGit.ViewModels
             FullPath = path;
             Depth = depth;
             IsExpanded = isExpanded;
+            Counter = 1;
         }
 
         public static List<TagTreeNode> Build(IList<Models.Tag> tags, HashSet<string> expaneded)
@@ -77,6 +84,7 @@ namespace SourceGit.ViewModels
                         if (folders.TryGetValue(folder, out var value))
                         {
                             lastFolder = value;
+                            lastFolder.Counter++;
                         }
                         else if (lastFolder == null)
                         {
