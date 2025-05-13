@@ -60,9 +60,11 @@
               <!-- Name -->
               <TextBlock Grid.Column="1"
                          Classes="primary"
-                         Text="{Binding Name}"
                          FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
-                         TextTrimming="CharacterEllipsis"/>
+                         TextTrimming="CharacterEllipsis">
+                <Run Text="{Binding Name}"/>
+                <Run Text="{Binding BranchesCount}" Foreground="{DynamicResource Brush.FG2}"/>
+              </TextBlock>
 
               <!-- Upstream invalid tip -->
               <Border Grid.Column="2"

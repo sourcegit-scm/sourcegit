@@ -228,6 +228,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _stashesCount, value);
         }
 
+        public int LocalBranchesCount
+        {
+            get => _localBranchesCount;
+            private set => SetProperty(ref _localBranchesCount, value);
+        }
+
         public bool IncludeUntracked
         {
             get => _settings.IncludeUntrackedInLocalChanges;
@@ -1020,7 +1026,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshBranches()
         {
-            var branches = new Commands.QueryBranches(_fullpath).Result();
+            var branches = new Commands.QueryBranches(_fullpath).Result(out var localBranchesCount);
             var remotes = new Commands.QueryRemotes(_fullpath).Result();
             var builder = BuildBranchTree(branches, remotes);
 
@@ -1033,6 +1039,7 @@ namespace SourceGit.ViewModels
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
+                LocalBranchesCount = localBranchesCount;
 
                 if (_workingCopy != null)
                     _workingCopy.HasRemotes = remotes.Count > 0;
@@ -2726,6 +2733,7 @@ namespace SourceGit.ViewModels
         private int _selectedViewIndex = 0;
         private object _selectedView = null;
 
+        private int _localBranchesCount = 0;
         private int _localChangesCount = 0;
         private int _stashesCount = 0;
 

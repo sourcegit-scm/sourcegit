@@ -204,7 +204,10 @@
           <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Local}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.LocalBranches}"/>
+              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
+                <Run Text="{DynamicResource Text.Repository.LocalBranches}"/>
+                <Run Text="{Binding LocalBranchesCount, StringFormat='({0})'}"/>
+              </TextBlock>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
@@ -231,7 +234,10 @@
           <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Remotes}"/>
+              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
+                <Run Text="{DynamicResource Text.Repository.Remotes}"/>
+                <Run Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}}"/>
+              </TextBlock>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"

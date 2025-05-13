@@ -17,8 +17,10 @@ namespace SourceGit.Commands
             Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
         }
 
-        public List<Models.Branch> Result()
+        public List<Models.Branch> Result(out int localBranchesCount)
         {
+            localBranchesCount = 0;
+
             var branches = new List<Models.Branch>();
             var rs = ReadToEnd();
             if (!rs.IsSuccess)
@@ -34,6 +36,8 @@ namespace SourceGit.Commands
                     branches.Add(b);
                     if (!b.IsLocal)
                         remoteBranches.Add(b.FullName);
+                    else
+                        localBranchesCount++;
                 }
             }
 
