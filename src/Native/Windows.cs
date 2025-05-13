@@ -24,34 +24,6 @@ namespace SourceGit.Native
             public int bottom;
         }
 
-        internal enum HitTest
-        {
-            HTERROR = -2,
-            HTTRANSPARENT = -1,
-            HTNOWHERE = 0,
-            HTCLIENT = 1,
-            HTCAPTION = 2,
-            HTSYSMENU = 3,
-            HTGROWBOX = 4,
-            HTMENU = 5,
-            HTHSCROLL = 6,
-            HTVSCROLL = 7,
-            HTMINBUTTON = 8,
-            HTMAXBUTTON = 9,
-            HTLEFT = 10,
-            HTRIGHT = 11,
-            HTTOP = 12,
-            HTTOPLEFT = 13,
-            HTTOPRIGHT = 14,
-            HTBOTTOM = 15,
-            HTBOTTOMLEFT = 16,
-            HTBOTTOMRIGHT = 17,
-            HTBORDER = 18,
-            HTOBJECT = 19,
-            HTCLOSE = 20,
-            HTHELP = 21
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         internal struct MARGINS
         {
@@ -103,32 +75,46 @@ namespace SourceGit.Native
                     handled = true;
 
                     if (window.WindowState == WindowState.FullScreen || window.WindowState == WindowState.Maximized)
-                        return (IntPtr)HitTest.HTCLIENT;
+                        return 1; // HTCLIENT
 
                     var p = IntPtrToPixelPoint(lParam);
                     GetWindowRect(hWnd, out var rcWindow);
 
                     var borderThinkness = (int)(4 * window.RenderScaling);
-                    int row = 1;
-                    int col = 1;
+                    int y = 1;
+                    int x = 1;
                     if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThinkness)
-                        col = 0;
+                        x = 0;
                     else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThinkness)
-                        col = 2;
+                        x = 2;
 
                     if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThinkness)
-                        row = 0;
+                        y = 0;
                     else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThinkness)
-                        row = 2;
+                        y = 2;
 
-                    ReadOnlySpan<HitTest> zones = stackalloc HitTest[]
+                    var zone = y * 3 + x;
+                    switch (zone)
                     {
-                        HitTest.HTTOPLEFT, HitTest.HTTOP, HitTest.HTTOPRIGHT,
-                        HitTest.HTLEFT, HitTest.HTCLIENT, HitTest.HTRIGHT,
-                        HitTest.HTBOTTOMLEFT, HitTest.HTBOTTOM, HitTest.HTBOTTOMRIGHT
-                    };
-
-                    return (IntPtr)(zones[row * 3 + col]);
+                        case 0:
+                            return 13; // HTTOPLEFT
+                        case 1:
+                            return 12; // HTTOP
+                        case 2:
+                            return 14; // HTTOPRIGHT
+                        case 3:
+                            return 10; // HTLEFT
+                        case 4:
+                            return 1;  // HTCLIENT
+                        case 5:
+                            return 11; // HTRIGHT
+                        case 6:
+                            return 16; // HTBOTTOMLEFT
+                        case 7:
+                            return 15; // HTBOTTOM
+                        default:
+                            return 17; // HTBOTTOMRIGHT
+                    }
                 }
 
                 return IntPtr.Zero;
