@@ -256,16 +256,18 @@
 
           <!-- Tags -->
           <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,Auto,*,Auto,Auto,Auto">
+            <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
               <Path Grid.Column="0" Width="11" Height="11" Margin="2,1,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Tags}"/>
-              <TextBlock Grid.Column="2" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <ToggleButton Grid.Column="3"
+              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
+                <Run Text="{DynamicResource Text.Repository.Tags}"/>
+                <Run Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}"/>
+              </TextBlock>
+              <ToggleButton Grid.Column="2"
                             Classes="tag_display_mode"
                             Width="14"
                             IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsAsTree, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Repository.ShowTagsAsTree}"/>
-              <Button Grid.Column="4"
+              <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
                       Margin="8,0,0,0"
@@ -273,7 +275,7 @@
                       ToolTip.Tip="{DynamicResource Text.Repository.Tags.Sort}">
                 <Path Width="12" Height="12" Margin="0,2,0,0" Data="{StaticResource Icons.Order}"/>
               </Button>
-              <Button Grid.Column="5"
+              <Button Grid.Column="4"
                       Classes="icon_button"
                       Width="14"
                       Margin="8,0"
@@ -297,11 +299,13 @@
 
           <!-- Submodules -->
           <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,Auto,*,Auto,Auto">
+            <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="10" Height="10" Margin="2,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Submodules}"/>
-              <TextBlock Grid.Column="2" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <Button Grid.Column="3"
+              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
+                <Run Text="{DynamicResource Text.Repository.Submodules}"/>
+                <Run Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}"/>
+              </TextBlock>
+              <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
                       Margin="8,0"
@@ -310,7 +314,7 @@
                       ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Update}">
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
               </Button>
-              <Button Grid.Column="4"
+              <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
                       Margin="0,0,8,0"
@@ -353,11 +357,13 @@
 
           <!-- Worktrees -->
           <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,Auto,*,Auto,Auto">
+            <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="11" Height="11" Margin="1,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0" Text="{DynamicResource Text.Repository.Worktrees}"/>
-              <TextBlock Grid.Column="2" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-              <Button Grid.Column="3"
+              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
+                <Run Text="{DynamicResource Text.Repository.Worktrees}"/>
+                <Run Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}"/>
+              </TextBlock>
+              <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
                       Margin="8,0"
@@ -366,7 +372,7 @@
                       ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Prune}">
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
               </Button>
-              <Button Grid.Column="4"
+              <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
                       Margin="0,0,9,0"

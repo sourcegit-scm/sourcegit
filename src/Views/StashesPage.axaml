@@ -19,11 +19,13 @@
     <!-- Left -->
     <Grid Grid.Column="0" RowDefinitions="28,36,*,28,*">
       <!-- Stash Bar -->
-      <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
         <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
-        <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Stashes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0"/>
-        <TextBlock Grid.Column="2" Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-        <Button Grid.Column="4"
+        <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
+          <Run Text="{DynamicResource Text.Stashes.Stashes}"/>
+          <Run Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}}"/>
+        </TextBlock>
+        <Button Grid.Column="2"
                 Classes="icon_button"
                 Width="26" Height="14"
                 Padding="0"
@@ -105,10 +107,12 @@
 
       <!-- Changes Bar -->
       <Border Grid.Row="3" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,Auto,*">
+        <Grid ColumnDefinitions="Auto,*">
           <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
-          <TextBlock Grid.Column="1" Text="{DynamicResource Text.Stashes.Changes}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0"/>
-          <TextBlock Grid.Column="2" Text="{Binding Changes, Converter={x:Static c:ListConverters.ToCount}}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
+            <Run Text="{DynamicResource Text.Stashes.Changes}"/>
+            <Run Text="{Binding Changes, Converter={x:Static c:ListConverters.ToCount}}"/>
+          </TextBlock>
         </Grid>
       </Border>
 

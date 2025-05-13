@@ -102,13 +102,12 @@ namespace SourceGit.ViewModels
                     if (branch.IsLocal)
                     {
                         MakeBranchNode(branch, _locals, folders, "refs/heads", bForceExpanded);
+                        continue;
                     }
-                    else
-                    {
-                        var remote = _remotes.Find(x => x.Name == branch.Remote);
-                        if (remote != null)
-                            MakeBranchNode(branch, remote.Children, folders, $"refs/remotes/{remote.Name}", bForceExpanded);
-                    }
+
+                    var rk = $"refs/remotes/{branch.Remote}";
+                    if (folders.TryGetValue(rk, out var remote))
+                        MakeBranchNode(branch, remote.Children, folders, rk, bForceExpanded);
                 }
 
                 foreach (var path in _expanded)
