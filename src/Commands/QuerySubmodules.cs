@@ -6,9 +6,9 @@ namespace SourceGit.Commands
 {
     public partial class QuerySubmodules : Command
     {
-        [GeneratedRegex(@"^[\-\+ ][0-9a-f]+\s(.*)\s\(.*\)$")]
+        [GeneratedRegex(@"^[U\-\+ ][0-9a-f]+\s(.*)\s\(.*\)$")]
         private static partial Regex REG_FORMAT1();
-        [GeneratedRegex(@"^[\-\+ ][0-9a-f]+\s(.*)$")]
+        [GeneratedRegex(@"^[U\-\+ ][0-9a-f]+\s(.*)$")]
         private static partial Regex REG_FORMAT2();
         [GeneratedRegex(@"^\s?[\w\?]{1,4}\s+(.+)$")]
         private static partial Regex REG_FORMAT_STATUS();
