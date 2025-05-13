@@ -5,17 +5,27 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public class TagTreeNodeToolTip
+    {
+        public string Name { get; private set; }
+        public bool IsAnnotated { get; private set; }
+        public string Message { get; private set; }
+
+        public TagTreeNodeToolTip(Models.Tag t)
+        {
+            Name = t.Name;
+            IsAnnotated = t.IsAnnotated;
+            Message = t.Message;
+        }
+    }
+
     public class TagTreeNode : ObservableObject
     {
         public string FullPath { get; set; }
         public int Depth { get; private set; } = 0;
         public Models.Tag Tag { get; private set; } = null;
+        public TagTreeNodeToolTip ToolTip { get; private set; } = null;
         public List<TagTreeNode> Children { get; private set; } = [];
-
-        public object ToolTip
-        {
-            get => Tag?.Message;
-        }
 
         public bool IsFolder
         {
@@ -33,6 +43,7 @@ namespace SourceGit.ViewModels
             FullPath = t.Name;
             Depth = depth;
             Tag = t;
+            ToolTip = new TagTreeNodeToolTip(t);
             IsExpanded = false;
         }
 

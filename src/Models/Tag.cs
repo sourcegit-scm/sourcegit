@@ -12,6 +12,7 @@ namespace SourceGit.Models
     public class Tag : ObservableObject
     {
         public string Name { get; set; } = string.Empty;
+        public bool IsAnnotated { get; set; } = false;
         public string SHA { get; set; } = string.Empty;
         public ulong CreatorDate { get; set; } = 0;
         public string Message { get; set; } = string.Empty;

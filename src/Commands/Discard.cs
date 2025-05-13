@@ -35,7 +35,7 @@ namespace SourceGit.Commands
                     App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
                 });
             }
-            
+
             new Restore(repo) { Log = log }.Exec();
             if (includeIgnored)
                 new Clean(repo) { Log = log }.Exec();
