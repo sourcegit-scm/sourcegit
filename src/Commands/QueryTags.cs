@@ -29,13 +29,17 @@ namespace SourceGit.Commands
                     continue;
 
                 var name = subs[0].Substring(10);
+                var message = subs[5].Trim();
+                if (!string.IsNullOrEmpty(message) && message.Equals(name, StringComparison.Ordinal))
+                    message = null;
+
                 tags.Add(new Models.Tag()
                 {
                     Name = name,
                     IsAnnotated = subs[1].Equals("tag", StringComparison.Ordinal),
                     SHA = string.IsNullOrEmpty(subs[3]) ? subs[2] : subs[3],
                     CreatorDate = ulong.Parse(subs[4]),
-                    Message = subs[5].Trim(),
+                    Message = message,
                 });
             }
 

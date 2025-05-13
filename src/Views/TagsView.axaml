@@ -38,7 +38,7 @@
                       </Border>
                     </StackPanel>
 
-                    <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}"/>
+                    <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                   </StackPanel>
                 </DataTemplate>
               </Border.DataTemplates>
@@ -95,7 +95,7 @@
                     </Border>
                   </StackPanel>
 
-                  <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}"/>
+                  <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                 </StackPanel>
               </ToolTip.Tip>
               
