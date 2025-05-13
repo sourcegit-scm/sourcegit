@@ -927,7 +927,11 @@ namespace SourceGit.ViewModels
                     return;
 
                 if (isLocal && !string.IsNullOrEmpty(branch.Upstream))
-                    _settings.UpdateHistoriesFilter(branch.Upstream, Models.FilterType.RemoteBranch, mode);
+                {
+                    var upstreamNode = FindBranchNode(_remoteBranchTrees, branch.Upstream);
+                    if (upstreamNode != null)
+                        _settings.UpdateHistoriesFilter(branch.Upstream, Models.FilterType.RemoteBranch, mode);
+                }
             }
             else
             {
