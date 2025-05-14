@@ -210,7 +210,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _submodules, value);
         }
 
-        public List<Models.Submodule> VisibleSubmodules
+        public SubmoduleCollection VisibleSubmodules
         {
             get => _visibleSubmodules;
             private set => SetProperty(ref _visibleSubmodules, value);
@@ -2512,7 +2512,7 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
-        private List<Models.Submodule> BuildVisibleSubmodules()
+        private SubmoduleCollection BuildVisibleSubmodules()
         {
             var visible = new List<Models.Submodule>();
             if (string.IsNullOrEmpty(_filter))
@@ -2527,7 +2527,8 @@ namespace SourceGit.ViewModels
                         visible.Add(s);
                 }
             }
-            return visible;
+
+            return SubmoduleCollection.Build(visible, _visibleSubmodules);
         }
 
         private void RefreshHistoriesFilters(bool refresh)
@@ -2759,7 +2760,7 @@ namespace SourceGit.ViewModels
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<Models.Tag> _visibleTags = new List<Models.Tag>();
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
-        private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
+        private SubmoduleCollection _visibleSubmodules = new SubmoduleCollection();
 
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
