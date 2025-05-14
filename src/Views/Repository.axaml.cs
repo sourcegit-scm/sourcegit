@@ -192,7 +192,7 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is ListBox { SelectedItem: Models.Submodule submodule } && 
+            if (sender is ListBox { SelectedItem: Models.Submodule submodule } &&
                 submodule.Status != Models.SubmoduleStatus.NotInited &&
                 DataContext is ViewModels.Repository repo)
             {

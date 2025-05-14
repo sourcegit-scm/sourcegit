@@ -713,6 +713,7 @@
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">未初始化</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">SHA变更</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解决冲突</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">仓库</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">复制标签信息</x:String>

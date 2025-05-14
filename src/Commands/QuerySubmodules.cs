@@ -11,6 +11,8 @@ namespace SourceGit.Commands
         private static partial Regex REG_FORMAT_STATUS();
         [GeneratedRegex(@"^\s?[\w\?]{1,4}\s+(.+)$")]
         private static partial Regex REG_FORMAT_DIRTY();
+        [GeneratedRegex(@"^submodule\.(\S*)\.(\w+)=(.*)$")]
+        private static partial Regex REG_FORMAT_MODULE_INFO();
 
         public QuerySubmodules(string repo)
         {
@@ -25,7 +27,8 @@ namespace SourceGit.Commands
             var rs = ReadToEnd();
 
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            var needCheckLocalChanges = new Dictionary<string, Models.Submodule>();
+            var map = new Dictionary<string, Models.Submodule>();
+            var needCheckLocalChanges = false;
             foreach (var line in lines)
             {
                 var match = REG_FORMAT_STATUS().Match(line);
@@ -49,22 +52,64 @@ namespace SourceGit.Commands
                             break;
                         default:
                             module.Status = Models.SubmoduleStatus.Normal;
-                            needCheckLocalChanges.Add(path, module);
+                            needCheckLocalChanges = true;
                             break;
                     }
 
+                    map.Add(path, module);
                     submodules.Add(module);
                 }
             }
 
-            if (needCheckLocalChanges.Count > 0)
+            if (submodules.Count > 0)
+            {
+                Args = "config --file .gitmodules --list";
+                rs = ReadToEnd();
+                if (rs.IsSuccess)
+                {
+                    var modules = new Dictionary<string, ModuleInfo>();
+                    lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var line in lines)
+                    {
+                        var match = REG_FORMAT_MODULE_INFO().Match(line);
+                        if (match.Success)
+                        {
+                            var name = match.Groups[1].Value;
+                            var key = match.Groups[2].Value;
+                            var val = match.Groups[3].Value;
+
+                            if (!modules.TryGetValue(name, out var m))
+                            {
+                                m = new ModuleInfo();
+                                modules.Add(name, m);
+                            }
+
+                            if (key.Equals("path", StringComparison.Ordinal))
+                                m.Path = val;
+                            else if (key.Equals("url", StringComparison.Ordinal))
+                                m.URL = val;
+                        }
+                    }
+
+                    foreach (var kv in modules)
+                    {
+                        if (map.TryGetValue(kv.Value.Path, out var m))
+                            m.URL = kv.Value.URL;
+                    }
+                }
+            }
+
+            if (needCheckLocalChanges)
             {
                 var builder = new StringBuilder();
-                foreach (var kv in needCheckLocalChanges)
+                foreach (var kv in map)
                 {
-                    builder.Append('"');
-                    builder.Append(kv.Key);
-                    builder.Append("\" ");
+                    if (kv.Value.Status == Models.SubmoduleStatus.Normal)
+                    {
+                        builder.Append('"');
+                        builder.Append(kv.Key);
+                        builder.Append("\" ");
+                    }
                 }
 
                 Args = $"--no-optional-locks status -uno --porcelain -- {builder}";
@@ -79,13 +124,19 @@ namespace SourceGit.Commands
                     if (match.Success)
                     {
                         var path = match.Groups[1].Value;
-                        if (needCheckLocalChanges.TryGetValue(path, out var m))
+                        if (map.TryGetValue(path, out var m))
                             m.Status = Models.SubmoduleStatus.Modified;
                     }
                 }
             }
 
             return submodules;
+        }
+
+        private class ModuleInfo
+        {
+            public string Path { get; set; } = string.Empty;
+            public string URL { get; set; } = string.Empty;
         }
     }
 }
