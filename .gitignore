@@ -38,3 +38,4 @@ build/*.rpm
 build/*.AppImage
 SourceGit.app/
 build.command
+src/Properties/launchSettings.json
