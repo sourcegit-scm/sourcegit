@@ -708,6 +708,11 @@
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本機存放的相對路徑。</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">刪除子模組</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">狀態</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">未提交變更</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">未初始化</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">SHA 變更</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解決的衝突</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">複製標籤訊息</x:String>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -6,12 +7,10 @@ namespace SourceGit.Commands
 {
     public partial class QuerySubmodules : Command
     {
-        [GeneratedRegex(@"^[U\-\+ ][0-9a-f]+\s(.*)\s\(.*\)$")]
-        private static partial Regex REG_FORMAT1();
-        [GeneratedRegex(@"^[U\-\+ ][0-9a-f]+\s(.*)$")]
-        private static partial Regex REG_FORMAT2();
-        [GeneratedRegex(@"^\s?[\w\?]{1,4}\s+(.+)$")]
+        [GeneratedRegex(@"^([U\-\+ ])([0-9a-f]+)\s(.*?)(\s\(.*\))?$")]
         private static partial Regex REG_FORMAT_STATUS();
+        [GeneratedRegex(@"^\s?[\w\?]{1,4}\s+(.+)$")]
+        private static partial Regex REG_FORMAT_DIRTY();
 
         public QuerySubmodules(string repo)
         {
@@ -25,49 +24,65 @@ namespace SourceGit.Commands
             var submodules = new List<Models.Submodule>();
             var rs = ReadToEnd();
 
-            var builder = new StringBuilder();
-            var lines = rs.StdOut.Split(['\r', '\n'], System.StringSplitOptions.RemoveEmptyEntries);
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            var needCheckLocalChanges = new Dictionary<string, Models.Submodule>();
             foreach (var line in lines)
             {
-                var match = REG_FORMAT1().Match(line);
+                var match = REG_FORMAT_STATUS().Match(line);
                 if (match.Success)
                 {
-                    var path = match.Groups[1].Value;
-                    builder.Append($"\"{path}\" ");
-                    submodules.Add(new Models.Submodule() { Path = path });
-                    continue;
-                }
+                    var stat = match.Groups[1].Value;
+                    var sha = match.Groups[2].Value;
+                    var path = match.Groups[3].Value;
 
-                match = REG_FORMAT2().Match(line);
-                if (match.Success)
-                {
-                    var path = match.Groups[1].Value;
-                    builder.Append($"\"{path}\" ");
-                    submodules.Add(new Models.Submodule() { Path = path });
+                    var module = new Models.Submodule() { Path = path, SHA = sha };
+                    switch (stat[0])
+                    {
+                        case '-':
+                            module.Status = Models.SubmoduleStatus.NotInited;
+                            break;
+                        case '+':
+                            module.Status = Models.SubmoduleStatus.RevisionChanged;
+                            break;
+                        case 'U':
+                            module.Status = Models.SubmoduleStatus.Unmerged;
+                            break;
+                        default:
+                            module.Status = Models.SubmoduleStatus.Normal;
+                            needCheckLocalChanges.Add(path, module);
+                            break;
+                    }
+
+                    submodules.Add(module);
                 }
             }
 
-            if (submodules.Count > 0)
+            if (needCheckLocalChanges.Count > 0)
             {
+                var builder = new StringBuilder();
+                foreach (var kv in needCheckLocalChanges)
+                {
+                    builder.Append('"');
+                    builder.Append(kv.Key);
+                    builder.Append("\" ");
+                }
+
                 Args = $"--no-optional-locks status -uno --porcelain -- {builder}";
                 rs = ReadToEnd();
                 if (!rs.IsSuccess)
                     return submodules;
 
-                var dirty = new HashSet<string>();
-                lines = rs.StdOut.Split(['\r', '\n'], System.StringSplitOptions.RemoveEmptyEntries);
+                lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
-                    var match = REG_FORMAT_STATUS().Match(line);
+                    var match = REG_FORMAT_DIRTY().Match(line);
                     if (match.Success)
                     {
                         var path = match.Groups[1].Value;
-                        dirty.Add(path);
+                        if (needCheckLocalChanges.TryGetValue(path, out var m))
+                            m.Status = Models.SubmoduleStatus.Modified;
                     }
                 }
-
-                foreach (var submodule in submodules)
-                    submodule.IsDirty = dirty.Contains(submodule.Path);
             }
 
             return submodules;

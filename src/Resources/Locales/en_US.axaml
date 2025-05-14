@@ -704,6 +704,11 @@
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relative folder to store this module.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Delete Submodule</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">STATUS</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">modified</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">not initialized</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revision changed</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">unmerged</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copy Tag Message</x:String>
