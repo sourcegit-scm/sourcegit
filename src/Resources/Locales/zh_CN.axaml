@@ -410,6 +410,7 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">关闭搜索</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">定位到下一个匹配搜索的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">定位到上一个匹配搜索的位置</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">使用外部比对工具查看</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">打开搜索</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丢弃</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暂存</x:String>

@@ -175,7 +175,17 @@
               <Path Width="12" Height="12" Data="{StaticResource Icons.Layout}" Margin="0,2,0,0"/>
             </ToggleButton>
 
-            <Button Classes="icon_button" Width="28" Command="{Binding OpenExternalMergeTool}" ToolTip.Tip="{DynamicResource Text.Diff.UseMerger}">
+            <Button Classes="icon_button"
+                    Width="28"
+                    Command="{Binding OpenExternalMergeTool}"
+                    HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}">
+              <ToolTip.Tip>
+                <TextBlock>
+                  <Run Text="{DynamicResource Text.Diff.UseMerger}"/>
+                  <Run Text=" "/>
+                  <Run Text="{OnPlatform Ctrl+D, macOS=⌘+D}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
             </Button>
           </StackPanel>
