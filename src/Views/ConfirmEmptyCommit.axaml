@@ -12,6 +12,7 @@
                     Title="{DynamicResource Text.Warn}"
                     SizeToContent="WidthAndHeight"
                     CanResize="False"
+                    ShowInTaskbar="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto,Auto">
     <!-- TitleBar -->
@@ -66,6 +67,7 @@
               Click="CloseWindow"
               Content="{DynamicResource Text.Cancel}"
               HorizontalContentAlignment="Center"
+              IsCancel="True"
               VerticalContentAlignment="Center"/>
     </StackPanel>
   </Grid>
