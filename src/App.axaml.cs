@@ -116,6 +116,9 @@ namespace SourceGit
                     else
                         window.Show(owner);
                 }
+                else
+                    window.Show();
+
                 return;
             }
 
