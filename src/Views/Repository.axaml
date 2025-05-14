@@ -356,55 +356,59 @@
                         <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Path}"/>
                       </StackPanel>
 
-                      <Grid RowDefinitions="24,24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
-                        <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.CommitDetail.Info.SHA}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1"
-                                   Margin="8,0,0,0"
-                                   Text="{Binding SHA}"
-                                   Foreground="DarkOrange"
-                                   VerticalAlignment="Center"/>
+                      <Grid RowDefinitions="24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Classes="info_label"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Text="{DynamicResource Text.CommitDetail.Info.SHA}"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Margin="8,0,0,0">
+                          <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                     VerticalAlignment="Center"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.Submodule.URL}" VerticalAlignment="Center"/>
+                          <Path Margin="6,0,0,0"
+                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Width="12" Height="12"
+                                Data="{StaticResource Icons.Check}"
+                                Fill="Green"
+                                IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}"/>
+                          <Border Height="16"
+                                  Margin="6,0,0,0" Padding="4,0"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  Background="DarkOrange"
+                                  CornerRadius="4"
+                                  IsVisible="{Binding Status, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}">
+                            <Grid>
+                              <TextBlock VerticalAlignment="Center"
+                                         Text="{DynamicResource Text.Submodule.Status.NotInited}"
+                                         Foreground="White"
+                                         IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.NotInited}}"/>
+                              <TextBlock VerticalAlignment="Center"
+                                         Text="{DynamicResource Text.Submodule.Status.Modified}"
+                                         Foreground="White"
+                                         IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Modified}}"/>
+                              <TextBlock VerticalAlignment="Center"
+                                         Text="{DynamicResource Text.Submodule.Status.RevisionChanged}"
+                                         Foreground="White"
+                                         IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.RevisionChanged}}"/>
+                              <TextBlock VerticalAlignment="Center"
+                                         Text="{DynamicResource Text.Submodule.Status.Unmerged}"
+                                         Foreground="White"
+                                         IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Unmerged}}"/>
+                            </Grid>
+                          </Border>
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Classes="info_label"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Text="{DynamicResource Text.Submodule.URL}"/>
                         <TextBlock Grid.Row="1" Grid.Column="1"
                                    Margin="8,0,0,0"
                                    Text="{Binding URL}"
                                    Foreground="{DynamicResource Brush.Link}"
-                                   VerticalAlignment="Center"/>
-
-                        <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" Text="{DynamicResource Text.Submodule.Status}" VerticalAlignment="Center"/>
-                        <Path Grid.Row="2" Grid.Column="1"
-                              Margin="8,0,0,0"
-                              HorizontalAlignment="Left" VerticalAlignment="Center"
-                              Width="12" Height="12" 
-                              Data="{StaticResource Icons.Check}"
-                              Fill="Green"
-                              IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}"/>
-                        <Border Grid.Row="2" Grid.Column="1"
-                                Height="16"
-                                Margin="8,0,0,0" Padding="4,0"
-                                HorizontalAlignment="Left" VerticalAlignment="Center"
-                                Background="DarkOrange"
-                                CornerRadius="4"
-                                IsVisible="{Binding Status, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}">
-                          <Grid>
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{DynamicResource Text.Submodule.Status.NotInited}"
-                                       Foreground="White"
-                                       IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.NotInited}}"/>
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{DynamicResource Text.Submodule.Status.Modified}"
-                                       Foreground="White"
-                                       IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Modified}}"/>
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{DynamicResource Text.Submodule.Status.RevisionChanged}"
-                                       Foreground="White"
-                                       IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.RevisionChanged}}"/>
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{DynamicResource Text.Submodule.Status.Unmerged}"
-                                       Foreground="White"
-                                       IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Unmerged}}"/>
-                          </Grid>
-                        </Border>
+                                   VerticalAlignment="Center"/>                        
                       </Grid>
                     </StackPanel>
                   </ToolTip.Tip>
