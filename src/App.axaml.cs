@@ -109,11 +109,13 @@ namespace SourceGit
         {
             if (data is Views.ChromelessWindow window)
             {
-                if (showAsDialog && Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                    window.ShowDialog(owner);
-                else
-                    window.Show();
-
+                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                {
+                    if (showAsDialog)
+                        window.ShowDialog(owner);
+                    else
+                        window.Show(owner);
+                }
                 return;
             }
 
