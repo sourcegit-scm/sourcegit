@@ -2330,14 +2330,15 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public ContextMenu CreateContextMenuForSubmodule(string submodule)
+        public ContextMenu CreateContextMenuForSubmodule(Models.Submodule submodule)
         {
             var open = new MenuItem();
             open.Header = App.Text("Submodule.Open");
             open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+            open.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
             open.Click += (_, ev) =>
             {
-                OpenSubmodule(submodule);
+                OpenSubmodule(submodule.Path);
                 ev.Handled = true;
             };
 
@@ -2346,7 +2347,7 @@ namespace SourceGit.ViewModels
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += (_, ev) =>
             {
-                App.CopyText(submodule);
+                App.CopyText(submodule.Path);
                 ev.Handled = true;
             };
 
@@ -2356,7 +2357,7 @@ namespace SourceGit.ViewModels
             rm.Click += (_, ev) =>
             {
                 if (CanCreatePopup())
-                    ShowPopup(new DeleteSubmodule(this, submodule));
+                    ShowPopup(new DeleteSubmodule(this, submodule.Path));
                 ev.Handled = true;
             };
 

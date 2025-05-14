@@ -183,7 +183,7 @@ namespace SourceGit.Views
         {
             if (sender is ListBox { SelectedItem: Models.Submodule submodule } grid && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForSubmodule(submodule.Path);
+                var menu = repo.CreateContextMenuForSubmodule(submodule);
                 menu?.Open(grid);
             }
 
@@ -192,7 +192,9 @@ namespace SourceGit.Views
 
         private void OnDoubleTappedSubmodule(object sender, TappedEventArgs e)
         {
-            if (sender is ListBox { SelectedItem: Models.Submodule submodule } && DataContext is ViewModels.Repository repo)
+            if (sender is ListBox { SelectedItem: Models.Submodule submodule } && 
+                submodule.Status != Models.SubmoduleStatus.NotInited &&
+                DataContext is ViewModels.Repository repo)
             {
                 repo.OpenSubmodule(submodule.Path);
             }
