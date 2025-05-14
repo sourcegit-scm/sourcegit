@@ -67,4 +67,9 @@
       </StackPanel>
     </Grid>
   </Grid>
+
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Escape" Command="{Binding #ThisControl.Close}"/>
+  </Window.KeyBindings>
+
 </v:ChromelessWindow>
