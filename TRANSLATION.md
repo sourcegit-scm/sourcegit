@@ -91,58 +91,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-94.27%25-yellow)
-
-<details>
-<summary>Missing keys in it_IT.axaml</summary>
-
-- Text.Bisect
-- Text.Bisect.Abort
-- Text.Bisect.Bad
-- Text.Bisect.Detecting
-- Text.Bisect.Good
-- Text.Bisect.Skip
-- Text.Bisect.WaitingForRange
-- Text.Checkout.RecurseSubmodules
-- Text.CommitCM.CopyAuthor
-- Text.CommitCM.CopyCommitter
-- Text.CommitCM.CopySubject
-- Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.Git.PreferredMergeMode
-- Text.ConfirmEmptyCommit.Continue
-- Text.ConfirmEmptyCommit.NoLocalChanges
-- Text.ConfirmEmptyCommit.StageAllThenCommit
-- Text.ConfirmEmptyCommit.WithLocalChanges
-- Text.CopyFullPath
-- Text.GitFlow.FinishWithPush
-- Text.GitFlow.FinishWithSquash
-- Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Preferences.General.ShowTagsInGraph
-- Text.Preferences.Git.IgnoreCRAtEOLInDiff
-- Text.Repository.BranchSort
-- Text.Repository.BranchSort.ByCommitterDate
-- Text.Repository.BranchSort.ByName
-- Text.Repository.Search.ByContent
-- Text.Repository.ShowSubmodulesAsTree
-- Text.Repository.ViewLogs
-- Text.Repository.Visit
-- Text.Submodule.Status
-- Text.Submodule.Status.Modified
-- Text.Submodule.Status.NotInited
-- Text.Submodule.Status.RevisionChanged
-- Text.Submodule.Status.Unmerged
-- Text.Submodule.URL
-- Text.ViewLogs
-- Text.ViewLogs.Clear
-- Text.ViewLogs.CopyLog
-- Text.ViewLogs.Delete
-- Text.WorkingCopy.ConfirmCommitWithFilter
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
-- Text.WorkingCopy.Conflicts.UseMine
-- Text.WorkingCopy.Conflicts.UseTheirs
-
-</details>
+### ![it__IT](https://img.shields.io/badge/it__IT-%E2%88%9A-brightgreen)
 
 ### ![ja__JP](https://img.shields.io/badge/ja__JP-94.27%25-yellow)
 
