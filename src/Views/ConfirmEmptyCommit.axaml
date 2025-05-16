@@ -12,6 +12,7 @@
                     Title="{DynamicResource Text.Warn}"
                     SizeToContent="WidthAndHeight"
                     CanResize="False"
+                    ShowInTaskbar="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto,Auto">
     <!-- TitleBar -->
@@ -64,6 +65,7 @@
               Height="30"
               Margin="4,0"
               Click="CloseWindow"
+              IsCancel="True"
               Content="{DynamicResource Text.Cancel}"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
