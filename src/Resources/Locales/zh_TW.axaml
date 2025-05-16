@@ -621,6 +621,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交訊息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">僅搜尋目前分支</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以樹型結構展示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以樹型結構展示</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">跳過此提交</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交統計</x:String>

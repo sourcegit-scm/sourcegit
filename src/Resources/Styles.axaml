@@ -1235,7 +1235,7 @@
     <Setter Property="Opacity" Value="1"/>
   </Style>
   
-  <Style Selector="ToggleButton.tag_display_mode">
+  <Style Selector="ToggleButton.show_as_tree">
     <Setter Property="Margin" Value="0" />
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">

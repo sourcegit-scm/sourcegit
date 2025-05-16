@@ -7,119 +7,217 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.SubmodulesView"
-             x:Name="ThisControl">
+             x:Class="SourceGit.Views.SubmodulesView">
   <UserControl.DataTemplates>
-    <DataTemplate DataType="m:Submodule">
-      <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal">
-          <Path Width="10" Height="10" Data="{StaticResource Icons.Submodule}"/>
-          <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Path}"/>
-        </StackPanel>
+    <DataTemplate DataType="vm:SubmoduleCollectionAsTree">
+      <ListBox Classes="repo_left_content_list" ItemsSource="{Binding Rows}" SelectionMode="Single">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="CornerRadius" Value="4"/>
+          </Style>
+        </ListBox.Styles>
 
-        <Grid RowDefinitions="24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
-          <TextBlock Grid.Row="0" Grid.Column="0"
-                     Classes="info_label"
-                     HorizontalAlignment="Left" VerticalAlignment="Center"
-                     Text="{DynamicResource Text.CommitDetail.Info.SHA}"/>
-          <StackPanel Grid.Row="0" Grid.Column="1"
-                      Orientation="Horizontal"
-                      Margin="8,0,0,0">
-            <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                       VerticalAlignment="Center"/>
+        <ListBox.DataTemplates>
+          <DataTemplate DataType="m:Submodule">
+            <StackPanel Orientation="Vertical">
+              <StackPanel Orientation="Horizontal">
+                <Path Width="10" Height="10" Data="{StaticResource Icons.Submodule}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Path}"/>
+              </StackPanel>
 
-            <Path Margin="6,0,0,0"
-                  HorizontalAlignment="Left" VerticalAlignment="Center"
-                  Width="12" Height="12"
-                  Data="{StaticResource Icons.Check}"
-                  Fill="Green"
-                  IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}"/>
-            <Border Height="16"
-                    Margin="6,0,0,0" Padding="4,0"
-                    HorizontalAlignment="Left" VerticalAlignment="Center"
-                    Background="DarkOrange"
-                    CornerRadius="4"
-                    IsVisible="{Binding Status, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}">
-              <Grid>
-                <TextBlock VerticalAlignment="Center"
-                           Text="{DynamicResource Text.Submodule.Status.NotInited}"
-                           Foreground="White"
-                           IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.NotInited}}"/>
-                <TextBlock VerticalAlignment="Center"
-                           Text="{DynamicResource Text.Submodule.Status.Modified}"
-                           Foreground="White"
-                           IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Modified}}"/>
-                <TextBlock VerticalAlignment="Center"
-                           Text="{DynamicResource Text.Submodule.Status.RevisionChanged}"
-                           Foreground="White"
-                           IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.RevisionChanged}}"/>
-                <TextBlock VerticalAlignment="Center"
-                           Text="{DynamicResource Text.Submodule.Status.Unmerged}"
-                           Foreground="White"
-                           IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Unmerged}}"/>
+              <Grid RowDefinitions="24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Classes="info_label"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{DynamicResource Text.CommitDetail.Info.SHA}"/>
+                <StackPanel Grid.Row="0" Grid.Column="1"
+                            Orientation="Horizontal"
+                            Margin="8,0,0,0">
+                  <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             VerticalAlignment="Center"/>
+
+                  <Path Margin="6,0,0,0"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Width="12" Height="12"
+                        Data="{StaticResource Icons.Check}"
+                        Fill="Green"
+                        IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}"/>
+                  <Border Height="16"
+                          Margin="6,0,0,0" Padding="4,0"
+                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                          Background="DarkOrange"
+                          CornerRadius="4"
+                          IsVisible="{Binding Status, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}">
+                    <Grid>
+                      <TextBlock VerticalAlignment="Center"
+                                 Text="{DynamicResource Text.Submodule.Status.NotInited}"
+                                 Foreground="White"
+                                 IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.NotInited}}"/>
+                      <TextBlock VerticalAlignment="Center"
+                                 Text="{DynamicResource Text.Submodule.Status.Modified}"
+                                 Foreground="White"
+                                 IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Modified}}"/>
+                      <TextBlock VerticalAlignment="Center"
+                                 Text="{DynamicResource Text.Submodule.Status.RevisionChanged}"
+                                 Foreground="White"
+                                 IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.RevisionChanged}}"/>
+                      <TextBlock VerticalAlignment="Center"
+                                 Text="{DynamicResource Text.Submodule.Status.Unmerged}"
+                                 Foreground="White"
+                                 IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Unmerged}}"/>
+                    </Grid>
+                  </Border>
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Classes="info_label"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{DynamicResource Text.Submodule.URL}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Margin="8,0,0,0"
+                           Text="{Binding URL}"
+                           Foreground="{DynamicResource Brush.Link}"
+                           VerticalAlignment="Center"/>
+              </Grid>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.DataTemplates>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="vm:SubmoduleTreeNode">
+            <Border Height="24"
+                    Background="Transparent"
+                    DoubleTapped="OnItemDoubleTapped"
+                    ContextRequested="OnItemContextRequested"
+                    ToolTip.Tip="{Binding Module}"
+                    ToolTip.Placement="Right">
+              <Grid ColumnDefinitions="16,Auto,*,Auto,Auto"
+                    Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                    VerticalAlignment="Center">
+                <v:SubmoduleTreeNodeToggleButton Grid.Column="0"
+                                                 Classes="tree_expander"
+                                                 Focusable="False"
+                                                 HorizontalAlignment="Center"
+                                                 IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                                 IsVisible="{Binding IsFolder}"/>
+
+                <v:SubmoduleTreeNodeIcon Grid.Column="1"
+                                         IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
+
+                <TextBlock Grid.Column="2"
+                           Classes="primary"
+                           Margin="8,0,0,0"
+                           TextTrimming="CharacterEllipsis">
+                  <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
+                  <Run Text="{Binding ChildCounter}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+
+                <Path Grid.Column="3"
+                      Width="8" Height="8"
+                      Margin="0,0,12,0"
+                      Fill="Goldenrod"
+                      Data="{StaticResource Icons.Modified}"
+                      IsVisible="{Binding IsDirty}"/>
               </Grid>
             </Border>
-          </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </DataTemplate>
 
-          <TextBlock Grid.Row="1" Grid.Column="0"
-                     Classes="info_label"
-                     HorizontalAlignment="Left" VerticalAlignment="Center"
-                     Text="{DynamicResource Text.Submodule.URL}"/>
-          <TextBlock Grid.Row="1" Grid.Column="1"
-                     Margin="8,0,0,0"
-                     Text="{Binding URL}"
-                     Foreground="{DynamicResource Brush.Link}"
-                     VerticalAlignment="Center"/>
-        </Grid>
-      </StackPanel>
+    <DataTemplate DataType="vm:SubmoduleCollectionAsList">
+      <ListBox Classes="repo_left_content_list" ItemsSource="{Binding Submodules}" SelectionMode="Single">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="CornerRadius" Value="4"/>
+          </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Submodule">
+            <Border Height="24"
+                    Background="Transparent"
+                    DoubleTapped="OnItemDoubleTapped"
+                    ContextRequested="OnItemContextRequested"
+                    ToolTip.Placement="Right">
+              <ToolTip.Tip>
+                <StackPanel Orientation="Vertical">
+                  <StackPanel Orientation="Horizontal">
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Submodule}"/>
+                    <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Path}"/>
+                  </StackPanel>
+
+                  <Grid RowDefinitions="24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Classes="info_label"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Text="{DynamicResource Text.CommitDetail.Info.SHA}"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1"
+                                Orientation="Horizontal"
+                                Margin="8,0,0,0">
+                      <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                 VerticalAlignment="Center"/>
+
+                      <Path Margin="6,0,0,0"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Width="12" Height="12"
+                            Data="{StaticResource Icons.Check}"
+                            Fill="Green"
+                            IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}"/>
+                      <Border Height="16"
+                              Margin="6,0,0,0" Padding="4,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                              Background="DarkOrange"
+                              CornerRadius="4"
+                              IsVisible="{Binding Status, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:SubmoduleStatus.Normal}}">
+                        <Grid>
+                          <TextBlock VerticalAlignment="Center"
+                                     Text="{DynamicResource Text.Submodule.Status.NotInited}"
+                                     Foreground="White"
+                                     IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.NotInited}}"/>
+                          <TextBlock VerticalAlignment="Center"
+                                     Text="{DynamicResource Text.Submodule.Status.Modified}"
+                                     Foreground="White"
+                                     IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Modified}}"/>
+                          <TextBlock VerticalAlignment="Center"
+                                     Text="{DynamicResource Text.Submodule.Status.RevisionChanged}"
+                                     Foreground="White"
+                                     IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.RevisionChanged}}"/>
+                          <TextBlock VerticalAlignment="Center"
+                                     Text="{DynamicResource Text.Submodule.Status.Unmerged}"
+                                     Foreground="White"
+                                     IsVisible="{Binding Status, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:SubmoduleStatus.Unmerged}}"/>
+                        </Grid>
+                      </Border>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Classes="info_label"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Text="{DynamicResource Text.Submodule.URL}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Margin="8,0,0,0"
+                               Text="{Binding URL}"
+                               Foreground="{DynamicResource Brush.Link}"
+                               VerticalAlignment="Center"/>
+                  </Grid>
+                </StackPanel>
+              </ToolTip.Tip>
+              
+              <Grid ColumnDefinitions="16,*,Auto" Margin="8,0,0,0" VerticalAlignment="Center">
+                <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
+                <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
+                <Path Grid.Column="2"
+                      Width="8" Height="8"
+                      Margin="8,0,12,0"
+                      Fill="Goldenrod"
+                      Data="{StaticResource Icons.Modified}"
+                      IsVisible="{Binding IsDirty}"/>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
     </DataTemplate>
   </UserControl.DataTemplates>
-
-  <ListBox Classes="repo_left_content_list" ItemsSource="{Binding #ThisControl.Submodules.Rows}" SelectionMode="Single">
-    <ListBox.Styles>
-      <Style Selector="ListBoxItem">
-        <Setter Property="CornerRadius" Value="4"/>
-      </Style>
-    </ListBox.Styles>
-
-    <ListBox.ItemTemplate>
-      <DataTemplate DataType="vm:SubmoduleTreeNode">
-        <Border Height="24"
-                Background="Transparent"
-                DoubleTapped="OnDoubleTappedNode"
-                ContextRequested="OnRowContextRequested"
-                ToolTip.Tip="{Binding Module}"
-                ToolTip.Placement="Right">
-          <Grid ColumnDefinitions="16,Auto,*,Auto,Auto"
-                Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                VerticalAlignment="Center">
-            <v:SubmoduleTreeNodeToggleButton Grid.Column="0"
-                                             Classes="tree_expander"
-                                             Focusable="False"
-                                             HorizontalAlignment="Center"
-                                             IsChecked="{Binding IsExpanded, Mode=OneWay}"
-                                             IsVisible="{Binding IsFolder}"/>
-
-            <v:SubmoduleTreeNodeIcon Grid.Column="1"
-                                     IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
-
-            <TextBlock Grid.Column="2"
-                       Classes="primary"
-                       Margin="8,0,0,0"
-                       TextTrimming="CharacterEllipsis">
-              <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
-              <Run Text="{Binding ChildCounter}" Foreground="{DynamicResource Brush.FG2}"/>
-            </TextBlock>
-
-            <Path Grid.Column="3"
-                  Width="8" Height="8"
-                  Margin="0,0,12,0"
-                  Fill="Goldenrod"
-                  Data="{StaticResource Icons.Modified}"
-                  IsVisible="{Binding IsDirty}"/>
-          </Grid>
-        </Border>
-      </DataTemplate>
-    </ListBox.ItemTemplate>
-  </ListBox>
 </UserControl>

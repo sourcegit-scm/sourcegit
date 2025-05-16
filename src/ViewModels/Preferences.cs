@@ -188,6 +188,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showTagsInGraph, value);
         }
 
+        public bool ShowSubmodulesAsTree
+        {
+            get;
+            set;
+        } = false;
+
         public bool UseTwoColumnsLayoutInHistories
         {
             get => _useTwoColumnsLayoutInHistories;

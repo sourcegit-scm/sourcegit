@@ -617,6 +617,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Show Submodules as Tree</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">SKIP</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistics</x:String>

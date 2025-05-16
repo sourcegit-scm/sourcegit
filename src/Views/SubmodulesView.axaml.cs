@@ -89,15 +89,6 @@ namespace SourceGit.Views
 
     public partial class SubmodulesView : UserControl
     {
-        public static readonly StyledProperty<ViewModels.SubmoduleCollection> SubmodulesProperty =
-            AvaloniaProperty.Register<SubmodulesView, ViewModels.SubmoduleCollection>(nameof(Submodules));
-
-        public ViewModels.SubmoduleCollection Submodules
-        {
-            get => GetValue(SubmodulesProperty);
-            set => SetValue(SubmodulesProperty, value);
-        }
-
         public static readonly RoutedEvent<RoutedEventArgs> RowsChangedEvent =
             RoutedEvent.Register<TagsView, RoutedEventArgs>(nameof(RowsChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
@@ -120,11 +111,10 @@ namespace SourceGit.Views
 
         public void ToggleNodeIsExpanded(ViewModels.SubmoduleTreeNode node)
         {
-            var submodules = Submodules;
-            if (submodules != null)
+            if (Content is ViewModels.SubmoduleCollectionAsTree tree)
             {
-                submodules.ToggleExpand(node);
-                Rows = submodules.Rows.Count;
+                tree.ToggleExpand(node);
+                Rows = tree.Rows.Count;
                 RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             }
         }
@@ -133,9 +123,15 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == SubmodulesProperty)
+            if (change.Property == ContentProperty)
             {
-                Rows = Submodules?.Rows.Count ?? 0;
+                if (Content is ViewModels.SubmoduleCollectionAsTree tree)
+                    Rows = tree.Rows.Count;
+                else if (Content is ViewModels.SubmoduleCollectionAsList list)
+                    Rows = list.Submodules.Count;
+                else
+                    Rows = 0;
+
                 RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             }
             else if (change.Property == IsVisibleProperty)
@@ -144,28 +140,40 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDoubleTappedNode(object sender, TappedEventArgs e)
+        private void OnItemDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (sender is Control { DataContext: ViewModels.SubmoduleTreeNode node } &&
-                DataContext is ViewModels.Repository repo)
+            if (sender is Control control && DataContext is ViewModels.Repository repo)
             {
-                if (node.IsFolder)
-                    ToggleNodeIsExpanded(node);
-                else if (node.Module.Status != Models.SubmoduleStatus.NotInited)
-                    repo.OpenSubmodule(node.Module.Path);
+                if (control.DataContext is ViewModels.SubmoduleTreeNode node)
+                {
+                    if (node.IsFolder)
+                        ToggleNodeIsExpanded(node);
+                    else if (node.Module.Status != Models.SubmoduleStatus.NotInited)
+                        repo.OpenSubmodule(node.Module.Path);
+                }
+                else if (control.DataContext is Models.Submodule m && m.Status != Models.SubmoduleStatus.NotInited)
+                {
+                    repo.OpenSubmodule(m.Path);
+                }
             }
 
             e.Handled = true;
         }
 
-        private void OnRowContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnItemContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is Control { DataContext: ViewModels.SubmoduleTreeNode node } control &&
-                node.Module != null &&
-                DataContext is ViewModels.Repository repo)
+            if (sender is Control control && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForSubmodule(node.Module);
-                menu?.Open(control);
+                if (control.DataContext is ViewModels.SubmoduleTreeNode node && node.Module != null)
+                {
+                    var menu = repo.CreateContextMenuForSubmodule(node.Module);
+                    menu?.Open(control);
+                }
+                else if (control.DataContext is Models.Submodule m)
+                {
+                    var menu = repo.CreateContextMenuForSubmodule(m);
+                    menu?.Open(control);
+                }
             }
 
             e.Handled = true;

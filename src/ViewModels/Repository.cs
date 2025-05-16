@@ -210,7 +210,21 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _submodules, value);
         }
 
-        public SubmoduleCollection VisibleSubmodules
+        public bool ShowSubmodulesAsTree
+        {
+            get => Preferences.Instance.ShowSubmodulesAsTree;
+            set
+            {
+                if (value != Preferences.Instance.ShowSubmodulesAsTree)
+                {
+                    Preferences.Instance.ShowSubmodulesAsTree = value;
+                    VisibleSubmodules = BuildVisibleSubmodules();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public object VisibleSubmodules
         {
             get => _visibleSubmodules;
             private set => SetProperty(ref _visibleSubmodules, value);
@@ -536,7 +550,7 @@ namespace SourceGit.ViewModels
             _tags.Clear();
             _visibleTags.Clear();
             _submodules.Clear();
-            _visibleSubmodules.Clear();
+            _visibleSubmodules = null;
             _searchedCommits.Clear();
             _selectedSearchedCommit = null;
 
@@ -2512,7 +2526,7 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
-        private SubmoduleCollection BuildVisibleSubmodules()
+        private object BuildVisibleSubmodules()
         {
             var visible = new List<Models.Submodule>();
             if (string.IsNullOrEmpty(_filter))
@@ -2528,7 +2542,10 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            return SubmoduleCollection.Build(visible, _visibleSubmodules);
+            if (Preferences.Instance.ShowSubmodulesAsTree)
+                return SubmoduleCollectionAsTree.Build(visible, _visibleSubmodules as SubmoduleCollectionAsTree);
+            else
+                return new SubmoduleCollectionAsList() { Submodules = visible };
         }
 
         private void RefreshHistoriesFilters(bool refresh)
@@ -2760,7 +2777,7 @@ namespace SourceGit.ViewModels
         private List<Models.Tag> _tags = new List<Models.Tag>();
         private List<Models.Tag> _visibleTags = new List<Models.Tag>();
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
-        private SubmoduleCollection _visibleSubmodules = new SubmoduleCollection();
+        private object _visibleSubmodules = null;
 
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;

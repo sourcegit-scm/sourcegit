@@ -120,7 +120,7 @@ namespace SourceGit.ViewModels
         private bool _isExpanded = false;
     }
 
-    public class SubmoduleCollection
+    public class SubmoduleCollectionAsTree
     {
         public List<SubmoduleTreeNode> Tree
         {
@@ -134,16 +134,19 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
-        public static SubmoduleCollection Build(List<Models.Submodule> submodules, SubmoduleCollection old)
+        public static SubmoduleCollectionAsTree Build(List<Models.Submodule> submodules, SubmoduleCollectionAsTree old)
         {
             var oldExpanded = new HashSet<string>();
-            foreach (var row in old.Rows)
+            if (old != null)
             {
-                if (row.IsFolder && row.IsExpanded)
-                    oldExpanded.Add(row.FullPath);
+                foreach (var row in old.Rows)
+                {
+                    if (row.IsFolder && row.IsExpanded)
+                        oldExpanded.Add(row.FullPath);
+                }
             }
 
-            var collection = new SubmoduleCollection();
+            var collection = new SubmoduleCollectionAsTree();
             collection.Tree = SubmoduleTreeNode.Build(submodules, oldExpanded);
 
             var rows = new List<SubmoduleTreeNode>();
@@ -202,5 +205,14 @@ namespace SourceGit.ViewModels
                 MakeTreeRows(rows, node.Children);
             }
         }
+    }
+
+    public class SubmoduleCollectionAsList
+    {
+        public List<Models.Submodule> Submodules
+        {
+            get;
+            set;
+        } = [];
     }
 }

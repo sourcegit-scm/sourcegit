@@ -269,7 +269,7 @@
                 <Run Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}"/>
               </TextBlock>
               <ToggleButton Grid.Column="2"
-                            Classes="tag_display_mode"
+                            Classes="show_as_tree"
                             Width="14"
                             IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsAsTree, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Repository.ShowTagsAsTree}"/>
@@ -305,13 +305,19 @@
 
           <!-- Submodules -->
           <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,*,Auto,Auto">
+            <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
               <Path Grid.Column="0" Width="10" Height="10" Margin="2,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
                 <Run Text="{DynamicResource Text.Repository.Submodules}"/>
                 <Run Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}"/>
               </TextBlock>
-              <Button Grid.Column="2"
+              <ToggleButton Grid.Column="2"
+                            Classes="show_as_tree"
+                            Width="14"
+                            IsChecked="{Binding ShowSubmodulesAsTree, Mode=TwoWay}"
+                            IsVisible="{Binding Submodules, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
+                            ToolTip.Tip="{DynamicResource Text.Repository.ShowSubmodulesAsTree}"/>
+              <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
                       Margin="8,0"
@@ -320,7 +326,7 @@
                       ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Update}">
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
               </Button>
-              <Button Grid.Column="3"
+              <Button Grid.Column="4"
                       Classes="icon_button"
                       Width="14"
                       Margin="0,0,8,0"
@@ -334,7 +340,7 @@
                             x:Name="SubmoduleList"
                             Height="0"
                             Margin="8,0,4,0"
-                            Submodules="{Binding VisibleSubmodules}"
+                            Content="{Binding VisibleSubmodules}"
                             RowsChanged="OnSubmodulesRowsChanged"
                             Focusable="False"
                             IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}"/>
