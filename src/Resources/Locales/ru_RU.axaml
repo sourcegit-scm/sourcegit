@@ -410,6 +410,7 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Закрыть панель поиска</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Найти следующее совпадение</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Найти предыдущее совпадение</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Открыть с внешним инструментом сравнения/слияние</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Открыть панель поиска</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Отклонить</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Сформировать</x:String>
@@ -708,6 +709,12 @@
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Каталог:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Относительный путь для хранения подмодуля.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Удалить подмодуль</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">СОСТОЯНИЕ</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">изменён</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">не создан</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">ревизия изменена</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">не слита</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL-адрес</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение с метки</x:String>
