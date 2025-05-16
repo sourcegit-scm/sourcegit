@@ -32,11 +32,13 @@
 
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:BranchTreeNode">
-        <Border Background="Transparent" PointerPressed="OnNodePointerPressed">
+        <Border Background="Transparent"
+                PointerPressed="OnNodePointerPressed"
+                ToolTip.Tip="{Binding Tooltip}"
+                ToolTip.Placement="Right">
           <Grid Height="24"
                 Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                ColumnDefinitions="16,*"
-                ToolTip.Tip="{Binding Tooltip}">
+                ColumnDefinitions="16,*">
 
             <!-- Tree Expander -->
             <v:BranchTreeNodeToggleButton Grid.Column="0"

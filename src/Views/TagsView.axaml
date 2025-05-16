@@ -26,7 +26,13 @@
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
-            <Border Height="24" Background="Transparent" PointerPressed="OnRowPointerPressed" DoubleTapped="OnDoubleTappedNode" ContextRequested="OnRowContextRequested" ToolTip.Tip="{Binding ToolTip}">
+            <Border Height="24"
+                    Background="Transparent"
+                    PointerPressed="OnRowPointerPressed"
+                    DoubleTapped="OnDoubleTappedNode"
+                    ContextRequested="OnRowContextRequested"
+                    ToolTip.Tip="{Binding ToolTip}"
+                    ToolTip.Placement="Right">
               <Border.DataTemplates>
                 <DataTemplate DataType="vm:TagTreeNodeToolTip">
                   <StackPanel Orientation="Vertical" Spacing="6">
@@ -86,7 +92,11 @@
                SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Tag">
-            <Border Height="24" Background="Transparent" PointerPressed="OnRowPointerPressed" ContextRequested="OnRowContextRequested">
+            <Border Height="24"
+                    Background="Transparent"
+                    PointerPressed="OnRowPointerPressed"
+                    ContextRequested="OnRowContextRequested"
+                    ToolTip.Placement="Right">
               <ToolTip.Tip>
                 <StackPanel Orientation="Vertical" Spacing="6">
                   <StackPanel Orientation="Horizontal">

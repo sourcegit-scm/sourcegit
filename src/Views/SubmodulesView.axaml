@@ -84,7 +84,12 @@
 
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:SubmoduleTreeNode">
-        <Border Height="24" Background="Transparent" DoubleTapped="OnDoubleTappedNode" ContextRequested="OnRowContextRequested" ToolTip.Tip="{Binding Module}">
+        <Border Height="24"
+                Background="Transparent"
+                DoubleTapped="OnDoubleTappedNode"
+                ContextRequested="OnRowContextRequested"
+                ToolTip.Tip="{Binding Module}"
+                ToolTip.Placement="Right">
           <Grid ColumnDefinitions="16,Auto,*,Auto,Auto"
                 Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                 VerticalAlignment="Center">
