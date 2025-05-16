@@ -17,15 +17,6 @@ namespace SourceGit.Views
 {
     public class BranchTreeNodeIcon : UserControl
     {
-        public static readonly StyledProperty<ViewModels.BranchTreeNode> NodeProperty =
-            AvaloniaProperty.Register<BranchTreeNodeIcon, ViewModels.BranchTreeNode>(nameof(Node));
-
-        public ViewModels.BranchTreeNode Node
-        {
-            get => GetValue(NodeProperty);
-            set => SetValue(NodeProperty, value);
-        }
-
         public static readonly StyledProperty<bool> IsExpandedProperty =
             AvaloniaProperty.Register<BranchTreeNodeIcon, bool>(nameof(IsExpanded));
 
@@ -35,16 +26,23 @@ namespace SourceGit.Views
             set => SetValue(IsExpandedProperty, value);
         }
 
-        static BranchTreeNodeIcon()
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            NodeProperty.Changed.AddClassHandler<BranchTreeNodeIcon>((icon, _) => icon.UpdateContent());
-            IsExpandedProperty.Changed.AddClassHandler<BranchTreeNodeIcon>((icon, _) => icon.UpdateContent());
+            base.OnDataContextChanged(e);
+            UpdateContent();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == IsExpandedProperty)
+                UpdateContent();
         }
 
         private void UpdateContent()
         {
-            var node = Node;
-            if (node == null)
+            if (DataContext is not ViewModels.BranchTreeNode node)
             {
                 Content = null;
                 return;

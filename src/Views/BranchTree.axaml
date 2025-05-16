@@ -55,9 +55,7 @@
                   DoubleTapped="OnDoubleTappedBranchNode">
 
               <!-- Icon -->
-              <v:BranchTreeNodeIcon Grid.Column="0"
-                                    Node="{Binding}"
-                                    IsExpanded="{Binding IsExpanded}"/>
+              <v:BranchTreeNodeIcon Grid.Column="0" IsExpanded="{Binding IsExpanded}"/>
 
               <!-- Name -->
               <TextBlock Grid.Column="1"
