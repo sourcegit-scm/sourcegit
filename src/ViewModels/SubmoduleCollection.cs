@@ -150,16 +150,10 @@ namespace SourceGit.ViewModels
             collection.Tree = SubmoduleTreeNode.Build(submodules, oldExpanded);
 
             var rows = new List<SubmoduleTreeNode>();
-            collection.MakeTreeRows(rows, collection.Tree);
+            MakeTreeRows(rows, collection.Tree);
             collection.Rows.AddRange(rows);
 
             return collection;
-        }
-
-        public void Clear()
-        {
-            Tree.Clear();
-            Rows.Clear();
         }
 
         public void ToggleExpand(SubmoduleTreeNode node)
@@ -193,7 +187,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void MakeTreeRows(List<SubmoduleTreeNode> rows, List<SubmoduleTreeNode> nodes)
+        private static void MakeTreeRows(List<SubmoduleTreeNode> rows, List<SubmoduleTreeNode> nodes)
         {
             foreach (var node in nodes)
             {

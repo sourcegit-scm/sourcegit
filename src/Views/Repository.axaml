@@ -271,7 +271,7 @@
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
                             Width="14"
-                            IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsAsTree, Mode=TwoWay}"
+                            IsChecked="{Binding ShowTagsAsTree, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Repository.ShowTagsAsTree}"/>
               <Button Grid.Column="3"
                       Classes="icon_button"
@@ -296,8 +296,7 @@
                       Height="0"
                       Margin="8,0,4,0"
                       Background="Transparent"
-                      ShowTagsAsTree="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsAsTree, Mode=OneWay}"
-                      Tags="{Binding VisibleTags}"
+                      Content="{Binding VisibleTags}"
                       Focusable="False"
                       IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                       SelectionChanged="OnTagsSelectionChanged"

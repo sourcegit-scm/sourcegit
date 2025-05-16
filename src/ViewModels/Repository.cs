@@ -198,7 +198,21 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _tags, value);
         }
 
-        public List<Models.Tag> VisibleTags
+        public bool ShowTagsAsTree
+        {
+            get => Preferences.Instance.ShowTagsAsTree;
+            set
+            {
+                if (value != Preferences.Instance.ShowTagsAsTree)
+                {
+                    Preferences.Instance.ShowTagsAsTree = value;
+                    VisibleTags = BuildVisibleTags();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public object VisibleTags
         {
             get => _visibleTags;
             private set => SetProperty(ref _visibleTags, value);
@@ -548,7 +562,7 @@ namespace SourceGit.ViewModels
             _localBranchTrees.Clear();
             _remoteBranchTrees.Clear();
             _tags.Clear();
-            _visibleTags.Clear();
+            _visibleTags = null;
             _submodules.Clear();
             _visibleSubmodules = null;
             _searchedCommits.Clear();
@@ -2492,7 +2506,7 @@ namespace SourceGit.ViewModels
             return builder;
         }
 
-        private List<Models.Tag> BuildVisibleTags()
+        private object BuildVisibleTags()
         {
             switch (_settings.TagSortMode)
             {
@@ -2523,7 +2537,11 @@ namespace SourceGit.ViewModels
 
             var historiesFilters = _settings.CollectHistoriesFilters();
             UpdateTagFilterMode(historiesFilters);
-            return visible;
+
+            if (Preferences.Instance.ShowTagsAsTree)
+                return TagCollectionAsTree.Build(visible, _visibleTags as TagCollectionAsTree);
+            else
+                return new TagCollectionAsList() { Tags = visible };
         }
 
         private object BuildVisibleSubmodules()
@@ -2775,7 +2793,7 @@ namespace SourceGit.ViewModels
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
-        private List<Models.Tag> _visibleTags = new List<Models.Tag>();
+        private object _visibleTags = null;
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
         private object _visibleSubmodules = null;
 

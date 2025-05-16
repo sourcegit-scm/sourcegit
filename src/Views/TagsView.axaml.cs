@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -31,15 +30,6 @@ namespace SourceGit.Views
 
     public class TagTreeNodeIcon : UserControl
     {
-        public static readonly StyledProperty<ViewModels.TagTreeNode> NodeProperty =
-            AvaloniaProperty.Register<TagTreeNodeIcon, ViewModels.TagTreeNode>(nameof(Node));
-
-        public ViewModels.TagTreeNode Node
-        {
-            get => GetValue(NodeProperty);
-            set => SetValue(NodeProperty, value);
-        }
-
         public static readonly StyledProperty<bool> IsExpandedProperty =
             AvaloniaProperty.Register<TagTreeNodeIcon, bool>(nameof(IsExpanded));
 
@@ -49,16 +39,23 @@ namespace SourceGit.Views
             set => SetValue(IsExpandedProperty, value);
         }
 
-        static TagTreeNodeIcon()
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            NodeProperty.Changed.AddClassHandler<TagTreeNodeIcon>((icon, _) => icon.UpdateContent());
-            IsExpandedProperty.Changed.AddClassHandler<TagTreeNodeIcon>((icon, _) => icon.UpdateContent());
+            base.OnDataContextChanged(e);
+            UpdateContent();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == IsExpandedProperty)
+                UpdateContent();
         }
 
         private void UpdateContent()
         {
-            var node = Node;
-            if (node == null)
+            if (DataContext is not ViewModels.TagTreeNode node)
             {
                 Content = null;
                 return;
@@ -92,24 +89,6 @@ namespace SourceGit.Views
 
     public partial class TagsView : UserControl
     {
-        public static readonly StyledProperty<bool> ShowTagsAsTreeProperty =
-            AvaloniaProperty.Register<TagsView, bool>(nameof(ShowTagsAsTree));
-
-        public bool ShowTagsAsTree
-        {
-            get => GetValue(ShowTagsAsTreeProperty);
-            set => SetValue(ShowTagsAsTreeProperty, value);
-        }
-
-        public static readonly StyledProperty<List<Models.Tag>> TagsProperty =
-            AvaloniaProperty.Register<TagsView, List<Models.Tag>>(nameof(Tags));
-
-        public List<Models.Tag> Tags
-        {
-            get => GetValue(TagsProperty);
-            set => SetValue(TagsProperty, value);
-        }
-
         public static readonly RoutedEvent<RoutedEventArgs> SelectionChangedEvent =
             RoutedEvent.Register<TagsView, RoutedEventArgs>(nameof(SelectionChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
@@ -150,33 +129,7 @@ namespace SourceGit.Views
         {
             if (Content is ViewModels.TagCollectionAsTree tree)
             {
-                node.IsExpanded = !node.IsExpanded;
-
-                var depth = node.Depth;
-                var idx = tree.Rows.IndexOf(node);
-                if (idx == -1)
-                    return;
-
-                if (node.IsExpanded)
-                {
-                    var subrows = new List<ViewModels.TagTreeNode>();
-                    MakeTreeRows(subrows, node.Children);
-                    tree.Rows.InsertRange(idx + 1, subrows);
-                }
-                else
-                {
-                    var removeCount = 0;
-                    for (int i = idx + 1; i < tree.Rows.Count; i++)
-                    {
-                        var row = tree.Rows[i];
-                        if (row.Depth <= depth)
-                            break;
-
-                        removeCount++;
-                    }
-                    tree.Rows.RemoveRange(idx + 1, removeCount);
-                }
-
+                tree.ToggleExpand(node);
                 Rows = tree.Rows.Count;
                 RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             }
@@ -186,9 +139,15 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == ShowTagsAsTreeProperty || change.Property == TagsProperty)
+            if (change.Property == ContentProperty)
             {
-                UpdateDataSource();
+                if (Content is ViewModels.TagCollectionAsTree tree)
+                    Rows = tree.Rows.Count;
+                else if (Content is ViewModels.TagCollectionAsList list)
+                    Rows = list.Tags.Count;
+                else
+                    Rows = 0;
+
                 RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             }
             else if (change.Property == IsVisibleProperty)
@@ -197,7 +156,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnDoubleTappedNode(object sender, TappedEventArgs e)
+        private void OnItemDoubleTapped(object sender, TappedEventArgs e)
         {
             if (sender is Control { DataContext: ViewModels.TagTreeNode { IsFolder: true } node })
                 ToggleNodeIsExpanded(node);
@@ -205,7 +164,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRowPointerPressed(object sender, PointerPressedEventArgs e)
+        private void OnItemPointerPressed(object sender, PointerPressedEventArgs e)
         {
             var p = e.GetCurrentPoint(this);
             if (!p.Properties.IsLeftButtonPressed)
@@ -220,7 +179,7 @@ namespace SourceGit.Views
                 repo.NavigateToCommit(nodeTag.SHA);
         }
 
-        private void OnRowContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnItemContextRequested(object sender, ContextRequestedEventArgs e)
         {
             var control = sender as Control;
             if (control == null)
@@ -243,7 +202,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRowSelectionChanged(object sender, SelectionChangedEventArgs _)
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
             var selected = (sender as ListBox)?.SelectedItem;
             var selectedTag = null as Models.Tag;
@@ -254,63 +213,6 @@ namespace SourceGit.Views
 
             if (selectedTag != null)
                 RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
-        }
-
-        private void MakeTreeRows(List<ViewModels.TagTreeNode> rows, List<ViewModels.TagTreeNode> nodes)
-        {
-            foreach (var node in nodes)
-            {
-                rows.Add(node);
-
-                if (!node.IsExpanded || !node.IsFolder)
-                    continue;
-
-                MakeTreeRows(rows, node.Children);
-            }
-        }
-
-        private void UpdateDataSource()
-        {
-            var tags = Tags;
-            if (tags == null || tags.Count == 0)
-            {
-                Rows = 0;
-                Content = null;
-                return;
-            }
-
-            if (ShowTagsAsTree)
-            {
-                var oldExpanded = new HashSet<string>();
-                if (Content is ViewModels.TagCollectionAsTree oldTree)
-                {
-                    foreach (var row in oldTree.Rows)
-                    {
-                        if (row.IsFolder && row.IsExpanded)
-                            oldExpanded.Add(row.FullPath);
-                    }
-                }
-
-                var tree = new ViewModels.TagCollectionAsTree();
-                tree.Tree = ViewModels.TagTreeNode.Build(tags, oldExpanded);
-
-                var rows = new List<ViewModels.TagTreeNode>();
-                MakeTreeRows(rows, tree.Tree);
-                tree.Rows.AddRange(rows);
-
-                Content = tree;
-                Rows = rows.Count;
-            }
-            else
-            {
-                var list = new ViewModels.TagCollectionAsList();
-                list.Tags.AddRange(tags);
-
-                Content = list;
-                Rows = tags.Count;
-            }
-
-            RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
         }
     }
 }
