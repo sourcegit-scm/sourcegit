@@ -157,6 +157,12 @@ namespace SourceGit.Views
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
+                if (e.Key == Key.P)
+                {
+                    vm.OpenWorkspaceSwitcher();
+                    e.Handled = true;
+                }
+
                 if (e.Key == Key.W)
                 {
                     vm.CloseTab(null);
@@ -248,17 +254,10 @@ namespace SourceGit.Views
                     }
                 }
             }
-            else if (e.KeyModifiers.HasFlag(KeyModifiers.Alt))
-            {
-                if (SwitchWorkspace(e.Key))
-                {
-                    e.Handled = true;
-                    return;
-                }
-            }
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
+                vm.CancelWorkspaceSwitcher();
                 e.Handled = true;
                 return;
             }
@@ -313,44 +312,6 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
-        }
-        
-        private bool SwitchWorkspace(Key eKey)
-        {
-            var exec = (ViewModels.Launcher l, int idx) =>
-            {
-                var pref = ViewModels.Preferences.Instance;
-                if (idx < pref.Workspaces.Count)
-                    l.SwitchWorkspace(pref.Workspaces[idx]);
-                return true; // Alt+1..9 (or Option+1..9) always mark handled
-            };
-            
-            if (DataContext is ViewModels.Launcher launcher)
-            {
-                switch (eKey)
-                {
-                    case Key.D1 or Key.NumPad1:
-                        return exec(launcher, 0);
-                    case Key.D2 or Key.NumPad2:
-                        return exec(launcher, 1);
-                    case Key.D3 or Key.NumPad3:
-                        return exec(launcher, 2);
-                    case Key.D4 or Key.NumPad4:
-                        return exec(launcher, 3);
-                    case Key.D5 or Key.NumPad5:
-                        return exec(launcher, 4);
-                    case Key.D6 or Key.NumPad6:
-                        return exec(launcher, 5);
-                    case Key.D7 or Key.NumPad7:
-                        return exec(launcher, 6);
-                    case Key.D8 or Key.NumPad8:
-                        return exec(launcher, 7);
-                    case Key.D9 or Key.NumPad9:
-                        return exec(launcher, 8);
-                }
-            }
-
-            return false;
         }
 
         private KeyModifiers _unhandledModifiers = KeyModifiers.None;

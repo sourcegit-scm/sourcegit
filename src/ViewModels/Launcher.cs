@@ -23,6 +23,12 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public WorkspaceSwitcher WorkspaceSwitcher
+        {
+            get => _workspaceSwitcher;
+            set => SetProperty(ref _workspaceSwitcher, value);
+        }
+
         public Workspace ActiveWorkspace
         {
             get => _activeWorkspace;
@@ -130,8 +136,21 @@ namespace SourceGit.ViewModels
             _ignoreIndexChange = false;
         }
 
+        public void OpenWorkspaceSwitcher()
+        {
+            WorkspaceSwitcher = new WorkspaceSwitcher(this);
+        }
+
+        public void CancelWorkspaceSwitcher()
+        {
+            WorkspaceSwitcher = null;
+        }
+
         public void SwitchWorkspace(Workspace to)
         {
+            if (to.IsActive)
+                return;
+
             foreach (var one in Pages)
             {
                 if (!one.CanCreatePopup() || one.Data is Repository { IsAutoFetching: true })
@@ -599,5 +618,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
+        private WorkspaceSwitcher _workspaceSwitcher = null;
     }
 }
