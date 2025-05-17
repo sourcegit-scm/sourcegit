@@ -134,7 +134,7 @@ namespace SourceGit.ViewModels
         {
             var existingRepositoriesPAge =
                 Pages.FirstOrDefault(p => string.IsNullOrEmpty(p.Node.Name));
-            if (existingRepositoriesPAge != null)
+            if (existingRepositoriesPAge is not null)
             {
                 ActivePage = existingRepositoriesPAge;
             }
