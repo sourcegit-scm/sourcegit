@@ -24,21 +24,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.98%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Repository.ShowSubmodulesAsTree
-- Text.Submodule.Status
-- Text.Submodule.Status.Modified
-- Text.Submodule.Status.NotInited
-- Text.Submodule.Status.RevisionChanged
-- Text.Submodule.Status.Unmerged
-- Text.Submodule.URL
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-94.53%25-yellow)
 
