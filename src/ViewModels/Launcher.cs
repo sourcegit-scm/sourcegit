@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -132,9 +132,18 @@ namespace SourceGit.ViewModels
 
         public void AddNewTab()
         {
-            var page = new LauncherPage();
-            Pages.Add(page);
-            ActivePage = page;
+            var existingRepositoriesPAge =
+                Pages.FirstOrDefault(p => string.IsNullOrEmpty(p.Node.Name));
+            if (existingRepositoriesPAge != null)
+            {
+                ActivePage = existingRepositoriesPAge;
+            }
+            else
+            {
+                var page = new LauncherPage();
+                Pages.Add(page);
+                ActivePage = page;
+            }
         }
 
         public void MoveTab(LauncherPage from, LauncherPage to)
