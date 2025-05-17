@@ -463,6 +463,14 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void SwitchWorkspace(int idx)
+        {
+            var pref = Preferences.Instance;
+            if (idx >= pref.Workspaces.Count || pref.Workspaces[idx].IsActive) return;
+            
+            SwitchWorkspace(pref.Workspaces[idx]);
+        }
+        
         private string GetRepositoryGitDir(string repo)
         {
             var fullpath = Path.Combine(repo, ".git");
@@ -493,7 +501,7 @@ namespace SourceGit.ViewModels
 
             return new Commands.QueryGitDir(repo).Result();
         }
-
+        
         private void SwitchWorkspace(Workspace to)
         {
             foreach (var one in Pages)
