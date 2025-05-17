@@ -248,6 +248,27 @@ namespace SourceGit.Views
                     }
                 }
             }
+            else if (e.KeyModifiers.HasFlag(KeyModifiers.Alt))
+            {
+                if (e.Key == Key.Space && DataContext is ViewModels.Launcher launcher)
+                {
+                    var menu = launcher.CreateContextForWorkspace();
+                    var workspacesButton = this.FindControl<Button>("WorkspacesButton");
+                    if (menu != null)
+                    {
+                        menu.PlacementTarget = workspacesButton;
+                        menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+                        menu.Open(workspacesButton);
+                    }
+                }
+                else
+                {
+                    SwitchToWorkspaceIndex(e.Key);
+                }
+
+                e.Handled = true;
+                return;
+            }
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
@@ -279,6 +300,29 @@ namespace SourceGit.Views
 
                 if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && e.Key is Key.LeftShift or Key.RightShift)
                     _unhandledModifiers |= KeyModifiers.Shift;
+            }
+        }
+
+        private void SwitchToWorkspaceIndex(Key eKey)
+        {
+            int newIndex;
+            switch (eKey)
+            {
+                case Key.D1 or Key.NumPad1: newIndex = 0; break;
+                case Key.D2 or Key.NumPad2: newIndex = 1; break;
+                case Key.D3 or Key.NumPad3: newIndex = 2; break;
+                case Key.D4 or Key.NumPad4: newIndex = 3; break;
+                case Key.D5 or Key.NumPad5: newIndex = 4; break;
+                case Key.D6 or Key.NumPad6: newIndex = 5; break;
+                case Key.D7 or Key.NumPad7: newIndex = 6; break;
+                case Key.D8 or Key.NumPad8: newIndex = 7; break;
+                case Key.D9 or Key.NumPad9: newIndex = 8; break;
+                default: return;
+            }
+
+            if (DataContext is ViewModels.Launcher launcher)
+            {
+                launcher.SwitchWorkspace(newIndex);
             }
         }
 
