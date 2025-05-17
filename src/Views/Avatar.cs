@@ -78,10 +78,10 @@ namespace SourceGit.Views
                     if (switches[idx])
                         context.FillRectangle(brush, new Rect(x, y, stepX, stepY));
 
-                    if (switches[idx+1])
+                    if (switches[idx + 1])
                         context.FillRectangle(brush, new Rect(x + stepX, y, stepX, stepY));
 
-                    if (switches[idx+2])
+                    if (switches[idx + 2])
                         context.FillRectangle(brush, new Rect(x + stepX * 2, y, stepX, stepY));
                 }
 
@@ -94,7 +94,7 @@ namespace SourceGit.Views
                     if (switches[idx])
                         context.FillRectangle(brush, new Rect(x, y, stepX, stepY));
 
-                    if (switches[idx-1])
+                    if (switches[idx - 1])
                         context.FillRectangle(brush, new Rect(x + stepX, y, stepX, stepY));
                 }
             }
