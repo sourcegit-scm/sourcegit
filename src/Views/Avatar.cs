@@ -54,8 +54,8 @@ namespace SourceGit.Views
             {
                 context.DrawRectangle(Brushes.White, new Pen(new SolidColorBrush(Colors.Black, 0.3f), 0.65f), rect, corner, corner);
 
-                var offsetX = Bounds.Width / 8.0;
-                var offsetY = Bounds.Height / 8.0;
+                var offsetX = Bounds.Width / 10.0;
+                var offsetY = Bounds.Height / 10.0;
 
                 var stepX = (Bounds.Width - offsetX * 2) / 5.0;
                 var stepY = (Bounds.Height - offsetY * 2) / 5.0;
