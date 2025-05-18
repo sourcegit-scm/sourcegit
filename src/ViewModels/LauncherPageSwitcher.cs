@@ -67,6 +67,7 @@ namespace SourceGit.ViewModels
             }
 
             VisiblePages = visible;
+            SelectedPage = visible.Count > 0 ? visible[0] : null;
         }
 
         private Launcher _launcher = null;
