@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -387,7 +387,7 @@ namespace SourceGit.ViewModels
                 {
                     var builder = new StringBuilder();
                     foreach (var c in selected)
-                        builder.AppendLine($"{c.SHA.Substring(0, 10)} - {c.Subject}");
+                        builder.AppendLine($"{c.SHA.AsSpan(0, 10)} - {c.Subject}");
 
                     App.CopyText(builder.ToString());
                     e.Handled = true;
@@ -780,7 +780,7 @@ namespace SourceGit.ViewModels
             copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
             copyInfo.Click += (_, e) =>
             {
-                App.CopyText($"{commit.SHA.Substring(0, 10)} - {commit.Subject}");
+                App.CopyText($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
                 e.Handled = true;
             };
 
