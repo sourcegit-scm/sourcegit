@@ -434,8 +434,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在浏览器中访问</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
-  <x:String x:Key="Text.Launcher.SwitchWorkspace" xml:space="preserve">切换工作区</x:String>
-  <x:String x:Key="Text.Launcher.SwitchTab" xml:space="preserve">切换页面</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作区列表</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">页面列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>

@@ -430,8 +430,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Open in Browser</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
-  <x:String x:Key="Text.Launcher.SwitchWorkspace" xml:space="preserve">Switch Workspace</x:String>
-  <x:String x:Key="Text.Launcher.SwitchTab" xml:space="preserve">Switch Tab</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Pages</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>

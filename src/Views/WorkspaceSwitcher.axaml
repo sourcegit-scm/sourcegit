@@ -7,15 +7,15 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.WorkspaceSwitcher"
              x:DataType="vm:WorkspaceSwitcher">
-  <Grid RowDefinitions="28,Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto,Auto">
     <TextBlock Grid.Row="0"
-               Text="{DynamicResource Text.Launcher.SwitchWorkspace}"
+               Text="{DynamicResource Text.Launcher.Workspaces}"
                FontWeight="Bold"
-               HorizontalAlignment="Center" VerticalAlignment="Top"/>
+               HorizontalAlignment="Center"/>
     
     <TextBox Grid.Row="1"
              Height="24"
-             Margin="4,0"
+             Margin="4,8,4,0"
              BorderThickness="1"
              CornerRadius="12"
              Text="{Binding SearchFilter, Mode=TwoWay}"
@@ -49,7 +49,7 @@
              x:Name="WorkspaceListBox"
              Width="300"
              MaxHeight="400"
-             Margin="0,8,0,0"
+             Margin="4,8,4,0"
              BorderThickness="0"
              SelectionMode="Single"
              Background="Transparent"
