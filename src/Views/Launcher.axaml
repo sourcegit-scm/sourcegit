@@ -106,13 +106,17 @@
     <!-- Workspace Switcher -->
     <Border Grid.Row="1"
             Background="Transparent"
-            IsVisible="{Binding WorkspaceSwitcher, Converter={x:Static ObjectConverters.IsNotNull}}">
+            IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
-          <ContentControl Margin="16" Content="{Binding WorkspaceSwitcher}">
+          <ContentControl Margin="16" Content="{Binding Switcher}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:WorkspaceSwitcher">
                 <v:WorkspaceSwitcher/>
+              </DataTemplate>
+              
+              <DataTemplate DataType="vm:LauncherPageSwitcher">
+                <v:LauncherPageSwitcher/>
               </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>

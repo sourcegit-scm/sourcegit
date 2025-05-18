@@ -391,6 +391,7 @@
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">打开偏好设置面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">切换工作区</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">切换显示页面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暂存区更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暂存区更改并推送</x:String>
@@ -433,6 +434,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在浏览器中访问</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
+  <x:String x:Key="Text.Launcher.SwitchWorkspace" xml:space="preserve">切换工作区</x:String>
+  <x:String x:Key="Text.Launcher.SwitchTab" xml:space="preserve">切换页面</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
@@ -639,7 +642,6 @@
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相对时间</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">查看命令日志</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">访问远程仓库 '{0}'</x:String>
-  <x:String x:Key="Text.Repository.WorkspaceSwitcher" xml:space="preserve">切换工作区</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作树列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作树</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">清理</x:String>

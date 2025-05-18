@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
             if (_selectedWorkspace is { })
                 _launcher.SwitchWorkspace(_selectedWorkspace);
 
-            _launcher.CancelWorkspaceSwitcher();
+            _launcher.CancelSwitcher();
         }
 
         private void UpdateVisibleWorkspaces()

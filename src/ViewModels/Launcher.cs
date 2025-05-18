@@ -23,12 +23,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public WorkspaceSwitcher WorkspaceSwitcher
-        {
-            get => _workspaceSwitcher;
-            set => SetProperty(ref _workspaceSwitcher, value);
-        }
-
         public Workspace ActiveWorkspace
         {
             get => _activeWorkspace;
@@ -48,6 +42,12 @@ namespace SourceGit.ViewModels
                         _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
                 }
             }
+        }
+
+        public object Switcher
+        {
+            get => _switcher;
+            set => SetProperty(ref _switcher, value);
         }
 
         public Launcher(string startupRepo)
@@ -138,12 +138,17 @@ namespace SourceGit.ViewModels
 
         public void OpenWorkspaceSwitcher()
         {
-            WorkspaceSwitcher = new WorkspaceSwitcher(this);
+            Switcher = new WorkspaceSwitcher(this);
         }
 
-        public void CancelWorkspaceSwitcher()
+        public void OpenTabSwitcher()
         {
-            WorkspaceSwitcher = null;
+            Switcher = new LauncherPageSwitcher(this);
+        }
+
+        public void CancelSwitcher()
+        {
+            Switcher = null;
         }
 
         public void SwitchWorkspace(Workspace to)
@@ -618,6 +623,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
-        private WorkspaceSwitcher _workspaceSwitcher = null;
+        private object _switcher = null;
     }
 }

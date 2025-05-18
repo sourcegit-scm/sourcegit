@@ -133,8 +133,8 @@ namespace SourceGit.Views
                 return;
             }
 
-            // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: (KeyModifiers.Control | KeyModifiers.Shift), Key: Key.P })
+            // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
             {
                 App.ShowWindow(new Preferences(), true);
                 e.Handled = true;
@@ -149,7 +149,7 @@ namespace SourceGit.Views
             }
 
             // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control && e.Key == Key.Q)
+            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
             {
                 App.Quit(0);
                 return;
@@ -157,10 +157,18 @@ namespace SourceGit.Views
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.Key == Key.P)
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.P)
                 {
                     vm.OpenWorkspaceSwitcher();
                     e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.P)
+                {
+                    vm.OpenTabSwitcher();
+                    e.Handled = true;
+                    return;
                 }
 
                 if (e.Key == Key.W)
@@ -257,7 +265,7 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
-                vm.CancelWorkspaceSwitcher();
+                vm.CancelSwitcher();
                 e.Handled = true;
                 return;
             }

@@ -9,7 +9,7 @@
              x:DataType="vm:WorkspaceSwitcher">
   <Grid RowDefinitions="28,Auto,Auto">
     <TextBlock Grid.Row="0"
-               Text="{DynamicResource Text.Repository.WorkspaceSwitcher}"
+               Text="{DynamicResource Text.Launcher.SwitchWorkspace}"
                FontWeight="Bold"
                HorizontalAlignment="Center" VerticalAlignment="Top"/>
     
@@ -82,7 +82,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:Workspace">
-          <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Fill="{Binding Brush}"
