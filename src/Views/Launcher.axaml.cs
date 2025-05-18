@@ -322,6 +322,13 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnCancelSwitcher(object sender, PointerPressedEventArgs e)
+        {
+            if (e.Source == sender)
+                (DataContext as ViewModels.Launcher)?.CancelSwitcher();
+            e.Handled = true;
+        }
+
         private KeyModifiers _unhandledModifiers = KeyModifiers.None;
         private WindowState _lastWindowState = WindowState.Normal;
     }

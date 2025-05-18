@@ -19,7 +19,7 @@ namespace SourceGit.Views
             get => GetValue(IsScrollerVisibleProperty);
             set => SetValue(IsScrollerVisibleProperty, value);
         }
-        
+
         public static readonly StyledProperty<string> SearchFilterProperty =
             AvaloniaProperty.Register<LauncherTabBar, string>(nameof(SearchFilter));
 
@@ -140,7 +140,7 @@ namespace SourceGit.Views
             var stroke = new Pen(this.FindResource("Brush.Border0") as IBrush);
             context.DrawGeometry(fill, stroke, geo);
         }
-        
+
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
@@ -148,7 +148,7 @@ namespace SourceGit.Views
             if (change.Property == SearchFilterProperty)
                 UpdateSelectablePages();
         }
-        
+
         private void ScrollTabs(object _, PointerWheelEventArgs e)
         {
             if (!e.KeyModifiers.HasFlag(KeyModifiers.Shift))
@@ -270,12 +270,18 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
-        
+
         private void OnTabsDropdownOpened(object sender, EventArgs e)
         {
             UpdateSelectablePages();
         }
-        
+
+        private void OnTabsDropdownClosed(object sender, EventArgs e)
+        {
+            SelectablePages.Clear();
+            SearchFilter = string.Empty;
+        }
+
         private void OnTabsDropdownKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -294,7 +300,7 @@ namespace SourceGit.Views
                 }
             }
         }
-        
+
         private void OnTabsDropdownSearchBoxKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down && TabsDropdownList.ItemCount > 0)
@@ -355,7 +361,7 @@ namespace SourceGit.Views
                     SelectablePages.Add(page);
             }
         }
-        
+
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new Point();
         private bool _startDragTab = false;

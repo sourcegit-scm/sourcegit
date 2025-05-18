@@ -104,9 +104,10 @@
     </ContentControl>
     
     <!-- Workspace/Pages Switcher -->
-    <Border Grid.Row="1"
+    <Border Grid.Row="0" Grid.RowSpan="2"
             Background="Transparent"
-            IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}">
+            IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}"
+            PointerPressed="OnCancelSwitcher">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
           <ContentControl Margin="16,10,16,12" Content="{Binding Switcher}">

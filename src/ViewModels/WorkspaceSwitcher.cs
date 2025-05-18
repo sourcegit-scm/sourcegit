@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class WorkspaceSwitcher : ObservableObject
+    public class WorkspaceSwitcher : ObservableObject, IDisposable
     {
         public List<Workspace> VisibleWorkspaces
         {
@@ -41,10 +41,15 @@ namespace SourceGit.ViewModels
 
         public void Switch()
         {
-            if (_selectedWorkspace is { })
-                _launcher.SwitchWorkspace(_selectedWorkspace);
-
+            _launcher.SwitchWorkspace(_selectedWorkspace);
             _launcher.CancelSwitcher();
+        }
+
+        public void Dispose()
+        {
+            _visibleWorkspaces.Clear();
+            _selectedWorkspace = null;
+            _searchFilter = string.Empty;
         }
 
         private void UpdateVisibleWorkspaces()

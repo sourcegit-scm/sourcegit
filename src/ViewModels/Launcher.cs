@@ -44,10 +44,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public object Switcher
+        public IDisposable Switcher
         {
             get => _switcher;
-            set => SetProperty(ref _switcher, value);
+            private set => SetProperty(ref _switcher, value);
         }
 
         public Launcher(string startupRepo)
@@ -148,12 +148,13 @@ namespace SourceGit.ViewModels
 
         public void CancelSwitcher()
         {
+            Switcher?.Dispose();
             Switcher = null;
         }
 
         public void SwitchWorkspace(Workspace to)
         {
-            if (to.IsActive)
+            if (to == null || to.IsActive)
                 return;
 
             foreach (var one in Pages)
@@ -623,6 +624,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
-        private object _switcher = null;
+        private IDisposable _switcher = null;
     }
 }

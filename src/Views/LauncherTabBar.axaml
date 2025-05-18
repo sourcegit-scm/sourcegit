@@ -141,7 +141,7 @@
 
       <Button x:Name="PageSelector" Classes="icon_button" Width="16" Height="16" Margin="8,0">
         <Button.Flyout>
-          <Flyout Opened="OnTabsDropdownOpened">
+          <Flyout Opened="OnTabsDropdownOpened" Closed="OnTabsDropdownClosed">
             <Grid RowDefinitions="28,Auto" KeyDown="OnTabsDropdownKeyDown" LostFocus="OnTabsDropdownLostFocus">
               <TextBox Grid.Row="0"
                        Height="24"

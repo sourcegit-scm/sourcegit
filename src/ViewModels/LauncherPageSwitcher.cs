@@ -4,14 +4,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class LauncherPageSwitcher : ObservableObject
+    public class LauncherPageSwitcher : ObservableObject, IDisposable
     {
         public List<LauncherPage> VisiblePages
         {
             get => _visiblePages;
             private set => SetProperty(ref _visiblePages, value);
         }
-        
+
         public string SearchFilter
         {
             get => _searchFilter;
@@ -27,13 +27,13 @@ namespace SourceGit.ViewModels
             get => _selectedPage;
             set => SetProperty(ref _selectedPage, value);
         }
-        
+
         public LauncherPageSwitcher(Launcher launcher)
         {
             _launcher = launcher;
             UpdateVisiblePages();
         }
-        
+
         public void ClearFilter()
         {
             SearchFilter = string.Empty;
@@ -41,10 +41,15 @@ namespace SourceGit.ViewModels
 
         public void Switch()
         {
-            if (_selectedPage is { })
-                _launcher.ActivePage = _selectedPage;
-
+            _launcher.ActivePage = _selectedPage ?? _launcher.ActivePage;
             _launcher.CancelSwitcher();
+        }
+
+        public void Dispose()
+        {
+            _visiblePages.Clear();
+            _selectedPage = null;
+            _searchFilter = string.Empty;
         }
 
         private void UpdateVisiblePages()
