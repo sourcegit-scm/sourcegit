@@ -16,8 +16,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 - Text.Repository.ShowSubmodulesAsTree
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -35,8 +35,8 @@ This document shows the translation status of each locale file in the repository
 
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 
 </details>
 
@@ -67,8 +67,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
@@ -102,8 +102,8 @@ This document shows the translation status of each locale file in the repository
 
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 
 </details>
 
@@ -134,8 +134,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
@@ -224,8 +224,8 @@ This document shows the translation status of each locale file in the repository
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
 - Text.InProgress.Revert.Head
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 - Text.Merge.Source
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
@@ -292,7 +292,7 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.Hotkeys.Global.SwitchTab
-- Text.Launcher.SwitchTab
+- Text.Launcher.Pages
 
 </details>
 
@@ -323,8 +323,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
@@ -374,8 +374,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Launcher.SwitchWorkspace
-- Text.Launcher.SwitchTab
+- Text.Launcher.Workspaces
+- Text.Launcher.Pages
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
