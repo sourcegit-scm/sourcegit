@@ -35,7 +35,7 @@
       <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,2,3" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
-            <MenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" InputGesture="Ctrl+Shift+P">
+            <MenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" InputGesture="Ctrl+,">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
               </MenuItem.Icon>
