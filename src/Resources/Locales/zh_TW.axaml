@@ -390,6 +390,8 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切換到上一個頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新增頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">開啟偏好設定面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">切換工作區</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">切換目前頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">存放庫頁面快速鍵</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暫存區變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暫存區變更並推送</x:String>
@@ -410,6 +412,7 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">關閉搜尋面板</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">前往下一個搜尋相符的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">前往上一個搜尋相符的位置</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">使用外部比對工具檢視</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">開啟搜尋面板</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">捨棄</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暫存</x:String>
@@ -431,6 +434,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在瀏覽器中開啟連結</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">發生錯誤</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作區列表</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">頁面列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合併分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式:</x:String>
@@ -620,6 +625,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交訊息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">僅搜尋目前分支</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以樹型結構展示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以樹型結構展示</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">跳過此提交</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交統計</x:String>
@@ -708,6 +714,12 @@
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本機存放的相對路徑。</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">刪除子模組</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">狀態</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">未提交變更</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">未初始化</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">SHA 變更</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解決的衝突</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">複製標籤訊息</x:String>

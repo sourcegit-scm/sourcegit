@@ -72,7 +72,7 @@
         <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
       </Button>
 
-      <!-- Workspace Switcher -->
+      <!-- Workspace Dropdown Menu -->
       <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenWorkspaceMenu">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
@@ -85,11 +85,11 @@
               Fill="{Binding ActiveWorkspace.Brush}"/>
       </Button>
 
-      <!-- Pages Tabs-->
+      <!-- Pages Tabs -->
       <v:LauncherTabBar Grid.Column="2" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
 
-      <!-- Caption Buttons (Windows/Linux)-->
-      <Border Grid.Column="3" Margin="16,0,0,0" IsVisible="{Binding #ThisControl.IsRightCaptionButtonsVisible}">
+      <!-- Caption Buttons (Windows/Linux) -->
+      <Border Grid.Column="3" Margin="16,0,0,0" IsVisible="{Binding #ThisControl.HasRightCaptionButton}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
@@ -102,5 +102,27 @@
         </DataTemplate>
       </ContentControl.DataTemplates>
     </ContentControl>
+    
+    <!-- Workspace/Pages Switcher -->
+    <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="Transparent"
+            IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}"
+            PointerPressed="OnCancelSwitcher">
+      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
+        <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
+          <ContentControl Margin="16,10,16,12" Content="{Binding Switcher}">
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="vm:WorkspaceSwitcher">
+                <v:WorkspaceSwitcher/>
+              </DataTemplate>
+              
+              <DataTemplate DataType="vm:LauncherPageSwitcher">
+                <v:LauncherPageSwitcher/>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Border>
+      </Border>
+    </Border>
   </Grid>
 </v:ChromelessWindow>

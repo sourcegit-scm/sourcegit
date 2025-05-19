@@ -40,7 +40,7 @@
   </Style>
   
   <Style Selector="Window[WindowState=Maximized].fix_maximized_padding">
-    <Setter Property="Padding" Value="6"/>
+    <Setter Property="Padding" Value="8,6,8,8"/>
   </Style>
 
   <Style Selector="Window.custom_window_frame">
@@ -1235,7 +1235,7 @@
     <Setter Property="Opacity" Value="1"/>
   </Style>
   
-  <Style Selector="ToggleButton.tag_display_mode">
+  <Style Selector="ToggleButton.show_as_tree">
     <Setter Property="Margin" Value="0" />
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Template">

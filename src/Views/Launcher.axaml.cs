@@ -29,12 +29,13 @@ namespace SourceGit.Views
             set => SetValue(HasLeftCaptionButtonProperty, value);
         }
 
-        public bool IsRightCaptionButtonsVisible
+        public bool HasRightCaptionButton
         {
             get
             {
                 if (OperatingSystem.IsLinux())
-                    return !ViewModels.Preferences.Instance.UseSystemWindowFrame;
+                    return !Native.OS.UseSystemWindowFrame;
+
                 return OperatingSystem.IsWindows();
             }
         }
@@ -52,8 +53,7 @@ namespace SourceGit.Views
             {
                 HasLeftCaptionButton = true;
                 CaptionHeight = new GridLength(34);
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome |
-                                              ExtendClientAreaChromeHints.OSXThickTitleBar;
+                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome | ExtendClientAreaChromeHints.OSXThickTitleBar;
             }
             else if (UseSystemWindowFrame)
             {
@@ -100,7 +100,7 @@ namespace SourceGit.Views
 
             if (change.Property == WindowStateProperty)
             {
-                _lastWindowState = (WindowState)change.OldValue;
+                _lastWindowState = (WindowState)change.OldValue!;
 
                 var state = (WindowState)change.NewValue!;
                 if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
@@ -133,8 +133,8 @@ namespace SourceGit.Views
                 return;
             }
 
-            // Ctrl+Shift+P opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: (KeyModifiers.Control | KeyModifiers.Shift), Key: Key.P })
+            // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
+            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
             {
                 App.ShowWindow(new Preferences(), true);
                 e.Handled = true;
@@ -149,7 +149,7 @@ namespace SourceGit.Views
             }
 
             // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Control && e.Key == Key.Q)
+            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
             {
                 App.Quit(0);
                 return;
@@ -157,6 +157,20 @@ namespace SourceGit.Views
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.P)
+                {
+                    vm.OpenWorkspaceSwitcher();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.P)
+                {
+                    vm.OpenTabSwitcher();
+                    e.Handled = true;
+                    return;
+                }
+
                 if (e.Key == Key.W)
                 {
                     vm.CloseTab(null);
@@ -251,6 +265,7 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
+                vm.CancelSwitcher();
                 e.Handled = true;
                 return;
             }
@@ -304,6 +319,13 @@ namespace SourceGit.Views
                 menu?.Open(btn);
             }
 
+            e.Handled = true;
+        }
+
+        private void OnCancelSwitcher(object sender, PointerPressedEventArgs e)
+        {
+            if (e.Source == sender)
+                (DataContext as ViewModels.Launcher)?.CancelSwitcher();
             e.Handled = true;
         }
 

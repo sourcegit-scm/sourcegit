@@ -390,6 +390,8 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切换到上一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">打开偏好设置面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">切换工作区</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">切换显示页面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暂存区更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暂存区更改并推送</x:String>
@@ -410,6 +412,7 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">关闭搜索</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">定位到下一个匹配搜索的位置</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">定位到上一个匹配搜索的位置</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">使用外部比对工具查看</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">打开搜索</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丢弃</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暂存</x:String>
@@ -431,6 +434,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在浏览器中访问</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作区列表</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">页面列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
@@ -620,6 +625,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">仅在当前分支中查找</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">跳过此提交</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">提交统计</x:String>
@@ -708,6 +714,12 @@
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相对仓库路径 ：</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本地存放的相对路径。</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">删除子模块</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">状态</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">未提交修改</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">未初始化</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">SHA变更</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解决冲突</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">仓库</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">复制标签信息</x:String>

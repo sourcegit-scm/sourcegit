@@ -14,6 +14,7 @@ namespace SourceGit.ViewModels
         public int Depth { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
+        public int Counter { get; set; } = 0;
 
         public Models.FilterMode FilterMode
         {
@@ -48,9 +49,23 @@ namespace SourceGit.ViewModels
             get => Backend is Models.Branch { IsUpstreamGone: true };
         }
 
+        public string BranchesCount
+        {
+            get => Counter > 0 ? $"({Counter})" : string.Empty;
+        }
+
         public string Tooltip
         {
-            get => Backend is Models.Branch b ? b.FriendlyName : null;
+            get
+            {
+                if (Backend is Models.Branch b)
+                    return b.FriendlyName;
+
+                if (Backend is Models.Remote r)
+                    return r.URL;
+
+                return null;
+            }
         }
 
         private Models.FilterMode _filterMode = Models.FilterMode.None;
@@ -102,12 +117,14 @@ namespace SourceGit.ViewModels
                     if (branch.IsLocal)
                     {
                         MakeBranchNode(branch, _locals, folders, "refs/heads", bForceExpanded);
+                        continue;
                     }
-                    else
+
+                    var rk = $"refs/remotes/{branch.Remote}";
+                    if (folders.TryGetValue(rk, out var remote))
                     {
-                        var remote = _remotes.Find(x => x.Name == branch.Remote);
-                        if (remote != null)
-                            MakeBranchNode(branch, remote.Children, folders, $"refs/remotes/{remote.Name}", bForceExpanded);
+                        remote.Counter++;
+                        MakeBranchNode(branch, remote.Children, folders, rk, bForceExpanded);
                     }
                 }
 
@@ -158,6 +175,7 @@ namespace SourceGit.ViewModels
                     if (folders.TryGetValue(folder, out var val))
                     {
                         lastFolder = val;
+                        lastFolder.Counter++;
                         lastFolder.TimeToSort = Math.Max(lastFolder.TimeToSort, time);
                         if (!lastFolder.IsExpanded)
                             lastFolder.IsExpanded |= (branch.IsCurrent || _expanded.Contains(folder));
@@ -170,6 +188,7 @@ namespace SourceGit.ViewModels
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
                             TimeToSort = time,
+                            Counter = 1,
                         };
                         roots.Add(lastFolder);
                         folders.Add(folder, lastFolder);
@@ -182,6 +201,7 @@ namespace SourceGit.ViewModels
                             Path = folder,
                             IsExpanded = bForceExpanded || branch.IsCurrent || _expanded.Contains(folder),
                             TimeToSort = time,
+                            Counter = 1,
                         };
                         lastFolder.Children.Add(cur);
                         folders.Add(folder, cur);

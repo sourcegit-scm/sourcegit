@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using Avalonia.Collections;
@@ -7,32 +7,17 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class TagTreeNodeToolTip
+    public class SubmoduleTreeNode : ObservableObject
     {
-        public string Name { get; private set; }
-        public bool IsAnnotated { get; private set; }
-        public string Message { get; private set; }
-
-        public TagTreeNodeToolTip(Models.Tag t)
-        {
-            Name = t.Name;
-            IsAnnotated = t.IsAnnotated;
-            Message = t.Message;
-        }
-    }
-
-    public class TagTreeNode : ObservableObject
-    {
-        public string FullPath { get; set; }
+        public string FullPath { get; set; } = string.Empty;
         public int Depth { get; private set; } = 0;
-        public Models.Tag Tag { get; private set; } = null;
-        public TagTreeNodeToolTip ToolTip { get; private set; } = null;
-        public List<TagTreeNode> Children { get; private set; } = [];
-        public int Counter { get; set; } = 0;
+        public Models.Submodule Module { get; private set; } = null;
+        public List<SubmoduleTreeNode> Children { get; private set; } = [];
+        public int Counter = 0;
 
         public bool IsFolder
         {
-            get => Tag == null;
+            get => Module == null;
         }
 
         public bool IsExpanded
@@ -41,21 +26,25 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public string TagsCount
+        public string ChildCounter
         {
             get => Counter > 0 ? $"({Counter})" : string.Empty;
         }
 
-        public TagTreeNode(Models.Tag t, int depth)
+        public bool IsDirty
         {
-            FullPath = t.Name;
+            get => Module?.IsDirty ?? false;
+        }
+
+        public SubmoduleTreeNode(Models.Submodule module, int depth)
+        {
+            FullPath = module.Path;
             Depth = depth;
-            Tag = t;
-            ToolTip = new TagTreeNodeToolTip(t);
+            Module = module;
             IsExpanded = false;
         }
 
-        public TagTreeNode(string path, bool isExpanded, int depth)
+        public SubmoduleTreeNode(string path, int depth, bool isExpanded)
         {
             FullPath = path;
             Depth = depth;
@@ -63,26 +52,26 @@ namespace SourceGit.ViewModels
             Counter = 1;
         }
 
-        public static List<TagTreeNode> Build(List<Models.Tag> tags, HashSet<string> expaneded)
+        public static List<SubmoduleTreeNode> Build(IList<Models.Submodule> submodules, HashSet<string> expaneded)
         {
-            var nodes = new List<TagTreeNode>();
-            var folders = new Dictionary<string, TagTreeNode>();
+            var nodes = new List<SubmoduleTreeNode>();
+            var folders = new Dictionary<string, SubmoduleTreeNode>();
 
-            foreach (var tag in tags)
+            foreach (var module in submodules)
             {
-                var sepIdx = tag.Name.IndexOf('/', StringComparison.Ordinal);
+                var sepIdx = module.Path.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1)
                 {
-                    nodes.Add(new TagTreeNode(tag, 0));
+                    nodes.Add(new SubmoduleTreeNode(module, 0));
                 }
                 else
                 {
-                    TagTreeNode lastFolder = null;
+                    SubmoduleTreeNode lastFolder = null;
                     int depth = 0;
 
                     while (sepIdx != -1)
                     {
-                        var folder = tag.Name.Substring(0, sepIdx);
+                        var folder = module.Path.Substring(0, sepIdx);
                         if (folders.TryGetValue(folder, out var value))
                         {
                             lastFolder = value;
@@ -90,23 +79,23 @@ namespace SourceGit.ViewModels
                         }
                         else if (lastFolder == null)
                         {
-                            lastFolder = new TagTreeNode(folder, expaneded.Contains(folder), depth);
+                            lastFolder = new SubmoduleTreeNode(folder, depth, expaneded.Contains(folder));
                             folders.Add(folder, lastFolder);
                             InsertFolder(nodes, lastFolder);
                         }
                         else
                         {
-                            var cur = new TagTreeNode(folder, expaneded.Contains(folder), depth);
+                            var cur = new SubmoduleTreeNode(folder, depth, expaneded.Contains(folder));
                             folders.Add(folder, cur);
                             InsertFolder(lastFolder.Children, cur);
                             lastFolder = cur;
                         }
 
                         depth++;
-                        sepIdx = tag.Name.IndexOf('/', sepIdx + 1);
+                        sepIdx = module.Path.IndexOf('/', sepIdx + 1);
                     }
 
-                    lastFolder?.Children.Add(new TagTreeNode(tag, depth));
+                    lastFolder?.Children.Add(new SubmoduleTreeNode(module, depth));
                 }
             }
 
@@ -114,7 +103,7 @@ namespace SourceGit.ViewModels
             return nodes;
         }
 
-        private static void InsertFolder(List<TagTreeNode> collection, TagTreeNode subFolder)
+        private static void InsertFolder(List<SubmoduleTreeNode> collection, SubmoduleTreeNode subFolder)
         {
             for (int i = 0; i < collection.Count; i++)
             {
@@ -128,33 +117,24 @@ namespace SourceGit.ViewModels
             collection.Add(subFolder);
         }
 
-        private bool _isExpanded = true;
+        private bool _isExpanded = false;
     }
 
-    public class TagCollectionAsList
+    public class SubmoduleCollectionAsTree
     {
-        public List<Models.Tag> Tags
-        {
-            get;
-            set;
-        } = [];
-    }
-
-    public class TagCollectionAsTree
-    {
-        public List<TagTreeNode> Tree
+        public List<SubmoduleTreeNode> Tree
         {
             get;
             set;
         } = [];
 
-        public AvaloniaList<TagTreeNode> Rows
+        public AvaloniaList<SubmoduleTreeNode> Rows
         {
             get;
             set;
         } = [];
 
-        public static TagCollectionAsTree Build(List<Models.Tag> tags, TagCollectionAsTree old)
+        public static SubmoduleCollectionAsTree Build(List<Models.Submodule> submodules, SubmoduleCollectionAsTree old)
         {
             var oldExpanded = new HashSet<string>();
             if (old != null)
@@ -166,17 +146,17 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var collection = new TagCollectionAsTree();
-            collection.Tree = TagTreeNode.Build(tags, oldExpanded);
+            var collection = new SubmoduleCollectionAsTree();
+            collection.Tree = SubmoduleTreeNode.Build(submodules, oldExpanded);
 
-            var rows = new List<TagTreeNode>();
+            var rows = new List<SubmoduleTreeNode>();
             MakeTreeRows(rows, collection.Tree);
             collection.Rows.AddRange(rows);
 
             return collection;
         }
 
-        public void ToggleExpand(TagTreeNode node)
+        public void ToggleExpand(SubmoduleTreeNode node)
         {
             node.IsExpanded = !node.IsExpanded;
 
@@ -188,7 +168,7 @@ namespace SourceGit.ViewModels
 
             if (node.IsExpanded)
             {
-                var subrows = new List<TagTreeNode>();
+                var subrows = new List<SubmoduleTreeNode>();
                 MakeTreeRows(subrows, node.Children);
                 rows.InsertRange(idx + 1, subrows);
             }
@@ -207,7 +187,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private static void MakeTreeRows(List<TagTreeNode> rows, List<TagTreeNode> nodes)
+        private static void MakeTreeRows(List<SubmoduleTreeNode> rows, List<SubmoduleTreeNode> nodes)
         {
             foreach (var node in nodes)
             {
@@ -219,5 +199,14 @@ namespace SourceGit.ViewModels
                 MakeTreeRows(rows, node.Children);
             }
         }
+    }
+
+    public class SubmoduleCollectionAsList
+    {
+        public List<Models.Submodule> Submodules
+        {
+            get;
+            set;
+        } = [];
     }
 }

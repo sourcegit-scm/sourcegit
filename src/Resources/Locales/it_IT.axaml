@@ -40,6 +40,13 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NESSUN FILE ASSUNTO COME INVARIATO</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">RIMUOVI</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">FILE BINARIO NON SUPPORTATO!!!</x:String>
+  <x:String x:Key="Text.Bisect" xml:space="preserve">Biseca</x:String>
+  <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Annulla</x:String>
+  <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Cattiva</x:String>
+  <x:String x:Key="Text.Bisect.Detecting" xml:space="preserve">Bisecando. La HEAD corrente è buona o cattiva?</x:String>
+  <x:String x:Key="Text.Bisect.Good" xml:space="preserve">Buona</x:String>
+  <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Salta</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForRange" xml:space="preserve">Bisecando. Marca il commit corrente come buono o cattivo e fai checkout di un altro.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Attribuisci</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">L'ATTRIBUZIONE SU QUESTO FILE NON È SUPPORTATA!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
@@ -79,6 +86,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stasha e Ripristina</x:String>
+  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Aggiorna tutti i sottomoduli</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Aggiungi sorgente al messaggio di commit</x:String>
@@ -103,8 +111,11 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Confronta con HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Autore</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Committer</x:String>
   <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Informazioni</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Oggetto</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Azione Personalizzata</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Riallinea Interattivamente ${0}$ fino a Qui</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Unisci a ${0}$</x:String>
@@ -136,6 +147,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Apri nel Browser</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Descrizione</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">OGGETTO</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Inserisci l'oggetto del commit</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Configura Repository</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">TEMPLATE DI COMMIT</x:String>
@@ -157,6 +169,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Recupera automaticamente i remoti</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto/i</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto Predefinito</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Modalità di Merge Preferita</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TRACCIAMENTO ISSUE</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Aggiungi una regola di esempio per Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Aggiungi una regola di esempio per un Issue Gitee</x:String>
@@ -181,6 +194,10 @@
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Colore</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Ripristina schede all'avvio</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">CONTINUA</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Trovato un commit vuoto! Vuoi procedere (--allow-empty)?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">STAGE DI TUTTO E COMMITTA</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Trovato un commit vuoto! Vuoi procedere (--allow-empty) o fare lo stage di tutto e committare?</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Guida Commit Convenzionali</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Modifica Sostanziale:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Issue Chiusa:</x:String>
@@ -190,6 +207,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipo di Modifica:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copia Tutto il Testo</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Copia Intero Percorso</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copia Percorso</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Crea Branch...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basato Su:</x:String>
@@ -309,6 +327,8 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Completa Hotfix</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Completa Rilascio</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Invia al remote dopo aver finito</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Esegui squash durante il merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Prefisso Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Inizializza Git-Flow</x:String>
@@ -390,6 +410,7 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Chiudi il pannello di ricerca</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Trova il prossimo risultato</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Trova il risultato precedente</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Apri con uno strumento di diff/merge esterno</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Apri il pannello di ricerca</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Scarta</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Aggiungi in stage</x:String>
@@ -476,6 +497,7 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Numero massimo di commit nella cronologia</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostra nel grafico l'orario dell'autore anziché quello del commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostra i figli nei dettagli del commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Mostra i tag nel grafico dei commit</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Lunghezza Guida Oggetto</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Abilita Auto CRLF</x:String>
@@ -483,6 +505,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email Utente</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email utente Git globale</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Abilita --prune durante il fetch</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Abilita --ignore-cr-at-eol nel diff</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Questa applicazione richiede Git (&gt;= 2.23.0)</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Percorso Installazione</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Abilita la verifica HTTP SSL</x:String>
@@ -556,6 +579,9 @@
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ANNULLA</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Recupero automatico delle modifiche dai remoti...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Ordina</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">Per data del committer</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">Per nome</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Pulizia (GC e Potatura)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Esegui il comando `git gc` per questo repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Cancella tutto</x:String>
@@ -589,11 +615,13 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">AGGIUNGI REMOTO</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Cerca Commit</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Autore</x:String>
-  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committente</x:String>
+  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Contenuto</x:String>
   <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Messaggio</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Branch Corrente</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Mostra i Sottomoduli Come Albero</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Mostra Tag come Albero</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">SALTA</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistiche</x:String>
@@ -608,6 +636,8 @@
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ordina</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Apri nel Terminale</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Usa tempo relativo nello storico</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Visualizza i Log</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visita '{0}' nel Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREE</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">AGGIUNGI WORKTREE</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">POTATURA</x:String>
@@ -680,6 +710,12 @@
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Percorso Relativo:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Cartella relativa per memorizzare questo modulo.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Elimina Sottomodulo</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">STATO</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">modificato</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">non inizializzato</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revisione cambiata</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">non unito</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copia Nome Tag</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copia Messaggio Tag</x:String>
@@ -693,6 +729,10 @@
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Sottomodulo:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Usa opzione --remote</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Log</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">CANCELLA TUTTO</x:String>
+  <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">Copia</x:String>
+  <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">Elimina</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Avviso</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">Pagina di Benvenuto</x:String>
   <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Crea Gruppo</x:String>
@@ -722,8 +762,13 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Attiva evento click</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Modifica)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage di tutte le modifiche e fai il commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">Hai stageato {0} file ma solo {1} file mostrati ({2} file sono stati filtrati). Vuoi procedere?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLITTI RILEVATI</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">APRI STRUMENTO DI MERGE ESTERNO</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">APRI TUTTI I CONFLITTI NELLO STRUMENTO DI MERGE ESTERNO</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">CONFLITTI NEI FILE RISOLTI</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USO IL MIO</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">USO IL LORO</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDI FILE NON TRACCIATI</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NESSUN MESSAGGIO RECENTE INSERITO</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NESSUN TEMPLATE DI COMMIT</x:String>

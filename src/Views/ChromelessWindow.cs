@@ -3,7 +3,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Platform;
 
 namespace SourceGit.Views
 {
@@ -11,7 +10,7 @@ namespace SourceGit.Views
     {
         public bool UseSystemWindowFrame
         {
-            get => OperatingSystem.IsLinux() && ViewModels.Preferences.Instance.UseSystemWindowFrame;
+            get => Native.OS.UseSystemWindowFrame;
         }
 
         protected override Type StyleKeyOverride => typeof(Window);
@@ -19,32 +18,7 @@ namespace SourceGit.Views
         public ChromelessWindow()
         {
             Focusable = true;
-
-            if (OperatingSystem.IsLinux())
-            {
-                if (UseSystemWindowFrame)
-                {
-                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
-                    ExtendClientAreaToDecorationsHint = false;
-                }
-                else
-                {
-                    ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
-                    ExtendClientAreaToDecorationsHint = true;
-                    Classes.Add("custom_window_frame");
-                }
-            }
-            else if (OperatingSystem.IsWindows())
-            {
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
-                ExtendClientAreaToDecorationsHint = true;
-                Classes.Add("fix_maximized_padding");
-            }
-            else
-            {
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome;
-                ExtendClientAreaToDecorationsHint = true;
-            }
+            Native.OS.SetupForWindow(this);
         }
 
         public void BeginMoveWindow(object _, PointerPressedEventArgs e)

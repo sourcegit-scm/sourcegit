@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Avalonia.Threading;
 
 namespace SourceGit.Commands
 {
@@ -22,7 +23,10 @@ namespace SourceGit.Commands
             var outs = new List<Models.Change>();
             var rs = ReadToEnd();
             if (!rs.IsSuccess)
+            {
+                Dispatcher.UIThread.Post(() => App.RaiseException(Context, rs.StdErr));
                 return outs;
+            }
 
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)

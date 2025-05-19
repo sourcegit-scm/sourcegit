@@ -11,16 +11,16 @@ using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
-    public class TagTreeNodeToggleButton : ToggleButton
+    public class SubmoduleTreeNodeToggleButton : ToggleButton
     {
         protected override Type StyleKeyOverride => typeof(ToggleButton);
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
-                DataContext is ViewModels.TagTreeNode { IsFolder: true } node)
+                DataContext is ViewModels.SubmoduleTreeNode { IsFolder: true } node)
             {
-                var view = this.FindAncestorOfType<TagsView>();
+                var view = this.FindAncestorOfType<SubmodulesView>();
                 view?.ToggleNodeIsExpanded(node);
             }
 
@@ -28,21 +28,15 @@ namespace SourceGit.Views
         }
     }
 
-    public class TagTreeNodeIcon : UserControl
+    public class SubmoduleTreeNodeIcon : UserControl
     {
         public static readonly StyledProperty<bool> IsExpandedProperty =
-            AvaloniaProperty.Register<TagTreeNodeIcon, bool>(nameof(IsExpanded));
+            AvaloniaProperty.Register<SubmoduleTreeNodeIcon, bool>(nameof(IsExpanded));
 
         public bool IsExpanded
         {
             get => GetValue(IsExpandedProperty);
             set => SetValue(IsExpandedProperty, value);
-        }
-
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-            UpdateContent();
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -53,16 +47,22 @@ namespace SourceGit.Views
                 UpdateContent();
         }
 
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            UpdateContent();
+        }
+
         private void UpdateContent()
         {
-            if (DataContext is not ViewModels.TagTreeNode node)
+            if (DataContext is not ViewModels.SubmoduleTreeNode node)
             {
                 Content = null;
                 return;
             }
 
-            if (node.Tag != null)
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Tag");
+            if (node.Module != null)
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Submodule");
             else if (node.IsExpanded)
                 CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
             else
@@ -87,17 +87,8 @@ namespace SourceGit.Views
         }
     }
 
-    public partial class TagsView : UserControl
+    public partial class SubmodulesView : UserControl
     {
-        public static readonly RoutedEvent<RoutedEventArgs> SelectionChangedEvent =
-            RoutedEvent.Register<TagsView, RoutedEventArgs>(nameof(SelectionChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-
-        public event EventHandler<RoutedEventArgs> SelectionChanged
-        {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
-        }
-
         public static readonly RoutedEvent<RoutedEventArgs> RowsChangedEvent =
             RoutedEvent.Register<TagsView, RoutedEventArgs>(nameof(RowsChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
@@ -113,21 +104,14 @@ namespace SourceGit.Views
             private set;
         }
 
-        public TagsView()
+        public SubmodulesView()
         {
             InitializeComponent();
         }
 
-        public void UnselectAll()
+        public void ToggleNodeIsExpanded(ViewModels.SubmoduleTreeNode node)
         {
-            var list = this.FindDescendantOfType<ListBox>();
-            if (list != null)
-                list.SelectedItem = null;
-        }
-
-        public void ToggleNodeIsExpanded(ViewModels.TagTreeNode node)
-        {
-            if (Content is ViewModels.TagCollectionAsTree tree)
+            if (Content is ViewModels.SubmoduleCollectionAsTree tree)
             {
                 tree.ToggleExpand(node);
                 Rows = tree.Rows.Count;
@@ -141,10 +125,10 @@ namespace SourceGit.Views
 
             if (change.Property == ContentProperty)
             {
-                if (Content is ViewModels.TagCollectionAsTree tree)
+                if (Content is ViewModels.SubmoduleCollectionAsTree tree)
                     Rows = tree.Rows.Count;
-                else if (Content is ViewModels.TagCollectionAsList list)
-                    Rows = list.Tags.Count;
+                else if (Content is ViewModels.SubmoduleCollectionAsList list)
+                    Rows = list.Submodules.Count;
                 else
                     Rows = 0;
 
@@ -158,62 +142,41 @@ namespace SourceGit.Views
 
         private void OnItemDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (sender is Control { DataContext: ViewModels.TagTreeNode { IsFolder: true } node })
-                ToggleNodeIsExpanded(node);
-
-            e.Handled = true;
-        }
-
-        private void OnItemPointerPressed(object sender, PointerPressedEventArgs e)
-        {
-            var p = e.GetCurrentPoint(this);
-            if (!p.Properties.IsLeftButtonPressed)
-                return;
-
-            if (DataContext is not ViewModels.Repository repo)
-                return;
-
-            if (sender is Control { DataContext: Models.Tag tag })
-                repo.NavigateToCommit(tag.SHA);
-            else if (sender is Control { DataContext: ViewModels.TagTreeNode { Tag: { } nodeTag } })
-                repo.NavigateToCommit(nodeTag.SHA);
-        }
-
-        private void OnItemContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            var control = sender as Control;
-            if (control == null)
-                return;
-
-            Models.Tag selected;
-            if (control.DataContext is ViewModels.TagTreeNode node)
-                selected = node.Tag;
-            else if (control.DataContext is Models.Tag tag)
-                selected = tag;
-            else
-                selected = null;
-
-            if (selected != null && DataContext is ViewModels.Repository repo)
+            if (sender is Control control && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForTag(selected);
-                menu?.Open(control);
+                if (control.DataContext is ViewModels.SubmoduleTreeNode node)
+                {
+                    if (node.IsFolder)
+                        ToggleNodeIsExpanded(node);
+                    else if (node.Module.Status != Models.SubmoduleStatus.NotInited)
+                        repo.OpenSubmodule(node.Module.Path);
+                }
+                else if (control.DataContext is Models.Submodule m && m.Status != Models.SubmoduleStatus.NotInited)
+                {
+                    repo.OpenSubmodule(m.Path);
+                }
             }
 
             e.Handled = true;
         }
 
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs _)
+        private void OnItemContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            var selected = (sender as ListBox)?.SelectedItem;
-            var selectedTag = null as Models.Tag;
-            if (selected is ViewModels.TagTreeNode node)
-                selectedTag = node.Tag;
-            else if (selected is Models.Tag tag)
-                selectedTag = tag;
+            if (sender is Control control && DataContext is ViewModels.Repository repo)
+            {
+                if (control.DataContext is ViewModels.SubmoduleTreeNode node && node.Module != null)
+                {
+                    var menu = repo.CreateContextMenuForSubmodule(node.Module);
+                    menu?.Open(control);
+                }
+                else if (control.DataContext is Models.Submodule m)
+                {
+                    var menu = repo.CreateContextMenuForSubmodule(m);
+                    menu?.Open(control);
+                }
+            }
 
-            if (selectedTag != null)
-                RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
+            e.Handled = true;
         }
     }
 }
-

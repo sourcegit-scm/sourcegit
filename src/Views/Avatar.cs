@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -12,14 +13,6 @@ namespace SourceGit.Views
 {
     public class Avatar : Control, Models.IAvatarHost
     {
-        private static readonly GradientStops[] FALLBACK_GRADIENTS = [
-            new GradientStops() { new GradientStop(Colors.Orange, 0), new GradientStop(Color.FromRgb(255, 213, 134), 1) },
-            new GradientStops() { new GradientStop(Colors.DodgerBlue, 0), new GradientStop(Colors.LightSkyBlue, 1) },
-            new GradientStops() { new GradientStop(Colors.LimeGreen, 0), new GradientStop(Color.FromRgb(124, 241, 124), 1) },
-            new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
-            new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
-        ];
-
         public static readonly StyledProperty<Models.User> UserProperty =
             AvaloniaProperty.Register<Avatar, Models.User>(nameof(User));
 
@@ -27,11 +20,6 @@ namespace SourceGit.Views
         {
             get => GetValue(UserProperty);
             set => SetValue(UserProperty, value);
-        }
-
-        static Avatar()
-        {
-            UserProperty.Changed.AddClassHandler<Avatar>(OnUserPropertyChanged);
         }
 
         public Avatar()
@@ -55,25 +43,72 @@ namespace SourceGit.Views
                 return;
 
             var corner = (float)Math.Max(2, Bounds.Width / 16);
-            var img = Models.AvatarManager.Instance.Request(User.Email, false);
-            if (img != null)
+            var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
+            var clip = context.PushClip(new RoundedRect(rect, corner));
+
+            if (_img != null)
             {
-                var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
-                context.PushClip(new RoundedRect(rect, corner));
-                context.DrawImage(img, rect);
+                context.DrawImage(_img, rect);
             }
             else
             {
-                Point textOrigin = new Point((Bounds.Width - _fallbackLabel.Width) * 0.5, (Bounds.Height - _fallbackLabel.Height) * 0.5);
-                context.DrawRectangle(_fallbackBrush, null, new Rect(0, 0, Bounds.Width, Bounds.Height), corner, corner);
-                context.DrawText(_fallbackLabel, textOrigin);
+                context.DrawRectangle(Brushes.White, new Pen(new SolidColorBrush(Colors.Black, 0.3f), 0.65f), rect, corner, corner);
+
+                var offsetX = Bounds.Width / 10.0;
+                var offsetY = Bounds.Height / 10.0;
+
+                var stepX = (Bounds.Width - offsetX * 2) / 5.0;
+                var stepY = (Bounds.Height - offsetY * 2) / 5.0;
+
+                var user = User;
+                var lowered = user.Email.ToLower(CultureInfo.CurrentCulture).Trim();
+                var hash = MD5.HashData(Encoding.Default.GetBytes(lowered));
+
+                var brush = new SolidColorBrush(new Color(255, hash[0], hash[1], hash[2]));
+                var switches = new bool[15];
+                for (int i = 0; i < switches.Length; i++)
+                    switches[i] = hash[i + 1] % 2 == 1;
+
+                for (int row = 0; row < 5; row++)
+                {
+                    var x = offsetX + stepX * 2;
+                    var y = offsetY + stepY * row;
+                    var idx = row * 3;
+
+                    if (switches[idx])
+                        context.FillRectangle(brush, new Rect(x, y, stepX, stepY));
+
+                    if (switches[idx + 1])
+                        context.FillRectangle(brush, new Rect(x + stepX, y, stepX, stepY));
+
+                    if (switches[idx + 2])
+                        context.FillRectangle(brush, new Rect(x + stepX * 2, y, stepX, stepY));
+                }
+
+                for (int row = 0; row < 5; row++)
+                {
+                    var x = offsetX;
+                    var y = offsetY + stepY * row;
+                    var idx = row * 3 + 2;
+
+                    if (switches[idx])
+                        context.FillRectangle(brush, new Rect(x, y, stepX, stepY));
+
+                    if (switches[idx - 1])
+                        context.FillRectangle(brush, new Rect(x + stepX, y, stepX, stepY));
+                }
             }
+
+            clip.Dispose();
         }
 
         public void OnAvatarResourceChanged(string email)
         {
             if (User.Email.Equals(email, StringComparison.Ordinal))
+            {
+                _img = Models.AvatarManager.Instance.Request(User.Email, false);
                 InvalidateVisual();
+            }
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -88,53 +123,21 @@ namespace SourceGit.Views
             Models.AvatarManager.Instance.Unsubscribe(this);
         }
 
-        private static void OnUserPropertyChanged(Avatar avatar, AvaloniaPropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            if (avatar.User == null)
-                return;
+            base.OnPropertyChanged(change);
 
-            var fallback = GetFallbackString(avatar.User.Name);
-            var chars = fallback.ToCharArray();
-            var sum = 0;
-            foreach (var c in chars)
-                sum += Math.Abs(c);
-
-            avatar._fallbackBrush = new LinearGradientBrush
+            if (change.Property == UserProperty)
             {
-                GradientStops = FALLBACK_GRADIENTS[sum % FALLBACK_GRADIENTS.Length],
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            };
+                var user = User;
+                if (user == null)
+                    return;
 
-            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
-            avatar._fallbackLabel = new FormattedText(
-                fallback,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                typeface,
-                avatar.Width * 0.65,
-                Brushes.White);
-
-            avatar.InvalidateVisual();
+                _img = Models.AvatarManager.Instance.Request(User.Email, false);
+                InvalidateVisual();
+            }
         }
 
-        private static string GetFallbackString(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return "?";
-
-            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            var chars = new List<char>();
-            foreach (var part in parts)
-                chars.Add(part[0]);
-
-            if (chars.Count >= 2 && char.IsAsciiLetterOrDigit(chars[0]) && char.IsAsciiLetterOrDigit(chars[^1]))
-                return string.Format("{0}{1}", chars[0], chars[^1]);
-
-            return name.Substring(0, 1);
-        }
-
-        private FormattedText _fallbackLabel = null;
-        private LinearGradientBrush _fallbackBrush = null;
+        private Bitmap _img = null;
     }
 }

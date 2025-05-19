@@ -10,7 +10,7 @@
                     Title="{DynamicResource Text.About}"
                     Width="520" Height="230"
                     CanResize="False"
-                    WindowStartupLocation="CenterScreen">
+                    WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
@@ -67,4 +67,9 @@
       </StackPanel>
     </Grid>
   </Grid>
+
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Escape" Command="{Binding #ThisControl.Close}"/>
+  </Window.KeyBindings>
+
 </v:ChromelessWindow>

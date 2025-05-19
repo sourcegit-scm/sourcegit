@@ -45,8 +45,8 @@
                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,0,0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+P, macOS=⌘+\,}"/>
+        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+\,, macOS=⌘+\,}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.OpenPreferences}"/>
 
           <TextBlock Grid.Row="1" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+T, macOS=⌘+T}"/>
@@ -55,7 +55,7 @@
           <TextBlock Grid.Row="2" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" />
           <TextBlock Grid.Row="2" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.CloseTab}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Shift+Ctrl+Tab, macOS=⌘+⌥+←}"/>
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+Tab, macOS=⌘+⌥+←}"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.GotoPrevTab}" />
 
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Tab, macOS=⌘+⌥+→}"/>
@@ -69,6 +69,12 @@
 
           <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Q, macOS=⌘+Q}"/>
           <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Quit}" />
+          
+          <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+P, macOS=⌘+⇧+P}"/>
+          <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.SwitchWorkspace}" />
+          
+          <TextBlock Grid.Row="9" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+P, macOS=⌘+P}"/>
+          <TextBlock Grid.Row="9" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.SwitchTab}" />
         </Grid>
 
         <TextBlock Text="{DynamicResource Text.Hotkeys.Repo}"
@@ -130,7 +136,7 @@
                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20" ColumnDefinitions="150,*">
+        <Grid RowDefinitions="20,20,20,20,20" ColumnDefinitions="150,*">
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.Search}" />
 
@@ -142,6 +148,9 @@
 
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="ESC"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+D, macOS=⌘+D}"/>
+          <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.OpenExternalMergeTool}" />
         </Grid>
       </StackPanel>
     </Border>

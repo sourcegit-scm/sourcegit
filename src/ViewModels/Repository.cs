@@ -198,7 +198,21 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _tags, value);
         }
 
-        public List<Models.Tag> VisibleTags
+        public bool ShowTagsAsTree
+        {
+            get => Preferences.Instance.ShowTagsAsTree;
+            set
+            {
+                if (value != Preferences.Instance.ShowTagsAsTree)
+                {
+                    Preferences.Instance.ShowTagsAsTree = value;
+                    VisibleTags = BuildVisibleTags();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public object VisibleTags
         {
             get => _visibleTags;
             private set => SetProperty(ref _visibleTags, value);
@@ -210,7 +224,21 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _submodules, value);
         }
 
-        public List<Models.Submodule> VisibleSubmodules
+        public bool ShowSubmodulesAsTree
+        {
+            get => Preferences.Instance.ShowSubmodulesAsTree;
+            set
+            {
+                if (value != Preferences.Instance.ShowSubmodulesAsTree)
+                {
+                    Preferences.Instance.ShowSubmodulesAsTree = value;
+                    VisibleSubmodules = BuildVisibleSubmodules();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public object VisibleSubmodules
         {
             get => _visibleSubmodules;
             private set => SetProperty(ref _visibleSubmodules, value);
@@ -226,6 +254,12 @@ namespace SourceGit.ViewModels
         {
             get => _stashesCount;
             private set => SetProperty(ref _stashesCount, value);
+        }
+
+        public int LocalBranchesCount
+        {
+            get => _localBranchesCount;
+            private set => SetProperty(ref _localBranchesCount, value);
         }
 
         public bool IncludeUntracked
@@ -528,9 +562,9 @@ namespace SourceGit.ViewModels
             _localBranchTrees.Clear();
             _remoteBranchTrees.Clear();
             _tags.Clear();
-            _visibleTags.Clear();
+            _visibleTags = null;
             _submodules.Clear();
-            _visibleSubmodules.Clear();
+            _visibleSubmodules = null;
             _searchedCommits.Clear();
             _selectedSearchedCommit = null;
 
@@ -926,7 +960,7 @@ namespace SourceGit.ViewModels
                 if (!changed)
                     return;
 
-                if (isLocal && !string.IsNullOrEmpty(branch.Upstream))
+                if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && !branch.IsUpstreamGone)
                     _settings.UpdateHistoriesFilter(branch.Upstream, Models.FilterType.RemoteBranch, mode);
             }
             else
@@ -1020,7 +1054,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshBranches()
         {
-            var branches = new Commands.QueryBranches(_fullpath).Result();
+            var branches = new Commands.QueryBranches(_fullpath).Result(out var localBranchesCount);
             var remotes = new Commands.QueryRemotes(_fullpath).Result();
             var builder = BuildBranchTree(branches, remotes);
 
@@ -1033,6 +1067,7 @@ namespace SourceGit.ViewModels
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
+                LocalBranchesCount = localBranchesCount;
 
                 if (_workingCopy != null)
                     _workingCopy.HasRemotes = remotes.Count > 0;
@@ -2323,14 +2358,15 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public ContextMenu CreateContextMenuForSubmodule(string submodule)
+        public ContextMenu CreateContextMenuForSubmodule(Models.Submodule submodule)
         {
             var open = new MenuItem();
             open.Header = App.Text("Submodule.Open");
             open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+            open.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
             open.Click += (_, ev) =>
             {
-                OpenSubmodule(submodule);
+                OpenSubmodule(submodule.Path);
                 ev.Handled = true;
             };
 
@@ -2339,7 +2375,7 @@ namespace SourceGit.ViewModels
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += (_, ev) =>
             {
-                App.CopyText(submodule);
+                App.CopyText(submodule.Path);
                 ev.Handled = true;
             };
 
@@ -2349,7 +2385,7 @@ namespace SourceGit.ViewModels
             rm.Click += (_, ev) =>
             {
                 if (CanCreatePopup())
-                    ShowPopup(new DeleteSubmodule(this, submodule));
+                    ShowPopup(new DeleteSubmodule(this, submodule.Path));
                 ev.Handled = true;
             };
 
@@ -2470,7 +2506,7 @@ namespace SourceGit.ViewModels
             return builder;
         }
 
-        private List<Models.Tag> BuildVisibleTags()
+        private object BuildVisibleTags()
         {
             switch (_settings.TagSortMode)
             {
@@ -2501,10 +2537,14 @@ namespace SourceGit.ViewModels
 
             var historiesFilters = _settings.CollectHistoriesFilters();
             UpdateTagFilterMode(historiesFilters);
-            return visible;
+
+            if (Preferences.Instance.ShowTagsAsTree)
+                return TagCollectionAsTree.Build(visible, _visibleTags as TagCollectionAsTree);
+            else
+                return new TagCollectionAsList() { Tags = visible };
         }
 
-        private List<Models.Submodule> BuildVisibleSubmodules()
+        private object BuildVisibleSubmodules()
         {
             var visible = new List<Models.Submodule>();
             if (string.IsNullOrEmpty(_filter))
@@ -2519,7 +2559,11 @@ namespace SourceGit.ViewModels
                         visible.Add(s);
                 }
             }
-            return visible;
+
+            if (Preferences.Instance.ShowSubmodulesAsTree)
+                return SubmoduleCollectionAsTree.Build(visible, _visibleSubmodules as SubmoduleCollectionAsTree);
+            else
+                return new SubmoduleCollectionAsList() { Submodules = visible };
         }
 
         private void RefreshHistoriesFilters(bool refresh)
@@ -2588,7 +2632,7 @@ namespace SourceGit.ViewModels
                 if (node.Path.Equals(path, StringComparison.Ordinal))
                     return node;
 
-                if (path!.StartsWith(node.Path, StringComparison.Ordinal))
+                if (path.StartsWith(node.Path, StringComparison.Ordinal))
                 {
                     var founded = FindBranchNode(node.Children, path);
                     if (founded != null)
@@ -2726,6 +2770,7 @@ namespace SourceGit.ViewModels
         private int _selectedViewIndex = 0;
         private object _selectedView = null;
 
+        private int _localBranchesCount = 0;
         private int _localChangesCount = 0;
         private int _stashesCount = 0;
 
@@ -2748,9 +2793,9 @@ namespace SourceGit.ViewModels
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
-        private List<Models.Tag> _visibleTags = new List<Models.Tag>();
+        private object _visibleTags = null;
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
-        private List<Models.Submodule> _visibleSubmodules = new List<Models.Submodule>();
+        private object _visibleSubmodules = null;
 
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;

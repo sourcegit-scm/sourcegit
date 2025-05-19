@@ -3,19 +3,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:c="using:SourceGit.Converters"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.LauncherTabsSelector"
-             x:Name="ThisControl">
-  <Grid RowDefinitions="28,Auto">
-    <TextBox Grid.Row="0"
+             x:Class="SourceGit.Views.WorkspaceSwitcher"
+             x:DataType="vm:WorkspaceSwitcher">
+  <Grid RowDefinitions="Auto,Auto,Auto">
+    <TextBlock Grid.Row="0"
+               Text="{DynamicResource Text.Launcher.Workspaces}"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"/>
+    
+    <TextBox Grid.Row="1"
              Height="24"
-             Margin="4,0"
+             Margin="4,8,4,0"
              BorderThickness="1"
              CornerRadius="12"
-             Text="{Binding #ThisControl.SearchFilter, Mode=TwoWay}"
+             Text="{Binding SearchFilter, Mode=TwoWay}"
+             KeyDown="OnSearchBoxKeyDown"
              BorderBrush="{DynamicResource Brush.Border2}"
-             VerticalContentAlignment="Center">
+             VerticalContentAlignment="Center"
+             v:AutoFocusBehaviour.IsEnabled="True">
       <TextBox.InnerLeftContent>
         <Path Width="14" Height="14"
               Margin="6,0,0,0"
@@ -27,8 +34,8 @@
         <Button Classes="icon_button"
                 Width="16"
                 Margin="0,0,6,0"
-                Click="OnClearSearchFilter"
-                IsVisible="{Binding #ThisControl.SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                Command="{Binding ClearFilter}"
+                IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                 HorizontalAlignment="Right">
           <Path Width="14" Height="14"
                 Margin="0,1,0,0"
@@ -38,19 +45,22 @@
       </TextBox.InnerRightContent>
     </TextBox>
 
-    <ListBox Grid.Row="1"
-             Width="200"
+    <ListBox Grid.Row="2"
+             x:Name="WorkspaceListBox"
+             Width="300"
              MaxHeight="400"
-             Margin="0,4,0,0"
-             Background="Transparent"
+             Margin="4,8,4,0"
+             BorderThickness="0"
              SelectionMode="Single"
+             Background="Transparent"
+             Focusable="True"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding #ThisControl.VisiblePages}"
-             SelectionChanged="OnPageSelectionChanged">
+             ItemsSource="{Binding VisibleWorkspaces, Mode=OneWay}"
+             SelectedItem="{Binding SelectedWorkspace, Mode=TwoWay}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
-          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Padding" Value="8,0"/>
           <Setter Property="MinHeight" Value="26"/>
           <Setter Property="CornerRadius" Value="4"/>
         </Style>
@@ -71,37 +81,31 @@
       </ListBox.ItemsPanel>
 
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="vm:LauncherPage">
-          <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+        <DataTemplate DataType="vm:Workspace">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
             <Path Grid.Column="0"
-                  Width="12" Height="12" Margin="12,0"
-                  Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                  Data="{StaticResource Icons.Bookmark}"
-                  IsVisible="{Binding Node.IsRepository}"
+                  Width="12" Height="12"
+                  Fill="{Binding Brush}"
+                  Data="{StaticResource Icons.Workspace}"
+                  IsVisible="{Binding !IsActive}"
                   IsHitTestVisible="False"/>
             <Path Grid.Column="0"
-                  Width="12" Height="12" Margin="12,0"
-                  Fill="{DynamicResource Brush.FG1}"
-                  Data="{StaticResource Icons.Repositories}"
-                  IsVisible="{Binding !Node.IsRepository}"
+                  Width="12" Height="12"
+                  Fill="{Binding Brush}"
+                  Data="{StaticResource Icons.Check}"
+                  IsVisible="{Binding IsActive}"
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="1"
+                       Margin="8,0,0,0"
                        Classes="primary"
                        VerticalAlignment="Center"
-                       FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                       Text="{Binding Node.Name}"
-                       IsVisible="{Binding Node.IsRepository}"
-                       IsHitTestVisible="False"/>
-            <TextBlock Grid.Column="1"
-                       Classes="primary"
-                       VerticalAlignment="Center"
-                       FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                       Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
-                       IsVisible="{Binding !Node.IsRepository}"
-                       IsHitTestVisible="False"/>
+                       Text="{Binding Name}"
+                       IsHitTestVisible="False"
+                       TextTrimming="CharacterEllipsis"/>
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
   </Grid>
 </UserControl>
+

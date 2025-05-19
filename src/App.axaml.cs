@@ -107,13 +107,24 @@ namespace SourceGit
         #region Utility Functions
         public static void ShowWindow(object data, bool showAsDialog)
         {
+            var impl = (Views.ChromelessWindow target, bool isDialog) =>
+            {
+                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                {
+                    if (isDialog)
+                        target.ShowDialog(owner);
+                    else
+                        target.Show(owner);
+                }
+                else
+                {
+                    target.Show();
+                }
+            };
+
             if (data is Views.ChromelessWindow window)
             {
-                if (showAsDialog && Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                    window.ShowDialog(owner);
-                else
-                    window.Show();
-
+                impl(window, showAsDialog);
                 return;
             }
 
@@ -130,10 +141,7 @@ namespace SourceGit
             if (window != null)
             {
                 window.DataContext = data;
-                if (showAsDialog && Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                    window.ShowDialog(owner);
-                else
-                    window.Show();
+                impl(window, showAsDialog);
             }
         }
 

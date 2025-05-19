@@ -23,14 +23,36 @@
       <ListBox Classes="repo_left_content_list"
                ItemsSource="{Binding Rows}"
                SelectionMode="Single"
-               SelectionChanged="OnRowSelectionChanged">
+               SelectionChanged="OnSelectionChanged">
+
+        <ListBox.DataTemplates>
+          <DataTemplate DataType="vm:TagTreeNodeToolTip">
+            <StackPanel Orientation="Vertical" Spacing="6">
+              <StackPanel Orientation="Horizontal">
+                <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Name}"/>
+                <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">
+                  <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Classes="primary" Margin="4,0" Foreground="White"/>
+                </Border>
+              </StackPanel>
+
+              <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.DataTemplates>
+        
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
-            <Border Height="24" Background="Transparent" PointerPressed="OnRowPointerPressed" DoubleTapped="OnDoubleTappedNode" ContextRequested="OnRowContextRequested">
+            <Border Height="24"
+                    Background="Transparent"
+                    PointerPressed="OnItemPointerPressed"
+                    DoubleTapped="OnItemDoubleTapped"
+                    ContextRequested="OnItemContextRequested"
+                    ToolTip.Tip="{Binding ToolTip}"
+                    ToolTip.Placement="Right">              
               <Grid ColumnDefinitions="16,Auto,*,Auto"
                     Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                    VerticalAlignment="Center"
-                    ToolTip.Tip="{Binding ToolTip}">
+                    VerticalAlignment="Center">
                 <v:TagTreeNodeToggleButton Grid.Column="0"
                                            Classes="tree_expander"
                                            Focusable="False"
@@ -38,14 +60,14 @@
                                            IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                            IsVisible="{Binding IsFolder}"/>
 
-                <v:TagTreeNodeIcon Grid.Column="1"
-                                   Node="{Binding .}"
-                                   IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
+                <v:TagTreeNodeIcon Grid.Column="1" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
                 <TextBlock Grid.Column="2"
                            Classes="primary"
-                           Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"
-                           Margin="8,0,0,0"/>
+                           Margin="8,0,0,0">
+                  <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
+                  <Run Text="{Binding TagsCount}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
 
                 <ContentControl Grid.Column="3" Content="{Binding Tag}">
                   <ContentControl.DataTemplates>
@@ -66,11 +88,29 @@
                Margin="8,0,0,0"
                ItemsSource="{Binding Tags}"
                SelectionMode="Single"
-               SelectionChanged="OnRowSelectionChanged">
+               SelectionChanged="OnSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Tag">
-            <Border Height="24" Background="Transparent" PointerPressed="OnRowPointerPressed" ContextRequested="OnRowContextRequested">
-              <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center" ToolTip.Tip="{Binding Message}">
+            <Border Height="24"
+                    Background="Transparent"
+                    PointerPressed="OnItemPointerPressed"
+                    ContextRequested="OnItemContextRequested"
+                    ToolTip.Placement="Right">
+              <ToolTip.Tip>
+                <StackPanel Orientation="Vertical" Spacing="6">
+                  <StackPanel Orientation="Horizontal">
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}"/>
+                    <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Name}"/>
+                    <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">
+                      <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Classes="primary" Margin="4,0" Foreground="White"/>
+                    </Border>
+                  </StackPanel>
+
+                  <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </StackPanel>
+              </ToolTip.Tip>
+              
+              <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                 <Path Grid.Column="0"
                       Margin="8,0,0,0"
                       Width="12" Height="12"

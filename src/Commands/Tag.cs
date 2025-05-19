@@ -9,7 +9,7 @@ namespace SourceGit.Commands
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"tag {name} {basedOn}";
+            cmd.Args = $"tag --no-sign {name} {basedOn}";
             cmd.Log = log;
             return cmd.Exec();
         }

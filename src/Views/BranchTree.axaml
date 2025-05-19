@@ -32,11 +32,13 @@
 
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:BranchTreeNode">
-        <Border Background="Transparent" PointerPressed="OnNodePointerPressed">
+        <Border Background="Transparent"
+                PointerPressed="OnNodePointerPressed"
+                ToolTip.Tip="{Binding Tooltip}"
+                ToolTip.Placement="Right">
           <Grid Height="24"
                 Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                ColumnDefinitions="16,*"
-                ToolTip.Tip="{Binding Tooltip}">
+                ColumnDefinitions="16,*">
 
             <!-- Tree Expander -->
             <v:BranchTreeNodeToggleButton Grid.Column="0"
@@ -53,16 +55,16 @@
                   DoubleTapped="OnDoubleTappedBranchNode">
 
               <!-- Icon -->
-              <v:BranchTreeNodeIcon Grid.Column="0"
-                                    Node="{Binding}"
-                                    IsExpanded="{Binding IsExpanded}"/>
+              <v:BranchTreeNodeIcon Grid.Column="0" IsExpanded="{Binding IsExpanded}"/>
 
               <!-- Name -->
               <TextBlock Grid.Column="1"
                          Classes="primary"
-                         Text="{Binding Name}"
                          FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
-                         TextTrimming="CharacterEllipsis"/>
+                         TextTrimming="CharacterEllipsis">
+                <Run Text="{Binding Name}"/>
+                <Run Text="{Binding BranchesCount}" Foreground="{DynamicResource Brush.FG2}"/>
+              </TextBlock>
 
               <!-- Upstream invalid tip -->
               <Border Grid.Column="2"
