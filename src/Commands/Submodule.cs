@@ -13,7 +13,7 @@ namespace SourceGit.Commands
 
         public bool Add(string url, string relativePath, bool recursive)
         {
-            Args = $"submodule add {url} \"{relativePath}\"";
+            Args = $"-c protocol.file.allow=always submodule add \"{url}\" \"{relativePath}\"";
             if (!Exec())
                 return false;
 

@@ -50,7 +50,11 @@ namespace SourceGit.Models
                     return true;
             }
 
-            return url.EndsWith(".git", StringComparison.Ordinal) && Directory.Exists(url);
+            var localPath = url;
+            if (url.StartsWith("file://", StringComparison.Ordinal))
+                localPath = url.Substring(7);
+            
+            return Directory.Exists(localPath);
         }
 
         public bool TryGetVisitURL(out string url)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -35,24 +36,33 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateURL(string url, ValidationContext ctx)
         {
-            if (!Models.Remote.IsValidURL(url))
-                return new ValidationResult("Invalid repository URL format");
-            return ValidationResult.Success;
+            if (ctx.ObjectInstance is AddSubmodule)
+            {
+                if (!Models.Remote.IsValidURL(url) &&
+                    !url.StartsWith("./", StringComparison.Ordinal) &&
+                    !url.StartsWith("../", StringComparison.Ordinal))
+                    return new ValidationResult("Invalid repository URL format");
+                
+                return ValidationResult.Success;
+            }
+            
+            return new ValidationResult("Missing validation context");
         }
 
         public static ValidationResult ValidateRelativePath(string path, ValidationContext ctx)
         {
-            if (Path.Exists(path))
+            if (ctx.ObjectInstance is AddSubmodule asm)
             {
-                return new ValidationResult("Give path is exists already!");
-            }
+                if (!path.StartsWith("./", StringComparison.Ordinal))
+                    return new ValidationResult("Path must be relative to this repository!");
+            
+                if (Path.Exists(Path.GetFullPath(path, asm._repo.FullPath)))
+                    return new ValidationResult("Give path is exists already!");
 
-            if (Path.IsPathRooted(path))
-            {
-                return new ValidationResult("Path must be relative to this repository!");
+                return ValidationResult.Success;
             }
-
-            return ValidationResult.Success;
+            
+            return new ValidationResult("Missing validation context");
         }
 
         public override Task<bool> Sure()
