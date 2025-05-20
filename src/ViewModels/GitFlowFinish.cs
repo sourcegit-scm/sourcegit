@@ -9,9 +9,11 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public bool IsFeature => _type == "feature";
-        public bool IsRelease => _type == "release";
-        public bool IsHotfix => _type == "hotfix";
+        public Models.GitFlowBranchType Type
+        {
+            get;
+            private set;
+        }
 
         public bool Squash
         {
@@ -31,27 +33,27 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public GitFlowFinish(Repository repo, Models.Branch branch, string type, string prefix)
+        public GitFlowFinish(Repository repo, Models.Branch branch, Models.GitFlowBranchType type)
         {
             _repo = repo;
-            _type = type;
-            _prefix = prefix;
             Branch = branch;
+            Type = type;
         }
 
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+            ProgressDescription = $"Git Flow - Finish {Branch.Name} ...";
 
-            var name = Branch.Name.StartsWith(_prefix) ? Branch.Name.Substring(_prefix.Length) : Branch.Name;
-            ProgressDescription = $"Git Flow - finishing {_type} {name} ...";
-
-            var log = _repo.CreateLog("Gitflow - Finish");
+            var log = _repo.CreateLog("GitFlow - Finish");
             Use(log);
+
+            var prefix = _repo.GitFlow.GetPrefix(Type);
+            var name = Branch.Name.StartsWith(prefix) ? Branch.Name.Substring(prefix.Length) : Branch.Name;
 
             return Task.Run(() =>
             {
-                var succ = Commands.GitFlow.Finish(_repo.FullPath, _type, name, Squash, AutoPush, KeepBranch, log);
+                var succ = Commands.GitFlow.Finish(_repo.FullPath, Type, name, Squash, AutoPush, KeepBranch, log);
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
@@ -59,7 +61,5 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private readonly string _type;
-        private readonly string _prefix;
     }
 }

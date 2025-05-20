@@ -2,8 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.GitFlowStart"
              x:DataType="vm:GitFlowStart">
@@ -11,15 +13,15 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitFlow.StartFeatureTitle}"
-               IsVisible="{Binding IsFeature}"/>
+               IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:GitFlowBranchType.Feature}}"/>
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitFlow.StartReleaseTitle}"
-               IsVisible="{Binding IsRelease}"/>
+               IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:GitFlowBranchType.Release}}"/>
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitFlow.StartHotfixTitle}"
-               IsVisible="{Binding IsHotfix}"/>
+               IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:GitFlowBranchType.Hotfix}}"/>
     <Grid Margin="0,16,0,0" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

@@ -975,8 +975,8 @@ namespace SourceGit.ViewModels
 
             if (!_repo.IsBare)
             {
-                var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, current.Name);
-                if (detect.IsGitFlowBranch)
+                var type = _repo.GetGitFlowType(current);
+                if (type != Models.GitFlowBranchType.None)
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", current.Name);
@@ -984,7 +984,7 @@ namespace SourceGit.ViewModels
                     finish.Click += (_, e) =>
                     {
                         if (_repo.CanCreatePopup())
-                            _repo.ShowPopup(new GitFlowFinish(_repo, current, detect.Type, detect.Prefix));
+                            _repo.ShowPopup(new GitFlowFinish(_repo, current, type));
                         e.Handled = true;
                     };
                     submenu.Items.Add(finish);
@@ -1063,8 +1063,8 @@ namespace SourceGit.ViewModels
 
             if (!_repo.IsBare)
             {
-                var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, branch.Name);
-                if (detect.IsGitFlowBranch)
+                var type = _repo.GetGitFlowType(branch);
+                if (type != Models.GitFlowBranchType.None)
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", branch.Name);
@@ -1072,7 +1072,7 @@ namespace SourceGit.ViewModels
                     finish.Click += (_, e) =>
                     {
                         if (_repo.CanCreatePopup())
-                            _repo.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
+                            _repo.ShowPopup(new GitFlowFinish(_repo, branch, type));
                         e.Handled = true;
                     };
                     submenu.Items.Add(finish);

@@ -121,7 +121,23 @@ namespace SourceGit.ViewModels
                     log);
 
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+
+                CallUIThread(() =>
+                {
+                    if (succ)
+                    {
+                        var gitflow = new Models.GitFlow();
+                        gitflow.Master = _master;
+                        gitflow.Develop = _develop;
+                        gitflow.FeaturePrefix = _featurePrefix;
+                        gitflow.ReleasePrefix = _releasePrefix;
+                        gitflow.HotfixPrefix = _hotfixPrefix;
+                        _repo.GitFlow = gitflow;
+                    }
+
+                    _repo.SetWatcherEnabled(true);
+                });
+
                 return succ;
             });
         }

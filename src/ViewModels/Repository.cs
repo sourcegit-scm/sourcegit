@@ -51,6 +51,12 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public Models.GitFlow GitFlow
+        {
+            get;
+            set;
+        } = new Models.GitFlow();
+
         public Models.FilterMode HistoriesFilterMode
         {
             get => _historiesFilterMode;
@@ -595,6 +601,28 @@ namespace SourceGit.ViewModels
             GetOwnerPage()?.StartPopup(popup);
         }
 
+        public bool IsGitFlowEnabled()
+        {
+            return GitFlow is { IsValid: true } &&
+                _branches.Find(x => x.IsLocal && x.Name.Equals(GitFlow.Master, StringComparison.Ordinal)) != null &&
+                _branches.Find(x => x.IsLocal && x.Name.Equals(GitFlow.Develop, StringComparison.Ordinal)) != null;
+        }
+
+        public Models.GitFlowBranchType GetGitFlowType(Models.Branch b)
+        {
+            if (!IsGitFlowEnabled())
+                return Models.GitFlowBranchType.None;
+
+            var name = b.Name;
+            if (name.StartsWith(GitFlow.FeaturePrefix, StringComparison.Ordinal))
+                return Models.GitFlowBranchType.Feature;
+            if (name.StartsWith(GitFlow.ReleasePrefix, StringComparison.Ordinal))
+                return Models.GitFlowBranchType.Release;
+            if (name.StartsWith(GitFlow.HotfixPrefix, StringComparison.Ordinal))
+                return Models.GitFlowBranchType.Hotfix;
+            return Models.GitFlowBranchType.None;
+        }
+
         public CommandLog CreateLog(string name)
         {
             var log = new CommandLog(name);
@@ -606,8 +634,19 @@ namespace SourceGit.ViewModels
         {
             Task.Run(() =>
             {
-                var allowedSignersFile = new Commands.Config(_fullpath).Get("gpg.ssh.allowedSignersFile");
-                _hasAllowedSignersFile = !string.IsNullOrEmpty(allowedSignersFile);
+                var config = new Commands.Config(_fullpath).ListAll();
+                _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
+
+                if (config.TryGetValue("gitflow.branch.master", out var masterName))
+                    GitFlow.Master = masterName;
+                if (config.TryGetValue("gitflow.branch.develop", out var developName))
+                    GitFlow.Develop = developName;
+                if (config.TryGetValue("gitflow.prefix.feature", out var featurePrefix))
+                    GitFlow.FeaturePrefix = featurePrefix;
+                if (config.TryGetValue("gitflow.prefix.release", out var releasePrefix))
+                    GitFlow.ReleasePrefix = releasePrefix;
+                if (config.TryGetValue("gitflow.prefix.hotfix", out var hotfixPrefix))
+                    GitFlow.HotfixPrefix = hotfixPrefix;
             });
 
             Task.Run(RefreshBranches);
@@ -1377,8 +1416,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
 
-            var isGitFlowEnabled = Commands.GitFlow.IsEnabled(_fullpath, _branches);
-            if (isGitFlowEnabled)
+            if (IsGitFlowEnabled())
             {
                 var startFeature = new MenuItem();
                 startFeature.Header = App.Text("GitFlow.StartFeature");
@@ -1386,7 +1424,7 @@ namespace SourceGit.ViewModels
                 startFeature.Click += (_, e) =>
                 {
                     if (CanCreatePopup())
-                        ShowPopup(new GitFlowStart(this, "feature"));
+                        ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Feature));
                     e.Handled = true;
                 };
 
@@ -1396,7 +1434,7 @@ namespace SourceGit.ViewModels
                 startRelease.Click += (_, e) =>
                 {
                     if (CanCreatePopup())
-                        ShowPopup(new GitFlowStart(this, "release"));
+                        ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Release));
                     e.Handled = true;
                 };
 
@@ -1406,7 +1444,7 @@ namespace SourceGit.ViewModels
                 startHotfix.Click += (_, e) =>
                 {
                     if (CanCreatePopup())
-                        ShowPopup(new GitFlowStart(this, "hotfix"));
+                        ShowPopup(new GitFlowStart(this, Models.GitFlowBranchType.Hotfix));
                     e.Handled = true;
                 };
 
@@ -1867,8 +1905,8 @@ namespace SourceGit.ViewModels
 
             if (!IsBare)
             {
-                var detect = Commands.GitFlow.DetectType(_fullpath, _branches, branch.Name);
-                if (detect.IsGitFlowBranch)
+                var type = GetGitFlowType(branch);
+                if (type != Models.GitFlowBranchType.None)
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", branch.Name);
@@ -1876,7 +1914,7 @@ namespace SourceGit.ViewModels
                     finish.Click += (_, e) =>
                     {
                         if (CanCreatePopup())
-                            ShowPopup(new GitFlowFinish(this, branch, detect.Type, detect.Prefix));
+                            ShowPopup(new GitFlowFinish(this, branch, type));
                         e.Handled = true;
                     };
                     menu.Items.Add(new MenuItem() { Header = "-" });
