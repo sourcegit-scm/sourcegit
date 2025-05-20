@@ -37,6 +37,7 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Run custom action ...";
 
             var log = _repo.CreateLog(CustomAction.Name);
+            Use(log);
 
             return Task.Run(() =>
             {
