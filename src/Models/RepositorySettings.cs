@@ -417,6 +417,7 @@ namespace SourceGit.Models
 
         public void PushCommitMessage(string message)
         {
+            message = message.Trim().ReplaceLineEndings("\n");
             var existIdx = CommitMessages.IndexOf(message);
             if (existIdx == 0)
                 return;
