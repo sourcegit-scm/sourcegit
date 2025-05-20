@@ -294,6 +294,7 @@ namespace SourceGit.ViewModels
                         SelectedSearchedCommit = null;
                         SearchCommitFilter = string.Empty;
                         MatchedFilesForSearching = null;
+                        _requestingWorktreeFiles = false;
                         _worktreeFiles = null;
                     }
                 }
@@ -568,6 +569,7 @@ namespace SourceGit.ViewModels
             _searchedCommits.Clear();
             _selectedSearchedCommit = null;
 
+            _requestingWorktreeFiles = false;
             _worktreeFiles = null;
             _matchedFilesForSearching = null;
         }
@@ -2698,19 +2700,27 @@ namespace SourceGit.ViewModels
         {
             if (!IsSearchingCommitsByFilePath())
             {
+                _requestingWorktreeFiles = false;
                 _worktreeFiles = null;
                 MatchedFilesForSearching = null;
                 GC.Collect();
                 return;
             }
 
+            if (_requestingWorktreeFiles)
+                return;
+
+            _requestingWorktreeFiles = true;
+
             Task.Run(() =>
             {
                 _worktreeFiles = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (IsSearchingCommitsByFilePath())
+                    if (IsSearchingCommitsByFilePath() && _requestingWorktreeFiles)
                         CalcMatchedFilesForSearching();
+
+                    _requestingWorktreeFiles = false;
                 });
             });
         }
@@ -2796,6 +2806,7 @@ namespace SourceGit.ViewModels
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
         private Models.Commit _selectedSearchedCommit = null;
+        private bool _requestingWorktreeFiles = false;
         private List<string> _worktreeFiles = null;
         private List<string> _matchedFilesForSearching = null;
 
