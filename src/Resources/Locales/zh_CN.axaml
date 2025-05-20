@@ -65,8 +65,9 @@
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull) ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">拉回(pull) ${0}$ 内容至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push)${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 分支至 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名 ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">跟踪的上游分支不存在或已删除！</x:String>
@@ -293,7 +294,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">编辑仓库</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">执行自定义操作</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自定义操作 ：</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快进(fast-forward，无需checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">强制覆盖本地REFs</x:String>
@@ -651,6 +651,9 @@
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">重置模式 ：</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">提交 ：</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">当前分支 ：</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">重置所选分支（非当前分支）</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">重置点 ：</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">操作分支 ：</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">在文件浏览器中查看</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">回滚操作确认</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目标提交 ：</x:String>

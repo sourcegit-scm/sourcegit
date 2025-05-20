@@ -292,7 +292,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Ausgewähltes Repository bearbeiten</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Führe benutzerdefinierte Aktion aus</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Name der Aktion:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (ohne Auschecken)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Alle Remotes fetchen</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Aktiviere '--force' Option</x:String>

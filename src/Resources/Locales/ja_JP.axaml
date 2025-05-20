@@ -275,7 +275,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">選択中のリポジトリを編集</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">カスタムアクションを実行</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">アクション名:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">(チェックアウトせずに)ブランチを早送りする</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">フェッチ</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">すべてのリモートをフェッチ</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">ローカル参照を強制的に上書き</x:String>

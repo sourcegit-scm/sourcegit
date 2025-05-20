@@ -275,7 +275,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Éditer le dépôt sélectionné</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Lancer action personnalisée</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Nom de l'action :</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (sans récupération)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch toutes les branches distantes</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Outrepasser les vérifications de refs</x:String>

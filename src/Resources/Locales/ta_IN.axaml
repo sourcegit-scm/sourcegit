@@ -275,7 +275,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட களஞ்சியத்தைத் திருத்து</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">தனிப்பயன் செயலை இயக்கு</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">செயல் பெயர்:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">வேகமாக முன்னோக்கி (சரிபார்க்காமல்)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">பெறு</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">எல்லா தொலைகளையும் பெறு</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">உள்ளக குறிப்புகளை கட்டாயமாக மீறு</x:String>

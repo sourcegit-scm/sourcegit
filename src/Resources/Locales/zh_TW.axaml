@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送 (push) ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 分支至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重新命名 ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重設 ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切換上游分支...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比較</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">追蹤上游分支不存在或已刪除!</x:String>
@@ -293,7 +294,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯存放庫</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">執行自訂動作</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自訂動作:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快進 (fast-forward，無需 checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">強制覆寫本機 REFs</x:String>
@@ -651,6 +651,9 @@
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">重設模式:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">移至提交:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">目前分支:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">重設選取的分支（非目前分支）</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">重設位置 ：</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">選取分支 ：</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">在檔案瀏覽器中檢視</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">復原操作確認</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目標提交:</x:String>

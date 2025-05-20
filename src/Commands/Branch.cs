@@ -31,6 +31,16 @@
             return cmd.Exec();
         }
 
+        public static bool ResetWithoutCheckout(string repo, string name, string to, Models.ICommandLog log)
+        {
+            var cmd = new Command();
+            cmd.WorkingDirectory = repo;
+            cmd.Context = repo;
+            cmd.Args = $"branch -f {name} {to}";
+            cmd.Log = log;
+            return cmd.Exec();
+        }
+
         public static bool SetUpstream(string repo, string name, string upstream, Models.ICommandLog log)
         {
             var cmd = new Command();

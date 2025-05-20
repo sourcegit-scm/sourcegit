@@ -279,7 +279,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Редагувати вибраний репозиторій</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Виконати спеціальну дію</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Ім'я дії:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Перемотати (без перемкнуття)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Витягти</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Витягти всі віддалені сховища</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Примусово перезаписати локальні refs</x:String>
