@@ -1459,8 +1459,15 @@ namespace SourceGit.ViewModels
                 init.Icon = App.CreateMenuIcon("Icons.Init");
                 init.Click += (_, e) =>
                 {
-                    if (CanCreatePopup())
+                    if (_currentBranch == null)
+                    {
+                        App.RaiseException(_fullpath, "Git flow init failed: No branch found!!!");
+                    }
+                    else if (CanCreatePopup())
+                    {
                         ShowPopup(new InitGitFlow(this));
+                    }
+
                     e.Handled = true;
                 };
                 menu.Items.Add(init);

@@ -1,24 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
+﻿using System.Text;
 using Avalonia.Threading;
 
 namespace SourceGit.Commands
 {
     public static class GitFlow
     {
-        public static bool Init(string repo, List<Models.Branch> branches, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
+        public static bool Init(string repo, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
         {
-            var current = branches.Find(x => x.IsCurrent);
-
-            var masterBranch = branches.Find(x => x.Name == master);
-            if (masterBranch == null && current != null)
-                Branch.Create(repo, master, current.Head, log);
-
-            var devBranch = branches.Find(x => x.Name == develop);
-            if (devBranch == null && current != null)
-                Branch.Create(repo, develop, current.Head, log);
-
             var config = new Config(repo);
             config.Set("gitflow.branch.master", master);
             config.Set("gitflow.branch.develop", develop);
