@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class WorkingCopy : ObservableObject
+    public class WorkingCopy : ObservableObject, IDisposable
     {
         public bool IncludeUntracked
         {
@@ -210,7 +210,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
             _repo = null;
             _inProgressContext = null;

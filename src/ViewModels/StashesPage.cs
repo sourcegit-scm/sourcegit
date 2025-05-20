@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class StashesPage : ObservableObject
+    public class StashesPage : ObservableObject, IDisposable
     {
         public List<Models.Stash> Stashes
         {
@@ -125,14 +125,13 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
+            _stashes?.Clear();
+            _changes?.Clear();
+
             _repo = null;
-            if (_stashes != null)
-                _stashes.Clear();
             _selectedStash = null;
-            if (_changes != null)
-                _changes.Clear();
             _selectedChange = null;
             _diffContext = null;
         }

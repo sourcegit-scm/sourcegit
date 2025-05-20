@@ -546,9 +546,9 @@ namespace SourceGit.ViewModels
             _historiesFilterMode = Models.FilterMode.None;
 
             _watcher?.Dispose();
-            _histories.Cleanup();
-            _workingCopy.Cleanup();
-            _stashesPage.Cleanup();
+            _histories.Dispose();
+            _workingCopy.Dispose();
+            _stashesPage.Dispose();
 
             _watcher = null;
             _histories = null;

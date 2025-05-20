@@ -15,7 +15,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public partial class CommitDetail : ObservableObject
+    public partial class CommitDetail : ObservableObject, IDisposable
     {
         public int ActivePageIndex
         {
@@ -137,7 +137,7 @@ namespace SourceGit.ViewModels
             WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
             _repo = null;
             _commit = null;

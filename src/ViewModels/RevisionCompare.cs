@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class RevisionCompare : ObservableObject
+    public class RevisionCompare : ObservableObject, IDisposable
     {
         public object StartPoint
         {
@@ -83,7 +83,7 @@ namespace SourceGit.ViewModels
             Task.Run(Refresh);
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
             _repo = null;
             _startPoint = null;
