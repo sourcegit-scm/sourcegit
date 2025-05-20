@@ -27,7 +27,7 @@ namespace SourceGit.Commands
             }
         }
 
-        public static void RunAndWait(string repo, string file, string args, Action<string> outputHandler)
+        public static void RunAndWait(string repo, string file, string args, Models.ICommandLog log)
         {
             var start = new ProcessStartInfo();
             start.FileName = file;
@@ -40,20 +40,22 @@ namespace SourceGit.Commands
             start.StandardErrorEncoding = Encoding.UTF8;
             start.WorkingDirectory = repo;
 
+            log?.AppendLine($"$ {file} {args}\n");
+
             var proc = new Process() { StartInfo = start };
             var builder = new StringBuilder();
 
             proc.OutputDataReceived += (_, e) =>
             {
                 if (e.Data != null)
-                    outputHandler?.Invoke(e.Data);
+                    log?.AppendLine(e.Data);
             };
 
             proc.ErrorDataReceived += (_, e) =>
             {
                 if (e.Data != null)
                 {
-                    outputHandler?.Invoke(e.Data);
+                    log?.AppendLine(e.Data);
                     builder.AppendLine(e.Data);
                 }
             };
