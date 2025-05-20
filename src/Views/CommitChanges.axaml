@@ -58,7 +58,7 @@
       <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1,0,1,1" Background="Transparent">
         <TextBlock Margin="4,0,0,0"
                    Foreground="{DynamicResource Brush.FG2}"
-                   Text="{Binding Changes.Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='CommitDetail.Changes.Count'}"
+                   Text="{Binding Changes.Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='CommitDetail.Changes.Count', Mode=OneWay}"
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
       </Border>
     </Grid>

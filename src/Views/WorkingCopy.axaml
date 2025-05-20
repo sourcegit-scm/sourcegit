@@ -65,7 +65,7 @@
             <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
             <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
               <Run Text="{DynamicResource Text.WorkingCopy.Unstaged}"/>
-              <Run Text="{Binding Unstaged, Converter={x:Static c:ListConverters.ToCount}}"/>
+              <Run Text="{Binding Unstaged, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
             </TextBlock>
             <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
 
@@ -148,7 +148,7 @@
             <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
             <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
               <Run Text="{DynamicResource Text.WorkingCopy.Staged}"/>
-              <Run Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}}"/>
+              <Run Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
             </TextBlock>
             <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
             <Button Grid.Column="4" Classes="icon_button" Width="26" Height="14" Padding="0" Click="OnUnstageSelectedButtonClicked">
