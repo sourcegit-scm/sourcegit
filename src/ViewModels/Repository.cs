@@ -632,6 +632,14 @@ namespace SourceGit.ViewModels
 
         public void RefreshAll()
         {
+            Task.Run(RefreshCommits);
+            Task.Run(RefreshBranches);
+            Task.Run(RefreshTags);
+            Task.Run(RefreshSubmodules);
+            Task.Run(RefreshWorktrees);
+            Task.Run(RefreshWorkingCopyChanges);
+            Task.Run(RefreshStashes);
+            
             Task.Run(() =>
             {
                 var config = new Commands.Config(_fullpath).ListAll();
@@ -648,14 +656,6 @@ namespace SourceGit.ViewModels
                 if (config.TryGetValue("gitflow.prefix.hotfix", out var hotfixPrefix))
                     GitFlow.HotfixPrefix = hotfixPrefix;
             });
-
-            Task.Run(RefreshBranches);
-            Task.Run(RefreshTags);
-            Task.Run(RefreshCommits);
-            Task.Run(RefreshSubmodules);
-            Task.Run(RefreshWorktrees);
-            Task.Run(RefreshWorkingCopyChanges);
-            Task.Run(RefreshStashes);
         }
 
         public ContextMenu CreateContextMenuForExternalTools()
