@@ -6,13 +6,17 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.48%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.87%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -25,6 +29,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -34,13 +39,17 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.74%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.12%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Launcher.Workspaces
@@ -49,10 +58,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-93.32%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-92.73%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -76,6 +86,10 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -95,6 +109,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -113,13 +128,17 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-98.74%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-98.12%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Launcher.Workspaces
@@ -128,10 +147,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-93.06%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-92.48%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -155,6 +175,10 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -176,6 +200,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -194,7 +219,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-84.87%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-84.34%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -238,11 +263,15 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.CreateBranch.Name.WarnSpace
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
 - Text.DeleteRepositoryNode.Path
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
 - Text.Diff.First
 - Text.Diff.Last
+- Text.Diff.Submodule.Deleted
 - Text.Diff.UseBlockNavigation
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
@@ -302,6 +331,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.AutoRestore
 - Text.Stash.AutoRestore.Tip
 - Text.StashCM.SaveAsPatch
+- Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -322,23 +352,28 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.99%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.37%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.Hotkeys.Global.SwitchTab
 - Text.Launcher.Pages
 - Text.Pull.RecurseSubmodules
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-93.32%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-92.73%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -362,6 +397,10 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -381,6 +420,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -399,7 +439,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-94.45%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-93.86%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -419,6 +459,10 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitMessageTextBox.SubjectCount
 - Text.ConfigureWorkspace.Name
+- Text.DeinitSubmodule
+- Text.DeinitSubmodule.Force
+- Text.DeinitSubmodule.Path
+- Text.Diff.Submodule.Deleted
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -438,6 +482,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
