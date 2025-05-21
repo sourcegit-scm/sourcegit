@@ -50,18 +50,6 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
 
-        public bool FetchAllBranches
-        {
-            get => _repo.Settings.FetchAllBranchesOnPull;
-            set => _repo.Settings.FetchAllBranchesOnPull = value;
-        }
-
-        public bool NoTags
-        {
-            get => _repo.Settings.FetchWithoutTagsOnPull;
-            set => _repo.Settings.FetchWithoutTagsOnPull = value;
-        }
-
         public bool IsRecurseSubmoduleVisible
         {
             get => _repo.Submodules.Count > 0;
@@ -155,38 +143,11 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                bool rs;
-                if (FetchAllBranches)
-                {
-                    rs = new Commands.Fetch(
-                        _repo.FullPath,
-                        _selectedRemote.Name,
-                        NoTags,
-                        false).Use(log).Exec();
-                    if (!rs)
-                    {
-                        log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
-                        return false;
-                    }
-
-                    _repo.MarkFetched();
-
-                    // Use merge/rebase instead of pull as fetch is done manually.
-                    if (UseRebase)
-                        rs = new Commands.Rebase(_repo.FullPath, _selectedBranch.FriendlyName, false).Use(log).Exec();
-                    else
-                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "").Use(log).Exec();
-                }
-                else
-                {
-                    rs = new Commands.Pull(
-                        _repo.FullPath,
-                        _selectedRemote.Name,
-                        _selectedBranch.Name,
-                        UseRebase,
-                        NoTags).Use(log).Exec();
-                }
+                bool rs = new Commands.Pull(
+                    _repo.FullPath,
+                    _selectedRemote.Name,
+                    !string.IsNullOrEmpty(_current.Upstream) && _current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
+                    UseRebase).Use(log).Exec();
 
                 if (rs)
                 {

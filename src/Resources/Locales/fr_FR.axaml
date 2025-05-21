@@ -508,12 +508,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve"> Élaguer les information de worktree dans `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branche distante :</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch toutes les branches</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch sans les tags</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Dépôt distant :</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Utiliser rebase au lieu de merge</x:String>

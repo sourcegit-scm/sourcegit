@@ -512,12 +512,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Видалити застарілу інформацію про робочі дерева в `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull (Витягти)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Віддалена гілка:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Отримати всі гілки</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Отримати без тегів</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Віддалене сховище:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Використовувати rebase замість merge</x:String>

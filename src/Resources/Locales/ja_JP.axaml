@@ -508,12 +508,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">`$GIT_DIR/worktrees` の作業ツリー情報を削除</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">プル</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">ブランチ:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">すべてのブランチをフェッチ</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">タグなしでフェッチ</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージの代わりにリベースを使用</x:String>

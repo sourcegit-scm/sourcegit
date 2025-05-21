@@ -508,12 +508,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">`$GIT_COMMON_DIR/பணிமரங்கள்` இதில் பணிமரம் தகவலை கத்தரி</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">இழு</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">தொலை கிளை:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">எல்லா கிளைகளையும் எடு</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">இதனுள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">குறிச்சொற்கள் இல்லாமல் பெறு</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">இழு (எடுத்து ஒன்றிணை)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">ஒன்றிணை என்பதற்குப் பதிலாக மறுதளத்தைப் பயன்படுத்து</x:String>

@@ -531,12 +531,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Информация об обрезке рабочего каталога в «$GIT_COMMON_DIR/worktrees»</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Загрузить</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Ветка внешнего репозитория:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Извлечь все ветки</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Загрузить без меток</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Загрузить (Получить и слить)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Использовать перемещение вместо слияния</x:String>

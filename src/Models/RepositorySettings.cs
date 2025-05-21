@@ -80,18 +80,6 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public bool FetchWithoutTagsOnPull
-        {
-            get;
-            set;
-        } = false;
-
-        public bool FetchAllBranchesOnPull
-        {
-            get;
-            set;
-        } = true;
-
         public bool CheckSubmodulesOnPush
         {
             get;

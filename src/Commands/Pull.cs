@@ -2,7 +2,7 @@
 {
     public class Pull : Command
     {
-        public Pull(string repo, string remote, string branch, bool useRebase, bool noTags)
+        public Pull(string repo, string remote, string branch, bool useRebase)
         {
             WorkingDirectory = repo;
             Context = repo;
@@ -11,9 +11,6 @@
 
             if (useRebase)
                 Args += "--rebase=true ";
-
-            if (noTags)
-                Args += "--no-tags ";
 
             Args += $"{remote} {branch}";
         }

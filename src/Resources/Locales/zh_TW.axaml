@@ -535,12 +535,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在 `$GIT_COMMON_DIR/worktrees` 中的無效工作區資訊</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉取 (pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">拉取遠端中的所有分支</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">不拉取遠端標籤</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉取 (提取並合併)</x:String>

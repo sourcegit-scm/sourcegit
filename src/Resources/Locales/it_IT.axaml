@@ -529,12 +529,10 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Potatura delle informazioni di worktree in `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Scarica</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Recupera tutti i branch</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stasha e Riapplica</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Recupera senza tag</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Scarica (Recupera e Unisci)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Riallineare anziché unire</x:String>
