@@ -74,9 +74,9 @@ namespace SourceGit.ViewModels
                 {
                     if (updateSubmodules)
                     {
-                        var submodules = new Commands.QuerySubmodules(_repo.FullPath).Result();
+                        var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
                         if (submodules.Count > 0)
-                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true, false);
+                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
                     }
 
                     if (needPopStash)

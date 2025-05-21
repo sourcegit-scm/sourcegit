@@ -29,23 +29,7 @@ namespace SourceGit.Commands
             }
         }
 
-        public bool Update(string module, bool init, bool recursive, bool useRemote)
-        {
-            Args = "submodule update";
-
-            if (init)
-                Args += " --init";
-            if (recursive)
-                Args += " --recursive";
-            if (useRemote)
-                Args += " --remote";
-            if (!string.IsNullOrEmpty(module))
-                Args += $" -- \"{module}\"";
-
-            return Exec();
-        }
-
-        public bool Update(List<Models.Submodule> modules, bool init, bool recursive, bool useRemote)
+        public bool Update(List<string> modules, bool init, bool recursive, bool useRemote = false)
         {
             var builder = new StringBuilder();
             builder.Append("submodule update");
@@ -60,7 +44,7 @@ namespace SourceGit.Commands
             {
                 builder.Append(" --");
                 foreach (var module in modules)
-                    builder.Append($" \"{module.Path}\"");
+                    builder.Append($" \"{module}\"");
             }
 
             Args = builder.ToString();
