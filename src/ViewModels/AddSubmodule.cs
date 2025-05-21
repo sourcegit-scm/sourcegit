@@ -15,12 +15,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _url, value, true);
         }
 
-        [Required(ErrorMessage = "Reletive path is required!!!")]
-        [CustomValidation(typeof(AddSubmodule), nameof(ValidateRelativePath))]
         public string RelativePath
         {
             get => _relativePath;
-            set => SetProperty(ref _relativePath, value, true);
+            set => SetProperty(ref _relativePath, value);
         }
 
         public bool Recursive
@@ -49,22 +47,6 @@ namespace SourceGit.ViewModels
             return new ValidationResult("Missing validation context");
         }
 
-        public static ValidationResult ValidateRelativePath(string path, ValidationContext ctx)
-        {
-            if (ctx.ObjectInstance is AddSubmodule asm)
-            {
-                if (!path.StartsWith("./", StringComparison.Ordinal))
-                    return new ValidationResult("Path must be relative to this repository!");
-            
-                if (Path.Exists(Path.GetFullPath(path, asm._repo.FullPath)))
-                    return new ValidationResult("Give path is exists already!");
-
-                return ValidationResult.Success;
-            }
-            
-            return new ValidationResult("Missing validation context");
-        }
-
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
@@ -73,9 +55,20 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Add Submodule");
             Use(log);
 
+            var relativePath = _relativePath;
+            if (string.IsNullOrEmpty(relativePath))
+            {
+                if (_url.EndsWith("/.git", StringComparison.Ordinal))
+                    relativePath = Path.GetFileName(Path.GetDirectoryName(_url));
+                else if (_url.EndsWith(".git", StringComparison.Ordinal))
+                    relativePath = Path.GetFileNameWithoutExtension(_url);
+                else
+                    relativePath = Path.GetFileName(_url);
+            }
+
             return Task.Run(() =>
             {
-                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Add(_url, _relativePath, Recursive);
+                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Add(_url, relativePath, Recursive);
                 log.Complete();
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
