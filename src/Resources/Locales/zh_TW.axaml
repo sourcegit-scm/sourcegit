@@ -235,6 +235,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住 Ctrl 鍵將直接以預設參數執行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">取消初始化子模組</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">強制取消，即使它包含本地變更</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模組 ：</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名稱:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在刪除遠端上的分支，請務必小心!</x:String>
@@ -270,6 +273,7 @@
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">已刪除</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法上色</x:String>
@@ -712,6 +716,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">新增子模組</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">複製路徑</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">提取子模組</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">開啟存放庫</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>

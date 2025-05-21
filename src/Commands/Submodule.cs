@@ -51,13 +51,15 @@ namespace SourceGit.Commands
             return Exec();
         }
 
-        public bool Delete(string relativePath)
+        public bool Deinit(string module, bool force)
         {
-            Args = $"submodule deinit -f \"{relativePath}\"";
-            if (!Exec())
-                return false;
+            Args = force ? $"submodule deinit -f -- \"{module}\"" : $"submodule deinit -- \"{module}\"";
+            return Exec();
+        }
 
-            Args = $"rm -rf \"{relativePath}\"";
+        public bool Delete(string module)
+        {
+            Args = $"rm -rf \"{module}\"";
             return Exec();
         }
     }

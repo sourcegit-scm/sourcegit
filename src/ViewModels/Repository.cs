@@ -2432,12 +2432,14 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var copy = new MenuItem();
-            copy.Header = App.Text("Submodule.CopyPath");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            var deinit = new MenuItem();
+            deinit.Header = App.Text("Submodule.Deinit");
+            deinit.Icon = App.CreateMenuIcon("Icons.Undo");
+            deinit.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
+            deinit.Click += (_, ev) =>
             {
-                App.CopyText(submodule.Path);
+                if (CanCreatePopup())
+                    ShowPopup(new DeinitSubmodule(this, submodule.Path));
                 ev.Handled = true;
             };
 
@@ -2451,10 +2453,22 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var copy = new MenuItem();
+            copy.Header = App.Text("Submodule.CopyPath");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, ev) =>
+            {
+                App.CopyText(submodule.Path);
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(open);
-            menu.Items.Add(copy);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(deinit);
             menu.Items.Add(rm);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(copy);
             return menu;
         }
 
