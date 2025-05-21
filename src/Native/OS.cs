@@ -124,7 +124,7 @@ namespace SourceGit.Native
                 Directory.CreateDirectory(DataDir);
         }
 
-        public static void SetupEnternalTools()
+        public static void SetupExternalTools()
         {
             ExternalTools = _backend.FindExternalTools();
         }
