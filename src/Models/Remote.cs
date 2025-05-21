@@ -50,7 +50,10 @@ namespace SourceGit.Models
                     return true;
             }
 
-            return url.StartsWith("file://", StringComparison.Ordinal) || Directory.Exists(url);
+            return url.StartsWith("file://", StringComparison.Ordinal) || 
+                url.StartsWith("./", StringComparison.Ordinal) ||
+                url.StartsWith("../", StringComparison.Ordinal) ||
+                Directory.Exists(url);
         }
 
         public bool TryGetVisitURL(out string url)

@@ -34,17 +34,10 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateURL(string url, ValidationContext ctx)
         {
-            if (ctx.ObjectInstance is AddSubmodule)
-            {
-                if (!Models.Remote.IsValidURL(url) &&
-                    !url.StartsWith("./", StringComparison.Ordinal) &&
-                    !url.StartsWith("../", StringComparison.Ordinal))
-                    return new ValidationResult("Invalid repository URL format");
-                
-                return ValidationResult.Success;
-            }
-            
-            return new ValidationResult("Missing validation context");
+            if (!Models.Remote.IsValidURL(url))
+                return new ValidationResult("Invalid repository URL format");
+
+            return ValidationResult.Success;
         }
 
         public override Task<bool> Sure()
