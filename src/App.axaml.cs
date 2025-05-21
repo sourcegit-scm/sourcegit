@@ -548,7 +548,7 @@ namespace SourceGit
 
         private void TryLaunchAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
-            Native.OS.SetupEnternalTools();
+            Native.OS.SetupExternalTools();
             Models.AvatarManager.Instance.Start();
 
             string startupRepo = null;
