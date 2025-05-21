@@ -21,6 +21,7 @@
         <RowDefinition Height="32"/>
         <RowDefinition Height="32"/>
         <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -105,6 +106,13 @@
                 Content="{DynamicResource Text.Pull.UseRebase}"
                 IsChecked="{Binding UseRebase, Mode=TwoWay}"
                 ToolTip.Tip="--rebase"/>
+
+      <CheckBox Grid.Row="7" Grid.Column="1"
+                Height="32"
+                Content="{DynamicResource Text.Pull.RecurseSubmodules}"
+                IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
+                IsVisible="{Binding IsRecurseSubmoduleVisible}"
+                ToolTip.Tip="--recurse-submodules"/>
     </Grid>
   </StackPanel>
 </UserControl>

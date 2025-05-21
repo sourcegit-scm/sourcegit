@@ -62,6 +62,17 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.FetchWithoutTagsOnPull = value;
         }
 
+        public bool IsRecurseSubmoduleVisible
+        {
+            get => _repo.Submodules.Count > 0;
+        }
+
+        public bool RecurseSubmodules
+        {
+            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
+            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
+        }
+
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
@@ -119,6 +130,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Pull");
             Use(log);
 
+            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
                 var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
@@ -176,8 +188,18 @@ namespace SourceGit.ViewModels
                         NoTags).Use(log).Exec();
                 }
 
-                if (rs && needPopStash)
-                    rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                if (rs)
+                {
+                    if (updateSubmodules)
+                    {
+                        var submodules = new Commands.QuerySubmodules(_repo.FullPath).Result();
+                        if (submodules.Count > 0)
+                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true, false);
+                    }
+
+                    if (needPopStash)
+                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                }
 
                 log.Complete();
 

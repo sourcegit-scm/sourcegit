@@ -17,8 +17,7 @@ namespace SourceGit.ViewModels
 
         public bool IsRecurseSubmoduleVisible
         {
-            get;
-            private set;
+            get => _repo.Submodules.Count > 0;
         }
 
         public bool RecurseSubmodules
@@ -32,7 +31,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Branch = branch;
             DiscardLocalChanges = false;
-            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public override Task<bool> Sure()

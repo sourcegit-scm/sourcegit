@@ -45,8 +45,7 @@ namespace SourceGit.ViewModels
 
         public bool IsRecurseSubmoduleVisible
         {
-            get;
-            private set;
+            get => _repo.Submodules.Count > 0;
         }
 
         public bool RecurseSubmodules
@@ -67,7 +66,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = branch;
             DiscardLocalChanges = false;
-            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public CreateBranch(Repository repo, Models.Commit commit)
@@ -77,7 +75,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = commit;
             DiscardLocalChanges = false;
-            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public CreateBranch(Repository repo, Models.Tag tag)
@@ -87,7 +84,6 @@ namespace SourceGit.ViewModels
 
             BasedOn = tag;
             DiscardLocalChanges = false;
-            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
