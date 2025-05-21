@@ -8,6 +8,8 @@ namespace SourceGit.Models
     {
         [GeneratedRegex(@"^https?://([-a-zA-Z0-9:%._\+~#=]+@)?[-a-zA-Z0-9:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?(:[0-9]{1,5})?\b(/[-a-zA-Z0-9()@:%_\+.~#?&=]+)+(\.git)?$")]
         private static partial Regex REG_HTTPS();
+        [GeneratedRegex(@"^git://([-a-zA-Z0-9:%._\+~#=]+@)?[-a-zA-Z0-9:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?(:[0-9]{1,5})?\b(/[-a-zA-Z0-9()@:%_\+.~#?&=]+)+(\.git)?$")]
+        private static partial Regex REG_GIT();
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH1();
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
@@ -18,6 +20,7 @@ namespace SourceGit.Models
 
         private static readonly Regex[] URL_FORMATS = [
             REG_HTTPS(),
+            REG_GIT(),
             REG_SSH1(),
             REG_SSH2(),
         ];
@@ -30,13 +33,10 @@ namespace SourceGit.Models
             if (string.IsNullOrWhiteSpace(url))
                 return false;
 
-            for (int i = 1; i < URL_FORMATS.Length; i++)
-            {
-                if (URL_FORMATS[i].IsMatch(url))
-                    return true;
-            }
+            if (REG_SSH1().IsMatch(url))
+                return true;
 
-            return false;
+            return REG_SSH2().IsMatch(url);
         }
 
         public static bool IsValidURL(string url)
