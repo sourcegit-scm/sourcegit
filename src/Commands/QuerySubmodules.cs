@@ -112,7 +112,7 @@ namespace SourceGit.Commands
                     }
                 }
 
-                Args = $"--no-optional-locks status -uno --porcelain -- {builder}";
+                Args = $"--no-optional-locks status --porcelain -- {builder}";
                 rs = ReadToEnd();
                 if (!rs.IsSuccess)
                     return submodules;
