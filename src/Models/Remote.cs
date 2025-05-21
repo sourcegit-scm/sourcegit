@@ -51,8 +51,16 @@ namespace SourceGit.Models
             }
 
             var localPath = url;
-            if (url.StartsWith("file://", StringComparison.Ordinal))
-                localPath = url.Substring(7);
+            if (OperatingSystem.IsWindows())
+            {
+                if (url.StartsWith("file:///", StringComparison.Ordinal))
+                    localPath = url.Substring(8);
+            }
+            else
+            {
+                if (url.StartsWith("file://", StringComparison.Ordinal))
+                    localPath = url.Substring(7);
+            }
             
             return Directory.Exists(localPath);
         }
