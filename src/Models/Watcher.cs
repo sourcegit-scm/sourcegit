@@ -187,8 +187,14 @@ namespace SourceGit.Models
                 return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal))
+            if (name.Equals(".git", StringComparison.Ordinal) || name.StartsWith(".git/", StringComparison.Ordinal))
                 return;
+
+            if (name.Equals(".gitmodules", StringComparison.Ordinal))
+            {
+                _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                return;
+            }
 
             lock (_lockSubmodule)
             {
