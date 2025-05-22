@@ -120,8 +120,11 @@ namespace SourceGit.Models
                     Task.Run(_repo.RefreshSubmodules);
                 }
 
-                Task.Run(_repo.RefreshBranches);
-                Task.Run(_repo.RefreshCommits);
+                Task.Run(() =>
+                {
+                    _repo.RefreshBranches();
+                    _repo.RefreshCommits();
+                });
                 Task.Run(_repo.RefreshWorkingCopyChanges);
                 Task.Run(_repo.RefreshWorktrees);
             }
