@@ -671,7 +671,16 @@ namespace SourceGit
                     prevChar = c;
                 }
 
-                trimmed.Add(sb.ToString());
+                var fontName = sb.ToString();
+                try
+                {
+                    _ = new Typeface(fontName).GlyphTypeface;
+                }
+                catch
+                {
+                    continue;
+                }
+                trimmed.Add(fontName);
             }
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
