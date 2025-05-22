@@ -154,7 +154,21 @@ namespace SourceGit.Models
                 return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name.StartsWith("modules", StringComparison.Ordinal) && name.EndsWith("HEAD", StringComparison.Ordinal))
+
+            if (name.Contains("fsmonitor--daemon/", StringComparison.Ordinal))
+                return;
+
+            if (name.StartsWith("modules", StringComparison.Ordinal))
+            {
+                if (name.EndsWith("/HEAD", StringComparison.Ordinal) ||
+                    name.EndsWith("/ORIG_HEAD", StringComparison.Ordinal))
+                {
+                    _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                    _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+                }
+            }
+            else if (name.Equals("MERGE_HEAD", StringComparison.Ordinal) ||
+                name.Equals("AUTO_MERGE", StringComparison.Ordinal))
             {
                 _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
                 _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
@@ -187,7 +201,13 @@ namespace SourceGit.Models
                 return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name.Equals(".git", StringComparison.Ordinal) || name.StartsWith(".git/", StringComparison.Ordinal))
+
+            if (name.Equals(".git", StringComparison.Ordinal) ||
+                name.StartsWith(".git/", StringComparison.Ordinal) ||
+                name.EndsWith("/.git", StringComparison.Ordinal))
+                return;
+
+            if (name.StartsWith(".vs/", StringComparison.Ordinal) && name.EndsWith("/.suo", StringComparison.Ordinal))
                 return;
 
             if (name.Equals(".gitmodules", StringComparison.Ordinal))
