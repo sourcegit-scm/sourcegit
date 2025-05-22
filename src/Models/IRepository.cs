@@ -2,6 +2,8 @@
 {
     public interface IRepository
     {
+        bool MayHaveSubmodules();
+
         void RefreshBranches();
         void RefreshWorktrees();
         void RefreshTags();

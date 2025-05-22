@@ -1093,6 +1093,13 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public bool MayHaveSubmodules()
+        {
+            var modulesFile = Path.Combine(_fullpath, ".gitmodules");
+            var info = new FileInfo(modulesFile);
+            return info.Exists && info.Length > 20;
+        }
+
         public void RefreshBranches()
         {
             var branches = new Commands.QueryBranches(_fullpath).Result(out var localBranchesCount);
@@ -1196,13 +1203,54 @@ namespace SourceGit.ViewModels
 
         public void RefreshSubmodules()
         {
+            if (!MayHaveSubmodules())
+            {
+                if (_submodules.Count > 0)
+                {
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        Submodules = [];
+                        VisibleSubmodules = BuildVisibleSubmodules();
+                    });
+                }
+
+                return;
+            }
+
             var submodules = new Commands.QuerySubmodules(_fullpath).Result();
             _watcher?.SetSubmodules(submodules);
 
             Dispatcher.UIThread.Invoke(() =>
             {
-                Submodules = submodules;
-                VisibleSubmodules = BuildVisibleSubmodules();
+                bool hasChanged = _submodules.Count != submodules.Count;
+                if (!hasChanged)
+                {
+                    var old = new Dictionary<string, Models.Submodule>();
+                    foreach (var module in _submodules)
+                        old.Add(module.Path, module);
+
+                    foreach (var module in submodules)
+                    {
+                        if (!old.TryGetValue(module.Path, out var exist))
+                        {
+                            hasChanged = true;
+                            break;
+                        }
+
+                        hasChanged = !exist.SHA.Equals(module.SHA, StringComparison.Ordinal) ||
+                            !exist.URL.Equals(module.URL, StringComparison.Ordinal) ||
+                            exist.Status != module.Status;
+
+                        if (hasChanged)
+                            break;
+                    }
+                }
+
+                if (hasChanged)
+                {
+                    Submodules = submodules;
+                    VisibleSubmodules = BuildVisibleSubmodules();
+                }
             });
         }
 
