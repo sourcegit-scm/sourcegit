@@ -1535,7 +1535,8 @@ namespace SourceGit.ViewModels
             foreach (var c in _cached)
             {
                 if (c.Index != Models.ChangeState.None &&
-                    c.Index != Models.ChangeState.Untracked)
+                    c.Index != Models.ChangeState.Untracked &&
+                    !c.IsConflict)
                     rs.Add(c);
             }
             return rs;
