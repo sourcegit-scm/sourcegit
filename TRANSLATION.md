@@ -6,13 +6,14 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-96.87%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.75%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -39,13 +40,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.12%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.00%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -62,7 +64,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-92.73%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-92.62%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -86,6 +88,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -128,13 +131,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-98.12%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-98.00%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -151,7 +155,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-92.48%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-92.37%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -175,6 +179,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -219,7 +224,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-84.34%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-84.23%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -263,6 +268,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.CopyFullPath
 - Text.CreateBranch.Name.WarnSpace
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -352,13 +358,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.37%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.25%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -373,7 +380,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-92.73%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-92.62%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -397,6 +404,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -439,7 +447,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-93.86%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-93.74%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -459,6 +467,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitMessageTextBox.SubjectCount
 - Text.ConfigureWorkspace.Name
+- Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
