@@ -394,23 +394,14 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(selected))
                 return;
 
-            var copy = new MenuItem() { Header = App.Text("Copy") };
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += (_, ev) =>
             {
                 App.CopyText(selected);
                 ev.Handled = true;
             };
-
-            if (this.FindResource("Icons.Copy") is StreamGeometry geo)
-            {
-                copy.Icon = new Avalonia.Controls.Shapes.Path()
-                {
-                    Width = 10,
-                    Height = 10,
-                    Stretch = Stretch.Fill,
-                    Data = geo,
-                };
-            }
 
             var menu = new ContextMenu();
             menu.Items.Add(copy);
