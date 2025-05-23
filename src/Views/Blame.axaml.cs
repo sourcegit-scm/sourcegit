@@ -296,8 +296,6 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
-            TextArea.LayoutUpdated += OnTextAreaLayoutUpdated;
-            TextArea.PointerWheelChanged += OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
@@ -341,8 +339,6 @@ namespace SourceGit.Views
 
             TextArea.LeftMargins.Clear();
             TextArea.Caret.PositionChanged -= OnTextAreaCaretPositionChanged;
-            TextArea.LayoutUpdated -= OnTextAreaLayoutUpdated;
-            TextArea.PointerWheelChanged -= OnTextAreaPointerWheelChanged;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
@@ -392,18 +388,6 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private void OnTextAreaLayoutUpdated(object sender, EventArgs e)
-        {
-            if (TextArea.IsFocused)
-                InvalidateVisual();
-        }
-
-        private void OnTextAreaPointerWheelChanged(object sender, PointerWheelEventArgs e)
-        {
-            if (!TextArea.IsFocused && !string.IsNullOrEmpty(_highlight))
-                Focus();
-        }
-
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
             var selected = SelectedText;
@@ -445,6 +429,8 @@ namespace SourceGit.Views
                     break;
                 }
             }
+
+            InvalidateVisual();
         }
 
         private TextMate.Installation _textMate = null;
