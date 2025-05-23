@@ -40,27 +40,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.00%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.87%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.BranchCM.ResetToSelectedCommit
-- Text.CommitDetail.Changes.Count
 - Text.CreateBranch.OverwriteExisting
-- Text.DeinitSubmodule
-- Text.DeinitSubmodule.Force
-- Text.DeinitSubmodule.Path
-- Text.Diff.Submodule.Deleted
-- Text.Hotkeys.Global.SwitchWorkspace
-- Text.Hotkeys.Global.SwitchTab
-- Text.Launcher.Workspaces
-- Text.Launcher.Pages
-- Text.Pull.RecurseSubmodules
-- Text.ResetWithoutCheckout
-- Text.ResetWithoutCheckout.MoveTo
-- Text.ResetWithoutCheckout.Target
-- Text.Submodule.Deinit
 
 </details>
 
