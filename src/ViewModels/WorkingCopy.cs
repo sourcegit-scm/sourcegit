@@ -1528,7 +1528,7 @@ namespace SourceGit.ViewModels
             if (_useAmend)
             {
                 var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").Result();
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{head.SHA}^").Result();
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^").Result();
             }
 
             var rs = new List<Models.Change>();
