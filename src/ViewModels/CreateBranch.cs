@@ -43,6 +43,16 @@ namespace SourceGit.ViewModels
             get => _repo.IsBare;
         }
 
+        public bool AllowOverwrite
+        {
+            get => _allowOverwrite;
+            set
+            {
+                if (SetProperty(ref _allowOverwrite, value))
+                    ValidateProperty(_name, nameof(Name));
+            }
+        }
+
         public bool IsRecurseSubmoduleVisible
         {
             get => _repo.Submodules.Count > 0;
@@ -88,18 +98,24 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
         {
-            var creator = ctx.ObjectInstance as CreateBranch;
-            if (creator == null)
-                return new ValidationResult("Missing runtime context to create branch!");
-
-            var fixedName = creator.FixName(name);
-            foreach (var b in creator._repo.Branches)
+            if (ctx.ObjectInstance is CreateBranch creator)
             {
-                if (b.FriendlyName == fixedName)
-                    return new ValidationResult("A branch with same name already exists!");
-            }
+                if (!creator._allowOverwrite)
+                {
+                    var fixedName = creator.FixName(name);
+                    foreach (var b in creator._repo.Branches)
+                    {
+                        if (b.FriendlyName == fixedName)
+                            return new ValidationResult("A branch with same name already exists!");
+                    }
+                }
 
-            return ValidationResult.Success;
+                return ValidationResult.Success;
+            }
+            else
+            {
+                return new ValidationResult("Missing runtime context to create branch!");
+            }
         }
 
         public override Task<bool> Sure()
@@ -119,7 +135,7 @@ namespace SourceGit.ViewModels
                     var needPopStash = false;
                     if (DiscardLocalChanges)
                     {
-                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, true);
+                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, true, _allowOverwrite);
                     }
                     else
                     {
@@ -137,7 +153,7 @@ namespace SourceGit.ViewModels
                             needPopStash = true;
                         }
 
-                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, false);
+                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, false, _allowOverwrite);
                     }
 
                     if (succ)
@@ -155,7 +171,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision, log);
+                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
                 }
 
                 log.Complete();
@@ -201,5 +217,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private string _name = null;
         private readonly string _baseOnRevision = null;
+        private bool _allowOverwrite = false;
     }
 }

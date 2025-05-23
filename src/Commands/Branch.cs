@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Text;
+
+namespace SourceGit.Commands
 {
     public static class Branch
     {
@@ -11,12 +13,20 @@
             return cmd.ReadToEnd().StdOut.Trim();
         }
 
-        public static bool Create(string repo, string name, string basedOn, Models.ICommandLog log)
+        public static bool Create(string repo, string name, string basedOn, bool force, Models.ICommandLog log)
         {
+            var builder = new StringBuilder();
+            builder.Append("branch ");
+            if (force)
+                builder.Append("-f ");
+            builder.Append(name);
+            builder.Append(" ");
+            builder.Append(basedOn);
+
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"branch {name} {basedOn}";
+            cmd.Args = builder.ToString();
             cmd.Log = log;
             return cmd.Exec();
         }
@@ -27,16 +37,6 @@
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -M {name} {to}";
-            cmd.Log = log;
-            return cmd.Exec();
-        }
-
-        public static bool ResetWithoutCheckout(string repo, string name, string to, Models.ICommandLog log)
-        {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.Args = $"branch -f {name} {to}";
             cmd.Log = log;
             return cmd.Exec();
         }

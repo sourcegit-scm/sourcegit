@@ -116,7 +116,7 @@ namespace SourceGit.ViewModels
                 var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
                 if (masterBranch == null)
                 {
-                    succ = Commands.Branch.Create(_repo.FullPath, _master, current.Head, log);
+                    succ = Commands.Branch.Create(_repo.FullPath, _master, current.Head, true, log);
                     if (!succ)
                     {
                         log.Complete();
@@ -128,7 +128,7 @@ namespace SourceGit.ViewModels
                 var developBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_develop, StringComparison.Ordinal));
                 if (developBranch == null)
                 {
-                    succ = Commands.Branch.Create(_repo.FullPath, _develop, current.Head, log);
+                    succ = Commands.Branch.Create(_repo.FullPath, _develop, current.Head, true, log);
                     if (!succ)
                     {
                         log.Complete();

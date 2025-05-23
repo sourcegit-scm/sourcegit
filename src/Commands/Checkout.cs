@@ -13,15 +13,28 @@ namespace SourceGit.Commands
 
         public bool Branch(string branch, bool force)
         {
-            var option = force ? "--force" : string.Empty;
-            Args = $"checkout {option} --progress {branch}";
+            var builder = new StringBuilder();
+            builder.Append("checkout --progress ");
+            if (force)
+                builder.Append("--force ");
+            builder.Append(branch);
+
+            Args = builder.ToString();
             return Exec();
         }
 
-        public bool Branch(string branch, string basedOn, bool force)
+        public bool Branch(string branch, string basedOn, bool force, bool allowOverwrite)
         {
-            var option = force ? "--force" : string.Empty;
-            Args = $"checkout --progress -b {branch} {basedOn}";
+            var builder = new StringBuilder();
+            builder.Append("checkout --progress ");
+            builder.Append(allowOverwrite ? "-B " : "-b ");
+            if (force)
+                builder.Append("--force ");
+            builder.Append(branch);
+            builder.Append(" ");
+            builder.Append(basedOn);
+
+            Args = builder.ToString();
             return Exec();
         }
 

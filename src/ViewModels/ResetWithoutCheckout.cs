@@ -40,7 +40,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = Commands.Branch.ResetWithoutCheckout(_repo.FullPath, Target.Name, _revision, log);
+                var succ = Commands.Branch.Create(_repo.FullPath, Target.Name, _revision, true, log);
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

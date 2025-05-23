@@ -221,6 +221,7 @@
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">輸入分支名稱。</x:String>
   <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">空格將以英文破折號取代</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本機分支</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">允許覆寫現有分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新增標籤...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">標籤位於:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">使用 GPG 簽章</x:String>
