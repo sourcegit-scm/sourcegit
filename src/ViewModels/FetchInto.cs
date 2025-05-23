@@ -33,11 +33,14 @@ namespace SourceGit.ViewModels
             {
                 new Commands.Fetch(_repo.FullPath, Local, Upstream).Use(log).Exec();
                 log.Complete();
+
+                var changedLocalBranchHead = new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).Result();
                 CallUIThread(() =>
                 {
-                    _repo.NavigateToBranchDelayed(Upstream.FullName);
+                    _repo.NavigateToCommitDelayed(changedLocalBranchHead);
                     _repo.SetWatcherEnabled(true);
                 });
+
                 return true;
             });
         }

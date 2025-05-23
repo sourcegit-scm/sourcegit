@@ -164,9 +164,10 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
+                var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
                 CallUIThread(() =>
                 {
-                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);
+                    _repo.NavigateToCommitDelayed(head);
                     _repo.SetWatcherEnabled(true);
                 });
 

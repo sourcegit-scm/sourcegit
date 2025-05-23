@@ -922,15 +922,15 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void NavigateToCommitDelayed(string sha)
+        {
+            _navigateToCommitDelayed = sha;
+        }
+
         public void NavigateToCurrentHead()
         {
             if (_currentBranch != null)
                 NavigateToCommit(_currentBranch.Head);
-        }
-
-        public void NavigateToBranchDelayed(string branch)
-        {
-            _navigateToBranchDelayed = branch;
         }
 
         public void ClearHistoriesFilter()
@@ -1189,15 +1189,11 @@ namespace SourceGit.ViewModels
 
                     BisectState = _histories.UpdateBisectInfo();
 
-                    if (!string.IsNullOrEmpty(_navigateToBranchDelayed))
-                    {
-                        var branch = _branches.Find(x => x.FullName == _navigateToBranchDelayed);
-                        if (branch != null)
-                            NavigateToCommit(branch.Head);
-                    }
+                    if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
+                        NavigateToCommit(_navigateToCommitDelayed);
                 }
 
-                _navigateToBranchDelayed = string.Empty;
+                _navigateToCommitDelayed = string.Empty;
             });
         }
 
@@ -2937,6 +2933,6 @@ namespace SourceGit.ViewModels
         private Models.BisectState _bisectState = Models.BisectState.None;
         private bool _isBisectCommandRunning = false;
 
-        private string _navigateToBranchDelayed = string.Empty;
+        private string _navigateToCommitDelayed = string.Empty;
     }
 }

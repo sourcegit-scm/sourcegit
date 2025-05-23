@@ -80,9 +80,16 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
+                var upstream = _repo.CurrentBranch?.Upstream;
+                var upstreamHead = string.Empty;
+                if (!string.IsNullOrEmpty(upstream))
+                    upstreamHead = new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).Result();
+
                 CallUIThread(() =>
                 {
-                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.Upstream);
+                    if (!string.IsNullOrEmpty(upstreamHead))
+                        _repo.NavigateToCommitDelayed(upstreamHead);
+
                     _repo.MarkFetched();
                     _repo.SetWatcherEnabled(true);
                 });
