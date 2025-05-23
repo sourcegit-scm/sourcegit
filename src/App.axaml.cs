@@ -671,7 +671,16 @@ namespace SourceGit
                     prevChar = c;
                 }
 
-                trimmed.Add(sb.ToString());
+                var name = sb.ToString();
+                var idx = name.IndexOf('#');
+                if (idx >= 0)
+                {
+                    if (!name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
+                        !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))
+                        continue;
+                }
+
+                trimmed.Add(name);
             }
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
