@@ -36,39 +36,14 @@ namespace SourceGit.Commands
 
         public bool Exec()
         {
+            Log?.AppendLine($"$ git {Args}\n");
+
             var start = CreateGitStartInfo();
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
 
-            Log?.AppendLine($"$ git {Args}\n");
-
-            proc.OutputDataReceived += (_, e) =>
-            {
-                if (e.Data is { } line)
-                    Log?.AppendLine(line);
-            };
-
-            proc.ErrorDataReceived += (_, e) =>
-            {
-                var line = e.Data ?? string.Empty;
-                Log?.AppendLine(line);
-
-                // Lines to hide in error message.
-                if (line.Length > 0)
-                {
-                    if (line.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal) ||
-                        line.StartsWith("remote: Counting objects:", StringComparison.Ordinal) ||
-                        line.StartsWith("remote: Compressing objects:", StringComparison.Ordinal) ||
-                        line.StartsWith("Filtering content:", StringComparison.Ordinal) ||
-                        line.StartsWith("hint:", StringComparison.Ordinal))
-                        return;
-
-                    if (REG_PROGRESS().IsMatch(line))
-                        return;
-                }
-
-                errs.Add(line);
-            };
+            proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
+            proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
 
             var dummy = null as Process;
             var dummyProcLock = new object();
@@ -215,6 +190,28 @@ namespace SourceGit.Commands
                 start.WorkingDirectory = WorkingDirectory;
 
             return start;
+        }
+
+        private void HandleOutput(string line, List<string> errs)
+        {
+            line = line ?? string.Empty;
+            Log?.AppendLine(line);
+
+            // Lines to hide in error message.
+            if (line.Length > 0)
+            {
+                if (line.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal) ||
+                    line.StartsWith("remote: Counting objects:", StringComparison.Ordinal) ||
+                    line.StartsWith("remote: Compressing objects:", StringComparison.Ordinal) ||
+                    line.StartsWith("Filtering content:", StringComparison.Ordinal) ||
+                    line.StartsWith("hint:", StringComparison.Ordinal))
+                    return;
+
+                if (REG_PROGRESS().IsMatch(line))
+                    return;
+            }
+
+            errs.Add(line);
         }
 
         [GeneratedRegex(@"\d+%")]
