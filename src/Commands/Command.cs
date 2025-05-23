@@ -44,35 +44,30 @@ namespace SourceGit.Commands
 
             proc.OutputDataReceived += (_, e) =>
             {
-                if (e.Data == null)
-                    return;
-
-                Log?.AppendLine(e.Data);
+                if (e.Data is { } line)
+                    Log?.AppendLine(line);
             };
 
             proc.ErrorDataReceived += (_, e) =>
             {
-                if (string.IsNullOrEmpty(e.Data))
+                var line = e.Data ?? string.Empty;
+                Log?.AppendLine(line);
+
+                // Lines to hide in error message.
+                if (line.Length > 0)
                 {
-                    errs.Add(string.Empty);
-                    return;
+                    if (line.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal) ||
+                        line.StartsWith("remote: Counting objects:", StringComparison.Ordinal) ||
+                        line.StartsWith("remote: Compressing objects:", StringComparison.Ordinal) ||
+                        line.StartsWith("Filtering content:", StringComparison.Ordinal) ||
+                        line.StartsWith("hint: ", StringComparison.Ordinal))
+                        return;
+
+                    if (REG_PROGRESS().IsMatch(line))
+                        return;
                 }
 
-                Log?.AppendLine(e.Data);
-
-                // Ignore progress messages
-                if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal))
-                    return;
-                if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal))
-                    return;
-                if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal))
-                    return;
-                if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal))
-                    return;
-                if (REG_PROGRESS().IsMatch(e.Data))
-                    return;
-
-                errs.Add(e.Data);
+                errs.Add(line);
             };
 
             var dummy = null as Process;
