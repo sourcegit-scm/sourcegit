@@ -60,7 +60,7 @@ namespace SourceGit.Commands
                         line.StartsWith("remote: Counting objects:", StringComparison.Ordinal) ||
                         line.StartsWith("remote: Compressing objects:", StringComparison.Ordinal) ||
                         line.StartsWith("Filtering content:", StringComparison.Ordinal) ||
-                        line.StartsWith("hint: ", StringComparison.Ordinal))
+                        line.StartsWith("hint:", StringComparison.Ordinal))
                         return;
 
                     if (REG_PROGRESS().IsMatch(line))
