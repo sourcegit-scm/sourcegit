@@ -48,15 +48,36 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public InteractiveRebaseItem(Models.Commit c, string message)
+        public bool HasParent
+        {
+            get
+            {
+                if (_parent?.Items == null || _parent.On == null)
+                    return true;
+
+                var isLastCommit = _parent.Items.IndexOf(this) == _parent.Items.Count - 1;
+                if (!isLastCommit)
+                    return true;
+
+                return _parent.On.Parents?.Count > 0;
+            }
+        }
+
+        private readonly InteractiveRebase _parent;
+
+        public InteractiveRebaseItem(Models.Commit c, string message, InteractiveRebase parent)
         {
             Commit = c;
             FullMessage = message;
+            _parent = parent;
         }
 
         public void SetAction(object param)
         {
-            Action = (Models.InteractiveRebaseAction)param;
+            var action = (Models.InteractiveRebaseAction)param;
+            if ((action is Models.InteractiveRebaseAction.Squash or Models.InteractiveRebaseAction.Fixup) && !HasParent)
+                return;
+            Action = action;
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
@@ -122,7 +143,7 @@ namespace SourceGit.ViewModels
                 var list = new List<InteractiveRebaseItem>();
 
                 foreach (var c in commits)
-                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message));
+                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message, this));
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
