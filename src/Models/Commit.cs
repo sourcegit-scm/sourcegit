@@ -18,6 +18,9 @@ namespace SourceGit.Models
 
     public class Commit
     {
+        // As retrieved by: git mktree </dev/null
+        public static readonly string EmptyTreeSHA1 = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
+
         public static double OpacityForNotMerged
         {
             get;

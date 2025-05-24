@@ -69,7 +69,7 @@ namespace SourceGit.ViewModels
                                 changes = new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).Result();
                                 if (value.Parents.Count == 3)
                                 {
-                                    var untracked = new Commands.CompareRevisions(_repo.FullPath, "4b825dc642cb6eb9a060e54bf8d69288fbee4904", value.Parents[2]).Result();
+                                    var untracked = new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2]).Result();
                                     var needSort = changes.Count > 0;
 
                                     foreach (var c in untracked)
@@ -107,7 +107,7 @@ namespace SourceGit.ViewModels
                     if (value == null)
                         DiffContext = null;
                     else if (value.Index == Models.ChangeState.Added && _selectedStash.Parents.Count == 3)
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption("4b825dc642cb6eb9a060e54bf8d69288fbee4904", _selectedStash.Parents[2], value), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], value), _diffContext);
                     else
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value), _diffContext);
                 }
@@ -182,7 +182,7 @@ namespace SourceGit.ViewModels
                     foreach (var c in _changes)
                     {
                         if (c.Index == Models.ChangeState.Added && _selectedStash.Parents.Count == 3)
-                            opts.Add(new Models.DiffOption("4b825dc642cb6eb9a060e54bf8d69288fbee4904", _selectedStash.Parents[2], c));
+                            opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
                         else
                             opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
                     }
