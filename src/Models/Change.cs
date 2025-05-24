@@ -18,8 +18,8 @@ namespace SourceGit.Models
         Deleted,
         Renamed,
         Copied,
-        Unmerged,
-        Untracked
+        Untracked,
+        Conflicted,
     }
 
     public class ChangeDataForAmend
@@ -36,20 +36,7 @@ namespace SourceGit.Models
         public string Path { get; set; } = "";
         public string OriginalPath { get; set; } = "";
         public ChangeDataForAmend DataForAmend { get; set; } = null;
-
-        public bool IsConflict
-        {
-            get
-            {
-                if (Index == ChangeState.Unmerged || WorkTree == ChangeState.Unmerged)
-                    return true;
-                if (Index == ChangeState.Added && WorkTree == ChangeState.Added)
-                    return true;
-                if (Index == ChangeState.Deleted && WorkTree == ChangeState.Deleted)
-                    return true;
-                return false;
-            }
-        }
+        public bool IsConflicted => WorkTree == ChangeState.Conflicted;
 
         public void Set(ChangeState index, ChangeState workTree = ChangeState.None)
         {
@@ -77,6 +64,7 @@ namespace SourceGit.Models
 
             if (Path[0] == '"')
                 Path = Path.Substring(1, Path.Length - 2);
+            
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
         }

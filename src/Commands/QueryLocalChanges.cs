@@ -128,30 +128,16 @@ namespace SourceGit.Commands
                         change.Set(Models.ChangeState.Deleted, Models.ChangeState.Copied);
                         break;
                     case "DD":
-                        change.Set(Models.ChangeState.Deleted, Models.ChangeState.Deleted);
-                        break;
                     case "AU":
-                        change.Set(Models.ChangeState.Added, Models.ChangeState.Unmerged);
-                        break;
                     case "UD":
-                        change.Set(Models.ChangeState.Unmerged, Models.ChangeState.Deleted);
-                        break;
                     case "UA":
-                        change.Set(Models.ChangeState.Unmerged, Models.ChangeState.Added);
-                        break;
                     case "DU":
-                        change.Set(Models.ChangeState.Deleted, Models.ChangeState.Unmerged);
-                        break;
                     case "AA":
-                        change.Set(Models.ChangeState.Added, Models.ChangeState.Added);
-                        break;
                     case "UU":
-                        change.Set(Models.ChangeState.Unmerged, Models.ChangeState.Unmerged);
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
                         break;
                     case "??":
-                        change.Set(Models.ChangeState.Untracked, Models.ChangeState.Untracked);
-                        break;
-                    default:
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Untracked);
                         break;
                 }
 

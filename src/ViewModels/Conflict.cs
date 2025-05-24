@@ -49,7 +49,6 @@ namespace SourceGit.ViewModels
             _change = change;
 
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
-
             IsResolved = !isSubmodule && new Commands.IsConflictResolved(repo.FullPath, change).Result();
 
             var context = wc.InProgressContext;
