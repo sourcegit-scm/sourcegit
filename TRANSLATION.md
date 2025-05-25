@@ -343,27 +343,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.25%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.BranchCM.ResetToSelectedCommit
-- Text.CommitDetail.Changes.Count
-- Text.CreateBranch.OverwriteExisting
-- Text.DeinitSubmodule
-- Text.DeinitSubmodule.Force
-- Text.DeinitSubmodule.Path
-- Text.Diff.Submodule.Deleted
-- Text.Hotkeys.Global.SwitchTab
-- Text.Launcher.Pages
-- Text.Pull.RecurseSubmodules
-- Text.ResetWithoutCheckout
-- Text.ResetWithoutCheckout.MoveTo
-- Text.ResetWithoutCheckout.Target
-- Text.Submodule.Deinit
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-92.62%25-yellow)
 
