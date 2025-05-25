@@ -19,6 +19,19 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public bool CanSquashOrFixup
+        {
+            get => _canSquashOrFixup;
+            set
+            {
+                if (SetProperty(ref _canSquashOrFixup, value))
+                {
+                    if (_action == Models.InteractiveRebaseAction.Squash || _action == Models.InteractiveRebaseAction.Fixup)
+                        Action = Models.InteractiveRebaseAction.Pick;
+                }
+            }
+        }
+
         public Models.InteractiveRebaseAction Action
         {
             get => _action;
@@ -48,10 +61,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public InteractiveRebaseItem(Models.Commit c, string message)
+        public InteractiveRebaseItem(Models.Commit c, string message, bool canSquashOrFixup)
         {
             Commit = c;
             FullMessage = message;
+            CanSquashOrFixup = canSquashOrFixup;
         }
 
         public void SetAction(object param)
@@ -62,6 +76,7 @@ namespace SourceGit.ViewModels
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
         private string _subject;
         private string _fullMessage;
+        private bool _canSquashOrFixup = true;
     }
 
     public class InteractiveRebase : ObservableObject
@@ -88,7 +103,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = new AvaloniaList<InteractiveRebaseItem>();
+        } = [];
 
         public InteractiveRebaseItem SelectedItem
         {
@@ -121,8 +136,11 @@ namespace SourceGit.ViewModels
                 var commits = new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).Result();
                 var list = new List<InteractiveRebaseItem>();
 
-                foreach (var c in commits)
-                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message));
+                for (var i = 0; i < commits.Count; i++)
+                {
+                    var c = commits[i];
+                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
+                }
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -140,6 +158,9 @@ namespace SourceGit.ViewModels
                 var prev = Items[idx - 1];
                 Items.RemoveAt(idx - 1);
                 Items.Insert(idx, prev);
+                
+                item.CanSquashOrFixup = true;
+                prev.CanSquashOrFixup = idx < Items.Count - 1;
                 SelectedItem = item;
             }
         }
@@ -152,6 +173,9 @@ namespace SourceGit.ViewModels
                 var next = Items[idx + 1];
                 Items.RemoveAt(idx + 1);
                 Items.Insert(idx, next);
+
+                item.CanSquashOrFixup = idx < Items.Count - 2;
+                next.CanSquashOrFixup = true;
                 SelectedItem = item;
             }
         }

@@ -143,7 +143,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="S" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Squash}">
+                      <MenuItem InputGesture="S" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Squash}" IsVisible="{Binding CanSquashOrFixup}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="LightGray"/>
                         </MenuItem.Icon>
@@ -155,7 +155,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="F" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Fixup}">
+                      <MenuItem InputGesture="F" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Fixup}" IsVisible="{Binding CanSquashOrFixup}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="LightGray"/>
                         </MenuItem.Icon>
