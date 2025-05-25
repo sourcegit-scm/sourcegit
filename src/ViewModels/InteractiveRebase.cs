@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
         public Models.InteractiveRebaseAction Action
         {
             get => _action;
-            private set => SetProperty(ref _action, value);
+            set => SetProperty(ref _action, value);
         }
 
         public string Subject
@@ -66,11 +66,6 @@ namespace SourceGit.ViewModels
             Commit = c;
             FullMessage = message;
             CanSquashOrFixup = canSquashOrFixup;
-        }
-
-        public void SetAction(object param)
-        {
-            Action = (Models.InteractiveRebaseAction)param;
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
@@ -158,10 +153,8 @@ namespace SourceGit.ViewModels
                 var prev = Items[idx - 1];
                 Items.RemoveAt(idx - 1);
                 Items.Insert(idx, prev);
-                
-                item.CanSquashOrFixup = true;
-                prev.CanSquashOrFixup = idx < Items.Count - 1;
                 SelectedItem = item;
+                UpdateItems();
             }
         }
 
@@ -173,11 +166,21 @@ namespace SourceGit.ViewModels
                 var next = Items[idx + 1];
                 Items.RemoveAt(idx + 1);
                 Items.Insert(idx, next);
-
-                item.CanSquashOrFixup = idx < Items.Count - 2;
-                next.CanSquashOrFixup = true;
                 SelectedItem = item;
+                UpdateItems();
             }
+        }
+
+        public void ChangeAction(InteractiveRebaseItem item, Models.InteractiveRebaseAction action)
+        {
+            if (!item.CanSquashOrFixup)
+            {
+                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
+                    return;
+            }
+            
+            item.Action = action;
+            UpdateItems();
         }
 
         public Task<bool> Start()
@@ -208,6 +211,27 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
+        }
+
+        private void UpdateItems()
+        {
+            if (Items.Count == 0)
+                return;
+
+            var hasValidParent = false;
+            for (var i = Items.Count - 1; i >= 0; i--)
+            {
+                var item = Items[i];
+                if (hasValidParent)
+                {
+                    item.CanSquashOrFixup = true;
+                }
+                else
+                {
+                    item.CanSquashOrFixup = false;
+                    hasValidParent = item.Action != Models.InteractiveRebaseAction.Drop;
+                }
+            }
         }
 
         private Repository _repo = null;

@@ -29,32 +29,32 @@ namespace SourceGit.Views
 
             if (e.Key == Key.P)
             {
-                item.SetAction(Models.InteractiveRebaseAction.Pick);
+                vm.ChangeAction(item, Models.InteractiveRebaseAction.Pick);
                 e.Handled = true;
             }
             else if (e.Key == Key.E)
             {
-                item.SetAction(Models.InteractiveRebaseAction.Edit);
+                vm.ChangeAction(item, Models.InteractiveRebaseAction.Edit);
                 e.Handled = true;
             }
             else if (e.Key == Key.R)
             {
-                item.SetAction(Models.InteractiveRebaseAction.Reword);
+                vm.ChangeAction(item, Models.InteractiveRebaseAction.Reword);
                 e.Handled = true;
             }
             else if (e.Key == Key.S)
             {
-                item.SetAction(Models.InteractiveRebaseAction.Squash);
+                vm.ChangeAction(item, Models.InteractiveRebaseAction.Squash);
                 e.Handled = true;
             }
             else if (e.Key == Key.F)
             {
-                item.SetAction(Models.InteractiveRebaseAction.Fixup);
+                vm.ChangeAction(item, Models.InteractiveRebaseAction.Fixup);
                 e.Handled = true;
             }
             else if (e.Key == Key.D)
             {
-                item.SetAction(Models.InteractiveRebaseAction.Drop);
+                vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
                 e.Handled = true;
             }
             else if (e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Up)
@@ -153,8 +153,21 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+        
+        private void OnChangeRebaseAction(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.InteractiveRebase vm &&
+                sender is Control
+                {
+                    DataContext: ViewModels.InteractiveRebaseItem item,
+                    Tag: Models.InteractiveRebaseAction action
+                })
+                vm.ChangeAction(item, action);
 
-        private async void StartJobs(object _1, RoutedEventArgs _2)
+            e.Handled = true;
+        }
+
+        private async void OnStartJobs(object _1, RoutedEventArgs _2)
         {
             var vm = DataContext as ViewModels.InteractiveRebase;
             if (vm == null)
