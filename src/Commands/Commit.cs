@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Commit : Command
     {
-        public Commit(string repo, string message, bool amend, bool signOff)
+        public Commit(string repo, string message, bool signOff, bool amend, bool resetAuthor)
         {
             _tmpFile = Path.GetTempFileName();
             File.WriteAllText(_tmpFile, message);
@@ -12,10 +12,10 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             Args = $"commit --allow-empty --file=\"{_tmpFile}\"";
-            if (amend)
-                Args += " --amend --no-edit";
             if (signOff)
                 Args += " --signoff";
+            if (amend)
+                Args += resetAuthor ? " --amend --reset-author --no-edit" : " --amend --no-edit";
         }
 
         public bool Run()

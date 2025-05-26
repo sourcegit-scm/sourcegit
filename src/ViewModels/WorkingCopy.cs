@@ -91,6 +91,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         CommitMessage = string.Empty;
+                        ResetAuthor = false;
                     }
 
                     Staged = GetStagedChanges();
@@ -98,6 +99,12 @@ namespace SourceGit.ViewModels
                     SelectedStaged = [];
                 }
             }
+        }
+
+        public bool ResetAuthor
+        {
+            get => _resetAuthor;
+            set => SetProperty(ref _resetAuthor, value);
         }
 
         public string Filter
@@ -1717,6 +1724,7 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
+            var signOff = _repo.Settings.EnableSignOffForCommit;
             var log = _repo.CreateLog("Commit");
             Task.Run(() =>
             {
@@ -1725,7 +1733,7 @@ namespace SourceGit.ViewModels
                     succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).Run();
 
                 log.Complete();
 
@@ -1785,6 +1793,7 @@ namespace SourceGit.ViewModels
         private bool _isUnstaging = false;
         private bool _isCommitting = false;
         private bool _useAmend = false;
+        private bool _resetAuthor = false;
         private bool _hasRemotes = false;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];
