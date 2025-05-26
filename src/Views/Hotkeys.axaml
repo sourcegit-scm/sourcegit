@@ -149,7 +149,7 @@
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="primary bold" Text="ESC"/>
           <TextBlock Grid.Row="3" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.CloseSearch}" />
 
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+D, macOS=⌘+D}"/>
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}"/>
           <TextBlock Grid.Row="4" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.TextEditor.OpenExternalMergeTool}" />
         </Grid>
       </StackPanel>

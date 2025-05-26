@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class WorkingCopy : ObservableObject
+    public class WorkingCopy : ObservableObject, IDisposable
     {
         public bool IncludeUntracked
         {
@@ -210,7 +210,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
             _repo = null;
             _inProgressContext = null;
@@ -244,7 +244,7 @@ namespace SourceGit.ViewModels
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflict) != null;
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
 
                     UpdateDetail();
                     UpdateInProgressState();
@@ -276,7 +276,7 @@ namespace SourceGit.ViewModels
                 if (c.WorkTree != Models.ChangeState.None)
                 {
                     unstaged.Add(c);
-                    hasConflict |= c.IsConflict;
+                    hasConflict |= c.IsConflicted;
                 }
             }
 
@@ -378,7 +378,7 @@ namespace SourceGit.ViewModels
 
             foreach (var change in changes)
             {
-                if (!change.IsConflict)
+                if (!change.IsConflicted)
                     continue;
 
                 if (change.WorkTree == Models.ChangeState.Deleted)
@@ -420,7 +420,7 @@ namespace SourceGit.ViewModels
 
             foreach (var change in changes)
             {
-                if (!change.IsConflict)
+                if (!change.IsConflicted)
                     continue;
 
                 if (change.Index == Models.ChangeState.Deleted)
@@ -547,17 +547,17 @@ namespace SourceGit.ViewModels
 
         public void Commit()
         {
-            DoCommit(false, false, false);
+            DoCommit(false, false);
         }
 
         public void CommitWithAutoStage()
         {
-            DoCommit(true, false, false);
+            DoCommit(true, false);
         }
 
         public void CommitWithPush()
         {
-            DoCommit(false, true, false);
+            DoCommit(false, true);
         }
 
         public ContextMenu CreateContextMenuForUnstagedChanges()
@@ -594,7 +594,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(openWith);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                if (change.IsConflict)
+                if (change.IsConflicted)
                 {
                     var useTheirs = new MenuItem();
                     useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
@@ -949,7 +949,7 @@ namespace SourceGit.ViewModels
                 var hasNonConflicts = false;
                 foreach (var change in _selectedUnstaged)
                 {
-                    if (change.IsConflict)
+                    if (change.IsConflicted)
                         hasConflicts = true;
                     else
                         hasNonConflicts = true;
@@ -1528,14 +1528,13 @@ namespace SourceGit.ViewModels
             if (_useAmend)
             {
                 var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").Result();
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{head.SHA}^").Result();
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^").Result();
             }
 
             var rs = new List<Models.Change>();
             foreach (var c in _cached)
             {
-                if (c.Index != Models.ChangeState.None &&
-                    c.Index != Models.ChangeState.Untracked)
+                if (c.Index != Models.ChangeState.None)
                     rs.Add(c);
             }
             return rs;
@@ -1681,7 +1680,7 @@ namespace SourceGit.ViewModels
 
             if (change == null)
                 DetailContext = null;
-            else if (change.IsConflict && isUnstaged)
+            else if (change.IsConflicted)
                 DetailContext = new Conflict(_repo, this, change);
             else
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
@@ -1763,14 +1762,17 @@ namespace SourceGit.ViewModels
         {
             if (old.Count != cur.Count)
                 return true;
-
-            var oldSet = new HashSet<string>();
+            
+            var oldMap = new Dictionary<string, Models.Change>();
             foreach (var c in old)
-                oldSet.Add($"{c.Path}\n{c.WorkTree}\n{c.Index}");
+                oldMap.Add(c.Path, c);
 
             foreach (var c in cur)
             {
-                if (!oldSet.Contains($"{c.Path}\n{c.WorkTree}\n{c.Index}"))
+                if (!oldMap.TryGetValue(c.Path, out var o))
+                    return true;
+
+                if (o.Index != c.Index || o.WorkTree != c.WorkTree)
                     return true;
             }
 

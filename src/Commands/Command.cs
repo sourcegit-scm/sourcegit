@@ -36,44 +36,14 @@ namespace SourceGit.Commands
 
         public bool Exec()
         {
+            Log?.AppendLine($"$ git {Args}\n");
+
             var start = CreateGitStartInfo();
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
 
-            Log?.AppendLine($"$ git {Args}\n");
-
-            proc.OutputDataReceived += (_, e) =>
-            {
-                if (e.Data == null)
-                    return;
-
-                Log?.AppendLine(e.Data);
-            };
-
-            proc.ErrorDataReceived += (_, e) =>
-            {
-                if (string.IsNullOrEmpty(e.Data))
-                {
-                    errs.Add(string.Empty);
-                    return;
-                }
-
-                Log?.AppendLine(e.Data);
-
-                // Ignore progress messages
-                if (e.Data.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal))
-                    return;
-                if (e.Data.StartsWith("remote: Counting objects:", StringComparison.Ordinal))
-                    return;
-                if (e.Data.StartsWith("remote: Compressing objects:", StringComparison.Ordinal))
-                    return;
-                if (e.Data.StartsWith("Filtering content:", StringComparison.Ordinal))
-                    return;
-                if (REG_PROGRESS().IsMatch(e.Data))
-                    return;
-
-                errs.Add(e.Data);
-            };
+            proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
+            proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
 
             var dummy = null as Process;
             var dummyProcLock = new object();
@@ -220,6 +190,28 @@ namespace SourceGit.Commands
                 start.WorkingDirectory = WorkingDirectory;
 
             return start;
+        }
+
+        private void HandleOutput(string line, List<string> errs)
+        {
+            line = line ?? string.Empty;
+            Log?.AppendLine(line);
+
+            // Lines to hide in error message.
+            if (line.Length > 0)
+            {
+                if (line.StartsWith("remote: Enumerating objects:", StringComparison.Ordinal) ||
+                    line.StartsWith("remote: Counting objects:", StringComparison.Ordinal) ||
+                    line.StartsWith("remote: Compressing objects:", StringComparison.Ordinal) ||
+                    line.StartsWith("Filtering content:", StringComparison.Ordinal) ||
+                    line.StartsWith("hint:", StringComparison.Ordinal))
+                    return;
+
+                if (REG_PROGRESS().IsMatch(line))
+                    return;
+            }
+
+            errs.Add(line);
         }
 
         [GeneratedRegex(@"\d+%")]

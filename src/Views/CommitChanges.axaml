@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitChanges"
              x:DataType="vm:CommitDetail">
@@ -14,7 +15,7 @@
       <ColumnDefinition Width="*" MinWidth="100"/>
     </Grid.ColumnDefinitions>
 
-    <Grid Grid.Column="0" RowDefinitions="26,*">
+    <Grid Grid.Column="0" RowDefinitions="26,*,26">
       <!-- Search & Display Mode -->
       <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
         <TextBox Grid.Column="0"
@@ -51,6 +52,16 @@
                                 SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                 AutoSelectFirstChange="True"
                                 ContextRequested="OnChangeContextRequested"/>
+      </Border>
+
+      <!-- Summary -->
+      <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1,0,1,1" Background="Transparent">
+        <TextBlock Margin="4,0,0,0"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   HorizontalAlignment="Left" VerticalAlignment="Center">
+          <Run Text="{Binding Changes, Converter={x:Static c:ListConverters.Count}, Mode=OneWay}" FontWeight="Bold"/>
+          <Run Text="{DynamicResource Text.CommitDetail.Changes.Count}"/>
+        </TextBlock>
       </Border>
     </Grid>
 

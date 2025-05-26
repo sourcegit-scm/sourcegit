@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace SourceGit.Views
 {
-    public partial class FastForwardWithoutCheckout : UserControl
+    public partial class DeinitSubmodule : UserControl
     {
-        public FastForwardWithoutCheckout()
+        public DeinitSubmodule()
         {
             InitializeComponent();
         }

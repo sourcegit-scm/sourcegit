@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Renombrar ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Resetear ${0}$ a ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Establecer Rama de Seguimiento...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Comparar Ramas</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">¡Upstream inválido!</x:String>
@@ -128,6 +129,7 @@
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash en Parent</x:String>
   <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Commits Hijos hasta Aquí</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CAMBIOS</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">archivo(s) modificado(s)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Cambios...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARCHIVOS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Archivo LFS</x:String>
@@ -233,6 +235,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">ligera</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Mantenga Ctrl para iniciar directamente</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Cortar</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Desinicializar Submódulo</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Forzar desinicialización incluso si contiene cambios locales.</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submódulo:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Eliminar Rama</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Rama:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">¡Estás a punto de eliminar una rama remota!</x:String>
@@ -268,6 +273,7 @@
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostrar símbolos ocultos</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diferencia Lado a Lado</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMÓDULO</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">BORRADO</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NUEVO</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Intercambiar</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Resaltado de Sintaxis</x:String>
@@ -292,7 +298,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Editar Repositorio Seleccionado</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Ejecutar Acción Personalizada</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Nombre de la Acción:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (sin checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch todos los remotos</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Utilizar opción '--force'</x:String>
@@ -390,6 +395,8 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Ir a la página anterior</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Crear nueva página</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Abrir diálogo de preferencias</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">Cambiar espacio de trabajo activo</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Cambiar página activa</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORIO</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit cambios staged</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit y push cambios staged</x:String>
@@ -432,6 +439,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Abrir en el Navegador</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVISO</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Espacios de trabajo</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Páginas</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Rama</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opción de Merge:</x:String>
@@ -530,12 +539,11 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar información de worktree en `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Rama Remota:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch todas las ramas</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch sin etiquetas</x:String>
+  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Actualizar todos los submódulos</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Usar rebase en lugar de merge</x:String>
@@ -646,6 +654,9 @@
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Modo de Reset:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Mover a:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">Rama Actual:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Resetear Rama (Sin hacer Checkout)</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Mover A:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Rama:</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">Revelar en el Explorador de Archivos</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">Revertir Commit</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
@@ -705,6 +716,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Añadir Submódulo</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copiar Ruta Relativa</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">Desinicializar Submódulo</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch submódulos anidados</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Abrir Repositorio del Submódulo</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Ruta Relativa:</x:String>

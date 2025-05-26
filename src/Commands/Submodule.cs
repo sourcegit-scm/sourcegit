@@ -13,7 +13,7 @@ namespace SourceGit.Commands
 
         public bool Add(string url, string relativePath, bool recursive)
         {
-            Args = $"submodule add {url} \"{relativePath}\"";
+            Args = $"-c protocol.file.allow=always submodule add \"{url}\" \"{relativePath}\"";
             if (!Exec())
                 return false;
 
@@ -29,23 +29,7 @@ namespace SourceGit.Commands
             }
         }
 
-        public bool Update(string module, bool init, bool recursive, bool useRemote)
-        {
-            Args = "submodule update";
-
-            if (init)
-                Args += " --init";
-            if (recursive)
-                Args += " --recursive";
-            if (useRemote)
-                Args += " --remote";
-            if (!string.IsNullOrEmpty(module))
-                Args += $" -- \"{module}\"";
-
-            return Exec();
-        }
-
-        public bool Update(List<Models.Submodule> modules, bool init, bool recursive, bool useRemote)
+        public bool Update(List<string> modules, bool init, bool recursive, bool useRemote = false)
         {
             var builder = new StringBuilder();
             builder.Append("submodule update");
@@ -60,20 +44,22 @@ namespace SourceGit.Commands
             {
                 builder.Append(" --");
                 foreach (var module in modules)
-                    builder.Append($" \"{module.Path}\"");
+                    builder.Append($" \"{module}\"");
             }
 
             Args = builder.ToString();
             return Exec();
         }
 
-        public bool Delete(string relativePath)
+        public bool Deinit(string module, bool force)
         {
-            Args = $"submodule deinit -f \"{relativePath}\"";
-            if (!Exec())
-                return false;
+            Args = force ? $"submodule deinit -f -- \"{module}\"" : $"submodule deinit -- \"{module}\"";
+            return Exec();
+        }
 
-            Args = $"rm -rf \"{relativePath}\"";
+        public bool Delete(string module)
+        {
+            Args = $"rm -rf \"{module}\"";
             return Exec();
         }
     }

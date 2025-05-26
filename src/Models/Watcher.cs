@@ -107,7 +107,6 @@ namespace SourceGit.Models
             {
                 _updateBranch = 0;
                 _updateWC = 0;
-                _updateSubmodules = 0;
 
                 if (_updateTags > 0)
                 {
@@ -115,10 +114,15 @@ namespace SourceGit.Models
                     Task.Run(_repo.RefreshTags);
                 }
 
+                if (_updateSubmodules > 0 || _repo.MayHaveSubmodules())
+                {
+                    _updateSubmodules = 0;
+                    Task.Run(_repo.RefreshSubmodules);
+                }
+
                 Task.Run(_repo.RefreshBranches);
                 Task.Run(_repo.RefreshCommits);
                 Task.Run(_repo.RefreshWorkingCopyChanges);
-                Task.Run(_repo.RefreshSubmodules);
                 Task.Run(_repo.RefreshWorktrees);
             }
 
@@ -150,14 +154,29 @@ namespace SourceGit.Models
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Name) || e.Name.EndsWith(".lock", StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(e.Name))
                 return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name.StartsWith("modules", StringComparison.Ordinal) && name.EndsWith("HEAD", StringComparison.Ordinal))
+            if (name.Contains("fsmonitor--daemon/", StringComparison.Ordinal) ||
+                name.EndsWith(".lock", StringComparison.Ordinal) ||
+                name.StartsWith("lfs/", StringComparison.Ordinal))
+                return;
+
+            if (name.StartsWith("modules", StringComparison.Ordinal))
             {
-                _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+                if (name.EndsWith("/HEAD", StringComparison.Ordinal) ||
+                    name.EndsWith("/ORIG_HEAD", StringComparison.Ordinal))
+                {
+                    _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                    _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+                }
+            }
+            else if (name.Equals("MERGE_HEAD", StringComparison.Ordinal) ||
+                name.Equals("AUTO_MERGE", StringComparison.Ordinal))
+            {
+                if (_repo.MayHaveSubmodules())
+                    _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
             }
             else if (name.StartsWith("refs/tags", StringComparison.Ordinal))
             {
@@ -187,8 +206,19 @@ namespace SourceGit.Models
                 return;
 
             var name = e.Name.Replace("\\", "/");
-            if (name == ".git" || name.StartsWith(".git/", StringComparison.Ordinal))
+            if (name.Equals(".git", StringComparison.Ordinal) ||
+                name.StartsWith(".git/", StringComparison.Ordinal) ||
+                name.EndsWith("/.git", StringComparison.Ordinal))
                 return;
+
+            if (name.StartsWith(".vs/", StringComparison.Ordinal))
+                return;
+
+            if (name.Equals(".gitmodules", StringComparison.Ordinal))
+            {
+                _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                return;
+            }
 
             lock (_lockSubmodule)
             {

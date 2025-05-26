@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送 (push) ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 分支至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重新命名 ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重設 ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切換上游分支...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比較</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">追蹤上游分支不存在或已刪除!</x:String>
@@ -128,6 +129,7 @@
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合併此提交到上一個提交</x:String>
   <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">合併之後的提交到此處</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">變更對比</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">個檔案已變更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">搜尋變更...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">檔案列表</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS 檔案</x:String>
@@ -219,6 +221,7 @@
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">輸入分支名稱。</x:String>
   <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">空格將以英文破折號取代</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本機分支</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">允許覆寫現有分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新增標籤...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">標籤位於:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">使用 GPG 簽章</x:String>
@@ -233,6 +236,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住 Ctrl 鍵將直接以預設參數執行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">取消初始化子模組</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">強制取消，即使它包含本地變更</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模組 ：</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名稱:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在刪除遠端上的分支，請務必小心!</x:String>
@@ -268,6 +274,7 @@
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">已刪除</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法上色</x:String>
@@ -292,7 +299,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯存放庫</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">執行自訂動作</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自訂動作:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">快進 (fast-forward，無需 checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">強制覆寫本機 REFs</x:String>
@@ -534,12 +540,11 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">清理在 `$GIT_COMMON_DIR/worktrees` 中的無效工作區資訊</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">拉取 (pull)</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">拉取遠端中的所有分支</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">不拉取遠端標籤</x:String>
+  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉取 (提取並合併)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用重定基底 (rebase) 合併分支</x:String>
@@ -650,6 +655,9 @@
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">重設模式:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">移至提交:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">目前分支:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">重設選取的分支（非目前分支）</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">重設位置 ：</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">選取分支 ：</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">在檔案瀏覽器中檢視</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">復原操作確認</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目標提交:</x:String>
@@ -709,6 +717,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">新增子模組</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">複製路徑</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">提取子模組</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">開啟存放庫</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>

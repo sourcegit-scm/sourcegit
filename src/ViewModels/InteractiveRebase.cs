@@ -19,10 +19,23 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public bool CanSquashOrFixup
+        {
+            get => _canSquashOrFixup;
+            set
+            {
+                if (SetProperty(ref _canSquashOrFixup, value))
+                {
+                    if (_action == Models.InteractiveRebaseAction.Squash || _action == Models.InteractiveRebaseAction.Fixup)
+                        Action = Models.InteractiveRebaseAction.Pick;
+                }
+            }
+        }
+
         public Models.InteractiveRebaseAction Action
         {
             get => _action;
-            private set => SetProperty(ref _action, value);
+            set => SetProperty(ref _action, value);
         }
 
         public string Subject
@@ -48,20 +61,17 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public InteractiveRebaseItem(Models.Commit c, string message)
+        public InteractiveRebaseItem(Models.Commit c, string message, bool canSquashOrFixup)
         {
             Commit = c;
             FullMessage = message;
-        }
-
-        public void SetAction(object param)
-        {
-            Action = (Models.InteractiveRebaseAction)param;
+            CanSquashOrFixup = canSquashOrFixup;
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
         private string _subject;
         private string _fullMessage;
+        private bool _canSquashOrFixup = true;
     }
 
     public class InteractiveRebase : ObservableObject
@@ -88,7 +98,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = new AvaloniaList<InteractiveRebaseItem>();
+        } = [];
 
         public InteractiveRebaseItem SelectedItem
         {
@@ -121,8 +131,11 @@ namespace SourceGit.ViewModels
                 var commits = new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).Result();
                 var list = new List<InteractiveRebaseItem>();
 
-                foreach (var c in commits)
-                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message));
+                for (var i = 0; i < commits.Count; i++)
+                {
+                    var c = commits[i];
+                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
+                }
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -141,6 +154,7 @@ namespace SourceGit.ViewModels
                 Items.RemoveAt(idx - 1);
                 Items.Insert(idx, prev);
                 SelectedItem = item;
+                UpdateItems();
             }
         }
 
@@ -153,7 +167,20 @@ namespace SourceGit.ViewModels
                 Items.RemoveAt(idx + 1);
                 Items.Insert(idx, next);
                 SelectedItem = item;
+                UpdateItems();
             }
+        }
+
+        public void ChangeAction(InteractiveRebaseItem item, Models.InteractiveRebaseAction action)
+        {
+            if (!item.CanSquashOrFixup)
+            {
+                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
+                    return;
+            }
+            
+            item.Action = action;
+            UpdateItems();
         }
 
         public Task<bool> Start()
@@ -184,6 +211,27 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Invoke(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
+        }
+
+        private void UpdateItems()
+        {
+            if (Items.Count == 0)
+                return;
+
+            var hasValidParent = false;
+            for (var i = Items.Count - 1; i >= 0; i--)
+            {
+                var item = Items[i];
+                if (hasValidParent)
+                {
+                    item.CanSquashOrFixup = true;
+                }
+                else
+                {
+                    item.CanSquashOrFixup = false;
+                    hasValidParent = item.Action != Models.InteractiveRebaseAction.Drop;
+                }
+            }
         }
 
         private Repository _repo = null;

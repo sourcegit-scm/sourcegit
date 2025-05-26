@@ -50,16 +50,15 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
 
-        public bool FetchAllBranches
+        public bool IsRecurseSubmoduleVisible
         {
-            get => _repo.Settings.FetchAllBranchesOnPull;
-            set => _repo.Settings.FetchAllBranchesOnPull = value;
+            get => _repo.Submodules.Count > 0;
         }
 
-        public bool NoTags
+        public bool RecurseSubmodules
         {
-            get => _repo.Settings.FetchWithoutTagsOnPull;
-            set => _repo.Settings.FetchWithoutTagsOnPull = value;
+            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
+            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
         }
 
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
@@ -119,6 +118,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Pull");
             Use(log);
 
+            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
                 var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
@@ -143,47 +143,31 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                bool rs;
-                if (FetchAllBranches)
+                bool rs = new Commands.Pull(
+                    _repo.FullPath,
+                    _selectedRemote.Name,
+                    !string.IsNullOrEmpty(_current.Upstream) && _current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
+                    UseRebase).Use(log).Exec();
+
+                if (rs)
                 {
-                    rs = new Commands.Fetch(
-                        _repo.FullPath,
-                        _selectedRemote.Name,
-                        NoTags,
-                        false).Use(log).Exec();
-                    if (!rs)
+                    if (updateSubmodules)
                     {
-                        log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
-                        return false;
+                        var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
+                        if (submodules.Count > 0)
+                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
                     }
 
-                    _repo.MarkFetched();
-
-                    // Use merge/rebase instead of pull as fetch is done manually.
-                    if (UseRebase)
-                        rs = new Commands.Rebase(_repo.FullPath, _selectedBranch.FriendlyName, false).Use(log).Exec();
-                    else
-                        rs = new Commands.Merge(_repo.FullPath, _selectedBranch.FriendlyName, "").Use(log).Exec();
+                    if (needPopStash)
+                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
                 }
-                else
-                {
-                    rs = new Commands.Pull(
-                        _repo.FullPath,
-                        _selectedRemote.Name,
-                        _selectedBranch.Name,
-                        UseRebase,
-                        NoTags).Use(log).Exec();
-                }
-
-                if (rs && needPopStash)
-                    rs = new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
 
                 log.Complete();
 
+                var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
                 CallUIThread(() =>
                 {
-                    _repo.NavigateToBranchDelayed(_repo.CurrentBranch?.FullName);
+                    _repo.NavigateToCommitDelayed(head);
                     _repo.SetWatcherEnabled(true);
                 });
 

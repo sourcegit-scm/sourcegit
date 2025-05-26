@@ -145,6 +145,7 @@ namespace SourceGit.Views
 
                         removeCount++;
                     }
+
                     tree.Rows.RemoveRange(idx + 1, removeCount);
                 }
             }
@@ -207,6 +208,13 @@ namespace SourceGit.Views
             }
 
             return null;
+        }
+
+        public void TakeFocus()
+        {
+            var container = this.FindDescendantOfType<ChangeCollectionContainer>();
+            if (container is { IsFocused: false })
+                container.Focus();
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

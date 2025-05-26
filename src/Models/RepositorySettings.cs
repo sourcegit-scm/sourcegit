@@ -80,18 +80,6 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public bool FetchWithoutTagsOnPull
-        {
-            get;
-            set;
-        } = false;
-
-        public bool FetchAllBranchesOnPull
-        {
-            get;
-            set;
-        } = true;
-
         public bool CheckSubmodulesOnPush
         {
             get;
@@ -417,6 +405,7 @@ namespace SourceGit.Models
 
         public void PushCommitMessage(string message)
         {
+            message = message.Trim().ReplaceLineEndings("\n");
             var existIdx = CommitMessages.IndexOf(message);
             if (existIdx == 0)
                 return;

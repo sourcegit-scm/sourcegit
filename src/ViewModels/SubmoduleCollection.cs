@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
 {
     public class SubmoduleTreeNode : ObservableObject
     {
-        public string FullPath { get; set; } = string.Empty;
+        public string FullPath { get; private set; } = string.Empty;
         public int Depth { get; private set; } = 0;
         public Models.Submodule Module { get; private set; } = null;
         public List<SubmoduleTreeNode> Children { get; private set; } = [];

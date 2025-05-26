@@ -264,8 +264,11 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                vm.ActivePage.CancelPopup();
-                vm.CancelSwitcher();
+                if (vm.Switcher != null)
+                    vm.CancelSwitcher();
+                else
+                    vm.ActivePage.CancelPopup();
+
                 e.Handled = true;
                 return;
             }

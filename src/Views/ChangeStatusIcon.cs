@@ -49,20 +49,15 @@ namespace SourceGit.Views
             },
             new LinearGradientBrush
             {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
                 GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
             },
+            Brushes.OrangeRed,
         ];
 
-        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "U", "★"];
-        private static readonly string[] TIPS = ["Unknown", "Modified", "Type Changed", "Added", "Deleted", "Renamed", "Copied", "Unmerged", "Untracked"];
+        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "★", "!"];
+        private static readonly string[] TIPS = ["Unknown", "Modified", "Type Changed", "Added", "Deleted", "Renamed", "Copied", "Untracked", "Conflict"];
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
             AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));
@@ -93,16 +88,8 @@ namespace SourceGit.Views
             string indicator;
             if (IsUnstagedChange)
             {
-                if (Change.IsConflict)
-                {
-                    background = Brushes.OrangeRed;
-                    indicator = "!";
-                }
-                else
-                {
-                    background = BACKGROUNDS[(int)Change.WorkTree];
-                    indicator = INDICATOR[(int)Change.WorkTree];
-                }
+                background = BACKGROUNDS[(int)Change.WorkTree];
+                indicator = INDICATOR[(int)Change.WorkTree];
             }
             else
             {
@@ -139,7 +126,7 @@ namespace SourceGit.Views
                 }
 
                 if (isUnstaged)
-                    ToolTip.SetTip(this, c.IsConflict ? "Conflict" : TIPS[(int)c.WorkTree]);
+                    ToolTip.SetTip(this, TIPS[(int)c.WorkTree]);
                 else
                     ToolTip.SetTip(this, TIPS[(int)c.Index]);
 

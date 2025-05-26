@@ -178,12 +178,12 @@
             <Button Classes="icon_button"
                     Width="28"
                     Command="{Binding OpenExternalMergeTool}"
-                    HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}">
+                    HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
               <ToolTip.Tip>
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.UseMerger}"/>
                   <Run Text=" "/>
-                  <Run Text="{OnPlatform Ctrl+D, macOS=⌘+D}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <Run Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
               </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
@@ -279,8 +279,18 @@
 
                   <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-                  <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}">
-                    <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding New.Commit}" FullMessage="{Binding New.FullMessage}"/>
+                  <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <ContentControl Content="{Binding New}">
+                      <ContentControl.DataTemplates>
+                        <DataTemplate DataType="m:RevisionSubmodule">
+                          <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                        </DataTemplate>
+                      </ContentControl.DataTemplates>
+                    </ContentControl>
+                  </Border>
+
+                  <Border Margin="0,8,0,0" Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="8" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
+                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10"/>
                   </Border>
                 </StackPanel>
               </ScrollViewer>

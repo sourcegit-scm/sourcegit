@@ -23,7 +23,7 @@
         <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
         <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
           <Run Text="{DynamicResource Text.Stashes.Stashes}"/>
-          <Run Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}}"/>
+          <Run Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
         </TextBlock>
         <Button Grid.Column="2"
                 Classes="icon_button"
@@ -111,7 +111,7 @@
           <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
           <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
             <Run Text="{DynamicResource Text.Stashes.Changes}"/>
-            <Run Text="{Binding Changes, Converter={x:Static c:ListConverters.ToCount}}"/>
+            <Run Text="{Binding Changes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
           </TextBlock>
         </Grid>
       </Border>

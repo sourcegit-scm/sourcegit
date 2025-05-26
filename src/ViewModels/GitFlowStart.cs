@@ -5,6 +5,18 @@ namespace SourceGit.ViewModels
 {
     public class GitFlowStart : Popup
     {
+        public Models.GitFlowBranchType Type
+        {
+            get;
+            private set;
+        }
+
+        public string Prefix
+        {
+            get;
+            private set;
+        }
+
         [Required(ErrorMessage = "Name is required!!!")]
         [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(GitFlowStart), nameof(ValidateBranchName))]
@@ -14,27 +26,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _name, value, true);
         }
 
-        public string Prefix
-        {
-            get => _prefix;
-        }
-
-        public bool IsFeature => _type == "feature";
-        public bool IsRelease => _type == "release";
-        public bool IsHotfix => _type == "hotfix";
-
-        public GitFlowStart(Repository repo, string type)
+        public GitFlowStart(Repository repo, Models.GitFlowBranchType type)
         {
             _repo = repo;
-            _type = type;
-            _prefix = Commands.GitFlow.GetPrefix(repo.FullPath, type);
+
+            Type = type;
+            Prefix = _repo.GitFlow.GetPrefix(type);
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
         {
             if (ctx.ObjectInstance is GitFlowStart starter)
             {
-                var check = $"{starter._prefix}{name}";
+                var check = $"{starter.Prefix}{name}";
                 foreach (var b in starter._repo.Branches)
                 {
                     if (b.FriendlyName == check)
@@ -48,14 +52,14 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Git Flow - starting {_type} {_name} ...";
+            ProgressDescription = $"Git Flow - Start {Prefix}{_name} ...";
 
-            var log = _repo.CreateLog("Gitflow - Start");
+            var log = _repo.CreateLog("GitFlow - Start");
             Use(log);
 
             return Task.Run(() =>
             {
-                var succ = Commands.GitFlow.Start(_repo.FullPath, _type, _name, log);
+                var succ = Commands.GitFlow.Start(_repo.FullPath, Type, _name, log);
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;
@@ -63,8 +67,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private readonly string _type;
-        private readonly string _prefix;
         private string _name = null;
     }
 }

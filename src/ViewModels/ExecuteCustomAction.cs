@@ -36,13 +36,17 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Run custom action ...";
 
+            var log = _repo.CreateLog(CustomAction.Name);
+            Use(log);
+
             return Task.Run(() =>
             {
                 if (CustomAction.WaitForExit)
-                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, _args, output => CallUIThread(() => ProgressDescription = output));
+                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, _args, log);
                 else
                     Commands.ExecuteCustomAction.Run(_repo.FullPath, CustomAction.Executable, _args);
 
+                log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;
             });

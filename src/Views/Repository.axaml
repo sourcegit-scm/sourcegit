@@ -206,7 +206,7 @@
               <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Local}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
                 <Run Text="{DynamicResource Text.Repository.LocalBranches}"/>
-                <Run Text="{Binding LocalBranchesCount, StringFormat='({0})'}"/>
+                <Run Text="{Binding LocalBranchesCount, StringFormat='({0})', Mode=OneWay}"/>
               </TextBlock>
               <Button Grid.Column="2"
                       Classes="icon_button"
@@ -236,7 +236,7 @@
               <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
                 <Run Text="{DynamicResource Text.Repository.Remotes}"/>
-                <Run Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}}"/>
+                <Run Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
               </TextBlock>
               <Button Grid.Column="2"
                       Classes="icon_button"
@@ -266,7 +266,7 @@
               <Path Grid.Column="0" Width="11" Height="11" Margin="2,1,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
                 <Run Text="{DynamicResource Text.Repository.Tags}"/>
-                <Run Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}"/>
+                <Run Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
               </TextBlock>
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
@@ -308,7 +308,7 @@
               <Path Grid.Column="0" Width="10" Height="10" Margin="2,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
                 <Run Text="{DynamicResource Text.Repository.Submodules}"/>
-                <Run Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}"/>
+                <Run Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
               </TextBlock>
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
@@ -350,7 +350,7 @@
               <Path Grid.Column="0" Width="11" Height="11" Margin="1,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
                 <Run Text="{DynamicResource Text.Repository.Worktrees}"/>
-                <Run Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}"/>
+                <Run Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
               </TextBlock>
               <Button Grid.Column="2"
                       Classes="icon_button"

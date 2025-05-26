@@ -108,7 +108,7 @@
                            Classes="primary"
                            Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis">
-                  <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
+                  <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
                   <Run Text="{Binding ChildCounter}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
 

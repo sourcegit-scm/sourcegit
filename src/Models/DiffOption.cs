@@ -65,7 +65,7 @@ namespace SourceGit.Models
         /// <param name="change"></param>
         public DiffOption(Commit commit, Change change)
         {
-            var baseRevision = commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{commit.SHA}^";
+            var baseRevision = commit.Parents.Count == 0 ? Commit.EmptyTreeSHA1 : $"{commit.SHA}^";
             _revisions.Add(baseRevision);
             _revisions.Add(commit.SHA);
             _path = change.Path;
@@ -79,7 +79,7 @@ namespace SourceGit.Models
         /// <param name="file"></param>
         public DiffOption(Commit commit, string file)
         {
-            var baseRevision = commit.Parents.Count == 0 ? "4b825dc642cb6eb9a060e54bf8d69288fbee4904" : $"{commit.SHA}^";
+            var baseRevision = commit.Parents.Count == 0 ? Commit.EmptyTreeSHA1 : $"{commit.SHA}^";
             _revisions.Add(baseRevision);
             _revisions.Add(commit.SHA);
             _path = file;
@@ -124,6 +124,6 @@ namespace SourceGit.Models
         private readonly string _path;
         private readonly string _orgPath = string.Empty;
         private readonly string _extra = string.Empty;
-        private readonly List<string> _revisions = new List<string>();
+        private readonly List<string> _revisions = [];
     }
 }

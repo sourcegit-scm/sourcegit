@@ -48,7 +48,14 @@ namespace SourceGit.ViewModels
 
         protected void Use(CommandLog log)
         {
-            log.Register(newline => ProgressDescription = newline.Trim());
+            log.Register(SetDescription);
+        }
+
+        private void SetDescription(string data)
+        {
+            var desc = data.Trim();
+            if (!string.IsNullOrEmpty(desc))
+                ProgressDescription = desc;
         }
 
         private bool _inProgress = false;

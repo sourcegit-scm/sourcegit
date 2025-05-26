@@ -12,7 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Histories : ObservableObject
+    public class Histories : ObservableObject, IDisposable
     {
         public Repository Repo
         {
@@ -57,7 +57,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _navigationId, value);
         }
 
-        public object DetailContext
+        public IDisposable DetailContext
         {
             get => _detailContext;
             set => SetProperty(ref _detailContext, value);
@@ -98,23 +98,13 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
-            Commits = new List<Models.Commit>();
-
+            Commits = [];
             _repo = null;
             _graph = null;
             _autoSelectedCommit = null;
-
-            if (_detailContext is CommitDetail cd)
-            {
-                cd.Cleanup();
-            }
-            else if (_detailContext is RevisionCompare rc)
-            {
-                rc.Cleanup();
-            }
-
+            _detailContext?.Dispose();
             _detailContext = null;
         }
 
@@ -220,7 +210,7 @@ namespace SourceGit.ViewModels
             else
             {
                 _repo.SelectedSearchedCommit = null;
-                DetailContext = commits.Count;
+                DetailContext = new Models.Count(commits.Count);
             }
         }
 
@@ -985,8 +975,8 @@ namespace SourceGit.ViewModels
 
             if (!_repo.IsBare)
             {
-                var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, current.Name);
-                if (detect.IsGitFlowBranch)
+                var type = _repo.GetGitFlowType(current);
+                if (type != Models.GitFlowBranchType.None)
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", current.Name);
@@ -994,7 +984,7 @@ namespace SourceGit.ViewModels
                     finish.Click += (_, e) =>
                     {
                         if (_repo.CanCreatePopup())
-                            _repo.ShowPopup(new GitFlowFinish(_repo, current, detect.Type, detect.Prefix));
+                            _repo.ShowPopup(new GitFlowFinish(_repo, current, type));
                         e.Handled = true;
                     };
                     submenu.Items.Add(finish);
@@ -1073,8 +1063,8 @@ namespace SourceGit.ViewModels
 
             if (!_repo.IsBare)
             {
-                var detect = Commands.GitFlow.DetectType(_repo.FullPath, _repo.Branches, branch.Name);
-                if (detect.IsGitFlowBranch)
+                var type = _repo.GetGitFlowType(branch);
+                if (type != Models.GitFlowBranchType.None)
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", branch.Name);
@@ -1082,7 +1072,7 @@ namespace SourceGit.ViewModels
                     finish.Click += (_, e) =>
                     {
                         if (_repo.CanCreatePopup())
-                            _repo.ShowPopup(new GitFlowFinish(_repo, branch, detect.Type, detect.Prefix));
+                            _repo.ShowPopup(new GitFlowFinish(_repo, branch, type));
                         e.Handled = true;
                     };
                     submenu.Items.Add(finish);
@@ -1256,7 +1246,7 @@ namespace SourceGit.ViewModels
         private Models.CommitGraph _graph = null;
         private Models.Commit _autoSelectedCommit = null;
         private long _navigationId = 0;
-        private object _detailContext = null;
+        private IDisposable _detailContext = null;
 
         private Models.Bisect _bisect = null;
 

@@ -51,7 +51,7 @@ namespace SourceGit.Views
             {
                 var next = UnstagedChangesView.GetNextChangeWithoutSelection();
                 vm.StageSelected(next);
-                UnstagedChangesView.Focus();
+                UnstagedChangesView.TakeFocus();
                 e.Handled = true;
             }
         }
@@ -62,7 +62,7 @@ namespace SourceGit.Views
             {
                 var next = StagedChangesView.GetNextChangeWithoutSelection();
                 vm.UnstageSelected(next);
-                StagedChangesView.Focus();
+                StagedChangesView.TakeFocus();
                 e.Handled = true;
             }
         }
@@ -75,7 +75,7 @@ namespace SourceGit.Views
                 {
                     var next = UnstagedChangesView.GetNextChangeWithoutSelection();
                     vm.StageSelected(next);
-                    UnstagedChangesView.Focus();
+                    UnstagedChangesView.TakeFocus();
                     e.Handled = true;
                     return;
                 }
@@ -94,7 +94,7 @@ namespace SourceGit.Views
             {
                 var next = StagedChangesView.GetNextChangeWithoutSelection();
                 vm.UnstageSelected(next);
-                StagedChangesView.Focus();
+                StagedChangesView.TakeFocus();
                 e.Handled = true;
             }
         }
@@ -105,7 +105,7 @@ namespace SourceGit.Views
             {
                 var next = UnstagedChangesView.GetNextChangeWithoutSelection();
                 vm.StageSelected(next);
-                UnstagedChangesView.Focus();
+                UnstagedChangesView.TakeFocus();
             }
 
             e.Handled = true;
@@ -117,7 +117,7 @@ namespace SourceGit.Views
             {
                 var next = StagedChangesView.GetNextChangeWithoutSelection();
                 vm.UnstageSelected(next);
-                StagedChangesView.Focus();
+                StagedChangesView.TakeFocus();
             }
 
             e.Handled = true;

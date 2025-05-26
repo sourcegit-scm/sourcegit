@@ -17,8 +17,7 @@ namespace SourceGit.ViewModels
 
         public bool IsRecurseSubmoduleVisible
         {
-            get;
-            private set;
+            get => _repo.Submodules.Count > 0;
         }
 
         public bool RecurseSubmodules
@@ -32,7 +31,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Branch = branch;
             DiscardLocalChanges = false;
-            IsRecurseSubmoduleVisible = repo.Submodules.Count > 0;
         }
 
         public override Task<bool> Sure()
@@ -76,9 +74,9 @@ namespace SourceGit.ViewModels
                 {
                     if (updateSubmodules)
                     {
-                        var submodules = new Commands.QuerySubmodules(_repo.FullPath).Result();
+                        var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
                         if (submodules.Count > 0)
-                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true, false);
+                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
                     }
 
                     if (needPopStash)

@@ -107,7 +107,7 @@
                 <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent">
                   <Button.Flyout>
                     <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-4">
-                      <MenuItem InputGesture="P" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Pick}">
+                      <MenuItem InputGesture="P" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Pick}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="Green"/>
                         </MenuItem.Icon>
@@ -119,7 +119,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="E" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Edit}">
+                      <MenuItem InputGesture="E" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Edit}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="Orange"/>
                         </MenuItem.Icon>
@@ -131,7 +131,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="R" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Reword}">
+                      <MenuItem InputGesture="R" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Reword}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="Orange"/>
                         </MenuItem.Icon>
@@ -143,7 +143,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="S" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Squash}">
+                      <MenuItem InputGesture="S" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Squash}" IsVisible="{Binding CanSquashOrFixup}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="LightGray"/>
                         </MenuItem.Icon>
@@ -155,7 +155,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="F" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Fixup}">
+                      <MenuItem InputGesture="F" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Fixup}" IsVisible="{Binding CanSquashOrFixup}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="LightGray"/>
                         </MenuItem.Icon>
@@ -167,7 +167,7 @@
                         </MenuItem.Header>
                       </MenuItem>
 
-                      <MenuItem InputGesture="D" Command="{Binding SetAction}" CommandParameter="{x:Static m:InteractiveRebaseAction.Drop}">
+                      <MenuItem InputGesture="D" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Drop}">
                         <MenuItem.Icon>
                           <Ellipse Width="14" Height="14" Fill="Red"/>
                         </MenuItem.Icon>
@@ -280,7 +280,7 @@
                    Minimum="0"
                    Maximum="100"
                    IsVisible="False"/>
-      <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="StartJobs"/>
+      <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="OnStartJobs"/>
       <Button Grid.Column="2" Classes="flat" Margin="8,0,0,0" MinWidth="80" Content="{DynamicResource Text.Cancel}" Click="CloseWindow"/>
     </Grid>
   </Grid>

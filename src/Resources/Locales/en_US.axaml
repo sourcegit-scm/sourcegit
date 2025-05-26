@@ -63,6 +63,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ on ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rename ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Reset ${0}$ to ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Set Tracking Branch...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Compare</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Invalid upstream!</x:String>
@@ -124,6 +125,7 @@
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash into Parent</x:String>
   <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Children into Here</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CHANGES</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">changed file(s)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Search Changes...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FILES</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS File</x:String>
@@ -215,6 +217,7 @@
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
   <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Spaces will be replaced with dashes.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Overwrite existing branch</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">New Tag At:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG signing</x:String>
@@ -229,6 +232,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Hold Ctrl to start directly</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">De-initialize Submodule</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Force de-init even if it contains local changes.</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Delete Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">You are about to delete a remote branch!!!</x:String>
@@ -264,6 +270,7 @@
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Show hidden symbols</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Side-By-Side Diff</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">DELETED</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Swap</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
@@ -288,7 +295,6 @@
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edit Selected Repository</x:String>
   <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Run Custom Action</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Action Name:</x:String>
-  <x:String x:Key="Text.FastForwardWithoutCheck" xml:space="preserve">Fast-Forward (without checkout)</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Force override local refs</x:String>
@@ -530,12 +536,11 @@
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune worktree information in `$GIT_COMMON_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote Branch:</x:String>
-  <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Fetch all branches</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
-  <x:String x:Key="Text.Pull.NoTags" xml:space="preserve">Fetch without tags</x:String>
+  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Update all submodules</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Use rebase instead of merge</x:String>
@@ -646,6 +651,9 @@
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Move To:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">Current Branch:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Reset Branch (Without Checkout)</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Move To:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">Reveal in File Explorer</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">Revert Commit</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
@@ -705,6 +713,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize Submodule</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Submodule Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
