@@ -180,7 +180,7 @@ namespace SourceGit.ViewModels
                     var opts = new List<Models.DiffOption>();
                     foreach (var c in _changes)
                     {
-                        if (c.Index == Models.ChangeState.Added && _selectedStash.Parents.Count == 3)
+                        if (_untracked.Contains(c))
                             opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
                         else
                             opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
