@@ -103,6 +103,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorName" xml:space="preserve">Author Name:</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorName.Placeholder" xml:space="preserve">Enter author's name</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorEmail" xml:space="preserve">Author Email:</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorEmail.Placeholder" xml:space="preserve">Enter author's email</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick Commit</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
@@ -779,6 +783,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USE MINE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>
+  <x:String x:Key="Text.WorkingCopy.ModifyAuthor" xml:space="preserve">Modify Author</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO COMMIT TEMPLATES</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Reset Author</x:String>

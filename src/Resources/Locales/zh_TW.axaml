@@ -107,6 +107,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">關閉</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交訊息編輯器</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorName" xml:space="preserve">作者名稱：</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorName.Placeholder" xml:space="preserve">輸入作者名稱</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorEmail" xml:space="preserve">作者電子郵件：</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorEmail.Placeholder" xml:space="preserve">輸入作者電子郵件</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">簽出 (checkout) 此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">揀選 (cherry-pick) 此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">揀選 (cherry-pick)...</x:String>
@@ -783,6 +787,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用我方版本 (ours)</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>
+  <x:String x:Key="Text.WorkingCopy.ModifyAuthor" xml:space="preserve">修改作者</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交訊息記錄</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">沒有可套用的提交訊息範本</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">重設作者</x:String>

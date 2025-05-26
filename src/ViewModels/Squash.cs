@@ -53,7 +53,7 @@ namespace SourceGit.ViewModels
 
                 succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).Exec();
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, true).Use(log).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _message, signOff, true).Use(log).Run();
 
                 if (succ && autoStashed)
                     new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");

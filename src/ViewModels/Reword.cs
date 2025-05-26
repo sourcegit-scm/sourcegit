@@ -41,7 +41,7 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 // For reword (only changes the commit message), disable `--reset-author`
-                var succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).Run();
+                var succ = new Commands.Commit(_repo.FullPath, _message, signOff, true).Use(log).Run();
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

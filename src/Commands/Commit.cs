@@ -4,14 +4,21 @@ namespace SourceGit.Commands
 {
     public class Commit : Command
     {
-        public Commit(string repo, string message, bool signOff, bool amend, bool resetAuthor)
+        public Commit(string repo, string message, bool signOff, bool amend, bool resetAuthor = false, string userName = null, string userEmail = null)
         {
             _tmpFile = Path.GetTempFileName();
             File.WriteAllText(_tmpFile, message);
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"commit --allow-empty --file=\"{_tmpFile}\"";
+
+            if (!string.IsNullOrEmpty(userName))
+                Args += $"-c user.name=\"{userName}\" ";
+            if (!string.IsNullOrEmpty(userEmail))
+                Args += $"-c user.email=\"{userEmail}\" ";
+
+            Args += $"commit --allow-empty --file=\"{_tmpFile}\"";
+
             if (signOff)
                 Args += " --signoff";
             if (amend)

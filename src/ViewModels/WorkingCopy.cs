@@ -68,6 +68,18 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableSignOffForCommit = value;
         }
 
+        public string UserName
+        {
+            get => _userName;
+            set => SetProperty(ref _userName, value);
+        }
+
+        public string UserEmail
+        {
+            get => _userEmail;
+            set => SetProperty(ref _userEmail, value);
+        }
+
         public bool UseAmend
         {
             get => _useAmend;
@@ -242,6 +254,8 @@ namespace SourceGit.ViewModels
 
             _detailContext = null;
             _commitMessage = string.Empty;
+            _userName = null;
+            _userEmail = null;
         }
 
         public void SetData(List<Models.Change> changes)
@@ -1733,7 +1747,7 @@ namespace SourceGit.ViewModels
                     succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _repo.Settings.EnableSignOffForCommit, _useAmend, _resetAuthor, _userName, _userEmail).Use(log).Run();
 
                 log.Complete();
 
@@ -1743,6 +1757,8 @@ namespace SourceGit.ViewModels
                     {
                         CommitMessage = string.Empty;
                         UseAmend = false;
+                        UserName = string.Empty;
+                        UserEmail = string.Empty;
 
                         if (autoPush && _repo.Remotes.Count > 0)
                         {
@@ -1770,7 +1786,7 @@ namespace SourceGit.ViewModels
         {
             if (old.Count != cur.Count)
                 return true;
-            
+
             var oldMap = new Dictionary<string, Models.Change>();
             foreach (var c in old)
                 oldMap.Add(c.Path, c);
@@ -1795,6 +1811,8 @@ namespace SourceGit.ViewModels
         private bool _useAmend = false;
         private bool _resetAuthor = false;
         private bool _hasRemotes = false;
+        private string _userName = string.Empty;
+        private string _userEmail = string.Empty;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];
         private List<Models.Change> _visibleUnstaged = [];

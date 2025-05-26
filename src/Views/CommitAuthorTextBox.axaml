@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="68"
+             x:Class="SourceGit.Views.CommitAuthorTextBox">
+  <Grid RowDefinitions="32,32" ColumnDefinitions="Auto,*" Margin="16,4,16,8">
+    <!-- Author Name Row -->
+    <TextBlock Grid.Row="0" Grid.Column="0"
+               Text="{DynamicResource Text.CommitAuthorTextBox.AuthorName}"
+               HorizontalAlignment="Right" VerticalAlignment="Center"
+               Margin="0,0,8,0"/>
+    <TextBox Grid.Row="0" Grid.Column="1"
+             Height="28"
+             CornerRadius="3"
+             Text="{Binding $parent[v:CommitAuthorTextBox].UserName, Mode=TwoWay}"
+             Watermark="{DynamicResource Text.CommitAuthorTextBox.AuthorName.Placeholder}"
+             AcceptsReturn="False"
+             TextWrapping="NoWrap"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+
+    <!-- Author Email Row -->
+    <TextBlock Grid.Row="1" Grid.Column="0"
+               Text="{DynamicResource Text.CommitAuthorTextBox.AuthorEmail}"
+               HorizontalAlignment="Right" VerticalAlignment="Center"
+               Margin="0,0,8,0"/>
+    <TextBox Grid.Row="1" Grid.Column="1"
+             Height="28"
+             CornerRadius="3"
+             Text="{Binding $parent[v:CommitAuthorTextBox].UserEmail, Mode=TwoWay}"
+             Watermark="{DynamicResource Text.CommitAuthorTextBox.AuthorEmail.Placeholder}"
+             AcceptsReturn="False"
+             TextWrapping="NoWrap"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+  </Grid>
+</UserControl>

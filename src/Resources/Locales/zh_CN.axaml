@@ -107,6 +107,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorName" xml:space="preserve">作者用户名：</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorName.Placeholder" xml:space="preserve">输入作者用户名</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorEmail" xml:space="preserve">作者邮箱：</x:String>
+  <x:String x:Key="Text.CommitAuthorTextBox.AuthorEmail.Placeholder" xml:space="preserve">输入作者邮箱</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">挑选(cherry-pick)...</x:String>
@@ -783,6 +787,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用 MINE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用 THEIRS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>
+  <x:String x:Key="Text.WorkingCopy.ModifyAuthor" xml:space="preserve">修改作者</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">没有提交信息记录</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">没有可应用的提交信息模板</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">重置提交者</x:String>

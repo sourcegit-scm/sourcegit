@@ -64,7 +64,7 @@ namespace SourceGit.Models
 
             if (Path[0] == '"')
                 Path = Path.Substring(1, Path.Length - 2);
-            
+
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
         }
