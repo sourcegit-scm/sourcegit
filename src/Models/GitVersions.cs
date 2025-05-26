@@ -21,10 +21,5 @@
         ///     The minimal version of Git that supports the `stash push` command with the `--staged` option.
         /// </summary>
         public static readonly System.Version STASH_PUSH_ONLY_STAGED = new System.Version(2, 35, 0);
-
-        /// <summary>
-        ///     The minimal version of Git that supports the `stash show` command with the `-u` option.
-        /// </summary>
-        public static readonly System.Version STASH_SHOW_WITH_UNTRACKED = new System.Version(2, 32, 0);
     }
 }
