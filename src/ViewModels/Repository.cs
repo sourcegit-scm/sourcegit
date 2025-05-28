@@ -639,7 +639,7 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshWorktrees);
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
-            
+
             Task.Run(() =>
             {
                 var config = new Commands.Config(_fullpath).ListAll();

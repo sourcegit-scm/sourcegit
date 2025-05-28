@@ -61,7 +61,7 @@ namespace SourceGit.ViewModels
                         {
                             var changes = new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).Result();
                             var untracked = new List<Models.Change>();
-                            
+
                             if (value.Parents.Count == 3)
                             {
                                 untracked = new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2]).Result();

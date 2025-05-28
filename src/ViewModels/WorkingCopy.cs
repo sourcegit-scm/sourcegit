@@ -1770,7 +1770,7 @@ namespace SourceGit.ViewModels
         {
             if (old.Count != cur.Count)
                 return true;
-            
+
             var oldMap = new Dictionary<string, Models.Change>();
             foreach (var c in old)
                 oldMap.Add(c.Path, c);

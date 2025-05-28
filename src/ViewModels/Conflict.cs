@@ -36,7 +36,7 @@ namespace SourceGit.ViewModels
             get;
             private set;
         }
-        
+
         public object Theirs
         {
             get;

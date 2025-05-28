@@ -153,7 +153,7 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
-        
+
         private void OnChangeRebaseAction(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.InteractiveRebase vm &&

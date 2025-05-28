@@ -49,7 +49,6 @@ namespace SourceGit.Models
         public string OriginalPath { get; set; } = "";
         public ChangeDataForAmend DataForAmend { get; set; } = null;
         public ConflictReason ConflictReason { get; set; } = ConflictReason.None;
-        public bool IsSubmodule { get; set; } = false;
         public bool IsConflicted => WorkTree == ChangeState.Conflicted;
 
         public void Set(ChangeState index, ChangeState workTree = ChangeState.None)
@@ -78,7 +77,7 @@ namespace SourceGit.Models
 
             if (Path[0] == '"')
                 Path = Path.Substring(1, Path.Length - 2);
-            
+
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
         }
