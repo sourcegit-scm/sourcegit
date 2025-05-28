@@ -49,7 +49,8 @@ namespace SourceGit.ViewModels
 
         public void ResetToSelectedRevision()
         {
-            new Commands.Checkout(_repo.FullPath).FileWithRevision(_file, $"{_revision.SHA}");
+            var revisionFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _revision.SHA, _file).Result();
+            new Commands.Checkout(_repo.FullPath).FileWithRevision(revisionFilePath, $"{_revision.SHA}");
         }
 
         private void RefreshViewContent()
@@ -62,10 +63,12 @@ namespace SourceGit.ViewModels
 
         private void SetViewContentAsRevisionFile()
         {
-            var objs = new Commands.QueryRevisionObjects(_repo.FullPath, _revision.SHA, _file).Result();
+            var revisionFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _revision.SHA, _file).Result();
+
+            var objs = new Commands.QueryRevisionObjects(_repo.FullPath, _revision.SHA, revisionFilePath).Result();
             if (objs.Count == 0)
             {
-                ViewContent = new FileHistoriesRevisionFile(_file, null);
+                ViewContent = new FileHistoriesRevisionFile(revisionFilePath, null);
                 return;
             }
 
@@ -75,30 +78,29 @@ namespace SourceGit.ViewModels
                 case Models.ObjectType.Blob:
                     Task.Run(() =>
                     {
-                        var isBinary = new Commands.IsBinary(_repo.FullPath, _revision.SHA, _file).Result();
+                        var isBinary = new Commands.IsBinary(_repo.FullPath, _revision.SHA, revisionFilePath).Result();
                         if (isBinary)
                         {
-                            var ext = Path.GetExtension(_file);
+                            var ext = Path.GetExtension(revisionFilePath);
                             if (IMG_EXTS.Contains(ext))
                             {
-                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _revision.SHA, _file);
+                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _revision.SHA, revisionFilePath);
                                 var fileSize = stream.Length;
                                 var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
-                                var imageType = Path.GetExtension(_file).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
+                                var imageType = Path.GetExtension(revisionFilePath).TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
                                 var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
-                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, image));
+                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(revisionFilePath, image));
                             }
                             else
                             {
-                                var size = new Commands.QueryFileSize(_repo.FullPath, _file, _revision.SHA).Result();
+                                var size = new Commands.QueryFileSize(_repo.FullPath, revisionFilePath, _revision.SHA).Result();
                                 var binaryFile = new Models.RevisionBinaryFile() { Size = size };
-                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, binaryFile));
+                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(revisionFilePath, binaryFile));
                             }
-
                             return;
                         }
 
-                        var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _revision.SHA, _file);
+                        var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _revision.SHA, revisionFilePath);
                         var content = new StreamReader(contentStream).ReadToEnd();
                         var matchLFS = REG_LFS_FORMAT().Match(content);
                         if (matchLFS.Success)
@@ -106,19 +108,19 @@ namespace SourceGit.ViewModels
                             var lfs = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
                             lfs.Object.Oid = matchLFS.Groups[1].Value;
                             lfs.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, lfs));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(revisionFilePath, lfs));
                         }
                         else
                         {
                             var txt = new Models.RevisionTextFile() { FileName = obj.Path, Content = content };
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, txt));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(revisionFilePath, txt));
                         }
                     });
                     break;
                 case Models.ObjectType.Commit:
                     Task.Run(() =>
                     {
-                        var submoduleRoot = Path.Combine(_repo.FullPath, _file);
+                        var submoduleRoot = Path.Combine(_repo.FullPath, revisionFilePath);
                         var commit = new Commands.QuerySingleCommit(submoduleRoot, obj.SHA).Result();
                         if (commit != null)
                         {
@@ -128,7 +130,7 @@ namespace SourceGit.ViewModels
                                 Commit = commit,
                                 FullMessage = new Models.CommitFullMessage { Message = message }
                             };
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(revisionFilePath, module));
                         }
                         else
                         {
@@ -137,19 +139,21 @@ namespace SourceGit.ViewModels
                                 Commit = new Models.Commit() { SHA = obj.SHA },
                                 FullMessage = null
                             };
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(revisionFilePath, module));
                         }
                     });
                     break;
                 default:
-                    ViewContent = new FileHistoriesRevisionFile(_file, null);
+                    ViewContent = new FileHistoriesRevisionFile(revisionFilePath, null);
                     break;
             }
         }
 
         private void SetViewContentAsDiff()
         {
-            var option = new Models.DiffOption(_revision, _file);
+            var revisionFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _revision.SHA, _file).Result();
+
+            var option = new Models.DiffOption(_revision, revisionFilePath);
             ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
         }
 
@@ -216,7 +220,50 @@ namespace SourceGit.ViewModels
         {
             Task.Run(() =>
             {
-                _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, _file).Result();
+                var startFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _startPoint.SHA, _file).Result();
+                var endFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _endPoint.SHA, _file).Result();
+
+                var allChanges = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA).Result();
+
+                Models.Change renamedChange = null;
+                foreach (var change in allChanges)
+                {
+                    if (change.WorkTree != Models.ChangeState.Renamed && change.Index != Models.ChangeState.Renamed)
+                        continue;
+                    if (change.Path != endFilePath && change.OriginalPath != startFilePath)
+                        continue;
+
+                    renamedChange = change;
+                    break;
+                }
+
+                if (renamedChange != null)
+                {
+                    _changes = [renamedChange];
+                }
+                else
+                {
+                    _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, startFilePath).Result();
+
+                    if (_changes.Count == 0 && startFilePath != endFilePath)
+                    {
+                        var renamed = new Models.Change()
+                        {
+                            OriginalPath = startFilePath,
+                            Path = endFilePath
+                        };
+                        renamed.Set(Models.ChangeState.Renamed);
+                        _changes = [renamed];
+                    }
+                    else if (_changes.Count == 0)
+                    {
+                        _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, endFilePath).Result();
+
+                        if (_changes.Count == 0)
+                            _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, _file).Result();
+                    }
+                }
+
                 if (_changes.Count == 0)
                 {
                     Dispatcher.UIThread.Invoke(() => ViewContent = null);
@@ -270,7 +317,7 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var based = commit ?? string.Empty;
-                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {based} -- \"{file}\"", false).Result();
+                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order --follow -n 10000 {based} -- \"{file}\"", false).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     IsLoading = false;
