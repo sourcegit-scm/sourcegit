@@ -25,6 +25,18 @@ namespace SourceGit.ViewModels
 
     public class Conflict
     {
+        public string Marker
+        {
+            get;
+            private set;
+        }
+
+        public string Description
+        {
+            get;
+            private set;
+        }
+        
         public object Theirs
         {
             get;
@@ -41,7 +53,13 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        }
+        } = false;
+
+        public bool CanUseExternalMergeTool
+        {
+            get;
+            private set;
+        } = false;
 
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
@@ -49,7 +67,51 @@ namespace SourceGit.ViewModels
             _change = change;
 
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
-            IsResolved = !isSubmodule && new Commands.IsConflictResolved(repo.FullPath, change).Result();
+            switch (change.ConflictReason)
+            {
+                case Models.ConflictReason.BothDeleted:
+                    Marker = "DD";
+                    Description = "Both deleted";
+                    break;
+                case Models.ConflictReason.AddedByUs:
+                    Marker = "AU";
+                    Description = "Added by us";
+                    break;
+                case Models.ConflictReason.DeletedByThem:
+                    Marker = "UD";
+                    Description = "Deleted by them";
+                    break;
+                case Models.ConflictReason.AddedByThem:
+                    Marker = "UA";
+                    Description = "Added by them";
+                    break;
+                case Models.ConflictReason.DeletedByUs:
+                    Marker = "DU";
+                    Description = "Deleted by us";
+                    break;
+                case Models.ConflictReason.BothAdded:
+                    Marker = "AA";
+                    Description = "Both added";
+                    if (!isSubmodule)
+                    {
+                        CanUseExternalMergeTool = true;
+                        IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
+                    }
+                    break;
+                case Models.ConflictReason.BothModified:
+                    Marker = "UU";
+                    Description = "Both modified";
+                    if (!isSubmodule)
+                    {
+                        CanUseExternalMergeTool = true;
+                        IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
+                    }
+                    break;
+                default:
+                    Marker = string.Empty;
+                    Description = string.Empty;
+                    break;
+            }
 
             var context = wc.InProgressContext;
             if (context is CherryPickInProgress cherryPick)

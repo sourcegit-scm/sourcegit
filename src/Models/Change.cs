@@ -22,6 +22,18 @@ namespace SourceGit.Models
         Conflicted,
     }
 
+    public enum ConflictReason
+    {
+        None,
+        BothDeleted,
+        AddedByUs,
+        DeletedByThem,
+        AddedByThem,
+        DeletedByUs,
+        BothAdded,
+        BothModified,
+    }
+
     public class ChangeDataForAmend
     {
         public string FileMode { get; set; } = "";
@@ -36,6 +48,8 @@ namespace SourceGit.Models
         public string Path { get; set; } = "";
         public string OriginalPath { get; set; } = "";
         public ChangeDataForAmend DataForAmend { get; set; } = null;
+        public ConflictReason ConflictReason { get; set; } = ConflictReason.None;
+        public bool IsSubmodule { get; set; } = false;
         public bool IsConflicted => WorkTree == ChangeState.Conflicted;
 
         public void Set(ChangeState index, ChangeState workTree = ChangeState.None)

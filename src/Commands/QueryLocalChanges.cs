@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
 using Avalonia.Threading;
 
 namespace SourceGit.Commands
@@ -128,12 +129,31 @@ namespace SourceGit.Commands
                         change.Set(Models.ChangeState.Deleted, Models.ChangeState.Copied);
                         break;
                     case "DD":
+                        change.ConflictReason = Models.ConflictReason.BothDeleted;
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
+                        break;
                     case "AU":
+                        change.ConflictReason = Models.ConflictReason.AddedByUs;
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
+                        break;
                     case "UD":
+                        change.ConflictReason = Models.ConflictReason.DeletedByThem;
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
+                        break;
                     case "UA":
+                        change.ConflictReason = Models.ConflictReason.AddedByThem;
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
+                        break;
                     case "DU":
+                        change.ConflictReason = Models.ConflictReason.DeletedByUs;
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
+                        break;
                     case "AA":
+                        change.ConflictReason = Models.ConflictReason.BothAdded;
+                        change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
+                        break;
                     case "UU":
+                        change.ConflictReason = Models.ConflictReason.BothModified;
                         change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
                         break;
                     case "??":
