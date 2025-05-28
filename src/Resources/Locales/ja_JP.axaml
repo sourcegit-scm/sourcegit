@@ -49,7 +49,6 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$を削除...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">選択中の{0}個のブランチを削除</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">すべての変更を破棄</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">${0}$ へ早送りする</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$ から ${1}$ へフェッチする</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
@@ -562,6 +561,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">続ける</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">カスタムアクションがありません</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">すべての変更を破棄</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">`--reflog` オプションを有効化</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">ファイルブラウザーで開く</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">ブランチ/タグ/サブモジュールを検索</x:String>

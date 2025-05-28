@@ -56,7 +56,6 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Изменить действие</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Удалить выбранные {0} ветки</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Отклонить все изменения.</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Перемотать вперёд к ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Извлечь ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git-процесс - Завершение ${0}$</x:String>
@@ -598,6 +597,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Изменить действия</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Не изменять действия</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Отклонить все изменения.</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Разрешить опцию --reflog</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Открыть в файловом менеджере</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, меток и подмодулей</x:String>

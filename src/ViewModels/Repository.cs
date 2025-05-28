@@ -1766,6 +1766,18 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void DiscardAllChanges()
+        {
+            if (CanCreatePopup())
+                ShowPopup(new Discard(this));
+        }
+
+        public void ClearStashes()
+        {
+            if (CanCreatePopup())
+                ShowPopup(new ClearStashes(this));
+        }
+
         public ContextMenu CreateContextMenuForLocalBranch(Models.Branch branch)
         {
             var menu = new ContextMenu();
@@ -1785,19 +1797,6 @@ namespace SourceGit.ViewModels
             {
                 if (!IsBare)
                 {
-                    var discard = new MenuItem();
-                    discard.Header = App.Text("BranchCM.DiscardAll");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.Click += (_, e) =>
-                    {
-                        if (CanCreatePopup())
-                            ShowPopup(new Discard(this));
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(discard);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-
                     if (!string.IsNullOrEmpty(branch.Upstream))
                     {
                         var upstream = branch.Upstream.Substring(13);
@@ -1828,6 +1827,7 @@ namespace SourceGit.ViewModels
                         };
 
                         menu.Items.Add(fastForward);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
                         menu.Items.Add(pull);
                     }
                 }

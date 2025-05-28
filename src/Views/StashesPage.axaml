@@ -19,20 +19,12 @@
     <!-- Left -->
     <Grid Grid.Column="0" RowDefinitions="28,36,*,28,*">
       <!-- Stash Bar -->
-      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+      <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
         <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
         <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
           <Run Text="{DynamicResource Text.Stashes.Stashes}"/>
           <Run Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
         </TextBlock>
-        <Button Grid.Column="2"
-                Classes="icon_button"
-                Width="26" Height="14"
-                Padding="0"
-                Command="{Binding Clear}"
-                IsEnabled="{Binding Stashes.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.RemoveAll}"/>
-        </Button>
       </Grid>
 
       <!-- Search Bar -->

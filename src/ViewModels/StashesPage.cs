@@ -272,12 +272,6 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public void Clear()
-        {
-            if (_repo.CanCreatePopup())
-                _repo.ShowPopup(new ClearStashes(_repo));
-        }
-
         public void ClearSearchFilter()
         {
             SearchFilter = string.Empty;
@@ -303,8 +297,8 @@ namespace SourceGit.ViewModels
         }
 
         private Repository _repo = null;
-        private List<Models.Stash> _stashes = new List<Models.Stash>();
-        private List<Models.Stash> _visibleStashes = new List<Models.Stash>();
+        private List<Models.Stash> _stashes = [];
+        private List<Models.Stash> _visibleStashes = [];
         private string _searchFilter = string.Empty;
         private Models.Stash _selectedStash = null;
         private List<Models.Change> _changes = null;

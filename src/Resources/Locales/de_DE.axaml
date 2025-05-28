@@ -56,7 +56,6 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Lösche ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Lösche alle ausgewählten {0} Branches</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward zu ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetche ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Abschließen ${0}$</x:String>
@@ -583,6 +582,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Benutzerdefinierte Aktionen</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Keine benutzerdefinierten Aktionen</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Aktiviere '--reflog' Option</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches/Tags/Submodule</x:String>

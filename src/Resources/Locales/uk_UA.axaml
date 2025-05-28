@@ -49,7 +49,6 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Видалити вибрані {0} гілок</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">Скасувати всі зміни</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Перемотати до ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Отримати ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Завершити ${0}$</x:String>
@@ -566,6 +565,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОВЖИТИ</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Спеціальні дії</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Немає спеціальних дій</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Скасувати всі зміни</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Увімкнути опцію '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Відкрити у файловому менеджері</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Пошук гілок/тегів/підмодулів</x:String>
