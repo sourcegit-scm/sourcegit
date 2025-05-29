@@ -238,46 +238,101 @@ namespace SourceGit.ViewModels
             {
                 var startFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _startPoint.SHA, _file).Result();
                 var endFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _endPoint.SHA, _file).Result();
-
                 var allChanges = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA).Result();
+
+                var startCommand = new Commands.QueryRevisionObjects(_repo.FullPath, _startPoint.SHA, startFilePath);
+                var startResult = startCommand.Result();
+                bool startFileExists = startResult.Count > 0;
+
+                var endCommand = new Commands.QueryRevisionObjects(_repo.FullPath, _endPoint.SHA, endFilePath);
+                var endResult = endCommand.Result();
+                bool endFileExists = endResult.Count > 0;
 
                 Models.Change renamedChange = null;
                 foreach (var change in allChanges)
                 {
-                    if (change.WorkTree != Models.ChangeState.Renamed && change.Index != Models.ChangeState.Renamed)
-                        continue;
-                    if (change.Path != endFilePath && change.OriginalPath != startFilePath)
-                        continue;
-
-                    renamedChange = change;
-                    break;
+                    if ((change.WorkTree & Models.ChangeState.Renamed) != 0 ||
+                        (change.Index & Models.ChangeState.Renamed) != 0)
+                    {
+                        if (change.Path == endFilePath || change.OriginalPath == startFilePath)
+                        {
+                            renamedChange = change;
+                            break;
+                        }
+                    }
                 }
+
+                bool hasChanges = false;
 
                 if (renamedChange != null)
                 {
+                    if (string.IsNullOrEmpty(renamedChange.OriginalPath))
+                        renamedChange.OriginalPath = startFilePath;
+
+                    if (string.IsNullOrEmpty(renamedChange.Path))
+                        renamedChange.Path = endFilePath;
+
+                    bool hasContentChange = (!startFileExists || IsEmptyFile(_repo.FullPath, _startPoint.SHA, startFilePath)) &&
+                                            endFileExists && !IsEmptyFile(_repo.FullPath, _endPoint.SHA, endFilePath);
+
+                    if (!hasContentChange)
+                        hasContentChange = ContainsContentChanges(allChanges, startFilePath, endFilePath);
+
+                    if (hasContentChange)
+                    {
+                        renamedChange.Index |= Models.ChangeState.Modified;
+                        renamedChange.WorkTree |= Models.ChangeState.Modified;
+                    }
+
                     _changes = [renamedChange];
+                    hasChanges = true;
                 }
-                else
+                else if (startFilePath != endFilePath)
                 {
                     _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, startFilePath).Result();
 
-                    if (_changes.Count == 0 && startFilePath != endFilePath)
+                    if (_changes.Count == 0)
                     {
                         var renamed = new Models.Change()
                         {
                             OriginalPath = startFilePath,
                             Path = endFilePath
                         };
-                        renamed.Set(Models.ChangeState.Renamed);
-                        _changes = [renamed];
-                    }
-                    else if (_changes.Count == 0)
-                    {
-                        _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, endFilePath).Result();
 
-                        if (_changes.Count == 0)
-                            _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, _file).Result();
+                        bool hasContentChange = (!startFileExists || IsEmptyFile(_repo.FullPath, _startPoint.SHA, startFilePath)) &&
+                                              endFileExists && !IsEmptyFile(_repo.FullPath, _endPoint.SHA, endFilePath);
+
+                        if (hasContentChange)
+                            renamed.Set(Models.ChangeState.Modified | Models.ChangeState.Renamed);
+                        else
+                            renamed.Set(Models.ChangeState.Renamed);
+
+                        _changes = [renamed];
+                        hasChanges = true;
                     }
+                    else
+                    {
+                        foreach (var change in _changes)
+                        {
+                            if (string.IsNullOrEmpty(change.OriginalPath) && change.Path == startFilePath)
+                            {
+                                change.OriginalPath = startFilePath;
+                                change.Path = endFilePath;
+
+                                change.Index |= Models.ChangeState.Renamed;
+                                change.WorkTree |= Models.ChangeState.Renamed;
+                            }
+                        }
+                        hasChanges = true;
+                    }
+                }
+
+                if (!hasChanges)
+                {
+                    _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, endFilePath).Result();
+
+                    if (_changes.Count == 0)
+                        _changes = new Commands.CompareRevisions(_repo.FullPath, _startPoint.SHA, _endPoint.SHA, _file).Result();
                 }
 
                 if (_changes.Count == 0)
@@ -289,6 +344,38 @@ namespace SourceGit.ViewModels
                 var option = new Models.DiffOption(_startPoint.SHA, _endPoint.SHA, _changes[0]);
                 Dispatcher.UIThread.Invoke(() => ViewContent = new DiffContext(_repo.FullPath, option, _viewContent));
             });
+        }
+
+        private bool ContainsContentChanges(List<Models.Change> changes, string startPath, string endPath)
+        {
+            foreach (var change in changes)
+            {
+                if (change.Path == endPath || change.OriginalPath == startPath)
+                {
+                    bool hasContentChanges =
+                        (change.WorkTree == Models.ChangeState.Modified ||
+                         change.WorkTree == Models.ChangeState.Added ||
+                         change.Index == Models.ChangeState.Modified ||
+                         change.Index == Models.ChangeState.Added);
+
+                    if (hasContentChanges)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsEmptyFile(string repoPath, string revision, string filePath)
+        {
+            try
+            {
+                var contentStream = Commands.QueryFileContent.Run(repoPath, revision, filePath);
+                return contentStream != null && contentStream.Length == 0;
+            }
+            catch
+            {
+                return true;
+            }
         }
 
         private Repository _repo = null;
