@@ -153,8 +153,24 @@ namespace SourceGit.ViewModels
         {
             var revisionFilePath = new Commands.QueryFilePathInRevision(_repo.FullPath, _revision.SHA, _file).Result();
 
-            var option = new Models.DiffOption(_revision, revisionFilePath);
-            ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
+            if (_revision.Parents.Count > 0)
+            {
+                var parentSHA = _revision.Parents[0];
+                var changes = new Commands.CompareRevisions(_repo.FullPath, parentSHA, _revision.SHA).Result();
+                foreach (var change in changes)
+                {
+                    if ((change.WorkTree == Models.ChangeState.Renamed || change.Index == Models.ChangeState.Renamed)
+                        && change.Path == revisionFilePath)
+                    {
+                        var option = new Models.DiffOption(parentSHA, _revision.SHA, change);
+                        ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
+                        return;
+                    }
+                }
+            }
+
+            var defaultOption = new Models.DiffOption(_revision, revisionFilePath);
+            ViewContent = new DiffContext(_repo.FullPath, defaultOption, _viewContent as DiffContext);
         }
 
         [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
