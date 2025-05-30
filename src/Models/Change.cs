@@ -87,8 +87,8 @@ namespace SourceGit.Models
 
         private static readonly string[] CONFLICT_MARKERS =
         [
-            string.Empty, 
-            "DD", 
+            string.Empty,
+            "DD",
             "AU",
             "UD",
             "UA",
