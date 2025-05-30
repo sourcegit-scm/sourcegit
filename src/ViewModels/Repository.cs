@@ -1928,15 +1928,15 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                var compareWithHead = new MenuItem();
-                compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
-                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithHead.Click += (_, _) =>
+                var compareWithCurrent = new MenuItem();
+                compareWithCurrent.Header = App.Text("BranchCM.CompareWithCurrent", _currentBranch.Name);
+                compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithCurrent.Click += (_, _) =>
                 {
                     App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(compareWithHead);
+                menu.Items.Add(compareWithCurrent);
 
                 if (_localChangesCount > 0)
                 {
