@@ -5,11 +5,15 @@ namespace SourceGit.Commands
 {
     public class Restore : Command
     {
-        public Restore(string repo)
+        public Restore(string repo, bool onlyStaged)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "restore . --source=HEAD --staged --worktree --recurse-submodules";
+
+            if (onlyStaged)
+                Args = "restore --source=HEAD --staged .";
+            else
+                Args = "restore --source=HEAD --staged --worktree --recurse-submodules .";
         }
 
         public Restore(string repo, List<string> files, string extra)

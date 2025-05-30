@@ -1664,14 +1664,18 @@ namespace SourceGit.ViewModels
             }
             else if (count == _staged.Count)
             {
-                await Task.Run(() => new Commands.Reset(_repo.FullPath).Use(log).Exec());
+                await Task.Run(() => new Commands.Restore(_repo.FullPath, true).Use(log).Exec());
             }
             else
             {
                 for (int i = 0; i < count; i += 10)
                 {
                     var step = changes.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Use(log).Exec());
+                    var files = new List<string>();
+                    foreach (var c in step)
+                        files.Add(c.Path);
+
+                    await Task.Run(() => new Commands.Restore(_repo.FullPath, files, "--staged").Use(log).Exec());
                 }
             }
             log.Complete();
