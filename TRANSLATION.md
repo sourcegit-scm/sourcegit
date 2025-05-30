@@ -148,7 +148,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-92.13%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-92.01%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -160,6 +160,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Good
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
+- Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
 - Text.Checkout.RecurseSubmodules
 - Text.CommitCM.CopyAuthor
@@ -355,17 +356,18 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.75%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.63%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.BranchCM.CompareWithCurrent
 - Text.Repository.ClearStashes
 - Text.WorkingCopy.ResetAuthor
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-92.38%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-92.26%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -377,6 +379,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Good
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
+- Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
 - Text.Checkout.RecurseSubmodules
 - Text.CommitCM.CopyAuthor
