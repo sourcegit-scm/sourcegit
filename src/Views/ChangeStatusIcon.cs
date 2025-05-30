@@ -126,9 +126,16 @@ namespace SourceGit.Views
                 }
 
                 if (isUnstaged)
-                    ToolTip.SetTip(this, TIPS[(int)c.WorkTree]);
+                {
+                    if (c.IsConflicted)
+                        ToolTip.SetTip(this, $"Conflict ({c.ConflictDesc})");
+                    else
+                        ToolTip.SetTip(this, TIPS[(int)c.WorkTree]);
+                }
                 else
+                {
                     ToolTip.SetTip(this, TIPS[(int)c.Index]);
+                }                    
 
                 InvalidateVisual();
             }
