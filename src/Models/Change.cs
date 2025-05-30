@@ -9,17 +9,18 @@ namespace SourceGit.Models
         Tree,
     }
 
+    [Flags]
     public enum ChangeState
     {
-        None,
-        Modified,
-        TypeChanged,
-        Added,
-        Deleted,
-        Renamed,
-        Copied,
-        Untracked,
-        Conflicted,
+        None = 0,
+        Modified = 1 << 0,
+        TypeChanged = 1 << 1,
+        Added = 1 << 2,
+        Deleted = 1 << 3,
+        Renamed = 1 << 4,
+        Copied = 1 << 5,
+        Untracked = 1 << 6,
+        Conflicted = 1 << 7,
     }
 
     public enum ConflictReason
@@ -83,6 +84,30 @@ namespace SourceGit.Models
 
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
+        }
+
+        public static ChangeState GetPrimaryState(ChangeState state)
+        {
+            if (state == ChangeState.None)
+                return ChangeState.None;
+            if ((state & ChangeState.Conflicted) != 0)
+                return ChangeState.Conflicted;
+            if ((state & ChangeState.Untracked) != 0)
+                return ChangeState.Untracked;
+            if ((state & ChangeState.Renamed) != 0)
+                return ChangeState.Renamed;
+            if ((state & ChangeState.Copied) != 0)
+                return ChangeState.Copied;
+            if ((state & ChangeState.Deleted) != 0)
+                return ChangeState.Deleted;
+            if ((state & ChangeState.Added) != 0)
+                return ChangeState.Added;
+            if ((state & ChangeState.TypeChanged) != 0)
+                return ChangeState.TypeChanged;
+            if ((state & ChangeState.Modified) != 0)
+                return ChangeState.Modified;
+
+            return ChangeState.None;
         }
 
         private static readonly string[] CONFLICT_MARKERS =
