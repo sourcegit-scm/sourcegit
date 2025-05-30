@@ -37,7 +37,7 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:ChangeTreeNode">
-            <Grid ColumnDefinitions="16,Auto,Auto,*"
+            <Grid ColumnDefinitions="16,Auto,Auto,Auto"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
                   DoubleTapped="OnRowDoubleTapped"
@@ -58,8 +58,16 @@
                             IsChecked="{Binding IsExpanded}"
                             IsVisible="{Binding IsFolder}"/>
 
-              <v:ChangeStatusIcon Grid.Column="1" Width="14" Height="14" IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}" Change="{Binding Change}" IsVisible="{Binding !IsFolder}"/>
-              <TextBlock Grid.Column="2" Classes="primary" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}" Margin="6,0,0,0"/>
+              <v:ChangeStatusIcon Grid.Column="1"
+                                  Width="14" Height="14"
+                                  IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
+                                  Change="{Binding Change}"
+                                  IsVisible="{Binding !IsFolder}"/>
+
+              <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="4,0,0,0">
+                <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
+                <TextBlock Classes="primary" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
+              </StackPanel>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
@@ -84,10 +92,10 @@
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
-              <TextBlock Grid.Column="1"
-                         Classes="primary"
-                         Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"
-                         Margin="4,0"/>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
+                <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
+                <TextBlock Classes="primary" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"/>
+              </StackPanel>
 
               <TextBlock Grid.Column="2"
                          Classes="primary"
@@ -117,10 +125,10 @@
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
-              <TextBlock Grid.Column="1"
-                         Classes="primary"
-                         Text="{Binding Path}"
-                         Margin="4,0"/>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
+                <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
+                <TextBlock Classes="primary" Text="{Binding Path}"/>
+              </StackPanel>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

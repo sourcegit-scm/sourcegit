@@ -17,6 +17,16 @@ namespace SourceGit.ViewModels
             get => Change == null;
         }
 
+        public bool ShowConflictMarker
+        {
+            get => Change is { IsConflicted: true };
+        }
+
+        public string ConflictMarker
+        {
+            get => Change?.ConflictMarker ?? string.Empty;
+        }
+
         public bool IsExpanded
         {
             get => _isExpanded;

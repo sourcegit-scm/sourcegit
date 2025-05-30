@@ -49,7 +49,10 @@ namespace SourceGit.Models
         public string OriginalPath { get; set; } = "";
         public ChangeDataForAmend DataForAmend { get; set; } = null;
         public ConflictReason ConflictReason { get; set; } = ConflictReason.None;
+
         public bool IsConflicted => WorkTree == ChangeState.Conflicted;
+        public string ConflictMarker => CONFLICT_MARKERS[(int)ConflictReason];
+        public string ConflictDesc => CONFLICT_DESCS[(int)ConflictReason];
 
         public void Set(ChangeState index, ChangeState workTree = ChangeState.None)
         {
@@ -81,5 +84,28 @@ namespace SourceGit.Models
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
         }
+
+        private static readonly string[] CONFLICT_MARKERS =
+        [
+            string.Empty, 
+            "DD", 
+            "AU",
+            "UD",
+            "UA",
+            "DU",
+            "AA",
+            "UU"
+        ];
+        private static readonly string[] CONFLICT_DESCS =
+        [
+            string.Empty,
+            "Both deleted",
+            "Added by us",
+            "Deleted by them",
+            "Added by them",
+            "Deleted by us",
+            "Both added",
+            "Both modified"
+        ];
     }
 }
