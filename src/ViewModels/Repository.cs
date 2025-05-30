@@ -1866,21 +1866,6 @@ namespace SourceGit.ViewModels
                     };
                     menu.Items.Add(fastForward);
 
-                    var selectedCommit = (_histories?.DetailContext as CommitDetail)?.Commit;
-                    if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))
-                    {
-                        var move = new MenuItem();
-                        move.Header = App.Text("BranchCM.ResetToSelectedCommit", branch.Name, selectedCommit.SHA.Substring(0, 10));
-                        move.Icon = App.CreateMenuIcon("Icons.Reset");
-                        move.Click += (_, e) =>
-                        {
-                            if (CanCreatePopup())
-                                ShowPopup(new ResetWithoutCheckout(this, branch, selectedCommit));
-                            e.Handled = true;
-                        };
-                        menu.Items.Add(move);
-                    }
-
                     var fetchInto = new MenuItem();
                     fetchInto.Header = App.Text("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
                     fetchInto.Icon = App.CreateMenuIcon("Icons.Fetch");
@@ -1922,6 +1907,25 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(merge);
                     menu.Items.Add(rebase);
+                }
+
+                if (worktree == null)
+                {
+                    var selectedCommit = (_histories?.DetailContext as CommitDetail)?.Commit;
+                    if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))
+                    {
+                        var move = new MenuItem();
+                        move.Header = App.Text("BranchCM.ResetToSelectedCommit", branch.Name, selectedCommit.SHA.Substring(0, 10));
+                        move.Icon = App.CreateMenuIcon("Icons.Reset");
+                        move.Click += (_, e) =>
+                        {
+                            if (CanCreatePopup())
+                                ShowPopup(new ResetWithoutCheckout(this, branch, selectedCommit));
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                        menu.Items.Add(move);
+                    }
                 }
 
                 var compareWithHead = new MenuItem();
