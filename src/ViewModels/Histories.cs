@@ -333,10 +333,12 @@ namespace SourceGit.ViewModels
                         {
                             log = _repo.CreateLog("Save as Patch");
 
+                            var folder = picker[0];
+                            var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
                             var succ = false;
                             for (var i = 0; i < selected.Count; i++)
                             {
-                                var saveTo = GetPatchFileName(picker[0].Path.LocalPath, selected[i], i);
+                                var saveTo = GetPatchFileName(folderPath, selected[i], i);
                                 succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Use(log).Exec());
                                 if (!succ)
                                     break;
@@ -691,8 +693,10 @@ namespace SourceGit.ViewModels
                     {
                         log = _repo.CreateLog("Save as Patch");
 
-                        var saveTo = GetPatchFileName(selected[0].Path.LocalPath, commit);
-                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).Exec();
+                        var folder = selected[0];
+                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                        var saveTo = GetPatchFileName(folderPath, commit);
+                        var succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).Exec());
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
