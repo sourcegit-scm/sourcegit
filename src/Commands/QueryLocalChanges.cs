@@ -122,12 +122,6 @@ namespace SourceGit.Commands
                     case "CD":
                         change.Set(Models.ChangeState.Copied, Models.ChangeState.Deleted);
                         break;
-                    case "DR":
-                        change.Set(Models.ChangeState.Deleted, Models.ChangeState.Renamed);
-                        break;
-                    case "DC":
-                        change.Set(Models.ChangeState.Deleted, Models.ChangeState.Copied);
-                        break;
                     case "DD":
                         change.ConflictReason = Models.ConflictReason.BothDeleted;
                         change.Set(Models.ChangeState.None, Models.ChangeState.Conflicted);
