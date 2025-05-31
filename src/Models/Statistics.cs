@@ -26,25 +26,23 @@ namespace SourceGit.Models
 
     public class StatisticsReport
     {
-        public static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
         public int Total { get; set; } = 0;
-        public List<StatisticsAuthor> Authors { get; set; } = new List<StatisticsAuthor>();
-        public List<ISeries> Series { get; set; } = new List<ISeries>();
-        public List<Axis> XAxes { get; set; } = new List<Axis>();
-        public List<Axis> YAxes { get; set; } = new List<Axis>();
+        public List<StatisticsAuthor> Authors { get; set; } = new();
+        public List<ISeries> Series { get; set; } = new();
+        public List<Axis> XAxes { get; set; } = new();
+        public List<Axis> YAxes { get; set; } = new();
         public StatisticsAuthor SelectedAuthor { get => _selectedAuthor; set => ChangeAuthor(value); }
 
         public StatisticsReport(StatisticsMode mode, DateTime start)
         {
             _mode = mode;
 
-            YAxes = [new Axis()
+            YAxes.Add(new Axis()
             {
                 TextSize = 10,
                 MinLimit = 0,
                 SeparatorsPaint = new SolidColorPaint(new SKColor(0x40808080)) { StrokeThickness = 1 }
-            }];
+            });
 
             if (mode == StatisticsMode.ThisWeek)
             {
@@ -72,7 +70,7 @@ namespace SourceGit.Models
         {
             Total++;
 
-            var normalized = DateTime.MinValue;
+            DateTime normalized;
             if (_mode == StatisticsMode.ThisWeek || _mode == StatisticsMode.ThisMonth)
                 normalized = time.Date;
             else
@@ -172,26 +170,27 @@ namespace SourceGit.Models
             ChangeColor(_fillColor);
         }
 
-        private StatisticsMode _mode = StatisticsMode.All;
-        private Dictionary<User, int> _mapUsers = new Dictionary<User, int>();
-        private Dictionary<DateTime, int> _mapSamples = new Dictionary<DateTime, int>();
-        private Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new Dictionary<User, Dictionary<DateTime, int>>();
+        private static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        private StatisticsMode _mode;
+        private Dictionary<User, int> _mapUsers = new();
+        private Dictionary<DateTime, int> _mapSamples = new();
+        private Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new();
         private StatisticsAuthor _selectedAuthor = null;
         private uint _fillColor = 255;
     }
 
     public class Statistics
     {
-        public StatisticsReport All { get; set; }
-        public StatisticsReport Month { get; set; }
-        public StatisticsReport Week { get; set; }
+        public StatisticsReport All { get; }
+        public StatisticsReport Month { get; }
+        public StatisticsReport Week { get; }
 
         public Statistics()
         {
-            _today = DateTime.Now.ToLocalTime().Date;
-            var weekOffset = (7 + (int)_today.DayOfWeek - (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) % 7;
-            _thisWeekStart = _today.AddDays(-weekOffset);
-            _thisMonthStart = _today.AddDays(1 - _today.Day);
+            var today = DateTime.Now.ToLocalTime().Date;
+            var weekOffset = (7 + (int)today.DayOfWeek - (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) % 7;
+            _thisWeekStart = today.AddDays(-weekOffset);
+            _thisMonthStart = today.AddDays(1 - today.Day);
 
             All = new StatisticsReport(StatisticsMode.All, DateTime.MinValue);
             Month = new StatisticsReport(StatisticsMode.ThisMonth, _thisMonthStart);
@@ -200,7 +199,13 @@ namespace SourceGit.Models
 
         public void AddCommit(string author, double timestamp)
         {
-            var user = User.FindOrAdd(author);
+            var emailIdx = author.IndexOf('±', StringComparison.Ordinal);
+            var email = author.Substring(emailIdx + 1).ToLower(CultureInfo.CurrentCulture);
+            if (!_users.TryGetValue(email, out var user))
+            {
+                user = User.FindOrAdd(author);
+                _users.Add(email, user);
+            }
 
             var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             if (time >= _thisWeekStart)
@@ -214,13 +219,15 @@ namespace SourceGit.Models
 
         public void Complete()
         {
+            _users.Clear();
+            
             All.Complete();
             Month.Complete();
             Week.Complete();
         }
-
-        private readonly DateTime _today;
+        
         private readonly DateTime _thisMonthStart;
         private readonly DateTime _thisWeekStart;
+        private readonly Dictionary<string, User> _users = new();
     }
 }
