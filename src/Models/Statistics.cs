@@ -220,12 +220,12 @@ namespace SourceGit.Models
         public void Complete()
         {
             _users.Clear();
-            
+
             All.Complete();
             Month.Complete();
             Week.Complete();
         }
-        
+
         private readonly DateTime _thisMonthStart;
         private readonly DateTime _thisWeekStart;
         private readonly Dictionary<string, User> _users = new();

@@ -135,7 +135,7 @@ namespace SourceGit.Views
                 else
                 {
                     ToolTip.SetTip(this, TIPS[(int)c.Index]);
-                }                    
+                }
 
                 InvalidateVisual();
             }

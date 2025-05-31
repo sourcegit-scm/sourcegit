@@ -393,7 +393,17 @@ namespace SourceGit
                 _ipcChannel = new Models.IpcChannel();
                 if (!_ipcChannel.IsFirstInstance)
                 {
-                    _ipcChannel.SendToFirstInstance(desktop.Args is { Length: 1 } ? desktop.Args[0] : string.Empty);
+                    var arg = desktop.Args is { Length: > 0 } ? desktop.Args[0].Trim() : string.Empty;
+                    if (!string.IsNullOrEmpty(arg))
+                    {
+                        if (arg.StartsWith('"') && arg.EndsWith('"'))
+                            arg = arg.Substring(1, arg.Length - 2).Trim();
+
+                        if (arg.Length > 0 && !Path.IsPathFullyQualified(arg))
+                            arg = Path.GetFullPath(arg);
+                    }
+
+                    _ipcChannel.SendToFirstInstance(arg);
                     Environment.Exit(0);
                 }
                 else
