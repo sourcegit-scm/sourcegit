@@ -1748,8 +1748,8 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var top = chunk.Y + (chunk.Height >= 36 ? 16 : 4);
-                var right = (chunk.Combined || !chunk.IsOldSide) ? 16 : (v.Bounds.Width * 0.5f) + 16;
+                var top = chunk.Y + (chunk.Height >= 36 ? 8 : 2);
+                var right = (chunk.Combined || !chunk.IsOldSide) ? 26 : (v.Bounds.Width * 0.5f) + 26;
                 v.Popup.Margin = new Thickness(0, top, right, 0);
                 v.Popup.IsVisible = true;
             });
