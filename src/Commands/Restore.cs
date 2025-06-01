@@ -21,7 +21,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("restore ");
             if (!string.IsNullOrEmpty(extra))
                 builder.Append(extra).Append(" ");

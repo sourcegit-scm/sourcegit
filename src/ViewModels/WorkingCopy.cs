@@ -1675,7 +1675,11 @@ namespace SourceGit.ViewModels
                     var step = changes.GetRange(i, Math.Min(10, count - i));
                     var files = new List<string>();
                     foreach (var c in step)
+                    {
                         files.Add(c.Path);
+                        if (c.Index == Models.ChangeState.Renamed)
+                            files.Add(c.OriginalPath);
+                    }
 
                     await Task.Run(() => new Commands.Restore(_repo.FullPath, files, "--staged").Use(log).Exec());
                 }
