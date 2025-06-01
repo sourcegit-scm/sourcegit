@@ -53,6 +53,9 @@ namespace SourceGit.Models
         public bool IsConflicted => WorkTree == ChangeState.Conflicted;
         public string ConflictMarker => CONFLICT_MARKERS[(int)ConflictReason];
         public string ConflictDesc => CONFLICT_DESCS[(int)ConflictReason];
+        
+        public string WorkTreeDesc => TYPE_DESCS[(int)WorkTree];
+        public string IndexDesc => TYPE_DESCS[(int)Index];
 
         public void Set(ChangeState index, ChangeState workTree = ChangeState.None)
         {
@@ -84,7 +87,19 @@ namespace SourceGit.Models
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
         }
-
+        
+        private static readonly string[] TYPE_DESCS = 
+        [
+            "Unknown",
+            "Modified",
+            "Type Changed",
+            "Added", 
+            "Deleted", 
+            "Renamed", 
+            "Copied", 
+            "Untracked", 
+            "Conflict"
+        ];
         private static readonly string[] CONFLICT_MARKERS =
         [
             string.Empty,

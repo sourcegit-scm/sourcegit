@@ -41,7 +41,7 @@
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
                   DoubleTapped="OnRowDoubleTapped"
-                  ToolTip.Tip="{Binding FullPath}">
+                  DataContextChanged="OnRowDataContextChanged">
               <v:ChangeTreeNodeToggleButton Grid.Column="0"
                                             Classes="tree_expander"
                                             Focusable="False"
@@ -85,7 +85,7 @@
             <Grid ColumnDefinitions="Auto,Auto,Auto,*"
                   Background="Transparent"
                   DoubleTapped="OnRowDoubleTapped"
-                  ToolTip.Tip="{Binding Path}">
+                  DataContextChanged="OnRowDataContextChanged">
               <v:ChangeStatusIcon Grid.Column="0"
                                   Width="14" Height="14"
                                   Margin="4,0,0,0"
@@ -118,7 +118,7 @@
             <Grid ColumnDefinitions="Auto,Auto,*"
                   Background="Transparent"
                   DoubleTapped="OnRowDoubleTapped"
-                  ToolTip.Tip="{Binding Path}">
+                  DataContextChanged="OnRowDataContextChanged">
               <v:ChangeStatusIcon Grid.Column="0"
                                   Width="14" Height="14"
                                   Margin="4,0,0,0"

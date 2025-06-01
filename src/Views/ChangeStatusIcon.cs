@@ -9,6 +9,7 @@ namespace SourceGit.Views
 {
     public class ChangeStatusIcon : Control
     {
+        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "★", "!"];
         private static readonly IBrush[] BACKGROUNDS = [
             Brushes.Transparent,
             new LinearGradientBrush
@@ -55,9 +56,6 @@ namespace SourceGit.Views
             },
             Brushes.OrangeRed,
         ];
-
-        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "★", "!"];
-        private static readonly string[] TIPS = ["Unknown", "Modified", "Type Changed", "Added", "Deleted", "Renamed", "Copied", "Untracked", "Conflict"];
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
             AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));
@@ -116,29 +114,7 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == IsUnstagedChangeProperty || change.Property == ChangeProperty)
-            {
-                var isUnstaged = IsUnstagedChange;
-                var c = Change;
-                if (c == null)
-                {
-                    ToolTip.SetTip(this, null);
-                    return;
-                }
-
-                if (isUnstaged)
-                {
-                    if (c.IsConflicted)
-                        ToolTip.SetTip(this, $"Conflict ({c.ConflictDesc})");
-                    else
-                        ToolTip.SetTip(this, TIPS[(int)c.WorkTree]);
-                }
-                else
-                {
-                    ToolTip.SetTip(this, TIPS[(int)c.Index]);
-                }
-
                 InvalidateVisual();
-            }
         }
     }
 }

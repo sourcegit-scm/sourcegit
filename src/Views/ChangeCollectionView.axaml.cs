@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -86,7 +88,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> AutoSelectFirstChangeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(AutoSelectFirstChange), false);
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(AutoSelectFirstChange));
 
         public bool AutoSelectFirstChange
         {
@@ -227,6 +229,28 @@ namespace SourceGit.Views
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
                 UpdateSelection();
+        }
+
+        private void OnRowDataContextChanged(object sender, EventArgs e)
+        {
+            if (sender is not Control control)
+                return;
+            
+            if (control.DataContext is ViewModels.ChangeTreeNode node)
+            {
+                if (node.Change is {} c)
+                    UpdateRowTips(control, c);
+                else
+                    ToolTip.SetTip(control, node.FullPath);
+            }
+            else if (control.DataContext is Models.Change change)
+            {
+                UpdateRowTips(control, change);
+            }
+            else
+            {
+                ToolTip.SetTip(control, null);
+            }
         }
 
         private void OnRowDoubleTapped(object sender, TappedEventArgs e)
@@ -466,6 +490,21 @@ namespace SourceGit.Views
             }
         }
 
+        private void UpdateRowTips(Control control, Models.Change change)
+        {
+            var tip = new TextBlock() { TextWrapping = TextWrapping.Wrap };
+            tip.Inlines!.Add(new Run(change.Path));
+            tip.Inlines!.Add(new Run(" • ") { Foreground = Brushes.Gray });
+            tip.Inlines!.Add(new Run(IsUnstagedChange ? change.WorkTreeDesc : change.IndexDesc) { Foreground = Brushes.Gray });
+            if (change.IsConflicted)
+            {
+                tip.Inlines!.Add(new Run(" • ") { Foreground = Brushes.Gray });
+                tip.Inlines!.Add(new Run(change.ConflictDesc) { Foreground = Brushes.Gray });
+            }
+            
+            ToolTip.SetTip(control, tip);
+        }
+        
         private bool _disableSelectionChangingEvent = false;
     }
 }
