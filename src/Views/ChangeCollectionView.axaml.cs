@@ -235,10 +235,10 @@ namespace SourceGit.Views
         {
             if (sender is not Control control)
                 return;
-            
+
             if (control.DataContext is ViewModels.ChangeTreeNode node)
             {
-                if (node.Change is {} c)
+                if (node.Change is { } c)
                     UpdateRowTips(control, c);
                 else
                     ToolTip.SetTip(control, node.FullPath);
@@ -501,10 +501,10 @@ namespace SourceGit.Views
                 tip.Inlines!.Add(new Run(" • ") { Foreground = Brushes.Gray });
                 tip.Inlines!.Add(new Run(change.ConflictDesc) { Foreground = Brushes.Gray });
             }
-            
+
             ToolTip.SetTip(control, tip);
         }
-        
+
         private bool _disableSelectionChangingEvent = false;
     }
 }
