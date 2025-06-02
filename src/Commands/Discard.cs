@@ -36,7 +36,7 @@ namespace SourceGit.Commands
                 });
             }
 
-            new Restore(repo) { Log = log }.Exec();
+            new Reset(repo, "HEAD", "--hard") { Log = log }.Exec();
             if (includeIgnored)
                 new Clean(repo) { Log = log }.Exec();
         }
