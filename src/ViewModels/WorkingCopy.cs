@@ -389,7 +389,8 @@ namespace SourceGit.ViewModels
                     continue;
 
                 if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
-                    change.ConflictReason == Models.ConflictReason.DeletedByThem)
+                    change.ConflictReason == Models.ConflictReason.DeletedByThem ||
+                    change.ConflictReason == Models.ConflictReason.AddedByUs)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -432,7 +433,8 @@ namespace SourceGit.ViewModels
                     continue;
 
                 if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
-                    change.ConflictReason == Models.ConflictReason.DeletedByUs)
+                    change.ConflictReason == Models.ConflictReason.DeletedByUs ||
+                    change.ConflictReason == Models.ConflictReason.AddedByThem)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
