@@ -11,6 +11,11 @@
         ///     The minimal version of Git that supports the `add` command with the `--pathspec-from-file` option.
         /// </summary>
         public static readonly System.Version ADD_WITH_PATHSPECFILE = new System.Version(2, 25, 0);
+        
+        /// <summary>
+        ///    The minimal version of Git that supports the `restore` command with the `--pathspec-from-file` option.
+        /// </summary>
+        public static readonly System.Version RESTORE_WITH_PATHSPECFILE = new System.Version(2, 25, 0);
 
         /// <summary>
         ///     The minimal version of Git that supports the `stash push` command with the `--pathspec-from-file` option.

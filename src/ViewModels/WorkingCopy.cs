@@ -1634,13 +1634,14 @@ namespace SourceGit.ViewModels
                 foreach (var c in changes)
                     paths.Add(c.Path);
 
-                for (int i = 0; i < count; i += 10)
+                for (int i = 0; i < count; i += 32)
                 {
-                    var step = paths.GetRange(i, Math.Min(10, count - i));
+                    var step = paths.GetRange(i, Math.Min(32, count - i));
                     await Task.Run(() => new Commands.Add(_repo.FullPath, step).Use(log).Exec());
                 }
             }
             log.Complete();
+            
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsStaging = false;
@@ -1664,15 +1665,26 @@ namespace SourceGit.ViewModels
                 log.AppendLine("$ git update-index --index-info ");
                 await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
             }
-            else if (count == _staged.Count)
+            else if (Native.OS.GitVersion >= Models.GitVersions.RESTORE_WITH_PATHSPECFILE)
             {
-                await Task.Run(() => new Commands.Restore(_repo.FullPath, true).Use(log).Exec());
+                var paths = new List<string>();
+                foreach (var c in changes)
+                {
+                    paths.Add(c.Path);
+                    if (c.Index == Models.ChangeState.Renamed)
+                        paths.Add(c.OriginalPath);
+                }
+                
+                var tmpFile = Path.GetTempFileName();
+                File.WriteAllLines(tmpFile, paths);
+                await Task.Run(() => new Commands.Restore(_repo.FullPath, tmpFile, "--staged").Use(log).Exec());
+                File.Delete(tmpFile);
             }
             else
             {
-                for (int i = 0; i < count; i += 10)
+                for (int i = 0; i < count; i += 32)
                 {
-                    var step = changes.GetRange(i, Math.Min(10, count - i));
+                    var step = changes.GetRange(i, Math.Min(32, count - i));
                     var files = new List<string>();
                     foreach (var c in step)
                     {
@@ -1685,6 +1697,7 @@ namespace SourceGit.ViewModels
                 }
             }
             log.Complete();
+            
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsUnstaging = false;

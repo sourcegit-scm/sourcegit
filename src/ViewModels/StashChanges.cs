@@ -124,9 +124,9 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                for (int i = 0; i < changes.Count; i += 10)
+                for (int i = 0; i < changes.Count; i += 32)
                 {
-                    var count = Math.Min(10, changes.Count - i);
+                    var count = Math.Min(32, changes.Count - i);
                     var step = changes.GetRange(i, count);
                     succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, step, KeepIndex);
                     if (!succ)

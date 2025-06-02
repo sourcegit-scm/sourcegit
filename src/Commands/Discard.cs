@@ -36,7 +36,7 @@ namespace SourceGit.Commands
                 });
             }
 
-            new Restore(repo, false) { Log = log }.Exec();
+            new Restore(repo) { Log = log }.Exec();
             if (includeIgnored)
                 new Clean(repo) { Log = log }.Exec();
         }
@@ -71,10 +71,20 @@ namespace SourceGit.Commands
                 });
             }
 
-            for (int i = 0; i < restores.Count; i += 10)
+            if (Native.OS.GitVersion >= Models.GitVersions.RESTORE_WITH_PATHSPECFILE)
             {
-                var count = Math.Min(10, restores.Count - i);
-                new Restore(repo, restores.GetRange(i, count), "--worktree --recurse-submodules") { Log = log }.Exec();
+                var tmpFile = Path.GetTempFileName();
+                File.WriteAllLines(tmpFile, restores);
+                new Restore(repo, tmpFile, "--worktree --recurse-submodules") { Log = log }.Exec();
+                File.Delete(tmpFile);
+            }
+            else
+            {
+                for (int i = 0; i < restores.Count; i += 32)
+                {
+                    var count = Math.Min(32, restores.Count - i);
+                    new Restore(repo, restores.GetRange(i, count), "--worktree --recurse-submodules") { Log = log }.Exec();
+                }
             }
         }
     }
