@@ -1,58 +1,52 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace SourceGit.Commands
 {
     public class Restore : Command
     {
         /// <summary>
-        ///     Only used to discard all changes in the working directory and staged area.
+        ///     Only used for single staged change.
         /// </summary>
         /// <param name="repo"></param>
-        public Restore(string repo)
-        {
-            WorkingDirectory = repo;
-            Context = repo;
-            Args = "restore --source=HEAD --staged --worktree --recurse-submodules .";
-        }
-
-        /// <summary>
-        ///     Discard changes with git (&lt; 2.25.0) that does not support the `--pathspec-from-file` option.
-        /// </summary>
-        /// <param name="repo"></param>
-        /// <param name="files"></param>
-        /// <param name="extra"></param>
-        public Restore(string repo, List<string> files, string extra)
+        /// <param name="stagedChange"></param>
+        public Restore(string repo, Models.Change stagedChange)
         {
             WorkingDirectory = repo;
             Context = repo;
 
             var builder = new StringBuilder();
-            builder.Append("restore ");
-            if (!string.IsNullOrEmpty(extra))
-                builder.Append(extra).Append(" ");
-            builder.Append("--");
-            foreach (var f in files)
-                builder.Append(' ').Append('"').Append(f).Append('"');
+            builder.Append("restore --staged -- \"");
+            builder.Append(stagedChange.Path);
+            builder.Append('"');
+
+            if (stagedChange.Index == Models.ChangeState.Renamed)
+            {
+                builder.Append(" \"");
+                builder.Append(stagedChange.OriginalPath);
+                builder.Append('"');
+            }
+
             Args = builder.ToString();
         }
 
         /// <summary>
-        ///     Discard changes with git (&gt;= 2.25.0) that supports the `--pathspec-from-file` option.
+        ///     Restore changes given in a path-spec file.
         /// </summary>
         /// <param name="repo"></param>
         /// <param name="pathspecFile"></param>
-        /// <param name="extra"></param>
-        public Restore(string repo, string pathspecFile, string extra)
+        /// <param name="isStaged"></param>
+        public Restore(string repo, string pathspecFile, bool isStaged)
         {
             WorkingDirectory = repo;
             Context = repo;
 
             var builder = new StringBuilder();
             builder.Append("restore ");
-            if (!string.IsNullOrEmpty(extra))
-                builder.Append(extra).Append(" ");
-            builder.Append("--pathspec-from-file=\"").Append(pathspecFile).Append('"');
+            builder.Append(isStaged ? "--staged " : "--worktree --recurse-submodules ");
+            builder.Append("--pathspec-from-file=\"");
+            builder.Append(pathspecFile);
+            builder.Append('"');
+
             Args = builder.ToString();
         }
     }

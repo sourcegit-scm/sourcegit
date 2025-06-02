@@ -412,7 +412,12 @@ namespace SourceGit.ViewModels
             }
 
             if (needStage.Count > 0)
-                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Use(log).Exec());
+            {
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, needStage);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                File.Delete(pathSpecFile);
+            }
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
@@ -456,7 +461,12 @@ namespace SourceGit.ViewModels
             }
 
             if (needStage.Count > 0)
-                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Use(log).Exec());
+            {
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, needStage);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                File.Delete(pathSpecFile);
+            }
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
@@ -467,7 +477,7 @@ namespace SourceGit.ViewModels
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on on every file with merge conflicts!
+            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on every file with merge conflicts!
             await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, file));
         }
 
@@ -770,7 +780,7 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                            var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
                             Commands.GitIgnore.Add(_repo.FullPath, dir + "/");
                             e.Handled = true;
                         };
@@ -792,7 +802,7 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                                var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
                                 Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
                                 e.Handled = true;
                             };
@@ -1619,31 +1629,19 @@ namespace SourceGit.ViewModels
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec());
             }
-            else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
-            {
-                var paths = new List<string>();
-                foreach (var c in changes)
-                    paths.Add(c.Path);
-
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, paths);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Use(log).Exec());
-                File.Delete(tmpFile);
-            }
             else
             {
                 var paths = new List<string>();
                 foreach (var c in changes)
                     paths.Add(c.Path);
 
-                for (int i = 0; i < count; i += 32)
-                {
-                    var step = paths.GetRange(i, Math.Min(32, count - i));
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Use(log).Exec());
-                }
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                File.Delete(pathSpecFile);
             }
             log.Complete();
-            
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsStaging = false;
@@ -1667,7 +1665,7 @@ namespace SourceGit.ViewModels
                 log.AppendLine("$ git update-index --index-info ");
                 await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
             }
-            else if (Native.OS.GitVersion >= Models.GitVersions.RESTORE_WITH_PATHSPECFILE)
+            else
             {
                 var paths = new List<string>();
                 foreach (var c in changes)
@@ -1676,30 +1674,14 @@ namespace SourceGit.ViewModels
                     if (c.Index == Models.ChangeState.Renamed)
                         paths.Add(c.OriginalPath);
                 }
-                
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, paths);
-                await Task.Run(() => new Commands.Restore(_repo.FullPath, tmpFile, "--staged").Use(log).Exec());
-                File.Delete(tmpFile);
-            }
-            else
-            {
-                for (int i = 0; i < count; i += 32)
-                {
-                    var step = changes.GetRange(i, Math.Min(32, count - i));
-                    var files = new List<string>();
-                    foreach (var c in step)
-                    {
-                        files.Add(c.Path);
-                        if (c.Index == Models.ChangeState.Renamed)
-                            files.Add(c.OriginalPath);
-                    }
 
-                    await Task.Run(() => new Commands.Restore(_repo.FullPath, files, "--staged").Use(log).Exec());
-                }
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                await Task.Run(() => new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).Exec());
+                File.Delete(pathSpecFile);
             }
             log.Complete();
-            
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsUnstaging = false;

@@ -487,7 +487,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email користувача</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Глобальний email користувача git</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Увімкнути --prune при fetch</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) є обов'язковим для цієї програми</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) є обов'язковим для цієї програми</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Шлях встановлення</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Увімкнути перевірку HTTP SSL</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Ім'я користувача</x:String>

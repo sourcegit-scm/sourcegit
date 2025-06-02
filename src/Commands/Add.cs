@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
-namespace SourceGit.Commands
+﻿namespace SourceGit.Commands
 {
     public class Add : Command
     {
@@ -12,20 +9,11 @@ namespace SourceGit.Commands
             Args = includeUntracked ? "add ." : "add -u .";
         }
 
-        public Add(string repo, List<string> changes)
+        public Add(string repo, Models.Change change)
         {
             WorkingDirectory = repo;
             Context = repo;
-
-            var builder = new StringBuilder();
-            builder.Append("add --");
-            foreach (var c in changes)
-            {
-                builder.Append(" \"");
-                builder.Append(c);
-                builder.Append("\"");
-            }
-            Args = builder.ToString();
+            Args = $"add -- \"{change.Path}\"";
         }
 
         public Add(string repo, string pathspecFromFile)

@@ -1868,7 +1868,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                new Commands.Add(repo.FullPath, [change.Path]).Exec();
+                new Commands.Add(repo.FullPath, change).Exec();
             }
             else
             {
@@ -1928,10 +1928,8 @@ namespace SourceGit.Views
             {
                 if (change.DataForAmend != null)
                     new Commands.UnstageChangesForAmend(repo.FullPath, [change]).Exec();
-                else if (change.Index == Models.ChangeState.Renamed)
-                    new Commands.Restore(repo.FullPath, [change.Path, change.OriginalPath], "--staged").Exec();
                 else
-                    new Commands.Restore(repo.FullPath, [change.Path], "--staged").Exec();
+                    new Commands.Restore(repo.FullPath, change).Exec();
             }
             else
             {

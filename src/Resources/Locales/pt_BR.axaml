@@ -440,7 +440,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email do Usuário</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email global do usuário git</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Habilita --prune ao buscar</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) é necessário para este aplicativo</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) é necessário para este aplicativo</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Caminho de Instalação</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nome do Usuário</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nome global do usuário git</x:String>

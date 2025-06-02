@@ -28,12 +28,13 @@ namespace SourceGit.Commands
                 string tmp = Path.GetTempFileName();
                 File.WriteAllText(tmp, message);
                 cmd.Args += $"-F \"{tmp}\"";
-            }
-            else
-            {
-                cmd.Args += $"-m {name}";
+
+                var succ = cmd.Exec();
+                File.Delete(tmp);
+                return succ;
             }
 
+            cmd.Args += $"-m {name}";
             return cmd.Exec();
         }
 

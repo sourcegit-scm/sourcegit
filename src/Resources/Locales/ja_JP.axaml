@@ -482,7 +482,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">ユーザー Eメールアドレス</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">グローバルgitのEメールアドレス</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">フェッチ時に--pruneを有効化</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) はこのアプリで必要です</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) はこのアプリで必要です</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">インストール パス</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">HTTP SSL 検証を有効にする</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">ユーザー名</x:String>

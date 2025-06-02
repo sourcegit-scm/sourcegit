@@ -482,7 +482,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">பயனர் மின்னஞ்சல்</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">உலகளாவிய அறிவிலி பயனர் மின்னஞ்சல்</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">--prune எடுக்கும்போது இயக்கு</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">அறிவிலி (&gt;= 2.23.0) இந்த பயன்பாட்டிற்கு தேவைப்படுகிறது</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">அறிவிலி (&gt;= 2.25.1) இந்த பயன்பாட்டிற்கு தேவைப்படுகிறது</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">நிறுவல் பாதை</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">உஉபநெ பாகுஅ சரிபார்ப்பை இயக்கு</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">பயனர் பெயர்</x:String>

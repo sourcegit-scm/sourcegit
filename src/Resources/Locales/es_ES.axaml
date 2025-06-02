@@ -515,7 +515,7 @@
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email global del usuario git</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Habilitar --prune para fetch</x:String>
   <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Habilitar --ignore-cr-at-eol en diff</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Se requiere Git (&gt;= 2.23.0) para esta aplicación</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Se requiere Git (&gt;= 2.25.1) para esta aplicación</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Ruta de instalación</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Habilitar verificación HTTP SSL</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nombre de usuario</x:String>

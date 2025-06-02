@@ -8,6 +8,12 @@ namespace SourceGit.Commands
 {
     public static class Discard
     {
+        /// <summary>
+        ///     Discard all local changes (unstaged & staged)
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="includeIgnored"></param>
+        /// <param name="log"></param>
         public static void All(string repo, bool includeIgnored, Models.ICommandLog log)
         {
             var changes = new QueryLocalChanges(repo).Result();
@@ -37,10 +43,17 @@ namespace SourceGit.Commands
             }
 
             new Reset(repo, "HEAD", "--hard") { Log = log }.Exec();
+
             if (includeIgnored)
                 new Clean(repo) { Log = log }.Exec();
         }
 
+        /// <summary>
+        ///     Discard selected changes (only unstaged).
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="changes"></param>
+        /// <param name="log"></param>
         public static void Changes(string repo, List<Models.Change> changes, Models.ICommandLog log)
         {
             var restores = new List<string>();
@@ -71,20 +84,12 @@ namespace SourceGit.Commands
                 });
             }
 
-            if (Native.OS.GitVersion >= Models.GitVersions.RESTORE_WITH_PATHSPECFILE)
+            if (restores.Count > 0)
             {
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, restores);
-                new Restore(repo, tmpFile, "--worktree --recurse-submodules") { Log = log }.Exec();
-                File.Delete(tmpFile);
-            }
-            else
-            {
-                for (int i = 0; i < restores.Count; i += 32)
-                {
-                    var count = Math.Min(32, restores.Count - i);
-                    new Restore(repo, restores.GetRange(i, count), "--worktree --recurse-submodules") { Log = log }.Exec();
-                }
+                var pathSpecFile = Path.GetTempFileName();
+                File.WriteAllLines(pathSpecFile, restores);
+                new Restore(repo, pathSpecFile, false) { Log = log }.Exec();
+                File.Delete(pathSpecFile);
             }
         }
     }

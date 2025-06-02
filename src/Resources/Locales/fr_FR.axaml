@@ -483,7 +483,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">E-mail utilsateur</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">E-mail utilsateur global</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Activer --prune pour fetch</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Cette application requière Git (&gt;= 2.23.0)</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Cette application requière Git (&gt;= 2.25.1)</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Chemin d'installation</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Activer la vérification HTTP SSL</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nom d'utilisateur</x:String>

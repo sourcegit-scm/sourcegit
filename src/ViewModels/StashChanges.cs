@@ -117,10 +117,10 @@ namespace SourceGit.ViewModels
                 foreach (var c in changes)
                     paths.Add(c.Path);
 
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, paths);
-                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, tmpFile, KeepIndex);
-                File.Delete(tmpFile);
+                var pathSpecFile = Path.GetTempFileName();
+                File.WriteAllLines(pathSpecFile, paths);
+                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, pathSpecFile, KeepIndex);
+                File.Delete(pathSpecFile);
             }
             else
             {

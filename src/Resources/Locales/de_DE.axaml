@@ -501,7 +501,7 @@
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Globale Git Benutzer Email</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Aktivere --prune beim fetchen</x:String>
   <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Aktiviere --ignore-cr-at-eol beim Unterschied</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Diese App setzt Git (&gt;= 2.23.0) voraus</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Diese App setzt Git (&gt;= 2.25.1) voraus</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Installationspfad</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Aktiviere HTTP SSL Verifizierung</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Benutzername</x:String>
