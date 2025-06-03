@@ -13,15 +13,15 @@
 
     <StackPanel Grid.Row="1" Orientation="Horizontal">
       <ToggleButton Classes="line_path"
-                    Width="13" Height="26"
+                    Width="15" Height="26"
                     Background="Transparent"
                     IsChecked="{Binding IsFiltered, Mode=TwoWay}">
         <Path Width="13" Height="13" Data="{StaticResource Icons.Filter}"/>
       </ToggleButton>
 
       <ToggleButton Classes="line_path"
-                    Width="13" Height="26"
-                    Margin="10,0,0,0"
+                    Width="15" Height="26"
+                    Margin="8,0,0,0"
                     Background="Transparent"
                     IsChecked="{Binding IsExcluded, Mode=TwoWay}">
         <Path Width="13" Height="13" Data="{StaticResource Icons.EyeClose}"/>
