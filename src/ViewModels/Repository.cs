@@ -1401,7 +1401,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            App.GetLauncer().OpenRepositoryInTab(node, null);
+            App.GetLauncher().OpenRepositoryInTab(node, null);
         }
 
         public void AddWorktree()
@@ -1430,7 +1430,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            App.GetLauncer()?.OpenRepositoryInTab(node, null);
+            App.GetLauncher()?.OpenRepositoryInTab(node, null);
         }
 
         public List<Models.OpenAIService> GetPreferedOpenAIServices()
@@ -2588,7 +2588,7 @@ namespace SourceGit.ViewModels
 
         private LauncherPage GetOwnerPage()
         {
-            var launcher = App.GetLauncer();
+            var launcher = App.GetLauncher();
             if (launcher == null)
                 return null;
 

@@ -16,7 +16,7 @@ namespace SourceGit.Views
 
         private async void OpenLocalRepository(object _1, RoutedEventArgs e)
         {
-            var activePage = App.GetLauncer().ActivePage;
+            var activePage = App.GetLauncher().ActivePage;
             if (activePage == null || !activePage.CanCreatePopup())
                 return;
 

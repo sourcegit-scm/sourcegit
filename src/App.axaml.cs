@@ -338,7 +338,7 @@ namespace SourceGit
             return null;
         }
 
-        public static ViewModels.Launcher GetLauncer()
+        public static ViewModels.Launcher GetLauncher()
         {
             return Current is App app ? app._launcher : null;
         }
