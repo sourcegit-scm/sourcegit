@@ -955,6 +955,7 @@
 
   <Style Selector="MenuItem.filter_mode_switcher">
     <Setter Property="Height" Value="48"/>
+    <Setter Property="StaysOpenOnClick" Value="True"/>
     
     <Style Selector="^:selected">
       <Style Selector="^ /template/ Border#PART_LayoutRoot">
