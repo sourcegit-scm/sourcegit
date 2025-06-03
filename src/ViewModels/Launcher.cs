@@ -421,7 +421,7 @@ namespace SourceGit.ViewModels
 
             foreach (var page in Pages)
             {
-                var id = page.Node.Id.Replace("\\", "/");
+                var id = page.Node.Id.Replace('\\', '/').TrimEnd('/');
                 if (id == pageId)
                 {
                     page.Notifications.Add(notification);

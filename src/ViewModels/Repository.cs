@@ -30,7 +30,7 @@ namespace SourceGit.ViewModels
             {
                 if (value != null)
                 {
-                    var normalized = value.Replace('\\', '/');
+                    var normalized = value.Replace('\\', '/').TrimEnd('/');
                     SetProperty(ref _fullpath, normalized);
                 }
                 else
@@ -499,7 +499,7 @@ namespace SourceGit.ViewModels
             {
                 // For worktrees, we need to watch the $GIT_COMMON_DIR instead of the $GIT_DIR.
                 var gitDirForWatcher = _gitDir;
-                if (_gitDir.Replace("\\", "/").IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
+                if (_gitDir.Replace('\\', '/').IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
                 {
                     var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
                     if (!string.IsNullOrEmpty(commonDir))
@@ -1387,7 +1387,7 @@ namespace SourceGit.ViewModels
                 return;
 
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-            var normalizedPath = root.Replace("\\", "/");
+            var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
 
             var node = Preferences.Instance.FindNode(normalizedPath);
             if (node == null)
