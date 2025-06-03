@@ -211,7 +211,7 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="vm:LauncherPage">
-                    <Grid ColumnDefinitions="Auto,*" Background="Transparent" DoubleTapped="OnTabsDropdownItemDoubleTapped">
+                    <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnTabsDropdownItemTapped">
                       <Path Grid.Column="0"
                             Width="12" Height="12" Margin="12,0"
                             Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
