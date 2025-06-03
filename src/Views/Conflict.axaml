@@ -14,7 +14,15 @@
       <StackPanel Orientation="Vertical" IsVisible="{Binding !IsResolved}">
         <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
         <TextBlock Margin="0,16" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
-
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
+          <Border Height="16" VerticalAlignment="Center" Background="Red" CornerRadius="8">
+            <TextBlock Classes="primary" Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="8,0" FontSize="10"/>
+          </Border>
+          
+          <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding Description}"/>
+        </StackPanel>
+        
         <Border Margin="16,0" Padding="8" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <Border.DataTemplates>
             <DataTemplate DataType="vm:ConflictSourceBranch">
@@ -97,27 +105,27 @@
           </Border.IsVisible>
 
           <Grid Margin="8,0,0,0" RowDefinitions="32,32" ColumnDefinitions="Auto,*">
-            <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="THEIRS"/>
-            <ContentControl Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Theirs}"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="MINE"/>
-            <ContentControl Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Mine}"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="MINE"/>
+            <ContentControl Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Mine}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="THEIRS"/>
+            <ContentControl Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Theirs}"/>
           </Grid>
         </Border>
 
         <StackPanel Margin="0,8,0,0"  Orientation="Horizontal" HorizontalAlignment="Center">
-          <Button Classes="flat" Margin="0,0,0,0" Command="{Binding UseTheirs}" ToolTip.Tip="git checkout --theirs">
+          <Button Classes="flat" Margin="0,0,0,0" Command="{Binding UseTheirs}">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Incoming}"/>
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseTheirs}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat" Margin="8,0,0,0" Command="{Binding UseMine}" ToolTip.Tip="git checkout --ours">
+          <Button Classes="flat" Margin="8,0,0,0" Command="{Binding UseMine}">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Local}"/>
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat" Margin="8,0,0,0" Command="{Binding OpenExternalMergeTool}">
+          <Button Classes="flat" Margin="8,0,0,0" Command="{Binding OpenExternalMergeTool}" IsVisible="{Binding CanUseExternalMergeTool}">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" VerticalAlignment="Center"/>

@@ -58,7 +58,7 @@ namespace SourceGit.Commands
 
                         if (b.TrackStatus == null)
                             b.TrackStatus = new Models.BranchTrackStatus();
-                    }                        
+                    }
                 }
             }
 

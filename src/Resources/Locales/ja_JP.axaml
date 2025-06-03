@@ -43,13 +43,11 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAMEではこのファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ をチェックアウトする...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">HEADと比較</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">ブランチ名をコピー</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$を削除...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">選択中の{0}個のブランチを削除</x:String>
-  <x:String x:Key="Text.BranchCM.DiscardAll" xml:space="preserve">すべての変更を破棄</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">${0}$ へ早送りする</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$ から ${1}$ へフェッチする</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
@@ -484,7 +482,7 @@
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">ユーザー Eメールアドレス</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">グローバルgitのEメールアドレス</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">フェッチ時に--pruneを有効化</x:String>
-  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.23.0) はこのアプリで必要です</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) はこのアプリで必要です</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">インストール パス</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">HTTP SSL 検証を有効にする</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">ユーザー名</x:String>
@@ -562,6 +560,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">続ける</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">カスタムアクションがありません</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">すべての変更を破棄</x:String>
   <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">`--reflog` オプションを有効化</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">ファイルブラウザーで開く</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">ブランチ/タグ/サブモジュールを検索</x:String>

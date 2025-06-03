@@ -54,7 +54,7 @@ You can find the current translation status in [TRANSLATION.md](https://github.c
 
 ## How to Use
 
-**To use this tool, you need to install Git(>=2.23.0) first.**
+**To use this tool, you need to install Git(>=2.25.1) first.**
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
 

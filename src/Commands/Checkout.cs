@@ -27,9 +27,9 @@ namespace SourceGit.Commands
         {
             var builder = new StringBuilder();
             builder.Append("checkout --progress ");
-            builder.Append(allowOverwrite ? "-B " : "-b ");
             if (force)
                 builder.Append("--force ");
+            builder.Append(allowOverwrite ? "-B " : "-b ");
             builder.Append(branch);
             builder.Append(" ");
             builder.Append(basedOn);

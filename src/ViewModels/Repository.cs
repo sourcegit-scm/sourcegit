@@ -639,7 +639,7 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshWorktrees);
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
-            
+
             Task.Run(() =>
             {
                 var config = new Commands.Config(_fullpath).ListAll();
@@ -1766,6 +1766,18 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public void DiscardAllChanges()
+        {
+            if (CanCreatePopup())
+                ShowPopup(new Discard(this));
+        }
+
+        public void ClearStashes()
+        {
+            if (CanCreatePopup())
+                ShowPopup(new ClearStashes(this));
+        }
+
         public ContextMenu CreateContextMenuForLocalBranch(Models.Branch branch)
         {
             var menu = new ContextMenu();
@@ -1785,19 +1797,6 @@ namespace SourceGit.ViewModels
             {
                 if (!IsBare)
                 {
-                    var discard = new MenuItem();
-                    discard.Header = App.Text("BranchCM.DiscardAll");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.Click += (_, e) =>
-                    {
-                        if (CanCreatePopup())
-                            ShowPopup(new Discard(this));
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(discard);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-
                     if (!string.IsNullOrEmpty(branch.Upstream))
                     {
                         var upstream = branch.Upstream.Substring(13);
@@ -1828,6 +1827,7 @@ namespace SourceGit.ViewModels
                         };
 
                         menu.Items.Add(fastForward);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
                         menu.Items.Add(pull);
                     }
                 }
@@ -1865,21 +1865,6 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     menu.Items.Add(fastForward);
-
-                    var selectedCommit = (_histories?.DetailContext as CommitDetail)?.Commit;
-                    if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))
-                    {
-                        var move = new MenuItem();
-                        move.Header = App.Text("BranchCM.ResetToSelectedCommit", branch.Name, selectedCommit.SHA.Substring(0, 10));
-                        move.Icon = App.CreateMenuIcon("Icons.Reset");
-                        move.Click += (_, e) =>
-                        {
-                            if (CanCreatePopup())
-                                ShowPopup(new ResetWithoutCheckout(this, branch, selectedCommit));
-                            e.Handled = true;
-                        };
-                        menu.Items.Add(move);
-                    }
 
                     var fetchInto = new MenuItem();
                     fetchInto.Header = App.Text("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
@@ -1924,15 +1909,34 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(rebase);
                 }
 
-                var compareWithHead = new MenuItem();
-                compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
-                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithHead.Click += (_, _) =>
+                if (worktree == null)
+                {
+                    var selectedCommit = (_histories?.DetailContext as CommitDetail)?.Commit;
+                    if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))
+                    {
+                        var move = new MenuItem();
+                        move.Header = App.Text("BranchCM.ResetToSelectedCommit", branch.Name, selectedCommit.SHA.Substring(0, 10));
+                        move.Icon = App.CreateMenuIcon("Icons.Reset");
+                        move.Click += (_, e) =>
+                        {
+                            if (CanCreatePopup())
+                                ShowPopup(new ResetWithoutCheckout(this, branch, selectedCommit));
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                        menu.Items.Add(move);
+                    }
+                }
+
+                var compareWithCurrent = new MenuItem();
+                compareWithCurrent.Header = App.Text("BranchCM.CompareWithCurrent", _currentBranch.Name);
+                compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithCurrent.Click += (_, _) =>
                 {
                     App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(compareWithHead);
+                menu.Items.Add(compareWithCurrent);
 
                 if (_localChangesCount > 0)
                 {

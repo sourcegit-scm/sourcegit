@@ -37,9 +37,11 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Reword HEAD");
             Use(log);
 
+            var signOff = _repo.Settings.EnableSignOffForCommit;
             return Task.Run(() =>
             {
-                var succ = new Commands.Commit(_repo.FullPath, _message, true, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
+                // For reword (only changes the commit message), disable `--reset-author`
+                var succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).Run();
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

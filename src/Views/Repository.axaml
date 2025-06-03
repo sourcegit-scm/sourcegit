@@ -129,7 +129,7 @@
               </ListBoxItem>
 
               <ListBoxItem IsVisible="{Binding !IsBare}">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <v:CounterPresenter Grid.Column="2"
@@ -146,11 +146,18 @@
                         Data="{StaticResource Icons.Info}"
                         Fill="DarkOrange"
                         IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                  <Button Grid.Column="4"
+                          Classes="icon_button"
+                          Width="26" Height="26"
+                          Command="{Binding DiscardAllChanges}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.DiscardAll}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
+                  </Button>
                 </Grid>
               </ListBoxItem>
 
               <ListBoxItem IsVisible="{Binding !IsBare}">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
                   <v:CounterPresenter Grid.Column="2"
@@ -161,6 +168,14 @@
                                       FontSize="10"
                                       Foreground="{DynamicResource Brush.BadgeFG}"
                                       Background="{DynamicResource Brush.Badge}"/>
+                  <Button Grid.Column="3"
+                          Classes="icon_button"
+                          Width="26" Height="26"
+                          Command="{Binding ClearStashes}"
+                          IsEnabled="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                          ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
+                  </Button>
                 </Grid>
               </ListBoxItem>
             </ListBox>

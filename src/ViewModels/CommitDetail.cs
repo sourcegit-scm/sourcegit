@@ -452,7 +452,9 @@ namespace SourceGit.ViewModels
                     var selected = await storageProvider.OpenFolderPickerAsync(options);
                     if (selected.Count == 1)
                     {
-                        var saveTo = Path.Combine(selected[0].Path.LocalPath, Path.GetFileName(file.Path));
+                        var folder = selected[0];
+                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path));
                         Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo);
                     }
                 }

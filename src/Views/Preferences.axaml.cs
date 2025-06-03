@@ -250,7 +250,9 @@ namespace SourceGit.Views
                 var selected = await StorageProvider.OpenFolderPickerAsync(options);
                 if (selected.Count == 1)
                 {
-                    ViewModels.Preferences.Instance.GitDefaultCloneDir = selected[0].Path.LocalPath;
+                    var folder = selected[0];
+                    var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                    ViewModels.Preferences.Instance.GitDefaultCloneDir = folderPath;
                 }
             }
             catch (Exception ex)

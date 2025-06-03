@@ -25,6 +25,16 @@ namespace SourceGit.ViewModels
 
     public class Conflict
     {
+        public string Marker
+        {
+            get => _change.ConflictMarker;
+        }
+
+        public string Description
+        {
+            get => _change.ConflictDesc;
+        }
+
         public object Theirs
         {
             get;
@@ -41,7 +51,13 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        }
+        } = false;
+
+        public bool CanUseExternalMergeTool
+        {
+            get;
+            private set;
+        } = false;
 
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
@@ -49,7 +65,11 @@ namespace SourceGit.ViewModels
             _change = change;
 
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
-            IsResolved = !isSubmodule && new Commands.IsConflictResolved(repo.FullPath, change).Result();
+            if (!isSubmodule && (_change.ConflictReason == Models.ConflictReason.BothAdded || _change.ConflictReason == Models.ConflictReason.BothModified))
+            {
+                CanUseExternalMergeTool = true;
+                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
+            }
 
             var context = wc.InProgressContext;
             if (context is CherryPickInProgress cherryPick)

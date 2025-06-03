@@ -1,29 +1,52 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace SourceGit.Commands
 {
     public class Restore : Command
     {
-        public Restore(string repo)
+        /// <summary>
+        ///     Only used for single staged change.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="stagedChange"></param>
+        public Restore(string repo, Models.Change stagedChange)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "restore . --source=HEAD --staged --worktree --recurse-submodules";
+
+            var builder = new StringBuilder();
+            builder.Append("restore --staged -- \"");
+            builder.Append(stagedChange.Path);
+            builder.Append('"');
+
+            if (stagedChange.Index == Models.ChangeState.Renamed)
+            {
+                builder.Append(" \"");
+                builder.Append(stagedChange.OriginalPath);
+                builder.Append('"');
+            }
+
+            Args = builder.ToString();
         }
 
-        public Restore(string repo, List<string> files, string extra)
+        /// <summary>
+        ///     Restore changes given in a path-spec file.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="pathspecFile"></param>
+        /// <param name="isStaged"></param>
+        public Restore(string repo, string pathspecFile, bool isStaged)
         {
             WorkingDirectory = repo;
             Context = repo;
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("restore ");
-            if (!string.IsNullOrEmpty(extra))
-                builder.Append(extra).Append(" ");
-            builder.Append("--");
-            foreach (var f in files)
-                builder.Append(' ').Append('"').Append(f).Append('"');
+            builder.Append(isStaged ? "--staged " : "--worktree --recurse-submodules ");
+            builder.Append("--pathspec-from-file=\"");
+            builder.Append(pathspecFile);
+            builder.Append('"');
+
             Args = builder.ToString();
         }
     }

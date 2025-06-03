@@ -91,6 +91,7 @@ namespace SourceGit.ViewModels
                     else
                     {
                         CommitMessage = string.Empty;
+                        ResetAuthor = false;
                     }
 
                     Staged = GetStagedChanges();
@@ -98,6 +99,12 @@ namespace SourceGit.ViewModels
                     SelectedStaged = [];
                 }
             }
+        }
+
+        public bool ResetAuthor
+        {
+            get => _resetAuthor;
+            set => SetProperty(ref _resetAuthor, value);
         }
 
         public string Filter
@@ -381,7 +388,9 @@ namespace SourceGit.ViewModels
                 if (!change.IsConflicted)
                     continue;
 
-                if (change.WorkTree == Models.ChangeState.Deleted)
+                if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
+                    change.ConflictReason == Models.ConflictReason.DeletedByThem ||
+                    change.ConflictReason == Models.ConflictReason.AddedByUs)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -403,7 +412,12 @@ namespace SourceGit.ViewModels
             }
 
             if (needStage.Count > 0)
-                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Use(log).Exec());
+            {
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, needStage);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                File.Delete(pathSpecFile);
+            }
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
@@ -423,7 +437,9 @@ namespace SourceGit.ViewModels
                 if (!change.IsConflicted)
                     continue;
 
-                if (change.Index == Models.ChangeState.Deleted)
+                if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
+                    change.ConflictReason == Models.ConflictReason.DeletedByUs ||
+                    change.ConflictReason == Models.ConflictReason.AddedByThem)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -445,7 +461,12 @@ namespace SourceGit.ViewModels
             }
 
             if (needStage.Count > 0)
-                await Task.Run(() => new Commands.Add(_repo.FullPath, needStage).Use(log).Exec());
+            {
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, needStage);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                File.Delete(pathSpecFile);
+            }
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
@@ -456,7 +477,7 @@ namespace SourceGit.ViewModels
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on on every file with merge conflicts!
+            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on every file with merge conflicts!
             await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, file));
         }
 
@@ -759,7 +780,7 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                            var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
                             Commands.GitIgnore.Add(_repo.FullPath, dir + "/");
                             e.Handled = true;
                         };
@@ -781,7 +802,7 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                var dir = Path.GetDirectoryName(change.Path).Replace("\\", "/");
+                                var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
                                 Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
                                 e.Handled = true;
                             };
@@ -1608,30 +1629,19 @@ namespace SourceGit.ViewModels
             {
                 await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec());
             }
-            else if (Native.OS.GitVersion >= Models.GitVersions.ADD_WITH_PATHSPECFILE)
-            {
-                var paths = new List<string>();
-                foreach (var c in changes)
-                    paths.Add(c.Path);
-
-                var tmpFile = Path.GetTempFileName();
-                File.WriteAllLines(tmpFile, paths);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, tmpFile).Use(log).Exec());
-                File.Delete(tmpFile);
-            }
             else
             {
                 var paths = new List<string>();
                 foreach (var c in changes)
                     paths.Add(c.Path);
 
-                for (int i = 0; i < count; i += 10)
-                {
-                    var step = paths.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Add(_repo.FullPath, step).Use(log).Exec());
-                }
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                File.Delete(pathSpecFile);
             }
             log.Complete();
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsStaging = false;
@@ -1655,19 +1665,23 @@ namespace SourceGit.ViewModels
                 log.AppendLine("$ git update-index --index-info ");
                 await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
             }
-            else if (count == _staged.Count)
-            {
-                await Task.Run(() => new Commands.Reset(_repo.FullPath).Use(log).Exec());
-            }
             else
             {
-                for (int i = 0; i < count; i += 10)
+                var paths = new List<string>();
+                foreach (var c in changes)
                 {
-                    var step = changes.GetRange(i, Math.Min(10, count - i));
-                    await Task.Run(() => new Commands.Reset(_repo.FullPath, step).Use(log).Exec());
+                    paths.Add(c.Path);
+                    if (c.Index == Models.ChangeState.Renamed)
+                        paths.Add(c.OriginalPath);
                 }
+
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                await Task.Run(() => new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).Exec());
+                File.Delete(pathSpecFile);
             }
             log.Complete();
+
             _repo.MarkWorkingCopyDirtyManually();
             _repo.SetWatcherEnabled(true);
             IsUnstaging = false;
@@ -1717,6 +1731,7 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
+            var signOff = _repo.Settings.EnableSignOffForCommit;
             var log = _repo.CreateLog("Commit");
             Task.Run(() =>
             {
@@ -1725,7 +1740,7 @@ namespace SourceGit.ViewModels
                     succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, _useAmend, _repo.Settings.EnableSignOffForCommit).Use(log).Run();
+                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).Run();
 
                 log.Complete();
 
@@ -1762,7 +1777,7 @@ namespace SourceGit.ViewModels
         {
             if (old.Count != cur.Count)
                 return true;
-            
+
             var oldMap = new Dictionary<string, Models.Change>();
             foreach (var c in old)
                 oldMap.Add(c.Path, c);
@@ -1785,6 +1800,7 @@ namespace SourceGit.ViewModels
         private bool _isUnstaging = false;
         private bool _isCommitting = false;
         private bool _useAmend = false;
+        private bool _resetAuthor = false;
         private bool _hasRemotes = false;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];

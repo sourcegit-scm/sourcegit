@@ -162,7 +162,9 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="m:StatisticsAuthor">
-                    <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+                    <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+                            Background="Transparent"
+                            ToolTip.Tip="{Binding User}">
                       <Grid ColumnDefinitions="26,*,100">
                         <v:Avatar Grid.Column="0"
                                   Width="16" Height="16"

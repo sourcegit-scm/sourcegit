@@ -24,7 +24,7 @@ namespace SourceGit.Commands
             var rs = ReadToEnd();
             if (!rs.IsSuccess)
                 return [];
-            
+
             var changes = new List<Models.Change>();
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)

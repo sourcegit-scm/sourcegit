@@ -178,7 +178,7 @@ namespace SourceGit.ViewModels
                 if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
                     return;
             }
-            
+
             item.Action = action;
             UpdateItems();
         }

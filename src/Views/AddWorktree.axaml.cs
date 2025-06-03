@@ -23,7 +23,11 @@ namespace SourceGit.Views
             {
                 var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
                 if (selected.Count == 1)
-                    TxtLocation.Text = selected[0].Path.LocalPath;
+                {
+                    var folder = selected[0];
+                    var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                    TxtLocation.Text = folderPath;
+                }
             }
             catch (Exception exception)
             {
