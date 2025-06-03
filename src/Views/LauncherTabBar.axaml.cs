@@ -327,7 +327,7 @@ namespace SourceGit.Views
             SearchFilter = string.Empty;
         }
 
-        private void OnTabsDropdownItemDoubleTapped(object sender, TappedEventArgs e)
+        private void OnTabsDropdownItemTapped(object sender, TappedEventArgs e)
         {
             if (sender is Control { DataContext: ViewModels.LauncherPage page } &&
                 DataContext is ViewModels.Launcher vm)
