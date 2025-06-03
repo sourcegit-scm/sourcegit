@@ -13,7 +13,7 @@ namespace SourceGit.ViewModels
             get => _id;
             set
             {
-                var normalized = value.Replace('\\', '/');
+                var normalized = value.Replace('\\', '/').TrimEnd('/');
                 SetProperty(ref _id, normalized);
             }
         }

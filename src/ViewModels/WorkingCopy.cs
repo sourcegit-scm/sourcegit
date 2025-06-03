@@ -780,7 +780,7 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
+                            var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
                             Commands.GitIgnore.Add(_repo.FullPath, dir + "/");
                             e.Handled = true;
                         };
@@ -802,7 +802,7 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
+                                var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
                                 Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
                                 e.Handled = true;
                             };

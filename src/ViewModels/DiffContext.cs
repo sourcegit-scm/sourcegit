@@ -133,7 +133,7 @@ namespace SourceGit.ViewModels
                     if (count <= 3)
                     {
                         var submoduleDiff = new Models.SubmoduleDiff();
-                        var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
+                        var submoduleRoot = $"{_repo}/{_option.Path}".Replace('\\', '/').TrimEnd('/');
                         isSubmodule = true;
                         for (int i = 1; i < count; i++)
                         {
