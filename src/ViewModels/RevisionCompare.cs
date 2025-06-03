@@ -100,7 +100,7 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
-            var launcher = App.GetLauncer();
+            var launcher = App.GetLauncher();
             if (launcher == null)
                 return;
 
