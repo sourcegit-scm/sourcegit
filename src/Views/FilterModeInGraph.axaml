@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.FilterModeInGraph"
+             x:DataType="vm:FilterModeInGraph">
+  <Grid RowDefinitions="22,26">
+    <TextBlock Grid.Row="0"
+               Text="{DynamicResource Text.Repository.FilterCommits}"
+               Foreground="{DynamicResource Brush.FG2}"/>
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal">
+      <ToggleButton Classes="line_path"
+                    Width="13" Height="26"
+                    Background="Transparent"
+                    IsChecked="{Binding IsFiltered, Mode=TwoWay}">
+        <Path Width="13" Height="13" Data="{StaticResource Icons.Filter}"/>
+      </ToggleButton>
+
+      <ToggleButton Classes="line_path"
+                    Width="13" Height="26"
+                    Margin="10,0,0,0"
+                    Background="Transparent"
+                    IsChecked="{Binding IsExcluded, Mode=TwoWay}">
+        <Path Width="13" Height="13" Data="{StaticResource Icons.EyeClose}"/>
+      </ToggleButton>
+    </StackPanel>
+  </Grid>
+</UserControl>
