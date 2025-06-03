@@ -430,16 +430,26 @@ namespace SourceGit.ViewModels
         {
             var collection = to == null ? RepositoryNodes : to.SubNodes;
             collection.Add(node);
-            collection.Sort((l, r) =>
+            SortNodes(collection);
+
+            if (save)
+                Save();
+        }
+
+        public void SortNodes(List<RepositoryNode> collection)
+        {
+            collection?.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
+        }
 
-            if (save)
-                Save();
+        public void SortAllNodes()
+        {
+            SortNodesRecursive(RepositoryNodes);
         }
 
         public RepositoryNode FindNode(string id)
@@ -497,22 +507,14 @@ namespace SourceGit.ViewModels
         public void SortByRenamedNode(RepositoryNode node)
         {
             var container = FindNodeContainer(node, RepositoryNodes);
-            container?.Sort((l, r) =>
-            {
-                if (l.IsRepository != r.IsRepository)
-                    return l.IsRepository ? 1 : -1;
-
-                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
-            });
+            SortNodes(container);
 
             Save();
         }
 
-        public void AutoRemoveInvalidNode()
+        public bool AutoRemoveInvalidNode()
         {
-            var changed = RemoveInvalidRepositoriesRecursive(RepositoryNodes);
-            if (changed)
-                Save();
+            return RemoveInvalidRepositoriesRecursive(RepositoryNodes);
         }
 
         public void Save()
@@ -580,6 +582,13 @@ namespace SourceGit.ViewModels
                     workspace.ActiveIdx = 0;
                 }
             }
+        }
+
+        private void SortNodesRecursive(List<RepositoryNode> collection)
+        {
+            SortNodes(collection);
+            foreach (var node in collection)
+                SortNodesRecursive(node.SubNodes);
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)

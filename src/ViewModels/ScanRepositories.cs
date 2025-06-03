@@ -64,6 +64,11 @@ namespace SourceGit.ViewModels
                     }
 
                     Preferences.Instance.AutoRemoveInvalidNode();
+
+                    // Sort & Save unconditionally after a complete rescan.
+                    Preferences.Instance.SortAllNodes();
+                    Preferences.Instance.Save();
+
                     Welcome.Instance.Refresh();
                 });
 
@@ -151,13 +156,7 @@ namespace SourceGit.ViewModels
                 IsExpanded = true,
             };
             collection.Add(added);
-            collection.Sort((l, r) =>
-            {
-                if (l.IsRepository != r.IsRepository)
-                    return l.IsRepository ? 1 : -1;
-
-                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
-            });
+            Preferences.Instance.SortNodes(collection);
 
             return added;
         }
