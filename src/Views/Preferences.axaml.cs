@@ -415,6 +415,30 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnMoveSelectedCustomActionUp(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomAction == null)
+                return;
+
+            var idx = ViewModels.Preferences.Instance.CustomActions.IndexOf(SelectedCustomAction);
+            if (idx > 0)
+                ViewModels.Preferences.Instance.CustomActions.Move(idx - 1, idx);
+
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedCustomActionDown(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomAction == null)
+                return;
+
+            var idx = ViewModels.Preferences.Instance.CustomActions.IndexOf(SelectedCustomAction);
+            if (idx < ViewModels.Preferences.Instance.CustomActions.Count - 1)
+                ViewModels.Preferences.Instance.CustomActions.Move(idx + 1, idx);
+
+            e.Handled = true;
+        }
+
         private void UpdateGitVersion()
         {
             GitVersion = Native.OS.GitVersionString;

@@ -304,6 +304,18 @@ namespace SourceGit.ViewModels
             SelectedCustomAction = null;
         }
 
+        public void MoveSelectedCustomActionUp()
+        {
+            if (_selectedCustomAction != null)
+                _repo.Settings.MoveCustomActionUp(_selectedCustomAction);
+        }
+
+        public void MoveSelectedCustomActionDown()
+        {
+            if (_selectedCustomAction != null)
+                _repo.Settings.MoveCustomActionDown(_selectedCustomAction);
+        }
+
         public void Save()
         {
             SetIfChanged("user.name", UserName, "");

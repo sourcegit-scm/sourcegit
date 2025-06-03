@@ -453,5 +453,19 @@ namespace SourceGit.Models
             if (act != null)
                 CustomActions.Remove(act);
         }
+
+        public void MoveCustomActionUp(CustomAction act)
+        {
+            var idx = CustomActions.IndexOf(act);
+            if (idx > 0)
+                CustomActions.Move(idx - 1, idx);
+        }
+
+        public void MoveCustomActionDown(CustomAction act)
+        {
+            var idx = CustomActions.IndexOf(act);
+            if (idx < CustomActions.Count - 1)
+                CustomActions.Move(idx + 1, idx);
+        }
     }
 }
