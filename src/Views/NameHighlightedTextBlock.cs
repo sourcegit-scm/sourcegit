@@ -55,9 +55,10 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(text))
                 return base.MeasureOverride(availableSize);
 
+            var trimmed = text.Replace("$", "");
             var typeface = new Typeface(FontFamily);
             var formatted = new FormattedText(
-                    Text,
+                    trimmed,
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
