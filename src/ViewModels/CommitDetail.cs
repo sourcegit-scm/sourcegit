@@ -56,7 +56,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = [];
+        }
 
         public List<string> Children
         {
@@ -426,12 +426,12 @@ namespace SourceGit.ViewModels
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.Click += (_, ev) =>
+            openWith.Click += async (_, ev) =>
             {
                 var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
                 var fileExt = Path.GetExtension(fullPath) ?? "";
                 var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
-                Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile);
+                await Task.Run(() => Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile));
                 Native.OS.OpenWithDefaultEditor(tmpFile);
                 ev.Handled = true;
             };
@@ -453,9 +453,9 @@ namespace SourceGit.ViewModels
                     if (selected.Count == 1)
                     {
                         var folder = selected[0];
-                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
-                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path));
-                        Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo);
+                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
+                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
+                        await Task.Run(() => Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo));
                     }
                 }
                 catch (Exception e)

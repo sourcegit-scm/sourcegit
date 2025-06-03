@@ -234,10 +234,28 @@ namespace SourceGit.ViewModels
             var resetToThisRevision = new MenuItem();
             resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
             resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-            resetToThisRevision.Click += (_, ev) =>
+            resetToThisRevision.Click += async (_, ev) =>
             {
                 var log = _repo.CreateLog($"Reset File to '{_selectedStash.SHA}'");
-                new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevision(change.Path, $"{_selectedStash.SHA}");
+
+                await Task.Run(() =>
+                {
+                    if (_untracked.Contains(change))
+                    {
+                        Commands.SaveRevisionFile.Run(_repo.FullPath, _selectedStash.Parents[2], change.Path, fullPath);
+                    }
+                    else if (change.Index == Models.ChangeState.Added)
+                    {
+                        Commands.SaveRevisionFile.Run(_repo.FullPath, _selectedStash.SHA, change.Path, fullPath);
+                    }
+                    else
+                    {
+                        new Commands.Checkout(_repo.FullPath)
+                            .Use(log)
+                            .FileWithRevision(change.Path, $"{_selectedStash.SHA}");
+                    }
+                });
+
                 log.Complete();
                 ev.Handled = true;
             };

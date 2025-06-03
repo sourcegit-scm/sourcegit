@@ -25,11 +25,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnResetToSelectedRevision(object sender, RoutedEventArgs e)
+        private async void OnResetToSelectedRevision(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: ViewModels.FileHistoriesSingleRevision single })
             {
-                single.ResetToSelectedRevision();
+                await single.ResetToSelectedRevision();
                 NotifyDonePanel.IsVisible = true;
             }
 
