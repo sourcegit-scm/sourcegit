@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">変更されていないとみなされるファイル</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">変更されていないとみなされるファイルはありません</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">削除</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">バイナリファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAMEではこのファイルはサポートされていません!!!</x:String>
@@ -531,7 +532,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">ローカルの変更をスタッシュして再適用</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">On:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">リベース:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">リモートを追加</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">リモートを編集</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">名前:</x:String>

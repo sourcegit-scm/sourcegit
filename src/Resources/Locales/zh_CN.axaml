@@ -39,6 +39,8 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">没有不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">加载本地图片</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二进制文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.Bisect">二分定位(bisect)</x:String>
   <x:String x:Key="Text.Bisect.Abort">终止</x:String>
@@ -565,7 +567,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目标提交 ：</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">分支 ：</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">添加远程仓库</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>

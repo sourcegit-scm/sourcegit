@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ALS UNVERÄNDERT ANGENOMMENE DATEIEN</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">KEINE ALS UNVERÄNDERT ANGENOMMENEN DATEIEN</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">ENTFERNEN</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">BINÄRE DATEI NICHT UNTERSTÜTZT!!!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Abbrechen</x:String>
@@ -550,7 +551,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Lokale Änderungen stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Auf:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Remote hinzufügen</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Remote bearbeiten</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Name:</x:String>

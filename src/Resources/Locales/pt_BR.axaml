@@ -33,6 +33,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ARQUIVOS CONSIDERADOS SEM ALTERAÇÕES</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NENHUM ARQUIVO CONSIDERADO SEM ALTERAÇÕES</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">REMOVER</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Atualizar</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ARQUIVO BINÁRIO NÃO SUPORTADO!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME NESTE ARQUIVO NÃO É SUPORTADO!!!</x:String>
@@ -488,7 +489,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Guardar &amp; reaplicar alterações locais</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Em:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Atualizar</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Adicionar Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Editar Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nome:</x:String>

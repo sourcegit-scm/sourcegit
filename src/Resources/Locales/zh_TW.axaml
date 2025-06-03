@@ -39,6 +39,8 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">沒有不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">載入本機圖片...</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">重新載入</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二進位檔案不支援該操作!</x:String>
   <x:String x:Key="Text.Bisect">二分搜尋 (bisect)</x:String>
   <x:String x:Key="Text.Bisect.Abort">中止</x:String>
@@ -565,7 +567,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自動擱置變更並復原本機變更</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目標提交:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">分支:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">重新載入</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">新增遠端存放庫</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">編輯遠端存放庫</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">遠端名稱:</x:String>

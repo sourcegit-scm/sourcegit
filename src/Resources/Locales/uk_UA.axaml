@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ФАЙЛИ, ЩО ВВАЖАЮТЬСЯ НЕЗМІНЕНИМИ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">НЕМАЄ ФАЙЛІВ, ЩО ВВАЖАЮТЬСЯ НЕЗМІНЕНИМИ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">ВИДАЛИТИ</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Оновити</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">БІНАРНИЙ ФАЙЛ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Автор рядка</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">ПОШУК АВТОРА РЯДКА ДЛЯ ЦЬОГО ФАЙЛУ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
@@ -536,7 +537,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Сховати та застосувати локальні зміни</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">На:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Перебазувати:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Оновити</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Додати віддалене сховище</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редагувати віддалене сховище</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Назва:</x:String>

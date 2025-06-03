@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">СПИСОК ПУСТ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">УДАЛИТЬ</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ДВОИЧНЫЙ ФАЙЛ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.Bisect">Раздвоить</x:String>
   <x:String x:Key="Text.Bisect.Abort">О</x:String>
@@ -564,7 +565,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">На:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Переместить:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Добавить внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редактировать внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Имя:</x:String>

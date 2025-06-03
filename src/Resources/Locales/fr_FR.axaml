@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">PAS DE FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">SUPPRIMER</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Rafraîchir</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">FICHIER BINAIRE NON SUPPORTÉ !!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blâme</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">LE BLÂME SUR CE FICHIER N'EST PAS SUPPORTÉ!!!</x:String>
@@ -532,7 +533,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; réappliquer changements locaux</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Sur :</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase :</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Rafraîchir</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Ajouter dépôt distant</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Modifier dépôt distant</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nom :</x:String>

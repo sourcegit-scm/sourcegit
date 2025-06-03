@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FILE ASSUNTI COME INVARIATI</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NESSUN FILE ASSUNTO COME INVARIATO</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">RIMUOVI</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Aggiorna</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">FILE BINARIO NON SUPPORTATO!!!</x:String>
   <x:String x:Key="Text.Bisect" xml:space="preserve">Biseca</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Annulla</x:String>
@@ -553,7 +554,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stasha e Riapplica modifiche locali</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Su:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Riallinea:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Aggiorna</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Aggiungi Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Modifica Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nome:</x:String>
