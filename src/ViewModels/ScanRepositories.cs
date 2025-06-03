@@ -31,8 +31,8 @@ namespace SourceGit.ViewModels
                 watch.Start();
 
                 var rootDir = new DirectoryInfo(RootDir);
-                var founded = new List<FoundRepository>();
-                GetUnmanagedRepositories(rootDir, founded, new EnumerationOptions()
+                var found = new List<FoundRepository>();
+                GetUnmanagedRepositories(rootDir, found, new EnumerationOptions()
                 {
                     AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
                     IgnoreInaccessible = true,
@@ -46,11 +46,11 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    var normalizedRoot = rootDir.FullName.Replace("\\", "/");
+                    var normalizedRoot = rootDir.FullName.Replace("\\", "/").TrimEnd('/');
 
-                    foreach (var f in founded)
+                    foreach (var f in found)
                     {
-                        var parent = new DirectoryInfo(f.Path).Parent!.FullName.Replace("\\", "/");
+                        var parent = new DirectoryInfo(f.Path).Parent!.FullName.Replace("\\", "/").TrimEnd('/');
                         if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                         {
                             Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, null, false);
@@ -93,7 +93,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() => ProgressDescription = $"Scanning {subdir.FullName}...");
 
-                var normalizedSelf = subdir.FullName.Replace("\\", "/");
+                var normalizedSelf = subdir.FullName.Replace("\\", "/").TrimEnd('/');
                 if (_managed.Contains(normalizedSelf))
                     continue;
 
@@ -103,7 +103,7 @@ namespace SourceGit.ViewModels
                     var test = new Commands.QueryRepositoryRootPath(subdir.FullName).ReadToEnd();
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
-                        var normalized = test.StdOut.Trim().Replace("\\", "/");
+                        var normalized = test.StdOut.Trim().Replace("\\", "/").TrimEnd('/');
                         if (!_managed.Contains(normalized))
                             outs.Add(new FoundRepository(normalized, false));
                     }
