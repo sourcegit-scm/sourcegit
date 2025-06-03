@@ -1120,7 +1120,8 @@ namespace SourceGit.ViewModels
                 if (_workingCopy != null)
                     _workingCopy.HasRemotes = remotes.Count > 0;
 
-                GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !CurrentBranch.TrackStatus.IsVisible);
+                var hasPendingPullOrPush = CurrentBranch?.TrackStatus.IsVisible ?? false;
+                GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !hasPendingPullOrPush);
             });
         }
 
