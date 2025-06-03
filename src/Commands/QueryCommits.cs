@@ -43,7 +43,7 @@ namespace SourceGit.Commands
             }
             else if (method == Models.CommitSearchMethod.ByFile)
             {
-                search += $"-- \"{filter}\"";
+                search += $"--follow -- \"{filter}\"";
             }
             else
             {

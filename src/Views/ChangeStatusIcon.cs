@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -9,53 +9,73 @@ namespace SourceGit.Views
 {
     public class ChangeStatusIcon : Control
     {
-        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "★", "!"];
-        private static readonly IBrush[] BACKGROUNDS = [
-            Brushes.Transparent,
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+        private static readonly Dictionary<Models.ChangeState, string> INDICATOR = new Dictionary<Models.ChangeState, string>()
+        {
+            { Models.ChangeState.None, "?" },
+            { Models.ChangeState.Modified, "±" },
+            { Models.ChangeState.TypeChanged, "T" },
+            { Models.ChangeState.Added, "+" },
+            { Models.ChangeState.Deleted, "−" },
+            { Models.ChangeState.Renamed, "➜" },
+            { Models.ChangeState.Copied, "❏" },
+            { Models.ChangeState.Untracked, "★" },
+            { Models.ChangeState.Conflicted, "!" }
+        };
+
+        private static readonly Dictionary<Models.ChangeState, IBrush> BACKGROUNDS = new Dictionary<Models.ChangeState, IBrush>()
+        {
+            { Models.ChangeState.None, Brushes.Transparent },
+            { Models.ChangeState.Modified, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            { Models.ChangeState.TypeChanged, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            { Models.ChangeState.Added, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            { Models.ChangeState.Deleted, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            { Models.ChangeState.Renamed, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            { Models.ChangeState.Copied, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            { Models.ChangeState.Untracked, new LinearGradientBrush
+                {
+                    GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                }
             },
-            Brushes.OrangeRed,
-        ];
+            { Models.ChangeState.Conflicted, Brushes.OrangeRed },
+        };
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
             AvaloniaProperty.Register<ChangeStatusIcon, bool>(nameof(IsUnstagedChange));
@@ -86,13 +106,15 @@ namespace SourceGit.Views
             string indicator;
             if (IsUnstagedChange)
             {
-                background = BACKGROUNDS[(int)Change.WorkTree];
-                indicator = INDICATOR[(int)Change.WorkTree];
+                var status = Models.Change.GetPrimaryState(Change.WorkTree);
+                background = BACKGROUNDS[status];
+                indicator = INDICATOR[status];
             }
             else
             {
-                background = BACKGROUNDS[(int)Change.Index];
-                indicator = INDICATOR[(int)Change.Index];
+                var status = Models.Change.GetPrimaryState(Change.Index);
+                background = BACKGROUNDS[status];
+                indicator = INDICATOR[status];
             }
 
             var txt = new FormattedText(

@@ -8,7 +8,7 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^([MADC])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
-        [GeneratedRegex(@"^R[0-9]{0,4}\s+(.+)$")]
+        [GeneratedRegex(@"^R[0-9]{0,4}\s+(.+)\s+(.+)$")]
         private static partial Regex REG_RENAME_FORMAT();
 
         public CompareRevisions(string repo, string start, string end)
@@ -51,7 +51,11 @@ namespace SourceGit.Commands
                 match = REG_RENAME_FORMAT().Match(line);
                 if (match.Success)
                 {
-                    var renamed = new Models.Change() { Path = match.Groups[1].Value };
+                    var renamed = new Models.Change()
+                    {
+                        OriginalPath = match.Groups[1].Value,
+                        Path = match.Groups[2].Value
+                    };
                     renamed.Set(Models.ChangeState.Renamed);
                     _changes.Add(renamed);
                 }
