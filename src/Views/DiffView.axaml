@@ -154,6 +154,14 @@
 
             <ToggleButton Classes="line_path"
                           Width="28"
+                          IsChecked="{Binding ShowContentInLFSDiff, Mode=TwoWay}"
+                          IsVisible="{Binding IsLFSDiff}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.LFSContent}">
+              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.LFS}"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="28"
                           IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
                           ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}">
               <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>

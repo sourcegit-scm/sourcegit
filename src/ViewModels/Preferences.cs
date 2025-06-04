@@ -231,6 +231,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool ShowContentInLFSDiff
+        {
+            get => _showContentInLFSDiff;
+            set => SetProperty(ref _showContentInLFSDiff, value);
+        }
+
         public bool IgnoreWhitespaceChangesInDiff
         {
             get => _ignoreWhitespaceChangesInDiff;
@@ -687,6 +693,7 @@ namespace SourceGit.ViewModels
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
         private bool _useBlockNavigationInDiffView = false;
+        private bool _showContentInLFSDiff = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

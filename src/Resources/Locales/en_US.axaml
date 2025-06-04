@@ -264,6 +264,7 @@
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore All Whitespace Changes</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Last Difference</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
+  <x:String x:Key="Text.Diff.LFSContent" xml:space="preserve">Show LFS Content</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Previous Difference</x:String>

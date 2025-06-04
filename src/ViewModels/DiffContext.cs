@@ -31,6 +31,20 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool ShowContentInLFSDiff
+        {
+            get => Preferences.Instance.ShowContentInLFSDiff;
+            set
+            {
+                if (value != Preferences.Instance.ShowContentInLFSDiff)
+                {
+                    Preferences.Instance.ShowContentInLFSDiff = value;
+                    OnPropertyChanged();
+                    LoadDiffContent();
+                }
+            }
+        }
+
         public string FileModeChange
         {
             get => _fileModeChange;
@@ -41,6 +55,11 @@ namespace SourceGit.ViewModels
         {
             get => _isTextDiff;
             private set => SetProperty(ref _isTextDiff, value);
+        }
+        public bool IsLFSDiff
+        {
+            get => _isLFSDiff;
+            private set => SetProperty(ref _isLFSDiff, value);
         }
 
         public object Content
@@ -221,6 +240,7 @@ namespace SourceGit.ViewModels
 
                     FileModeChange = latest.FileModeChange;
                     Content = rs;
+                    IsLFSDiff = latest.IsLFS;
                     IsTextDiff = rs is Models.TextDiff;
                 });
             });
@@ -291,6 +311,7 @@ namespace SourceGit.ViewModels
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
         private bool _isTextDiff = false;
+        private bool _isLFSDiff = false;
         private object _content = null;
         private Info _info = null;
     }
