@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -144,94 +145,7 @@ namespace SourceGit.ViewModels
 
                 _info = info;
 
-                var rs = null as object;
-                if (latest.TextDiff != null)
-                {
-                    var count = latest.TextDiff.Lines.Count;
-                    var isSubmodule = false;
-                    if (count <= 3)
-                    {
-                        var submoduleDiff = new Models.SubmoduleDiff();
-                        var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
-                        isSubmodule = true;
-                        for (int i = 1; i < count; i++)
-                        {
-                            var line = latest.TextDiff.Lines[i];
-                            if (!line.Content.StartsWith("Subproject commit ", StringComparison.Ordinal))
-                            {
-                                isSubmodule = false;
-                                break;
-                            }
-
-                            var sha = line.Content.Substring(18);
-                            if (line.Type == Models.TextDiffLineType.Added)
-                                submoduleDiff.New = QuerySubmoduleRevision(submoduleRoot, sha);
-                            else if (line.Type == Models.TextDiffLineType.Deleted)
-                                submoduleDiff.Old = QuerySubmoduleRevision(submoduleRoot, sha);
-                        }
-
-                        if (isSubmodule)
-                            rs = submoduleDiff;
-                    }
-
-                    if (!isSubmodule)
-                    {
-                        latest.TextDiff.File = _option.Path;
-                        rs = latest.TextDiff;
-                    }
-                }
-                else if (latest.IsBinary)
-                {
-                    var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
-                    var ext = Path.GetExtension(_option.Path);
-
-                    if (IMG_EXTS.Contains(ext))
-                    {
-                        var imgDiff = new Models.ImageDiff();
-                        if (_option.Revisions.Count == 2)
-                        {
-                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], _option.Path);
-                        }
-                        else
-                        {
-                            if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
-                                (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
-
-                            var fullPath = Path.Combine(_repo, _option.Path);
-                            if (File.Exists(fullPath))
-                            {
-                                imgDiff.New = new Bitmap(fullPath);
-                                imgDiff.NewFileSize = new FileInfo(fullPath).Length;
-                            }
-                        }
-                        rs = imgDiff;
-                    }
-                    else
-                    {
-                        var binaryDiff = new Models.BinaryDiff();
-                        if (_option.Revisions.Count == 2)
-                        {
-                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).Result();
-                            binaryDiff.NewSize = new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).Result();
-                        }
-                        else
-                        {
-                            var fullPath = Path.Combine(_repo, _option.Path);
-                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, "HEAD").Result();
-                            binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
-                        }
-                        rs = binaryDiff;
-                    }
-                }
-                else if (latest.IsLFS)
-                {
-                    rs = latest.LFSDiff;
-                }
-                else
-                {
-                    rs = new Models.NoOrEOLChange();
-                }
+                var rs = GetDiffObject(latest);
 
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -244,6 +158,106 @@ namespace SourceGit.ViewModels
                     IsTextDiff = rs is Models.TextDiff;
                 });
             });
+        }
+
+        private object GetDiffObject(DiffResult latest)
+        {
+            var rs = null as object;
+            if (latest.TextDiff != null)
+            {
+                var count = latest.TextDiff.Lines.Count;
+                var isSubmodule = false;
+                if (count <= 3)
+                {
+                    var submoduleDiff = new Models.SubmoduleDiff();
+                    var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
+                    isSubmodule = true;
+                    for (int i = 1; i < count; i++)
+                    {
+                        var line = latest.TextDiff.Lines[i];
+                        if (!line.Content.StartsWith("Subproject commit ", StringComparison.Ordinal))
+                        {
+                            isSubmodule = false;
+                            break;
+                        }
+
+                        var sha = line.Content.Substring(18);
+                        if (line.Type == Models.TextDiffLineType.Added)
+                            submoduleDiff.New = QuerySubmoduleRevision(submoduleRoot, sha);
+                        else if (line.Type == Models.TextDiffLineType.Deleted)
+                            submoduleDiff.Old = QuerySubmoduleRevision(submoduleRoot, sha);
+                    }
+
+                    if (isSubmodule)
+                        rs = submoduleDiff;
+                }
+
+                if (!isSubmodule)
+                {
+                    latest.TextDiff.File = _option.Path;
+                    rs = latest.TextDiff;
+                }
+            }
+            else if (latest.IsBinary)
+            {
+                var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
+                var ext = Path.GetExtension(_option.Path);
+
+                if (IMG_EXTS.Contains(ext))
+                {
+                    var imgDiff = new Models.ImageDiff();
+                    if (_option.Revisions.Count == 2)
+                    {
+                        (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
+                        (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], _option.Path);
+                    }
+                    else
+                    {
+                        if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
+                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
+
+                        var fullPath = Path.Combine(_repo, _option.Path);
+                        if (File.Exists(fullPath))
+                        {
+                            imgDiff.New = new Bitmap(fullPath);
+                            imgDiff.NewFileSize = new FileInfo(fullPath).Length;
+                        }
+                    }
+                    rs = imgDiff;
+                }
+                else
+                {
+                    var binaryDiff = new Models.BinaryDiff();
+                    if (_option.Revisions.Count == 2)
+                    {
+                        binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).Result();
+                        binaryDiff.NewSize = new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).Result();
+                    }
+                    else
+                    {
+                        var fullPath = Path.Combine(_repo, _option.Path);
+                        binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, "HEAD").Result();
+                        binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
+                    }
+                    rs = binaryDiff;
+                }
+            }
+            else if (latest.IsLFS)
+            {
+                rs = latest.LFSDiff;
+            }
+            else
+            {
+                rs = new Models.NoOrEOLChange();
+            }
+            return rs;
+        }
+
+        private string GetLFSObjectPath(string oid)
+        {
+            var lfsDir = Path.Combine(".git", "lfs", "objects", oid.Substring(0, 2), oid.Substring(2, 2), oid);
+
+            return lfsDir;
         }
 
         private (Bitmap, long) BitmapFromRevisionFile(string repo, string revision, string file)
