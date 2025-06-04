@@ -100,6 +100,18 @@ namespace SourceGit.Models
         }
 
         /// <summary>
+        ///     Used to show differences between two files.
+        /// </summary>
+        /// <param name="path_lhs"></param>
+        /// <param name="path_rhs"></param>
+        public DiffOption(string path_lhs, string path_rhs)
+        {
+            _extra = "--no-index";
+            _orgPath = path_lhs;
+            _path = path_rhs;
+        }
+
+        /// <summary>
         ///     Converts to diff command arguments.
         /// </summary>
         /// <returns></returns>
