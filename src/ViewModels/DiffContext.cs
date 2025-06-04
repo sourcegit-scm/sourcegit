@@ -138,6 +138,7 @@ namespace SourceGit.ViewModels
                 // so instead we set a very high number for the "lines of context" parameter.
                 var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
                 var ignoreWS = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+                var showContentInLFSDiff = Preferences.Instance.ShowContentInLFSDiff;
                 var latest = new Commands.Diff(_repo, _option, numLines, ignoreWS).Result();
                 var info = new Info(_option, numLines, ignoreWS, latest);
                 if (_info != null && info.IsSame(_info))
@@ -146,6 +147,18 @@ namespace SourceGit.ViewModels
                 _info = info;
 
                 var rs = GetDiffObject(latest, _option);
+                if (latest.IsLFS && showContentInLFSDiff)
+                {
+                    var newLFSFilePath = GetLFSObjectPath(latest.LFSDiff.New.Oid);
+                    var oldLFSFilePath = latest.LFSDiff.Old.Oid.Length > 0 ? GetLFSObjectPath(latest.LFSDiff.Old.Oid) : "/dev/null";
+
+                    var oidDiffOption = new DiffOption(oldLFSFilePath, newLFSFilePath);
+                    var oidDiff = new Commands.Diff(_repo, oidDiffOption, numLines, ignoreWS).Result();
+
+                    // FIXME: if we have an lfs file that points to another lfs file, the showContentInLFSDiff will toggle between the
+                    // original lfs pointer sha and the 1 depth recursed lfs sha pointer
+                    rs = GetDiffObject(oidDiff, oidDiffOption, _option.Path);
+                }
 
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -160,7 +173,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private object GetDiffObject(DiffResult diffResult, DiffOption diffOption)
+        private object GetDiffObject(DiffResult diffResult, DiffOption diffOption, string LFSOrigFilePath = "")
         {
             var rs = null as object;
             if (diffResult.TextDiff != null)
@@ -201,7 +214,7 @@ namespace SourceGit.ViewModels
             else if (diffResult.IsBinary)
             {
                 var oldPath = string.IsNullOrEmpty(diffOption.OrgPath) ? diffOption.Path : diffOption.OrgPath;
-                var ext = Path.GetExtension(diffOption.Path);
+                var ext = LFSOrigFilePath.Length == 0 ? Path.GetExtension(diffOption.Path) : Path.GetExtension(LFSOrigFilePath);
 
                 if (IMG_EXTS.Contains(ext))
                 {
