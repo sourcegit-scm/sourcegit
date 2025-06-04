@@ -122,7 +122,7 @@
 
             <ToggleButton Classes="line_path"
                           Width="28"
-                          Command="{Binding ToggleFullTextDiff}"
+                          Click="OnUseFullTextDiffClicked"
                           IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFullTextDiff, Mode=OneWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.All}">
