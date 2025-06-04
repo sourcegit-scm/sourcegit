@@ -207,7 +207,10 @@ namespace SourceGit.ViewModels
                 }
                 else if (latest.IsLFS)
                 {
-                    rs = latest.LFSDiff;
+                    if (IMG_EXTS.Contains(Path.GetExtension(_option.Path) ?? ".invalid"))
+                        rs = new LFSImageDiff(_repo, latest.LFSDiff);
+                    else
+                        rs = latest.LFSDiff;
                 }
                 else
                 {

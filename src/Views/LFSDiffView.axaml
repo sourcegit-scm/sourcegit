@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.LFSDiffView"
+             x:DataType="m:LFSDiff">
+  <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+    <TextBlock Text="{DynamicResource Text.Diff.LFS}"
+               Margin="0,0,0,32"
+               FontSize="18" FontWeight="Bold"
+               Foreground="{DynamicResource Brush.FG2}"
+               HorizontalAlignment="Center"/>
+    <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
+    <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
+      <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+        <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+      </Border>
+
+      <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding Old.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+      <TextBlock Grid.Row="0" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+
+      <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
+        <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
+      </Border>
+
+      <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+      <TextBlock Grid.Row="1" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+    </Grid>
+  </StackPanel>
+</UserControl>
