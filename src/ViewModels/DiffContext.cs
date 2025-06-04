@@ -145,7 +145,7 @@ namespace SourceGit.ViewModels
 
                 _info = info;
 
-                var rs = GetDiffObject(latest);
+                var rs = GetDiffObject(latest, _option);
 
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -160,21 +160,21 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private object GetDiffObject(DiffResult latest)
+        private object GetDiffObject(DiffResult diffResult, DiffOption diffOption)
         {
             var rs = null as object;
-            if (latest.TextDiff != null)
+            if (diffResult.TextDiff != null)
             {
-                var count = latest.TextDiff.Lines.Count;
+                var count = diffResult.TextDiff.Lines.Count;
                 var isSubmodule = false;
                 if (count <= 3)
                 {
                     var submoduleDiff = new Models.SubmoduleDiff();
-                    var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
+                    var submoduleRoot = $"{_repo}/{diffOption.Path}".Replace("\\", "/");
                     isSubmodule = true;
                     for (int i = 1; i < count; i++)
                     {
-                        var line = latest.TextDiff.Lines[i];
+                        var line = diffResult.TextDiff.Lines[i];
                         if (!line.Content.StartsWith("Subproject commit ", StringComparison.Ordinal))
                         {
                             isSubmodule = false;
@@ -194,29 +194,29 @@ namespace SourceGit.ViewModels
 
                 if (!isSubmodule)
                 {
-                    latest.TextDiff.File = _option.Path;
-                    rs = latest.TextDiff;
+                    diffResult.TextDiff.File = diffOption.Path;
+                    rs = diffResult.TextDiff;
                 }
             }
-            else if (latest.IsBinary)
+            else if (diffResult.IsBinary)
             {
-                var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
-                var ext = Path.GetExtension(_option.Path);
+                var oldPath = string.IsNullOrEmpty(diffOption.OrgPath) ? diffOption.Path : diffOption.OrgPath;
+                var ext = Path.GetExtension(diffOption.Path);
 
                 if (IMG_EXTS.Contains(ext))
                 {
                     var imgDiff = new Models.ImageDiff();
-                    if (_option.Revisions.Count == 2)
+                    if (diffOption.Revisions.Count == 2)
                     {
-                        (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                        (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], _option.Path);
+                        (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, diffOption.Revisions[0], oldPath);
+                        (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, diffOption.Revisions[1], diffOption.Path);
                     }
                     else
                     {
                         if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
                             (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
 
-                        var fullPath = Path.Combine(_repo, _option.Path);
+                        var fullPath = Path.Combine(_repo, diffOption.Path);
                         if (File.Exists(fullPath))
                         {
                             imgDiff.New = new Bitmap(fullPath);
@@ -228,23 +228,23 @@ namespace SourceGit.ViewModels
                 else
                 {
                     var binaryDiff = new Models.BinaryDiff();
-                    if (_option.Revisions.Count == 2)
+                    if (diffOption.Revisions.Count == 2)
                     {
-                        binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).Result();
-                        binaryDiff.NewSize = new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).Result();
+                        binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, diffOption.Revisions[0]).Result();
+                        binaryDiff.NewSize = new Commands.QueryFileSize(_repo, diffOption.Path, diffOption.Revisions[1]).Result();
                     }
                     else
                     {
-                        var fullPath = Path.Combine(_repo, _option.Path);
+                        var fullPath = Path.Combine(_repo, diffOption.Path);
                         binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, "HEAD").Result();
                         binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                     }
                     rs = binaryDiff;
                 }
             }
-            else if (latest.IsLFS)
+            else if (diffResult.IsLFS)
             {
-                rs = latest.LFSDiff;
+                rs = diffResult.LFSDiff;
             }
             else
             {
