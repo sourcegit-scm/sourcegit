@@ -237,6 +237,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _ignoreWhitespaceChangesInDiff, value);
         }
 
+        public static event Action NoImageFilteringChanged;
+
+        public bool NoImageFiltering
+        {
+            get => _noImageFiltering;
+            set {
+                if ( SetProperty(ref _noImageFiltering, value))
+                { 
+                    OnPropertyChanged();
+                    NoImageFilteringChanged?.Invoke();
+                }
+            }
+        }
+
         public bool EnableDiffViewWordWrap
         {
             get => _enableDiffViewWordWrap;
@@ -695,6 +709,7 @@ namespace SourceGit.ViewModels
         private bool _useFullTextDiff = false;
         private bool _useBlockNavigationInDiffView = false;
         private int _lfsImageActiveIdx = 0;
+        private bool _noImageFiltering = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

@@ -122,6 +122,25 @@
 
             <ToggleButton Classes="line_path"
                           Width="28"
+                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=NoImageFiltering, Mode=TwoWay}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.NoImageFiltering}">
+              <ToggleButton.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                  <Binding Path="Content"
+                            Mode="OneWay"
+                            Converter="{x:Static c:ObjectConverters.IsTypeOf}"
+                            ConverterParameter="{x:Type m:ImageDiff}"/>
+                  <Binding Path="Content"
+                            Mode="OneWay"
+                            Converter="{x:Static c:ObjectConverters.IsTypeOf}"
+                            ConverterParameter="{x:Type vm:LFSImageDiff}"/>
+                </MultiBinding>
+              </ToggleButton.IsVisible>
+              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.NoImageFiltering}"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="28"
                           Click="OnUseFullTextDiffClicked"
                           IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFullTextDiff, Mode=OneWay}"
                           IsVisible="{Binding IsTextDiff}"

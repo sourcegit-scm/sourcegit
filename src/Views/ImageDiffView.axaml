@@ -91,8 +91,7 @@
           <Border HorizontalAlignment="Center" Background="{DynamicResource Brush.Window}">
             <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
               <v:ImageSwipeControl OldImage="{Binding Old}"
-                                   NewImage="{Binding New}"
-                                   RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                                   NewImage="{Binding New}"/>
             </Border>
           </Border>
         </Border>

@@ -11,6 +11,16 @@ namespace SourceGit.Views
 {
     public class ImageContainer : Control
     {
+        public ImageContainer()
+        {
+            SourceGit.ViewModels.Preferences.NoImageFilteringChanged += OnNoImageFilteringChanged;
+        }
+
+        private void OnNoImageFilteringChanged()
+        {
+            InvalidateVisual();
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_bgBrush == null)
@@ -66,7 +76,8 @@ namespace SourceGit.Views
         public override void Render(DrawingContext context)
         {
             base.Render(context);
-
+            var interpolationMode = SourceGit.ViewModels.Preferences.Instance.NoImageFiltering ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
+            using(context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = interpolationMode }))
             if (Image is { } image)
                 context.DrawImage(image, new Rect(0, 0, Bounds.Width, Bounds.Height));
         }
@@ -152,10 +163,12 @@ namespace SourceGit.Views
             var h = Bounds.Height;
             var x = w * alpha;
             var left = OldImage;
-            if (left != null && alpha > 0)
+            var interpolationMode = SourceGit.ViewModels.Preferences.Instance.NoImageFiltering ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
+                if (left != null && alpha > 0)
             {
                 var src = new Rect(0, 0, left.Size.Width * alpha, left.Size.Height);
                 var dst = new Rect(0, 0, x, h);
+                using(context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = interpolationMode }))
                 context.DrawImage(left, src, dst);
             }
 
@@ -164,6 +177,7 @@ namespace SourceGit.Views
             {
                 var src = new Rect(right.Size.Width * alpha, 0, right.Size.Width * (1 - alpha), right.Size.Height);
                 var dst = new Rect(x, 0, w - x, h);
+                using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = interpolationMode }))
                 context.DrawImage(right, src, dst);
             }
 
@@ -296,6 +310,8 @@ namespace SourceGit.Views
             var right = NewImage;
             var drawLeft = left != null && alpha < 1.0;
             var drawRight = right != null && alpha > 0;
+            var interpolationMode = SourceGit.ViewModels.Preferences.Instance.NoImageFiltering ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
+            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = interpolationMode }))
 
             if (drawLeft && drawRight)
             {
@@ -312,7 +328,6 @@ namespace SourceGit.Views
                         using (dc.PushOpacity(alpha))
                             dc.DrawImage(right, rtRect);
                     }
-
                     context.DrawImage(rt, rtRect, rect);
                 }
             }
