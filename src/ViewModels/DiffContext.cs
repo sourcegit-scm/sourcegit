@@ -140,7 +140,7 @@ namespace SourceGit.ViewModels
                 var ignoreWS = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
                 var showContentInLFSDiff = Preferences.Instance.ShowContentInLFSDiff;
                 var latest = new Commands.Diff(_repo, _option, numLines, ignoreWS).Result();
-                var info = new Info(_option, numLines, ignoreWS, latest);
+                var info = new Info(_option, numLines, ignoreWS, showContentInLFSDiff, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
@@ -310,14 +310,16 @@ namespace SourceGit.ViewModels
             public string Argument { get; set; }
             public int UnifiedLines { get; set; }
             public bool IgnoreWhitespace { get; set; }
+            public bool ShowContentInLFSDiff { get; set; }
             public string OldHash { get; set; }
             public string NewHash { get; set; }
 
-            public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, Models.DiffResult result)
+            public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, bool showContentInFLSDiff, Models.DiffResult result)
             {
                 Argument = option.ToString();
                 UnifiedLines = unifiedLines;
                 IgnoreWhitespace = ignoreWhitespace;
+                ShowContentInLFSDiff = showContentInFLSDiff;
                 OldHash = result.OldHash;
                 NewHash = result.NewHash;
             }
@@ -327,6 +329,7 @@ namespace SourceGit.ViewModels
                 return Argument.Equals(other.Argument, StringComparison.Ordinal) &&
                     UnifiedLines == other.UnifiedLines &&
                     IgnoreWhitespace == other.IgnoreWhitespace &&
+                    ShowContentInLFSDiff == other.ShowContentInLFSDiff &&
                     OldHash.Equals(other.OldHash, StringComparison.Ordinal) &&
                     NewHash.Equals(other.NewHash, StringComparison.Ordinal);
             }
