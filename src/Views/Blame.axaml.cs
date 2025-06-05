@@ -61,6 +61,7 @@ namespace SourceGit.Views
                             typeface,
                             _editor.FontSize,
                             Brushes.DarkOrange);
+
                         context.DrawText(shaLink, new Point(x, y));
                         context.DrawLine(underlinePen, new Point(x, y + shaLink.Baseline + 2), new Point(x + shaLink.Width, y + shaLink.Baseline + 2));
                         x += shaLink.Width + 8;
@@ -225,7 +226,7 @@ namespace SourceGit.Views
                         {
                             if (DataContext is ViewModels.Blame blame)
                             {
-                                blame.NavigateToCommit(info.CommitSHA);
+                                blame.NavigateToCommit(info.CommitSHA, true);
                             }
 
                             e.Handled = true;
@@ -433,12 +434,41 @@ namespace SourceGit.Views
         public Blame()
         {
             InitializeComponent();
+
+            AddHandler(PointerReleasedEvent, MouseUpHandler, handledEventsToo: true);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
             GC.Collect();
+        }
+
+        private void HistoryBack(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Blame blame)
+            {
+                blame.Back();
+            }
+        }
+        private void HistoryForward(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Blame blame)
+            {
+                blame.Forward();
+            }
+        }
+
+        private void MouseUpHandler(object sender, PointerReleasedEventArgs e)
+        {
+            if (e.InitialPressMouseButton == MouseButton.XButton1)
+            {
+                HistoryBack(null, null);
+            }
+            else if (e.InitialPressMouseButton == MouseButton.XButton2)
+            {
+                HistoryForward(null, null);
+            }
         }
     }
 }
