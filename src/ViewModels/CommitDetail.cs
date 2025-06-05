@@ -245,9 +245,9 @@ namespace SourceGit.ViewModels
                 case Models.ObjectType.Commit:
                     Task.Run(() =>
                     {
-                        var submoduleRoot = Path.Combine(_repo.FullPath, file.Path);
-                        var commit = new Commands.QuerySingleCommit(submoduleRoot, _commit.SHA).Result();
-                        var message = commit != null ? new Commands.QueryCommitFullMessage(submoduleRoot, _commit.SHA).Result() : null;
+                        var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
+                        var commit = new Commands.QuerySingleCommit(submoduleRoot, file.SHA).Result();
+                        var message = commit != null ? new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result() : null;
                         var module = new Models.RevisionSubmodule()
                         {
                             Commit = commit ?? new Models.Commit() { SHA = _commit.SHA },
