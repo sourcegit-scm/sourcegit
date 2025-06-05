@@ -44,14 +44,14 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.1" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.1" />
     <PackageReference Include="Avalonia.Diagnostics" Version="11.3.1" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.2.0" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.3.0" />
     <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.4" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc5.4" />
     <PackageReference Include="OpenAI" Version="2.2.0-beta.4" />
-    <PackageReference Include="TextMateSharp" Version="1.0.66" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.66" />
+    <PackageReference Include="TextMateSharp" Version="1.0.69" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.69" />
   </ItemGroup>
 
   <ItemGroup>
