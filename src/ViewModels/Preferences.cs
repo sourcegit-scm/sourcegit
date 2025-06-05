@@ -261,6 +261,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useBlockNavigationInDiffView, value);
         }
 
+        public int LFSImageDiffActiveIdx
+        {
+            get => _lfsImageDiffActiveIdx;
+            set => SetProperty(ref _lfsImageDiffActiveIdx, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -687,6 +693,7 @@ namespace SourceGit.ViewModels
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
         private bool _useBlockNavigationInDiffView = false;
+        private int _lfsImageDiffActiveIdx = 0;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

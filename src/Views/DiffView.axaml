@@ -282,7 +282,7 @@
 
           <!-- LFS Image Diff -->
           <DataTemplate DataType="vm:LFSImageDiff">
-            <TabControl Margin="0,8,0,0">
+            <TabControl Margin="0,8,0,0" SelectedIndex="{Binding Source={x:Static vm:Preferences.Instance}, Path=LFSImageDiffActiveIdx, Mode=TwoWay}">
               <TabControl.Styles>
                 <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
                   <Setter Property="HorizontalAlignment" Value="Center"/>
