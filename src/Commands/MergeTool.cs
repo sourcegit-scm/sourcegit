@@ -24,7 +24,7 @@ namespace SourceGit.Commands
 
             if (!File.Exists(toolPath))
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, $"Can NOT found external merge tool in '{toolPath}'!"));
+                Dispatcher.UIThread.Post(() => App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!"));
                 return false;
             }
 
@@ -54,7 +54,7 @@ namespace SourceGit.Commands
 
             if (!File.Exists(toolPath))
             {
-                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, $"Can NOT found external diff tool in '{toolPath}'!"));
+                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!"));
                 return false;
             }
 

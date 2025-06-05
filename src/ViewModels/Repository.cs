@@ -772,7 +772,7 @@ namespace SourceGit.ViewModels
 
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                App.RaiseException(_fullpath, "Can NOT find current branch!!!");
                 return;
             }
 
@@ -796,7 +796,7 @@ namespace SourceGit.ViewModels
 
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                App.RaiseException(_fullpath, "Can NOT find current branch!!!");
                 return;
             }
 
@@ -1288,7 +1288,7 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
+                App.RaiseException(_fullpath, "Git cannot create a branch before your first commit.");
                 return;
             }
 
@@ -1354,7 +1354,7 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
+                App.RaiseException(_fullpath, "Git cannot create a branch before your first commit.");
                 return;
             }
 

@@ -1707,7 +1707,7 @@ namespace SourceGit.ViewModels
 
             if (!_repo.CanCreatePopup())
             {
-                App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
+                App.RaiseException(_repo.FullPath, "Repository has an unfinished job! Please wait!");
                 return;
             }
 
