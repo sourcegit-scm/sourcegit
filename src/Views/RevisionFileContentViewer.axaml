@@ -68,6 +68,32 @@
         </ScrollViewer>
       </Grid>
     </DataTemplate>
+
+    <DataTemplate DataType="vm:RevisionLFSImage">
+      <TabControl Margin="0,8,0,0" SelectedIndex="{Binding Source={x:Static vm:Preferences.Instance}, Path=LFSImageActiveIdx, Mode=TwoWay}">
+        <TabControl.Styles>
+          <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+          </Style>
+        </TabControl.Styles>
+
+        <TabItem>
+          <TabItem.Header>
+            <TextBlock Text="LFS" FontWeight="Bold"/>
+          </TabItem.Header>
+
+          <ContentControl Content="{Binding LFS}"/>
+        </TabItem>
+
+        <TabItem>
+          <TabItem.Header>
+            <TextBlock Text="IMAGE" FontWeight="Bold"/>
+          </TabItem.Header>
+
+          <ContentControl Content="{Binding Image}"/>
+        </TabItem>
+      </TabControl>
+    </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>
 

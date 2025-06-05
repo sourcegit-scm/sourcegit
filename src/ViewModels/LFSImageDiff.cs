@@ -1,8 +1,5 @@
 ﻿using System.Threading.Tasks;
-
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -20,28 +17,25 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _image, value);
         }
 
-        public LFSImageDiff(string repo, Models.LFSDiff lfs)
+        public LFSImageDiff(string repo, Models.LFSDiff lfs, Models.ImageDecoder decoder)
         {
             LFS = lfs;
 
             Task.Run(() =>
             {
-                var img = new Models.ImageDiff();
-                (img.Old, img.OldFileSize) = BitmapFromLFSObject(repo, lfs.Old);
-                (img.New, img.NewFileSize) = BitmapFromLFSObject(repo, lfs.New);
+                var oldImage = ImageSource.FromLFSObject(repo, lfs.Old, decoder);
+                var newImage = ImageSource.FromLFSObject(repo, lfs.New, decoder);
+
+                var img = new Models.ImageDiff()
+                {
+                    Old = oldImage.Bitmap,
+                    OldFileSize = oldImage.Size,
+                    New = newImage.Bitmap,
+                    NewFileSize = newImage.Size
+                };
 
                 Dispatcher.UIThread.Invoke(() => Image = img);
             });
-        }
-
-        private (Bitmap, long) BitmapFromLFSObject(string repo, Models.LFSObject lfs)
-        {
-            if (string.IsNullOrEmpty(lfs.Oid) || lfs.Size == 0)
-                return (null, 0);
-
-            var stream = Commands.QueryFileContent.FromLFS(repo, lfs.Oid, lfs.Size);
-            var size = stream.Length;
-            return size > 0 ? (new Bitmap(stream), size) : (null, size);
         }
 
         private Models.ImageDiff _image;

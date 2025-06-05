@@ -1,4 +1,6 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System.Globalization;
+using System.IO;
+using Avalonia.Media.Imaging;
 
 namespace SourceGit.Models
 {
@@ -9,10 +11,17 @@ namespace SourceGit.Models
 
     public class RevisionImageFile
     {
-        public Bitmap Image { get; set; } = null;
-        public long FileSize { get; set; } = 0;
-        public string ImageType { get; set; } = string.Empty;
+        public Bitmap Image { get; }
+        public long FileSize { get; }
+        public string ImageType { get; }
         public string ImageSize => Image != null ? $"{Image.PixelSize.Width} x {Image.PixelSize.Height}" : "0 x 0";
+
+        public RevisionImageFile(string file, Bitmap img, long size)
+        {
+            Image = img;
+            FileSize = size;
+            ImageType = Path.GetExtension(file)!.Substring(1).ToUpper(CultureInfo.CurrentCulture);
+        }
     }
 
     public class RevisionTextFile

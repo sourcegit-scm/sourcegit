@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
@@ -103,9 +101,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchChangeFilter, value))
-                {
                     RefreshVisibleChanges();
-                }
             }
         }
 
@@ -205,14 +201,11 @@ namespace SourceGit.ViewModels
                         var isBinary = new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path).Result();
                         if (isBinary)
                         {
-                            var ext = Path.GetExtension(file.Path);
-                            if (IMG_EXTS.Contains(ext))
+                            var imgDecoder = ImageSource.GetDecoder(file.Path);
+                            if (imgDecoder != Models.ImageDecoder.None)
                             {
-                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
-                                var fileSize = stream.Length;
-                                var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
-                                var imageType = ext!.Substring(1).ToUpper(CultureInfo.CurrentCulture);
-                                var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
+                                var source = ImageSource.FromRevision(_repo.FullPath, _commit.SHA, file.Path, imgDecoder);
+                                var image = new Models.RevisionImageFile(file.Path, source.Bitmap, source.Size);
                                 Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = image);
                             }
                             else
@@ -227,13 +220,20 @@ namespace SourceGit.ViewModels
 
                         var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
                         var content = new StreamReader(contentStream).ReadToEnd();
-                        var matchLFS = REG_LFS_FORMAT().Match(content);
-                        if (matchLFS.Success)
+                        var lfs = Models.LFSObject.Parse(content);
+                        if (lfs != null)
                         {
-                            var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
-                            obj.Object.Oid = matchLFS.Groups[1].Value;
-                            obj.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = obj);
+                            var imgDecoder = ImageSource.GetDecoder(file.Path);
+                            if (imgDecoder != Models.ImageDecoder.None)
+                            {
+                                var combined = new RevisionLFSImage(_repo.FullPath, file.Path, lfs, imgDecoder);
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = combined);
+                            }
+                            else
+                            {
+                                var rlfs = new Models.RevisionLFSObject() { Object = lfs };
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = rlfs);
+                            }
                         }
                         else
                         {
@@ -246,29 +246,15 @@ namespace SourceGit.ViewModels
                     Task.Run(() =>
                     {
                         var submoduleRoot = Path.Combine(_repo.FullPath, file.Path);
-                        var commit = new Commands.QuerySingleCommit(submoduleRoot, file.SHA).Result();
-                        if (commit != null)
+                        var commit = new Commands.QuerySingleCommit(submoduleRoot, _commit.SHA).Result();
+                        var message = commit != null ? new Commands.QueryCommitFullMessage(submoduleRoot, _commit.SHA).Result() : null;
+                        var module = new Models.RevisionSubmodule()
                         {
-                            var body = new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result();
-                            var submodule = new Models.RevisionSubmodule()
-                            {
-                                Commit = commit,
-                                FullMessage = new Models.CommitFullMessage { Message = body }
-                            };
+                            Commit = commit ?? new Models.Commit() { SHA = _commit.SHA },
+                            FullMessage = new Models.CommitFullMessage { Message = message }
+                        };
 
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = submodule);
-                        }
-                        else
-                        {
-                            Dispatcher.UIThread.Invoke(() =>
-                            {
-                                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                                {
-                                    Commit = new Models.Commit() { SHA = file.SHA },
-                                    FullMessage = null,
-                                };
-                            });
-                        }
+                        Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = module);
                     });
                     break;
                 default:
@@ -896,14 +882,6 @@ namespace SourceGit.ViewModels
 
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
-
-        [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
-        private static partial Regex REG_LFS_FORMAT();
-
-        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
-        {
-            ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
-        };
 
         private Repository _repo = null;
         private Models.Commit _commit = null;

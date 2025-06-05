@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -113,9 +111,6 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                // NOTE: Here we override the UnifiedLines value (if UseFullTextDiff is on).
-                // There is no way to tell a git-diff to use "ALL lines of context",
-                // so instead we set a very high number for the "lines of context" parameter.
                 var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
                 var ignoreWS = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
                 var latest = new Commands.Diff(_repo, _option, numLines, ignoreWS).Result();
@@ -164,28 +159,39 @@ namespace SourceGit.ViewModels
                 else if (latest.IsBinary)
                 {
                     var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
-                    var ext = Path.GetExtension(_option.Path);
+                    var imgDecoder = ImageSource.GetDecoder(_option.Path);
 
-                    if (IMG_EXTS.Contains(ext))
+                    if (imgDecoder != Models.ImageDecoder.None)
                     {
                         var imgDiff = new Models.ImageDiff();
+
                         if (_option.Revisions.Count == 2)
                         {
-                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], _option.Path);
+                            var oldImage = ImageSource.FromRevision(_repo, _option.Revisions[0], oldPath, imgDecoder);
+                            var newImage = ImageSource.FromRevision(_repo, _option.Revisions[1], _option.Path, imgDecoder);
+                            imgDiff.Old = oldImage.Bitmap;
+                            imgDiff.OldFileSize = oldImage.Size;
+                            imgDiff.New = newImage.Bitmap;
+                            imgDiff.NewFileSize = newImage.Size;
                         }
                         else
                         {
                             if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
-                                (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
+                            {
+                                var oldImage = ImageSource.FromRevision(_repo, "HEAD", oldPath, imgDecoder);
+                                imgDiff.Old = oldImage.Bitmap;
+                                imgDiff.OldFileSize = oldImage.Size;
+                            }
 
                             var fullPath = Path.Combine(_repo, _option.Path);
                             if (File.Exists(fullPath))
                             {
-                                imgDiff.New = new Bitmap(fullPath);
-                                imgDiff.NewFileSize = new FileInfo(fullPath).Length;
+                                var newImage = ImageSource.FromFile(fullPath, imgDecoder);
+                                imgDiff.New = newImage.Bitmap;
+                                imgDiff.NewFileSize = newImage.Size;
                             }
                         }
+
                         rs = imgDiff;
                     }
                     else
@@ -207,8 +213,9 @@ namespace SourceGit.ViewModels
                 }
                 else if (latest.IsLFS)
                 {
-                    if (IMG_EXTS.Contains(Path.GetExtension(_option.Path) ?? ".invalid"))
-                        rs = new LFSImageDiff(_repo, latest.LFSDiff);
+                    var imgDecoder = ImageSource.GetDecoder(_option.Path);
+                    if (imgDecoder != Models.ImageDecoder.None)
+                        rs = new LFSImageDiff(_repo, latest.LFSDiff, imgDecoder);
                     else
                         rs = latest.LFSDiff;
                 }
@@ -227,13 +234,6 @@ namespace SourceGit.ViewModels
                     IsTextDiff = rs is Models.TextDiff;
                 });
             });
-        }
-
-        private (Bitmap, long) BitmapFromRevisionFile(string repo, string revision, string file)
-        {
-            var stream = Commands.QueryFileContent.Run(repo, revision, file);
-            var size = stream.Length;
-            return size > 0 ? (new Bitmap(stream), size) : (null, size);
         }
 
         private Models.RevisionSubmodule QuerySubmoduleRevision(string repo, string sha)
@@ -255,11 +255,6 @@ namespace SourceGit.ViewModels
                 FullMessage = null,
             };
         }
-
-        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
-        {
-            ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
-        };
 
         private class Info
         {
