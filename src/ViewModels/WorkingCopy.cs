@@ -1099,7 +1099,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
 
             var ai = null as MenuItem;
-            var services = _repo.GetPreferedOpenAIServices();
+            var services = _repo.GetPreferredOpenAIServices();
             if (services.Count > 0)
             {
                 ai = new MenuItem();
@@ -1497,7 +1497,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            var services = _repo.GetPreferedOpenAIServices();
+            var services = _repo.GetPreferredOpenAIServices();
             if (services.Count == 0)
             {
                 App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");

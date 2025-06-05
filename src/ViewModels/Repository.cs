@@ -127,12 +127,12 @@ namespace SourceGit.ViewModels
 
         public bool OnlyHighlightCurrentBranchInHistories
         {
-            get => _settings.OnlyHighlighCurrentBranchInHistories;
+            get => _settings.OnlyHighlightCurrentBranchInHistories;
             set
             {
-                if (value != _settings.OnlyHighlighCurrentBranchInHistories)
+                if (value != _settings.OnlyHighlightCurrentBranchInHistories)
                 {
-                    _settings.OnlyHighlighCurrentBranchInHistories = value;
+                    _settings.OnlyHighlightCurrentBranchInHistories = value;
                     OnPropertyChanged();
                 }
             }
@@ -1401,7 +1401,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            App.GetLauncer().OpenRepositoryInTab(node, null);
+            App.GetLauncher().OpenRepositoryInTab(node, null);
         }
 
         public void AddWorktree()
@@ -1430,10 +1430,10 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            App.GetLauncer()?.OpenRepositoryInTab(node, null);
+            App.GetLauncher()?.OpenRepositoryInTab(node, null);
         }
 
-        public List<Models.OpenAIService> GetPreferedOpenAIServices()
+        public List<Models.OpenAIService> GetPreferredOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
@@ -1442,11 +1442,11 @@ namespace SourceGit.ViewModels
             if (services.Count == 1)
                 return [services[0]];
 
-            var prefered = _settings.PreferedOpenAIService;
+            var preferred = _settings.PreferredOpenAIService;
             var all = new List<Models.OpenAIService>();
             foreach (var service in services)
             {
-                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                if (service.Name.Equals(preferred, StringComparison.Ordinal))
                     return [service];
 
                 all.Add(service);
@@ -2588,7 +2588,7 @@ namespace SourceGit.ViewModels
 
         private LauncherPage GetOwnerPage()
         {
-            var launcher = App.GetLauncer();
+            var launcher = App.GetLauncher();
             if (launcher == null)
                 return null;
 

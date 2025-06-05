@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
         {
             if (!string.IsNullOrEmpty(file))
             {
-                var log = _repo.CreateLog("Remove Assue Unchanged File");
+                var log = _repo.CreateLog("Remove Assume Unchanged File");
                 new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).Exec();
                 log.Complete();
                 Files.Remove(file);

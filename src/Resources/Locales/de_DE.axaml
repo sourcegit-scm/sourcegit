@@ -767,7 +767,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">ALLES STAGEN</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">ALS UNVERÄNDERT ANGENOMMENE ANZEIGEN</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">ALS UNVERÄNDERT ANGENOMMENE ANZEIGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ARBEITSPLATZ: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Arbeitsplätze konfigurieren...</x:String>

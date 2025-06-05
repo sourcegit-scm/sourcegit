@@ -52,7 +52,7 @@ namespace SourceGit.ViewModels
             Counter = 1;
         }
 
-        public static List<SubmoduleTreeNode> Build(IList<Models.Submodule> submodules, HashSet<string> expaneded)
+        public static List<SubmoduleTreeNode> Build(IList<Models.Submodule> submodules, HashSet<string> expanded)
         {
             var nodes = new List<SubmoduleTreeNode>();
             var folders = new Dictionary<string, SubmoduleTreeNode>();
@@ -79,13 +79,13 @@ namespace SourceGit.ViewModels
                         }
                         else if (lastFolder == null)
                         {
-                            lastFolder = new SubmoduleTreeNode(folder, depth, expaneded.Contains(folder));
+                            lastFolder = new SubmoduleTreeNode(folder, depth, expanded.Contains(folder));
                             folders.Add(folder, lastFolder);
                             InsertFolder(nodes, lastFolder);
                         }
                         else
                         {
-                            var cur = new SubmoduleTreeNode(folder, depth, expaneded.Contains(folder));
+                            var cur = new SubmoduleTreeNode(folder, depth, expanded.Contains(folder));
                             folders.Add(folder, cur);
                             InsertFolder(lastFolder.Children, cur);
                             lastFolder = cur;

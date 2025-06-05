@@ -731,7 +731,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">未ステージのファイル</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">ステージへ移動</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">すべてステージへ移動</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">変更されていないとみなしたものを表示</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">変更されていないとみなしたものを表示</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">テンプレート: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ワークスペース: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">ワークスペースを設定...</x:String>
