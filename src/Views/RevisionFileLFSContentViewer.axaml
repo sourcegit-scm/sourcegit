@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.RevisionFileLFSContentViewer"
+             x:DataType="m:RevisionLFSObject">
+  <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{DynamicResource Text.CommitDetail.Files.LFS}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+    <Path Width="64" Height="64" Margin="0,24,0,0" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
+    <SelectableTextBlock Margin="0,16,0,0" Text="{Binding Object.Oid}" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+    <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+      <TextBlock Classes="primary" Text="{Binding Object.Size}" Foreground="{DynamicResource Brush.FG2}"/>
+      <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>
+

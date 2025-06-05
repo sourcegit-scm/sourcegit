@@ -103,10 +103,23 @@ namespace SourceGit.ViewModels
                         var matchLFS = REG_LFS_FORMAT().Match(content);
                         if (matchLFS.Success)
                         {
-                            var lfs = new Models.RevisionLFSObject() { Object = new() };
-                            lfs.Object.Oid = matchLFS.Groups[1].Value;
-                            lfs.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, lfs));
+                            var lfs = new Models.RevisionLFSObject() { Object = new Models.LFSObject { 
+                                Oid = matchLFS.Groups[1].Value,
+                                Size = long.Parse(matchLFS.Groups[2].Value)
+                            } };
+
+                            var ext = Path.GetExtension(_file);
+                            var obj = null as object;
+                            if (IMG_EXTS.Contains(ext))
+                            {
+                                var imageType = Path.GetExtension(_file)!.TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
+                                obj = new RevisionLFSImageObject(_repo.FullPath, lfs, ext);
+                            }
+                            else
+                            {
+                                obj = lfs;
+                            }
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, obj));
                         }
                         else
                         {

@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private (Bitmap, long) BitmapFromLFSObject(string repo, Models.LFSObject lfs)
+        public static (Bitmap, long) BitmapFromLFSObject(string repo, Models.LFSObject lfs)
         {
             if (string.IsNullOrEmpty(lfs.Oid) || lfs.Size == 0)
                 return (null, 0);
