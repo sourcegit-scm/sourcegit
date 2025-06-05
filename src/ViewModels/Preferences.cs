@@ -453,17 +453,12 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void SortAllNodes()
-        {
-            SortNodesRecursive(RepositoryNodes);
-        }
-
         public RepositoryNode FindNode(string id)
         {
             return FindNodeRecursive(id, RepositoryNodes);
         }
 
-        public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode)
+        public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode, bool save = true)
         {
             var normalized = repo.Replace('\\', '/').TrimEnd('/');
 
@@ -478,11 +473,11 @@ namespace SourceGit.ViewModels
                     IsRepository = true,
                 };
 
-                AddNode(node, parent, true);
+                AddNode(node, parent, save);
             }
             else if (shouldMoveNode)
             {
-                MoveNode(node, parent, true);
+                MoveNode(node, parent, save);
             }
 
             return node;
@@ -514,13 +509,12 @@ namespace SourceGit.ViewModels
         {
             var container = FindNodeContainer(node, RepositoryNodes);
             SortNodes(container);
-
             Save();
         }
 
-        public bool AutoRemoveInvalidNode()
+        public void AutoRemoveInvalidNode()
         {
-            return RemoveInvalidRepositoriesRecursive(RepositoryNodes);
+            RemoveInvalidRepositoriesRecursive(RepositoryNodes);
         }
 
         public void Save()

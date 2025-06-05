@@ -53,20 +53,17 @@ namespace SourceGit.ViewModels
                         var parent = new DirectoryInfo(f.Path).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                         if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                         {
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, null, false);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, null, false, false);
                         }
                         else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                         {
                             var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
                             var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, group, false);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, group, false, false);
                         }
                     }
 
                     Preferences.Instance.AutoRemoveInvalidNode();
-
-                    // Sort & Save unconditionally after a complete rescan.
-                    Preferences.Instance.SortAllNodes();
                     Preferences.Instance.Save();
 
                     Welcome.Instance.Refresh();
