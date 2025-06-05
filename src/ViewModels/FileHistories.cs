@@ -12,12 +12,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class FileHistoriesRevisionFile(string path, object content)
-    {
-        public string Path { get; set; } = path;
-        public object Content { get; set; } = content;
-    }
-
     public partial class FileHistoriesSingleRevision : ObservableObject
     {
         public bool IsDiffMode
@@ -65,7 +59,7 @@ namespace SourceGit.ViewModels
             var objs = new Commands.QueryRevisionObjects(_repo.FullPath, _revision.SHA, _file).Result();
             if (objs.Count == 0)
             {
-                ViewContent = new FileHistoriesRevisionFile(_file, null);
+                ViewContent = new FileContent(_file, null);
                 return;
             }
 
@@ -86,13 +80,13 @@ namespace SourceGit.ViewModels
                                 var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
                                 var imageType = Path.GetExtension(_file)!.TrimStart('.').ToUpper(CultureInfo.CurrentCulture);
                                 var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
-                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, image));
+                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileContent(_file, image));
                             }
                             else
                             {
                                 var size = new Commands.QueryFileSize(_repo.FullPath, _file, _revision.SHA).Result();
                                 var binaryFile = new Models.RevisionBinaryFile() { Size = size };
-                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, binaryFile));
+                                Dispatcher.UIThread.Invoke(() => ViewContent = new FileContent(_file, binaryFile));
                             }
 
                             return;
@@ -106,12 +100,12 @@ namespace SourceGit.ViewModels
                             var lfs = new Models.RevisionLFSObject() { Object = new() };
                             lfs.Object.Oid = matchLFS.Groups[1].Value;
                             lfs.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, lfs));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileContent(_file, lfs));
                         }
                         else
                         {
                             var txt = new Models.RevisionTextFile() { FileName = obj.Path, Content = content };
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, txt));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileContent(_file, txt));
                         }
                     });
                     break;
@@ -128,7 +122,7 @@ namespace SourceGit.ViewModels
                                 Commit = commit,
                                 FullMessage = new Models.CommitFullMessage { Message = message }
                             };
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileContent(_file, module));
                         }
                         else
                         {
@@ -137,12 +131,12 @@ namespace SourceGit.ViewModels
                                 Commit = new Models.Commit() { SHA = obj.SHA },
                                 FullMessage = null
                             };
-                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
+                            Dispatcher.UIThread.Invoke(() => ViewContent = new FileContent(_file, module));
                         }
                     });
                     break;
                 default:
-                    ViewContent = new FileHistoriesRevisionFile(_file, null);
+                    ViewContent = new FileContent(_file, null);
                     break;
             }
         }

@@ -113,7 +113,7 @@
     <!-- Right: File Content Viewer -->
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-        <v:RevisionFileContentViewer Content="{Binding ViewRevisionFileContent}"/>
+        <v:FileContentViewer DataContext="{Binding ViewRevisionFileContent}"/>
       </Border>
     </Grid>
   </Grid>

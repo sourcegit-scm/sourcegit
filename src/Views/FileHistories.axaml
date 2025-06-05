@@ -133,26 +133,8 @@
                     <v:DiffView/>
                   </DataTemplate>
 
-                  <DataTemplate DataType="vm:FileHistoriesRevisionFile">
-                    <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-                      <Grid RowDefinitions="26,*">
-                        <Border Grid.Row="0"
-                                BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
-                                Background="{DynamicResource Brush.Window}">
-                          <Grid ColumnDefinitions="Auto,*">
-                            <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
-                            <TextBlock Grid.Column="1"
-                                       Classes="primary"
-                                       Margin="4,0,0,0"
-                                       Text="{Binding Path}"
-                                       FontSize="11"
-                                       TextTrimming="CharacterEllipsis"/>
-                          </Grid>
-                        </Border>
-
-                        <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding Content}"/>
-                      </Grid>
-                    </Border>
+                  <DataTemplate DataType="vm:FileContent">
+                    <v:FileContentViewer />
                   </DataTemplate>
                 </ContentControl.DataTemplates>
               </ContentControl>

@@ -213,13 +213,13 @@ namespace SourceGit.ViewModels
                                 var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
                                 var imageType = ext!.Substring(1).ToUpper(CultureInfo.CurrentCulture);
                                 var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
-                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = image);
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = new FileContent(file.Path, image));
                             }
                             else
                             {
                                 var size = new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).Result();
                                 var binary = new Models.RevisionBinaryFile() { Size = size };
-                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = binary);
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = new FileContent(file.Path, binary));
                             }
 
                             return;
@@ -233,12 +233,12 @@ namespace SourceGit.ViewModels
                             var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
                             obj.Object.Oid = matchLFS.Groups[1].Value;
                             obj.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = obj);
+                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = new FileContent(file.Path, obj));
                         }
                         else
                         {
                             var txt = new Models.RevisionTextFile() { FileName = file.Path, Content = content };
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = txt);
+                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = new FileContent(file.Path, txt));
                         }
                     });
                     break;
@@ -256,17 +256,17 @@ namespace SourceGit.ViewModels
                                 FullMessage = new Models.CommitFullMessage { Message = body }
                             };
 
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = submodule);
+                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = new FileContent(file.Path, submodule));
                         }
                         else
                         {
                             Dispatcher.UIThread.Invoke(() =>
                             {
-                                ViewRevisionFileContent = new Models.RevisionSubmodule()
+                                ViewRevisionFileContent = new FileContent(file.Path, new Models.RevisionSubmodule()
                                 {
                                     Commit = new Models.Commit() { SHA = file.SHA },
                                     FullMessage = null,
-                                };
+                                });
                             });
                         }
                     });
