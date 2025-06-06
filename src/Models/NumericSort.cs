@@ -41,7 +41,8 @@ namespace SourceGit.Models
                 }
                 else
                 {
-                    result = string.CompareOrdinal(sub1, sub2);
+                    result = string.Compare(sub1, sub2,
+                        ViewModels.Preferences.Instance.GetPreferredListComparisonType());
                 }
                 if (result != 0)
                     return result;
