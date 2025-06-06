@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Models
+﻿using System;
+
+namespace SourceGit.Models
 {
     public static class NumericSort
     {
@@ -10,58 +12,50 @@
             int marker1 = 0;
             int marker2 = 0;
 
-            char[] tmp1 = new char[len1];
-            char[] tmp2 = new char[len2];
+            char[] tmp = new char[Math.Max(len1, len2)];
 
             while (marker1 < len1 && marker2 < len2)
             {
                 char c1 = s1[marker1];
                 char c2 = s2[marker2];
-                int loc1 = 0;
-                int loc2 = 0;
 
                 bool isDigit1 = char.IsDigit(c1);
                 bool isDigit2 = char.IsDigit(c2);
                 if (isDigit1 != isDigit2)
                     return c1.CompareTo(c2);
 
-                do
-                {
-                    tmp1[loc1] = c1;
-                    loc1++;
-                    marker1++;
+                int subLen1 = GetCoherentSubstringLength(s1, len1, marker1, isDigit1, ref tmp);
+                int subLen2 = GetCoherentSubstringLength(s2, len2, marker2, isDigit2, ref tmp);
 
-                    if (marker1 < len1)
-                        c1 = s1[marker1];
-                    else
-                        break;
-                } while (char.IsDigit(c1) == isDigit1);
+                string sub1 = s1.Substring(marker1, subLen1);
+                string sub2 = s2.Substring(marker2, subLen2);
 
-                do
-                {
-                    tmp2[loc2] = c2;
-                    loc2++;
-                    marker2++;
+                marker1 += subLen1;
+                marker2 += subLen2;
 
-                    if (marker2 < len2)
-                        c2 = s2[marker2];
-                    else
-                        break;
-                } while (char.IsDigit(c2) == isDigit2);
-
-                string sub1 = new string(tmp1, 0, loc1);
-                string sub2 = new string(tmp2, 0, loc2);
                 int result;
                 if (isDigit1)
-                    result = loc1 == loc2 ? string.CompareOrdinal(sub1, sub2) : loc1 - loc2;
+                {
+                    // NOTE: We don't strip leading zeroes before comparing substring digits/lengths - should we?
+                    result = (subLen1 == subLen2) ? string.CompareOrdinal(sub1, sub2) : (subLen1 - subLen2);
+                }
                 else
+                {
                     result = string.CompareOrdinal(sub1, sub2);
-
+                }
                 if (result != 0)
                     return result;
             }
 
             return len1 - len2;
+        }
+
+        private static int GetCoherentSubstringLength(string s, int len, int start, bool isDigit, ref char[] tmp)
+        {
+            int num = 1;
+            while (start + num < len && char.IsDigit(s[start + num]) == isDigit)
+                num++;
+            return num;
         }
     }
 }
