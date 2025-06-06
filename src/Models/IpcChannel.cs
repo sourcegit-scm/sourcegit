@@ -19,7 +19,7 @@ namespace SourceGit.Models
         {
             try
             {
-                _singletoneLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 _isFirstInstance = true;
                 _server = new NamedPipeServerStream(
                     "SourceGitIPCChannel" + Environment.UserName,
@@ -67,7 +67,7 @@ namespace SourceGit.Models
         public void Dispose()
         {
             _cancellationTokenSource?.Cancel();
-            _singletoneLock?.Dispose();
+            _singletonLock?.Dispose();
         }
 
         private async void StartServer()
@@ -96,7 +96,7 @@ namespace SourceGit.Models
             }
         }
 
-        private FileStream _singletoneLock = null;
+        private FileStream _singletonLock = null;
         private bool _isFirstInstance = false;
         private NamedPipeServerStream _server = null;
         private CancellationTokenSource _cancellationTokenSource = null;

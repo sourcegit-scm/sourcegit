@@ -794,7 +794,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE TODO</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VER ASSUME UNCHANGED</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VER ASSUME UNCHANGED</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Plantilla: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ESPACIO DE TRABAJO: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configura Espacios de Trabajo...</x:String>

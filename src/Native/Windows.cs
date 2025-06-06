@@ -80,17 +80,17 @@ namespace SourceGit.Native
                     var p = IntPtrToPixelPoint(lParam);
                     GetWindowRect(hWnd, out var rcWindow);
 
-                    var borderThinkness = (int)(4 * window.RenderScaling);
+                    var borderThickness = (int)(4 * window.RenderScaling);
                     int y = 1;
                     int x = 1;
-                    if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThinkness)
+                    if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThickness)
                         x = 0;
-                    else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThinkness)
+                    else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThickness)
                         x = 2;
 
-                    if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThinkness)
+                    if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThickness)
                         y = 0;
-                    else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThinkness)
+                    else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
                         y = 2;
 
                     var zone = y * 3 + x;
@@ -351,10 +351,10 @@ namespace SourceGit.Native
                     Microsoft.Win32.RegistryView.Registry64);
 
             // VSCodium (system)
-            var systemVScodium = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{88DA3577-054F-4CA1-8122-7D820494CFFB}_is1");
-            if (systemVScodium != null)
+            var systemVSCodium = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{88DA3577-054F-4CA1-8122-7D820494CFFB}_is1");
+            if (systemVSCodium != null)
             {
-                return systemVScodium.GetValue("DisplayIcon") as string;
+                return systemVSCodium.GetValue("DisplayIcon") as string;
             }
 
             var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(

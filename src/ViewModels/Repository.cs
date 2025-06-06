@@ -127,12 +127,12 @@ namespace SourceGit.ViewModels
 
         public bool OnlyHighlightCurrentBranchInHistories
         {
-            get => _settings.OnlyHighlighCurrentBranchInHistories;
+            get => _settings.OnlyHighlightCurrentBranchInHistories;
             set
             {
-                if (value != _settings.OnlyHighlighCurrentBranchInHistories)
+                if (value != _settings.OnlyHighlightCurrentBranchInHistories)
                 {
-                    _settings.OnlyHighlighCurrentBranchInHistories = value;
+                    _settings.OnlyHighlightCurrentBranchInHistories = value;
                     OnPropertyChanged();
                 }
             }
@@ -787,7 +787,7 @@ namespace SourceGit.ViewModels
 
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                App.RaiseException(_fullpath, "Can NOT find current branch!!!");
                 return;
             }
 
@@ -811,7 +811,7 @@ namespace SourceGit.ViewModels
 
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                App.RaiseException(_fullpath, "Can NOT find current branch!!!");
                 return;
             }
 
@@ -1304,7 +1304,7 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
+                App.RaiseException(_fullpath, "Git cannot create a branch before your first commit.");
                 return;
             }
 
@@ -1370,7 +1370,7 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
+                App.RaiseException(_fullpath, "Git cannot create a branch before your first commit.");
                 return;
             }
 
@@ -1449,7 +1449,7 @@ namespace SourceGit.ViewModels
             App.GetLauncher()?.OpenRepositoryInTab(node, null);
         }
 
-        public List<Models.OpenAIService> GetPreferedOpenAIServices()
+        public List<Models.OpenAIService> GetPreferredOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
@@ -1458,11 +1458,11 @@ namespace SourceGit.ViewModels
             if (services.Count == 1)
                 return [services[0]];
 
-            var prefered = _settings.PreferedOpenAIService;
+            var preferred = _settings.PreferredOpenAIService;
             var all = new List<Models.OpenAIService>();
             foreach (var service in services)
             {
-                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                if (service.Name.Equals(preferred, StringComparison.Ordinal))
                     return [service];
 
                 all.Add(service);

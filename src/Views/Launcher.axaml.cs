@@ -284,7 +284,7 @@ namespace SourceGit.Views
 
             base.OnKeyDown(e);
 
-            // Record unhandled key modifers.
+            // Record unhandled key modifiers.
             if (!e.Handled)
             {
                 _unhandledModifiers = e.KeyModifiers;

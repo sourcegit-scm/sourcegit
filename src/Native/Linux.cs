@@ -120,8 +120,8 @@ namespace SourceGit.Native
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
-            var pathes = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var path in pathes)
+            var paths = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var path in paths)
             {
                 var test = Path.Combine(path, filename);
                 if (File.Exists(test))

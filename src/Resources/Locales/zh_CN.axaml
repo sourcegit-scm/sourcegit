@@ -795,7 +795,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">未暂存</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">暂存选中</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暂存所有</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">查看忽略变更文件</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">查看忽略变更文件</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">模板：${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">工作区：</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">配置工作区...</x:String>

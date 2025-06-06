@@ -63,7 +63,7 @@ namespace SourceGit.ViewModels
             Counter = 1;
         }
 
-        public static List<TagTreeNode> Build(List<Models.Tag> tags, HashSet<string> expaneded)
+        public static List<TagTreeNode> Build(List<Models.Tag> tags, HashSet<string> expanded)
         {
             var nodes = new List<TagTreeNode>();
             var folders = new Dictionary<string, TagTreeNode>();
@@ -90,13 +90,13 @@ namespace SourceGit.ViewModels
                         }
                         else if (lastFolder == null)
                         {
-                            lastFolder = new TagTreeNode(folder, expaneded.Contains(folder), depth);
+                            lastFolder = new TagTreeNode(folder, expanded.Contains(folder), depth);
                             folders.Add(folder, lastFolder);
                             InsertFolder(nodes, lastFolder);
                         }
                         else
                         {
-                            var cur = new TagTreeNode(folder, expaneded.Contains(folder), depth);
+                            var cur = new TagTreeNode(folder, expanded.Contains(folder), depth);
                             folders.Add(folder, cur);
                             InsertFolder(lastFolder.Children, cur);
                             lastFolder = cur;

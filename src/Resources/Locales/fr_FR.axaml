@@ -733,7 +733,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">NON INDEXÉ</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">INDEXER</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">INDEXER TOUT</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VOIR LES FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VOIR LES FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Modèle: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ESPACE DE TRAVAIL : </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configurer les espaces de travail...</x:String>

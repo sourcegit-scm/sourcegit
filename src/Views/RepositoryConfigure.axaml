@@ -509,7 +509,7 @@
                     Height="28" Padding="8,0"
                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
                     ItemsSource="{Binding AvailableOpenAIServices}"
-                    SelectedItem="{Binding PreferedOpenAIService, Mode=TwoWay}">
+                    SelectedItem="{Binding PreferredOpenAIService, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">

@@ -360,7 +360,7 @@ namespace SourceGit.ViewModels
 
             if (!Path.Exists(node.Id))
             {
-                App.RaiseException(node.Id, "Repository does NOT exists any more. Please remove it.");
+                App.RaiseException(node.Id, "Repository does NOT exist any more. Please remove it.");
                 return;
             }
 

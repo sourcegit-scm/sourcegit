@@ -110,7 +110,7 @@ namespace SourceGit.Views
                     context.DrawLine(pen, new Point(j * 32, 0), new Point(j * 32, 192));
 
                 // Selected
-                if (_hightlightedTableRect is { } rect)
+                if (_highlightedTableRect is { } rect)
                     context.DrawRectangle(new Pen(Brushes.White, 2), rect);
             }
 
@@ -143,7 +143,7 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
-            _hightlightedTableRect = null;
+            _highlightedTableRect = null;
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -161,9 +161,9 @@ namespace SourceGit.Views
                 var col = (int)Math.Floor(p.X / 32.0);
                 var row = (int)Math.Floor(p.Y / 32.0);
                 var rect = new Rect(col * 32 + 2, row * 32 + 2, 28, 28);
-                if (!rect.Equals(_hightlightedTableRect))
+                if (!rect.Equals(_highlightedTableRect))
                 {
-                    _hightlightedTableRect = rect;
+                    _highlightedTableRect = rect;
                     SetCurrentValue(ValueProperty, COLOR_TABLE[row, col].ToUInt32());
                 }
 
@@ -172,32 +172,32 @@ namespace SourceGit.Views
 
             if (_darkestRect.Rect.Contains(p))
             {
-                _hightlightedTableRect = null;
+                _highlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _darkestColor.ToUInt32());
             }
             else if (_darkerRect.Contains(p))
             {
-                _hightlightedTableRect = null;
+                _highlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _darkerColor.ToUInt32());
             }
             else if (_darkRect.Contains(p))
             {
-                _hightlightedTableRect = null;
+                _highlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _darkColor.ToUInt32());
             }
             else if (_lightRect.Contains(p))
             {
-                _hightlightedTableRect = null;
+                _highlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _lightColor.ToUInt32());
             }
             else if (_lighterRect.Contains(p))
             {
-                _hightlightedTableRect = null;
+                _highlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _lighterColor.ToUInt32());
             }
             else if (_lightestRect.Rect.Contains(p))
             {
-                _hightlightedTableRect = null;
+                _highlightedTableRect = null;
                 SetCurrentValue(ValueProperty, _lightestColor.ToUInt32());
             }
         }
@@ -234,7 +234,7 @@ namespace SourceGit.Views
         private Rect _lightRect = new Rect(160, 200, 32, 32);
         private Rect _lighterRect = new Rect(192, 200, 32, 32);
         private RoundedRect _lightestRect = new RoundedRect(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
-        private Rect? _hightlightedTableRect = null;
+        private Rect? _highlightedTableRect = null;
 
         private Color _darkestColor;
         private Color _darkerColor;

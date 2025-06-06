@@ -791,7 +791,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">НЕСФОРМИРОВАННЫЕ</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">СФОРМИРОВАТЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">СФОРМИРОВАТЬ ВСЁ</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">ОТКРЫТЬ СПИСОК НЕОТСЛЕЖИВАЕМЫХ ФАЙЛОВ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">ОТКРЫТЬ СПИСОК НЕОТСЛЕЖИВАЕМЫХ ФАЙЛОВ</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Шаблон: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">РАБОЧЕЕ ПРОСТРАНСТВО: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Настройка рабочего пространства...</x:String>

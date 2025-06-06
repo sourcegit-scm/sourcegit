@@ -732,7 +732,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">நிலைநீக்கு</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">நிலைபடுத்து</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">அனைத்தும் நிலைபடுத்து</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">மாறாதது எனநினைப்பதை பார்</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">மாறாதது எனநினைப்பதை பார்</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">வளர்புரு: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">பணியிடம்:</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">பணியிடங்களை உள்ளமை...</x:String>

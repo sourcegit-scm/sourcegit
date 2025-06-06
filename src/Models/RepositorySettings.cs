@@ -32,7 +32,7 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public bool OnlyHighlighCurrentBranchInHistories
+        public bool OnlyHighlightCurrentBranchInHistories
         {
             get;
             set;
@@ -188,7 +188,7 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public string PreferedOpenAIService
+        public string PreferredOpenAIService
         {
             get;
             set;
