@@ -601,8 +601,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">குறிசொற்கள்</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">புதிய குறிசொல்</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">படைப்பாளர் தேதியின்படி</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">பெயர் (ஏறுவரிசை) மூலம்</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">பெயர் (இறகுவரிசை) மூலம்</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">பெயர் மூலம்</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">வரிசைப்படுத்து</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">முனையத்தில் திற</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">வரலாறுகளில் உறவு நேரத்தைப் பயன்படுத்து</x:String>

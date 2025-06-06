@@ -2442,30 +2442,19 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var byNameAsc = new MenuItem();
-            byNameAsc.Header = App.Text("Repository.Tags.OrderByNameAsc");
-            if (mode == Models.TagSortMode.NameInAscending)
-                byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
-            byNameAsc.Click += (_, ev) =>
+            var byName = new MenuItem();
+            byName.Header = App.Text("Repository.Tags.OrderByName");
+            if (mode == Models.TagSortMode.Name)
+                byName.Icon = App.CreateMenuIcon("Icons.Check");
+            byName.Click += (_, ev) =>
             {
-                changeMode(Models.TagSortMode.NameInAscending);
-                ev.Handled = true;
-            };
-
-            var byNameDes = new MenuItem();
-            byNameDes.Header = App.Text("Repository.Tags.OrderByNameDes");
-            if (mode == Models.TagSortMode.NameInDescending)
-                byNameDes.Icon = App.CreateMenuIcon("Icons.Check");
-            byNameDes.Click += (_, ev) =>
-            {
-                changeMode(Models.TagSortMode.NameInDescending);
+                changeMode(Models.TagSortMode.Name);
                 ev.Handled = true;
             };
 
             var menu = new ContextMenu();
             menu.Items.Add(byCreatorDate);
-            menu.Items.Add(byNameAsc);
-            menu.Items.Add(byNameDes);
+            menu.Items.Add(byName);
             return menu;
         }
 
@@ -2638,11 +2627,8 @@ namespace SourceGit.ViewModels
                 case Models.TagSortMode.CreatorDate:
                     _tags.Sort((l, r) => r.CreatorDate.CompareTo(l.CreatorDate));
                     break;
-                case Models.TagSortMode.NameInAscending:
-                    _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
-                    break;
                 default:
-                    _tags.Sort((l, r) => Models.NumericSort.Compare(r.Name, l.Name));
+                    _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
                     break;
             }
 

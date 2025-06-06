@@ -642,8 +642,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">标签列表</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新建标签</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">按创建时间</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">按名称（升序）</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">按名称（降序）</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">按名称</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在终端中打开</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相对时间</x:String>

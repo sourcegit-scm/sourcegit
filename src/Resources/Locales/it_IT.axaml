@@ -628,8 +628,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAG</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NUOVO TAG</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Per data di creazione</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">Per nome (ascendente)</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">Per nome (discendente)</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Per nome</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ordina</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Apri nel Terminale</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Usa tempo relativo nello storico</x:String>

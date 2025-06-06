@@ -5,8 +5,7 @@ namespace SourceGit.Models
     public enum TagSortMode
     {
         CreatorDate = 0,
-        NameInAscending,
-        NameInDescending,
+        Name,
     }
 
     public class Tag : ObservableObject
