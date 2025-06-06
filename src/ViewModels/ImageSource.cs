@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -23,7 +24,7 @@ namespace SourceGit.ViewModels
 
         public static Models.ImageDecoder GetDecoder(string file)
         {
-            var ext = Path.GetExtension(file) ?? ".invalid_img";
+            var ext = (Path.GetExtension(file) ?? ".invalid_img").ToLower(CultureInfo.CurrentCulture);
 
             switch (ext)
             {
@@ -92,9 +93,9 @@ namespace SourceGit.ViewModels
 
         private static ImageSource DecodeWithPfim(Stream stream, long size)
         {
-            using (var pfiImage = Pfimage.FromStream(stream))
+            try
             {
-                try
+                using (var pfiImage = Pfimage.FromStream(stream))
                 {
                     var data = pfiImage.Data;
                     var stride = pfiImage.Stride;
@@ -136,7 +137,7 @@ namespace SourceGit.ViewModels
                                 data[i * 4 + 0] = (byte)Math.Round(((v & 0b1111100000000000) >> 11) / 31.0 * 255);
                                 data[i * 4 + 1] = (byte)Math.Round(((v & 0b11111000000) >> 6) / 31.0 * 255);
                                 data[i * 4 + 2] = (byte)Math.Round(((v & 0b111110) >> 1) / 31.0 * 255);
-                                data[i * 4 + 3] = (byte)((v & 1) == 1 ? 255 : 0); 
+                                data[i * 4 + 3] = (byte)((v & 1) == 1 ? 255 : 0);
                             }
                             alphaFormat = AlphaFormat.Premul;
                             break;
@@ -157,10 +158,10 @@ namespace SourceGit.ViewModels
                     var bitmap = new Bitmap(pixelFormat, alphaFormat, ptr, pixelSize, dpi, stride);
                     return new ImageSource(bitmap, size);
                 }
-                catch
-                {
-                    return new ImageSource(null, 0);
-                }
+            }
+            catch (Exception e)
+            {
+                return new ImageSource(null, 0);
             }
         }
     }
