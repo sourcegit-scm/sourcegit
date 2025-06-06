@@ -100,59 +100,31 @@ namespace SourceGit.ViewModels
                     var data = pfiImage.Data;
                     var stride = pfiImage.Stride;
 
-                    var pixelFormat = PixelFormats.Rgba8888;
+                    var pixelFormat = PixelFormats.Bgra8888;
                     var alphaFormat = AlphaFormat.Opaque;
                     switch (pfiImage.Format)
                     {
                         case ImageFormat.Rgb8:
                             pixelFormat = PixelFormats.Gray8;
                             break;
-                        case ImageFormat.R5g6b5:
-                            pixelFormat = PixelFormats.Rgb565;
-                            break;
-                        case ImageFormat.Rgba16:
-                            var pixels = pfiImage.DataLen / 2;
-                            var newSize = pfiImage.DataLen * 2;
-                            data = new byte[newSize];
-                            stride = 4 * pfiImage.Width;
-                            for (int i = 0; i < pixels; i++)
-                            {
-                                var rg = pfiImage.Data[i * 2];
-                                var ba = pfiImage.Data[i * 2 + 1];
-                                data[i * 4 + 0] = (byte)Math.Round((rg >> 4) / 15.0 * 255);
-                                data[i * 4 + 1] = (byte)Math.Round((rg & 0xF) / 15.0 * 255);
-                                data[i * 4 + 2] = (byte)Math.Round((ba >> 4) / 15.0 * 255);
-                                data[i * 4 + 3] = (byte)Math.Round((ba & 0xF) / 15.0 * 255);
-                            }
-                            alphaFormat = AlphaFormat.Premul;
-                            break;
+                        case ImageFormat.R5g5b5:
                         case ImageFormat.R5g5b5a1:
-                            var pixels2 = pfiImage.DataLen / 2;
-                            var newSize2 = pfiImage.DataLen * 2;
-                            data = new byte[newSize2];
-                            stride = 4 * pfiImage.Width;
-                            for (int i = 0; i < pixels2; i++)
-                            {
-                                var v = (int)pfiImage.Data[i * 2] << 8 + pfiImage.Data[i * 2 + 1];
-                                data[i * 4 + 0] = (byte)Math.Round(((v & 0b1111100000000000) >> 11) / 31.0 * 255);
-                                data[i * 4 + 1] = (byte)Math.Round(((v & 0b11111000000) >> 6) / 31.0 * 255);
-                                data[i * 4 + 2] = (byte)Math.Round(((v & 0b111110) >> 1) / 31.0 * 255);
-                                data[i * 4 + 3] = (byte)((v & 1) == 1 ? 255 : 0);
-                            }
-                            alphaFormat = AlphaFormat.Premul;
+                            pixelFormat = PixelFormats.Bgr555;
+                            break;
+                        case ImageFormat.R5g6b5:
+                            pixelFormat = PixelFormats.Bgr565;
                             break;
                         case ImageFormat.Rgb24:
-                            pixelFormat = PixelFormats.Rgb24;
+                            pixelFormat = PixelFormats.Bgr24;
                             break;
                         case ImageFormat.Rgba32:
-                            pixelFormat = PixelFormat.Rgba8888;
                             alphaFormat = AlphaFormat.Premul;
                             break;
                         default:
                             return new ImageSource(null, 0);
                     }
 
-                    var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(pfiImage.Data, 0);
+                    var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
                     var pixelSize = new PixelSize(pfiImage.Width, pfiImage.Height);
                     var dpi = new Vector(96, 96);
                     var bitmap = new Bitmap(pixelFormat, alphaFormat, ptr, pixelSize, dpi, stride);
