@@ -52,7 +52,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-92.27%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-92.26%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -149,7 +149,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-91.90%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-92.01%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -196,7 +196,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.FilterCommits
 - Text.Repository.Search.ByContent
 - Text.Repository.ShowSubmodulesAsTree
-- Text.Repository.Tags.OrderByNameDes
 - Text.Repository.ViewLogs
 - Text.Repository.Visit
 - Text.ResetWithoutCheckout
@@ -222,7 +221,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-83.92%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-84.02%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -320,8 +319,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.ShowSubmodulesAsTree
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
-- Text.Repository.Tags.OrderByNameAsc
-- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.OrderByName
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 - Text.Repository.ViewLogs
@@ -371,7 +369,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-92.14%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-92.13%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -442,7 +440,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-93.39%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-93.38%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
