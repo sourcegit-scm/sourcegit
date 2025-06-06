@@ -1,6 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
+
+using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+
 using Pfim;
 
 namespace SourceGit.ViewModels
@@ -64,103 +69,98 @@ namespace SourceGit.ViewModels
             if (size > 0)
             {
                 if (decoder == Models.ImageDecoder.Builtin)
-                {
-                    try
-                    {
-                        var bitmap = new Bitmap(stream);
-                        return new ImageSource(bitmap, size);
-                    }
-                    catch
-                    {
-                        // Just ignore.
-                    }
-                }
+                    return DecodeWithAvalonia(stream, size);
                 else if (decoder == Models.ImageDecoder.Pfim)
-                {
-                    return new ImageSource(LoadWithPfim(stream), size);
-                }
+                    return DecodeWithPfim(stream, size);
             }
 
             return new ImageSource(null, 0);
         }
 
-        private static Bitmap LoadWithPfim(Stream stream)
+        private static ImageSource DecodeWithAvalonia(Stream stream, long size)
         {
-            var image = Pfim.Pfimage.FromStream(stream);
-            byte[] data;
-            int stride;
-            if (image.Format == ImageFormat.Rgba32)
-            {
-                data = image.Data;
-                stride = image.Stride;
-            }
-            else
-            {
-                int pixels = image.Width * image.Height;
-                data = new byte[pixels * 4];
-                stride = image.Width * 4;
-
-                switch (image.Format)
-                {
-                    case ImageFormat.Rgba16:
-                    case ImageFormat.R5g5b5a1:
-                        {
-                            for (int i = 0; i < pixels; i++)
-                            {
-                                data[i * 4 + 0] = image.Data[i * 4 + 2]; // B
-                                data[i * 4 + 1] = image.Data[i * 4 + 1]; // G
-                                data[i * 4 + 2] = image.Data[i * 4 + 0]; // R
-                                data[i * 4 + 3] = image.Data[i * 4 + 3]; // A
-                            }
-                        }
-                        break;
-                    case ImageFormat.R5g5b5:
-                    case ImageFormat.R5g6b5:
-                    case ImageFormat.Rgb24:
-                        {
-                            for (int i = 0; i < pixels; i++)
-                            {
-                                data[i * 4 + 0] = image.Data[i * 3 + 2]; // B
-                                data[i * 4 + 1] = image.Data[i * 3 + 1]; // G
-                                data[i * 4 + 2] = image.Data[i * 3 + 0]; // R
-                                data[i * 4 + 3] = 255;                   // A
-                            }
-                        }
-                        break;
-                    case ImageFormat.Rgb8:
-                        {
-                            for (int i = 0; i < pixels; i++)
-                            {
-                                var color = image.Data[i];
-                                data[i * 4 + 0] = color;
-                                data[i * 4 + 1] = color;
-                                data[i * 4 + 2] = color;
-                                data[i * 4 + 3] = 255;
-                            }
-                        }
-                        break;
-                    default:
-                        return null;
-                }
-            }
-
-            // Pin the array and pass the pointer to Bitmap
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
-                var bitmap = new Bitmap(
-                    Avalonia.Platform.PixelFormat.Bgra8888,
-                    Avalonia.Platform.AlphaFormat.Unpremul,
-                    ptr,
-                    new Avalonia.PixelSize(image.Width, image.Height),
-                    new Avalonia.Vector(96, 96),
-                    stride);
-                return bitmap;
+                var bitmap = new Bitmap(stream);
+                return new ImageSource(bitmap, size);
             }
-            finally
+            catch
             {
-                handle.Free();
+                return new ImageSource(null, 0);
+            }
+        }
+
+        private static ImageSource DecodeWithPfim(Stream stream, long size)
+        {
+            using (var pfiImage = Pfimage.FromStream(stream))
+            {
+                try
+                {
+                    var data = pfiImage.Data;
+                    var stride = pfiImage.Stride;
+
+                    var pixelFormat = PixelFormats.Rgba8888;
+                    var alphaFormat = AlphaFormat.Opaque;
+                    switch (pfiImage.Format)
+                    {
+                        case ImageFormat.Rgb8:
+                            pixelFormat = PixelFormats.Gray8;
+                            break;
+                        case ImageFormat.R5g6b5:
+                            pixelFormat = PixelFormats.Rgb565;
+                            break;
+                        case ImageFormat.Rgba16:
+                            var pixels = pfiImage.DataLen / 2;
+                            var newSize = pfiImage.DataLen * 2;
+                            data = new byte[newSize];
+                            stride = 4 * pfiImage.Width;
+                            for (int i = 0; i < pixels; i++)
+                            {
+                                var rg = pfiImage.Data[i * 2];
+                                var ba = pfiImage.Data[i * 2 + 1];
+                                data[i * 4 + 0] = (byte)Math.Round((rg >> 4) / 15.0 * 255);
+                                data[i * 4 + 1] = (byte)Math.Round((rg & 0xF) / 15.0 * 255);
+                                data[i * 4 + 2] = (byte)Math.Round((ba >> 4) / 15.0 * 255);
+                                data[i * 4 + 3] = (byte)Math.Round((ba & 0xF) / 15.0 * 255);
+                            }
+                            alphaFormat = AlphaFormat.Premul;
+                            break;
+                        case ImageFormat.R5g5b5a1:
+                            var pixels2 = pfiImage.DataLen / 2;
+                            var newSize2 = pfiImage.DataLen * 2;
+                            data = new byte[newSize2];
+                            stride = 4 * pfiImage.Width;
+                            for (int i = 0; i < pixels2; i++)
+                            {
+                                var v = (int)pfiImage.Data[i * 2] << 8 + pfiImage.Data[i * 2 + 1];
+                                data[i * 4 + 0] = (byte)Math.Round(((v & 0b1111100000000000) >> 11) / 31.0 * 255);
+                                data[i * 4 + 1] = (byte)Math.Round(((v & 0b11111000000) >> 6) / 31.0 * 255);
+                                data[i * 4 + 2] = (byte)Math.Round(((v & 0b111110) >> 1) / 31.0 * 255);
+                                data[i * 4 + 3] = (byte)((v & 1) == 1 ? 255 : 0); 
+                            }
+                            alphaFormat = AlphaFormat.Premul;
+                            break;
+                        case ImageFormat.Rgb24:
+                            pixelFormat = PixelFormats.Rgb24;
+                            break;
+                        case ImageFormat.Rgba32:
+                            pixelFormat = PixelFormat.Rgba8888;
+                            alphaFormat = AlphaFormat.Premul;
+                            break;
+                        default:
+                            return new ImageSource(null, 0);
+                    }
+
+                    var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(pfiImage.Data, 0);
+                    var pixelSize = new PixelSize(pfiImage.Width, pfiImage.Height);
+                    var dpi = new Vector(96, 96);
+                    var bitmap = new Bitmap(pixelFormat, alphaFormat, ptr, pixelSize, dpi, stride);
+                    return new ImageSource(bitmap, size);
+                }
+                catch
+                {
+                    return new ImageSource(null, 0);
+                }
             }
         }
     }
