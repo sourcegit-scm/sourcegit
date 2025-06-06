@@ -105,10 +105,16 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string ViewRevisionFilePath
+        {
+            get => _viewRevisionFilePath;
+            private set => SetProperty(ref _viewRevisionFilePath, value);
+        }
+
         public object ViewRevisionFileContent
         {
             get => _viewRevisionFileContent;
-            set => SetProperty(ref _viewRevisionFileContent, value);
+            private set => SetProperty(ref _viewRevisionFileContent, value);
         }
 
         public string RevisionFileSearchFilter
@@ -189,9 +195,12 @@ namespace SourceGit.ViewModels
         {
             if (file == null)
             {
+                ViewRevisionFilePath = string.Empty;
                 ViewRevisionFileContent = null;
                 return;
             }
+
+            ViewRevisionFilePath = file.Path;
 
             switch (file.Type)
             {
@@ -893,6 +902,7 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _selectedChanges = null;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
+        private string _viewRevisionFilePath = string.Empty;
         private object _viewRevisionFileContent = null;
         private CancellationTokenSource _cancellationSource = null;
         private bool _requestingRevisionFiles = false;

@@ -23,6 +23,7 @@
       <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}"
                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                               TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
+                              UseSyntaxHighlighting="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting}"
                               Background="{DynamicResource Brush.Contents}"/>
     </DataTemplate>
 
