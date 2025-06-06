@@ -434,6 +434,21 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsSortingLocalBranchByName
+        {
+            get => _settings.LocalBranchSortMode == Models.BranchSortMode.Name;
+        }
+
+        public bool IsSortingRemoteBranchByName
+        {
+            get => _settings.RemoteBranchSortMode == Models.BranchSortMode.Name;
+        }
+
+        public bool IsSortingTagsByName
+        {
+            get => _settings.TagSortMode == Models.TagSortMode.Name;
+        }
+
         public InProgressContext InProgressContext
         {
             get => _workingCopy?.InProgressContext;
@@ -2381,9 +2396,15 @@ namespace SourceGit.ViewModels
             var changeMode = new Action<Models.BranchSortMode>(m =>
             {
                 if (local)
+                {
                     _settings.LocalBranchSortMode = m;
+                    OnPropertyChanged(nameof(IsSortingLocalBranchByName));
+                }
                 else
+                {
                     _settings.RemoteBranchSortMode = m;
+                    OnPropertyChanged(nameof(IsSortingRemoteBranchByName));
+                }
 
                 var builder = BuildBranchTree(_branches, _remotes);
                 LocalBranchTrees = builder.Locals;
@@ -2415,6 +2436,7 @@ namespace SourceGit.ViewModels
             };
 
             var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
             menu.Items.Add(byNameAsc);
             menu.Items.Add(byCommitterDate);
             return menu;
@@ -2428,6 +2450,7 @@ namespace SourceGit.ViewModels
                 if (_settings.TagSortMode != m)
                 {
                     _settings.TagSortMode = m;
+                    OnPropertyChanged(nameof(IsSortingTagsByName));
                     VisibleTags = BuildVisibleTags();
                 }
             });
@@ -2453,6 +2476,7 @@ namespace SourceGit.ViewModels
             };
 
             var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
             menu.Items.Add(byCreatorDate);
             menu.Items.Add(byName);
             return menu;
