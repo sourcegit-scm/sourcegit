@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
     {
         public string Title
         {
-            get => _title;
+            get;
         }
 
         public bool IgnoreWhitespace
@@ -68,9 +68,9 @@ namespace SourceGit.ViewModels
             }
 
             if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
-                _title = _option.Path;
+                Title = _option.Path;
             else
-                _title = $"{_option.OrgPath} → {_option.Path}";
+                Title = $"{_option.OrgPath} → {_option.Path}";
 
             LoadDiffContent();
         }
@@ -112,9 +112,9 @@ namespace SourceGit.ViewModels
             Task.Run(() =>
             {
                 var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
-                var ignoreWS = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
-                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWS).Result();
-                var info = new Info(_option, numLines, ignoreWS, latest);
+                var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWhitespace).Result();
+                var info = new Info(_option, numLines, ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
@@ -239,30 +239,24 @@ namespace SourceGit.ViewModels
         private Models.RevisionSubmodule QuerySubmoduleRevision(string repo, string sha)
         {
             var commit = new Commands.QuerySingleCommit(repo, sha).Result();
-            if (commit != null)
-            {
-                var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
-                return new Models.RevisionSubmodule()
-                {
-                    Commit = commit,
-                    FullMessage = new Models.CommitFullMessage { Message = body }
-                };
-            }
+            if (commit == null)
+                return new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = sha } };
 
+            var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
             return new Models.RevisionSubmodule()
             {
-                Commit = new Models.Commit() { SHA = sha },
-                FullMessage = null,
+                Commit = commit,
+                FullMessage = new Models.CommitFullMessage { Message = body }
             };
         }
 
         private class Info
         {
-            public string Argument { get; set; }
-            public int UnifiedLines { get; set; }
-            public bool IgnoreWhitespace { get; set; }
-            public string OldHash { get; set; }
-            public string NewHash { get; set; }
+            public string Argument { get; }
+            public int UnifiedLines { get; }
+            public bool IgnoreWhitespace { get; }
+            public string OldHash { get; }
+            public string NewHash { get; }
 
             public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, Models.DiffResult result)
             {
@@ -285,7 +279,6 @@ namespace SourceGit.ViewModels
 
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
-        private string _title;
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
         private bool _isTextDiff = false;
