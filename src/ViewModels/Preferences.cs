@@ -89,6 +89,20 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool UseCaseInsensitiveSortingInLists
+        {
+            get => _useCaseInsensitiveSortingInLists;
+            set
+            {
+                if (SetProperty(ref _useCaseInsensitiveSortingInLists, value) && !_isLoading)
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher.ActivePage.Data is ViewModels.Repository repo)
+                        repo.RefreshAll();
+                }
+            }
+        }
+
         public bool UseSystemWindowFrame
         {
             get => Native.OS.UseSystemWindowFrame;
@@ -432,6 +446,12 @@ namespace SourceGit.ViewModels
             return first;
         }
 
+        public StringComparison GetPreferredListComparisonType()
+        {
+            return Preferences.Instance.UseCaseInsensitiveSortingInLists ?
+                StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        }
+
         public void AddNode(RepositoryNode node, RepositoryNode to, bool save)
         {
             var collection = to == null ? RepositoryNodes : to.SubNodes;
@@ -449,7 +469,7 @@ namespace SourceGit.ViewModels
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
 
-                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                return string.Compare(l.Name, r.Name, GetPreferredListComparisonType());
             });
         }
 
@@ -669,6 +689,7 @@ namespace SourceGit.ViewModels
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
         private bool _onlyUseMonoFontInEditor = true;
+        private bool _useCaseInsensitiveSortingInLists = false;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;

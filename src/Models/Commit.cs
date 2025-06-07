@@ -113,7 +113,8 @@ namespace SourceGit.Models
                 if (l.Type != r.Type)
                     return (int)l.Type - (int)r.Type;
                 else
-                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                    return string.Compare(l.Name, r.Name,
+                        ViewModels.Preferences.Instance.GetPreferredListComparisonType());
             });
         }
     }

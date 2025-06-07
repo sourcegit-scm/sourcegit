@@ -159,6 +159,8 @@ namespace SourceGit.Commands
                     outs.Add(change);
             }
 
+            outs.Sort((l, r) => string.Compare(l.Path, r.Path,
+                ViewModels.Preferences.Instance.GetPreferredListComparisonType()));
             return outs;
         }
     }
