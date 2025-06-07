@@ -213,7 +213,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
 
                 <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                 </Border>
 
                 <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
@@ -240,7 +240,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
 
                 <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                 </Border>
 
                 <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
@@ -274,7 +274,7 @@
                   </Border>
 
                   <Border Height="16" HorizontalAlignment="Center" Background="Green" CornerRadius="8" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10"/>
+                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
 
                   <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
@@ -290,7 +290,7 @@
                   </Border>
 
                   <Border Margin="0,8,0,0" Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="8" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10"/>
+                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
                 </StackPanel>
               </ScrollViewer>

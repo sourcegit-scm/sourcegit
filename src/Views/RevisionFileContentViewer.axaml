@@ -39,7 +39,7 @@
 
         <StackPanel Grid.Row="1" Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
           <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{Binding ImageType}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock Classes="primary" Text="{Binding ImageType}" Margin="8,0" FontSize="10" Foreground="White"/>
           </Border>
 
           <TextBlock Classes="primary" Text="{Binding ImageSize}" Margin="8,0,0,0"/>
