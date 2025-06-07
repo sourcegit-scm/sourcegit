@@ -117,6 +117,21 @@ namespace SourceGit.ViewModels
                         case ImageFormat.Rgb24:
                             pixelFormat = PixelFormats.Bgr24;
                             break;
+                        case ImageFormat.Rgba16:
+                            var pixels2 = pfiImage.DataLen / 2;
+                            data = new byte[pixels2 * 4];
+                            stride = pfiImage.Width * 4;
+                            for (var i = 0; i < pixels2; i++)
+                            {
+                                var src = BitConverter.ToUInt16(pfiImage.Data, i * 2);
+                                data[i * 4 + 0] = (byte)Math.Round((src & 0x0F) / 15F * 255); // B
+                                data[i * 4 + 1] = (byte)Math.Round(((src >> 4) & 0x0F) / 15F * 255); // G
+                                data[i * 4 + 2] = (byte)Math.Round(((src >> 8) & 0x0F) / 15F * 255); // R
+                                data[i * 4 + 3] = (byte)Math.Round(((src >> 12) & 0x0F) / 15F * 255); // A
+                            }
+
+                            alphaFormat = AlphaFormat.Premul;
+                            break;
                         case ImageFormat.Rgba32:
                             alphaFormat = AlphaFormat.Premul;
                             break;
@@ -131,7 +146,7 @@ namespace SourceGit.ViewModels
                     return new ImageSource(bitmap, size);
                 }
             }
-            catch (Exception e)
+            catch
             {
                 return new ImageSource(null, 0);
             }
