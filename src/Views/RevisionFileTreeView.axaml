@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFileTreeView"
              x:Name="ThisControl">
-  <v:RevisionFileRowsListBox ItemsSource="{Binding #ThisControl.Rows}"
+  <v:RevisionFileRowsListBox x:Name="RevisionFileRowsListBox" ItemsSource="{Binding #ThisControl.Rows}"
                              Background="Transparent"
                              SelectionMode="Single"
                              SelectionChanged="OnRowsSelectionChanged"

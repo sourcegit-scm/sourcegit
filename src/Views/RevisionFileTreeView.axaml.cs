@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.VisualTree;
+using SourceGit.ViewModels;
 
 namespace SourceGit.Views
 {
@@ -249,6 +250,17 @@ namespace SourceGit.Views
 
             if (change.Property == RevisionProperty)
             {
+                var selectedNode = _revisionFileRowsListBox?.SelectedItem as RevisionFileTreeNode;
+
+                var expandedObjects = new List<Models.Object>();
+                foreach (var node in _rows)
+                {
+                    if (node.IsExpanded)
+                    {
+                        expandedObjects.Add(node.Backend);
+                    }
+                }
+
                 _tree.Clear();
                 _rows.Clear();
                 _searchResult.Clear();
@@ -280,7 +292,48 @@ namespace SourceGit.Views
                 var topTree = new List<ViewModels.RevisionFileTreeNode>();
                 MakeRows(topTree, _tree, 0);
                 _rows.AddRange(topTree);
+
+                _revisionFileRowsListBox ??= this.Find<RevisionFileRowsListBox>("RevisionFileRowsListBox");
+
+                if (_revisionFileRowsListBox is { IsArrangeValid: true })
+                {
+                    RestoreTreeState(expandedObjects, selectedNode);
+                }
+
                 GC.Collect();
+            }
+        }
+
+        private void RestoreTreeState(List<Models.Object> expandedObjects, RevisionFileTreeNode selectedNode)
+        {
+            for (int i = 0; i < _rows.Count; i++)
+            {
+                var revisionFileTreeNode = _rows[i];
+
+                if (!revisionFileTreeNode.IsFolder)
+                    continue;
+
+                if (expandedObjects.FirstOrDefault(o => o.SHA == revisionFileTreeNode.Backend.SHA || o.Path == revisionFileTreeNode.Backend.Path) != null)
+                {
+                    ToggleNodeIsExpanded(revisionFileTreeNode);
+                }
+            }
+
+            if (selectedNode != null)
+            {
+                foreach (var node in _rows)
+                {
+                    if (node.Backend.SHA != selectedNode.Backend.SHA && node.Backend.Path != selectedNode.Backend.Path)
+                        continue;
+
+                    selectedNode = node;
+                    break;
+                }
+            }
+
+            if (_revisionFileRowsListBox != null)
+            {
+                _revisionFileRowsListBox.SelectedItem = selectedNode;
             }
         }
 
@@ -369,5 +422,6 @@ namespace SourceGit.Views
         private AvaloniaList<ViewModels.RevisionFileTreeNode> _rows = [];
         private bool _disableSelectionChangingEvent = false;
         private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
+        private RevisionFileRowsListBox _revisionFileRowsListBox;
     }
 }
