@@ -83,6 +83,7 @@ namespace SourceGit.Views
             {
                 Text = source.Content;
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
+                ScrollToHome();
             }
             else
             {
