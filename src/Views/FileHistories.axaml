@@ -139,7 +139,7 @@
                         <Border Grid.Row="0"
                                 BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
                                 Background="{DynamicResource Brush.Window}">
-                          <Grid ColumnDefinitions="Auto,*">
+                          <Grid ColumnDefinitions="Auto,*,Auto">
                             <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
                             <TextBlock Grid.Column="1"
                                        Classes="primary"
@@ -147,6 +147,20 @@
                                        Text="{Binding Path}"
                                        FontSize="11"
                                        TextTrimming="CharacterEllipsis"/>
+                            <ToggleButton Grid.Column="2"
+                                          Classes="line_path"
+                                          Width="28"
+                                          Background="Transparent"
+                                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
+                                          ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
+                              <ToggleButton.IsVisible>
+                                <Binding Path="Content"
+                                         Mode="OneWay"
+                                         Converter="{x:Static c:ObjectConverters.IsTypeOf}"
+                                         ConverterParameter="{x:Type m:RevisionTextFile}"/>
+                              </ToggleButton.IsVisible>
+                              <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+                            </ToggleButton>
                           </Grid>
                         </Border>
 

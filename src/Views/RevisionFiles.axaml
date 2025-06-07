@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
@@ -133,6 +134,12 @@
                             Background="Transparent"
                             IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
+                <ToggleButton.IsVisible>
+                  <Binding Path="ViewRevisionFileContent"
+                           Mode="OneWay"
+                           Converter="{x:Static c:ObjectConverters.IsTypeOf}"
+                           ConverterParameter="{x:Type m:RevisionTextFile}"/>
+                </ToggleButton.IsVisible>
                 <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
               </ToggleButton>
             </Grid>
