@@ -620,9 +620,9 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private List<Models.InlineElement> ParseInlinesInMessage(string message)
+        private Models.InlineElementCollector ParseInlinesInMessage(string message)
         {
-            var inlines = new List<Models.InlineElement>();
+            var inlines = new Models.InlineElementCollector();
             if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
@@ -638,18 +638,6 @@ namespace SourceGit.ViewModels
 
                 var start = match.Index;
                 var len = match.Length;
-                var intersect = false;
-                foreach (var link in inlines)
-                {
-                    if (link.Intersect(start, len))
-                    {
-                        intersect = true;
-                        break;
-                    }
-                }
-
-                if (intersect)
-                    continue;
 
                 var url = message.Substring(start, len);
                 if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
@@ -665,27 +653,12 @@ namespace SourceGit.ViewModels
 
                 var start = match.Index;
                 var len = match.Length;
-                var intersect = false;
-                foreach (var link in inlines)
-                {
-                    if (link.Intersect(start, len))
-                    {
-                        intersect = true;
-                        break;
-                    }
-                }
-
-                if (intersect)
-                    continue;
 
                 var sha = match.Groups[1].Value;
                 var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
                 if (isCommitSHA)
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
-
-            if (inlines.Count > 0)
-                inlines.Sort((l, r) => l.Start - r.Start);
 
             return inlines;
         }

@@ -167,19 +167,6 @@ namespace SourceGit.Views
 
                     var start = match.Index;
                     var len = match.Length;
-                    var intersect = false;
-                    foreach (var exist in _elements)
-                    {
-                        if (exist.Intersect(start, len))
-                        {
-                            intersect = true;
-                            break;
-                        }
-                    }
-
-                    if (intersect)
-                        continue;
-
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
                 }
 
@@ -187,7 +174,6 @@ namespace SourceGit.Views
                 foreach (var rule in rules)
                     rule.Matches(_elements, subject);
 
-                _elements.Sort((l, r) => l.Start - r.Start);
                 _needRebuildInlines = true;
                 InvalidateVisual();
             }
@@ -364,7 +350,7 @@ namespace SourceGit.Views
             }
         }
 
-        private List<Models.InlineElement> _elements = [];
+        private Models.InlineElementCollector _elements = [];
         private List<Inline> _inlines = [];
         private Models.InlineElement _lastHover = null;
         private bool _needRebuildInlines = false;

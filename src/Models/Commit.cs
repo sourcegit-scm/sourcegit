@@ -121,6 +121,6 @@ namespace SourceGit.Models
     public class CommitFullMessage
     {
         public string Message { get; set; } = string.Empty;
-        public List<InlineElement> Inlines { get; set; } = [];
+        public InlineElementCollector Inlines { get; set; } = [];
     }
 }
