@@ -95,26 +95,11 @@ namespace SourceGit.Views
                 point = new Point(x, y);
 
                 var pos = TextLayout.HitTestPoint(point).TextPosition;
-                foreach (var link in links)
-                {
-                    if (!link.Intersect(pos, 1))
-                        continue;
 
-                    if (link == _lastHover)
-                        return;
-
-                    SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
-
-                    _lastHover = link;
-                    if (link.Type == Models.InlineElementType.Link)
-                        ToolTip.SetTip(this, link.Link);
-                    else
-                        ProcessHoverCommitLink(link);
-
-                    return;
-                }
-
-                ClearHoveredIssueLink();
+                if (links.Lookup(pos) is { } link)
+                    SetHoveredIssueLink(link);
+                else
+                    ClearHoveredIssueLink();
             }
         }
 
@@ -289,6 +274,20 @@ namespace SourceGit.Views
                     });
                 });
             }
+        }
+
+        private void SetHoveredIssueLink(Models.InlineElement link)
+        {
+            if (link == _lastHover)
+                return;
+
+            SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
+
+            _lastHover = link;
+            if (link.Type == Models.InlineElementType.Link)
+                ToolTip.SetTip(this, link.Link);
+            else
+                ProcessHoverCommitLink(link);
         }
 
         private void ClearHoveredIssueLink()

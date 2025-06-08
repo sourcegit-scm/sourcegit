@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -46,7 +45,7 @@ namespace SourceGit.Models
             set => SetProperty(ref _urlTemplate, value);
         }
 
-        public void Matches(List<InlineElement> outs, string message)
+        public void Matches(InlineElementCollector outs, string message)
         {
             if (_regex == null || string.IsNullOrEmpty(_urlTemplate))
                 return;
@@ -60,18 +59,6 @@ namespace SourceGit.Models
 
                 var start = match.Index;
                 var len = match.Length;
-                var intersect = false;
-                foreach (var exist in outs)
-                {
-                    if (exist.Intersect(start, len))
-                    {
-                        intersect = true;
-                        break;
-                    }
-                }
-
-                if (intersect)
-                    continue;
 
                 var link = _urlTemplate;
                 for (var j = 1; j < match.Groups.Count; j++)
