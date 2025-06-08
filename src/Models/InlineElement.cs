@@ -2,8 +2,7 @@
 {
     public enum InlineElementType
     {
-        None = 0,
-        Keyword,
+        Keyword = 0,
         Link,
         CommitSHA,
         Code,
@@ -11,10 +10,10 @@
 
     public class InlineElement
     {
-        public InlineElementType Type { get; set; } = InlineElementType.None;
-        public int Start { get; set; } = 0;
-        public int Length { get; set; } = 0;
-        public string Link { get; set; } = "";
+        public InlineElementType Type { get; }
+        public int Start { get; }
+        public int Length { get; }
+        public string Link { get; }
 
         public InlineElement(InlineElementType type, int start, int length, string link)
         {
@@ -24,7 +23,7 @@
             Link = link;
         }
 
-        public bool Intersect(int start, int length)
+        public bool IsIntersecting(int start, int length)
         {
             if (start == Start)
                 return true;

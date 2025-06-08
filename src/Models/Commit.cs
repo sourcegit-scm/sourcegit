@@ -33,8 +33,8 @@ namespace SourceGit.Models
         public User Committer { get; set; } = User.Invalid;
         public ulong CommitterTime { get; set; } = 0;
         public string Subject { get; set; } = string.Empty;
-        public List<string> Parents { get; set; } = new List<string>();
-        public List<Decorator> Decorators { get; set; } = new List<Decorator>();
+        public List<string> Parents { get; set; } = new();
+        public List<Decorator> Decorators { get; set; } = new();
         public bool HasDecorators => Decorators.Count > 0;
 
         public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
@@ -49,7 +49,7 @@ namespace SourceGit.Models
         public int Color { get; set; } = 0;
         public double Opacity => IsMerged ? 1 : OpacityForNotMerged;
         public FontWeight FontWeight => IsCurrentHead ? FontWeight.Bold : FontWeight.Regular;
-        public Thickness Margin { get; set; } = new Thickness(0);
+        public Thickness Margin { get; set; } = new(0);
         public IBrush Brush => CommitGraph.Pens[Color].Brush;
 
         public void ParseDecorators(string data)
@@ -121,6 +121,6 @@ namespace SourceGit.Models
     public class CommitFullMessage
     {
         public string Message { get; set; } = string.Empty;
-        public InlineElementCollector Inlines { get; set; } = [];
+        public InlineElementCollector Inlines { get; set; } = new();
     }
 }

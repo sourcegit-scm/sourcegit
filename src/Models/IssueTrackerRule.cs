@@ -59,6 +59,8 @@ namespace SourceGit.Models
 
                 var start = match.Index;
                 var len = match.Length;
+                if (outs.Intersect(start, len) != null)
+                    continue;
 
                 var link = _urlTemplate;
                 for (var j = 1; j < match.Groups.Count; j++)

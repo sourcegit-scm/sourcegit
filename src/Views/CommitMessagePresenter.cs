@@ -48,8 +48,9 @@ namespace SourceGit.Views
 
                 var inlines = new List<Inline>();
                 var pos = 0;
-                foreach (var link in links)
+                for (var i = 0; i < links.Count; i++)
                 {
+                    var link = links[i];
                     if (link.Start > pos)
                         inlines.Add(new Run(message.Substring(pos, link.Start - pos)));
 
@@ -95,8 +96,7 @@ namespace SourceGit.Views
                 point = new Point(x, y);
 
                 var pos = TextLayout.HitTestPoint(point).TextPosition;
-
-                if (links.Lookup(pos) is { } link)
+                if (links.Intersect(pos, 1) is { } link)
                     SetHoveredIssueLink(link);
                 else
                     ClearHoveredIssueLink();

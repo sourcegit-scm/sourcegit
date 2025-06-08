@@ -638,6 +638,8 @@ namespace SourceGit.ViewModels
 
                 var start = match.Index;
                 var len = match.Length;
+                if (inlines.Intersect(start, len) != null)
+                    continue;
 
                 var url = message.Substring(start, len);
                 if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
@@ -653,6 +655,8 @@ namespace SourceGit.ViewModels
 
                 var start = match.Index;
                 var len = match.Length;
+                if (inlines.Intersect(start, len) != null)
+                    continue;
 
                 var sha = match.Groups[1].Value;
                 var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
@@ -660,6 +664,7 @@ namespace SourceGit.ViewModels
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
 
+            inlines.Sort();
             return inlines;
         }
 

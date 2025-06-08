@@ -167,6 +167,9 @@ namespace SourceGit.Views
 
                     var start = match.Index;
                     var len = match.Length;
+                    if (_elements.Intersect(start, len) != null)
+                        continue;
+
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
                 }
 
@@ -174,6 +177,7 @@ namespace SourceGit.Views
                 foreach (var rule in rules)
                     rule.Matches(_elements, subject);
 
+                _elements.Sort();
                 _needRebuildInlines = true;
                 InvalidateVisual();
             }
@@ -247,8 +251,9 @@ namespace SourceGit.Views
             var codeTypeface = new Typeface(codeFontFamily, FontStyle.Normal, FontWeight);
             var pos = 0;
             var x = 0.0;
-            foreach (var elem in _elements)
+            for (var i = 0; i < _elements.Count; i++)
             {
+                var elem = _elements[i];
                 if (elem.Start > pos)
                 {
                     var normal = new FormattedText(
@@ -350,7 +355,7 @@ namespace SourceGit.Views
             }
         }
 
-        private Models.InlineElementCollector _elements = [];
+        private Models.InlineElementCollector _elements = new();
         private List<Inline> _inlines = [];
         private Models.InlineElement _lastHover = null;
         private bool _needRebuildInlines = false;
