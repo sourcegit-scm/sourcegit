@@ -86,25 +86,11 @@ namespace SourceGit.Views
                 var imageSize = image.Size;
                 var scaleW = availableSize.Width / imageSize.Width;
                 var scaleH = availableSize.Height / imageSize.Height;
-                var scale = Math.Min(scaleW, scaleH);
+                var scale = Math.Min(1, Math.Min(scaleW, scaleH));
                 return new Size(scale * imageSize.Width, scale * imageSize.Height);
             }
 
             return availableSize;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            if (Image is { } image)
-            {
-                var imageSize = image.Size;
-                var scaleW = finalSize.Width / imageSize.Width;
-                var scaleH = finalSize.Height / imageSize.Height;
-                var scale = Math.Min(scaleW, scaleH);
-                return new Size(scale * imageSize.Width, scale * imageSize.Height);
-            }
-
-            return base.ArrangeOverride(finalSize);
         }
     }
 
@@ -243,7 +229,7 @@ namespace SourceGit.Views
         {
             var sw = available.Width / img.Width;
             var sh = available.Height / img.Height;
-            var scale = Math.Min(sw, sh);
+            var scale = Math.Min(1, Math.Min(sw, sh));
             return new Size(scale * img.Width, scale * img.Height);
         }
 
@@ -348,7 +334,7 @@ namespace SourceGit.Views
         {
             var sw = available.Width / img.Width;
             var sh = available.Height / img.Height;
-            var scale = Math.Min(sw, sh);
+            var scale = Math.Min(1, Math.Min(sw, sh));
             return new Size(scale * img.Width, scale * img.Height);
         }
 
