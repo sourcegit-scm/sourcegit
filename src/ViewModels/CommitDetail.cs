@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
@@ -56,7 +54,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = [];
+        }
 
         public List<string> Children
         {
@@ -103,16 +101,20 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchChangeFilter, value))
-                {
                     RefreshVisibleChanges();
-                }
             }
+        }
+
+        public string ViewRevisionFilePath
+        {
+            get => _viewRevisionFilePath;
+            private set => SetProperty(ref _viewRevisionFilePath, value);
         }
 
         public object ViewRevisionFileContent
         {
             get => _viewRevisionFileContent;
-            set => SetProperty(ref _viewRevisionFileContent, value);
+            private set => SetProperty(ref _viewRevisionFileContent, value);
         }
 
         public string RevisionFileSearchFilter
@@ -193,9 +195,12 @@ namespace SourceGit.ViewModels
         {
             if (file == null)
             {
+                ViewRevisionFilePath = string.Empty;
                 ViewRevisionFileContent = null;
                 return;
             }
+
+            ViewRevisionFilePath = file.Path;
 
             switch (file.Type)
             {
@@ -205,14 +210,11 @@ namespace SourceGit.ViewModels
                         var isBinary = new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path).Result();
                         if (isBinary)
                         {
-                            var ext = Path.GetExtension(file.Path);
-                            if (IMG_EXTS.Contains(ext))
+                            var imgDecoder = ImageSource.GetDecoder(file.Path);
+                            if (imgDecoder != Models.ImageDecoder.None)
                             {
-                                var stream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
-                                var fileSize = stream.Length;
-                                var bitmap = fileSize > 0 ? new Bitmap(stream) : null;
-                                var imageType = ext!.Substring(1).ToUpper(CultureInfo.CurrentCulture);
-                                var image = new Models.RevisionImageFile() { Image = bitmap, FileSize = fileSize, ImageType = imageType };
+                                var source = ImageSource.FromRevision(_repo.FullPath, _commit.SHA, file.Path, imgDecoder);
+                                var image = new Models.RevisionImageFile(file.Path, source.Bitmap, source.Size);
                                 Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = image);
                             }
                             else
@@ -227,13 +229,20 @@ namespace SourceGit.ViewModels
 
                         var contentStream = Commands.QueryFileContent.Run(_repo.FullPath, _commit.SHA, file.Path);
                         var content = new StreamReader(contentStream).ReadToEnd();
-                        var matchLFS = REG_LFS_FORMAT().Match(content);
-                        if (matchLFS.Success)
+                        var lfs = Models.LFSObject.Parse(content);
+                        if (lfs != null)
                         {
-                            var obj = new Models.RevisionLFSObject() { Object = new Models.LFSObject() };
-                            obj.Object.Oid = matchLFS.Groups[1].Value;
-                            obj.Object.Size = long.Parse(matchLFS.Groups[2].Value);
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = obj);
+                            var imgDecoder = ImageSource.GetDecoder(file.Path);
+                            if (imgDecoder != Models.ImageDecoder.None)
+                            {
+                                var combined = new RevisionLFSImage(_repo.FullPath, file.Path, lfs, imgDecoder);
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = combined);
+                            }
+                            else
+                            {
+                                var rlfs = new Models.RevisionLFSObject() { Object = lfs };
+                                Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = rlfs);
+                            }
                         }
                         else
                         {
@@ -245,30 +254,16 @@ namespace SourceGit.ViewModels
                 case Models.ObjectType.Commit:
                     Task.Run(() =>
                     {
-                        var submoduleRoot = Path.Combine(_repo.FullPath, file.Path);
+                        var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
                         var commit = new Commands.QuerySingleCommit(submoduleRoot, file.SHA).Result();
-                        if (commit != null)
+                        var message = commit != null ? new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result() : null;
+                        var module = new Models.RevisionSubmodule()
                         {
-                            var body = new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).Result();
-                            var submodule = new Models.RevisionSubmodule()
-                            {
-                                Commit = commit,
-                                FullMessage = new Models.CommitFullMessage { Message = body }
-                            };
+                            Commit = commit ?? new Models.Commit() { SHA = _commit.SHA },
+                            FullMessage = new Models.CommitFullMessage { Message = message }
+                        };
 
-                            Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = submodule);
-                        }
-                        else
-                        {
-                            Dispatcher.UIThread.Invoke(() =>
-                            {
-                                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                                {
-                                    Commit = new Models.Commit() { SHA = file.SHA },
-                                    FullMessage = null,
-                                };
-                            });
-                        }
+                        Dispatcher.UIThread.Invoke(() => ViewRevisionFileContent = module);
                     });
                     break;
                 default:
@@ -426,12 +421,12 @@ namespace SourceGit.ViewModels
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.Click += (_, ev) =>
+            openWith.Click += async (_, ev) =>
             {
                 var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
                 var fileExt = Path.GetExtension(fullPath) ?? "";
                 var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
-                Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile);
+                await Task.Run(() => Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile));
                 Native.OS.OpenWithDefaultEditor(tmpFile);
                 ev.Handled = true;
             };
@@ -453,9 +448,9 @@ namespace SourceGit.ViewModels
                     if (selected.Count == 1)
                     {
                         var folder = selected[0];
-                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
-                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path));
-                        Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo);
+                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
+                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
+                        await Task.Run(() => Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, saveTo));
                     }
                 }
                 catch (Exception e)
@@ -625,9 +620,9 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private List<Models.InlineElement> ParseInlinesInMessage(string message)
+        private Models.InlineElementCollector ParseInlinesInMessage(string message)
         {
-            var inlines = new List<Models.InlineElement>();
+            var inlines = new Models.InlineElementCollector();
             if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
@@ -643,17 +638,7 @@ namespace SourceGit.ViewModels
 
                 var start = match.Index;
                 var len = match.Length;
-                var intersect = false;
-                foreach (var link in inlines)
-                {
-                    if (link.Intersect(start, len))
-                    {
-                        intersect = true;
-                        break;
-                    }
-                }
-
-                if (intersect)
+                if (inlines.Intersect(start, len) != null)
                     continue;
 
                 var url = message.Substring(start, len);
@@ -670,17 +655,7 @@ namespace SourceGit.ViewModels
 
                 var start = match.Index;
                 var len = match.Length;
-                var intersect = false;
-                foreach (var link in inlines)
-                {
-                    if (link.Intersect(start, len))
-                    {
-                        intersect = true;
-                        break;
-                    }
-                }
-
-                if (intersect)
+                if (inlines.Intersect(start, len) != null)
                     continue;
 
                 var sha = match.Groups[1].Value;
@@ -689,9 +664,7 @@ namespace SourceGit.ViewModels
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
 
-            if (inlines.Count > 0)
-                inlines.Sort((l, r) => l.Start - r.Start);
-
+            inlines.Sort();
             return inlines;
         }
 
@@ -897,14 +870,6 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
 
-        [GeneratedRegex(@"^version https://git-lfs.github.com/spec/v\d+\r?\noid sha256:([0-9a-f]+)\r?\nsize (\d+)[\r\n]*$")]
-        private static partial Regex REG_LFS_FORMAT();
-
-        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
-        {
-            ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
-        };
-
         private Repository _repo = null;
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
@@ -915,6 +880,7 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _selectedChanges = null;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
+        private string _viewRevisionFilePath = string.Empty;
         private object _viewRevisionFileContent = null;
         private CancellationTokenSource _cancellationSource = null;
         private bool _requestingRevisionFiles = false;

@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ARCHIVOS ASUMIDOS COMO SIN CAMBIOS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NO HAY ARCHIVOS ASUMIDOS COMO SIN CAMBIOS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">REMOVER</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Refrescar</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">¡ARCHIVO BINARIO NO SOPORTADO!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Abortar</x:String>
@@ -565,7 +566,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reaplicar cambios locales</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Refrescar</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Añadir Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Editar Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nombre:</x:String>
@@ -641,8 +641,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">ETIQUETAS</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NUEVA ETIQUETA</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Por Fecha de Creación</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">Por Nombre (Ascendiente)</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">Por Nombre (Descendiente)</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Por Nombre</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ordenar</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Abrir en Terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Usar tiempo relativo en las historias</x:String>
@@ -795,7 +794,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE TODO</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VER ASSUME UNCHANGED</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VER ASSUME UNCHANGED</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Plantilla: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ESPACIO DE TRABAJO: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configura Espacios de Trabajo...</x:String>

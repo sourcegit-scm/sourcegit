@@ -843,6 +843,10 @@
                   <DataTemplate DataType="x:String">
                     <v:NameHighlightedTextBlock Text="{Binding}" VerticalAlignment="Center"/>
                   </DataTemplate>
+
+                  <DataTemplate DataType="vm:FilterModeInGraph">
+                    <v:FilterModeInGraph/>
+                  </DataTemplate>
                 </ContentPresenter.DataTemplates>
               </ContentPresenter>
               
@@ -946,6 +950,20 @@
           <Separator Margin="28,0,4,0" Height=".5" VerticalAlignment="Center" Background="{DynamicResource Brush.Border2}"/>
         </ControlTemplate>
       </Setter>
+    </Style>
+  </Style>
+
+  <Style Selector="MenuItem.filter_mode_switcher">
+    <Setter Property="Height" Value="48"/>
+    <Setter Property="StaysOpenOnClick" Value="True"/>
+    
+    <Style Selector="^:selected">
+      <Style Selector="^ /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="Transparent" />
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="Foreground" Value="Transparent" />
+      </Style>
     </Style>
   </Style>
 

@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">கோப்புகள் மாற்றப்படவில்லை எனக் கருதப்படுகிறது</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">எந்த கோப்புகளும் மாற்றப்படவில்லை எனக் கருதப்படுகிறது</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">நீக்கு</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">புதுப்பி</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">இருமம் கோப்பு ஆதரிக்கப்படவில்லை!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">குற்றச்சாட்டு</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">இந்த கோப்பில் குற்றம் சாட்ட ஆதரிக்கப்படவில்லை!!!</x:String>
@@ -531,7 +532,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">உள்ளக மாற்றங்களை பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">மேல்:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">மறுதளம்:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">புதுப்பி</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">தொலையைச் சேர்</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">தொலையைத் திருத்து</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">பெயர்:</x:String>
@@ -601,8 +601,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">குறிசொற்கள்</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">புதிய குறிசொல்</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">படைப்பாளர் தேதியின்படி</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">பெயர் (ஏறுவரிசை) மூலம்</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">பெயர் (இறகுவரிசை) மூலம்</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">பெயர் மூலம்</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">வரிசைப்படுத்து</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">முனையத்தில் திற</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">வரலாறுகளில் உறவு நேரத்தைப் பயன்படுத்து</x:String>
@@ -733,7 +732,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">நிலைநீக்கு</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">நிலைபடுத்து</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">அனைத்தும் நிலைபடுத்து</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">மாறாதது எனநினைப்பதை பார்</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">மாறாதது எனநினைப்பதை பார்</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">வளர்புரு: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">பணியிடம்:</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">பணியிடங்களை உள்ளமை...</x:String>

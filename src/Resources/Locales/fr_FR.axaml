@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">PAS DE FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">SUPPRIMER</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Rafraîchir</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">FICHIER BINAIRE NON SUPPORTÉ !!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blâme</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">LE BLÂME SUR CE FICHIER N'EST PAS SUPPORTÉ!!!</x:String>
@@ -532,7 +533,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; réappliquer changements locaux</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Sur :</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase :</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Rafraîchir</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Ajouter dépôt distant</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Modifier dépôt distant</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nom :</x:String>
@@ -602,8 +602,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAGS</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">NOUVEAU TAG</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Par date de créateur</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">Par nom (Croissant)</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">Par nom (Décroissant)</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Par nom</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Trier</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Ouvrir dans un terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Utiliser le temps relatif dans les historiques</x:String>
@@ -734,7 +733,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">NON INDEXÉ</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">INDEXER</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">INDEXER TOUT</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VOIR LES FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VOIR LES FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Modèle: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ESPACE DE TRAVAIL : </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configurer les espaces de travail...</x:String>

@@ -110,7 +110,7 @@ namespace SourceGit.ViewModels
             var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repoRoot, parent, bMoveExistedNode);
             Refresh();
 
-            var launcher = App.GetLauncer();
+            var launcher = App.GetLauncher();
             launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
         }
 
@@ -122,7 +122,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var activePage = App.GetLauncer().ActivePage;
+            var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
         }
@@ -135,7 +135,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var activePage = App.GetLauncer().ActivePage;
+            var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new Clone(activePage.Node.Id);
         }
@@ -163,7 +163,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var activePage = App.GetLauncer().ActivePage;
+            var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.StartPopup(new ScanRepositories(defaultCloneDir));
         }
@@ -175,7 +175,7 @@ namespace SourceGit.ViewModels
 
         public void AddRootNode()
         {
-            var activePage = App.GetLauncer().ActivePage;
+            var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new CreateGroup(null);
         }
@@ -197,7 +197,7 @@ namespace SourceGit.ViewModels
                 openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 openAll.Click += (_, e) =>
                 {
-                    OpenAllInNode(App.GetLauncer(), node);
+                    OpenAllInNode(App.GetLauncher(), node);
                     e.Handled = true;
                 };
 
@@ -212,7 +212,7 @@ namespace SourceGit.ViewModels
                 open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                 open.Click += (_, e) =>
                 {
-                    App.GetLauncer()?.OpenRepositoryInTab(node, null);
+                    App.GetLauncher()?.OpenRepositoryInTab(node, null);
                     e.Handled = true;
                 };
 
@@ -267,7 +267,7 @@ namespace SourceGit.ViewModels
             move.Icon = App.CreateMenuIcon("Icons.MoveToAnotherGroup");
             move.Click += (_, e) =>
             {
-                var activePage = App.GetLauncer().ActivePage;
+                var activePage = App.GetLauncher().ActivePage;
                 if (activePage != null && activePage.CanCreatePopup())
                     activePage.Popup = new MoveRepositoryNode(node);
 

@@ -56,7 +56,7 @@ You can find the current translation status in [TRANSLATION.md](https://github.c
 
 **To use this tool, you need to install Git(>=2.25.1) first.**
 
-You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [Github Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
+You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [GitHub Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
 
 This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationData}/SourceGit"`, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
 
@@ -93,7 +93,7 @@ For **macOS** users:
   brew tap ybeapps/homebrew-sourcegit
   brew install --cask --no-quarantine sourcegit
   ```
-* If you want to install `SourceGit.app` from Github Release manually, you need run following command to make sure it works:
+* If you want to install `SourceGit.app` from GitHub Release manually, you need run following command to make sure it works:
   ```shell
   sudo xattr -cr /Applications/SourceGit.app
   ```

@@ -6,11 +6,12 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-96.50%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.38%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
 - Text.CreateBranch.OverwriteExisting
@@ -42,13 +43,21 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.88%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-92.38%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Avatar.Load
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-92.26%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
+- Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
 - Text.Bisect.Bad
@@ -113,11 +122,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-97.75%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-97.63%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
 - Text.CommitDetail.Changes.Count
 - Text.CreateBranch.OverwriteExisting
@@ -144,6 +154,7 @@ This document shows the translation status of each locale file in the repository
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
 - Text.Bisect.Bad
@@ -185,7 +196,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.FilterCommits
 - Text.Repository.Search.ByContent
 - Text.Repository.ShowSubmodulesAsTree
-- Text.Repository.Tags.OrderByNameDes
 - Text.Repository.ViewLogs
 - Text.Repository.Visit
 - Text.ResetWithoutCheckout
@@ -222,6 +232,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ApplyStash.DropAfterApply
 - Text.ApplyStash.RestoreIndex
 - Text.ApplyStash.Stash
+- Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
 - Text.Bisect.Bad
@@ -308,8 +319,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.ShowSubmodulesAsTree
 - Text.Repository.Skip
 - Text.Repository.Tags.OrderByCreatorDate
-- Text.Repository.Tags.OrderByNameAsc
-- Text.Repository.Tags.OrderByNameDes
+- Text.Repository.Tags.OrderByName
 - Text.Repository.Tags.Sort
 - Text.Repository.UseRelativeTimeInHistories
 - Text.Repository.ViewLogs
@@ -347,22 +357,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.63%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.BranchCM.CompareWithCurrent
-- Text.Repository.ClearStashes
-- Text.WorkingCopy.ResetAuthor
-
-</details>
-
-### ![ta__IN](https://img.shields.io/badge/ta__IN-92.26%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-92.13%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
 
+- Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
 - Text.Bisect.Bad
@@ -428,11 +430,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-93.51%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-93.38%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
 
+- Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
 - Text.Bisect.Bad

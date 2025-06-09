@@ -31,8 +31,8 @@ namespace SourceGit.ViewModels
                 watch.Start();
 
                 var rootDir = new DirectoryInfo(RootDir);
-                var founded = new List<FoundRepository>();
-                GetUnmanagedRepositories(rootDir, founded, new EnumerationOptions()
+                var found = new List<string>();
+                GetUnmanagedRepositories(rootDir, found, new EnumerationOptions()
                 {
                     AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
                     IgnoreInaccessible = true,
@@ -46,24 +46,27 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    var normalizedRoot = rootDir.FullName.Replace("\\", "/");
+                    var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
 
-                    foreach (var f in founded)
+                    foreach (var f in found)
                     {
-                        var parent = new DirectoryInfo(f.Path).Parent!.FullName.Replace("\\", "/");
+                        var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                         if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                         {
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, null, false);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
                         }
                         else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                         {
                             var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
                             var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f.Path, group, false);
+                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
                         }
                     }
 
                     Preferences.Instance.AutoRemoveInvalidNode();
+                    Preferences.Instance.SortNodes(Preferences.Instance.RepositoryNodes);
+                    Preferences.Instance.Save();
+
                     Welcome.Instance.Refresh();
                 });
 
@@ -82,7 +85,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void GetUnmanagedRepositories(DirectoryInfo dir, List<FoundRepository> outs, EnumerationOptions opts, int depth = 0)
+        private void GetUnmanagedRepositories(DirectoryInfo dir, List<string> outs, EnumerationOptions opts, int depth = 0)
         {
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
@@ -93,7 +96,7 @@ namespace SourceGit.ViewModels
 
                 CallUIThread(() => ProgressDescription = $"Scanning {subdir.FullName}...");
 
-                var normalizedSelf = subdir.FullName.Replace("\\", "/");
+                var normalizedSelf = subdir.FullName.Replace('\\', '/').TrimEnd('/');
                 if (_managed.Contains(normalizedSelf))
                     continue;
 
@@ -103,9 +106,9 @@ namespace SourceGit.ViewModels
                     var test = new Commands.QueryRepositoryRootPath(subdir.FullName).ReadToEnd();
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
-                        var normalized = test.StdOut.Trim().Replace("\\", "/");
+                        var normalized = test.StdOut.Trim().Replace('\\', '/').TrimEnd('/');
                         if (!_managed.Contains(normalized))
-                            outs.Add(new FoundRepository(normalized, false));
+                            outs.Add(normalized);
                     }
 
                     continue;
@@ -114,7 +117,7 @@ namespace SourceGit.ViewModels
                 var isBare = new Commands.IsBareRepository(subdir.FullName).Result();
                 if (isBare)
                 {
-                    outs.Add(new FoundRepository(normalizedSelf, true));
+                    outs.Add(normalizedSelf);
                     continue;
                 }
 
@@ -151,23 +154,11 @@ namespace SourceGit.ViewModels
                 IsExpanded = true,
             };
             collection.Add(added);
-            collection.Sort((l, r) =>
-            {
-                if (l.IsRepository != r.IsRepository)
-                    return l.IsRepository ? 1 : -1;
-
-                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
-            });
+            Preferences.Instance.SortNodes(collection);
 
             return added;
         }
 
-        private record FoundRepository(string path, bool isBare)
-        {
-            public string Path { get; set; } = path;
-            public bool IsBare { get; set; } = isBare;
-        }
-
-        private HashSet<string> _managed = new HashSet<string>();
+        private HashSet<string> _managed = new();
     }
 }

@@ -151,11 +151,15 @@ namespace SourceGit.Views
                     return;
                 }
 
+                var rules = IssueTrackerRules ?? [];
+                foreach (var rule in rules)
+                    rule.Matches(_elements, subject);
+
                 var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
                 if (!keywordMatch.Success)
                     keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
 
-                if (keywordMatch.Success)
+                if (keywordMatch.Success && _elements.Intersect(0, keywordMatch.Length) == null)
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
 
                 var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
@@ -167,27 +171,13 @@ namespace SourceGit.Views
 
                     var start = match.Index;
                     var len = match.Length;
-                    var intersect = false;
-                    foreach (var exist in _elements)
-                    {
-                        if (exist.Intersect(start, len))
-                        {
-                            intersect = true;
-                            break;
-                        }
-                    }
-
-                    if (intersect)
+                    if (_elements.Intersect(start, len) != null)
                         continue;
 
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
                 }
 
-                var rules = IssueTrackerRules ?? [];
-                foreach (var rule in rules)
-                    rule.Matches(_elements, subject);
-
-                _elements.Sort((l, r) => l.Start - r.Start);
+                _elements.Sort();
                 _needRebuildInlines = true;
                 InvalidateVisual();
             }
@@ -261,8 +251,9 @@ namespace SourceGit.Views
             var codeTypeface = new Typeface(codeFontFamily, FontStyle.Normal, FontWeight);
             var pos = 0;
             var x = 0.0;
-            foreach (var elem in _elements)
+            for (var i = 0; i < _elements.Count; i++)
             {
+                var elem = _elements[i];
                 if (elem.Start > pos)
                 {
                     var normal = new FormattedText(
@@ -364,7 +355,7 @@ namespace SourceGit.Views
             }
         }
 
-        private List<Models.InlineElement> _elements = [];
+        private Models.InlineElementCollector _elements = new();
         private List<Inline> _inlines = [];
         private Models.InlineElement _lastHover = null;
         private bool _needRebuildInlines = false;

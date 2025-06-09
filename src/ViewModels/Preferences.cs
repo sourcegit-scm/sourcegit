@@ -261,6 +261,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useBlockNavigationInDiffView, value);
         }
 
+        public int LFSImageActiveIdx
+        {
+            get => _lfsImageActiveIdx;
+            set => SetProperty(ref _lfsImageActiveIdx, value);
+        }
+
         public Models.ChangeViewMode UnstagedChangeViewMode
         {
             get => _unstagedChangeViewMode;
@@ -430,16 +436,21 @@ namespace SourceGit.ViewModels
         {
             var collection = to == null ? RepositoryNodes : to.SubNodes;
             collection.Add(node);
-            collection.Sort((l, r) =>
+            SortNodes(collection);
+
+            if (save)
+                Save();
+        }
+
+        public void SortNodes(List<RepositoryNode> collection)
+        {
+            collection?.Sort((l, r) =>
             {
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
 
                 return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
             });
-
-            if (save)
-                Save();
         }
 
         public RepositoryNode FindNode(string id)
@@ -447,11 +458,9 @@ namespace SourceGit.ViewModels
             return FindNodeRecursive(id, RepositoryNodes);
         }
 
-        public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode)
+        public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode, bool save = true)
         {
-            var normalized = repo.Replace('\\', '/');
-            if (normalized.EndsWith("/"))
-                normalized = normalized.TrimEnd('/');
+            var normalized = repo.Replace('\\', '/').TrimEnd('/');
 
             var node = FindNodeRecursive(normalized, RepositoryNodes);
             if (node == null)
@@ -464,11 +473,11 @@ namespace SourceGit.ViewModels
                     IsRepository = true,
                 };
 
-                AddNode(node, parent, true);
+                AddNode(node, parent, save);
             }
             else if (shouldMoveNode)
             {
-                MoveNode(node, parent, true);
+                MoveNode(node, parent, save);
             }
 
             return node;
@@ -499,22 +508,13 @@ namespace SourceGit.ViewModels
         public void SortByRenamedNode(RepositoryNode node)
         {
             var container = FindNodeContainer(node, RepositoryNodes);
-            container?.Sort((l, r) =>
-            {
-                if (l.IsRepository != r.IsRepository)
-                    return l.IsRepository ? 1 : -1;
-
-                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
-            });
-
+            SortNodes(container);
             Save();
         }
 
         public void AutoRemoveInvalidNode()
         {
-            var changed = RemoveInvalidRepositoriesRecursive(RepositoryNodes);
-            if (changed)
-                Save();
+            RemoveInvalidRepositoriesRecursive(RepositoryNodes);
         }
 
         public void Save()
@@ -582,6 +582,13 @@ namespace SourceGit.ViewModels
                     workspace.ActiveIdx = 0;
                 }
             }
+        }
+
+        private void SortNodesRecursive(List<RepositoryNode> collection)
+        {
+            SortNodes(collection);
+            foreach (var node in collection)
+                SortNodesRecursive(node.SubNodes);
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
@@ -661,7 +668,7 @@ namespace SourceGit.ViewModels
         private string _themeOverrides = string.Empty;
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
-        private bool _onlyUseMonoFontInEditor = false;
+        private bool _onlyUseMonoFontInEditor = true;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;
@@ -687,6 +694,7 @@ namespace SourceGit.ViewModels
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
         private bool _useBlockNavigationInDiffView = false;
+        private int _lfsImageActiveIdx = 0;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;

@@ -313,16 +313,13 @@ namespace SourceGit.Views
 
         private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
-            if (_disableSelectionChangingEvent)
+            if (_disableSelectionChangingEvent || DataContext is not ViewModels.CommitDetail vm)
                 return;
 
-            if (sender is ListBox { SelectedItem: ViewModels.RevisionFileTreeNode node } && DataContext is ViewModels.CommitDetail vm)
-            {
-                if (!node.IsFolder)
-                    vm.ViewRevisionFile(node.Backend);
-                else
-                    vm.ViewRevisionFile(null);
-            }
+            if (sender is ListBox { SelectedItem: ViewModels.RevisionFileTreeNode { IsFolder: false } node })
+                vm.ViewRevisionFile(node.Backend);
+            else
+                vm.ViewRevisionFile(null);
         }
 
         private List<ViewModels.RevisionFileTreeNode> GetChildrenOfTreeNode(ViewModels.RevisionFileTreeNode node)

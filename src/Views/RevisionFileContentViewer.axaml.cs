@@ -24,6 +24,15 @@ namespace SourceGit.Views
             set => SetValue(TabWidthProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
+            AvaloniaProperty.Register<RevisionTextFileView, bool>(nameof(UseSyntaxHighlighting));
+
+        public bool UseSyntaxHighlighting
+        {
+            get => GetValue(UseSyntaxHighlightingProperty);
+            set => SetValue(UseSyntaxHighlightingProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public RevisionTextFileView() : base(new TextArea(), new TextDocument())
@@ -72,8 +81,9 @@ namespace SourceGit.Views
 
             if (DataContext is Models.RevisionTextFile source)
             {
-                UpdateTextMate();
                 Text = source.Content;
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
+                ScrollToHome();
             }
             else
             {
@@ -86,9 +96,9 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == TabWidthProperty)
-            {
                 Options.IndentationSize = TabWidth;
-            }
+            else if (change.Property == UseSyntaxHighlightingProperty)
+                UpdateTextMate();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -124,11 +134,22 @@ namespace SourceGit.Views
 
         private void UpdateTextMate()
         {
-            if (_textMate == null)
-                _textMate = Models.TextMateHelper.CreateForEditor(this);
+            if (UseSyntaxHighlighting)
+            {
+                if (_textMate == null)
+                    _textMate = Models.TextMateHelper.CreateForEditor(this);
 
-            if (DataContext is Models.RevisionTextFile file)
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);
+                if (DataContext is Models.RevisionTextFile file)
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);
+            }
+            else if (_textMate != null)
+            {
+                _textMate.Dispose();
+                _textMate = null;
+                GC.Collect();
+
+                TextArea.TextView.Redraw();
+            }
         }
 
         private TextMate.Installation _textMate = null;

@@ -30,7 +30,7 @@ namespace SourceGit.ViewModels
             {
                 if (value != null)
                 {
-                    var normalized = value.Replace('\\', '/');
+                    var normalized = value.Replace('\\', '/').TrimEnd('/');
                     SetProperty(ref _fullpath, normalized);
                 }
                 else
@@ -127,12 +127,12 @@ namespace SourceGit.ViewModels
 
         public bool OnlyHighlightCurrentBranchInHistories
         {
-            get => _settings.OnlyHighlighCurrentBranchInHistories;
+            get => _settings.OnlyHighlightCurrentBranchInHistories;
             set
             {
-                if (value != _settings.OnlyHighlighCurrentBranchInHistories)
+                if (value != _settings.OnlyHighlightCurrentBranchInHistories)
                 {
-                    _settings.OnlyHighlighCurrentBranchInHistories = value;
+                    _settings.OnlyHighlightCurrentBranchInHistories = value;
                     OnPropertyChanged();
                 }
             }
@@ -434,6 +434,21 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsSortingLocalBranchByName
+        {
+            get => _settings.LocalBranchSortMode == Models.BranchSortMode.Name;
+        }
+
+        public bool IsSortingRemoteBranchByName
+        {
+            get => _settings.RemoteBranchSortMode == Models.BranchSortMode.Name;
+        }
+
+        public bool IsSortingTagsByName
+        {
+            get => _settings.TagSortMode == Models.TagSortMode.Name;
+        }
+
         public InProgressContext InProgressContext
         {
             get => _workingCopy?.InProgressContext;
@@ -499,7 +514,7 @@ namespace SourceGit.ViewModels
             {
                 // For worktrees, we need to watch the $GIT_COMMON_DIR instead of the $GIT_DIR.
                 var gitDirForWatcher = _gitDir;
-                if (_gitDir.Replace("\\", "/").IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
+                if (_gitDir.Replace('\\', '/').IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
                 {
                     var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
                     if (!string.IsNullOrEmpty(commonDir))
@@ -772,7 +787,7 @@ namespace SourceGit.ViewModels
 
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                App.RaiseException(_fullpath, "Can NOT find current branch!!!");
                 return;
             }
 
@@ -796,7 +811,7 @@ namespace SourceGit.ViewModels
 
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Can NOT found current branch!!!");
+                App.RaiseException(_fullpath, "Can NOT find current branch!!!");
                 return;
             }
 
@@ -1120,7 +1135,8 @@ namespace SourceGit.ViewModels
                 if (_workingCopy != null)
                     _workingCopy.HasRemotes = remotes.Count > 0;
 
-                GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !CurrentBranch.TrackStatus.IsVisible);
+                var hasPendingPullOrPush = CurrentBranch?.TrackStatus.IsVisible ?? false;
+                GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !hasPendingPullOrPush);
             });
         }
 
@@ -1288,7 +1304,7 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
+                App.RaiseException(_fullpath, "Git cannot create a branch before your first commit.");
                 return;
             }
 
@@ -1354,7 +1370,7 @@ namespace SourceGit.ViewModels
         {
             if (_currentBranch == null)
             {
-                App.RaiseException(_fullpath, "Git do not hold any branch until you do first commit.");
+                App.RaiseException(_fullpath, "Git cannot create a branch before your first commit.");
                 return;
             }
 
@@ -1387,7 +1403,7 @@ namespace SourceGit.ViewModels
                 return;
 
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
-            var normalizedPath = root.Replace("\\", "/");
+            var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
 
             var node = Preferences.Instance.FindNode(normalizedPath);
             if (node == null)
@@ -1401,7 +1417,7 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            App.GetLauncer().OpenRepositoryInTab(node, null);
+            App.GetLauncher().OpenRepositoryInTab(node, null);
         }
 
         public void AddWorktree()
@@ -1430,10 +1446,10 @@ namespace SourceGit.ViewModels
                 };
             }
 
-            App.GetLauncer()?.OpenRepositoryInTab(node, null);
+            App.GetLauncher()?.OpenRepositoryInTab(node, null);
         }
 
-        public List<Models.OpenAIService> GetPreferedOpenAIServices()
+        public List<Models.OpenAIService> GetPreferredOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
@@ -1442,11 +1458,11 @@ namespace SourceGit.ViewModels
             if (services.Count == 1)
                 return [services[0]];
 
-            var prefered = _settings.PreferedOpenAIService;
+            var preferred = _settings.PreferredOpenAIService;
             var all = new List<Models.OpenAIService>();
             foreach (var service in services)
             {
-                if (service.Name.Equals(prefered, StringComparison.Ordinal))
+                if (service.Name.Equals(preferred, StringComparison.Ordinal))
                     return [service];
 
                 all.Add(service);
@@ -2380,9 +2396,15 @@ namespace SourceGit.ViewModels
             var changeMode = new Action<Models.BranchSortMode>(m =>
             {
                 if (local)
+                {
                     _settings.LocalBranchSortMode = m;
+                    OnPropertyChanged(nameof(IsSortingLocalBranchByName));
+                }
                 else
+                {
                     _settings.RemoteBranchSortMode = m;
+                    OnPropertyChanged(nameof(IsSortingRemoteBranchByName));
+                }
 
                 var builder = BuildBranchTree(_branches, _remotes);
                 LocalBranchTrees = builder.Locals;
@@ -2414,6 +2436,7 @@ namespace SourceGit.ViewModels
             };
 
             var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
             menu.Items.Add(byNameAsc);
             menu.Items.Add(byCommitterDate);
             return menu;
@@ -2427,6 +2450,7 @@ namespace SourceGit.ViewModels
                 if (_settings.TagSortMode != m)
                 {
                     _settings.TagSortMode = m;
+                    OnPropertyChanged(nameof(IsSortingTagsByName));
                     VisibleTags = BuildVisibleTags();
                 }
             });
@@ -2441,30 +2465,20 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var byNameAsc = new MenuItem();
-            byNameAsc.Header = App.Text("Repository.Tags.OrderByNameAsc");
-            if (mode == Models.TagSortMode.NameInAscending)
-                byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
-            byNameAsc.Click += (_, ev) =>
+            var byName = new MenuItem();
+            byName.Header = App.Text("Repository.Tags.OrderByName");
+            if (mode == Models.TagSortMode.Name)
+                byName.Icon = App.CreateMenuIcon("Icons.Check");
+            byName.Click += (_, ev) =>
             {
-                changeMode(Models.TagSortMode.NameInAscending);
-                ev.Handled = true;
-            };
-
-            var byNameDes = new MenuItem();
-            byNameDes.Header = App.Text("Repository.Tags.OrderByNameDes");
-            if (mode == Models.TagSortMode.NameInDescending)
-                byNameDes.Icon = App.CreateMenuIcon("Icons.Check");
-            byNameDes.Click += (_, ev) =>
-            {
-                changeMode(Models.TagSortMode.NameInDescending);
+                changeMode(Models.TagSortMode.Name);
                 ev.Handled = true;
             };
 
             var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
             menu.Items.Add(byCreatorDate);
-            menu.Items.Add(byNameAsc);
-            menu.Items.Add(byNameDes);
+            menu.Items.Add(byName);
             return menu;
         }
 
@@ -2588,7 +2602,7 @@ namespace SourceGit.ViewModels
 
         private LauncherPage GetOwnerPage()
         {
-            var launcher = App.GetLauncer();
+            var launcher = App.GetLauncher();
             if (launcher == null)
                 return null;
 
@@ -2637,11 +2651,8 @@ namespace SourceGit.ViewModels
                 case Models.TagSortMode.CreatorDate:
                     _tags.Sort((l, r) => r.CreatorDate.CompareTo(l.CreatorDate));
                     break;
-                case Models.TagSortMode.NameInAscending:
-                    _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
-                    break;
                 default:
-                    _tags.Sort((l, r) => Models.NumericSort.Compare(r.Name, l.Name));
+                    _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
                     break;
             }
 

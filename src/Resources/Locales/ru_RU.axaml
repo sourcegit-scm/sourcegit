@@ -39,6 +39,8 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">СПИСОК ПУСТ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">УДАЛИТЬ</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Загрузить картинку...</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ДВОИЧНЫЙ ФАЙЛ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.Bisect">Раздвоить</x:String>
   <x:String x:Key="Text.Bisect.Abort">О</x:String>
@@ -50,6 +52,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Переключиться на ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Сравнить с ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копировать имя ветки</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Изменить действие</x:String>
@@ -564,7 +567,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">На:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Переместить:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Добавить внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редактировать внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Имя:</x:String>
@@ -592,6 +594,7 @@
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Очистить (Сбор мусора и удаление) </x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Запустить команду (git gc) для данного репозитория.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Очистить всё</x:String>
+  <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Очистить</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Изменить действия</x:String>
@@ -639,8 +642,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">МЕТКИ</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">НОВАЯ МЕТКА</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">По дате создания</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">По имени (по возрастанию)</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">По имени (по убыванию)</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">По имени</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Сортировать</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Открыть в терминале</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Использовать относительное время в историях</x:String>
@@ -784,6 +786,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТЬ НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">НЕТ ПОСЛЕДНИХ ВХОДНЫХ СООБЩЕНИЙ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">НЕТ ШАБЛОНОВ РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Сбросить автора</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Щёлкните правой кнопкой мыши выбранный файл(ы) и разрешите конфликты.</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">Завершение работы</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">СФОРМИРОВАННЫЕ</x:String>
@@ -792,7 +795,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">НЕСФОРМИРОВАННЫЕ</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">СФОРМИРОВАТЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">СФОРМИРОВАТЬ ВСЁ</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">ОТКРЫТЬ СПИСОК НЕОТСЛЕЖИВАЕМЫХ ФАЙЛОВ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">ОТКРЫТЬ СПИСОК НЕОТСЛЕЖИВАЕМЫХ ФАЙЛОВ</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Шаблон: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">РАБОЧЕЕ ПРОСТРАНСТВО: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Настройка рабочего пространства...</x:String>

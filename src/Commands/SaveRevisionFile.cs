@@ -13,12 +13,8 @@ namespace SourceGit.Commands
             var isLFSFiltered = new IsLFSFiltered(repo, revision, file).Result();
             if (isLFSFiltered)
             {
-                var tmpFile = saveTo + ".tmp";
-                if (ExecCmd(repo, $"show {revision}:\"{file}\"", tmpFile))
-                {
-                    ExecCmd(repo, $"lfs smudge", saveTo, tmpFile);
-                }
-                File.Delete(tmpFile);
+                var pointerStream = QueryFileContent.Run(repo, revision, file);
+                ExecCmd(repo, $"lfs smudge", saveTo, pointerStream);
             }
             else
             {
@@ -26,7 +22,7 @@ namespace SourceGit.Commands
             }
         }
 
-        private static bool ExecCmd(string repo, string args, string outputFile, string inputFile = null)
+        private static bool ExecCmd(string repo, string args, string outputFile, Stream input = null)
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
@@ -45,21 +41,8 @@ namespace SourceGit.Commands
                 {
                     var proc = new Process() { StartInfo = starter };
                     proc.Start();
-
-                    if (inputFile != null)
-                    {
-                        using (StreamReader sr = new StreamReader(inputFile))
-                        {
-                            while (true)
-                            {
-                                var line = sr.ReadLine();
-                                if (line == null)
-                                    break;
-                                proc.StandardInput.WriteLine(line);
-                            }
-                        }
-                    }
-
+                    if (input != null)
+                        proc.StandardInput.Write(new StreamReader(input).ReadToEnd());
                     proc.StandardOutput.BaseStream.CopyTo(sw);
                     proc.WaitForExit();
                     var rs = proc.ExitCode == 0;

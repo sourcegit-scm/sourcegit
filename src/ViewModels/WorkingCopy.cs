@@ -780,7 +780,7 @@ namespace SourceGit.ViewModels
                         byParentFolder.IsVisible = !isRooted;
                         byParentFolder.Click += (_, e) =>
                         {
-                            var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
+                            var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
                             Commands.GitIgnore.Add(_repo.FullPath, dir + "/");
                             e.Handled = true;
                         };
@@ -802,7 +802,7 @@ namespace SourceGit.ViewModels
                             byExtensionInSameFolder.IsVisible = !isRooted;
                             byExtensionInSameFolder.Click += (_, e) =>
                             {
-                                var dir = Path.GetDirectoryName(change.Path)!.Replace("\\", "/");
+                                var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
                                 Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
                                 e.Handled = true;
                             };
@@ -1099,7 +1099,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
 
             var ai = null as MenuItem;
-            var services = _repo.GetPreferedOpenAIServices();
+            var services = _repo.GetPreferredOpenAIServices();
             if (services.Count > 0)
             {
                 ai = new MenuItem();
@@ -1497,7 +1497,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            var services = _repo.GetPreferedOpenAIServices();
+            var services = _repo.GetPreferredOpenAIServices();
             if (services.Count == 0)
             {
                 App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
@@ -1707,7 +1707,7 @@ namespace SourceGit.ViewModels
 
             if (!_repo.CanCreatePopup())
             {
-                App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
+                App.RaiseException(_repo.FullPath, "Repository has an unfinished job! Please wait!");
                 return;
             }
 

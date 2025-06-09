@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,7 +12,7 @@ namespace SourceGit.ViewModels
     {
         public string Title
         {
-            get => _title;
+            get;
         }
 
         public bool IgnoreWhitespace
@@ -70,9 +68,9 @@ namespace SourceGit.ViewModels
             }
 
             if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
-                _title = _option.Path;
+                Title = _option.Path;
             else
-                _title = $"{_option.OrgPath} → {_option.Path}";
+                Title = $"{_option.OrgPath} → {_option.Path}";
 
             LoadDiffContent();
         }
@@ -113,13 +111,10 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                // NOTE: Here we override the UnifiedLines value (if UseFullTextDiff is on).
-                // There is no way to tell a git-diff to use "ALL lines of context",
-                // so instead we set a very high number for the "lines of context" parameter.
                 var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
-                var ignoreWS = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
-                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWS).Result();
-                var info = new Info(_option, numLines, ignoreWS, latest);
+                var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWhitespace).Result();
+                var info = new Info(_option, numLines, ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
@@ -133,7 +128,7 @@ namespace SourceGit.ViewModels
                     if (count <= 3)
                     {
                         var submoduleDiff = new Models.SubmoduleDiff();
-                        var submoduleRoot = $"{_repo}/{_option.Path}".Replace("\\", "/");
+                        var submoduleRoot = $"{_repo}/{_option.Path}".Replace('\\', '/').TrimEnd('/');
                         isSubmodule = true;
                         for (int i = 1; i < count; i++)
                         {
@@ -164,28 +159,39 @@ namespace SourceGit.ViewModels
                 else if (latest.IsBinary)
                 {
                     var oldPath = string.IsNullOrEmpty(_option.OrgPath) ? _option.Path : _option.OrgPath;
-                    var ext = Path.GetExtension(_option.Path);
+                    var imgDecoder = ImageSource.GetDecoder(_option.Path);
 
-                    if (IMG_EXTS.Contains(ext))
+                    if (imgDecoder != Models.ImageDecoder.None)
                     {
                         var imgDiff = new Models.ImageDiff();
+
                         if (_option.Revisions.Count == 2)
                         {
-                            (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[0], oldPath);
-                            (imgDiff.New, imgDiff.NewFileSize) = BitmapFromRevisionFile(_repo, _option.Revisions[1], _option.Path);
+                            var oldImage = ImageSource.FromRevision(_repo, _option.Revisions[0], oldPath, imgDecoder);
+                            var newImage = ImageSource.FromRevision(_repo, _option.Revisions[1], _option.Path, imgDecoder);
+                            imgDiff.Old = oldImage.Bitmap;
+                            imgDiff.OldFileSize = oldImage.Size;
+                            imgDiff.New = newImage.Bitmap;
+                            imgDiff.NewFileSize = newImage.Size;
                         }
                         else
                         {
                             if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
-                                (imgDiff.Old, imgDiff.OldFileSize) = BitmapFromRevisionFile(_repo, "HEAD", oldPath);
+                            {
+                                var oldImage = ImageSource.FromRevision(_repo, "HEAD", oldPath, imgDecoder);
+                                imgDiff.Old = oldImage.Bitmap;
+                                imgDiff.OldFileSize = oldImage.Size;
+                            }
 
                             var fullPath = Path.Combine(_repo, _option.Path);
                             if (File.Exists(fullPath))
                             {
-                                imgDiff.New = new Bitmap(fullPath);
-                                imgDiff.NewFileSize = new FileInfo(fullPath).Length;
+                                var newImage = ImageSource.FromFile(fullPath, imgDecoder);
+                                imgDiff.New = newImage.Bitmap;
+                                imgDiff.NewFileSize = newImage.Size;
                             }
                         }
+
                         rs = imgDiff;
                     }
                     else
@@ -207,7 +213,11 @@ namespace SourceGit.ViewModels
                 }
                 else if (latest.IsLFS)
                 {
-                    rs = latest.LFSDiff;
+                    var imgDecoder = ImageSource.GetDecoder(_option.Path);
+                    if (imgDecoder != Models.ImageDecoder.None)
+                        rs = new LFSImageDiff(_repo, latest.LFSDiff, imgDecoder);
+                    else
+                        rs = latest.LFSDiff;
                 }
                 else
                 {
@@ -226,45 +236,27 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private (Bitmap, long) BitmapFromRevisionFile(string repo, string revision, string file)
-        {
-            var stream = Commands.QueryFileContent.Run(repo, revision, file);
-            var size = stream.Length;
-            return size > 0 ? (new Bitmap(stream), size) : (null, size);
-        }
-
         private Models.RevisionSubmodule QuerySubmoduleRevision(string repo, string sha)
         {
             var commit = new Commands.QuerySingleCommit(repo, sha).Result();
-            if (commit != null)
-            {
-                var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
-                return new Models.RevisionSubmodule()
-                {
-                    Commit = commit,
-                    FullMessage = new Models.CommitFullMessage { Message = body }
-                };
-            }
+            if (commit == null)
+                return new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = sha } };
 
+            var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
             return new Models.RevisionSubmodule()
             {
-                Commit = new Models.Commit() { SHA = sha },
-                FullMessage = null,
+                Commit = commit,
+                FullMessage = new Models.CommitFullMessage { Message = body }
             };
         }
 
-        private static readonly HashSet<string> IMG_EXTS = new HashSet<string>()
-        {
-            ".ico", ".bmp", ".jpg", ".png", ".jpeg", ".webp"
-        };
-
         private class Info
         {
-            public string Argument { get; set; }
-            public int UnifiedLines { get; set; }
-            public bool IgnoreWhitespace { get; set; }
-            public string OldHash { get; set; }
-            public string NewHash { get; set; }
+            public string Argument { get; }
+            public int UnifiedLines { get; }
+            public bool IgnoreWhitespace { get; }
+            public string OldHash { get; }
+            public string NewHash { get; }
 
             public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, Models.DiffResult result)
             {
@@ -287,7 +279,6 @@ namespace SourceGit.ViewModels
 
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
-        private string _title;
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
         private bool _isTextDiff = false;

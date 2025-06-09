@@ -360,7 +360,7 @@ namespace SourceGit.ViewModels
 
             if (!Path.Exists(node.Id))
             {
-                App.RaiseException(node.Id, "Repository does NOT exists any more. Please remove it.");
+                App.RaiseException(node.Id, "Repository does NOT exist any more. Please remove it.");
                 return;
             }
 
@@ -421,7 +421,7 @@ namespace SourceGit.ViewModels
 
             foreach (var page in Pages)
             {
-                var id = page.Node.Id.Replace("\\", "/");
+                var id = page.Node.Id.Replace('\\', '/').TrimEnd('/');
                 if (id == pageId)
                 {
                     page.Notifications.Add(notification);

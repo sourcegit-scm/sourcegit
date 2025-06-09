@@ -23,7 +23,7 @@ namespace SourceGit.Models
             get
             {
                 if (IsDetached)
-                    return $"deteched HEAD at {Head.AsSpan(10)}";
+                    return $"detached HEAD at {Head.AsSpan(10)}";
 
                 if (Branch.StartsWith("refs/heads/", StringComparison.Ordinal))
                     return Branch.Substring(11);

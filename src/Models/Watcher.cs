@@ -157,7 +157,7 @@ namespace SourceGit.Models
             if (string.IsNullOrEmpty(e.Name))
                 return;
 
-            var name = e.Name.Replace("\\", "/");
+            var name = e.Name.Replace('\\', '/').TrimEnd('/');
             if (name.Contains("fsmonitor--daemon/", StringComparison.Ordinal) ||
                 name.EndsWith(".lock", StringComparison.Ordinal) ||
                 name.StartsWith("lfs/", StringComparison.Ordinal))
@@ -205,7 +205,7 @@ namespace SourceGit.Models
             if (string.IsNullOrEmpty(e.Name))
                 return;
 
-            var name = e.Name.Replace("\\", "/");
+            var name = e.Name.Replace('\\', '/').TrimEnd('/');
             if (name.Equals(".git", StringComparison.Ordinal) ||
                 name.StartsWith(".git/", StringComparison.Ordinal) ||
                 name.EndsWith("/.git", StringComparison.Ordinal))

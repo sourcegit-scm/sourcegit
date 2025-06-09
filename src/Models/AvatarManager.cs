@@ -17,7 +17,7 @@ namespace SourceGit.Models
 {
     public interface IAvatarHost
     {
-        void OnAvatarResourceChanged(string email);
+        void OnAvatarResourceChanged(string email, Bitmap image);
     }
 
     public partial class AvatarManager
@@ -119,7 +119,7 @@ namespace SourceGit.Models
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         _resources[email] = img;
-                        NotifyResourceChanged(email);
+                        NotifyResourceChanged(email, img);
                     });
                 }
 
@@ -151,7 +151,7 @@ namespace SourceGit.Models
                 if (File.Exists(localFile))
                     File.Delete(localFile);
 
-                NotifyResourceChanged(email);
+                NotifyResourceChanged(email, null);
             }
             else
             {
@@ -186,6 +186,37 @@ namespace SourceGit.Models
             return null;
         }
 
+        public void SetFromLocal(string email, string file)
+        {
+            try
+            {
+                Bitmap image = null;
+
+                using (var stream = File.OpenRead(file))
+                {
+                    image = Bitmap.DecodeToWidth(stream, 128);
+                }
+
+                if (image == null)
+                    return;
+
+                if (_resources.ContainsKey(email))
+                    _resources[email] = image;
+                else
+                    _resources.Add(email, image);
+
+                _requesting.Remove(email);
+
+                var store = Path.Combine(_storePath, GetEmailHash(email));
+                File.Copy(file, store, true);
+                NotifyResourceChanged(email, image);
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
         private void LoadDefaultAvatar(string key, string img)
         {
             var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/{img}", UriKind.RelativeOrAbsolute));
@@ -203,12 +234,10 @@ namespace SourceGit.Models
             return builder.ToString();
         }
 
-        private void NotifyResourceChanged(string email)
+        private void NotifyResourceChanged(string email, Bitmap image)
         {
             foreach (var avatar in _avatars)
-            {
-                avatar.OnAvatarResourceChanged(email);
-            }
+                avatar.OnAvatarResourceChanged(email, image);
         }
     }
 }

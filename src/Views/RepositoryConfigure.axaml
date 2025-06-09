@@ -417,19 +417,34 @@
 
               <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
 
-              <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
-                <Button Classes="icon_button" Command="{Binding AddNewCustomAction}">
+              <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto,Auto" Background="{DynamicResource Brush.ToolBar}">
+                <Button Grid.Column="0"
+                        Classes="icon_button"
+                        Width="28" Height="28"
+                        Command="{Binding AddNewCustomAction}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                 </Button>
-
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-
-                <Button Classes="icon_button" Command="{Binding RemoveSelectedCustomAction}">
+                <Button Grid.Column="1"
+                        Classes="icon_button"
+                        Width="28" Height="28"
+                        Command="{Binding RemoveSelectedCustomAction}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
                 </Button>
-
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-              </StackPanel>
+                <Button Grid.Column="3"
+                        Classes="icon_button"
+                        Width="28" Height="28"
+                        Command="{Binding MoveSelectedCustomActionUp}"
+                        IsVisible="{Binding SelectedCustomAction, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+                </Button>
+                <Button Grid.Column="4"
+                        Classes="icon_button"
+                        Width="28" Height="28"
+                        Command="{Binding MoveSelectedCustomActionDown}"
+                        IsVisible="{Binding SelectedCustomAction, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+                </Button>
+              </Grid>
             </Grid>
           </Border>
 
@@ -494,7 +509,7 @@
                     Height="28" Padding="8,0"
                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
                     ItemsSource="{Binding AvailableOpenAIServices}"
-                    SelectedItem="{Binding PreferedOpenAIService, Mode=TwoWay}">
+                    SelectedItem="{Binding PreferredOpenAIService, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">

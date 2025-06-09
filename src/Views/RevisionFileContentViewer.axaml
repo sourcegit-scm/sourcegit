@@ -23,6 +23,7 @@
       <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}"
                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                               TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
+                              UseSyntaxHighlighting="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting}"
                               Background="{DynamicResource Brush.Contents}"/>
     </DataTemplate>
 
@@ -38,7 +39,7 @@
 
         <StackPanel Grid.Row="1" Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
           <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{Binding ImageType}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock Classes="primary" Text="{Binding ImageType}" Margin="8,0" FontSize="10" Foreground="White"/>
           </Border>
 
           <TextBlock Classes="primary" Text="{Binding ImageSize}" Margin="8,0,0,0"/>
@@ -67,6 +68,32 @@
           <v:CommitBaseInfo Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
         </ScrollViewer>
       </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:RevisionLFSImage">
+      <TabControl Margin="0,8,0,0" SelectedIndex="{Binding Source={x:Static vm:Preferences.Instance}, Path=LFSImageActiveIdx, Mode=TwoWay}">
+        <TabControl.Styles>
+          <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+          </Style>
+        </TabControl.Styles>
+
+        <TabItem>
+          <TabItem.Header>
+            <TextBlock Text="LFS" FontWeight="Bold"/>
+          </TabItem.Header>
+
+          <ContentControl Content="{Binding LFS}"/>
+        </TabItem>
+
+        <TabItem>
+          <TabItem.Header>
+            <TextBlock Text="IMAGE" FontWeight="Bold"/>
+          </TabItem.Header>
+
+          <ContentControl Content="{Binding Image}"/>
+        </TabItem>
+      </TabControl>
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>

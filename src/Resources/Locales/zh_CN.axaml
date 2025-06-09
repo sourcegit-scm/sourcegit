@@ -39,6 +39,8 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">没有不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">加载本地图片</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二进制文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.Bisect">二分定位(bisect)</x:String>
   <x:String x:Key="Text.Bisect.Abort">终止</x:String>
@@ -565,7 +567,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目标提交 ：</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">分支 ：</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">添加远程仓库</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>
@@ -641,8 +642,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">标签列表</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新建标签</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">按创建时间</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">按名称（升序）</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameDes" xml:space="preserve">按名称（降序）</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">按名称</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在终端中打开</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">在提交列表中使用相对时间</x:String>
@@ -795,7 +795,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">未暂存</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">暂存选中</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暂存所有</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">查看忽略变更文件</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">查看忽略变更文件</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">模板：${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">工作区：</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">配置工作区...</x:String>

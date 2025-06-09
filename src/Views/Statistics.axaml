@@ -136,7 +136,7 @@
         <DataTemplate DataType="m:StatisticsReport">
           <Grid ColumnDefinitions="256,*">
             <Grid Grid.Column="0" RowDefinitions="*,16">
-              <!-- Table By Autor -->
+              <!-- Table By Author -->
               <ListBox Grid.Column="0"
                        ItemsSource="{Binding Authors}"
                        SelectedItem="{Binding SelectedAuthor, Mode=TwoWay}"

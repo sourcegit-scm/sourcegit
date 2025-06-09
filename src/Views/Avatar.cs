@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
 {
@@ -24,16 +26,6 @@ namespace SourceGit.Views
 
         public Avatar()
         {
-            var refetch = new MenuItem() { Header = App.Text("RefetchAvatar") };
-            refetch.Click += (_, _) =>
-            {
-                if (User != null)
-                    Models.AvatarManager.Instance.Request(User.Email, true);
-            };
-
-            ContextMenu = new ContextMenu();
-            ContextMenu.Items.Add(refetch);
-
             RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
         }
 
@@ -102,11 +94,11 @@ namespace SourceGit.Views
             clip.Dispose();
         }
 
-        public void OnAvatarResourceChanged(string email)
+        public void OnAvatarResourceChanged(string email, Bitmap image)
         {
             if (User.Email.Equals(email, StringComparison.Ordinal))
             {
-                _img = Models.AvatarManager.Instance.Request(User.Email, false);
+                _img = image;
                 InvalidateVisual();
             }
         }
@@ -115,11 +107,13 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
             Models.AvatarManager.Instance.Subscribe(this);
+            ContextRequested += OnContextRequested;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
+            ContextRequested -= OnContextRequested;
             Models.AvatarManager.Instance.Unsubscribe(this);
         }
 
@@ -136,6 +130,94 @@ namespace SourceGit.Views
                 _img = Models.AvatarManager.Instance.Request(User.Email, false);
                 InvalidateVisual();
             }
+        }
+
+        private void OnContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel == null)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            var refetch = new MenuItem();
+            refetch.Icon = App.CreateMenuIcon("Icons.Loading");
+            refetch.Header = App.Text("Avatar.Refetch");
+            refetch.Click += (_, ev) =>
+            {
+                if (User != null)
+                    Models.AvatarManager.Instance.Request(User.Email, true);
+
+                ev.Handled = true;
+            };
+
+            var load = new MenuItem();
+            load.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+            load.Header = App.Text("Avatar.Load");
+            load.Click += async (_, ev) =>
+            {
+                var options = new FilePickerOpenOptions()
+                {
+                    FileTypeFilter = [new FilePickerFileType("PNG") { Patterns = ["*.png"] }],
+                    AllowMultiple = false,
+                };
+
+                var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);
+                if (selected.Count == 1)
+                {
+                    var localFile = selected[0].Path.LocalPath;
+                    Models.AvatarManager.Instance.SetFromLocal(User.Email, localFile);
+                }
+
+                ev.Handled = true;
+            };
+
+            var saveAs = new MenuItem();
+            saveAs.Icon = App.CreateMenuIcon("Icons.Save");
+            saveAs.Header = App.Text("SaveAs");
+            saveAs.Click += async (_, ev) =>
+            {
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("SaveAs");
+                options.DefaultExtension = ".png";
+                options.FileTypeChoices = [new FilePickerFileType("PNG") { Patterns = ["*.png"] }];
+
+                var storageFile = await toplevel.StorageProvider.SaveFilePickerAsync(options);
+                if (storageFile != null)
+                {
+                    var saveTo = storageFile.Path.LocalPath;
+                    using (var writer = File.OpenWrite(saveTo))
+                    {
+                        if (_img != null)
+                        {
+                            _img.Save(writer);
+                        }
+                        else
+                        {
+                            var pixelSize = new PixelSize((int)Bounds.Width, (int)Bounds.Height);
+                            var dpi = new Vector(96, 96);
+
+                            using (var rt = new RenderTargetBitmap(pixelSize, dpi))
+                            using (var ctx = rt.CreateDrawingContext())
+                            {
+                                this.Render(ctx);
+                                rt.Save(writer);
+                            }
+                        }
+                    }
+                }
+
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(refetch);
+            menu.Items.Add(load);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(saveAs);
+
+            menu.Open(this);
         }
 
         private Bitmap _img = null;

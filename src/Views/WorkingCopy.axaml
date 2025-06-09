@@ -73,7 +73,7 @@
                     Classes="icon_button"
                     Width="26" Height="14"
                     Padding="0"
-                    ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchaged}"
+                    ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchanged}"
                     Command="{Binding OpenAssumeUnchanged}">
               <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
             </Button>

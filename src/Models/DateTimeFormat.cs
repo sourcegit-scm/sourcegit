@@ -25,7 +25,7 @@ namespace SourceGit.Models
             set;
         } = 0;
 
-        public static DateTimeFormat Actived
+        public static DateTimeFormat Active
         {
             get => Supported[ActiveIndex];
         }

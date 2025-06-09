@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">変更されていないとみなされるファイル</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">変更されていないとみなされるファイルはありません</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">削除</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">バイナリファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAMEではこのファイルはサポートされていません!!!</x:String>
@@ -531,7 +532,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">ローカルの変更をスタッシュして再適用</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">On:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">リベース:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">リモートを追加</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">リモートを編集</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">名前:</x:String>
@@ -600,7 +600,7 @@
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">タグ</x:String>
   <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新しいタグを作成</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">作成者日時</x:String>
-  <x:String x:Key="Text.Repository.Tags.OrderByNameAsc" xml:space="preserve">名前 (昇順)</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">ソート</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">ターミナルで開く</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">履歴に相対時間を使用</x:String>
@@ -731,7 +731,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">未ステージのファイル</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">ステージへ移動</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">すべてステージへ移動</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">変更されていないとみなしたものを表示</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">変更されていないとみなしたものを表示</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">テンプレート: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ワークスペース: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">ワークスペースを設定...</x:String>

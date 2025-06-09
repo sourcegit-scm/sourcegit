@@ -127,10 +127,10 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public string PreferedOpenAIService
+        public string PreferredOpenAIService
         {
-            get => _repo.Settings.PreferedOpenAIService;
-            set => _repo.Settings.PreferedOpenAIService = value;
+            get => _repo.Settings.PreferredOpenAIService;
+            set => _repo.Settings.PreferredOpenAIService = value;
         }
 
         public AvaloniaList<Models.CustomAction> CustomActions
@@ -156,8 +156,8 @@ namespace SourceGit.ViewModels
             foreach (var service in Preferences.Instance.OpenAIServices)
                 AvailableOpenAIServices.Add(service.Name);
 
-            if (AvailableOpenAIServices.IndexOf(PreferedOpenAIService) == -1)
-                PreferedOpenAIService = "---";
+            if (AvailableOpenAIServices.IndexOf(PreferredOpenAIService) == -1)
+                PreferredOpenAIService = "---";
 
             _cached = new Commands.Config(repo.FullPath).ListAll();
             if (_cached.TryGetValue("user.name", out var name))
@@ -302,6 +302,18 @@ namespace SourceGit.ViewModels
         {
             _repo.Settings.RemoveCustomAction(_selectedCustomAction);
             SelectedCustomAction = null;
+        }
+
+        public void MoveSelectedCustomActionUp()
+        {
+            if (_selectedCustomAction != null)
+                _repo.Settings.MoveCustomActionUp(_selectedCustomAction);
+        }
+
+        public void MoveSelectedCustomActionDown()
+        {
+            if (_selectedCustomAction != null)
+                _repo.Settings.MoveCustomActionDown(_selectedCustomAction);
         }
 
         public void Save()

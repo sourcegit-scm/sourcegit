@@ -31,7 +31,7 @@ namespace SourceGit.ViewModels
 
         [Required(ErrorMessage = "Feature prefix is required!!!")]
         [RegularExpression(@"^[\w\-\.]+/$", ErrorMessage = "Bad feature prefix format!")]
-        public string FeturePrefix
+        public string FeaturePrefix
         {
             get => _featurePrefix;
             set => SetProperty(ref _featurePrefix, value, true);

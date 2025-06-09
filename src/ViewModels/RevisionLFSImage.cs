@@ -1,0 +1,34 @@
+﻿using System.Threading.Tasks;
+using Avalonia.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace SourceGit.ViewModels
+{
+    public class RevisionLFSImage : ObservableObject
+    {
+        public Models.RevisionLFSObject LFS
+        {
+            get;
+        }
+
+        public Models.RevisionImageFile Image
+        {
+            get => _image;
+            private set => SetProperty(ref _image, value);
+        }
+
+        public RevisionLFSImage(string repo, string file, Models.LFSObject lfs, Models.ImageDecoder decoder)
+        {
+            LFS = new Models.RevisionLFSObject() { Object = lfs };
+
+            Task.Run(() =>
+            {
+                var source = ImageSource.FromLFSObject(repo, lfs, decoder);
+                var img = new Models.RevisionImageFile(file, source.Bitmap, source.Size);
+                Dispatcher.UIThread.Invoke(() => Image = img);
+            });
+        }
+
+        private Models.RevisionImageFile _image = null;
+    }
+}

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
@@ -113,7 +114,39 @@
     <!-- Right: File Content Viewer -->
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-        <v:RevisionFileContentViewer Content="{Binding ViewRevisionFileContent}"/>
+        <Grid RowDefinitions="Auto,*">
+          <Border Grid.Row="0"
+                  Height="26"
+                  BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
+                  IsVisible="{Binding ViewRevisionFilePath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="1"
+                         Classes="primary"
+                         Margin="4,0,0,0"
+                         Text="{Binding ViewRevisionFilePath}"
+                         FontSize="11"
+                         TextTrimming="CharacterEllipsis"/>
+
+              <ToggleButton Grid.Column="2"
+                            Classes="line_path"
+                            Width="28"
+                            Background="Transparent"
+                            IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
+                            ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
+                <ToggleButton.IsVisible>
+                  <Binding Path="ViewRevisionFileContent"
+                           Mode="OneWay"
+                           Converter="{x:Static c:ObjectConverters.IsTypeOf}"
+                           ConverterParameter="{x:Type m:RevisionTextFile}"/>
+                </ToggleButton.IsVisible>
+                <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+              </ToggleButton>
+            </Grid>
+          </Border>
+          
+          <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding ViewRevisionFileContent}"/>
+        </Grid>
       </Border>
     </Grid>
   </Grid>

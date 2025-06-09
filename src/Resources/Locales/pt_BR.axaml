@@ -33,6 +33,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ARQUIVOS CONSIDERADOS SEM ALTERAÇÕES</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NENHUM ARQUIVO CONSIDERADO SEM ALTERAÇÕES</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">REMOVER</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Atualizar</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ARQUIVO BINÁRIO NÃO SUPORTADO!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME NESTE ARQUIVO NÃO É SUPORTADO!!!</x:String>
@@ -488,7 +489,6 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Guardar &amp; reaplicar alterações locais</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Em:</x:String>
   <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Rebase:</x:String>
-  <x:String x:Key="Text.RefetchAvatar" xml:space="preserve">Atualizar</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Adicionar Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Editar Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nome:</x:String>
@@ -667,7 +667,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE TODOS</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchaged" xml:space="preserve">VER SUPOR NÃO ALTERADO</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VER SUPOR NÃO ALTERADO</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">Workspaces: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configurar workspaces...</x:String>

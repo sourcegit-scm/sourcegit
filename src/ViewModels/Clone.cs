@@ -150,7 +150,7 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
-                    var launcher = App.GetLauncer();
+                    var launcher = App.GetLauncher();
                     var page = null as LauncherPage;
                     foreach (var one in launcher.Pages)
                     {
