@@ -151,11 +151,15 @@ namespace SourceGit.Views
                     return;
                 }
 
+                var rules = IssueTrackerRules ?? [];
+                foreach (var rule in rules)
+                    rule.Matches(_elements, subject);
+
                 var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
                 if (!keywordMatch.Success)
                     keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
 
-                if (keywordMatch.Success)
+                if (keywordMatch.Success && _elements.Intersect(0, keywordMatch.Length) == null)
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
 
                 var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
@@ -172,10 +176,6 @@ namespace SourceGit.Views
 
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
                 }
-
-                var rules = IssueTrackerRules ?? [];
-                foreach (var rule in rules)
-                    rule.Matches(_elements, subject);
 
                 _elements.Sort();
                 _needRebuildInlines = true;
