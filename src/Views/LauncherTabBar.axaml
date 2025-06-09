@@ -87,7 +87,6 @@
                                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                                TextAlignment="Center"
                                Text="{Binding Node.Name}"
-                               IsVisible="{Binding Node.IsRepository}"
                                IsHitTestVisible="False"/>
                   </Grid>
                   
@@ -99,6 +98,7 @@
                              Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                              IsVisible="{Binding !Node.IsRepository}"
                              IsHitTestVisible="False"/>
+                  
                   <Button Grid.Column="2"
                           Classes="icon_button"
                           Width="16" Height="16" Margin="12,0"
