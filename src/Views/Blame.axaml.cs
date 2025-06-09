@@ -61,7 +61,6 @@ namespace SourceGit.Views
                             typeface,
                             _editor.FontSize,
                             Brushes.DarkOrange);
-
                         context.DrawText(shaLink, new Point(x, y));
                         context.DrawLine(underlinePen, new Point(x, y + shaLink.Baseline + 2), new Point(x + shaLink.Width, y + shaLink.Baseline + 2));
                         x += shaLink.Width + 8;
