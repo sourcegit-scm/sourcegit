@@ -236,8 +236,6 @@ namespace SourceGit.ViewModels
                     var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
                     if (remoteBranch != null)
                     {
-                        // If there's a local branch that is tracking on this remote branch and it does not ahead of
-                        // its upstream, show `Checkout and Fast-Forward` popup.
                         var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
                         if (localBranch is { TrackStatus.Ahead.Count: 0 })
                         {
@@ -248,9 +246,7 @@ namespace SourceGit.ViewModels
                     }
                     
                     if (firstRemoteBranch == null)
-                    {
                         firstRemoteBranch = remoteBranch;
-                    }
                 }
             }
 
