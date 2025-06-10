@@ -1316,7 +1316,7 @@ namespace SourceGit.ViewModels
         {
             if (branch.IsLocal)
             {
-                var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
+                var worktree = _worktrees.Find(x => x.Branch.Equals(branch.FullName, StringComparison.Ordinal));
                 if (worktree != null)
                 {
                     OpenWorktree(worktree);
@@ -1341,9 +1341,13 @@ namespace SourceGit.ViewModels
             {
                 foreach (var b in _branches)
                 {
-                    if (b.IsLocal && b.Upstream == branch.FullName)
+                    if (b.IsLocal && 
+                        b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
+                        b.TrackStatus.Ahead.Count == 0)
                     {
-                        if (!b.IsCurrent)
+                        if (b.TrackStatus.Behind.Count > 0)
+                            ShowPopup(new CheckoutAndFastForward(this, b, branch));
+                        else if (!b.IsCurrent)
                             CheckoutBranch(b);
 
                         return;
