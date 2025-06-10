@@ -231,9 +231,24 @@ namespace SourceGit.ViewModels
                         return;
                     }
                 }
-                else if (d.Type == Models.DecoratorType.RemoteBranchHead && firstRemoteBranch == null)
+                else if (d.Type == Models.DecoratorType.RemoteBranchHead)
                 {
-                    firstRemoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    if (remoteBranch != null)
+                    {
+                        var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
+                        if (localBranch != null)
+                        {
+                            if (!localBranch.IsCurrent)
+                                _repo.CheckoutBranch(localBranch);
+                            return;
+                        }
+                    }
+                    
+                    if (firstRemoteBranch == null)
+                    {
+                        firstRemoteBranch = remoteBranch;
+                    }
                 }
             }
 
