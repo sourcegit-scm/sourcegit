@@ -224,9 +224,7 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
-                            {
-                                blame.NavigateToCommit(info.CommitSHA, true);
-                            }
+                                blame.NavigateToCommit(info.CommitSHA);
 
                             e.Handled = true;
                             break;
@@ -433,8 +431,6 @@ namespace SourceGit.Views
         public Blame()
         {
             InitializeComponent();
-
-            AddHandler(PointerReleasedEvent, MouseUpHandler, handledEventsToo: true);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -443,30 +439,22 @@ namespace SourceGit.Views
             GC.Collect();
         }
 
-        private void HistoryBack(object _, RoutedEventArgs e)
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            if (DataContext is ViewModels.Blame blame)
-            {
-                blame.Back();
-            }
-        }
-        private void HistoryForward(object _, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Blame blame)
-            {
-                blame.Forward();
-            }
-        }
+            base.OnPointerReleased(e);
 
-        private void MouseUpHandler(object sender, PointerReleasedEventArgs e)
-        {
-            if (e.InitialPressMouseButton == MouseButton.XButton1)
+            if (!e.Handled && DataContext is ViewModels.Blame blame)
             {
-                HistoryBack(null, null);
-            }
-            else if (e.InitialPressMouseButton == MouseButton.XButton2)
-            {
-                HistoryForward(null, null);
+                if (e.InitialPressMouseButton == MouseButton.XButton1)
+                {
+                    blame.Back();
+                    e.Handled = true;
+                }
+                else if (e.InitialPressMouseButton == MouseButton.XButton2)
+                {
+                    blame.Forward();
+                    e.Handled = true;
+                }
             }
         }
     }

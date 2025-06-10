@@ -313,7 +313,7 @@ namespace SourceGit.ViewModels
             blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
             blame.Click += (_, ev) =>
             {
-                App.ShowWindow(new Blame(_repo.FullPath, change.Path, _commit.SHA), false);
+                App.ShowWindow(new Blame(_repo.FullPath, change.Path, _commit), false);
                 ev.Handled = true;
             };
 
@@ -481,7 +481,7 @@ namespace SourceGit.ViewModels
             blame.IsEnabled = file.Type == Models.ObjectType.Blob;
             blame.Click += (_, ev) =>
             {
-                App.ShowWindow(new Blame(_repo.FullPath, file.Path, _commit.SHA), false);
+                App.ShowWindow(new Blame(_repo.FullPath, file.Path, _commit), false);
                 ev.Handled = true;
             };
 
