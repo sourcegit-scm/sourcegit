@@ -237,9 +237,9 @@ namespace SourceGit.ViewModels
                     if (remoteBranch != null)
                     {
                         // If there's a local branch that is tracking on this remote branch and it does not ahead of
-                        // its upstream, show `Create and Fast-Forward` popup.
+                        // its upstream, show `Checkout and Fast-Forward` popup.
                         var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
-                        if (localBranch is { TrackStatus: { Ahead: { Count: 0 } } }) 
+                        if (localBranch is { TrackStatus.Ahead.Count: 0 })
                         {
                             if (_repo.CanCreatePopup())
                                 _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
