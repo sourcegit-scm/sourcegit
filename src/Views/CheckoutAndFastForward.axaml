@@ -47,7 +47,7 @@
                  Text="{DynamicResource Text.Checkout.WithFastForward.Upstream}"/>
       <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Margin="4,0" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Text="{Binding RemoteBrach.FriendlyName}"/>
+        <TextBlock Text="{Binding RemoteBranch.FriendlyName}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="2" Grid.Column="0"

@@ -264,8 +264,7 @@ namespace SourceGit.Views
                         if (currentParent is { DataContext: ViewModels.CommitDetail currentDetail } &&
                             currentDetail.Commit.SHA == lastDetailCommit)
                         {
-                            if (!_inlineCommits.ContainsKey(sha))
-                                _inlineCommits.Add(sha, c);
+                            _inlineCommits.TryAdd(sha, c);
 
                             // Make sure user still hovers the target SHA.
                             if (_lastHover == link && c != null)

@@ -95,20 +95,15 @@ namespace SourceGit.Views
                     normalTypeface,
                     FontSize,
                     Foreground);
-
+                context.DrawText(formatted, new Point(offsetX, 0));
+                
                 if (isName)
                 {
                     var lineY = formatted.Baseline + 2;
-                    context.DrawText(formatted, new Point(offsetX, 0));
                     context.DrawLine(underlinePen, new Point(offsetX, lineY), new Point(offsetX + formatted.Width, lineY));
-                    offsetX += formatted.WidthIncludingTrailingWhitespace;
-                }
-                else
-                {
-                    context.DrawText(formatted, new Point(offsetX, 0));
-                    offsetX += formatted.WidthIncludingTrailingWhitespace;
                 }
 
+                offsetX += formatted.WidthIncludingTrailingWhitespace;
                 isName = !isName;
             }
         }

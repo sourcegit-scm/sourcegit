@@ -157,7 +157,7 @@ namespace SourceGit.Views
             else
             {
                 var vm = DataContext as ViewModels.CommitDetail;
-                if (vm == null || vm.Commit == null)
+                if (vm?.Commit == null)
                     return;
 
                 var objects = vm.GetRevisionFilesUnderFolder(file);
@@ -254,7 +254,7 @@ namespace SourceGit.Views
                 _searchResult.Clear();
 
                 var vm = DataContext as ViewModels.CommitDetail;
-                if (vm == null || vm.Commit == null)
+                if (vm?.Commit == null)
                 {
                     GC.Collect();
                     return;

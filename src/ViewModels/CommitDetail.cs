@@ -569,14 +569,14 @@ namespace SourceGit.ViewModels
 
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Invoke(() => FullMessage = new Models.CommitFullMessage { Message = message, Inlines = inlines });
-            });
+            }, token);
 
             Task.Run(() =>
             {
                 var signInfo = new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile).Result();
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Invoke(() => SignInfo = signInfo);
-            });
+            }, token);
 
             if (Preferences.Instance.ShowChildren)
             {
@@ -587,7 +587,7 @@ namespace SourceGit.ViewModels
                     var children = cmd.Result();
                     if (!token.IsCancellationRequested)
                         Dispatcher.UIThread.Post(() => Children = children);
-                });
+                }, token);
             }
 
             Task.Run(() =>
@@ -617,7 +617,7 @@ namespace SourceGit.ViewModels
                             SelectedChanges = null;
                     });
                 }
-            });
+            }, token);
         }
 
         private Models.InlineElementCollector ParseInlinesInMessage(string message)

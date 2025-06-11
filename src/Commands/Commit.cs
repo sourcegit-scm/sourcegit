@@ -34,6 +34,6 @@ namespace SourceGit.Commands
             return succ;
         }
 
-        private string _tmpFile = string.Empty;
+        private readonly string _tmpFile;
     }
 }

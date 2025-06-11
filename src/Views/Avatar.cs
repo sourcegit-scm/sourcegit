@@ -187,7 +187,7 @@ namespace SourceGit.Views
                 if (storageFile != null)
                 {
                     var saveTo = storageFile.Path.LocalPath;
-                    using (var writer = File.OpenWrite(saveTo))
+                    await using (var writer = File.OpenWrite(saveTo))
                     {
                         if (_img != null)
                         {
@@ -201,7 +201,7 @@ namespace SourceGit.Views
                             using (var rt = new RenderTargetBitmap(pixelSize, dpi))
                             using (var ctx = rt.CreateDrawingContext())
                             {
-                                this.Render(ctx);
+                                Render(ctx);
                                 rt.Save(writer);
                             }
                         }

@@ -45,7 +45,7 @@
                 KeyDown="OnResetModeKeyDown">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ResetMode">
-            <Grid ColumnDefinitions="16,60,*">
+            <Grid ColumnDefinitions="16,60,*,*">
               <Ellipse Grid.Column="0" Width="12" Height="12" Fill="{Binding Color}"/>
               <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="2,0,0,0"/>
               <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="2,0,16,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>

@@ -141,7 +141,7 @@ namespace SourceGit.Views
                 if (DataContext is ViewModels.Histories)
                 {
                     var list = CommitListContainer;
-                    if (list != null && list.SelectedItems.Count == 1)
+                    if (list is { SelectedItems.Count: 1 })
                         list.ScrollIntoView(list.SelectedIndex);
                 }
             }
@@ -170,7 +170,7 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: > 0 } } list)
+            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: > 0 } list)
             {
                 var menu = histories.MakeContextMenu(list);
                 menu?.Open(list);
@@ -180,7 +180,7 @@ namespace SourceGit.Views
 
         private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems: { Count: 1 } })
+            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: 1 })
             {
                 var source = e.Source as Control;
                 var item = source.FindAncestorOfType<ListBoxItem>();

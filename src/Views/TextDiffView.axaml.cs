@@ -765,12 +765,10 @@ namespace SourceGit.Views
             }
             else if (change.Property == BlockNavigationProperty)
             {
-                var oldValue = change.OldValue as ViewModels.BlockNavigation;
-                if (oldValue != null)
+                if (change.OldValue is ViewModels.BlockNavigation oldValue)
                     oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
 
-                var newValue = change.NewValue as ViewModels.BlockNavigation;
-                if (newValue != null)
+                if (change.NewValue is ViewModels.BlockNavigation newValue)
                     newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
 
                 TextArea?.TextView?.Redraw();
@@ -1251,8 +1249,7 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
 
-            var textDiff = DataContext as Models.TextDiff;
-            if (textDiff != null)
+            if (DataContext is Models.TextDiff textDiff)
             {
                 var builder = new StringBuilder();
                 foreach (var line in textDiff.Lines)
@@ -1410,8 +1407,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            var textDiff = this.FindAncestorOfType<TextDiffView>()?.DataContext as Models.TextDiff;
-            if (textDiff != null)
+            if (this.FindAncestorOfType<TextDiffView>()?.DataContext is Models.TextDiff textDiff)
             {
                 var lineIdx = -1;
                 foreach (var line in view.VisualLines)
@@ -1537,7 +1533,7 @@ namespace SourceGit.Views
 
         private void DirectSyncScrollOffset()
         {
-            if (_scrollViewer is { } && DataContext is ViewModels.TwoSideTextDiff diff)
+            if (_scrollViewer is not null && DataContext is ViewModels.TwoSideTextDiff diff)
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 

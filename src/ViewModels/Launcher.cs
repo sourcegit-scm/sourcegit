@@ -298,15 +298,10 @@ namespace SourceGit.ViewModels
             if (removeIdx == activeIdx)
             {
                 ActivePage = Pages[removeIdx > 0 ? removeIdx - 1 : removeIdx + 1];
-                CloseRepositoryInTab(page);
-                Pages.RemoveAt(removeIdx);
-            }
-            else
-            {
-                CloseRepositoryInTab(page);
-                Pages.RemoveAt(removeIdx);
             }
 
+            CloseRepositoryInTab(page);
+            Pages.RemoveAt(removeIdx);
             GC.Collect();
         }
 

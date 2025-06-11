@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public Models.Branch RemoteBrach
+        public Models.Branch RemoteBranch
         {
             get;
         }
@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             LocalBranch = localBranch;
-            RemoteBrach = remoteBranch;
+            RemoteBranch = remoteBranch;
         }
 
         public override Task<bool> Sure()
@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
 
                 if (DiscardLocalChanges)
                 {
-                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(LocalBranch.Name, RemoteBrach.Head, true, true);
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(LocalBranch.Name, RemoteBranch.Head, true, true);
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace SourceGit.ViewModels
                         needPopStash = true;
                     }
 
-                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(LocalBranch.Name, RemoteBrach.Head, false, true);
+                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(LocalBranch.Name, RemoteBranch.Head, false, true);
                 }
 
                 if (succ)

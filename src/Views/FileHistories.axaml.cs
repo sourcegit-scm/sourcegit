@@ -51,7 +51,7 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await this.StorageProvider.SaveFilePickerAsync(options);
+                var storageFile = await StorageProvider.SaveFilePickerAsync(options);
                 if (storageFile != null)
                     await compare.SaveAsPatch(storageFile.Path.LocalPath);
 

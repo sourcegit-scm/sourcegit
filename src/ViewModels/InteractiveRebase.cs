@@ -106,7 +106,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selectedItem, value))
-                    DetailContext.Commit = value != null ? value.Commit : null;
+                    DetailContext.Commit = value?.Commit;
             }
         }
 

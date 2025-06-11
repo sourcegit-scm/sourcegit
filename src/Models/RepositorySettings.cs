@@ -287,9 +287,8 @@ namespace SourceGit.Models
                 return false;
             }
 
-            for (int i = 0; i < HistoriesFilters.Count; i++)
+            foreach (var filter in HistoriesFilters)
             {
-                var filter = HistoriesFilters[i];
                 if (filter.Type != type)
                     continue;
 
