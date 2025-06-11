@@ -137,21 +137,12 @@ namespace SourceGit.Views
             var w = Bounds.Width;
             var h = Bounds.Height;
             var x = w * alpha;
-            var left = OldImage;
-            if (left != null && alpha > 0)
-            {
-                var src = new Rect(0, 0, left.Size.Width * alpha, left.Size.Height);
-                var dst = new Rect(0, 0, x, h);
-                context.DrawImage(left, src, dst);
-            }
 
-            var right = NewImage;
-            if (right != null && alpha < 1)
-            {
-                var src = new Rect(right.Size.Width * alpha, 0, right.Size.Width * (1 - alpha), right.Size.Height);
-                var dst = new Rect(x, 0, w - x, h);
-                context.DrawImage(right, src, dst);
-            }
+            if (OldImage is { } left && alpha > 0)
+                RenderSingleSide(context, left, new Rect(0, 0, x, h));
+
+            if (NewImage is { } right && alpha < 1)
+                RenderSingleSide(context, right, new Rect(x, 0, w - x, h));
 
             context.DrawLine(new Pen(Brushes.DarkGreen, 2), new Point(x, 0), new Point(x, Bounds.Height));
         }
@@ -231,6 +222,25 @@ namespace SourceGit.Views
             var sh = available.Height / img.Height;
             var scale = Math.Min(1, Math.Min(sw, sh));
             return new Size(scale * img.Width, scale * img.Height);
+        }
+
+        private void RenderSingleSide(DrawingContext context, Bitmap img, Rect clip)
+        {
+            var w = Bounds.Width;
+            var h = Bounds.Height;
+
+            var imgW = img.Size.Width;
+            var imgH = img.Size.Height;
+            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
+
+            var scaledW = img.Size.Width * scale;
+            var scaledH = img.Size.Height * scale;
+
+            var src = new Rect(0, 0, imgW, imgH);
+            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+
+            using (context.PushClip(clip))
+                context.DrawImage(img, src, dst);
         }
 
         private bool _pressedOnSlider = false;
