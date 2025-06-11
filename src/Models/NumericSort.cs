@@ -1,4 +1,7 @@
-﻿namespace SourceGit.Models
+﻿using System;
+using System.Globalization;
+
+namespace SourceGit.Models
 {
     public static class NumericSort
     {
@@ -23,7 +26,7 @@
                 bool isDigit1 = char.IsDigit(c1);
                 bool isDigit2 = char.IsDigit(c2);
                 if (isDigit1 != isDigit2)
-                    return c1.CompareTo(c2);
+                    return char.ToUpper(c1, CultureInfo.CurrentCulture).CompareTo(char.ToUpper(c2, CultureInfo.CurrentCulture));
 
                 do
                 {
@@ -55,7 +58,7 @@
                 if (isDigit1)
                     result = loc1 == loc2 ? string.CompareOrdinal(sub1, sub2) : loc1 - loc2;
                 else
-                    result = string.CompareOrdinal(sub1, sub2);
+                    result = string.Compare(sub1, sub2, StringComparison.OrdinalIgnoreCase);
 
                 if (result != 0)
                     return result;

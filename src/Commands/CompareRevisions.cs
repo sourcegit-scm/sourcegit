@@ -39,7 +39,7 @@ namespace SourceGit.Commands
             foreach (var line in lines)
                 ParseLine(line);
 
-            _changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
+            _changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
             return _changes;
         }
 

@@ -71,7 +71,7 @@ namespace SourceGit.ViewModels
                                     changes.Add(c);
 
                                 if (needSort)
-                                    changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
+                                    changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                             }
 
                             Dispatcher.UIThread.Invoke(() =>

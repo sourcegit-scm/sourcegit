@@ -1275,6 +1275,7 @@ namespace SourceGit.ViewModels
             if (_workingCopy == null)
                 return;
 
+            changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
             _workingCopy.SetData(changes);
 
             Dispatcher.UIThread.Invoke(() =>
