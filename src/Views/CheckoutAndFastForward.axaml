@@ -27,6 +27,18 @@
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Margin="4,0" Data="{StaticResource Icons.Branch}"/>
         <TextBlock Text="{Binding LocalBranch.Name}"/>
+        <Border Height="18"
+                Margin="8,0,0,0"
+                Padding="8,0"
+                VerticalAlignment="Center"
+                CornerRadius="9"
+                Background="{DynamicResource Brush.Badge}"
+                IsVisible="{Binding LocalBranch.TrackStatus.IsVisible}">
+          <TextBlock Foreground="{DynamicResource Brush.BadgeFG}"
+                     FontFamily="{DynamicResource Fonts.Monospace}"
+                     FontSize="10"
+                     Text="{Binding LocalBranch.TrackStatus}"/>
+        </Border>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
