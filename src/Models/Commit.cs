@@ -113,7 +113,7 @@ namespace SourceGit.Models
                 if (l.Type != r.Type)
                     return (int)l.Type - (int)r.Type;
                 else
-                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                    return NumericSort.Compare(l.Name, r.Name);
             });
         }
     }

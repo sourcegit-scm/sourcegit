@@ -26,7 +26,7 @@ namespace SourceGit.Models
                 bool isDigit1 = char.IsDigit(c1);
                 bool isDigit2 = char.IsDigit(c2);
                 if (isDigit1 != isDigit2)
-                    return char.ToUpper(c1, CultureInfo.CurrentCulture).CompareTo(char.ToUpper(c2, CultureInfo.CurrentCulture));
+                    return c1.CompareTo(c2);
 
                 do
                 {
