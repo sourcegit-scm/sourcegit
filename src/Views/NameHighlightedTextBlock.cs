@@ -96,7 +96,7 @@ namespace SourceGit.Views
                     FontSize,
                     Foreground);
                 context.DrawText(formatted, new Point(offsetX, 0));
-                
+
                 if (isName)
                 {
                     var lineY = formatted.Baseline + 2;

@@ -14,7 +14,7 @@
       <ColumnDefinition Width="2*" MinWidth="600"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
-    
+
     <!-- Managed Repositories -->
     <Grid Grid.Row="0" Grid.Column="1" Margin="8" RowDefinitions="Auto,*">
       <!-- Search Box -->

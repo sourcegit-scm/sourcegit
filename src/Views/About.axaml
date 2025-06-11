@@ -62,7 +62,6 @@
           </Button>
         </StackPanel>
 
-
         <TextBlock x:Name="TxtCopyright" Margin="0,40,0,0" Foreground="{DynamicResource Brush.FG2}"/>
       </StackPanel>
     </Grid>

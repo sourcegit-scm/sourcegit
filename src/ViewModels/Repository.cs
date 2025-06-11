@@ -1339,7 +1339,7 @@ namespace SourceGit.ViewModels
             {
                 foreach (var b in _branches)
                 {
-                    if (b.IsLocal && 
+                    if (b.IsLocal &&
                         b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
                         b.TrackStatus.Ahead.Count == 0)
                     {

@@ -244,7 +244,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
                     }
-                    
+
                     if (firstRemoteBranch == null)
                         firstRemoteBranch = remoteBranch;
                 }

@@ -102,7 +102,7 @@
         </DataTemplate>
       </ContentControl.DataTemplates>
     </ContentControl>
-    
+
     <!-- Workspace/Pages Switcher -->
     <Border Grid.Row="0" Grid.RowSpan="2"
             Background="Transparent"
@@ -115,7 +115,7 @@
               <DataTemplate DataType="vm:WorkspaceSwitcher">
                 <v:WorkspaceSwitcher/>
               </DataTemplate>
-              
+
               <DataTemplate DataType="vm:LauncherPageSwitcher">
                 <v:LauncherPageSwitcher/>
               </DataTemplate>

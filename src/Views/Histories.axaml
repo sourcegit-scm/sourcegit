@@ -133,7 +133,7 @@
                                                AheadBrush="{DynamicResource Brush.Accent}"
                                                BehindBrush="{DynamicResource Brush.FG1}"
                                                VerticalAlignment="Center"/>
-                      
+
                       <v:BisectStateIndicator Grid.Column="1"
                                               Background="{DynamicResource Brush.Contents}"
                                               Foreground="{DynamicResource Brush.FG1}"

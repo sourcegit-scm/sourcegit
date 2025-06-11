@@ -80,7 +80,7 @@
                              VerticalAlignment="Center"
                              IsVisible="{Binding DirtyBrush, Converter={x:Static ObjectConverters.IsNotNull}}"
                              Fill="{Binding DirtyBrush}"/>
-                    
+
                     <TextBlock Grid.Column="1"
                                Classes="primary"
                                VerticalAlignment="Center"
@@ -89,7 +89,7 @@
                                Text="{Binding Node.Name}"
                                IsHitTestVisible="False"/>
                   </Grid>
-                  
+
                   <TextBlock Grid.Column="1"
                              Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
@@ -98,7 +98,7 @@
                              Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                              IsVisible="{Binding !Node.IsRepository}"
                              IsHitTestVisible="False"/>
-                  
+
                   <Button Grid.Column="2"
                           Classes="icon_button"
                           Width="16" Height="16" Margin="12,0"

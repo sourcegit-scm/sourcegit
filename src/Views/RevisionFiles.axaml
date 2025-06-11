@@ -144,7 +144,7 @@
               </ToggleButton>
             </Grid>
           </Border>
-          
+
           <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding ViewRevisionFileContent}"/>
         </Grid>
       </Border>

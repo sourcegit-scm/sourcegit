@@ -204,7 +204,6 @@ namespace SourceGit.Models
 
             for (int i = 0; i <= half; i++)
             {
-
                 for (int j = -i; j <= i; j += 2)
                 {
                     var idx = j + half;

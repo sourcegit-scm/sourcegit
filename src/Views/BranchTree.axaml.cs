@@ -479,12 +479,12 @@ namespace SourceGit.Views
 
             if (branches.Find(x => x.IsCurrent) != null)
                 return;
-            
+
             if (branches.Count == 1)
                 repo.DeleteBranch(branches[0]);
             else
                 repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
-            
+
             e.Handled = true;
         }
 
@@ -537,4 +537,3 @@ namespace SourceGit.Views
         private bool _disableSelectionChangingEvent = false;
     }
 }
-

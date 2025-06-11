@@ -168,7 +168,7 @@
                                       ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
-        
+
         <!-- Staged Changes -->
         <v:ChangeCollectionView Grid.Row="1"
                                 x:Name="StagedChangesView"
@@ -357,7 +357,7 @@
               <Binding Path="CommitMessage" Converter="{x:Static c:StringConverters.IsNotNullOrWhitespace}"/>
             </MultiBinding>
           </Button.IsEnabled>
-          
+
           <Button.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="HasRemotes"/>
