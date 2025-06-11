@@ -53,6 +53,7 @@
                ItemsSource="{Binding Logs}"
                SelectedItem="{Binding SelectedLog, Mode=TwoWay}"
                SelectionMode="Single"
+               KeyDown="OnLogKeyDown"
                Grid.IsSharedSizeScope="True"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">

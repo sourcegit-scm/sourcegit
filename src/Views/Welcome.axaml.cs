@@ -94,20 +94,28 @@ namespace SourceGit.Views
 
         private void OnTreeViewKeyDown(object _, KeyEventArgs e)
         {
-            if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node && e.Key == Key.Enter)
+            if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node)
             {
-                if (node.IsRepository)
+                if (e.Key == Key.Enter)
                 {
-                    var parent = this.FindAncestorOfType<Launcher>();
-                    if (parent is { DataContext: ViewModels.Launcher launcher })
-                        launcher.OpenRepositoryInTab(node, null);
-                }
-                else
-                {
-                    ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-                }
+                    if (node.IsRepository)
+                    {
+                        var parent = this.FindAncestorOfType<Launcher>();
+                        if (parent is { DataContext: ViewModels.Launcher launcher })
+                            launcher.OpenRepositoryInTab(node, null);
+                    }
+                    else
+                    {
+                        ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                    }
 
-                e.Handled = true;
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.Delete or Key.Back)
+                {
+                    node.Delete();
+                    e.Handled = true;
+                }
             }
         }
 

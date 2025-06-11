@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace SourceGit.Views
 {
@@ -37,6 +38,18 @@ namespace SourceGit.Views
             menu.Items.Add(rm);
             menu.Open(grid);
 
+            e.Handled = true;
+        }
+
+        private void OnLogKeyDown(object _, KeyEventArgs e)
+        {
+            if (e.Key is not (Key.Delete or Key.Back))
+                return;
+            
+            if (DataContext is not ViewModels.ViewLogs vm)
+                return;
+
+            vm.Logs.Remove(vm.SelectedLog);
             e.Handled = true;
         }
     }
