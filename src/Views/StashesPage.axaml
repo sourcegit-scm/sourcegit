@@ -65,7 +65,7 @@
                ItemsSource="{Binding VisibleStashes}"
                SelectedItem="{Binding SelectedStash, Mode=TwoWay}"
                SelectionMode="Single"
-               KeyDown="OnStashKeyDown"
+               KeyDown="OnStashListKeyDown"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>

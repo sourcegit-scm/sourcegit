@@ -450,7 +450,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnListKeyDown(object _, KeyEventArgs e)
+        private void OnTreeKeyDown(object _, KeyEventArgs e)
         {
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
@@ -463,7 +463,7 @@ namespace SourceGit.Views
             if (selected == null || selected.Count == 0)
                 return;
 
-            if (selected is [ViewModels.BranchTreeNode { Backend: Models.Remote remote }])
+            if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Remote remote })
             {
                 repo.DeleteRemote(remote);
                 e.Handled = true;

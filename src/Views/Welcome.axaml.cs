@@ -31,9 +31,25 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItem is ViewModels.RepositoryNode { IsRepository: false } node && e.KeyModifiers == KeyModifiers.None)
+            if (SelectedItem is ViewModels.RepositoryNode node && e.KeyModifiers == KeyModifiers.None)
             {
-                if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                if (e.Key is Key.Delete or Key.Back)
+                {
+                    node.Delete();
+                    e.Handled = true;
+                }
+                else if (node.IsRepository)
+                {
+                    if (e.Key == Key.Enter)
+                    {
+                        var parent = this.FindAncestorOfType<Launcher>();
+                        if (parent is { DataContext: ViewModels.Launcher launcher })
+                            launcher.OpenRepositoryInTab(node, null);
+
+                        e.Handled = true;
+                    }
+                }
+                else if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right) || e.Key == Key.Enter)
                 {
                     ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
                     e.Handled = true;
@@ -89,33 +105,6 @@ namespace SourceGit.Views
                 DragDrop.SetAllowDrop(grid, true);
                 grid.AddHandler(DragDrop.DragOverEvent, DragOverTreeNode);
                 grid.AddHandler(DragDrop.DropEvent, DropOnTreeNode);
-            }
-        }
-
-        private void OnTreeViewKeyDown(object _, KeyEventArgs e)
-        {
-            if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node)
-            {
-                if (e.Key == Key.Enter)
-                {
-                    if (node.IsRepository)
-                    {
-                        var parent = this.FindAncestorOfType<Launcher>();
-                        if (parent is { DataContext: ViewModels.Launcher launcher })
-                            launcher.OpenRepositoryInTab(node, null);
-                    }
-                    else
-                    {
-                        ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-                    }
-
-                    e.Handled = true;
-                }
-                else if (e.Key is Key.Delete or Key.Back)
-                {
-                    node.Delete();
-                    e.Handled = true;
-                }
             }
         }
 

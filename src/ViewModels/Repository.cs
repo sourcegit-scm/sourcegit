@@ -1365,12 +1365,6 @@ namespace SourceGit.ViewModels
                 ShowPopup(new DeleteBranch(this, branch));
         }
 
-        public void DeleteRemote(Models.Remote remote)
-        {
-            if (CanCreatePopup())
-                ShowPopup(new DeleteRemote(this, remote));
-        }
-
         public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
         {
             if (CanCreatePopup())
@@ -1405,6 +1399,12 @@ namespace SourceGit.ViewModels
         {
             if (CanCreatePopup())
                 ShowPopup(new AddRemote(this));
+        }
+
+        public void DeleteRemote(Models.Remote remote)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteRemote(this, remote));
         }
 
         public void AddSubmodule()

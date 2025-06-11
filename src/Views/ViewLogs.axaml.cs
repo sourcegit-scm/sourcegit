@@ -45,11 +45,10 @@ namespace SourceGit.Views
         {
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
-            
-            if (DataContext is not ViewModels.ViewLogs vm)
-                return;
 
-            vm.Logs.Remove(vm.SelectedLog);
+            if (DataContext is ViewModels.ViewLogs { SelectedLog: { } log } vm)
+                vm.Logs.Remove(log);
+
             e.Handled = true;
         }
     }

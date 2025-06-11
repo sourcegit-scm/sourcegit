@@ -295,6 +295,12 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
+        public void Drop(Models.Stash stash)
+        {
+            if (stash != null && _repo.CanCreatePopup())
+                _repo.ShowPopup(new DropStash(_repo, stash));
+        }
+
         private void RefreshVisible()
         {
             if (string.IsNullOrEmpty(_searchFilter))
@@ -312,12 +318,6 @@ namespace SourceGit.ViewModels
 
                 VisibleStashes = visible;
             }
-        }
-
-        public void Drop(Models.Stash stash)
-        {
-            if (_repo.CanCreatePopup())
-                _repo.ShowPopup(new DropStash(_repo, stash));
         }
 
         private Repository _repo = null;

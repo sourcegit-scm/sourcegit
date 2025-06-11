@@ -61,8 +61,7 @@
                            ItemsSource="{Binding Rows}"
                            SelectionMode="Single"
                            Loaded="SetupTreeViewDragAndDrop"
-                           LostFocus="OnTreeViewLostFocus"
-                           KeyDown="OnTreeViewKeyDown">
+                           LostFocus="OnTreeViewLostFocus">
         <ListBox.Styles>
           <Style Selector="ListBox">
             <Setter Property="FocusAdorner">
