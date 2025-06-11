@@ -1359,6 +1359,18 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void DeleteBranch(Models.Branch branch)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteBranch(this, branch));
+        }
+
+        public void DeleteRemote(Models.Remote remote)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteRemote(this, remote));
+        }
+
         public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
         {
             if (CanCreatePopup())
@@ -1381,6 +1393,12 @@ namespace SourceGit.ViewModels
 
             if (CanCreatePopup())
                 ShowPopup(new CreateTag(this, _currentBranch));
+        }
+
+        public void DeleteTag(Models.Tag tag)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteTag(this, tag));
         }
 
         public void AddRemote()

@@ -23,6 +23,7 @@
       <ListBox Classes="repo_left_content_list"
                ItemsSource="{Binding Rows}"
                SelectionMode="Single"
+               KeyDown="OnKeyDown"
                SelectionChanged="OnSelectionChanged">
 
         <ListBox.DataTemplates>
@@ -88,6 +89,7 @@
                Margin="8,0,0,0"
                ItemsSource="{Binding Tags}"
                SelectionMode="Single"
+               KeyDown="OnKeyDown"
                SelectionChanged="OnSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Tag">

@@ -314,6 +314,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void Drop(Models.Stash stash)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new DropStash(_repo, stash));
+        }
+
         private Repository _repo = null;
         private List<Models.Stash> _stashes = [];
         private List<Models.Stash> _visibleStashes = [];

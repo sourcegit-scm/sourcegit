@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace SourceGit.Views
 {
@@ -30,6 +31,21 @@ namespace SourceGit.Views
                 var menu = vm.MakeContextMenu(border.DataContext as Models.Stash);
                 menu?.Open(border);
             }
+            e.Handled = true;
+        }
+
+        private void OnStashKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key is not (Key.Delete or Key.Back))
+                return;
+
+            if (DataContext is not ViewModels.StashesPage vm)
+                return;
+
+            if (sender is not ListBox { SelectedValue: Models.Stash stash })
+                return;
+
+            vm.Drop(stash);
             e.Handled = true;
         }
 
