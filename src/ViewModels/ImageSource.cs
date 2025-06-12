@@ -30,6 +30,7 @@ namespace SourceGit.ViewModels
             {
                 case ".ico":
                 case ".bmp":
+                case ".gif":
                 case ".jpg":
                 case ".jpeg":
                 case ".png":
