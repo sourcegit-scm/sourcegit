@@ -115,7 +115,7 @@ namespace SourceGit.ViewModels
                         break;
                     }
                 }
-            }            
+            }
         }
 
         private void SetBlameData(string commitSHA)
@@ -145,7 +145,7 @@ namespace SourceGit.ViewModels
                         }
                     });
                 }, token);
-            }                
+            }
 
             Task.Run(() =>
             {

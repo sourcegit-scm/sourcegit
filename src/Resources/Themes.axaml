@@ -55,7 +55,7 @@
       <Color x:Key="Color.InlineCode">#FF383838</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
-  
+
   <SolidColorBrush x:Key="Brush.Window" Color="{DynamicResource Color.Window}"/>
   <SolidColorBrush x:Key="Brush.WindowBorder" Color="{DynamicResource Color.WindowBorder}"/>
   <SolidColorBrush x:Key="Brush.TitleBar" Color="{DynamicResource Color.TitleBar}"/>

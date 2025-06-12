@@ -48,7 +48,7 @@
         <Path Grid.Column="0"
               Width="14" Height="14"
               Data="{StaticResource Icons.File}"/>
-        
+
         <TextBlock Grid.Column="1"
                    Margin="4,0,0,0"
                    VerticalAlignment="Center"
@@ -61,7 +61,7 @@
                 Command="{Binding Back}">
           <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleLeft}"/>
         </Button>
-        
+
         <Button Grid.Column="3"
                 Classes="icon_button"
                 IsEnabled="{Binding CanForward}"
@@ -77,10 +77,10 @@
                        Margin="0,0,6,0"
                        Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay}"/>
 
-            <TextBlock Grid.Column="2"
+            <TextBlock Grid.Column="1"
                        Text="{Binding Revision.Subject}"
                        TextTrimming="CharacterEllipsis"/>
-          </Grid>          
+          </Grid>
         </Border>
       </Grid>
     </Border>

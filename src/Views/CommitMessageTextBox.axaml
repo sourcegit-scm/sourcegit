@@ -67,7 +67,7 @@
         <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*" Margin="0,4">
           <Button Grid.Column="0"
                   Classes="icon_button"
-                  Width="24" 
+                  Width="24"
                   Margin="0,0,4,0" Padding="0"
                   Click="OnOpenCommitMessagePicker"
                   IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
@@ -120,4 +120,3 @@
     </Grid>
   </Border>
 </UserControl>
-

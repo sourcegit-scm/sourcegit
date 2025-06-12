@@ -35,7 +35,7 @@ namespace SourceGit.Views
             set => SetValue(BehindBrushProperty, value);
         }
 
-        enum Status
+        private enum Status
         {
             Normal,
             Ahead,

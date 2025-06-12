@@ -44,7 +44,7 @@
         <ColumnDefinition Width="4"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      
+
       <ListBox Grid.Column="0"
                Padding="4"
                Background="{DynamicResource Brush.Contents}"
@@ -84,14 +84,14 @@
                              Width="14" Height="14"
                              Margin="4,0,4,0"
                              IsVisible="{Binding !IsComplete}"/>
-              
+
               <TextBlock Grid.Column="1"
                          Classes="primary"
                          Margin="4,0,0,0"
                          Text="{Binding Name}"
                          VerticalAlignment="Center"
                          TextTrimming="CharacterEllipsis"/>
-              
+
               <v:CommandLogTime Grid.Column="2"
                                 Classes="primary"
                                 Margin="4,0"

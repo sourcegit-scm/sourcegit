@@ -90,6 +90,6 @@ namespace SourceGit.Commands
 
         private List<Models.InteractiveCommit> _commits = [];
         private Models.InteractiveCommit _current = null;
-        private string _boundary = "";
+        private readonly string _boundary;
     }
 }

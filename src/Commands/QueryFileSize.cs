@@ -16,9 +16,6 @@ namespace SourceGit.Commands
 
         public long Result()
         {
-            if (_result != 0)
-                return _result;
-
             var rs = ReadToEnd();
             if (rs.IsSuccess)
             {
@@ -29,7 +26,5 @@ namespace SourceGit.Commands
 
             return 0;
         }
-
-        private readonly long _result = 0;
     }
 }

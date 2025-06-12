@@ -736,11 +736,8 @@ namespace SourceGit.ViewModels
             {
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                foreach (var url in urls)
+                foreach (var (name, addr) in urls)
                 {
-                    var name = url.Key;
-                    var addr = url.Value;
-
                     var item = new MenuItem();
                     item.Header = App.Text("Repository.Visit", name);
                     item.Icon = App.CreateMenuIcon("Icons.Remotes");
@@ -1342,7 +1339,7 @@ namespace SourceGit.ViewModels
             {
                 foreach (var b in _branches)
                 {
-                    if (b.IsLocal && 
+                    if (b.IsLocal &&
                         b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
                         b.TrackStatus.Ahead.Count == 0)
                     {
@@ -2468,7 +2465,7 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateContextMenuForTagSortMode()
         {
             var mode = _settings.TagSortMode;
-            var changeMode = new Action<Models.TagSortMode>((m) =>
+            var changeMode = new Action<Models.TagSortMode>(m =>
             {
                 if (_settings.TagSortMode != m)
                 {
@@ -2746,10 +2743,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var node in nodes)
             {
-                if (filters.TryGetValue(node.Path, out var value))
-                    node.FilterMode = value;
-                else
-                    node.FilterMode = Models.FilterMode.None;
+                node.FilterMode = filters.GetValueOrDefault(node.Path, Models.FilterMode.None);
 
                 if (!node.IsBranch)
                     UpdateBranchTreeFilterMode(node.Children, filters);
@@ -2760,10 +2754,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var tag in _tags)
             {
-                if (filters.TryGetValue(tag.Name, out var value))
-                    tag.FilterMode = value;
-                else
-                    tag.FilterMode = Models.FilterMode.None;
+                tag.FilterMode = filters.GetValueOrDefault(tag.Name, Models.FilterMode.None);
             }
         }
 
@@ -2952,7 +2943,7 @@ namespace SourceGit.ViewModels
         private List<string> _matchedFilesForSearching = null;
 
         private string _filter = string.Empty;
-        private object _lockRemotes = new object();
+        private readonly Lock _lockRemotes = new();
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private Models.Branch _currentBranch = null;

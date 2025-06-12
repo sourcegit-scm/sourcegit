@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
-    public partial class CommitTemplate : ObservableObject
+    public class CommitTemplate : ObservableObject
     {
         public string Name
         {

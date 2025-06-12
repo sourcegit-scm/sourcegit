@@ -69,10 +69,10 @@
 
           <TextBlock Grid.Row="7" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Q, macOS=⌘+Q}"/>
           <TextBlock Grid.Row="7" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Quit}" />
-          
+
           <TextBlock Grid.Row="8" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+Shift+P, macOS=⌘+⇧+P}"/>
           <TextBlock Grid.Row="8" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.SwitchWorkspace}" />
-          
+
           <TextBlock Grid.Row="9" Grid.Column="0" Classes="primary bold" Text="{OnPlatform Ctrl+P, macOS=⌘+P}"/>
           <TextBlock Grid.Row="9" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Global.SwitchTab}" />
         </Grid>

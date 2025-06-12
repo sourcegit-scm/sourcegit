@@ -38,7 +38,7 @@ namespace SourceGit.Models
         [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@.+\.github\.com$")]
         private static partial Regex REG_GITHUB_USER_EMAIL();
 
-        private object _synclock = new object();
+        private readonly Lock _synclock = new();
         private string _storePath;
         private List<IAvatarHost> _avatars = new List<IAvatarHost>();
         private Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
@@ -144,8 +144,7 @@ namespace SourceGit.Models
                 if (_defaultAvatars.Contains(email))
                     return null;
 
-                if (_resources.ContainsKey(email))
-                    _resources.Remove(email);
+                _resources.Remove(email);
 
                 var localFile = Path.Combine(_storePath, GetEmailHash(email));
                 if (File.Exists(localFile))
@@ -179,8 +178,7 @@ namespace SourceGit.Models
 
             lock (_synclock)
             {
-                if (!_requesting.Contains(email))
-                    _requesting.Add(email);
+                _requesting.Add(email);
             }
 
             return null;
@@ -200,10 +198,7 @@ namespace SourceGit.Models
                 if (image == null)
                     return;
 
-                if (_resources.ContainsKey(email))
-                    _resources[email] = image;
-                else
-                    _resources.Add(email, image);
+                _resources[email] = image;
 
                 _requesting.Remove(email);
 

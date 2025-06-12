@@ -10,7 +10,7 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^(.+)\s+([\w.]+)\s+\w+:(\d+)$")]
         private static partial Regex REG_LOCK();
 
-        class SubCmd : Command
+        private class SubCmd : Command
         {
             public SubCmd(string repo, string args, Models.ICommandLog log)
             {

@@ -215,16 +215,8 @@ namespace SourceGit.Views
                 if (to == null)
                     return;
 
-                if (to.IsRepository)
-                {
-                    e.DragEffects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-                else
-                {
-                    e.DragEffects = DragDropEffects.Move;
-                    e.Handled = true;
-                }
+                e.DragEffects = to.IsRepository ? DragDropEffects.None : DragDropEffects.Move;
+                e.Handled = true;
             }
         }
 

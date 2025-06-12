@@ -65,8 +65,7 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateTagName(string name, ValidationContext ctx)
         {
-            var creator = ctx.ObjectInstance as CreateTag;
-            if (creator != null)
+            if (ctx.ObjectInstance is CreateTag creator)
             {
                 var found = creator._repo.Tags.Find(x => x.Name == name);
                 if (found != null)

@@ -26,11 +26,7 @@ namespace SourceGit.Models
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is User))
-                return false;
-
-            var other = obj as User;
-            return Name == other.Name && Email == other.Email;
+            return obj is User other && Name == other.Name && Email == other.Email;
         }
 
         public override int GetHashCode()

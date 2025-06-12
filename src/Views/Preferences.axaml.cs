@@ -178,7 +178,7 @@ namespace SourceGit.Views
             SetIfChanged(config, "user.name", DefaultUser, "");
             SetIfChanged(config, "user.email", DefaultEmail, "");
             SetIfChanged(config, "user.signingkey", GPGUserKey, "");
-            SetIfChanged(config, "core.autocrlf", CRLFMode != null ? CRLFMode.Value : null, null);
+            SetIfChanged(config, "core.autocrlf", CRLFMode?.Value, null);
             SetIfChanged(config, "fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
             SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
             SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");

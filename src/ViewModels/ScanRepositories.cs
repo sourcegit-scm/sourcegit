@@ -128,14 +128,14 @@ namespace SourceGit.ViewModels
 
         private RepositoryNode FindOrCreateGroupRecursive(List<RepositoryNode> collection, string path)
         {
-            var idx = path.IndexOf('/');
-            if (idx < 0)
-                return FindOrCreateGroup(collection, path);
+            RepositoryNode node = null;
+            foreach (var name in path.Split('/'))
+            {
+                node = FindOrCreateGroup(collection, name);
+                collection = node.SubNodes;
+            }
 
-            var name = path.Substring(0, idx);
-            var tail = path.Substring(idx + 1);
-            var parent = FindOrCreateGroup(collection, name);
-            return FindOrCreateGroupRecursive(parent.SubNodes, tail);
+            return node;
         }
 
         private RepositoryNode FindOrCreateGroup(List<RepositoryNode> collection, string name)

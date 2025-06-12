@@ -4,7 +4,7 @@ namespace SourceGit.ViewModels
 {
     public abstract class InProgressContext
     {
-        public InProgressContext(string repo, string cmd)
+        protected InProgressContext(string repo, string cmd)
         {
             _repo = repo;
             _cmd = cmd;

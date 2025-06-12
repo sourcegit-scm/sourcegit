@@ -9,7 +9,7 @@ namespace SourceGit.Models
         public int AddedStart { get; set; }
         public int AddedCount { get; set; }
 
-        class Chunk
+        private class Chunk
         {
             public int Hash;
             public bool Modified;
@@ -25,7 +25,7 @@ namespace SourceGit.Models
             }
         }
 
-        enum Edit
+        private enum Edit
         {
             None,
             DeletedRight,
@@ -34,7 +34,7 @@ namespace SourceGit.Models
             AddedLeft,
         }
 
-        class EditResult
+        private class EditResult
         {
             public Edit State;
             public int DeleteStart;
@@ -204,11 +204,10 @@ namespace SourceGit.Models
 
             for (int i = 0; i <= half; i++)
             {
-
                 for (int j = -i; j <= i; j += 2)
                 {
                     var idx = j + half;
-                    int o, n;
+                    int o;
                     if (j == -i || (j != i && forward[idx - 1] < forward[idx + 1]))
                     {
                         o = forward[idx + 1];
@@ -220,7 +219,7 @@ namespace SourceGit.Models
                         rs.State = Edit.DeletedRight;
                     }
 
-                    n = o - j;
+                    var n = o - j;
 
                     var startX = o;
                     var startY = n;
@@ -258,7 +257,7 @@ namespace SourceGit.Models
                 for (int j = -i; j <= i; j += 2)
                 {
                     var idx = j + half;
-                    int o, n;
+                    int o;
                     if (j == -i || (j != i && reverse[idx + 1] <= reverse[idx - 1]))
                     {
                         o = reverse[idx + 1] - 1;
@@ -270,7 +269,7 @@ namespace SourceGit.Models
                         rs.State = Edit.AddedLeft;
                     }
 
-                    n = o - (j + delta);
+                    var n = o - (j + delta);
 
                     var endX = o;
                     var endY = n;
@@ -312,8 +311,7 @@ namespace SourceGit.Models
 
         private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start)
         {
-            int hash;
-            if (hashes.TryGetValue(data, out hash))
+            if (hashes.TryGetValue(data, out var hash))
             {
                 chunks.Add(new Chunk(hash, start, data.Length));
             }

@@ -71,12 +71,10 @@ namespace SourceGit.ViewModels
                 }
                 else if (t is Models.Commit commit)
                 {
-                    var d = commit.Decorators.Find(x =>
-                    {
-                        return x.Type == Models.DecoratorType.LocalBranchHead ||
-                            x.Type == Models.DecoratorType.RemoteBranchHead ||
-                            x.Type == Models.DecoratorType.Tag;
-                    });
+                    var d = commit.Decorators.Find(x => x.Type is
+                        Models.DecoratorType.LocalBranchHead or
+                        Models.DecoratorType.RemoteBranchHead or
+                        Models.DecoratorType.Tag);
 
                     if (d != null)
                         ret.Add(d.Name);

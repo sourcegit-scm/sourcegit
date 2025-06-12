@@ -41,7 +41,7 @@
             </StackPanel>
           </DataTemplate>
         </ListBox.DataTemplates>
-        
+
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
             <Border Height="24"
@@ -50,7 +50,7 @@
                     DoubleTapped="OnItemDoubleTapped"
                     ContextRequested="OnItemContextRequested"
                     ToolTip.Tip="{Binding ToolTip}"
-                    ToolTip.Placement="Right">              
+                    ToolTip.Placement="Right">
               <Grid ColumnDefinitions="16,Auto,*,Auto"
                     Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                     VerticalAlignment="Center">
@@ -111,7 +111,7 @@
                   <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                 </StackPanel>
               </ToolTip.Tip>
-              
+
               <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                 <Path Grid.Column="0"
                       Margin="8,0,0,0"
@@ -133,4 +133,3 @@
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>
-

@@ -128,7 +128,7 @@ namespace SourceGit.Native
                 Microsoft.Win32.RegistryView.Registry64);
 
             var git = reg.OpenSubKey("SOFTWARE\\GitForWindows");
-            if (git != null && git.GetValue("InstallPath") is string installPath)
+            if (git?.GetValue("InstallPath") is string installPath)
             {
                 return Path.Combine(installPath, "bin", "git.exe");
             }
@@ -181,7 +181,7 @@ namespace SourceGit.Native
 
                     break;
                 case "cmd":
-                    return "C:\\Windows\\System32\\cmd.exe";
+                    return @"C:\Windows\System32\cmd.exe";
                 case "wt":
                     var wtFinder = new StringBuilder("wt.exe", 512);
                     if (PathFindOnPath(wtFinder, null))
@@ -199,8 +199,8 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
-            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
-            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
+            finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
+            finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
             finder.SublimeText(FindSublimeText);
             finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
             return finder.Founded;

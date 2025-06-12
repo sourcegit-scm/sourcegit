@@ -246,7 +246,7 @@ namespace SourceGit.Models
         private long _updateStashes = 0;
         private long _updateTags = 0;
 
-        private object _lockSubmodule = new object();
+        private readonly Lock _lockSubmodule = new();
         private List<string> _submodules = new List<string>();
     }
 }

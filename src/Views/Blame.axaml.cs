@@ -102,9 +102,8 @@ namespace SourceGit.Views
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
 
-                        if (calculated.Contains(info.CommitSHA))
+                        if (!calculated.Add(info.CommitSHA))
                             continue;
-                        calculated.Add(info.CommitSHA);
 
                         var x = 0.0;
                         var shaLink = new FormattedText(

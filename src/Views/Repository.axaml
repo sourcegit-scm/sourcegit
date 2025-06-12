@@ -769,7 +769,7 @@
                 Click="OnBisectCommand"
                 Tag="reset"/>
       </Grid>
-      
+
       <Border Grid.Row="2" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
