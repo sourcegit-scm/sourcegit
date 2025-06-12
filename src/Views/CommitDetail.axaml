@@ -51,6 +51,14 @@
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Change">
                 <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
+                  <ToolTip.Tip>
+                    <TextBlock TextWrapping="Wrap">
+                      <Run Text="{Binding Path, Mode=OneWay}"/>
+                      <Run Text=" • " Foreground="Gray"/>
+                      <Run Text="{Binding IndexDesc, Mode=OneWay}" Foreground="Gray"/>
+                    </TextBlock>
+                  </ToolTip.Tip>
+                  
                   <v:ChangeStatusIcon Grid.Column="0"
                                       Width="14" Height="14"
                                       HorizontalAlignment="Left"
