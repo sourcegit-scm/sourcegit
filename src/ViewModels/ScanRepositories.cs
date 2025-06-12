@@ -64,7 +64,6 @@ namespace SourceGit.ViewModels
                     }
 
                     Preferences.Instance.AutoRemoveInvalidNode();
-                    Preferences.Instance.SortNodes(Preferences.Instance.RepositoryNodes);
                     Preferences.Instance.Save();
 
                     Welcome.Instance.Refresh();
@@ -154,8 +153,8 @@ namespace SourceGit.ViewModels
                 IsExpanded = true,
             };
             collection.Add(added);
-            Preferences.Instance.SortNodes(collection);
 
+            Preferences.Instance.SortNodes(collection);
             return added;
         }
 
