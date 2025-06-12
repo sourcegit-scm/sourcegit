@@ -11,7 +11,7 @@ namespace SourceGit.ViewModels
 {
     public class Welcome : ObservableObject
     {
-        public static Welcome Instance => _instance;
+        public static Welcome Instance { get; } = new();
 
         public AvaloniaList<RepositoryNode> Rows
         {
@@ -354,7 +354,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private static Welcome _instance = new Welcome();
         private string _searchFilter = string.Empty;
     }
 }

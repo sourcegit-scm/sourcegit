@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateChangeContextMenu()
         {
-            if (_selectedChanges == null || _selectedChanges.Count != 1)
+            if (_selectedChanges is not { Count: 1 })
                 return null;
 
             var change = _selectedChanges[0];

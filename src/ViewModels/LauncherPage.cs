@@ -87,7 +87,7 @@ namespace SourceGit.ViewModels
 
         public bool CanCreatePopup()
         {
-            return _popup == null || !_popup.InProgress;
+            return _popup is not { InProgress: true };
         }
 
         public void StartPopup(Popup popup)

@@ -136,8 +136,7 @@ namespace SourceGit.Views
         {
             if (UseSyntaxHighlighting)
             {
-                if (_textMate == null)
-                    _textMate = Models.TextMateHelper.CreateForEditor(this);
+                _textMate ??= Models.TextMateHelper.CreateForEditor(this);
 
                 if (DataContext is Models.RevisionTextFile file)
                     Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);

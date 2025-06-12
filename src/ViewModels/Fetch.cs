@@ -46,10 +46,7 @@ namespace SourceGit.ViewModels
             else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
             {
                 var def = _repo.Remotes.Find(r => r.Name == _repo.Settings.DefaultRemote);
-                if (def != null)
-                    SelectedRemote = def;
-                else
-                    SelectedRemote = _repo.Remotes[0];
+                SelectedRemote = def ?? _repo.Remotes[0];
             }
             else
             {

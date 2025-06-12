@@ -84,7 +84,7 @@ namespace SourceGit.Views
                 return;
 
             var geo = new StreamGeometry();
-            var angle = Math.PI / 2;
+            const double angle = Math.PI / 2;
             var y = height + 0.5;
             using (var ctx = geo.Open())
             {

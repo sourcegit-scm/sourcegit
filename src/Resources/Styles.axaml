@@ -529,13 +529,7 @@
     <Setter Property="MinHeight" Value="24"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" />
-          </Grid.ColumnDefinitions>
-
+        <Grid ColumnDefinitions="*,1,Auto">
           <Button x:Name="PART_PrimaryButton"
                   Grid.Column="0"
                   Classes="flat primary"
@@ -1001,12 +995,7 @@
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid Background="Transparent">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-
+        <Grid Background="Transparent" ColumnDefinitions="Auto,*">
           <Border x:Name="Border" Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1" Background="Transparent" CornerRadius="2">
             <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent}" IsVisible="False" Margin="0,2,0,0"/>
           </Border>

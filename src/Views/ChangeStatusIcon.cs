@@ -82,7 +82,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == IsUnstagedChangeProperty || 
+            if (change.Property == IsUnstagedChangeProperty ||
                 change.Property == ChangeProperty ||
                 (change.Property.Name == "ActualThemeVariant" && change.NewValue != null))
                 InvalidateVisual();

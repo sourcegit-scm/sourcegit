@@ -12,7 +12,7 @@ namespace SourceGit.Views
     public class HistoriesLayout : Grid
     {
         public static readonly StyledProperty<bool> UseHorizontalProperty =
-            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(UseHorizontal), false);
+            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(UseHorizontal));
 
         public bool UseHorizontal
         {

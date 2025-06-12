@@ -24,10 +24,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _endPoint, value);
         }
 
-        public bool CanSaveAsPatch
-        {
-            get => _canSaveAsPatch;
-        }
+        public bool CanSaveAsPatch { get; }
 
         public List<Models.Change> VisibleChanges
         {
@@ -78,7 +75,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
-            _canSaveAsPatch = startPoint != null && endPoint != null;
+            CanSaveAsPatch = startPoint != null && endPoint != null;
 
             Task.Run(Refresh);
         }
@@ -138,7 +135,7 @@ namespace SourceGit.ViewModels
 
         public ContextMenu CreateChangeContextMenu()
         {
-            if (_selectedChanges == null || _selectedChanges.Count != 1)
+            if (_selectedChanges is not { Count: 1 })
                 return null;
 
             var change = _selectedChanges[0];
@@ -244,7 +241,6 @@ namespace SourceGit.ViewModels
         private string _repo;
         private object _startPoint = null;
         private object _endPoint = null;
-        private bool _canSaveAsPatch = false;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

@@ -155,7 +155,7 @@ namespace SourceGit.Views
 
         private void NavigateToHead(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository { CurrentBranch: { } } repo)
+            if (DataContext is ViewModels.Repository { CurrentBranch: not null } repo)
             {
                 repo.NavigateToCommit(repo.CurrentBranch.Head);
                 e.Handled = true;
