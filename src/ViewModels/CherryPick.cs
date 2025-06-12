@@ -66,6 +66,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+            _repo.ClearCommitMessage();
             ProgressDescription = $"Cherry-Pick commit(s) ...";
 
             var log = _repo.CreateLog("Cherry-Pick");

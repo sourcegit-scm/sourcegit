@@ -41,6 +41,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+            _repo.ClearCommitMessage();
             ProgressDescription = "Merge head(s) ...";
 
             var log = _repo.CreateLog("Merge Multiple Heads");
@@ -48,7 +49,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Merge(
+                new Commands.Merge(
                     _repo.FullPath,
                     ConvertTargetToMergeSources(),
                     AutoCommit,
@@ -56,7 +57,7 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return true;
             });
         }
 

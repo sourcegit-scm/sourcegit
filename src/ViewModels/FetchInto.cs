@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
                 var changedLocalBranchHead = new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).Result();
                 CallUIThread(() =>
                 {
-                    _repo.NavigateToCommitDelayed(changedLocalBranchHead);
+                    _repo.NavigateToCommit(changedLocalBranchHead, true);
                     _repo.SetWatcherEnabled(true);
                 });
 

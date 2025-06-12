@@ -150,5 +150,14 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private void NavigateToHead(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository { CurrentBranch: { } } repo)
+            {
+                repo.NavigateToCommit(repo.CurrentBranch.Head);
+                e.Handled = true;
+            }
+        }
     }
 }

@@ -167,7 +167,7 @@ namespace SourceGit.ViewModels
                 var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
                 CallUIThread(() =>
                 {
-                    _repo.NavigateToCommitDelayed(head);
+                    _repo.NavigateToCommit(head, true);
                     _repo.SetWatcherEnabled(true);
                 });
 

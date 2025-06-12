@@ -925,24 +925,23 @@ namespace SourceGit.ViewModels
             _lastFetchTime = DateTime.Now;
         }
 
-        public void NavigateToCommit(string sha)
+        public void NavigateToCommit(string sha, bool isDelayMode = false)
         {
-            if (_histories != null)
+            if (isDelayMode)
+            {
+                _navigateToCommitDelayed = sha;
+            }
+            else if (_histories != null)
             {
                 SelectedViewIndex = 0;
                 _histories.NavigateTo(sha);
             }
         }
 
-        public void NavigateToCommitDelayed(string sha)
+        public void ClearCommitMessage()
         {
-            _navigateToCommitDelayed = sha;
-        }
-
-        public void NavigateToCurrentHead()
-        {
-            if (_currentBranch != null)
-                NavigateToCommit(_currentBranch.Head);
+            if (_workingCopy is not null)
+                _workingCopy.CommitMessage = string.Empty;
         }
 
         public void ClearHistoriesFilter()
