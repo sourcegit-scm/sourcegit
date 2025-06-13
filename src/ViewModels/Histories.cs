@@ -237,18 +237,18 @@ namespace SourceGit.ViewModels
                         {
                             if (localBranch.IsCurrent)
                                 return;
-                            if (localBranch.TrackStatus.Behind.Count == 0)
-                                _repo.CheckoutBranch(localBranch);
-                            else if (localBranch.TrackStatus.Ahead.Count == 0)
+                            if (localBranch.TrackStatus.Ahead.Count > 0)
+                            {
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new CreateBranch(_repo, remoteBranch));
+                            }
+                            else if (localBranch.TrackStatus.Behind.Count > 0)
                             {
                                 if (_repo.CanCreatePopup())
                                     _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
                             }
                             else
-                            {
-                                if (_repo.CanCreatePopup())
-                                    _repo.ShowPopup(new CreateBranch(_repo, remoteBranch));
-                            }
+                                _repo.CheckoutBranch(localBranch);
                             return;
                         }
                     }
