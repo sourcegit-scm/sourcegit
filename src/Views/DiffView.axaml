@@ -261,7 +261,11 @@
 
               <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical" Margin="8,0">
-                  <Border IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <Border Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="8" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
+                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
+                  </Border>
+                  
+                  <Border Margin="0,8,0,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding Old}">
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
@@ -273,11 +277,18 @@
                     </ContentControl>
                   </Border>
 
+                  <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center">
+                    <Path.IsVisible>
+                      <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="Old" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                        <Binding Path="New" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                      </MultiBinding>
+                    </Path.IsVisible>
+                  </Path>
+
                   <Border Height="16" HorizontalAlignment="Center" Background="Green" CornerRadius="8" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNull}}">
                     <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
-
-                  <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
                   <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding New}">
@@ -287,10 +298,6 @@
                         </DataTemplate>
                       </ContentControl.DataTemplates>
                     </ContentControl>
-                  </Border>
-
-                  <Border Margin="0,8,0,0" Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="8" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
                 </StackPanel>
               </ScrollViewer>
