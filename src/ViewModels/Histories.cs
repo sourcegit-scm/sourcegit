@@ -214,8 +214,47 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void DoubleTapped(Models.Commit commit)
+        public void DoubleTapped(Models.Commit commit, Models.Decorator decorator = null)
         {
+            if (decorator != null)
+            {
+                if (decorator.Type == Models.DecoratorType.LocalBranchHead)
+                {
+                    var b = _repo.Branches.Find(x => x.FriendlyName == decorator.Name);
+                    if (b != null)
+                    {
+                        _repo.CheckoutBranch(b);
+                        return;
+                    }
+                }
+                else if (decorator.Type == Models.DecoratorType.RemoteBranchHead)
+                {
+                    var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == decorator.Name);
+                    if (remoteBranch != null)
+                    {
+                        var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
+                        if (localBranch != null)
+                        {
+                            if (localBranch.IsCurrent)
+                                return;
+                            if (localBranch.TrackStatus.Behind.Count == 0)
+                                _repo.CheckoutBranch(localBranch);
+                            else if (localBranch.TrackStatus.Ahead.Count == 0)
+                            {
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
+                            }
+                            else
+                            {
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new CreateBranch(_repo, remoteBranch));
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+
             if (commit == null || commit.IsCurrentHead)
                 return;
 
