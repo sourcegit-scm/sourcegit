@@ -156,6 +156,22 @@ namespace SourceGit.Views
             InvalidateMeasure();
         }
 
+        public Models.Decorator DecoratorAt(Point point)
+        {
+            if (DataContext is not Models.Commit commit)
+                return null;
+            
+            var x = 0.0;
+            for (var i = 0; i < _items.Count; i++)
+            {
+                x += _items[i].Width + 4;
+                if (point.X < x)
+                    return commit.Decorators[i];
+            }
+            
+            return null;
+        }
+        
         protected override Size MeasureOverride(Size availableSize)
         {
             _items.Clear();
