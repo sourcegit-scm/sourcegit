@@ -42,11 +42,6 @@ namespace SourceGit.Views
             set => SetValue(ChangeProperty, value);
         }
 
-        public ChangeStatusIcon()
-        {
-            ActualThemeVariantChanged += (_, _) => InvalidateVisual();
-        }
-
         public override void Render(DrawingContext context)
         {
             if (Change == null || Bounds.Width <= 0)
@@ -87,7 +82,9 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == IsUnstagedChangeProperty || change.Property == ChangeProperty)
+            if (change.Property == IsUnstagedChangeProperty || 
+                change.Property == ChangeProperty ||
+                (change.Property.Name == "ActualThemeVariant" && change.NewValue != null))
                 InvalidateVisual();
         }
     }
