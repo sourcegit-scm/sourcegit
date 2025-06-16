@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ARCHIVOS ASUMIDOS COMO SIN CAMBIOS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NO HAY ARCHIVOS ASUMIDOS COMO SIN CAMBIOS</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">REMOVER</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Cargar Imagen...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Refrescar</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">¡ARCHIVO BINARIO NO SOPORTADO!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
@@ -89,6 +90,8 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Actualizar todos los submódulos</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Rama:</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward a:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Añadir fuente al mensaje de commit</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
