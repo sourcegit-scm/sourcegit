@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace SourceGit.Views
 {
@@ -21,6 +22,18 @@ namespace SourceGit.Views
 
             if (layout.StashesLeftWidth.Value - maxLeft > 1.0)
                 layout.StashesLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
+        }
+
+        private void OnStashListKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key is not (Key.Delete or Key.Back))
+                return;
+
+            if (DataContext is not ViewModels.StashesPage vm)
+                return;
+
+            vm.Drop(vm.SelectedStash);
+            e.Handled = true;
         }
 
         private void OnStashContextRequested(object sender, ContextRequestedEventArgs e)

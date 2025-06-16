@@ -41,6 +41,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+            _repo.ClearCommitMessage();
             ProgressDescription = "Merge head(s) ...";
 
             var log = _repo.CreateLog("Merge Multiple Heads");
@@ -48,7 +49,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = new Commands.Merge(
+                new Commands.Merge(
                     _repo.FullPath,
                     ConvertTargetToMergeSources(),
                     AutoCommit,
@@ -56,7 +57,7 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                return true;
             });
         }
 
@@ -71,12 +72,10 @@ namespace SourceGit.ViewModels
                 }
                 else if (t is Models.Commit commit)
                 {
-                    var d = commit.Decorators.Find(x =>
-                    {
-                        return x.Type == Models.DecoratorType.LocalBranchHead ||
-                            x.Type == Models.DecoratorType.RemoteBranchHead ||
-                            x.Type == Models.DecoratorType.Tag;
-                    });
+                    var d = commit.Decorators.Find(x => x.Type is
+                        Models.DecoratorType.LocalBranchHead or
+                        Models.DecoratorType.RemoteBranchHead or
+                        Models.DecoratorType.Tag);
 
                     if (d != null)
                         ret.Add(d.Name);

@@ -13,7 +13,7 @@
                Text="{DynamicResource Text.Launcher.Pages}"
                FontWeight="Bold"
                HorizontalAlignment="Center"/>
-    
+
     <TextBox Grid.Row="1"
              Height="24"
              Margin="4,8,4,0"

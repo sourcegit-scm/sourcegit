@@ -25,6 +25,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
+            _repo.ClearCommitMessage();
             ProgressDescription = $"Revert commit '{Target.SHA}' ...";
 
             var log = _repo.CreateLog($"Revert '{Target.SHA}'");

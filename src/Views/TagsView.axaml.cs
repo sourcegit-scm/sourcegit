@@ -214,6 +214,19 @@ namespace SourceGit.Views
             if (selectedTag != null)
                 RaiseEvent(new RoutedEventArgs(SelectionChangedEvent));
         }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.Repository repo)
+                return;
+
+            var selected = (sender as ListBox)?.SelectedItem;
+            if (selected is ViewModels.TagTreeNode { Tag: { } tagInNode })
+                repo.DeleteTag(tagInNode);
+            else if (selected is Models.Tag tag)
+                repo.DeleteTag(tag);
+
+            e.Handled = true;
+        }
     }
 }
-

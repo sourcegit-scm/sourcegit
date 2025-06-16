@@ -61,7 +61,7 @@ namespace SourceGit.Views
 
         private void StopTimer()
         {
-            if (_refreshTimer is { })
+            if (_refreshTimer is not null)
             {
                 _refreshTimer.Dispose();
                 _refreshTimer = null;

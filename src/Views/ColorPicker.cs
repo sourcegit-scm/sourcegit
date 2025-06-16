@@ -19,7 +19,7 @@ namespace SourceGit.Views
         }
 
         // Values are copied from Avalonia: src/Avalonia.Controls.ColorPicker/ColorPalettes/FluentColorPalette.cs
-        private static readonly Color[,] COLOR_TABLE = new Color[,]
+        private static readonly Color[,] COLOR_TABLE = new[,]
         {
             {
                 Color.FromArgb(255, 255,  67,  67), /* #FF4343 */

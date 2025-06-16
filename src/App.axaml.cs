@@ -301,7 +301,7 @@ namespace SourceGit
                     return await clipboard.GetTextAsync();
                 }
             }
-            return default;
+            return null;
         }
 
         public static string Text(string key, params object[] args)
@@ -323,8 +323,7 @@ namespace SourceGit
             icon.Height = 12;
             icon.Stretch = Stretch.Uniform;
 
-            var geo = Current?.FindResource(key) as StreamGeometry;
-            if (geo != null)
+            if (Current?.FindResource(key) is StreamGeometry geo)
                 icon.Data = geo;
 
             return icon;
@@ -682,8 +681,7 @@ namespace SourceGit
                 }
 
                 var name = sb.ToString();
-                var idx = name.IndexOf('#');
-                if (idx >= 0)
+                if (name.Contains('#', StringComparison.Ordinal))
                 {
                     if (!name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
                         !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))

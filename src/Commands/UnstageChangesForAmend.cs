@@ -23,13 +23,11 @@ namespace SourceGit.Commands
                     _patchBuilder.Append(c.DataForAmend.ObjectHash);
                     _patchBuilder.Append("\t");
                     _patchBuilder.Append(c.OriginalPath);
-                    _patchBuilder.Append("\n");
                 }
                 else if (c.Index == Models.ChangeState.Added)
                 {
                     _patchBuilder.Append("0 0000000000000000000000000000000000000000\t");
                     _patchBuilder.Append(c.Path);
-                    _patchBuilder.Append("\n");
                 }
                 else if (c.Index == Models.ChangeState.Deleted)
                 {
@@ -37,7 +35,6 @@ namespace SourceGit.Commands
                     _patchBuilder.Append(c.DataForAmend.ObjectHash);
                     _patchBuilder.Append("\t");
                     _patchBuilder.Append(c.Path);
-                    _patchBuilder.Append("\n");
                 }
                 else
                 {
@@ -46,8 +43,9 @@ namespace SourceGit.Commands
                     _patchBuilder.Append(c.DataForAmend.ObjectHash);
                     _patchBuilder.Append("\t");
                     _patchBuilder.Append(c.Path);
-                    _patchBuilder.Append("\n");
                 }
+
+                _patchBuilder.Append("\n");
             }
         }
 

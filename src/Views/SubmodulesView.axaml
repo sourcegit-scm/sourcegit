@@ -203,7 +203,7 @@
                   </Grid>
                 </StackPanel>
               </ToolTip.Tip>
-              
+
               <Grid ColumnDefinitions="16,*,Auto" Margin="8,0,0,0" VerticalAlignment="Center">
                 <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
                 <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>

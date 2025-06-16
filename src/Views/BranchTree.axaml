@@ -13,6 +13,7 @@
            ItemsSource="{Binding #ThisControl.Rows}"
            SelectionMode="Multiple"
            SelectionChanged="OnNodesSelectionChanged"
+           KeyDown="OnTreeKeyDown"
            ContextRequested="OnTreeContextRequested">
     <ListBox.ItemsPanel>
       <ItemsPanelTemplate>
@@ -95,4 +96,3 @@
     </ListBox.ItemTemplate>
   </ListBox>
 </UserControl>
-

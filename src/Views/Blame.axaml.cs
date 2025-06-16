@@ -102,9 +102,8 @@ namespace SourceGit.Views
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
 
-                        if (calculated.Contains(info.CommitSHA))
+                        if (!calculated.Add(info.CommitSHA))
                             continue;
-                        calculated.Add(info.CommitSHA);
 
                         var x = 0.0;
                         var shaLink = new FormattedText(
@@ -224,9 +223,7 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
-                            {
                                 blame.NavigateToCommit(info.CommitSHA);
-                            }
 
                             e.Handled = true;
                             break;
@@ -439,6 +436,25 @@ namespace SourceGit.Views
         {
             base.OnClosed(e);
             GC.Collect();
+        }
+
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+        {
+            base.OnPointerReleased(e);
+
+            if (!e.Handled && DataContext is ViewModels.Blame blame)
+            {
+                if (e.InitialPressMouseButton == MouseButton.XButton1)
+                {
+                    blame.Back();
+                    e.Handled = true;
+                }
+                else if (e.InitialPressMouseButton == MouseButton.XButton2)
+                {
+                    blame.Forward();
+                    e.Handled = true;
+                }
+            }
         }
     }
 }

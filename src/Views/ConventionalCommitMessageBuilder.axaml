@@ -56,11 +56,11 @@
               <TextBlock Text="{Binding Name}" Margin="0,0,8,0"/>
               <Border Height="16" CornerRadius="8" Padding="8,0" VerticalAlignment="Center" Background="Green">
                 <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontSize="11" Foreground="White"/>
-              </Border>              
+              </Border>
             </StackPanel>
           </DataTemplate>
         </ComboBox.SelectionBoxItemTemplate>
-        
+
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ConventionalCommitType">
             <Grid Height="22">

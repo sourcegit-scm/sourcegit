@@ -29,7 +29,7 @@
 
     <DataTemplate DataType="m:RevisionImageFile">
       <Grid RowDefinitions="*,Auto" Margin="0,8" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Border Grid.Row="0" Effect="drop-shadow(0 0 8 #A0000000)">
+        <Border Grid.Row="0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
           <Border Background="{DynamicResource Brush.Window}">
             <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
               <v:ImageView Image="{Binding Image}"/>
@@ -97,4 +97,3 @@
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>
-

@@ -19,7 +19,7 @@ namespace SourceGit.Models
     public class Commit
     {
         // As retrieved by: git mktree </dev/null
-        public static readonly string EmptyTreeSHA1 = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
+        public const string EmptyTreeSHA1 = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
         public static double OpacityForNotMerged
         {
@@ -113,7 +113,7 @@ namespace SourceGit.Models
                 if (l.Type != r.Type)
                     return (int)l.Type - (int)r.Type;
                 else
-                    return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                    return NumericSort.Compare(l.Name, r.Name);
             });
         }
     }

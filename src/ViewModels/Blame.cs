@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -10,10 +11,25 @@ namespace SourceGit.ViewModels
 {
     public class Blame : ObservableObject
     {
-        public string Title
+        public string FilePath
         {
             get;
-            private set;
+        }
+
+        public Models.Commit Revision
+        {
+            get => _revision;
+            private set => SetProperty(ref _revision, value);
+        }
+
+        public Models.BlameData Data
+        {
+            get => _data;
+            private set
+            {
+                if (SetProperty(ref _data, value))
+                    OnPropertyChanged(nameof(IsBinary));
+            }
         }
 
         public bool IsBinary
@@ -21,42 +37,27 @@ namespace SourceGit.ViewModels
             get => _data != null && _data.IsBinary;
         }
 
-        public Models.BlameData Data
+        public bool CanBack
         {
-            get => _data;
-            private set => SetProperty(ref _data, value);
+            get => _navigationActiveIndex > 0;
         }
 
-        public Blame(string repo, string file, string revision)
+        public bool CanForward
         {
+            get => _navigationActiveIndex < _navigationHistory.Count - 1;
+        }
+
+        public Blame(string repo, string file, Models.Commit commit)
+        {
+            var sha = commit.SHA.Substring(0, 10);
+
+            FilePath = file;
+            Revision = commit;
+
             _repo = repo;
-
-            Title = $"{file} @ {revision.AsSpan(0, 10)}";
-            Task.Run(() =>
-            {
-                var result = new Commands.Blame(repo, file, revision).Result();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    Data = result;
-                    OnPropertyChanged(nameof(IsBinary));
-                });
-            });
-        }
-
-        public void NavigateToCommit(string commitSHA)
-        {
-            var launcher = App.GetLauncher();
-            if (launcher == null)
-                return;
-
-            foreach (var page in launcher.Pages)
-            {
-                if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
-                {
-                    repo.NavigateToCommit(commitSHA);
-                    break;
-                }
-            }
+            _navigationHistory.Add(sha);
+            _commits.Add(sha, commit);
+            SetBlameData(sha);
         }
 
         public string GetCommitMessage(string sha)
@@ -69,8 +70,102 @@ namespace SourceGit.ViewModels
             return msg;
         }
 
-        private readonly string _repo;
+        public void Back()
+        {
+            if (_navigationActiveIndex <= 0)
+                return;
+
+            _navigationActiveIndex--;
+            OnPropertyChanged(nameof(CanBack));
+            OnPropertyChanged(nameof(CanForward));
+            NavigateToCommit(_navigationHistory[_navigationActiveIndex]);
+        }
+
+        public void Forward()
+        {
+            if (_navigationActiveIndex >= _navigationHistory.Count - 1)
+                return;
+
+            _navigationActiveIndex++;
+            OnPropertyChanged(nameof(CanBack));
+            OnPropertyChanged(nameof(CanForward));
+            NavigateToCommit(_navigationHistory[_navigationActiveIndex]);
+        }
+
+        public void NavigateToCommit(string commitSHA)
+        {
+            if (!_navigationHistory[_navigationActiveIndex].Equals(commitSHA, StringComparison.Ordinal))
+            {
+                _navigationHistory.Add(commitSHA);
+                _navigationActiveIndex = _navigationHistory.Count - 1;
+                OnPropertyChanged(nameof(CanBack));
+                OnPropertyChanged(nameof(CanForward));
+            }
+
+            if (!Revision.SHA.StartsWith(commitSHA, StringComparison.Ordinal))
+                SetBlameData(commitSHA);
+
+            if (App.GetLauncher() is { Pages: { } pages })
+            {
+                foreach (var page in pages)
+                {
+                    if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
+                    {
+                        repo.NavigateToCommit(commitSHA);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void SetBlameData(string commitSHA)
+        {
+            if (_cancellationSource is { IsCancellationRequested: false })
+                _cancellationSource.Cancel();
+
+            _cancellationSource = new CancellationTokenSource();
+            var token = _cancellationSource.Token;
+
+            if (_commits.TryGetValue(commitSHA, out var c))
+            {
+                Revision = c;
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    var result = new Commands.QuerySingleCommit(_repo, commitSHA).Result();
+
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (!token.IsCancellationRequested)
+                        {
+                            _commits.Add(commitSHA, result);
+                            Revision = result ?? new Models.Commit() { SHA = commitSHA };
+                        }
+                    });
+                }, token);
+            }
+
+            Task.Run(() =>
+            {
+                var result = new Commands.Blame(_repo, FilePath, commitSHA).Result();
+
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    if (!token.IsCancellationRequested)
+                        Data = result;
+                });
+            }, token);
+        }
+
+        private string _repo;
+        private Models.Commit _revision;
+        private CancellationTokenSource _cancellationSource = null;
+        private int _navigationActiveIndex = 0;
+        private List<string> _navigationHistory = [];
         private Models.BlameData _data = null;
-        private Dictionary<string, string> _commitMessages = new Dictionary<string, string>();
+        private Dictionary<string, Models.Commit> _commits = new();
+        private Dictionary<string, string> _commitMessages = new();
     }
 }

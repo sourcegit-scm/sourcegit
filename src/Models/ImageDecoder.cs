@@ -4,6 +4,7 @@
     {
         None = 0,
         Builtin,
-        Pfim
+        Pfim,
+        Tiff,
     }
 }

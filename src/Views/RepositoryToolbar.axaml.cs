@@ -124,6 +124,8 @@ namespace SourceGit.Views
             {
                 if (repo.LocalChangesCount > 0)
                     App.RaiseException(repo.FullPath, "You have un-committed local changes. Please discard or stash them first.");
+                else if (repo.IsBisectCommandRunning || repo.BisectState != Models.BisectState.None)
+                    App.RaiseException(repo.FullPath, "Bisect is running! Please abort it before starting a new one.");
                 else
                     repo.Bisect("start");
             }
@@ -150,6 +152,14 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private void NavigateToHead(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository { CurrentBranch: { } } repo)
+            {
+                repo.NavigateToCommit(repo.CurrentBranch.Head);
+                e.Handled = true;
+            }
+        }
     }
 }
-

@@ -4,6 +4,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Blame"
                     x:DataType="vm:Blame"
@@ -42,8 +43,46 @@
     </Grid>
 
     <!-- File -->
-    <Border Grid.Row="1" Padding="8,0">
-      <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
+    <Border Grid.Row="1" Padding="8,0" >
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto,400">
+        <Path Grid.Column="0"
+              Width="14" Height="14"
+              Data="{StaticResource Icons.File}"/>
+
+        <TextBlock Grid.Column="1"
+                   Margin="4,0,0,0"
+                   VerticalAlignment="Center"
+                   Text="{Binding FilePath, Mode=OneWay}"/>
+
+        <Button Grid.Column="2"
+                Classes="icon_button"
+                IsEnabled="{Binding CanBack}"
+                Width="28"
+                Command="{Binding Back}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleLeft}"/>
+        </Button>
+
+        <Button Grid.Column="3"
+                Classes="icon_button"
+                IsEnabled="{Binding CanForward}"
+                Width="28"
+                Command="{Binding Forward}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleRight}"/>
+        </Button>
+
+        <Border Grid.Column="4" Background="#40000000" CornerRadius="3" Padding="4,0" Margin="0,2">
+          <Grid ColumnDefinitions="Auto,*">
+            <TextBlock Grid.Column="0"
+                       FontWeight="Bold"
+                       Margin="0,0,6,0"
+                       Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay}"/>
+
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Revision.Subject}"
+                       TextTrimming="CharacterEllipsis"/>
+          </Grid>
+        </Border>
+      </Grid>
     </Border>
 
     <!-- Body -->

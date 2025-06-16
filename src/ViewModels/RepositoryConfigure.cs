@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
             foreach (var service in Preferences.Instance.OpenAIServices)
                 AvailableOpenAIServices.Add(service.Name);
 
-            if (AvailableOpenAIServices.IndexOf(PreferredOpenAIService) == -1)
+            if (!AvailableOpenAIServices.Contains(PreferredOpenAIService))
                 PreferredOpenAIService = "---";
 
             _cached = new Commands.Config(repo.FullPath).ListAll();

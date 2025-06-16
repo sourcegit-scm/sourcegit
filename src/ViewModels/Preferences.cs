@@ -449,7 +449,7 @@ namespace SourceGit.ViewModels
                 if (l.IsRepository != r.IsRepository)
                     return l.IsRepository ? 1 : -1;
 
-                return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
+                return Models.NumericSort.Compare(l.Name, r.Name);
             });
         }
 

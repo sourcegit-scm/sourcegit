@@ -231,9 +231,22 @@ namespace SourceGit.ViewModels
                         return;
                     }
                 }
-                else if (d.Type == Models.DecoratorType.RemoteBranchHead && firstRemoteBranch == null)
+                else if (d.Type == Models.DecoratorType.RemoteBranchHead)
                 {
-                    firstRemoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    if (remoteBranch != null)
+                    {
+                        var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
+                        if (localBranch is { TrackStatus.Ahead.Count: 0 })
+                        {
+                            if (_repo.CanCreatePopup())
+                                _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
+                            return;
+                        }
+                    }
+
+                    if (firstRemoteBranch == null)
+                        firstRemoteBranch = remoteBranch;
                 }
             }
 
@@ -334,7 +347,7 @@ namespace SourceGit.ViewModels
                             log = _repo.CreateLog("Save as Patch");
 
                             var folder = picker[0];
-                            var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                            var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
                             var succ = false;
                             for (var i = 0; i < selected.Count; i++)
                             {
@@ -694,7 +707,7 @@ namespace SourceGit.ViewModels
                         log = _repo.CreateLog("Save as Patch");
 
                         var folder = selected[0];
-                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
                         var saveTo = GetPatchFileName(folderPath, commit);
                         var succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).Exec());
                         if (succ)

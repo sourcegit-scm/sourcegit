@@ -32,8 +32,8 @@
             <TextBlock Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
           </StackPanel>
 
-          <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
-            <Border Background="{DynamicResource Brush.Popup}" HorizontalAlignment="Center" Padding="8">
+          <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Popup}" Padding="8">
               <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
                 <v:ImageView Image="{Binding Old}"/>
               </Border>
@@ -52,8 +52,8 @@
             <TextBlock Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
           </StackPanel>
 
-          <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
-            <Border Background="{DynamicResource Brush.Popup}" HorizontalAlignment="Center" Padding="8">
+          <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Popup}" Padding="8">
               <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
                 <v:ImageView Image="{Binding New}"/>
               </Border>
@@ -87,8 +87,8 @@
           <TextBlock Grid.Column="7" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
         </Grid>
 
-        <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
-          <Border HorizontalAlignment="Center" Background="{DynamicResource Brush.Window}">
+        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+          <Border Background="{DynamicResource Brush.Window}">
             <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
               <v:ImageSwipeControl OldImage="{Binding Old}"
                                    NewImage="{Binding New}"
@@ -123,8 +123,8 @@
           <TextBlock Grid.Column="7" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
         </Grid>
 
-        <Border Grid.Row="1" Margin="0,12,0,0" Effect="drop-shadow(0 0 8 #A0000000)">
-          <Border HorizontalAlignment="Center" Background="{DynamicResource Brush.Window}">
+        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+          <Border Background="{DynamicResource Brush.Window}">
             <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
               <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
                                    OldImage="{Binding Old}"

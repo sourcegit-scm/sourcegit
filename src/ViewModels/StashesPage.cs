@@ -71,7 +71,7 @@ namespace SourceGit.ViewModels
                                     changes.Add(c);
 
                                 if (needSort)
-                                    changes.Sort((l, r) => string.Compare(l.Path, r.Path, StringComparison.Ordinal));
+                                    changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                             }
 
                             Dispatcher.UIThread.Invoke(() =>
@@ -293,6 +293,12 @@ namespace SourceGit.ViewModels
         public void ClearSearchFilter()
         {
             SearchFilter = string.Empty;
+        }
+
+        public void Drop(Models.Stash stash)
+        {
+            if (stash != null && _repo.CanCreatePopup())
+                _repo.ShowPopup(new DropStash(_repo, stash));
         }
 
         private void RefreshVisible()

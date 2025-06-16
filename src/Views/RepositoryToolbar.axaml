@@ -102,7 +102,7 @@
 
       <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
         <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
-      </Button>      
+      </Button>
     </StackPanel>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
@@ -126,10 +126,9 @@
         </ContentControl.DataTemplates>
       </ContentControl>
 
-      <Button Classes="icon_button" Width="32" Command="{Binding NavigateToCurrentHead}" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+      <Button Classes="icon_button" Width="32" Click="NavigateToHead" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
         <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
       </Button>
     </StackPanel>
   </Grid>
 </UserControl>
-

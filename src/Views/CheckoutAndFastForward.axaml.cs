@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace SourceGit.Views
 {
-    public partial class MoveRepositoryNode : UserControl
+    public partial class CheckoutAndFastForward : UserControl
     {
-        public MoveRepositoryNode()
+        public CheckoutAndFastForward()
         {
             InitializeComponent();
         }

@@ -127,23 +127,17 @@ namespace SourceGit.Native
                 Microsoft.Win32.RegistryHive.LocalMachine,
                 Microsoft.Win32.RegistryView.Registry64);
 
-            var git = reg.OpenSubKey("SOFTWARE\\GitForWindows");
-            if (git != null && git.GetValue("InstallPath") is string installPath)
-            {
+            var git = reg.OpenSubKey(@"SOFTWARE\GitForWindows");
+            if (git?.GetValue("InstallPath") is string installPath)
                 return Path.Combine(installPath, "bin", "git.exe");
-            }
 
             var builder = new StringBuilder("git.exe", 259);
             if (!PathFindOnPath(builder, null))
-            {
                 return null;
-            }
 
             var exePath = builder.ToString();
             if (!string.IsNullOrEmpty(exePath))
-            {
                 return exePath;
-            }
 
             return null;
         }
@@ -181,7 +175,7 @@ namespace SourceGit.Native
 
                     break;
                 case "cmd":
-                    return "C:\\Windows\\System32\\cmd.exe";
+                    return @"C:\Windows\System32\cmd.exe";
                 case "wt":
                     var wtFinder = new StringBuilder("wt.exe", 512);
                     if (PathFindOnPath(wtFinder, null))
@@ -199,8 +193,8 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
-            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Programs\\Fleet\\Fleet.exe");
-            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\JetBrains\\Toolbox");
+            finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
+            finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
             finder.SublimeText(FindSublimeText);
             finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
             return finder.Founded;
@@ -299,9 +293,7 @@ namespace SourceGit.Native
             // VSCode (system)
             var systemVScode = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1");
             if (systemVScode != null)
-            {
                 return systemVScode.GetValue("DisplayIcon") as string;
-            }
 
             var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
                     Microsoft.Win32.RegistryHive.CurrentUser,
@@ -310,9 +302,7 @@ namespace SourceGit.Native
             // VSCode (user)
             var vscode = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{771FD6B0-FA20-440A-A002-3B3BAC16DC50}_is1");
             if (vscode != null)
-            {
                 return vscode.GetValue("DisplayIcon") as string;
-            }
 
             return string.Empty;
         }
@@ -326,9 +316,7 @@ namespace SourceGit.Native
             // VSCode - Insiders (system)
             var systemVScodeInsiders = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1287CAD5-7C8D-410D-88B9-0D1EE4A83FF2}_is1");
             if (systemVScodeInsiders != null)
-            {
                 return systemVScodeInsiders.GetValue("DisplayIcon") as string;
-            }
 
             var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
                     Microsoft.Win32.RegistryHive.CurrentUser,
@@ -337,9 +325,7 @@ namespace SourceGit.Native
             // VSCode - Insiders (user)
             var vscodeInsiders = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{217B4C08-948D-4276-BFBB-BEE930AE5A2C}_is1");
             if (vscodeInsiders != null)
-            {
                 return vscodeInsiders.GetValue("DisplayIcon") as string;
-            }
 
             return string.Empty;
         }
@@ -353,9 +339,7 @@ namespace SourceGit.Native
             // VSCodium (system)
             var systemVSCodium = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{88DA3577-054F-4CA1-8122-7D820494CFFB}_is1");
             if (systemVSCodium != null)
-            {
                 return systemVSCodium.GetValue("DisplayIcon") as string;
-            }
 
             var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
                     Microsoft.Win32.RegistryHive.CurrentUser,
@@ -364,9 +348,7 @@ namespace SourceGit.Native
             // VSCodium (user)
             var vscodium = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2E1F05D1-C245-4562-81EE-28188DB6FD17}_is1");
             if (vscodium != null)
-            {
                 return vscodium.GetValue("DisplayIcon") as string;
-            }
 
             return string.Empty;
         }
@@ -409,9 +391,7 @@ namespace SourceGit.Native
                 if (launcher.GetValue(string.Empty) is string CLSID &&
                     localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv &&
                     devenv.GetValue(string.Empty) is string localServer32)
-                {
                     return localServer32!.Trim('\"');
-                }
             }
 
             return string.Empty;

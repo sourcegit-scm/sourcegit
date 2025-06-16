@@ -157,7 +157,7 @@ namespace SourceGit.Views
             else
             {
                 var vm = DataContext as ViewModels.CommitDetail;
-                if (vm == null || vm.Commit == null)
+                if (vm?.Commit == null)
                     return;
 
                 var objects = vm.GetRevisionFilesUnderFolder(file);
@@ -254,7 +254,7 @@ namespace SourceGit.Views
                 _searchResult.Clear();
 
                 var vm = DataContext as ViewModels.CommitDetail;
-                if (vm == null || vm.Commit == null)
+                if (vm?.Commit == null)
                 {
                     GC.Collect();
                     return;
@@ -270,12 +270,7 @@ namespace SourceGit.Views
                 foreach (var obj in objects)
                     _tree.Add(new ViewModels.RevisionFileTreeNode { Backend = obj });
 
-                _tree.Sort((l, r) =>
-                {
-                    if (l.IsFolder == r.IsFolder)
-                        return string.Compare(l.Name, r.Name, StringComparison.Ordinal);
-                    return l.IsFolder ? -1 : 1;
-                });
+                SortNodes(_tree);
 
                 var topTree = new List<ViewModels.RevisionFileTreeNode>();
                 MakeRows(topTree, _tree, 0);
@@ -341,13 +336,7 @@ namespace SourceGit.Views
             foreach (var obj in objects)
                 node.Children.Add(new ViewModels.RevisionFileTreeNode() { Backend = obj });
 
-            node.Children.Sort((l, r) =>
-            {
-                if (l.IsFolder == r.IsFolder)
-                    return Models.NumericSort.Compare(l.Name, r.Name);
-                return l.IsFolder ? -1 : 1;
-            });
-
+            SortNodes(node.Children);
             return node.Children;
         }
 
@@ -363,6 +352,16 @@ namespace SourceGit.Views
 
                 MakeRows(rows, node.Children, depth + 1);
             }
+        }
+
+        private void SortNodes(List<ViewModels.RevisionFileTreeNode> nodes)
+        {
+            nodes.Sort((l, r) =>
+            {
+                if (l.IsFolder == r.IsFolder)
+                    return Models.NumericSort.Compare(l.Name, r.Name);
+                return l.IsFolder ? -1 : 1;
+            });
         }
 
         private List<ViewModels.RevisionFileTreeNode> _tree = [];

@@ -736,11 +736,8 @@ namespace SourceGit.ViewModels
             {
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                foreach (var url in urls)
+                foreach (var (name, addr) in urls)
                 {
-                    var name = url.Key;
-                    var addr = url.Value;
-
                     var item = new MenuItem();
                     item.Header = App.Text("Repository.Visit", name);
                     item.Icon = App.CreateMenuIcon("Icons.Remotes");
@@ -928,24 +925,23 @@ namespace SourceGit.ViewModels
             _lastFetchTime = DateTime.Now;
         }
 
-        public void NavigateToCommit(string sha)
+        public void NavigateToCommit(string sha, bool isDelayMode = false)
         {
-            if (_histories != null)
+            if (isDelayMode)
+            {
+                _navigateToCommitDelayed = sha;
+            }
+            else if (_histories != null)
             {
                 SelectedViewIndex = 0;
                 _histories.NavigateTo(sha);
             }
         }
 
-        public void NavigateToCommitDelayed(string sha)
+        public void ClearCommitMessage()
         {
-            _navigateToCommitDelayed = sha;
-        }
-
-        public void NavigateToCurrentHead()
-        {
-            if (_currentBranch != null)
-                NavigateToCommit(_currentBranch.Head);
+            if (_workingCopy is not null)
+                _workingCopy.CommitMessage = string.Empty;
         }
 
         public void ClearHistoriesFilter()
@@ -1275,6 +1271,7 @@ namespace SourceGit.ViewModels
             if (_workingCopy == null)
                 return;
 
+            changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
             _workingCopy.SetData(changes);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1316,7 +1313,7 @@ namespace SourceGit.ViewModels
         {
             if (branch.IsLocal)
             {
-                var worktree = _worktrees.Find(x => x.Branch == branch.FullName);
+                var worktree = _worktrees.Find(x => x.Branch.Equals(branch.FullName, StringComparison.Ordinal));
                 if (worktree != null)
                 {
                     OpenWorktree(worktree);
@@ -1341,9 +1338,13 @@ namespace SourceGit.ViewModels
             {
                 foreach (var b in _branches)
                 {
-                    if (b.IsLocal && b.Upstream == branch.FullName)
+                    if (b.IsLocal &&
+                        b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
+                        b.TrackStatus.Ahead.Count == 0)
                     {
-                        if (!b.IsCurrent)
+                        if (b.TrackStatus.Behind.Count > 0)
+                            ShowPopup(new CheckoutAndFastForward(this, b, branch));
+                        else if (!b.IsCurrent)
                             CheckoutBranch(b);
 
                         return;
@@ -1352,6 +1353,12 @@ namespace SourceGit.ViewModels
 
                 ShowPopup(new CreateBranch(this, branch));
             }
+        }
+
+        public void DeleteBranch(Models.Branch branch)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteBranch(this, branch));
         }
 
         public void DeleteMultipleBranches(List<Models.Branch> branches, bool isLocal)
@@ -1378,10 +1385,22 @@ namespace SourceGit.ViewModels
                 ShowPopup(new CreateTag(this, _currentBranch));
         }
 
+        public void DeleteTag(Models.Tag tag)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteTag(this, tag));
+        }
+
         public void AddRemote()
         {
             if (CanCreatePopup())
                 ShowPopup(new AddRemote(this));
+        }
+
+        public void DeleteRemote(Models.Remote remote)
+        {
+            if (CanCreatePopup())
+                ShowPopup(new DeleteRemote(this, remote));
         }
 
         public void AddSubmodule()
@@ -2445,7 +2464,7 @@ namespace SourceGit.ViewModels
         public ContextMenu CreateContextMenuForTagSortMode()
         {
             var mode = _settings.TagSortMode;
-            var changeMode = new Action<Models.TagSortMode>((m) =>
+            var changeMode = new Action<Models.TagSortMode>(m =>
             {
                 if (_settings.TagSortMode != m)
                 {
@@ -2723,10 +2742,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var node in nodes)
             {
-                if (filters.TryGetValue(node.Path, out var value))
-                    node.FilterMode = value;
-                else
-                    node.FilterMode = Models.FilterMode.None;
+                node.FilterMode = filters.GetValueOrDefault(node.Path, Models.FilterMode.None);
 
                 if (!node.IsBranch)
                     UpdateBranchTreeFilterMode(node.Children, filters);
@@ -2737,10 +2753,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var tag in _tags)
             {
-                if (filters.TryGetValue(tag.Name, out var value))
-                    tag.FilterMode = value;
-                else
-                    tag.FilterMode = Models.FilterMode.None;
+                tag.FilterMode = filters.GetValueOrDefault(tag.Name, Models.FilterMode.None);
             }
         }
 
@@ -2929,7 +2942,7 @@ namespace SourceGit.ViewModels
         private List<string> _matchedFilesForSearching = null;
 
         private string _filter = string.Empty;
-        private object _lockRemotes = new object();
+        private readonly Lock _lockRemotes = new();
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private Models.Branch _currentBranch = null;

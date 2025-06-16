@@ -98,7 +98,6 @@ namespace SourceGit.Views
                     ctx.BeginFigure(new Point(x, y), true);
                     y = 1;
                     ctx.LineTo(new Point(x, y));
-                    x = drawRightX - 6;
                 }
                 else
                 {
@@ -112,8 +111,9 @@ namespace SourceGit.Views
                     x += 6;
                     y = 1;
                     ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
-                    x = drawRightX - 6;
                 }
+
+                x = drawRightX - 6;
 
                 if (drawRightX <= LauncherTabsScroller.Bounds.Right)
                 {

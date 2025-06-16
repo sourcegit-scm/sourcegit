@@ -16,7 +16,7 @@
     <Style.Resources>
       <x:Double x:Key="ScrollBarSize">12</x:Double>
     </Style.Resources>
-  
+
     <Setter Property="ShowDelay" Value="0:0:0.1"/>
     <Setter Property="HideDelay" Value="0:0:0.2"/>
   </Style>
@@ -38,7 +38,7 @@
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Padding" Value="0"/>
   </Style>
-  
+
   <Style Selector="Window[WindowState=Maximized].fix_maximized_padding">
     <Setter Property="Padding" Value="8,6,8,8"/>
   </Style>
@@ -206,7 +206,7 @@
               <DropShadowEffect OffsetX="0" OffsetY="0" BlurRadius="4" Color="Black" Opacity=".6"/>
             </Border.Effect>
           </Border>
-          
+
           <Border Name="LayoutRoot"
                   Margin="4"
                   Padding="12"
@@ -318,7 +318,7 @@
     <Setter Property="Foreground" Value="DarkOrange"/>
     <Setter Property="TextDecorations" Value="Underline"/>
   </Style>
-  
+
   <Style Selector="SelectableTextBlock">
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -336,7 +336,7 @@
               <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
             </MenuItem.Icon>
           </MenuItem>
-          
+
           <MenuItem Header="{DynamicResource Text.CopyAllText}"
                     Command="{x:Static s:App.CopyTextBlockCommand}"
                     CommandParameter="{Binding $parent[SelectableTextBlock]}">
@@ -524,7 +524,7 @@
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
   </Style>
-  
+
   <Style Selector="SplitButton">
     <Setter Property="MinHeight" Value="24"/>
     <Setter Property="Template">
@@ -569,17 +569,17 @@
         </Grid>
       </ControlTemplate>
     </Setter>
-    
+
     <Style Selector="^:disabled /template/ Button">
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
       <Setter Property="Background" Value="Transparent"/>
     </Style>
-    
+
     <Style Selector="^:disabled TextBlock">
       <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     </Style>
-    
+
     <Style Selector="^:disabled Path">
       <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
     </Style>
@@ -737,7 +737,7 @@
       <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
       <Setter Property="Opacity" Value=".8"/>
     </Style>
-  </Style>  
+  </Style>
 
   <Style Selector="ContextMenu">
     <Setter Property="HorizontalOffset" Value="-4"/>
@@ -849,7 +849,7 @@
                   </DataTemplate>
                 </ContentPresenter.DataTemplates>
               </ContentPresenter>
-              
+
               <TextBlock x:Name="PART_InputGestureText"
                          Grid.Column="2"
                          Classes="CaptionTextBlockStyle"
@@ -871,7 +871,7 @@
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
                          FontSize="11"
                          IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-              
+
               <Path Name="PART_ChevronPath"
                     Width="6"
                     Data="M573 512 215 881c-20 20-20 51 0 61l61 61c20 20 51 20 61 0l461-461c10-10 10-20 10-31s0-20-10-31L338 20C317 0 287 0 276 20L215 82c-20 20-20 51 0 61L573 512z"
@@ -914,7 +914,7 @@
         </Panel>
       </ControlTemplate>
     </Setter>
-    
+
     <Style Selector="^:icon /template/ ContentControl#PART_IconPresenter">
       <Setter Property="IsVisible" Value="True" />
     </Style>
@@ -956,7 +956,7 @@
   <Style Selector="MenuItem.filter_mode_switcher">
     <Setter Property="Height" Value="48"/>
     <Setter Property="StaysOpenOnClick" Value="True"/>
-    
+
     <Style Selector="^:selected">
       <Style Selector="^ /template/ Border#PART_LayoutRoot">
         <Setter Property="Background" Value="Transparent" />
@@ -1179,7 +1179,7 @@
       <Setter Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
     </Style>
   </Style>
-  
+
   <Style Selector="ToggleButton.folder">
     <Setter Property="Margin" Value="0" />
     <Setter Property="Background" Value="Transparent"/>
@@ -1252,7 +1252,7 @@
   <Style Selector="ToggleButton.toggle_untracked:pointerover /template/ Path#PART_IndicatorIcon">
     <Setter Property="Opacity" Value="1"/>
   </Style>
-  
+
   <Style Selector="ToggleButton.show_as_tree">
     <Setter Property="Margin" Value="0" />
     <Setter Property="Background" Value="Transparent"/>
@@ -1284,7 +1284,7 @@
       <Setter Property="Opacity" Value="1"/>
     </Style>
   </Style>
-  
+
   <Style Selector="Slider">
     <Style.Resources>
       <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>

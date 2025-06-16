@@ -194,7 +194,7 @@ namespace SourceGit.Commands
 
         private void HandleOutput(string line, List<string> errs)
         {
-            line = line ?? string.Empty;
+            line ??= string.Empty;
             Log?.AppendLine(line);
 
             // Lines to hide in error message.

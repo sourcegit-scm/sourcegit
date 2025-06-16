@@ -51,7 +51,7 @@ namespace SourceGit.Commands
 
         private void ParseLine(string line)
         {
-            if (line.IndexOf('\0', StringComparison.Ordinal) >= 0)
+            if (line.Contains('\0', StringComparison.Ordinal))
             {
                 _result.IsBinary = true;
                 _result.LineInfos.Clear();

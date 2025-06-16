@@ -86,25 +86,11 @@ namespace SourceGit.Views
                 var imageSize = image.Size;
                 var scaleW = availableSize.Width / imageSize.Width;
                 var scaleH = availableSize.Height / imageSize.Height;
-                var scale = Math.Min(scaleW, scaleH);
+                var scale = Math.Min(1, Math.Min(scaleW, scaleH));
                 return new Size(scale * imageSize.Width, scale * imageSize.Height);
             }
 
             return availableSize;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            if (Image is { } image)
-            {
-                var imageSize = image.Size;
-                var scaleW = finalSize.Width / imageSize.Width;
-                var scaleH = finalSize.Height / imageSize.Height;
-                var scale = Math.Min(scaleW, scaleH);
-                return new Size(scale * imageSize.Width, scale * imageSize.Height);
-            }
-
-            return base.ArrangeOverride(finalSize);
         }
     }
 
@@ -151,21 +137,12 @@ namespace SourceGit.Views
             var w = Bounds.Width;
             var h = Bounds.Height;
             var x = w * alpha;
-            var left = OldImage;
-            if (left != null && alpha > 0)
-            {
-                var src = new Rect(0, 0, left.Size.Width * alpha, left.Size.Height);
-                var dst = new Rect(0, 0, x, h);
-                context.DrawImage(left, src, dst);
-            }
 
-            var right = NewImage;
-            if (right != null && alpha < 1)
-            {
-                var src = new Rect(right.Size.Width * alpha, 0, right.Size.Width * (1 - alpha), right.Size.Height);
-                var dst = new Rect(x, 0, w - x, h);
-                context.DrawImage(right, src, dst);
-            }
+            if (OldImage is { } left && alpha > 0)
+                RenderSingleSide(context, left, new Rect(0, 0, x, h));
+
+            if (NewImage is { } right && alpha < 1)
+                RenderSingleSide(context, right, new Rect(x, 0, w - x, h));
 
             context.DrawLine(new Pen(Brushes.DarkGreen, 2), new Point(x, 0), new Point(x, Bounds.Height));
         }
@@ -243,8 +220,27 @@ namespace SourceGit.Views
         {
             var sw = available.Width / img.Width;
             var sh = available.Height / img.Height;
-            var scale = Math.Min(sw, sh);
+            var scale = Math.Min(1, Math.Min(sw, sh));
             return new Size(scale * img.Width, scale * img.Height);
+        }
+
+        private void RenderSingleSide(DrawingContext context, Bitmap img, Rect clip)
+        {
+            var w = Bounds.Width;
+            var h = Bounds.Height;
+
+            var imgW = img.Size.Width;
+            var imgH = img.Size.Height;
+            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
+
+            var scaledW = img.Size.Width * scale;
+            var scaledH = img.Size.Height * scale;
+
+            var src = new Rect(0, 0, imgW, imgH);
+            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+
+            using (context.PushClip(clip))
+                context.DrawImage(img, src, dst);
         }
 
         private bool _pressedOnSlider = false;
@@ -290,7 +286,6 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
-            var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
             var alpha = Alpha;
             var left = OldImage;
             var right = NewImage;
@@ -299,32 +294,27 @@ namespace SourceGit.Views
 
             if (drawLeft && drawRight)
             {
-                using (var rt = new RenderTargetBitmap(right.PixelSize, right.Dpi))
+                using (var rt = new RenderTargetBitmap(new PixelSize((int)Bounds.Width, (int)Bounds.Height), right.Dpi))
                 {
-                    var rtRect = new Rect(rt.Size);
                     using (var dc = rt.CreateDrawingContext())
                     {
                         using (dc.PushRenderOptions(RO_SRC))
-                        using (dc.PushOpacity(1 - alpha))
-                            dc.DrawImage(left, rtRect);
+                            RenderSingleSide(dc, left, rt.Size.Width, rt.Size.Height, 1 - alpha);
 
                         using (dc.PushRenderOptions(RO_DST))
-                        using (dc.PushOpacity(alpha))
-                            dc.DrawImage(right, rtRect);
+                            RenderSingleSide(dc, right, rt.Size.Width, rt.Size.Height, alpha);
                     }
 
-                    context.DrawImage(rt, rtRect, rect);
+                    context.DrawImage(rt, new Rect(0, 0, Bounds.Width, Bounds.Height));
                 }
             }
             else if (drawLeft)
             {
-                using (context.PushOpacity(1 - alpha))
-                    context.DrawImage(left, rect);
+                RenderSingleSide(context, left, Bounds.Width, Bounds.Height, 1 - alpha);
             }
             else if (drawRight)
             {
-                using (context.PushOpacity(alpha))
-                    context.DrawImage(right, rect);
+                RenderSingleSide(context, right, Bounds.Width, Bounds.Height, alpha);
             }
         }
 
@@ -348,8 +338,24 @@ namespace SourceGit.Views
         {
             var sw = available.Width / img.Width;
             var sh = available.Height / img.Height;
-            var scale = Math.Min(sw, sh);
+            var scale = Math.Min(1, Math.Min(sw, sh));
             return new Size(scale * img.Width, scale * img.Height);
+        }
+
+        private void RenderSingleSide(DrawingContext context, Bitmap img, double w, double h, double alpha)
+        {
+            var imgW = img.Size.Width;
+            var imgH = img.Size.Height;
+            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
+
+            var scaledW = img.Size.Width * scale;
+            var scaledH = img.Size.Height * scale;
+
+            var src = new Rect(0, 0, imgW, imgH);
+            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+
+            using (context.PushOpacity(alpha))
+                context.DrawImage(img, src, dst);
         }
 
         private static readonly RenderOptions RO_SRC = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };

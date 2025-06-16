@@ -1778,16 +1778,11 @@ namespace SourceGit.ViewModels
             if (old.Count != cur.Count)
                 return true;
 
-            var oldMap = new Dictionary<string, Models.Change>();
-            foreach (var c in old)
-                oldMap.Add(c.Path, c);
-
-            foreach (var c in cur)
+            for (int idx = 0; idx < old.Count; idx++)
             {
-                if (!oldMap.TryGetValue(c.Path, out var o))
-                    return true;
-
-                if (o.Index != c.Index || o.WorkTree != c.WorkTree)
+                var o = old[idx];
+                var c = cur[idx];
+                if (o.Path != c.Path || o.Index != c.Index || o.WorkTree != c.WorkTree)
                     return true;
             }
 

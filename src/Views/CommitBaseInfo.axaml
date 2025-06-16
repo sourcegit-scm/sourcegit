@@ -120,7 +120,7 @@
                       <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
                     </MultiBinding>
                   </ToolTip.IsOpen>
-                  
+
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -165,7 +165,7 @@
                       <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
                     </MultiBinding>
                   </ToolTip.IsOpen>
-                  
+
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
@@ -209,7 +209,7 @@
                 <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
               </MultiBinding>
             </ToolTip.IsOpen>
-            
+
             <v:CommitMessagePresenter.DataTemplates>
               <DataTemplate DataType="m:Commit">
                 <StackPanel MinWidth="400" Orientation="Vertical">

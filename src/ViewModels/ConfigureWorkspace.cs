@@ -29,8 +29,7 @@ namespace SourceGit.ViewModels
 
         public ConfigureWorkspace()
         {
-            Workspaces = new AvaloniaList<Workspace>();
-            Workspaces.AddRange(Preferences.Instance.Workspaces);
+            Workspaces = new(Preferences.Instance.Workspaces);
         }
 
         public void Add()

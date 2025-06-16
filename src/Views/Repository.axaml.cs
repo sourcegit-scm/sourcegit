@@ -208,7 +208,7 @@ namespace SourceGit.Views
 
         private void OnWorktreeListPropertyChanged(object _, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == ListBox.ItemsSourceProperty || e.Property == ListBox.IsVisibleProperty)
+            if (e.Property == ItemsControl.ItemsSourceProperty || e.Property == IsVisibleProperty)
                 UpdateLeftSidebarLayout();
         }
 
@@ -221,7 +221,7 @@ namespace SourceGit.Views
         private void UpdateLeftSidebarLayout()
         {
             var vm = DataContext as ViewModels.Repository;
-            if (vm == null || vm.Settings == null)
+            if (vm?.Settings == null)
                 return;
 
             if (!IsLoaded)

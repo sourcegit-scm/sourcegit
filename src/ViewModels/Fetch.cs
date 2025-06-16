@@ -88,7 +88,7 @@ namespace SourceGit.ViewModels
                 CallUIThread(() =>
                 {
                     if (!string.IsNullOrEmpty(upstreamHead))
-                        _repo.NavigateToCommitDelayed(upstreamHead);
+                        _repo.NavigateToCommit(upstreamHead, true);
 
                     _repo.MarkFetched();
                     _repo.SetWatcherEnabled(true);

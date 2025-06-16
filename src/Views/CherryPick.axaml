@@ -76,8 +76,7 @@
         <Border Grid.Column="1"
                 Background="Transparent"
                 ToolTip.Tip="{DynamicResource Text.CherryPick.Mainline.Tips}">
-          <Path Grid.Column="1"
-                Width="14" Height="14"
+          <Path Width="14" Height="14"
                 Data="{StaticResource Icons.Info}"/>
         </Border>
       </Grid>

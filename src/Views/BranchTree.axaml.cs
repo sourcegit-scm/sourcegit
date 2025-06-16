@@ -450,6 +450,44 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnTreeKeyDown(object _, KeyEventArgs e)
+        {
+            if (e.Key is not (Key.Delete or Key.Back))
+                return;
+
+            var repo = DataContext as ViewModels.Repository;
+            if (repo?.Settings == null)
+                return;
+
+            var selected = BranchesPresenter.SelectedItems;
+            if (selected == null || selected.Count == 0)
+                return;
+
+            if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Remote remote })
+            {
+                repo.DeleteRemote(remote);
+                e.Handled = true;
+                return;
+            }
+
+            var branches = new List<Models.Branch>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.BranchTreeNode node)
+                    CollectBranchesInNode(branches, node);
+            }
+
+            if (branches.Find(x => x.IsCurrent) != null)
+                return;
+
+            if (branches.Count == 1)
+                repo.DeleteBranch(branches[0]);
+            else
+                repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+
+            e.Handled = true;
+        }
+
         private void OnDoubleTappedBranchNode(object sender, TappedEventArgs _)
         {
             if (sender is Grid { DataContext: ViewModels.BranchTreeNode node })
@@ -499,4 +537,3 @@ namespace SourceGit.Views
         private bool _disableSelectionChangingEvent = false;
     }
 }
-

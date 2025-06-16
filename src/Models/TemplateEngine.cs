@@ -402,7 +402,7 @@ namespace SourceGit.Models
 
             sb.AppendJoin(", ", paths);
             if (max < context.changes.Count)
-                sb.AppendFormat(" and {0} other files", context.changes.Count - max);
+                sb.Append($" and {context.changes.Count - max} other files");
 
             return sb.ToString();
         }
