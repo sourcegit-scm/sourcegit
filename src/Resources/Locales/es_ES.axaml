@@ -692,10 +692,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Ruta de almacenamiento de la clave privada SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Restaurar automáticamente después del stashing</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Tus archivos de trabajo permanecen sin cambios, pero se guarda un stash.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Mantener archivos staged</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Mensaje:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Nombre de este stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Solo cambios staged</x:String>

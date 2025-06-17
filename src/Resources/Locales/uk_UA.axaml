@@ -649,10 +649,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Шлях до сховища приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ПОЧАТИ</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash (Сховати)</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Автоматично відновити після схову</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Ваші робочі файли залишаться без змін, але буде збережено схованку.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Включити невідстежувані файли</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Зберегти проіндексовані файли</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Повідомлення:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Необов'язково. Назва цієї схованки</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Лише проіндексовані зміни</x:String>

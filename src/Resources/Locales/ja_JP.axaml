@@ -643,10 +643,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">プライベートSSHキーストアのパス</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">スタート</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">スタッシュ</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">スタッシュ後に自動で復元</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">作業ファイルは変更されず、スタッシュが保存されます。</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">追跡されていないファイルを含める</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">ステージされたファイルを保持</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">メッセージ:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">オプション. このスタッシュの名前を入力</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">ステージされた変更のみ</x:String>

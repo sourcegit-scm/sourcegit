@@ -673,10 +673,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Percorso per la chiave SSH privata</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">AVVIA</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stasha</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Auto-ripristino dopo lo stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">I tuoi file di lavoro rimangono inalterati, ma viene salvato uno stash.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Includi file non tracciati</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Mantieni file in stage</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Messaggio:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opzionale. Nome di questo stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Solo modifiche in stage</x:String>

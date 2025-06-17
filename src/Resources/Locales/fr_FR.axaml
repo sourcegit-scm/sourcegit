@@ -645,10 +645,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Chemin du magasin de clés privées SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Auto-restauration après le stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Vos fichiers de travail restent inchangés, mais une sauvegarde est enregistrée.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inclure les fichiers non-suivis</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Garder les fichiers indexés</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message :</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optionnel. Nom de ce stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Seulement les changements indexés</x:String>

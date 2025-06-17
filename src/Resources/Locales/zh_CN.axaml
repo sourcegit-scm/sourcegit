@@ -693,10 +693,8 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">贮藏(stash)</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">贮藏后自动恢复工作区</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">工作区文件保持未修改状态，但贮藏内容已保存。</x:String>
+  <x:String x:Key="Text.Stash.Changes" xml:space="preserve">已选择变更 ：</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟踪的文件</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">保留暂存区文件</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">信息 ：</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">选填，用于命名此贮藏</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">仅贮藏暂存区的变更</x:String>

@@ -690,10 +690,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Путь хранения приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ЗАПУСК</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Отложить</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Автоматически восстанавливать после откладывания</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Ваши рабочие файлы остаются неизменными, но отложенные сохранятся.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Включить неотслеживаемые файлы</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Хранить отложенные файлы</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Сообщение:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Имя тайника (необязательно)</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Только сформированные изменения</x:String>
