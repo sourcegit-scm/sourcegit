@@ -829,11 +829,10 @@
       <ContentControl Grid.Row="3" Content="{Binding SelectedView}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Histories">
-            <v:Histories CurrentBranch="{Binding Repo.CurrentBranch}"
+            <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}"
                          Bisect="{Binding Bisect}"
-                         AuthorNameColumnWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}"
-                         IssueTrackerRules="{Binding Repo.Settings.IssueTrackerRules}"
-                         OnlyHighlightCurrentBranch="{Binding Repo.OnlyHighlightCurrentBranchInHistories}"
+                         IssueTrackerRules="{Binding $parent[v:Repository].((vm:Repository)DataContext).Settings.IssueTrackerRules}"
+                         OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistories}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 

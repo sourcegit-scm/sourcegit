@@ -34,7 +34,7 @@
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="3"/>
-              <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=TwoWay}" MinWidth="80"/>
+              <ColumnDefinition SharedSizeGroup="AuthorName" Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.HistoriesAuthorColumnWidth, Mode=TwoWay}" MinWidth="80"/>
               <ColumnDefinition SharedSizeGroup="SHA" MinWidth="100"/>
               <ColumnDefinition SharedSizeGroup="Time" MinWidth="160"/>
             </Grid.ColumnDefinitions>
@@ -120,7 +120,7 @@
                 <Grid Height="26">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="{Binding #ThisControl.AuthorNameColumnWidth, Mode=OneWay}"/>
+                    <ColumnDefinition SharedSizeGroup="AuthorName" Width="Auto"/>
                     <ColumnDefinition SharedSizeGroup="SHA" Width="Auto"/>
                     <ColumnDefinition SharedSizeGroup="Time" Width="Auto"/>
                   </Grid.ColumnDefinitions>

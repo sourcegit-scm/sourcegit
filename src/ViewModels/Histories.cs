@@ -14,11 +14,6 @@ namespace SourceGit.ViewModels
 {
     public class Histories : ObservableObject, IDisposable
     {
-        public Repository Repo
-        {
-            get => _repo;
-        }
-
         public bool IsLoading
         {
             get => _isLoading;

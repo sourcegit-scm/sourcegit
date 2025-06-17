@@ -73,15 +73,6 @@ namespace SourceGit.Views
 
     public partial class Histories : UserControl
     {
-        public static readonly StyledProperty<GridLength> AuthorNameColumnWidthProperty =
-            AvaloniaProperty.Register<Histories, GridLength>(nameof(AuthorNameColumnWidth), new GridLength(120));
-
-        public GridLength AuthorNameColumnWidth
-        {
-            get => GetValue(AuthorNameColumnWidthProperty);
-            set => SetValue(AuthorNameColumnWidthProperty, value);
-        }
-
         public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
             AvaloniaProperty.Register<Histories, Models.Branch>(nameof(CurrentBranch));
 
@@ -150,7 +141,7 @@ namespace SourceGit.Views
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
             var y = CommitListContainer.Scroll?.Offset.Y ?? 0;
-            var authorNameColumnWidth = AuthorNameColumnWidth.Value;
+            var authorNameColumnWidth = ViewModels.Preferences.Instance.Layout.HistoriesAuthorColumnWidth.Value;
             if (y != _lastScrollY || authorNameColumnWidth != _lastAuthorNameColumnWidth)
             {
                 _lastScrollY = y;
