@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -77,6 +78,14 @@ namespace SourceGit.Views
                 TxtSearchRevisionFiles.CaretIndex = content.Length;
                 FileTree.SetSearchResult(vm.RevisionFileSearchFilter);
             }
+
+            e.Handled = true;
+        }
+
+        private async void OnOpenFileWithDefaultEditor(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail { CanOpenRevisionFileWithDefaultEditor: true } vm)
+                await vm.OpenRevisionFileWithDefaultEditor(vm.ViewRevisionFilePath);
 
             e.Handled = true;
         }
