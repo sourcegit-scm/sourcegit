@@ -570,6 +570,8 @@ namespace SourceGit.ViewModels
 
             SignInfo = null;
             ViewRevisionFileContent = null;
+            ViewRevisionFilePath = string.Empty;
+            CanOpenRevisionFileWithDefaultEditor = false;
             Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
