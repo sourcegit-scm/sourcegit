@@ -446,6 +446,7 @@
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作区列表</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">页面列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">编辑合并信息</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并目标 ：</x:String>

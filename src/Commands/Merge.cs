@@ -5,11 +5,20 @@ namespace SourceGit.Commands
 {
     public class Merge : Command
     {
-        public Merge(string repo, string source, string mode)
+        public Merge(string repo, string source, string mode, bool edit)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"merge --progress {source} {mode}";
+            Editor = EditorType.CoreEditor;
+
+            var builder = new StringBuilder();
+            builder.Append("merge --progress ");
+            builder.Append(edit ? "--edit " : "--no-edit ");
+            builder.Append(source);
+            builder.Append(' ');
+            builder.Append(mode);
+
+            Args = builder.ToString();
         }
 
         public Merge(string repo, List<string> targets, bool autoCommit, string strategy)
