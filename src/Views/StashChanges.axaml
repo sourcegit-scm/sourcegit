@@ -82,6 +82,7 @@
       </CheckBox>
 
       <TextBlock Grid.Row="5" Grid.Column="1"
+                 Classes="small"
                  Margin="0,4,0,0"
                  Text="{DynamicResource Text.Stash.TipForSelectedFiles}"
                  TextWrapping="Wrap"
