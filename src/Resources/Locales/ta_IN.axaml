@@ -443,8 +443,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} திங்களுக்கு முன்பு</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} ஆண்டுகளுக்கு முன்பு</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">நேற்று</x:String>
-  <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">புதிய வரியை உள்ளிட 'உயர்த்து+நுழை' ஐப் பயன்படுத்தவும். 'நுழை' என்பது சரி பொத்தானின் சூடானவிசை ஆகும்</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">செநு</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">வேறுபாடு உடனடியாக பகுப்பாய்வு செய்</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">பநிஇ திறவுகோல்</x:String>

@@ -479,8 +479,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0}个月前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
-  <x:String x:Key="Text.Preferences" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">请使用Shift+Enter换行。Enter键已被【确  定】按钮占用。</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API密钥</x:String>

@@ -461,8 +461,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Vor {0} Monaten</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Vor {0} Jahren</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Gestern</x:String>
-  <x:String x:Key="Text.Preferences" xml:space="preserve">Einstellungen</x:String>
   <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Verwende 'Shift+Enter' um eine neue Zeile einzufügen. 'Enter' ist das Kürzel für den OK Button</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">Einstellungen</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analysierung des Diff Befehl</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Schlüssel</x:String>
