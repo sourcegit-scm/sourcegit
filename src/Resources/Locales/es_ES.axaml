@@ -478,8 +478,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Hace {0} meses</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Hace {0} años</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ayer</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Usa 'Shift+Enter' para introducir una nueva línea. 'Enter' es el atajo del botón OK</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferencias</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Usa 'Shift+Enter' para introducir una nueva línea. 'Enter' es el atajo del botón OK</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analizar Diff Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clave API</x:String>

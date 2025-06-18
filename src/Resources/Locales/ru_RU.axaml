@@ -476,8 +476,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев назад</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчера</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Параметры</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Запрос на анализ сравнения</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Ключ API</x:String>

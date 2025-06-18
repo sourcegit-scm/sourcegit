@@ -448,8 +448,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} місяців тому</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} років тому</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчора</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Використовуйте 'Shift+Enter' для введення нового рядка. 'Enter' - гаряча клавіша кнопки OK</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Налаштування</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Використовуйте 'Shift+Enter' для введення нового рядка. 'Enter' - гаряча клавіша кнопки OK</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Промпт для аналізу різниці</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Ключ API</x:String>

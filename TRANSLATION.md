@@ -35,7 +35,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -53,7 +53,7 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Merge.Edit
-- Text.Stash.Changes
+- Text.Stash.Mode
 
 </details>
 
@@ -110,7 +110,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -156,7 +156,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.Submodule.Deinit
 - Text.WorkingCopy.ResetAuthor
 
@@ -217,7 +217,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -352,7 +352,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SetUpstream.Unset
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.StashCM.SaveAsPatch
 - Text.Submodule.Deinit
 - Text.Submodule.Status
@@ -384,7 +384,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.Merge.Edit
-- Text.Stash.Changes
+- Text.Stash.Mode
 
 </details>
 
@@ -442,7 +442,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -512,7 +512,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
-- Text.Stash.Changes
+- Text.Stash.Mode
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
