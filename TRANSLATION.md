@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-95.89%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-95.77%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -36,6 +36,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -47,17 +48,18 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.75%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.63%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Merge.Edit
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.77%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-91.66%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -111,6 +113,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -131,7 +134,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-97.13%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-97.01%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -157,12 +160,13 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.WorkingCopy.ResetAuthor
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-91.52%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-91.41%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -218,6 +222,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -238,7 +243,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-83.79%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-83.69%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -353,6 +358,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SetUpstream.Upstream
 - Text.SHALinkCM.NavigateTo
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.StashCM.SaveAsPatch
 - Text.Submodule.Deinit
 - Text.Submodule.Status
@@ -376,7 +382,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.50%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.38%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -385,10 +391,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward.Upstream
 - Text.Merge.Edit
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-91.65%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-91.53%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -443,6 +450,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -463,7 +471,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-92.89%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-92.78%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -513,6 +521,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
 - Text.Stash.Mode
+- Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
@@ -528,6 +537,20 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.88%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.StashCM.CopyMessage
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.88%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.StashCM.CopyMessage
+
+</details>
