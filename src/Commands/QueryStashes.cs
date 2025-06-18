@@ -7,11 +7,9 @@ namespace SourceGit.Commands
     {
         public QueryStashes(string repo)
         {
-            _boundary = $"-----BOUNDARY_OF_COMMIT{Guid.NewGuid()}-----";
-
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"stash list --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B%n{_boundary}\"";
+            Args = $"stash list -z --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B\"";
         }
 
         public List<Models.Stash> Result()
@@ -21,66 +19,57 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return outs;
 
-            var nextPartIdx = 0;
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
+            var items = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (var item in items)
             {
-                var line = rs.StdOut.Substring(start, end - start);
+                var current = new Models.Stash();
 
-                switch (nextPartIdx)
+                var nextPartIdx = 0;
+                var start = 0;
+                var end = item.IndexOf('\n', start);
+                while (end > 0 && nextPartIdx < 4)
                 {
-                    case 0:
-                        _current = new Models.Stash() { SHA = line };
-                        outs.Add(_current);
-                        break;
-                    case 1:
-                        ParseParent(line);
-                        break;
-                    case 2:
-                        _current.Time = ulong.Parse(line);
-                        break;
-                    case 3:
-                        _current.Name = line;
-                        break;
-                    default:
-                        var boundary = rs.StdOut.IndexOf(_boundary, end + 1, StringComparison.Ordinal);
-                        if (boundary > end)
-                        {
-                            _current.Message = rs.StdOut.Substring(start, boundary - start - 1);
-                            end = boundary + _boundary.Length;
-                        }
-                        else
-                        {
-                            _current.Message = rs.StdOut.Substring(start);
-                            end = rs.StdOut.Length - 2;
-                        }
+                    var line = item.Substring(start, end - start);
 
-                        nextPartIdx = -1;
+                    switch (nextPartIdx)
+                    {
+                        case 0:
+                            current.SHA = line;
+                            break;
+                        case 1:
+                            ParseParent(line, ref current);
+                            break;
+                        case 2:
+                            current.Time = ulong.Parse(line);
+                            break;
+                        case 3:
+                            current.Name = line;
+                            break;
+                    }
+
+                    nextPartIdx++;
+
+                    start = end + 1;
+                    if (start >= item.Length - 1)
                         break;
+
+                    end = item.IndexOf('\n', start);
                 }
 
-                nextPartIdx++;
+                if (start < item.Length)
+                    current.Message = item.Substring(start);
 
-                start = end + 1;
-                if (start >= rs.StdOut.Length - 1)
-                    break;
-
-                end = rs.StdOut.IndexOf('\n', start);
+                outs.Add(current);
             }
-
             return outs;
         }
 
-        private void ParseParent(string data)
+        private void ParseParent(string data, ref Models.Stash current)
         {
             if (data.Length < 8)
                 return;
 
-            _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
+            current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
-
-        private Models.Stash _current = null;
-        private readonly string _boundary;
     }
 }
