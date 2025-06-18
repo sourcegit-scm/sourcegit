@@ -476,6 +476,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев назад</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчера</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Параметры</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Запрос на анализ сравнения</x:String>
@@ -664,7 +665,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Отмена ревизии</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Изменить комментарий ревизии</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Запуск. Подождите пожалуйста...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">СОХРАНИТЬ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Сохранить как...</x:String>

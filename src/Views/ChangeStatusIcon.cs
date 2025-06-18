@@ -54,8 +54,8 @@ namespace SourceGit.Views
             var color = COLOR[idx];
             var hsl = color.ToHsl();
             var color2 = ActualThemeVariant == ThemeVariant.Dark
-                ? new HslColor(hsl.A, hsl.H,hsl.S, hsl.L - 0.1).ToRgb()
-                : new HslColor(hsl.A, hsl.H,hsl.S, hsl.L + 0.1).ToRgb();
+                ? new HslColor(hsl.A, hsl.H, hsl.S, hsl.L - 0.1).ToRgb()
+                : new HslColor(hsl.A, hsl.H, hsl.S, hsl.L + 0.1).ToRgb();
 
             var background = new LinearGradientBrush
             {

@@ -448,6 +448,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} місяців тому</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} років тому</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчора</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Використовуйте 'Shift+Enter' для введення нового рядка. 'Enter' - гаряча клавіша кнопки OK</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Налаштування</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Промпт для аналізу різниці</x:String>
@@ -623,7 +624,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Коміт:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Закомітити зміни скасування</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Змінити повідомлення коміту</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Використовуйте 'Shift+Enter' для введення нового рядка. 'Enter' - гаряча клавіша кнопки OK</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Виконується. Будь ласка, зачекайте...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">ЗБЕРЕГТИ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Зберегти як...</x:String>

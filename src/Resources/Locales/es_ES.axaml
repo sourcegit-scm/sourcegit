@@ -478,6 +478,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Hace {0} meses</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Hace {0} años</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ayer</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Usa 'Shift+Enter' para introducir una nueva línea. 'Enter' es el atajo del botón OK</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferencias</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analizar Diff Prompt</x:String>
@@ -666,7 +667,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revertir cambios</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reescribir Mensaje de Commit</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Usa 'Shift+Enter' para introducir una nueva línea. 'Enter' es el atajo del botón OK</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Ejecutando. Por favor espera...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">GUARDAR</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Guardar Como...</x:String>
@@ -694,7 +694,7 @@
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Mensaje:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Nombre de este stash</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Información de este stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Solo cambios staged</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">¡Tanto los cambios staged como los no staged de los archivos seleccionados serán stashed!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Cambios Locales</x:String>

@@ -479,6 +479,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0}个月前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">请使用Shift+Enter换行。Enter键已被【确  定】按钮占用。</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
@@ -667,7 +668,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目标提交 ：</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">回滚后提交更改</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">编辑提交信息</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">请使用Shift+Enter换行。Enter键已被【确  定】按钮占用。</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">执行操作中，请耐心等待...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">保    存</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">另存为...</x:String>
@@ -693,10 +693,10 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">贮藏(stash)</x:String>
-  <x:String x:Key="Text.Stash.Changes" xml:space="preserve">已选择变更 ：</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未跟踪的文件</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">信息 ：</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">选填，用于命名此贮藏</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">选填，此贮藏的描述信息</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">模式 ：</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">仅贮藏暂存区的变更</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">选中文件的所有变更均会被贮藏！</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">贮藏本地变更</x:String>

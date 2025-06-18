@@ -476,6 +476,7 @@
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferences</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
@@ -663,7 +664,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revert changes</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reword Commit Message</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>
@@ -689,10 +689,10 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.Changes" xml:space="preserve">Selected Changes:</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Include untracked files</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Message of this stash</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Mode:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Both staged and unstaged changes of selected file(s) will be stashed!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Local Changes</x:String>

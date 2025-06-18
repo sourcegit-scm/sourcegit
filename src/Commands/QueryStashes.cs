@@ -7,9 +7,11 @@ namespace SourceGit.Commands
     {
         public QueryStashes(string repo)
         {
+            _boundary = $"-----BOUNDARY_OF_COMMIT{Guid.NewGuid()}-----";
+
             WorkingDirectory = repo;
             Context = repo;
-            Args = "stash list --format=%H%n%P%n%ct%n%gd%n%s";
+            Args = $"stash list --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B%n{_boundary}\"";
         }
 
         public List<Models.Stash> Result()
@@ -41,21 +43,31 @@ namespace SourceGit.Commands
                     case 3:
                         _current.Name = line;
                         break;
-                    case 4:
-                        _current.Message = line;
+                    default:
+                        var boundary = rs.StdOut.IndexOf(_boundary, end + 1, StringComparison.Ordinal);
+                        if (boundary > end)
+                        {
+                            _current.Message = rs.StdOut.Substring(start, boundary - start - 1);
+                            end = boundary + _boundary.Length;
+                        }
+                        else
+                        {
+                            _current.Message = rs.StdOut.Substring(start);
+                            end = rs.StdOut.Length - 2;
+                        }
+
+                        nextPartIdx = -1;
                         break;
                 }
 
                 nextPartIdx++;
-                if (nextPartIdx > 4)
-                    nextPartIdx = 0;
 
                 start = end + 1;
+                if (start >= rs.StdOut.Length - 1)
+                    break;
+
                 end = rs.StdOut.IndexOf('\n', start);
             }
-
-            if (start < rs.StdOut.Length)
-                _current.Message = rs.StdOut.Substring(start);
 
             return outs;
         }
@@ -69,5 +81,6 @@ namespace SourceGit.Commands
         }
 
         private Models.Stash _current = null;
+        private readonly string _boundary;
     }
 }
