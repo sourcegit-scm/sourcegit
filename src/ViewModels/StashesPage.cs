@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
 
             var apply = new MenuItem();
             apply.Header = App.Text("StashCM.Apply");
-            apply.Icon = App.CreateMenuIcon("Icons.Check");
+            apply.Icon = App.CreateMenuIcon("Icons.CheckCircled");
             apply.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
