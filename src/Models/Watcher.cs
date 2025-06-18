@@ -12,27 +12,50 @@ namespace SourceGit.Models
         {
             _repo = repo;
 
-            _wcWatcher = new FileSystemWatcher();
-            _wcWatcher.Path = fullpath;
-            _wcWatcher.Filter = "*";
-            _wcWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
-            _wcWatcher.IncludeSubdirectories = true;
-            _wcWatcher.Created += OnWorkingCopyChanged;
-            _wcWatcher.Renamed += OnWorkingCopyChanged;
-            _wcWatcher.Changed += OnWorkingCopyChanged;
-            _wcWatcher.Deleted += OnWorkingCopyChanged;
-            _wcWatcher.EnableRaisingEvents = true;
+            var testGitDir = new DirectoryInfo(Path.Combine(fullpath, ".git")).FullName;
+            var desiredDir = new DirectoryInfo(gitDir).FullName;
+            if (testGitDir.Equals(desiredDir, StringComparison.Ordinal))
+            {
+                var combined = new FileSystemWatcher();
+                combined.Path = fullpath;
+                combined.Filter = "*";
+                combined.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
+                combined.IncludeSubdirectories = true;
+                combined.Created += OnRepositoryChanged;
+                combined.Renamed += OnRepositoryChanged;
+                combined.Changed += OnRepositoryChanged;
+                combined.Deleted += OnRepositoryChanged;
+                combined.EnableRaisingEvents = true;
 
-            _repoWatcher = new FileSystemWatcher();
-            _repoWatcher.Path = gitDir;
-            _repoWatcher.Filter = "*";
-            _repoWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
-            _repoWatcher.IncludeSubdirectories = true;
-            _repoWatcher.Created += OnRepositoryChanged;
-            _repoWatcher.Renamed += OnRepositoryChanged;
-            _repoWatcher.Changed += OnRepositoryChanged;
-            _repoWatcher.Deleted += OnRepositoryChanged;
-            _repoWatcher.EnableRaisingEvents = true;
+                _watchers.Add(combined);
+            }
+            else
+            {
+                var wc = new FileSystemWatcher();
+                wc.Path = fullpath;
+                wc.Filter = "*";
+                wc.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
+                wc.IncludeSubdirectories = true;
+                wc.Created += OnWorkingCopyChanged;
+                wc.Renamed += OnWorkingCopyChanged;
+                wc.Changed += OnWorkingCopyChanged;
+                wc.Deleted += OnWorkingCopyChanged;
+                wc.EnableRaisingEvents = true;
+
+                var git = new FileSystemWatcher();
+                git.Path = gitDir;
+                git.Filter = "*";
+                git.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
+                git.IncludeSubdirectories = true;
+                git.Created += OnGitDirChanged;
+                git.Renamed += OnGitDirChanged;
+                git.Changed += OnGitDirChanged;
+                git.Deleted += OnGitDirChanged;
+                git.EnableRaisingEvents = true;
+
+                _watchers.Add(wc);
+                _watchers.Add(git);
+            }               
 
             _timer = new Timer(Tick, null, 100, 100);
         }
@@ -77,22 +100,13 @@ namespace SourceGit.Models
 
         public void Dispose()
         {
-            _repoWatcher.EnableRaisingEvents = false;
-            _repoWatcher.Created -= OnRepositoryChanged;
-            _repoWatcher.Renamed -= OnRepositoryChanged;
-            _repoWatcher.Changed -= OnRepositoryChanged;
-            _repoWatcher.Deleted -= OnRepositoryChanged;
-            _repoWatcher.Dispose();
-            _repoWatcher = null;
+            foreach (var watcher in _watchers)
+            {
+                watcher.EnableRaisingEvents = false;
+                watcher.Dispose();
+            }
 
-            _wcWatcher.EnableRaisingEvents = false;
-            _wcWatcher.Created -= OnWorkingCopyChanged;
-            _wcWatcher.Renamed -= OnWorkingCopyChanged;
-            _wcWatcher.Changed -= OnWorkingCopyChanged;
-            _wcWatcher.Deleted -= OnWorkingCopyChanged;
-            _wcWatcher.Dispose();
-            _wcWatcher = null;
-
+            _watchers.Clear();
             _timer.Dispose();
             _timer = null;
         }
@@ -154,10 +168,44 @@ namespace SourceGit.Models
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
         {
+            if (string.IsNullOrEmpty(e.Name) || e.Name.Equals(".git", StringComparison.Ordinal))
+                return;
+
+            var name = e.Name.Replace('\\', '/').TrimEnd('/');
+            if (name.EndsWith("/.git", StringComparison.Ordinal))
+                return;
+
+            if (name.StartsWith(".git/", StringComparison.Ordinal))
+                HandleGitDirFileChanged(name.Substring(5));
+            else
+                HandleWorkingCopyFileChanged(name);
+        }
+
+        private void OnGitDirChanged(object o, FileSystemEventArgs e)
+        {
             if (string.IsNullOrEmpty(e.Name))
                 return;
 
             var name = e.Name.Replace('\\', '/').TrimEnd('/');
+            HandleGitDirFileChanged(name);
+        }
+
+        private void OnWorkingCopyChanged(object o, FileSystemEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.Name))
+                return;
+
+            var name = e.Name.Replace('\\', '/').TrimEnd('/');
+            if (name.Equals(".git", StringComparison.Ordinal) ||
+                name.StartsWith(".git/", StringComparison.Ordinal) ||
+                name.EndsWith("/.git", StringComparison.Ordinal))
+                return;
+
+            HandleWorkingCopyFileChanged(name);
+        }
+
+        private void HandleGitDirFileChanged(string name)
+        {
             if (name.Contains("fsmonitor--daemon/", StringComparison.Ordinal) ||
                 name.EndsWith(".lock", StringComparison.Ordinal) ||
                 name.StartsWith("lfs/", StringComparison.Ordinal))
@@ -200,17 +248,8 @@ namespace SourceGit.Models
             }
         }
 
-        private void OnWorkingCopyChanged(object o, FileSystemEventArgs e)
+        private void HandleWorkingCopyFileChanged(string name)
         {
-            if (string.IsNullOrEmpty(e.Name))
-                return;
-
-            var name = e.Name.Replace('\\', '/').TrimEnd('/');
-            if (name.Equals(".git", StringComparison.Ordinal) ||
-                name.StartsWith(".git/", StringComparison.Ordinal) ||
-                name.EndsWith("/.git", StringComparison.Ordinal))
-                return;
-
             if (name.StartsWith(".vs/", StringComparison.Ordinal))
                 return;
 
@@ -236,8 +275,7 @@ namespace SourceGit.Models
         }
 
         private readonly IRepository _repo = null;
-        private FileSystemWatcher _repoWatcher = null;
-        private FileSystemWatcher _wcWatcher = null;
+        private List<FileSystemWatcher> _watchers = [];
         private Timer _timer = null;
         private int _lockCount = 0;
         private long _updateWC = 0;
