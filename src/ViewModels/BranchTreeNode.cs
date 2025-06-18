@@ -75,9 +75,7 @@ namespace SourceGit.ViewModels
         public class Builder
         {
             public List<BranchTreeNode> Locals { get; } = [];
-
             public List<BranchTreeNode> Remotes { get; } = [];
-
             public List<string> InvalidExpandedNodes { get; } = [];
 
             public Builder(Models.BranchSortMode localSortMode, Models.BranchSortMode remoteSortMode)
