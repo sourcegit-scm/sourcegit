@@ -142,6 +142,7 @@ namespace SourceGit.ViewModels
 
             var apply = new MenuItem();
             apply.Header = App.Text("StashCM.Apply");
+            apply.Icon = App.CreateMenuIcon("Icons.Check");
             apply.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
@@ -152,6 +153,7 @@ namespace SourceGit.ViewModels
 
             var drop = new MenuItem();
             drop.Header = App.Text("StashCM.Drop");
+            drop.Icon = App.CreateMenuIcon("Icons.Clear");
             drop.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
@@ -208,6 +210,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(drop);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(patch);
+            menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(copy);
             return menu;
         }
