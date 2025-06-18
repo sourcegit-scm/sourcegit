@@ -20,6 +20,7 @@
       <TextBox Grid.Row="0" Grid.Column="1"
                Height="26"
                CornerRadius="3"
+               AcceptsReturn="True"
                Text="{Binding Message, Mode=TwoWay}"
                Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
                v:AutoFocusBehaviour.IsEnabled="True"/>

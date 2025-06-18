@@ -9,7 +9,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "stash list --format=%H%n%P%n%ct%n%gd%n%s";
+            Args = "stash list -z --format=%H%n%P%n%ct%n%gd%n%B";
         }
 
         public List<Models.Stash> Result()
@@ -19,55 +19,54 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return outs;
 
-            var nextPartIdx = 0;
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
+            var stashes = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (var stash in stashes)
             {
-                var line = rs.StdOut.Substring(start, end - start);
+                var current = new Models.Stash();
 
-                switch (nextPartIdx)
+                var nextPartIdx = 0;
+                var start = 0;
+                var end = stash.IndexOf('\n', start);
+                while (end > 0 && nextPartIdx < 4)
                 {
-                    case 0:
-                        _current = new Models.Stash() { SHA = line };
-                        outs.Add(_current);
-                        break;
-                    case 1:
-                        ParseParent(line);
-                        break;
-                    case 2:
-                        _current.Time = ulong.Parse(line);
-                        break;
-                    case 3:
-                        _current.Name = line;
-                        break;
-                    case 4:
-                        _current.Message = line;
-                        break;
+                    var line = stash.Substring(start, end - start);
+
+                    switch (nextPartIdx)
+                    {
+                        case 0:
+                            current = new Models.Stash() { SHA = line };
+                            break;
+                        case 1:
+                            ParseParent(line, ref current);
+                            break;
+                        case 2:
+                            current.Time = ulong.Parse(line);
+                            break;
+                        case 3:
+                            current.Name = line;
+                            break;
+                    }
+
+                    nextPartIdx++;
+
+                    start = end + 1;
+                    end = stash.IndexOf('\n', start);
                 }
 
-                nextPartIdx++;
-                if (nextPartIdx > 4)
-                    nextPartIdx = 0;
+                if (start < stash.Length)
+                    current.Message = stash.Substring(start);
 
-                start = end + 1;
-                end = rs.StdOut.IndexOf('\n', start);
+                outs.Add(current);
             }
-
-            if (start < rs.StdOut.Length)
-                _current.Message = rs.StdOut.Substring(start);
-
             return outs;
         }
 
-        private void ParseParent(string data)
+        private void ParseParent(string data, ref Models.Stash current)
         {
             if (data.Length < 8)
                 return;
 
-            _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
+            current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
-
-        private Models.Stash _current = null;
     }
 }
