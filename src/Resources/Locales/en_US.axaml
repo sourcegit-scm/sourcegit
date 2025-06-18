@@ -764,6 +764,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignore files in this folder</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignore files in the same folder</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignore this file only</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>

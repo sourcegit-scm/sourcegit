@@ -768,6 +768,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">添加至 .gitignore 忽略列表</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">忽略所有 *{0} 文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">忽略同目录下所有 *{0} 文件</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">忽略该目录下的新文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同目录下所有文件</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本文件</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修补</x:String>
