@@ -89,7 +89,7 @@ namespace SourceGit.ViewModels
                 catch (Exception e)
                 {
                     Console.Out.WriteLine(e.Message);
-                }                
+                }
             }
 
             return new ImageSource(null, 0);
@@ -154,7 +154,7 @@ namespace SourceGit.ViewModels
                 return new ImageSource(bitmap, size);
             }
         }
-    
+
         private static ImageSource DecodeWithTiff(Stream stream, long size)
         {
             using (var tiff = Tiff.ClientOpen($"{Guid.NewGuid()}.tif", "r", stream, new TiffStream()))
@@ -166,7 +166,7 @@ namespace SourceGit.ViewModels
                 var height = tiff.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
                 var pixels = new int[width * height];
 
-                // Currently only supports image when its `BITSPERSAMPLE` is one in [1,2,4,8,16] 
+                // Currently only supports image when its `BITSPERSAMPLE` is one in [1,2,4,8,16]
                 tiff.ReadRGBAImageOriented(width, height, pixels, Orientation.TOPLEFT);
 
                 var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(pixels, 0);

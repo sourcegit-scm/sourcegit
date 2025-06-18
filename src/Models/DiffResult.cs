@@ -16,11 +16,10 @@ namespace SourceGit.Models
         Deleted,
     }
 
-    public class TextInlineRange
+    public class TextInlineRange(int p, int n)
     {
-        public int Start { get; set; }
-        public int End { get; set; }
-        public TextInlineRange(int p, int n) { Start = p; End = p + n - 1; }
+        public int Start { get; set; } = p;
+        public int End { get; set; } = p + n - 1;
     }
 
     public class TextDiffLine
@@ -556,7 +555,7 @@ namespace SourceGit.Models
                 }
                 else if (test.Type == TextDiffLineType.Added)
                 {
-                    if (i < start - 1)
+                    if (i < start - 1 || isOldSide)
                     {
                         if (revert)
                         {
@@ -566,18 +565,7 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        if (isOldSide)
-                        {
-                            if (revert)
-                            {
-                                newCount++;
-                                oldCount++;
-                            }
-                        }
-                        else
-                        {
-                            newCount++;
-                        }
+                        newCount++;
                     }
 
                     if (i == end - 1 && tailed)
@@ -655,9 +643,7 @@ namespace SourceGit.Models
         public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
     }
 
-    public class NoOrEOLChange
-    {
-    }
+    public class NoOrEOLChange;
 
     public class FileModeDiff
     {

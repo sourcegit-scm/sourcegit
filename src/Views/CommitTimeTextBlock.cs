@@ -19,7 +19,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<int> DateTimeFormatProperty =
-            AvaloniaProperty.Register<CommitTimeTextBlock, int>(nameof(DateTimeFormat), 0);
+            AvaloniaProperty.Register<CommitTimeTextBlock, int>(nameof(DateTimeFormat));
 
         public int DateTimeFormat
         {

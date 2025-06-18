@@ -7,7 +7,7 @@ namespace SourceGit.ViewModels
     public class Pull : Popup
     {
         public List<Models.Remote> Remotes => _repo.Remotes;
-        public Models.Branch Current => _current;
+        public Models.Branch Current { get; }
 
         public bool HasSpecifiedRemoteBranch
         {
@@ -64,7 +64,7 @@ namespace SourceGit.ViewModels
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
-            _current = repo.CurrentBranch;
+            Current = repo.CurrentBranch;
 
             if (specifiedRemoteBranch != null)
             {
@@ -84,12 +84,12 @@ namespace SourceGit.ViewModels
             else
             {
                 var autoSelectedRemote = null as Models.Remote;
-                if (!string.IsNullOrEmpty(_current.Upstream))
+                if (!string.IsNullOrEmpty(Current.Upstream))
                 {
-                    var remoteNameEndIdx = _current.Upstream.IndexOf('/', 13);
+                    var remoteNameEndIdx = Current.Upstream.IndexOf('/', 13);
                     if (remoteNameEndIdx > 0)
                     {
-                        var remoteName = _current.Upstream.Substring(13, remoteNameEndIdx - 13);
+                        var remoteName = Current.Upstream.Substring(13, remoteNameEndIdx - 13);
                         autoSelectedRemote = _repo.Remotes.Find(x => x.Name == remoteName);
                     }
                 }
@@ -146,7 +146,7 @@ namespace SourceGit.ViewModels
                 bool rs = new Commands.Pull(
                     _repo.FullPath,
                     _selectedRemote.Name,
-                    !string.IsNullOrEmpty(_current.Upstream) && _current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
+                    !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
                     UseRebase).Use(log).Exec();
 
                 if (rs)
@@ -188,12 +188,12 @@ namespace SourceGit.ViewModels
             RemoteBranches = branches;
 
             var autoSelectedBranch = false;
-            if (!string.IsNullOrEmpty(_current.Upstream) &&
-                _current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
+            if (!string.IsNullOrEmpty(Current.Upstream) &&
+                Current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
             {
                 foreach (var branch in branches)
                 {
-                    if (_current.Upstream == branch.FullName)
+                    if (Current.Upstream == branch.FullName)
                     {
                         SelectedBranch = branch;
                         autoSelectedBranch = true;
@@ -206,7 +206,7 @@ namespace SourceGit.ViewModels
             {
                 foreach (var branch in branches)
                 {
-                    if (_current.Name == branch.Name)
+                    if (Current.Name == branch.Name)
                     {
                         SelectedBranch = branch;
                         autoSelectedBranch = true;
@@ -220,7 +220,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private readonly Models.Branch _current = null;
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;

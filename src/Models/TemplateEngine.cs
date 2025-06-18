@@ -102,7 +102,7 @@ namespace SourceGit.Models
         private int? Integer()
         {
             var start = _pos;
-            while (Peek() is char c && c >= '0' && c <= '9')
+            while (Peek() is >= '0' and <= '9')
             {
                 _pos++;
             }
@@ -118,7 +118,7 @@ namespace SourceGit.Models
             // text token start
             var tok = _pos;
             bool esc = false;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 if (esc)
                 {
@@ -129,7 +129,7 @@ namespace SourceGit.Models
                 {
                     case ESCAPE:
                         // allow to escape only \ and $
-                        if (Peek() is char nc && (nc == ESCAPE || nc == VARIABLE_ANCHOR))
+                        if (Peek() is { } nc && (nc == ESCAPE || nc == VARIABLE_ANCHOR))
                         {
                             esc = true;
                             FlushText(tok, _pos - 1);
@@ -173,7 +173,7 @@ namespace SourceGit.Models
             if (Next() != VARIABLE_START)
                 return null;
             int name_start = _pos;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 // name character, continue advancing
                 if (IsNameChar(c))
@@ -228,7 +228,7 @@ namespace SourceGit.Models
             var sb = new StringBuilder();
             var tok = _pos;
             var esc = false;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 if (esc)
                 {
@@ -277,7 +277,7 @@ namespace SourceGit.Models
             var sb = new StringBuilder();
             var tok = _pos;
             var esc = false;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 if (esc)
                 {

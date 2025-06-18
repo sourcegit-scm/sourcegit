@@ -112,7 +112,7 @@
           </Grid>
         </Border>
 
-        <StackPanel Margin="0,8,0,0"  Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
           <Button Classes="flat" Margin="0,0,0,0" Command="{Binding UseTheirs}">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Incoming}"/>

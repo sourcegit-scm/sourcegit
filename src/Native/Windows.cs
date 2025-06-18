@@ -54,7 +54,7 @@ namespace SourceGit.Native
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 22000, 0))
+            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 22000))
             {
                 Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
                 Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
@@ -385,11 +385,11 @@ namespace SourceGit.Native
                     Microsoft.Win32.RegistryView.Registry64);
 
             // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
-            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is Microsoft.Win32.RegistryKey launcher)
+            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is { } launcher)
             {
                 // Get actual path to the executable
                 if (launcher.GetValue(string.Empty) is string CLSID &&
-                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv &&
+                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is { } devenv &&
                     devenv.GetValue(string.Empty) is string localServer32)
                     return localServer32!.Trim('\"');
             }

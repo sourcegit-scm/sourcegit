@@ -1424,17 +1424,14 @@ namespace SourceGit.ViewModels
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
             var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
 
-            var node = Preferences.Instance.FindNode(normalizedPath);
-            if (node == null)
-            {
-                node = new RepositoryNode()
+            var node = Preferences.Instance.FindNode(normalizedPath) ??
+                new RepositoryNode
                 {
                     Id = normalizedPath,
                     Name = Path.GetFileName(normalizedPath),
                     Bookmark = selfPage.Node.Bookmark,
                     IsRepository = true,
                 };
-            }
 
             App.GetLauncher().OpenRepositoryInTab(node, null);
         }
@@ -1453,17 +1450,14 @@ namespace SourceGit.ViewModels
 
         public void OpenWorktree(Models.Worktree worktree)
         {
-            var node = Preferences.Instance.FindNode(worktree.FullPath);
-            if (node == null)
-            {
-                node = new RepositoryNode()
+            var node = Preferences.Instance.FindNode(worktree.FullPath) ??
+                new RepositoryNode
                 {
                     Id = worktree.FullPath,
                     Name = Path.GetFileName(worktree.FullPath),
                     Bookmark = 0,
                     IsRepository = true,
                 };
-            }
 
             App.GetLauncher()?.OpenRepositoryInTab(node, null);
         }

@@ -2,27 +2,19 @@
 
 namespace SourceGit.Models
 {
-    public class TextInlineChange
+    public class TextInlineChange(int dp, int dc, int ap, int ac)
     {
-        public int DeletedStart { get; set; }
-        public int DeletedCount { get; set; }
-        public int AddedStart { get; set; }
-        public int AddedCount { get; set; }
+        public int DeletedStart { get; set; } = dp;
+        public int DeletedCount { get; set; } = dc;
+        public int AddedStart { get; set; } = ap;
+        public int AddedCount { get; set; } = ac;
 
-        private class Chunk
+        private class Chunk(int hash, int start, int size)
         {
-            public int Hash;
+            public readonly int Hash = hash;
+            public readonly int Start = start;
+            public readonly int Size = size;
             public bool Modified;
-            public int Start;
-            public int Size;
-
-            public Chunk(int hash, int start, int size)
-            {
-                Hash = hash;
-                Modified = false;
-                Start = start;
-                Size = size;
-            }
         }
 
         private enum Edit
@@ -41,14 +33,6 @@ namespace SourceGit.Models
             public int DeleteEnd;
             public int AddStart;
             public int AddEnd;
-        }
-
-        public TextInlineChange(int dp, int dc, int ap, int ac)
-        {
-            DeletedStart = dp;
-            DeletedCount = dc;
-            AddedStart = ap;
-            AddedCount = ac;
         }
 
         public static List<TextInlineChange> Compare(string oldValue, string newValue)

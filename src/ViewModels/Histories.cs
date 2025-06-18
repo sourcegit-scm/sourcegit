@@ -240,8 +240,7 @@ namespace SourceGit.ViewModels
                         }
                     }
 
-                    if (firstRemoteBranch == null)
-                        firstRemoteBranch = remoteBranch;
+                    firstRemoteBranch ??= remoteBranch;
                 }
             }
 
@@ -555,9 +554,7 @@ namespace SourceGit.ViewModels
                                 var parents = new List<Models.Commit>();
                                 foreach (var sha in commit.Parents)
                                 {
-                                    var parent = _commits.Find(x => x.SHA == sha);
-                                    if (parent == null)
-                                        parent = new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
+                                    var parent = _commits.Find(x => x.SHA == sha) ?? new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
 
                                     if (parent != null)
                                         parents.Add(parent);

@@ -134,10 +134,7 @@ namespace SourceGit.Views
             set => SetValue(RevisionProperty, value);
         }
 
-        public AvaloniaList<ViewModels.RevisionFileTreeNode> Rows
-        {
-            get => _rows;
-        }
+        public AvaloniaList<ViewModels.RevisionFileTreeNode> Rows { get; } = [];
 
         public RevisionFileTreeView()
         {
@@ -146,7 +143,7 @@ namespace SourceGit.Views
 
         public void SetSearchResult(string file)
         {
-            _rows.Clear();
+            Rows.Clear();
             _searchResult.Clear();
 
             var rows = new List<ViewModels.RevisionFileTreeNode>();
@@ -161,10 +158,10 @@ namespace SourceGit.Views
                     return;
 
                 var objects = vm.GetRevisionFilesUnderFolder(file);
-                if (objects == null || objects.Count != 1)
+                if (objects is not { Count: 1 })
                     return;
 
-                var routes = file.Split('/', StringSplitOptions.None);
+                var routes = file.Split('/');
                 if (routes.Length == 1)
                 {
                     _searchResult.Add(new ViewModels.RevisionFileTreeNode
@@ -202,7 +199,7 @@ namespace SourceGit.Views
                 MakeRows(rows, _searchResult, 0);
             }
 
-            _rows.AddRange(rows);
+            Rows.AddRange(rows);
             GC.Collect();
         }
 
@@ -212,7 +209,7 @@ namespace SourceGit.Views
             node.IsExpanded = !node.IsExpanded;
 
             var depth = node.Depth;
-            var idx = _rows.IndexOf(node);
+            var idx = Rows.IndexOf(node);
             if (idx == -1)
                 return;
 
@@ -223,21 +220,21 @@ namespace SourceGit.Views
                 {
                     var subrows = new List<ViewModels.RevisionFileTreeNode>();
                     MakeRows(subrows, subtree, depth + 1);
-                    _rows.InsertRange(idx + 1, subrows);
+                    Rows.InsertRange(idx + 1, subrows);
                 }
             }
             else
             {
                 var removeCount = 0;
-                for (int i = idx + 1; i < _rows.Count; i++)
+                for (int i = idx + 1; i < Rows.Count; i++)
                 {
-                    var row = _rows[i];
+                    var row = Rows[i];
                     if (row.Depth <= depth)
                         break;
 
                     removeCount++;
                 }
-                _rows.RemoveRange(idx + 1, removeCount);
+                Rows.RemoveRange(idx + 1, removeCount);
             }
 
             _disableSelectionChangingEvent = false;
@@ -250,7 +247,7 @@ namespace SourceGit.Views
             if (change.Property == RevisionProperty)
             {
                 _tree.Clear();
-                _rows.Clear();
+                Rows.Clear();
                 _searchResult.Clear();
 
                 var vm = DataContext as ViewModels.CommitDetail;
@@ -274,7 +271,7 @@ namespace SourceGit.Views
 
                 var topTree = new List<ViewModels.RevisionFileTreeNode>();
                 MakeRows(topTree, _tree, 0);
-                _rows.AddRange(topTree);
+                Rows.AddRange(topTree);
                 GC.Collect();
             }
         }
@@ -365,7 +362,6 @@ namespace SourceGit.Views
         }
 
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
-        private AvaloniaList<ViewModels.RevisionFileTreeNode> _rows = [];
         private bool _disableSelectionChangingEvent = false;
         private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
     }

@@ -55,7 +55,7 @@ namespace SourceGit.Views
         {
             if (sender is ContentPresenter presenter)
             {
-                if (presenter.DataContext == null || presenter.DataContext is not ViewModels.Popup)
+                if (presenter.DataContext is not ViewModels.Popup)
                 {
                     presenter.Content = null;
                     return;
