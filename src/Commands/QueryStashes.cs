@@ -19,7 +19,7 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return outs;
 
-            var items = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
+            var items = rs.StdOut.Split('\0', StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in items)
             {
                 var current = new Models.Stash();
@@ -37,7 +37,8 @@ namespace SourceGit.Commands
                             current.SHA = line;
                             break;
                         case 1:
-                            ParseParent(line, ref current);
+                            if (line.Length > 6)
+                                current.Parents.AddRange(line.Split(' ', StringSplitOptions.RemoveEmptyEntries));
                             break;
                         case 2:
                             current.Time = ulong.Parse(line);
@@ -62,14 +63,6 @@ namespace SourceGit.Commands
                 outs.Add(current);
             }
             return outs;
-        }
-
-        private void ParseParent(string data, ref Models.Stash current)
-        {
-            if (data.Length < 8)
-                return;
-
-            current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }
