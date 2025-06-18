@@ -53,7 +53,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Stash changes ...";
+            ProgressDescription = "Stash changes ...";
 
             var log = _repo.CreateLog("Stash Local Changes");
             Use(log);
@@ -62,7 +62,7 @@ namespace SourceGit.ViewModels
             {
                 var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
                 var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
-                var succ = false;
+                bool succ;
 
                 if (!HasSelectedFiles)
                 {

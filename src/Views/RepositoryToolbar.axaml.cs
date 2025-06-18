@@ -157,7 +157,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Repository { CurrentBranch: not null } repo)
             {
-                var repoView = TopLevel.GetTopLevel(this)?.FindDescendantOfType<Repository>(false);
+                var repoView = TopLevel.GetTopLevel(this)?.FindDescendantOfType<Repository>();
                 repoView?.LocalBranchTree?.Select(repo.CurrentBranch);
 
                 repo.NavigateToCommit(repo.CurrentBranch.Head);

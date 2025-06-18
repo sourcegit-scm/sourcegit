@@ -27,25 +27,13 @@ namespace SourceGit.ViewModels
         {
             var ext = (Path.GetExtension(file) ?? ".invalid_img").ToLower(CultureInfo.CurrentCulture);
 
-            switch (ext)
+            return ext switch
             {
-                case ".ico":
-                case ".bmp":
-                case ".gif":
-                case ".jpg":
-                case ".jpeg":
-                case ".png":
-                case ".webp":
-                    return Models.ImageDecoder.Builtin;
-                case ".tga":
-                case ".dds":
-                    return Models.ImageDecoder.Pfim;
-                case ".tif":
-                case ".tiff":
-                    return Models.ImageDecoder.Tiff;
-                default:
-                    return Models.ImageDecoder.None;
-            }
+                ".ico" or ".bmp" or ".gif" or ".jpg" or ".jpeg" or ".png" or ".webp" => Models.ImageDecoder.Builtin,
+                ".tga" or ".dds" => Models.ImageDecoder.Pfim,
+                ".tif" or ".tiff" => Models.ImageDecoder.Tiff,
+                _ => Models.ImageDecoder.None,
+            };
         }
 
         public static ImageSource FromFile(string fullpath, Models.ImageDecoder decoder)

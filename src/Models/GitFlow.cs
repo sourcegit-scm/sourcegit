@@ -30,17 +30,13 @@
 
         public string GetPrefix(GitFlowBranchType type)
         {
-            switch (type)
+            return type switch
             {
-                case GitFlowBranchType.Feature:
-                    return FeaturePrefix;
-                case GitFlowBranchType.Release:
-                    return ReleasePrefix;
-                case GitFlowBranchType.Hotfix:
-                    return HotfixPrefix;
-                default:
-                    return string.Empty;
-            }
+                GitFlowBranchType.Feature => FeaturePrefix,
+                GitFlowBranchType.Release => ReleasePrefix,
+                GitFlowBranchType.Hotfix => HotfixPrefix,
+                _ => string.Empty,
+            };
         }
     }
 }

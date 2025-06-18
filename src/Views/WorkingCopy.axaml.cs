@@ -32,7 +32,7 @@ namespace SourceGit.Views
             {
                 var container = control.FindDescendantOfType<ChangeCollectionContainer>();
                 var selectedSingleFolder = string.Empty;
-                if (container is { SelectedItems: { Count: 1 }, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                if (container is { SelectedItems.Count: 1, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
                     selectedSingleFolder = node.FullPath;
 
                 var menu = vm.CreateContextMenuForUnstagedChanges(selectedSingleFolder);
@@ -47,7 +47,7 @@ namespace SourceGit.Views
             {
                 var container = control.FindDescendantOfType<ChangeCollectionContainer>();
                 var selectedSingleFolder = string.Empty;
-                if (container is { SelectedItems: { Count: 1 }, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                if (container is { SelectedItems.Count: 1, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
                     selectedSingleFolder = node.FullPath;
 
                 var menu = vm.CreateContextMenuForStagedChanges(selectedSingleFolder);

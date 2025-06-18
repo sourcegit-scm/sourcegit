@@ -75,18 +75,12 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedViewIndex, value))
                 {
-                    switch (value)
+                    SelectedView = value switch
                     {
-                        case 1:
-                            SelectedView = _workingCopy;
-                            break;
-                        case 2:
-                            SelectedView = _stashesPage;
-                            break;
-                        default:
-                            SelectedView = _histories;
-                            break;
-                    }
+                        1 => _workingCopy,
+                        2 => _stashesPage,
+                        _ => _histories,
+                    };
                 }
             }
         }
@@ -829,7 +823,7 @@ namespace SourceGit.ViewModels
             if (!CanCreatePopup())
                 return;
 
-            var popup = null as ExecuteCustomAction;
+            ExecuteCustomAction popup;
             if (scope is Models.Branch b)
                 popup = new ExecuteCustomAction(this, action, b);
             else if (scope is Models.Commit c)
@@ -877,7 +871,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var visible = null as List<Models.Commit>;
+                List<Models.Commit> visible;
                 var method = (Models.CommitSearchMethod)_searchCommitFilterType;
 
                 if (method == Models.CommitSearchMethod.BySHA)
@@ -1733,7 +1727,7 @@ namespace SourceGit.ViewModels
                     var log = CreateLog("Install LFS");
                     var succ = new Commands.LFS(_fullpath).Install(log);
                     if (succ)
-                        App.SendNotification(_fullpath, $"LFS enabled successfully!");
+                        App.SendNotification(_fullpath, "LFS enabled successfully!");
 
                     log.Complete();
                     e.Handled = true;

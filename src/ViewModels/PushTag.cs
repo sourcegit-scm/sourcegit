@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Pushing tag ...";
+            ProgressDescription = "Pushing tag ...";
 
             var log = _repo.CreateLog("Push Tag");
             Use(log);

@@ -112,11 +112,9 @@ namespace SourceGit.ViewModels
                 HeadName = HeadName.Substring(10);
 
             var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
-            var stoppedSHA = string.Empty;
-            if (File.Exists(stoppedSHAPath))
-                stoppedSHA = File.ReadAllText(stoppedSHAPath).Trim();
-            else
-                stoppedSHA = new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).Result();
+            var stoppedSHA = File.Exists(stoppedSHAPath)
+                ? File.ReadAllText(stoppedSHAPath).Trim()
+                : new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).Result();
 
             if (!string.IsNullOrEmpty(stoppedSHA))
                 StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
@@ -132,7 +130,7 @@ namespace SourceGit.ViewModels
                 WorkingDirectory = _repo,
                 Context = _repo,
                 Editor = Commands.Command.EditorType.RebaseEditor,
-                Args = $"rebase --continue",
+                Args = "rebase --continue",
             }.Exec();
         }
     }

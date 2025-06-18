@@ -185,7 +185,7 @@ namespace SourceGit.Models
         {
             try
             {
-                Bitmap image = null;
+                Bitmap image;
 
                 using (var stream = File.OpenRead(file))
                 {

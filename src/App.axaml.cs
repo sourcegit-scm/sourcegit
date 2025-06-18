@@ -95,7 +95,7 @@ namespace SourceGit
             builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
             builder.Append($"Exception Time: {DateTime.Now}\n");
             builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
-            builder.Append($"---------------------------\n\n");
+            builder.Append("---------------------------\n\n");
             builder.Append(ex);
 
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
