@@ -645,7 +645,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorar todos os arquivos *{0}</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignorar arquivos *{0} na mesma pasta</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignorar arquivos na mesma pasta</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignorar apenas este arquivo</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Corrigir</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Você pode stagear este arquivo agora.</x:String>

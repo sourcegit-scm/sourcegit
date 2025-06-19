@@ -788,17 +788,6 @@ namespace SourceGit.ViewModels
                             };
                             addToIgnore.Items.Add(singleFile);
 
-                            var byParentFolder = new MenuItem();
-                            byParentFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InSameFolder");
-                            byParentFolder.IsVisible = !isRooted;
-                            byParentFolder.Click += (_, e) =>
-                            {
-                                var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
-                                Commands.GitIgnore.Add(_repo.FullPath, dir + "/");
-                                e.Handled = true;
-                            };
-                            addToIgnore.Items.Add(byParentFolder);
-
                             if (!string.IsNullOrEmpty(extension))
                             {
                                 var byExtension = new MenuItem();
