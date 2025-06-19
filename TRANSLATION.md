@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-95.77%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-95.64%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -44,11 +44,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.RevisionChanged
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.URL
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.ResetAuthor
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.63%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.50%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -56,10 +57,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Edit
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.66%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-91.53%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -125,6 +127,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ViewLogs.Clear
 - Text.ViewLogs.CopyLog
 - Text.ViewLogs.Delete
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.ConfirmCommitWithFilter
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
@@ -134,7 +137,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-97.01%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-96.89%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -162,11 +165,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.ResetAuthor
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-91.41%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-91.28%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -234,6 +238,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ViewLogs.Clear
 - Text.ViewLogs.CopyLog
 - Text.ViewLogs.Delete
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.ConfirmCommitWithFilter
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
@@ -243,7 +248,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-83.69%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-83.56%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -371,6 +376,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ViewLogs.Clear
 - Text.ViewLogs.CopyLog
 - Text.ViewLogs.Delete
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.ConfirmCommitWithFilter
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
@@ -382,7 +388,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.38%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.25%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -392,10 +398,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Edit
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-91.53%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-91.41%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -463,6 +470,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ViewLogs.Clear
 - Text.ViewLogs.CopyLog
 - Text.ViewLogs.Delete
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.Conflicts.OpenExternalMergeTool
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
@@ -471,7 +479,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-92.78%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-92.65%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -533,6 +541,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ViewLogs.Clear
 - Text.ViewLogs.CopyLog
 - Text.ViewLogs.Delete
+- Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.ResetAuthor
 
 </details>
