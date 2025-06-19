@@ -173,10 +173,14 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: 1 })
             {
+                Models.Decorator decorator = null;
+                if (e.Source is CommitRefsPresenter crp)
+                    decorator = crp.DecoratorAt(e.GetPosition(crp));
+
                 var source = e.Source as Control;
                 var item = source.FindAncestorOfType<ListBoxItem>();
                 if (item is { DataContext: Models.Commit commit })
-                    histories.DoubleTapped(commit);
+                    histories.DoubleTapped(commit, decorator);
             }
             e.Handled = true;
         }
