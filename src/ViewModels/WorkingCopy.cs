@@ -1052,6 +1052,22 @@ namespace SourceGit.ViewModels
                     return menu;
                 }
 
+                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                {
+                    var dir = Path.Combine(_repo.FullPath, selectedSingleFolder);
+                    var explore = new MenuItem();
+                    explore.Header = App.Text("RevealFile");
+                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.IsEnabled = Directory.Exists(dir);
+                    explore.Click += (_, e) =>
+                    {
+                        Native.OS.OpenInFileManager(dir, true);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(explore);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.StageMulti", _selectedUnstaged.Count);
                 stage.Icon = App.CreateMenuIcon("Icons.File.Add");
@@ -1134,7 +1150,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public ContextMenu CreateContextMenuForStagedChanges()
+        public ContextMenu CreateContextMenuForStagedChanges(string selectedSingleFolder)
         {
             if (_selectedStaged == null || _selectedStaged.Count == 0)
                 return null;
@@ -1383,6 +1399,23 @@ namespace SourceGit.ViewModels
             }
             else
             {
+                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                {
+                    var dir = Path.Combine(_repo.FullPath, selectedSingleFolder);
+                    var explore = new MenuItem();
+                    explore.IsEnabled = Directory.Exists(dir);
+                    explore.Header = App.Text("RevealFile");
+                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.Click += (_, e) =>
+                    {
+                        Native.OS.OpenInFileManager(dir, true);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(explore);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }                
+
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", _selectedStaged.Count);
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");

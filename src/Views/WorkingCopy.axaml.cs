@@ -45,7 +45,12 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
             {
-                var menu = vm.CreateContextMenuForStagedChanges();
+                var container = control.FindDescendantOfType<ChangeCollectionContainer>();
+                var selectedSingleFolder = string.Empty;
+                if (container is { SelectedItems: { Count: 1 }, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                    selectedSingleFolder = node.FullPath;
+
+                var menu = vm.CreateContextMenuForStagedChanges(selectedSingleFolder);
                 menu?.Open(control);
                 e.Handled = true;
             }
