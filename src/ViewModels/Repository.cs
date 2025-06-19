@@ -172,7 +172,7 @@ namespace SourceGit.ViewModels
             private set
             {
                 var oldHead = _currentBranch?.Head;
-                if (SetProperty(ref _currentBranch, value))
+                if (SetProperty(ref _currentBranch, value) && value != null)
                 {
                     if (oldHead != _currentBranch.Head && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
