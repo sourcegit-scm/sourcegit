@@ -10,6 +10,10 @@ namespace SourceGit.Commands
     {
         public static void Run(string repo, string revision, string file, string saveTo)
         {
+            var dir = Path.GetDirectoryName(saveTo);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
             var isLFSFiltered = new IsLFSFiltered(repo, revision, file).Result();
             if (isLFSFiltered)
             {
