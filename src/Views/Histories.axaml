@@ -70,7 +70,6 @@
                    LayoutUpdated="OnCommitListLayoutUpdated"
                    SelectionChanged="OnCommitListSelectionChanged"
                    ContextRequested="OnCommitListContextRequested"
-                   DoubleTapped="OnCommitListDoubleTapped"
                    KeyDown="OnCommitListKeyDown">
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
@@ -117,7 +116,7 @@
 
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Commit">
-                <Grid Height="26">
+                <Grid Height="26" Background="Transparent" DoubleTapped="OnCommitListItemDoubleTapped">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition SharedSizeGroup="AuthorName" Width="Auto"/>

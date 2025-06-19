@@ -209,48 +209,56 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void DoubleTapped(Models.Commit commit, Models.Decorator decorator = null)
+        public bool CheckoutBranchByDecorator(Models.Decorator decorator)
         {
-            if (decorator != null)
+            if (decorator == null)
+                return false;
+
+            if (decorator.Type == Models.DecoratorType.CurrentBranchHead ||
+                decorator.Type == Models.DecoratorType.CurrentCommitHead)
+                return true;
+
+            if (decorator.Type == Models.DecoratorType.LocalBranchHead)
             {
-                if (decorator.Type == Models.DecoratorType.LocalBranchHead)
-                {
-                    var b = _repo.Branches.Find(x => x.FriendlyName == decorator.Name);
-                    if (b != null)
-                    {
-                        _repo.CheckoutBranch(b);
-                        return;
-                    }
-                }
-                else if (decorator.Type == Models.DecoratorType.RemoteBranchHead)
-                {
-                    var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == decorator.Name);
-                    if (remoteBranch != null)
-                    {
-                        var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
-                        if (localBranch != null)
-                        {
-                            if (localBranch.IsCurrent)
-                                return;
-                            if (localBranch.TrackStatus.Ahead.Count > 0)
-                            {
-                                if (_repo.CanCreatePopup())
-                                    _repo.ShowPopup(new CreateBranch(_repo, remoteBranch));
-                            }
-                            else if (localBranch.TrackStatus.Behind.Count > 0)
-                            {
-                                if (_repo.CanCreatePopup())
-                                    _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
-                            }
-                            else
-                                _repo.CheckoutBranch(localBranch);
-                            return;
-                        }
-                    }
-                }
+                var b = _repo.Branches.Find(x => x.Name == decorator.Name);
+                if (b == null)
+                    return false;
+
+                _repo.CheckoutBranch(b);
+                return true;
             }
 
-            if (commit == null || commit.IsCurrentHead)
+            if (decorator.Type == Models.DecoratorType.RemoteBranchHead)
+            {
+                var rb = _repo.Branches.Find(x => x.FriendlyName == decorator.Name);
+                if (rb == null)
+                    return false;
+
+                var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
+                if (lb == null || lb.TrackStatus.Ahead.Count > 0)
+                {
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new CreateBranch(_repo, rb));
+                }
+                else if (lb.TrackStatus.Behind.Count > 0)
+                {
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new CheckoutAndFastForward(_repo, lb, rb));
+                }
+                else if (!lb.IsCurrent)
+                {
+                    _repo.CheckoutBranch(lb);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void CheckoutBranchByCommit(Models.Commit commit)
+        {
+            if (commit.IsCurrentHead)
                 return;
 
             var firstRemoteBranch = null as Models.Branch;
@@ -258,28 +266,28 @@ namespace SourceGit.ViewModels
             {
                 if (d.Type == Models.DecoratorType.LocalBranchHead)
                 {
-                    var b = _repo.Branches.Find(x => x.FriendlyName == d.Name);
-                    if (b != null)
-                    {
-                        _repo.CheckoutBranch(b);
-                        return;
-                    }
+                    var b = _repo.Branches.Find(x => x.Name == d.Name);
+                    if (b == null)
+                        continue;
+
+                    _repo.CheckoutBranch(b);
+                    return;
                 }
                 else if (d.Type == Models.DecoratorType.RemoteBranchHead)
                 {
-                    var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
-                    if (remoteBranch != null)
+                    var rb = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    if (rb == null)
+                        continue;
+
+                    var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
+                    if (lb is { TrackStatus.Ahead.Count: 0 })
                     {
-                        var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
-                        if (localBranch is { TrackStatus.Ahead.Count: 0 })
-                        {
-                            if (_repo.CanCreatePopup())
-                                _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
-                            return;
-                        }
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new CheckoutAndFastForward(_repo, lb, rb));
+                        return;
                     }
 
-                    firstRemoteBranch ??= remoteBranch;
+                    firstRemoteBranch ??= rb;
                 }
             }
 

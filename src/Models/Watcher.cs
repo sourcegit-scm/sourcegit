@@ -55,7 +55,7 @@ namespace SourceGit.Models
 
                 _watchers.Add(wc);
                 _watchers.Add(git);
-            }               
+            }
 
             _timer = new Timer(Tick, null, 100, 100);
         }

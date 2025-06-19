@@ -17,6 +17,7 @@ namespace SourceGit.Views
             public IBrush Brush { get; set; } = null;
             public bool IsHead { get; set; } = false;
             public double Width { get; set; } = 0.0;
+            public Models.Decorator Decorator { get; set; } = null;
         }
 
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
@@ -93,6 +94,19 @@ namespace SourceGit.Views
                 ShowTagsProperty);
         }
 
+        public Models.Decorator DecoratorAt(Point point)
+        {
+            var x = 0.0;
+            foreach (var item in _items)
+            {
+                x += item.Width;
+                if (point.X < x)
+                    return item.Decorator;
+            }
+
+            return null;
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_items.Count == 0)
@@ -156,22 +170,6 @@ namespace SourceGit.Views
             InvalidateMeasure();
         }
 
-        public Models.Decorator DecoratorAt(Point point)
-        {
-            if (DataContext is not Models.Commit commit)
-                return null;
-            
-            var x = 0.0;
-            for (var i = 0; i < _items.Count; i++)
-            {
-                x += _items[i].Width + 4;
-                if (point.X < x)
-                    return commit.Decorators[i];
-            }
-            
-            return null;
-        }
-        
         protected override Size MeasureOverride(Size availableSize)
         {
             _items.Clear();
@@ -214,7 +212,8 @@ namespace SourceGit.Views
                     {
                         Label = label,
                         Brush = normalBG,
-                        IsHead = isHead
+                        IsHead = isHead,
+                        Decorator = decorator,
                     };
 
                     StreamGeometry geo;

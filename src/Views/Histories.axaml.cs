@@ -169,22 +169,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
-        {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: 1 })
-            {
-                Models.Decorator decorator = null;
-                if (e.Source is CommitRefsPresenter crp)
-                    decorator = crp.DecoratorAt(e.GetPosition(crp));
-
-                var source = e.Source as Control;
-                var item = source.FindAncestorOfType<ListBoxItem>();
-                if (item is { DataContext: Models.Commit commit })
-                    histories.DoubleTapped(commit, decorator);
-            }
-            e.Handled = true;
-        }
-
         private void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
             if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
@@ -225,6 +209,25 @@ namespace SourceGit.Views
                         e.Handled = true;
                     }
                 }
+            }
+        }
+
+        private void OnCommitListItemDoubleTapped(object sender, TappedEventArgs e)
+        {
+            e.Handled = true;
+
+            if (DataContext is ViewModels.Histories histories &&
+                CommitListContainer.SelectedItems is { Count: 1 } &&
+                sender is Grid { DataContext: Models.Commit commit })
+            {
+                if (e.Source is CommitRefsPresenter crp)
+                {
+                    var decorator = crp.DecoratorAt(e.GetPosition(crp));
+                    if (histories.CheckoutBranchByDecorator(decorator))
+                        return;
+                }
+
+                histories.CheckoutBranchByCommit(commit);
             }
         }
 

@@ -810,7 +810,7 @@ namespace SourceGit.ViewModels
                                 };
                                 addToIgnore.Items.Add(byExtensionInSameFolder);
                             }
-                        }                       
+                        }
 
                         menu.Items.Add(addToIgnore);
                         hasExtra = true;
@@ -1414,7 +1414,7 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(explore);
                     menu.Items.Add(new MenuItem() { Header = "-" });
-                }                
+                }
 
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", _selectedStaged.Count);
