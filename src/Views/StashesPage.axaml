@@ -96,7 +96,7 @@
                 </Grid>
 
                 <v:StashSubjectPresenter Grid.Row="1"
-                                         Message="{Binding Message}"
+                                         Subject="{Binding Subject}"
                                          Foreground="{DynamicResource Brush.FG1}"
                                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
                                          PrefixBackground="{DynamicResource Brush.InlineCode}"

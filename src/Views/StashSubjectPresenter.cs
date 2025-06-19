@@ -46,25 +46,22 @@ namespace SourceGit.Views
             set => SetValue(PrefixBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<string> MessageProperty =
-            AvaloniaProperty.Register<StashSubjectPresenter, string>(nameof(Message));
+        public static readonly StyledProperty<string> SubjectProperty =
+            AvaloniaProperty.Register<StashSubjectPresenter, string>(nameof(Subject));
 
-        public string Message
+        public string Subject
         {
-            get => GetValue(MessageProperty);
-            set => SetValue(MessageProperty, value);
+            get => GetValue(SubjectProperty);
+            set => SetValue(SubjectProperty, value);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            var message = Message ?? string.Empty;
-            if (string.IsNullOrEmpty(message))
+            var subject = Subject;
+            if (string.IsNullOrEmpty(subject))
                 return;
-
-            var subjectIdx = message.IndexOf('\n', StringComparison.Ordinal);
-            var subject = subjectIdx > 0 ? message.Substring(0, subjectIdx).Trim() : message;
 
             var typeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal);
             var foreground = Foreground;
@@ -108,7 +105,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == MessageProperty ||
+            if (change.Property == SubjectProperty ||
                 change.Property == FontFamilyProperty ||
                 change.Property == FontSizeProperty ||
                 change.Property == ForegroundProperty ||
