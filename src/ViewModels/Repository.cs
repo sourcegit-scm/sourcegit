@@ -1090,6 +1090,7 @@ namespace SourceGit.ViewModels
                 var succ = new Commands.Bisect(_fullpath, subcmd).Use(log).Exec();
                 log.Complete();
 
+                var head = new Commands.QueryRevisionByRefName(_fullpath, "HEAD").Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (!succ)
@@ -1098,6 +1099,7 @@ namespace SourceGit.ViewModels
                         App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
 
                     MarkBranchesDirtyManually();
+                    NavigateToCommit(head, true);
                     SetWatcherEnabled(true);
                     IsBisectCommandRunning = false;
                 });
