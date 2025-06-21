@@ -124,6 +124,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合并(merge)此提交至 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合并(merge)...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送(push) ${0}$ 到 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重置(reset) ${0}$ 到此处</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">回滚此提交</x:String>
@@ -558,6 +559,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">启用强制推送</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">本地分支 ：</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">远程仓库 ：</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">修订 ：</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送指定修订到远程仓库</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到远程仓库</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">远程分支 ：</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">跟踪远程分支</x:String>

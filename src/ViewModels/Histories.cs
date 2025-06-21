@@ -666,6 +666,22 @@ namespace SourceGit.ViewModels
 
             if (current.Head != commit.SHA)
             {
+                if (current.TrackStatus.Ahead.Contains(commit.SHA))
+                {
+                    var upstream = _repo.Branches.Find(x => x.FullName.Equals(current.Upstream, StringComparison.Ordinal));
+                    var pushRevision = new MenuItem();
+                    pushRevision.Header = App.Text("CommitCM.PushRevision", commit.SHA.Substring(0, 10), upstream.FriendlyName);
+                    pushRevision.Icon = App.CreateMenuIcon("Icons.Push");
+                    pushRevision.Click += (_, e) =>
+                    {
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new PushRevision(_repo, commit, upstream));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(pushRevision);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");

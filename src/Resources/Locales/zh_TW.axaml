@@ -124,6 +124,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合併 (merge) 此提交到 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合併 (merge)...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送(push) ${0}$ 至 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重設 (reset) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">復原此提交</x:String>
@@ -558,6 +559,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">啟用強制推送</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">遠端存放庫:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">修訂:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送修訂到遠端存放庫</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到遠端存放庫</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">遠端分支:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">追蹤遠端分支</x:String>

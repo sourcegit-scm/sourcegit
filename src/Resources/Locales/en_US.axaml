@@ -120,6 +120,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactively Rebase ${0}$ on Here</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge to ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ to ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ on Here</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
@@ -554,6 +555,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Local Branch:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revision To Remote</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Changes To Remote</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</x:String>
