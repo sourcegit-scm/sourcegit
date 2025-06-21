@@ -2240,7 +2240,7 @@ namespace SourceGit.ViewModels
             }
 
             var compareWithHead = new MenuItem();
-            compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
+            compareWithHead.Header = App.Text("BranchCM.CompareWithCurrent", _currentBranch.Name);
             compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
             compareWithHead.Click += (_, _) =>
             {
