@@ -6,51 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-95.29%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.Avatar.Load
-- Text.BranchCM.ResetToSelectedCommit
-- Text.Checkout.WithFastForward
-- Text.Checkout.WithFastForward.Upstream
-- Text.CommitCM.PushRevision
-- Text.CommitDetail.Changes.Count
-- Text.CreateBranch.OverwriteExisting
-- Text.DeinitSubmodule
-- Text.DeinitSubmodule.Force
-- Text.DeinitSubmodule.Path
-- Text.Diff.Submodule.Deleted
-- Text.GitFlow.FinishWithPush
-- Text.GitFlow.FinishWithSquash
-- Text.Hotkeys.Global.SwitchWorkspace
-- Text.Hotkeys.Global.SwitchTab
-- Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.Launcher.Workspaces
-- Text.Launcher.Pages
-- Text.Merge.Edit
-- Text.Pull.RecurseSubmodules
-- Text.Push.Revision
-- Text.Push.Revision.Title
-- Text.Repository.ClearStashes
-- Text.Repository.ShowSubmodulesAsTree
-- Text.ResetWithoutCheckout
-- Text.ResetWithoutCheckout.MoveTo
-- Text.ResetWithoutCheckout.Target
-- Text.Stash.Mode
-- Text.StashCM.CopyMessage
-- Text.Submodule.Deinit
-- Text.Submodule.Status
-- Text.Submodule.Status.Modified
-- Text.Submodule.Status.NotInited
-- Text.Submodule.Status.RevisionChanged
-- Text.Submodule.Status.Unmerged
-- Text.Submodule.URL
-- Text.WorkingCopy.AddToGitIgnore.InFolder
-- Text.WorkingCopy.ResetAuthor
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-99.13%25-yellow)
 
