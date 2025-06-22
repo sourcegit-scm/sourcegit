@@ -406,22 +406,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.88%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Checkout.WithFastForward
-- Text.Checkout.WithFastForward.Upstream
-- Text.CommitCM.PushRevision
-- Text.Merge.Edit
-- Text.Push.Revision
-- Text.Push.Revision.Title
-- Text.Stash.Mode
-- Text.StashCM.CopyMessage
-- Text.WorkingCopy.AddToGitIgnore.InFolder
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-91.07%25-yellow)
 
