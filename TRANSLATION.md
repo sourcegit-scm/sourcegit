@@ -6,13 +6,25 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.63%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.13%25-yellow)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
+
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-98.76%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.CommitCM.PushRevision
 - Text.Merge.Edit
 - Text.Push.Revision
@@ -23,11 +35,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.19%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-90.85%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
@@ -102,11 +117,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-96.53%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-96.17%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
 - Text.Checkout.WithFastForward
@@ -138,11 +156,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-90.94%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-90.61%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
@@ -219,11 +240,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-83.25%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-82.94%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.AIAssistant.Regen
 - Text.AIAssistant.Use
 - Text.ApplyStash
@@ -362,13 +386,25 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.63%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-91.07%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-90.73%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
@@ -444,11 +480,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-92.31%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-91.97%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
 
+- Text.AddToIgnore
+- Text.AddToIgnore.Pattern
+- Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.Bisect
 - Text.Bisect.Abort
