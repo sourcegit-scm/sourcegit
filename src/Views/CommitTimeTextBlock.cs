@@ -3,6 +3,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Threading;
 
 namespace SourceGit.Views
@@ -51,9 +52,15 @@ namespace SourceGit.Views
                 SetCurrentValue(TextProperty, GetDisplayText());
 
                 if (ShowAsDateTime)
+                {
                     StopTimer();
+                    HorizontalAlignment = HorizontalAlignment.Left;
+                }
                 else
+                {
                     StartTimer();
+                    HorizontalAlignment = HorizontalAlignment.Center;
+                }
             }
             else if (change.Property == DateTimeFormatProperty)
             {
