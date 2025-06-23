@@ -6,6 +6,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">關於</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於 SourceGit</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">開源免費的 Git 客戶端</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">新增忽略檔案</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">匹配模式 ：</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">儲存路徑 ：</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">工作區路徑:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">填寫該工作區的路徑。支援相對路徑。</x:String>

@@ -1,0 +1,24 @@
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace SourceGit.Models
+{
+    public class GitIgnoreFile
+    {
+        public static readonly List<GitIgnoreFile> Supported = [new(true), new(false)];
+
+        public bool IsShared { get; set; }
+        public string File => IsShared ? ".gitignore" : "$GIT_DIR/info/exclude";
+        public string Desc => IsShared ? "Shared" : "Private";
+
+        public GitIgnoreFile(bool isShared)
+        {
+            IsShared = isShared;
+        }
+
+        public string GetFullPath(string repoPath, string gitDir)
+        {
+            return IsShared ? Path.Combine(repoPath, ".gitignore") : Path.Combine(gitDir, "info", "exclude");
+        }
+    }
+}

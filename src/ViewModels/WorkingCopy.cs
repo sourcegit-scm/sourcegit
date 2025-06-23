@@ -771,7 +771,8 @@ namespace SourceGit.ViewModels
                             ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
                             ignoreFolder.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, $"{selectedSingleFolder}/");
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(ignoreFolder);
@@ -783,7 +784,8 @@ namespace SourceGit.ViewModels
                             singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
                             singleFile.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, change.Path);
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new AddToIgnore(_repo, change.Path));
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(singleFile);
@@ -794,7 +796,8 @@ namespace SourceGit.ViewModels
                                 byExtension.Header = App.Text("WorkingCopy.AddToGitIgnore.Extension", extension);
                                 byExtension.Click += (_, e) =>
                                 {
-                                    Commands.GitIgnore.Add(_repo.FullPath, $"*{extension}");
+                                    if (_repo.CanCreatePopup())
+                                        _repo.ShowPopup(new AddToIgnore(_repo, $"*{extension}"));
                                     e.Handled = true;
                                 };
                                 addToIgnore.Items.Add(byExtension);
@@ -805,7 +808,8 @@ namespace SourceGit.ViewModels
                                 byExtensionInSameFolder.Click += (_, e) =>
                                 {
                                     var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
-                                    Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
+                                    if (_repo.CanCreatePopup())
+                                        _repo.ShowPopup(new AddToIgnore(_repo, $"{dir}/*{extension}"));
                                     e.Handled = true;
                                 };
                                 addToIgnore.Items.Add(byExtensionInSameFolder);
@@ -827,7 +831,8 @@ namespace SourceGit.ViewModels
                             ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
                             ignoreFolder.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, $"{selectedSingleFolder}/");
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(ignoreFolder);
@@ -1133,7 +1138,8 @@ namespace SourceGit.ViewModels
                     ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
                     ignoreFolder.Click += (_, e) =>
                     {
-                        Commands.GitIgnore.Add(_repo.FullPath, $"{selectedSingleFolder}/");
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
                         e.Handled = true;
                     };
 
