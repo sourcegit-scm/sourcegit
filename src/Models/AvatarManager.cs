@@ -26,10 +26,7 @@ namespace SourceGit.Models
         {
             get
             {
-                if (_instance == null)
-                    _instance = new AvatarManager();
-
-                return _instance;
+                return _instance ??= new AvatarManager();
             }
         }
 

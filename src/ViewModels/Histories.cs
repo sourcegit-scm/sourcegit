@@ -14,11 +14,6 @@ namespace SourceGit.ViewModels
 {
     public class Histories : ObservableObject, IDisposable
     {
-        public Repository Repo
-        {
-            get => _repo;
-        }
-
         public bool IsLoading
         {
             get => _isLoading;
@@ -214,9 +209,56 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void DoubleTapped(Models.Commit commit)
+        public bool CheckoutBranchByDecorator(Models.Decorator decorator)
         {
-            if (commit == null || commit.IsCurrentHead)
+            if (decorator == null)
+                return false;
+
+            if (decorator.Type == Models.DecoratorType.CurrentBranchHead ||
+                decorator.Type == Models.DecoratorType.CurrentCommitHead)
+                return true;
+
+            if (decorator.Type == Models.DecoratorType.LocalBranchHead)
+            {
+                var b = _repo.Branches.Find(x => x.Name == decorator.Name);
+                if (b == null)
+                    return false;
+
+                _repo.CheckoutBranch(b);
+                return true;
+            }
+
+            if (decorator.Type == Models.DecoratorType.RemoteBranchHead)
+            {
+                var rb = _repo.Branches.Find(x => x.FriendlyName == decorator.Name);
+                if (rb == null)
+                    return false;
+
+                var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
+                if (lb == null || lb.TrackStatus.Ahead.Count > 0)
+                {
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new CreateBranch(_repo, rb));
+                }
+                else if (lb.TrackStatus.Behind.Count > 0)
+                {
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new CheckoutAndFastForward(_repo, lb, rb));
+                }
+                else if (!lb.IsCurrent)
+                {
+                    _repo.CheckoutBranch(lb);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void CheckoutBranchByCommit(Models.Commit commit)
+        {
+            if (commit.IsCurrentHead)
                 return;
 
             var firstRemoteBranch = null as Models.Branch;
@@ -224,29 +266,28 @@ namespace SourceGit.ViewModels
             {
                 if (d.Type == Models.DecoratorType.LocalBranchHead)
                 {
-                    var b = _repo.Branches.Find(x => x.FriendlyName == d.Name);
-                    if (b != null)
-                    {
-                        _repo.CheckoutBranch(b);
-                        return;
-                    }
+                    var b = _repo.Branches.Find(x => x.Name == d.Name);
+                    if (b == null)
+                        continue;
+
+                    _repo.CheckoutBranch(b);
+                    return;
                 }
                 else if (d.Type == Models.DecoratorType.RemoteBranchHead)
                 {
-                    var remoteBranch = _repo.Branches.Find(x => x.FriendlyName == d.Name);
-                    if (remoteBranch != null)
+                    var rb = _repo.Branches.Find(x => x.FriendlyName == d.Name);
+                    if (rb == null)
+                        continue;
+
+                    var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
+                    if (lb is { TrackStatus.Ahead.Count: 0 })
                     {
-                        var localBranch = _repo.Branches.Find(x => x.IsLocal && x.Upstream == remoteBranch.FullName);
-                        if (localBranch is { TrackStatus.Ahead.Count: 0 })
-                        {
-                            if (_repo.CanCreatePopup())
-                                _repo.ShowPopup(new CheckoutAndFastForward(_repo, localBranch, remoteBranch));
-                            return;
-                        }
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new CheckoutAndFastForward(_repo, lb, rb));
+                        return;
                     }
 
-                    if (firstRemoteBranch == null)
-                        firstRemoteBranch = remoteBranch;
+                    firstRemoteBranch ??= rb;
                 }
             }
 
@@ -560,9 +601,7 @@ namespace SourceGit.ViewModels
                                 var parents = new List<Models.Commit>();
                                 foreach (var sha in commit.Parents)
                                 {
-                                    var parent = _commits.Find(x => x.SHA == sha);
-                                    if (parent == null)
-                                        parent = new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
+                                    var parent = _commits.Find(x => x.SHA == sha) ?? new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
 
                                     if (parent != null)
                                         parents.Add(parent);
@@ -627,6 +666,22 @@ namespace SourceGit.ViewModels
 
             if (current.Head != commit.SHA)
             {
+                if (current.TrackStatus.Ahead.Contains(commit.SHA))
+                {
+                    var upstream = _repo.Branches.Find(x => x.FullName.Equals(current.Upstream, StringComparison.Ordinal));
+                    var pushRevision = new MenuItem();
+                    pushRevision.Header = App.Text("CommitCM.PushRevision", commit.SHA.Substring(0, 10), upstream.FriendlyName);
+                    pushRevision.Icon = App.CreateMenuIcon("Icons.Push");
+                    pushRevision.Click += (_, e) =>
+                    {
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new PushRevision(_repo, commit, upstream));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(pushRevision);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");

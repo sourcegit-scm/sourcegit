@@ -142,6 +142,7 @@ namespace SourceGit.ViewModels
 
             var apply = new MenuItem();
             apply.Header = App.Text("StashCM.Apply");
+            apply.Icon = App.CreateMenuIcon("Icons.CheckCircled");
             apply.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
@@ -152,6 +153,7 @@ namespace SourceGit.ViewModels
 
             var drop = new MenuItem();
             drop.Header = App.Text("StashCM.Drop");
+            drop.Icon = App.CreateMenuIcon("Icons.Clear");
             drop.Click += (_, ev) =>
             {
                 if (_repo.CanCreatePopup())
@@ -194,11 +196,22 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
 
+            var copy = new MenuItem();
+            copy.Header = App.Text("StashCM.CopyMessage");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Click += (_, ev) =>
+            {
+                App.CopyText(stash.Message);
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(apply);
             menu.Items.Add(drop);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(patch);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(copy);
             return menu;
         }
 

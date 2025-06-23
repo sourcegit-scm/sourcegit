@@ -406,6 +406,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} meses atrás</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} anos atrás</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ontem</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Use 'Shift+Enter' para inserir uma nova linha. 'Enter' é a tecla de atalho do botão OK</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferências</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">INTELIGÊNCIA ARTIFICIAL</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Prompt para Analisar Diff</x:String>
@@ -563,7 +564,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commitar alterações de reversão</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reescrever Mensagem do Commit</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' para inserir uma nova linha. 'Enter' é a tecla de atalho do botão OK</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Executando. Por favor, aguarde...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SALVAR</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Salvar Como...</x:String>
@@ -585,9 +585,8 @@
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir arquivos não rastreados</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Manter arquivos em stage</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Mensagem:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Nome deste stash</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Informações deste stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Apenas mudanças em stage</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Tanto mudanças em stage e fora de stage dos arquivos selecionados serão enviadas para stash!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Guardar Alterações Locais</x:String>
@@ -646,7 +645,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorar todos os arquivos *{0}</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignorar arquivos *{0} na mesma pasta</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignorar arquivos na mesma pasta</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignorar apenas este arquivo</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Corrigir</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Você pode stagear este arquivo agora.</x:String>

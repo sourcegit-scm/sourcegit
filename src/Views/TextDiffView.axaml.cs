@@ -348,16 +348,11 @@ namespace SourceGit.Views
             private ThemedTextDiffPresenter _presenter = null;
         }
 
-        public class LineStyleTransformer : DocumentColorizingTransformer
+        public class LineStyleTransformer(ThemedTextDiffPresenter presenter) : DocumentColorizingTransformer
         {
-            public LineStyleTransformer(ThemedTextDiffPresenter presenter)
-            {
-                _presenter = presenter;
-            }
-
             protected override void ColorizeLine(DocumentLine line)
             {
-                var lines = _presenter.GetLines();
+                var lines = presenter.GetLines();
                 var idx = line.LineNumber;
                 if (idx > lines.Count)
                     return;
@@ -367,13 +362,11 @@ namespace SourceGit.Views
                 {
                     ChangeLinePart(line.Offset, line.EndOffset, v =>
                     {
-                        v.TextRunProperties.SetForegroundBrush(_presenter.IndicatorForeground);
-                        v.TextRunProperties.SetTypeface(new Typeface(_presenter.FontFamily, FontStyle.Italic));
+                        v.TextRunProperties.SetForegroundBrush(presenter.IndicatorForeground);
+                        v.TextRunProperties.SetTypeface(new Typeface(presenter.FontFamily, FontStyle.Italic));
                     });
                 }
             }
-
-            private readonly ThemedTextDiffPresenter _presenter;
         }
 
         public static readonly StyledProperty<string> FileNameProperty =

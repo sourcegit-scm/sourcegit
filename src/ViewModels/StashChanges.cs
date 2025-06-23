@@ -27,19 +27,20 @@ namespace SourceGit.ViewModels
         public bool OnlyStaged
         {
             get => _repo.Settings.OnlyStagedWhenStash;
-            set => _repo.Settings.OnlyStagedWhenStash = value;
+            set
+            {
+                if (_repo.Settings.OnlyStagedWhenStash != value)
+                {
+                    _repo.Settings.OnlyStagedWhenStash = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
-        public bool KeepIndex
+        public int ChangesAfterStashing
         {
-            get => _repo.Settings.KeepIndexWhenStash;
-            set => _repo.Settings.KeepIndexWhenStash = value;
-        }
-
-        public bool AutoRestore
-        {
-            get => _repo.Settings.AutoRestoreAfterStash;
-            set => _repo.Settings.AutoRestoreAfterStash = value;
+            get => _repo.Settings.ChangesAfterStashing;
+            set => _repo.Settings.ChangesAfterStashing = value;
         }
 
         public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
@@ -59,6 +60,8 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
+                var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
                 var succ = false;
 
                 if (!HasSelectedFiles)
@@ -67,7 +70,7 @@ namespace SourceGit.ViewModels
                     {
                         if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                         {
-                            succ = new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStaged(Message, KeepIndex);
+                            succ = new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStaged(Message, keepIndex);
                         }
                         else
                         {
@@ -78,20 +81,20 @@ namespace SourceGit.ViewModels
                                     staged.Add(c);
                             }
 
-                            succ = StashWithChanges(staged, log);
+                            succ = StashWithChanges(staged, keepIndex, log);
                         }
                     }
                     else
                     {
-                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, IncludeUntracked, KeepIndex);
+                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, IncludeUntracked, keepIndex);
                     }
                 }
                 else
                 {
-                    succ = StashWithChanges(_changes, log);
+                    succ = StashWithChanges(_changes, keepIndex, log);
                 }
 
-                if (AutoRestore && succ)
+                if (mode == DealWithChangesAfterStashing.KeepAll && succ)
                     succ = new Commands.Stash(_repo.FullPath).Use(log).Apply("stash@{0}", true);
 
                 log.Complete();
@@ -105,7 +108,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private bool StashWithChanges(List<Models.Change> changes, CommandLog log)
+        private bool StashWithChanges(List<Models.Change> changes, bool keepIndex, CommandLog log)
         {
             if (changes.Count == 0)
                 return true;
@@ -119,7 +122,7 @@ namespace SourceGit.ViewModels
 
                 var pathSpecFile = Path.GetTempFileName();
                 File.WriteAllLines(pathSpecFile, paths);
-                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, pathSpecFile, KeepIndex);
+                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, pathSpecFile, keepIndex);
                 File.Delete(pathSpecFile);
             }
             else
@@ -128,13 +131,20 @@ namespace SourceGit.ViewModels
                 {
                     var count = Math.Min(32, changes.Count - i);
                     var step = changes.GetRange(i, count);
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, step, KeepIndex);
+                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, step, keepIndex);
                     if (!succ)
                         break;
                 }
             }
 
             return succ;
+        }
+
+        private enum DealWithChangesAfterStashing
+        {
+            Discard = 0,
+            KeepIndex,
+            KeepAll,
         }
 
         private readonly Repository _repo = null;

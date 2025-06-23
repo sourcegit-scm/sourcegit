@@ -119,7 +119,7 @@
                   Height="26"
                   BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
                   IsVisible="{Binding ViewRevisionFilePath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-            <Grid ColumnDefinitions="Auto,*,Auto">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
               <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="1"
                          Classes="primary"
@@ -140,8 +140,18 @@
                            Converter="{x:Static c:ObjectConverters.IsTypeOf}"
                            ConverterParameter="{x:Type m:RevisionTextFile}"/>
                 </ToggleButton.IsVisible>
-                <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+                <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,2,0,0"/>
               </ToggleButton>
+
+              <Button Grid.Column="3"
+                      Classes="icon_button"
+                      Width="28"
+                      Background="Transparent"
+                      Click="OnOpenFileWithDefaultEditor"
+                      IsVisible="{Binding CanOpenRevisionFileWithDefaultEditor, Mode=OneWay}"
+                      ToolTip.Tip="{DynamicResource Text.OpenWith}">
+                <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+              </Button>
             </Grid>
           </Border>
 

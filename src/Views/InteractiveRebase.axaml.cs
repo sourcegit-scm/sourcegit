@@ -167,6 +167,18 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnOpenCommitMessageEditor(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: ViewModels.InteractiveRebaseItem item })
+            {
+                var dialog = new CommitMessageEditor();
+                dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
+                dialog.ShowDialog(this);
+            }
+
+            e.Handled = true;
+        }
+
         private async void OnStartJobs(object _1, RoutedEventArgs _2)
         {
             var vm = DataContext as ViewModels.InteractiveRebase;

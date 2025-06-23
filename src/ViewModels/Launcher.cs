@@ -65,17 +65,14 @@ namespace SourceGit.ViewModels
                 var repos = ActiveWorkspace.Repositories.ToArray();
                 foreach (var repo in repos)
                 {
-                    var node = pref.FindNode(repo);
-                    if (node == null)
-                    {
-                        node = new RepositoryNode()
+                    var node = pref.FindNode(repo) ??
+                        new RepositoryNode
                         {
                             Id = repo,
                             Name = Path.GetFileName(repo),
                             Bookmark = 0,
                             IsRepository = true,
                         };
-                    }
 
                     OpenRepositoryInTab(node, null);
                 }
@@ -184,17 +181,14 @@ namespace SourceGit.ViewModels
             var repos = to.Repositories.ToArray();
             foreach (var repo in repos)
             {
-                var node = pref.FindNode(repo);
-                if (node == null)
-                {
-                    node = new RepositoryNode()
+                var node = pref.FindNode(repo) ??
+                    new RepositoryNode
                     {
                         Id = repo,
                         Name = Path.GetFileName(repo),
                         Bookmark = 0,
                         IsRepository = true,
                     };
-                }
 
                 OpenRepositoryInTab(node, null);
             }
@@ -290,8 +284,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (page == null)
-                page = _activePage;
+            page ??= _activePage;
 
             var removeIdx = Pages.IndexOf(page);
             var activeIdx = Pages.IndexOf(_activePage);

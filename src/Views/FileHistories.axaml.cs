@@ -76,5 +76,13 @@ namespace SourceGit.Views
                     ToolTip.SetTip(border, vm.GetCommitFullMessage(commit));
             }
         }
+
+        private async void OnOpenFileWithDefaultEditor(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.FileHistories { ViewContent: ViewModels.FileHistoriesSingleRevision revision })
+                await revision.OpenWithDefaultEditor();
+
+            e.Handled = true;
+        }
     }
 }

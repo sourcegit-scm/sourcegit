@@ -13,12 +13,7 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.FileHistory}"
                     MinWidth="1280" MinHeight="720">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
+  <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
@@ -139,7 +134,7 @@
                         <Border Grid.Row="0"
                                 BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
                                 Background="{DynamicResource Brush.Window}">
-                          <Grid ColumnDefinitions="Auto,*,Auto">
+                          <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                             <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
                             <TextBlock Grid.Column="1"
                                        Classes="primary"
@@ -161,6 +156,15 @@
                               </ToggleButton.IsVisible>
                               <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
                             </ToggleButton>
+                            <Button Grid.Column="3"
+                                    Classes="icon_button"
+                                    Width="28"
+                                    Background="Transparent"
+                                    Click="OnOpenFileWithDefaultEditor"
+                                    IsVisible="{Binding CanOpenWithDefaultEditor, Mode=OneWay}"
+                                    ToolTip.Tip="{DynamicResource Text.OpenWith}">
+                              <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+                            </Button>
                           </Grid>
                         </Border>
 

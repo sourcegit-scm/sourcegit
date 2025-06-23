@@ -12,7 +12,7 @@ namespace SourceGit.Views
     public class HistoriesLayout : Grid
     {
         public static readonly StyledProperty<bool> UseHorizontalProperty =
-            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(UseHorizontal), false);
+            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(UseHorizontal));
 
         public bool UseHorizontal
         {
@@ -73,15 +73,6 @@ namespace SourceGit.Views
 
     public partial class Histories : UserControl
     {
-        public static readonly StyledProperty<GridLength> AuthorNameColumnWidthProperty =
-            AvaloniaProperty.Register<Histories, GridLength>(nameof(AuthorNameColumnWidth), new GridLength(120));
-
-        public GridLength AuthorNameColumnWidth
-        {
-            get => GetValue(AuthorNameColumnWidthProperty);
-            set => SetValue(AuthorNameColumnWidthProperty, value);
-        }
-
         public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
             AvaloniaProperty.Register<Histories, Models.Branch>(nameof(CurrentBranch));
 
@@ -150,7 +141,7 @@ namespace SourceGit.Views
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
             var y = CommitListContainer.Scroll?.Offset.Y ?? 0;
-            var authorNameColumnWidth = AuthorNameColumnWidth.Value;
+            var authorNameColumnWidth = ViewModels.Preferences.Instance.Layout.HistoriesAuthorColumnWidth.Value;
             if (y != _lastScrollY || authorNameColumnWidth != _lastAuthorNameColumnWidth)
             {
                 _lastScrollY = y;
@@ -174,18 +165,6 @@ namespace SourceGit.Views
             {
                 var menu = histories.MakeContextMenu(list);
                 menu?.Open(list);
-            }
-            e.Handled = true;
-        }
-
-        private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
-        {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: 1 })
-            {
-                var source = e.Source as Control;
-                var item = source.FindAncestorOfType<ListBoxItem>();
-                if (item is { DataContext: Models.Commit commit })
-                    histories.DoubleTapped(commit);
             }
             e.Handled = true;
         }
@@ -230,6 +209,25 @@ namespace SourceGit.Views
                         e.Handled = true;
                     }
                 }
+            }
+        }
+
+        private void OnCommitListItemDoubleTapped(object sender, TappedEventArgs e)
+        {
+            e.Handled = true;
+
+            if (DataContext is ViewModels.Histories histories &&
+                CommitListContainer.SelectedItems is { Count: 1 } &&
+                sender is Grid { DataContext: Models.Commit commit })
+            {
+                if (e.Source is CommitRefsPresenter crp)
+                {
+                    var decorator = crp.DecoratorAt(e.GetPosition(crp));
+                    if (histories.CheckoutBranchByDecorator(decorator))
+                        return;
+                }
+
+                histories.CheckoutBranchByCommit(commit);
             }
         }
 

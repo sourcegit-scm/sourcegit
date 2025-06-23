@@ -521,7 +521,7 @@ namespace SourceGit
         private bool TryLaunchAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
-            if (args == null || args.Length <= 1 || !args[0].Equals("--core-editor", StringComparison.Ordinal))
+            if (args is not { Length: > 1 } || !args[0].Equals("--core-editor", StringComparison.Ordinal))
                 return false;
 
             var file = args[1];
@@ -531,8 +531,8 @@ namespace SourceGit
                 return true;
             }
 
-            var editor = new Views.StandaloneCommitMessageEditor();
-            editor.SetFile(file);
+            var editor = new Views.CommitMessageEditor();
+            editor.AsStandalone(file);
             desktop.MainWindow = editor;
             return true;
         }

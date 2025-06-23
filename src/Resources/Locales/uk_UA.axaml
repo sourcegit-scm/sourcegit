@@ -448,6 +448,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} місяців тому</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} років тому</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчора</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Використовуйте 'Shift+Enter' для введення нового рядка. 'Enter' - гаряча клавіша кнопки OK</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Налаштування</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Промпт для аналізу різниці</x:String>
@@ -623,7 +624,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Коміт:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Закомітити зміни скасування</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Змінити повідомлення коміту</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Використовуйте 'Shift+Enter' для введення нового рядка. 'Enter' - гаряча клавіша кнопки OK</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Виконується. Будь ласка, зачекайте...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">ЗБЕРЕГТИ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Зберегти як...</x:String>
@@ -649,10 +649,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Шлях до сховища приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ПОЧАТИ</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash (Сховати)</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Автоматично відновити після схову</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Ваші робочі файли залишаться без змін, але буде збережено схованку.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Включити невідстежувані файли</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Зберегти проіндексовані файли</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Повідомлення:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Необов'язково. Назва цієї схованки</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Лише проіндексовані зміни</x:String>
@@ -714,7 +711,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ігнорувати всі файли *{0}</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ігнорувати файли *{0} у цій же теці</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ігнорувати файли у цій же теці</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ігнорувати лише цей файл</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend (Доповнити)</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Тепер ви можете проіндексувати цей файл.</x:String>

@@ -172,7 +172,7 @@ namespace SourceGit.ViewModels
             private set
             {
                 var oldHead = _currentBranch?.Head;
-                if (SetProperty(ref _currentBranch, value))
+                if (SetProperty(ref _currentBranch, value) && value != null)
                 {
                     if (oldHead != _currentBranch.Head && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
@@ -1090,6 +1090,7 @@ namespace SourceGit.ViewModels
                 var succ = new Commands.Bisect(_fullpath, subcmd).Use(log).Exec();
                 log.Complete();
 
+                var head = new Commands.QueryRevisionByRefName(_fullpath, "HEAD").Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (!succ)
@@ -1098,6 +1099,7 @@ namespace SourceGit.ViewModels
                         App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
 
                     MarkBranchesDirtyManually();
+                    NavigateToCommit(head, true);
                     SetWatcherEnabled(true);
                     IsBisectCommandRunning = false;
                 });
@@ -1424,17 +1426,14 @@ namespace SourceGit.ViewModels
             var root = Path.GetFullPath(Path.Combine(_fullpath, submodule));
             var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
 
-            var node = Preferences.Instance.FindNode(normalizedPath);
-            if (node == null)
-            {
-                node = new RepositoryNode()
+            var node = Preferences.Instance.FindNode(normalizedPath) ??
+                new RepositoryNode
                 {
                     Id = normalizedPath,
                     Name = Path.GetFileName(normalizedPath),
                     Bookmark = selfPage.Node.Bookmark,
                     IsRepository = true,
                 };
-            }
 
             App.GetLauncher().OpenRepositoryInTab(node, null);
         }
@@ -1453,17 +1452,14 @@ namespace SourceGit.ViewModels
 
         public void OpenWorktree(Models.Worktree worktree)
         {
-            var node = Preferences.Instance.FindNode(worktree.FullPath);
-            if (node == null)
-            {
-                node = new RepositoryNode()
+            var node = Preferences.Instance.FindNode(worktree.FullPath) ??
+                new RepositoryNode
                 {
                     Id = worktree.FullPath,
                     Name = Path.GetFileName(worktree.FullPath),
                     Bookmark = 0,
                     IsRepository = true,
                 };
-            }
 
             App.GetLauncher()?.OpenRepositoryInTab(node, null);
         }
@@ -2244,7 +2240,7 @@ namespace SourceGit.ViewModels
             }
 
             var compareWithHead = new MenuItem();
-            compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
+            compareWithHead.Header = App.Text("BranchCM.CompareWithCurrent", _currentBranch.Name);
             compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
             compareWithHead.Click += (_, _) =>
             {

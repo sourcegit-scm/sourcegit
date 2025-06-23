@@ -306,7 +306,7 @@ namespace SourceGit.Views
                 return;
 
             var view = TextArea.TextView;
-            if (view == null || !view.VisualLinesValid)
+            if (view is not { VisualLinesValid: true })
                 return;
 
             var color = (Color)this.FindResource("SystemAccentColor")!;

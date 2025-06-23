@@ -57,7 +57,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> ShowAdvancedOptionsProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, bool>(nameof(ShowAdvancedOptions), false);
+            AvaloniaProperty.Register<CommitMessageTextBox, bool>(nameof(ShowAdvancedOptions));
 
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Text), string.Empty);
@@ -182,7 +182,7 @@ namespace SourceGit.Views
             {
                 var menu = vm.CreateContextMenuForCommitMessages();
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu?.Open(button);
+                menu.Open(button);
             }
 
             e.Handled = true;
@@ -201,7 +201,14 @@ namespace SourceGit.Views
 
         private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
-            App.ShowWindow(new ViewModels.ConventionalCommitMessageBuilder(text => Text = text), true);
+            var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel is Window owner)
+            {
+                var vm = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text);
+                var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
+                builder.ShowDialog(owner);
+            }
+
             e.Handled = true;
         }
 

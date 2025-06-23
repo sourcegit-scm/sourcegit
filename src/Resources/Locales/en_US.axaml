@@ -120,6 +120,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactively Rebase ${0}$ on Here</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge to ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ to ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ on Here</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ to Here</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
@@ -442,6 +443,7 @@
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Pages</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Customize merge message</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source:</x:String>
@@ -474,6 +476,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
@@ -552,6 +555,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Local Branch:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revision To Remote</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Changes To Remote</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Set as tracking branch</x:String>
@@ -662,7 +667,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit revert changes</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reword Commit Message</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAVE</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Save As...</x:String>
@@ -688,16 +692,15 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Auto-restore after stashing</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Your working files remain unchanged, but a stash is saved.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Include untracked files</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Keep staged files</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name of this stash</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Message of this stash</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Mode:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Only staged changes</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Both staged and unstaged changes of selected file(s) will be stashed!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Local Changes</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Apply</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Copy Message</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Drop</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</x:String>
@@ -764,7 +767,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignore files in the same folder</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignore untracked files in this folder</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignore this file only</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">You can stage this file now.</x:String>

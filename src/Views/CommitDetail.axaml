@@ -58,7 +58,7 @@
                       <Run Text="{Binding IndexDesc, Mode=OneWay}" Foreground="Gray"/>
                     </TextBlock>
                   </ToolTip.Tip>
-                  
+
                   <v:ChangeStatusIcon Grid.Column="0"
                                       Width="14" Height="14"
                                       HorizontalAlignment="Left"

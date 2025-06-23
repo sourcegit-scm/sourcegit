@@ -8,10 +8,7 @@ namespace SourceGit.Models
 {
     public class IpcChannel : IDisposable
     {
-        public bool IsFirstInstance
-        {
-            get => _isFirstInstance;
-        }
+        public bool IsFirstInstance { get; }
 
         public event Action<string> MessageReceived;
 
@@ -20,7 +17,7 @@ namespace SourceGit.Models
             try
             {
                 _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-                _isFirstInstance = true;
+                IsFirstInstance = true;
                 _server = new NamedPipeServerStream(
                     "SourceGitIPCChannel" + Environment.UserName,
                     PipeDirection.In,
@@ -32,7 +29,7 @@ namespace SourceGit.Models
             }
             catch
             {
-                _isFirstInstance = false;
+                IsFirstInstance = false;
             }
         }
 
@@ -97,7 +94,6 @@ namespace SourceGit.Models
         }
 
         private FileStream _singletonLock = null;
-        private bool _isFirstInstance = false;
         private NamedPipeServerStream _server = null;
         private CancellationTokenSource _cancellationTokenSource = null;
     }

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -29,7 +30,12 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
             {
-                var menu = vm.CreateContextMenuForUnstagedChanges();
+                var container = control.FindDescendantOfType<ChangeCollectionContainer>();
+                var selectedSingleFolder = string.Empty;
+                if (container is { SelectedItems: { Count: 1 }, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                    selectedSingleFolder = node.FullPath;
+
+                var menu = vm.CreateContextMenuForUnstagedChanges(selectedSingleFolder);
                 menu?.Open(control);
                 e.Handled = true;
             }
@@ -39,7 +45,12 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
             {
-                var menu = vm.CreateContextMenuForStagedChanges();
+                var container = control.FindDescendantOfType<ChangeCollectionContainer>();
+                var selectedSingleFolder = string.Empty;
+                if (container is { SelectedItems: { Count: 1 }, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                    selectedSingleFolder = node.FullPath;
+
+                var menu = vm.CreateContextMenuForStagedChanges(selectedSingleFolder);
                 menu?.Open(control);
                 e.Handled = true;
             }

@@ -444,6 +444,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">il y a {0} mois</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">il y a {0} ans</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Hier</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Utiliser 'Maj+Entrée' pour insérer une nouvelle ligne. 'Entrée' est la touche pour valider</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyser Diff Prompt</x:String>
@@ -619,7 +620,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit :</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit les changements de l'annulation</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Reformuler le message de commit</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Utiliser 'Maj+Entrée' pour insérer une nouvelle ligne. 'Entrée' est la touche pour valider</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">En exécution. Veuillez patienter...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAUVEGARDER</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Sauvegarder en tant que...</x:String>
@@ -645,12 +645,9 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Chemin du magasin de clés privées SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Auto-restauration après le stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Vos fichiers de travail restent inchangés, mais une sauvegarde est enregistrée.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inclure les fichiers non-suivis</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Garder les fichiers indexés</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Message :</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optionnel. Nom de ce stash</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optionnel. Information de ce stash</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Seulement les changements indexés</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Les modifications indexées et non-indexées des fichiers sélectionnés seront stockées!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash les changements locaux</x:String>
@@ -710,7 +707,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorer tous les *{0} fichiers</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignorer *{0} fichiers dans le même dossier</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignorer les fichiers dans le même dossier</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">N'ignorer que ce fichier</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amender</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Vous pouvez indexer ce fichier.</x:String>

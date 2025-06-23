@@ -90,6 +90,8 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Обновить все подкаталоги</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Переключиться и перемотать</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Перемотать к:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для ревизии сообщения</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Ревизия(и):</x:String>
@@ -122,6 +124,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Влить ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Выложить ${0}$ в ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Отменить ревизию</x:String>
@@ -444,6 +447,7 @@
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Рабочие места</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Страницы</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Влить ветку</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Изменить сообщение слияния</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Источник:</x:String>
@@ -476,6 +480,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев назад</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчера</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Параметры</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Запрос на анализ сравнения</x:String>
@@ -554,6 +559,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Принудительно выложить</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Локальная ветка:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Ревизия:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Выложить ревизию на удалёную</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Выложить изменения на внешний репозиторий</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Ветка внешнего репозитория:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Отслеживать ветку</x:String>
@@ -664,7 +671,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Отмена ревизии</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Изменить комментарий ревизии</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Используйте «Shift+Enter» для ввода новой строки. «Enter» - это горячая клавиша кнопки «OK»</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Запуск. Подождите пожалуйста...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">СОХРАНИТЬ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Сохранить как...</x:String>
@@ -690,16 +696,15 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Путь хранения приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ЗАПУСК</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Отложить</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Автоматически восстанавливать после откладывания</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Ваши рабочие файлы остаются неизменными, но отложенные сохранятся.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Включить неотслеживаемые файлы</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Хранить отложенные файлы</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Сообщение:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Имя тайника (необязательно)</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Режим:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Только сформированные изменения</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Сформированные так и несформированные изменения выбранных файлов будут сохранены!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Отложить локальные изменения</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Принять</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Копировать сообщение</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Отбросить</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатку...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Отбросить тайник</x:String>
@@ -766,7 +771,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Игнорировать Git</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Игнорировать все *{0} файлы</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Игнорировать *{0} файлы в том же каталоге</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Игнорировать файлы в том же каталоге</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Игнорировать неотслеживаемые файлы в этом каталоге</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Игнорировать только эти файлы</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Изменить</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Теперь вы можете сформировать этот файл.</x:String>

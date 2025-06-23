@@ -124,6 +124,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合併 (merge) 此提交到 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合併 (merge)...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送(push) ${0}$ 至 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重設 (reset) ${0}$ 到此處</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">復原此提交</x:String>
@@ -446,6 +447,7 @@
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">頁面列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合併分支</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">編輯合併訊息</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合併來源:</x:String>
@@ -478,6 +480,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} 個月前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">請使用 Shift + Enter 換行。Enter 鍵已被 [確定] 按鈕佔用。</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>
@@ -556,6 +559,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">啟用強制推送</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">遠端存放庫:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">修訂:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送修訂到遠端存放庫</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到遠端存放庫</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">遠端分支:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">追蹤遠端分支</x:String>
@@ -666,7 +671,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目標提交:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">復原後提交變更</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">編輯提交訊息</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">請使用 Shift + Enter 換行。Enter 鍵已被 [確定] 按鈕佔用。</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">執行操作中，請耐心等待...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">儲存</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">另存新檔...</x:String>
@@ -692,16 +696,15 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH 金鑰檔案</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開  始</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">擱置變更 (stash)</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">擱置變更後自動復原工作區</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">工作區檔案保持未修改，但擱置內容已儲存。</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">包含未追蹤的檔案</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">保留已暫存的變更</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">擱置變更訊息:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">選填，用於命名此擱置變更</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">選填，用於描述此擱置變更</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">操作模式:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">僅擱置已暫存的變更</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">已選取的檔案中的變更均會被擱置!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">擱置本機變更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">套用 (apply)</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">複製描述訊息</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">刪除 (drop)</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">捨棄擱置變更確認</x:String>
@@ -768,7 +771,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">加入至 .gitignore 忽略清單</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">忽略所有 *{0} 檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">忽略同路徑下所有 *{0} 檔案</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">忽略同路徑下所有檔案</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">忽略本路徑下的新增檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">忽略本檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修補</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>

@@ -13,13 +13,7 @@
                     Title="{DynamicResource Text.BranchCompare}"
                     MinWidth="1280" MinHeight="720"
                     WindowStartupLocation="CenterOwner">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="64"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
+  <Grid RowDefinitions="Auto,64,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->

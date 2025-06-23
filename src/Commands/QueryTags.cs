@@ -24,7 +24,7 @@ namespace SourceGit.Commands
             var records = rs.StdOut.Split(_boundary, StringSplitOptions.RemoveEmptyEntries);
             foreach (var record in records)
             {
-                var subs = record.Split('\0', StringSplitOptions.None);
+                var subs = record.Split('\0');
                 if (subs.Length != 6)
                     continue;
 

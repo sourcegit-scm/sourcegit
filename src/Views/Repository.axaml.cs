@@ -12,7 +12,7 @@ namespace SourceGit.Views
     public class CounterPresenter : Control
     {
         public static readonly StyledProperty<int> CountProperty =
-            AvaloniaProperty.Register<CounterPresenter, int>(nameof(Count), 0);
+            AvaloniaProperty.Register<CounterPresenter, int>(nameof(Count));
 
         public int Count
         {

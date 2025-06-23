@@ -176,17 +176,11 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public bool KeepIndexWhenStash
+        public int ChangesAfterStashing
         {
             get;
             set;
-        } = false;
-
-        public bool AutoRestoreAfterStash
-        {
-            get;
-            set;
-        } = false;
+        } = 0;
 
         public string PreferredOpenAIService
         {

@@ -4,57 +4,24 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace SourceGit.Views
 {
     public class ChangeStatusIcon : Control
     {
         private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "★", "!"];
-        private static readonly IBrush[] BACKGROUNDS = [
-            Brushes.Transparent,
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(238, 160, 14), 0), new GradientStop(Color.FromRgb(228, 172, 67), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            new LinearGradientBrush
-            {
-                GradientStops = new GradientStops() { new GradientStop(Color.FromRgb(47, 185, 47), 0), new GradientStop(Color.FromRgb(75, 189, 75), 1) },
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            },
-            Brushes.OrangeRed,
+        private static readonly Color[] COLOR =
+        [
+            Colors.Transparent,
+            Colors.Goldenrod,
+            Colors.Goldenrod,
+            Colors.LimeGreen,
+            Colors.Tomato,
+            Colors.Orchid,
+            Colors.Goldenrod,
+            Colors.LimeGreen,
+            Colors.OrangeRed,
         ];
 
         public static readonly StyledProperty<bool> IsUnstagedChangeProperty =
@@ -82,18 +49,20 @@ namespace SourceGit.Views
 
             var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
 
-            IBrush background;
-            string indicator;
-            if (IsUnstagedChange)
+            var idx = (int)(IsUnstagedChange ? Change.WorkTree : Change.Index);
+            var indicator = INDICATOR[idx];
+            var color = COLOR[idx];
+            var hsl = color.ToHsl();
+            var color2 = ActualThemeVariant == ThemeVariant.Dark
+                ? new HslColor(hsl.A, hsl.H, hsl.S, hsl.L - 0.1).ToRgb()
+                : new HslColor(hsl.A, hsl.H, hsl.S, hsl.L + 0.1).ToRgb();
+
+            var background = new LinearGradientBrush
             {
-                background = BACKGROUNDS[(int)Change.WorkTree];
-                indicator = INDICATOR[(int)Change.WorkTree];
-            }
-            else
-            {
-                background = BACKGROUNDS[(int)Change.Index];
-                indicator = INDICATOR[(int)Change.Index];
-            }
+                GradientStops = [new GradientStop(color, 0), new GradientStop(color2, 1)],
+                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            };
 
             var txt = new FormattedText(
                 indicator,
@@ -113,7 +82,9 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == IsUnstagedChangeProperty || change.Property == ChangeProperty)
+            if (change.Property == IsUnstagedChangeProperty ||
+                change.Property == ChangeProperty ||
+                (change.Property.Name == "ActualThemeVariant" && change.NewValue != null))
                 InvalidateVisual();
         }
     }

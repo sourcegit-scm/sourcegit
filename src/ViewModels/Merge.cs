@@ -21,6 +21,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool Edit
+        {
+            get;
+            set;
+        } = false;
+
         public Merge(Repository repo, Models.Branch source, string into, bool forceFastForward)
         {
             _repo = repo;
@@ -62,7 +68,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg).Use(log).Exec();
+                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).Exec();
                 log.Complete();
 
                 var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();

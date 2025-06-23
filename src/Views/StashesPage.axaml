@@ -84,14 +84,23 @@
 
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Stash">
-            <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent" ContextRequested="OnStashContextRequested">
+            <Border Background="Transparent"
+                    BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
+                    Padding="4"
+                    ContextRequested="OnStashContextRequested"
+                    ToolTip.Tip="{Binding Message}">
               <Grid RowDefinitions="Auto,*" >
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
                   <TextBlock Grid.Column="0" Classes="primary" Text="{Binding Name}" Foreground="DarkOrange"/>
                   <TextBlock Grid.Column="1" Classes="primary" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                 </Grid>
 
-                <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Message}" VerticalAlignment="Bottom"/>
+                <v:StashSubjectPresenter Grid.Row="1"
+                                         Subject="{Binding Subject}"
+                                         Foreground="{DynamicResource Brush.FG1}"
+                                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
+                                         PrefixBackground="{DynamicResource Brush.InlineCode}"
+                                         VerticalAlignment="Bottom"/>
               </Grid>
             </Border>
           </DataTemplate>

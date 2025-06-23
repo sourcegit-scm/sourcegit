@@ -10,6 +10,10 @@ namespace SourceGit.Commands
     {
         public static void Run(string repo, string revision, string file, string saveTo)
         {
+            var dir = Path.GetDirectoryName(saveTo);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
             var isLFSFiltered = new IsLFSFiltered(repo, revision, file).Result();
             if (isLFSFiltered)
             {
@@ -22,7 +26,7 @@ namespace SourceGit.Commands
             }
         }
 
-        private static bool ExecCmd(string repo, string args, string outputFile, Stream input = null)
+        private static void ExecCmd(string repo, string args, string outputFile, Stream input = null)
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
@@ -45,10 +49,7 @@ namespace SourceGit.Commands
                         proc.StandardInput.Write(new StreamReader(input).ReadToEnd());
                     proc.StandardOutput.BaseStream.CopyTo(sw);
                     proc.WaitForExit();
-                    var rs = proc.ExitCode == 0;
                     proc.Close();
-
-                    return rs;
                 }
                 catch (Exception e)
                 {
@@ -56,7 +57,6 @@ namespace SourceGit.Commands
                     {
                         App.RaiseException(repo, "Save file failed: " + e.Message);
                     });
-                    return false;
                 }
             }
         }

@@ -39,6 +39,7 @@
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ALS UNVERÄNDERT ANGENOMMENE DATEIEN</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">KEINE ALS UNVERÄNDERT ANGENOMMENEN DATEIEN</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">ENTFERNEN</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Bild laden...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">BINÄRE DATEI NICHT UNTERSTÜTZT!!!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
@@ -67,6 +68,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ auf ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Benenne ${0}$ um...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Setze ${0}$ zurück auf ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Setze verfolgten Branch...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Vergleich</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Ungültiger upstream!</x:String>
@@ -88,6 +90,8 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Alle Submodule updaten</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Auschecken &amp; Fast-Forward</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward zu:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Quelle an Commit-Nachricht anhängen</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
@@ -120,6 +124,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactives Rebase von ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge in ${0}$ hinein</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ zu ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase von ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ auf diesen Commit</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
@@ -128,6 +133,7 @@
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash in den Vorgänger</x:String>
   <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Nachfolger Commits bis hier</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ÄNDERUNGEN</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">geänderte Datei(en)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">DATEIEN</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS DATEI</x:String>
@@ -219,6 +225,7 @@
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Branch-Namen eingeben.</x:String>
   <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Leerzeichen werden durch Bindestriche ersetzt.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Lokalen Branch erstellen</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Überschreibe existierenden Branch</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Tag erstellen...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Neuer Tag auf:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Mit GPG signieren</x:String>
@@ -233,6 +240,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Ohne Anmerkung</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Halte Strg gedrückt, um direkt auszuführen</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Ausschneiden</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">De-initialisiere Submodul</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Erzwinge De-Initialisierung, selbst wenn es lokale Änderungen enthält.</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submodul:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Branch löschen</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Du löscht gerade einen Remote-Branch!!!</x:String>
@@ -268,6 +278,7 @@
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Zeige versteckte Symbole</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Nebeneinander</x:String>
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODUL</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">GELÖSCHT</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEU</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Seiten wechseln</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Hervorhebung</x:String>
@@ -326,6 +337,8 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Finish Hotfix</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Finish Release</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Ziel:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Push zu Remote(s) nach Durchführung des Finish</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash beim Merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix-Prefix:</x:String>
   <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Git-Flow initialisieren</x:String>
@@ -387,6 +400,8 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Zum vorherigen Tab wechseln</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Neuen Tab erstellen</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Einstellungen öffnen</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">Aktiven Arbeitsplatz wechseln</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Aktiven Tab wechseln</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Gestagte Änderungen committen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Gestagte Änderungen committen und pushen</x:String>
@@ -407,6 +422,7 @@
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Suchpanel schließen</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Suche nächste Übereinstimmung</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Suche vorherige Übereinstimmung</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Öffne mit externem Diff/Merge Tool</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Öffne Suchpanel</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stagen</x:String>
@@ -428,7 +444,10 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">In Browser öffnen</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">FEHLER</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">INFO</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Arbeitsplätze</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Tabs</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Branch mergen</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Merge-Nachricht anpassen</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Quelle:</x:String>
@@ -461,6 +480,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Vor {0} Monaten</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Vor {0} Jahren</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Gestern</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Verwende 'Shift+Enter' um eine neue Zeile einzufügen. 'Enter' ist das Kürzel für den OK Button</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Einstellungen</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analysierung des Diff Befehl</x:String>
@@ -530,6 +550,7 @@
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
+  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Alle Submodule aktualisieren</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Rebase anstatt Merge verwenden</x:String>
@@ -538,6 +559,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Erzwinge Push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Lokaler Branch:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revision zu Remote-Branch</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Remote-Branch:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Remote-Branch verfolgen</x:String>
@@ -578,6 +601,7 @@
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Aufräumen (GC &amp; Prune)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Führt `git gc` auf diesem Repository aus.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Filter aufheben</x:String>
+  <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Löschen</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Repository Einstellungen</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Benutzerdefinierte Aktionen</x:String>
@@ -615,6 +639,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Commit-Nachricht</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Aktueller Branch</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Submodule als Baum anzeigen</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Zeige Tags als Baum</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">ÜBERSPRINGEN</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistiken</x:String>
@@ -638,12 +663,14 @@
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Rücksetzmodus:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Verschiebe zu:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">Aktueller Branch:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Reset Branch (ohne Checkout)</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Auf:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.RevealFile" xml:space="preserve">Zeige im Datei-Explorer</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit Änderungen rückgängig machen</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">Commit Nachricht umformulieren</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">Verwende 'Shift+Enter' um eine neue Zeile einzufügen. 'Enter' ist das Kürzel für den OK Button</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Bitte warten...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SPEICHERN</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Speichern als...</x:String>
@@ -669,16 +696,15 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">Automatisch wiederherstellen nach dem Stashen</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">Die Arbeitsdateien bleiben unverändert, aber ein Stash wird gespeichert.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inklusive nicht-verfolgter Dateien</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">Behalte gestagte Dateien</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Name:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Name dieses Stashes</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Informationen zu dieses Stashes</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Modus:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur gestagte Änderungen</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Gestagte und unstagte Änderungen der ausgewähleten Datei(en) werden gestasht!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Lokale Änderungen stashen</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Anwenden</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Kopiere Nachricht</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Entfernen</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Als Path speichern...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Stash entfernen</x:String>
@@ -697,11 +723,18 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Submodul hinzufügen</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relativen Pfad kopieren</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialisiere Submodul</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Untergeordnete Submodule fetchen</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Öffne Submodul Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relativer Pfad:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relativer Ordner um dieses Submodul zu speichern.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Submodul löschen</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">STATUS</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">geändert</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">nicht initialisiert</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">Revision geändert</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">nicht gemerged</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Tag-Namen kopieren</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Tag-Nachricht kopieren</x:String>
@@ -738,7 +771,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignoriere alle *{0} Dateien</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignoriere *{0} Datein im selben Ordner</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">Ignoriere Dateien im selben Ordner</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignoriere nicht-verfolgte Dateien in diesem Ordner</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignoriere nur diese Datei</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Du kannst diese Datei jetzt stagen.</x:String>
@@ -758,6 +791,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN INKLUDIEREN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">KEINE BISHERIGEN COMMIT-NACHRICHTEN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">KEINE COMMIT TEMPLATES</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Autor zurücksetzen</x:String>
   <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Rechtsklick auf selektierte Dateien und wähle die Konfliktlösungen aus.</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">SignOff</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">GESTAGED</x:String>

@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value == null || value.Count != 1)
+                    if (value is not { Count: 1 })
                         DiffContext = null;
                     else
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, value[0]), _diffContext);
@@ -131,6 +131,12 @@ namespace SourceGit.ViewModels
         {
             get => _revisionFileSearchSuggestion;
             private set => SetProperty(ref _revisionFileSearchSuggestion, value);
+        }
+
+        public bool CanOpenRevisionFileWithDefaultEditor
+        {
+            get => _canOpenRevisionFileWithDefaultEditor;
+            private set => SetProperty(ref _canOpenRevisionFileWithDefaultEditor, value);
         }
 
         public CommitDetail(Repository repo)
@@ -197,6 +203,7 @@ namespace SourceGit.ViewModels
             {
                 ViewRevisionFilePath = string.Empty;
                 ViewRevisionFileContent = null;
+                CanOpenRevisionFileWithDefaultEditor = false;
                 return;
             }
 
@@ -205,6 +212,7 @@ namespace SourceGit.ViewModels
             switch (file.Type)
             {
                 case Models.ObjectType.Blob:
+                    CanOpenRevisionFileWithDefaultEditor = true;
                     Task.Run(() =>
                     {
                         var isBinary = new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path).Result();
@@ -252,6 +260,7 @@ namespace SourceGit.ViewModels
                     });
                     break;
                 case Models.ObjectType.Commit:
+                    CanOpenRevisionFileWithDefaultEditor = false;
                     Task.Run(() =>
                     {
                         var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
@@ -267,9 +276,24 @@ namespace SourceGit.ViewModels
                     });
                     break;
                 default:
+                    CanOpenRevisionFileWithDefaultEditor = false;
                     ViewRevisionFileContent = null;
                     break;
             }
+        }
+
+        public Task OpenRevisionFileWithDefaultEditor(string file)
+        {
+            return Task.Run(() =>
+            {
+                var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file);
+                var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
+                var fileExt = Path.GetExtension(fullPath) ?? "";
+                var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
+
+                Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file, tmpFile);
+                Native.OS.OpenWithDefaultEditor(tmpFile);
+            });
         }
 
         public ContextMenu CreateChangeContextMenu(Models.Change change)
@@ -421,13 +445,10 @@ namespace SourceGit.ViewModels
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = file.Type == Models.ObjectType.Blob;
             openWith.Click += async (_, ev) =>
             {
-                var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
-                var fileExt = Path.GetExtension(fullPath) ?? "";
-                var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
-                await Task.Run(() => Commands.SaveRevisionFile.Run(_repo.FullPath, _commit.SHA, file.Path, tmpFile));
-                Native.OS.OpenWithDefaultEditor(tmpFile);
+                await OpenRevisionFileWithDefaultEditor(file.Path);
                 ev.Handled = true;
             };
 
@@ -549,6 +570,8 @@ namespace SourceGit.ViewModels
 
             SignInfo = null;
             ViewRevisionFileContent = null;
+            ViewRevisionFilePath = string.Empty;
+            CanOpenRevisionFileWithDefaultEditor = false;
             Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
@@ -887,5 +910,6 @@ namespace SourceGit.ViewModels
         private List<string> _revisionFiles = null;
         private string _revisionFileSearchFilter = string.Empty;
         private List<string> _revisionFileSearchSuggestion = null;
+        private bool _canOpenRevisionFileWithDefaultEditor = false;
     }
 }

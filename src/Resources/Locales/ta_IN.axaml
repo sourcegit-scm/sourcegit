@@ -443,6 +443,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} திங்களுக்கு முன்பு</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} ஆண்டுகளுக்கு முன்பு</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">நேற்று</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">புதிய வரியை உள்ளிட 'உயர்த்து+நுழை' ஐப் பயன்படுத்தவும். 'நுழை' என்பது சரி பொத்தானின் சூடானவிசை ஆகும்</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">செநு</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">வேறுபாடு உடனடியாக பகுப்பாய்வு செய்</x:String>
@@ -618,7 +619,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">உறுதிமொழி:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">பின்வாங்கு மாற்றங்களை உறுதிமொழி</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">மாறுசொல் உறுதிமொழி செய்தி</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">புதிய வரியை உள்ளிட 'உயர்த்து+நுழை' ஐப் பயன்படுத்தவும். 'நுழை' என்பது சரி பொத்தானின் சூடானவிசை ஆகும்</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">இயங்குகிறது. காத்திருக்கவும்...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">சேமி</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">எனச் சேமி...</x:String>
@@ -644,10 +644,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">தனியார் பாஓடு திறவுகோல் கடை பாதை</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">தொடங்கு</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">பதுக்கிவை</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">பதுக்கிவைத்த பிறகு தானியங்கி மீட்டமை</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">உங்கள் செயல்படும் கோப்புகள் மாறாமல் இருக்கும், ஆனால் ஒரு பதுக்கிவைக்கப்படும்.</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">கண்காணிக்கப்படாத கோப்புகளைச் சேர்</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">நிலைப்படுத்தப்பட்ட கோப்புகளை வைத்திரு</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">செய்தி:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">விருப்பத்தேர்வு. இந்த பதுக்கலின் பெயர்</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">நிலைப்படுத்தப்பட்ட மாற்றங்கள் மட்டும்</x:String>
@@ -708,7 +705,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">அறிவிலி புறக்கணி</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">எல்லா *{0} கோப்புகளையும் புறக்கணி</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">ஒரே கோப்புறையில் *{0} கோப்புகளைப் புறக்கணி</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">ஒரே கோப்புறையில் கோப்புகளைப் புறக்கணி</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">இந்த கோப்பை மட்டும் புறக்கணி</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">பின்னொட்டு</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">இந்த கோப்பை இப்போது நீங்கள் நிலைப்படுத்தலாம்.</x:String>

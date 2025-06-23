@@ -443,6 +443,7 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} ヶ月前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨日</x:String>
+  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">改行には'Shift+Enter'キーを使用します。 'Enter"はOKボタンのホットキーとして機能します。</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">差分分析プロンプト</x:String>
@@ -617,7 +618,6 @@
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">コミット:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">コミットの変更を戻す</x:String>
   <x:String x:Key="Text.Reword" xml:space="preserve">コミットメッセージを書き直す</x:String>
-  <x:String x:Key="Text.Reword.Tip" xml:space="preserve">改行には'Shift+Enter'キーを使用します。 'Enter"はOKボタンのホットキーとして機能します。</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">実行中です。しばらくお待ちください...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">保存</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">名前を付けて保存...</x:String>
@@ -643,12 +643,9 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">プライベートSSHキーストアのパス</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">スタート</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">スタッシュ</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore" xml:space="preserve">スタッシュ後に自動で復元</x:String>
-  <x:String x:Key="Text.Stash.AutoRestore.Tip" xml:space="preserve">作業ファイルは変更されず、スタッシュが保存されます。</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">追跡されていないファイルを含める</x:String>
-  <x:String x:Key="Text.Stash.KeepIndex" xml:space="preserve">ステージされたファイルを保持</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">メッセージ:</x:String>
-  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">オプション. このスタッシュの名前を入力</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">オプション. このスタッシュの情報</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">ステージされた変更のみ</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">選択したファイルの、ステージされた変更とステージされていない変更の両方がスタッシュされます!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">ローカルの変更をスタッシュ</x:String>
@@ -708,7 +705,6 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">すべての*{0}ファイルを無視</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">同じフォルダ内の*{0}ファイルを無視</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InSameFolder" xml:space="preserve">同じフォルダ内のファイルを無視</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">このファイルのみを無視</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">このファイルを今すぐステージできます。</x:String>

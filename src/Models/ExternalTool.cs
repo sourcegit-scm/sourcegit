@@ -107,8 +107,7 @@ namespace SourceGit.Models
                 // Ignore
             }
 
-            if (_customPaths == null)
-                _customPaths = new ExternalToolPaths();
+            _customPaths ??= new ExternalToolPaths();
         }
 
         public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null)

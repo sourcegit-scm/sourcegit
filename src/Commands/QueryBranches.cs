@@ -48,16 +48,12 @@ namespace SourceGit.Commands
                     if (remoteHeads.TryGetValue(b.Upstream, out var upstreamHead))
                     {
                         b.IsUpstreamGone = false;
-
-                        if (b.TrackStatus == null)
-                            b.TrackStatus = new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).Result();
+                        b.TrackStatus ??= new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).Result();
                     }
                     else
                     {
                         b.IsUpstreamGone = true;
-
-                        if (b.TrackStatus == null)
-                            b.TrackStatus = new Models.BranchTrackStatus();
+                        b.TrackStatus ??= new Models.BranchTrackStatus();
                     }
                 }
             }

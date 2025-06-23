@@ -11,7 +11,7 @@ namespace SourceGit.Views
     public class CommandLogTime : TextBlock
     {
         public static readonly StyledProperty<ViewModels.CommandLog> LogProperty =
-            AvaloniaProperty.Register<CommandLogTime, ViewModels.CommandLog>(nameof(Log), null);
+            AvaloniaProperty.Register<CommandLogTime, ViewModels.CommandLog>(nameof(Log));
 
         public ViewModels.CommandLog Log
         {
