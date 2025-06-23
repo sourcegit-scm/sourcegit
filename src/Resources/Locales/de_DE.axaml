@@ -6,6 +6,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">Info</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Über SourceGit</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Open Source &amp; freier Git GUI Client</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Zu ignorierende Datei(en) hinzufügen</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Muster:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Speichern in Datei:</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Worktree hinzufügen</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Ordner:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Pfad für diesen Worktree. Relativer Pfad wird unterstützt.</x:String>
