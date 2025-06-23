@@ -189,14 +189,11 @@
 
                 <!-- Subject -->
                 <Grid Grid.Column="2" ColumnDefinitions="Auto,*" ClipToBounds="True">
-                  <Button Grid.Column="0" Classes="icon_button" Margin="0,0,8,0" IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}">
-                    <Button.Flyout>
-                      <Flyout Placement="BottomEdgeAlignedLeft">
-                        <Panel Width="600" Height="120">
-                          <v:CommitMessageTextBox Text="{Binding FullMessage, Mode=TwoWay}"/>
-                        </Panel>
-                      </Flyout>
-                    </Button.Flyout>
+                  <Button Grid.Column="0"
+                          Classes="icon_button"
+                          Margin="0,0,8,0"
+                          IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}"
+                          Click="OnOpenCommitMessageEditor">
                     <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
                   </Button>
                   <TextBlock Grid.Column="1" Classes="primary" Margin="0,0,4,0" Text="{Binding Subject}"/>

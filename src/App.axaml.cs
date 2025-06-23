@@ -531,8 +531,8 @@ namespace SourceGit
                 return true;
             }
 
-            var editor = new Views.StandaloneCommitMessageEditor();
-            editor.SetFile(file);
+            var editor = new Views.CommitMessageEditor();
+            editor.AsStandalone(file);
             desktop.MainWindow = editor;
             return true;
         }

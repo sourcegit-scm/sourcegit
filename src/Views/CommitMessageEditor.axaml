@@ -4,7 +4,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.StandaloneCommitMessageEditor"
+                    x:Class="SourceGit.Views.CommitMessageEditor"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.CodeEditor}"

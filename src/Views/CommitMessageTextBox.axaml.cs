@@ -201,7 +201,14 @@ namespace SourceGit.Views
 
         private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
-            App.ShowWindow(new ViewModels.ConventionalCommitMessageBuilder(text => Text = text), true);
+            var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel is Window owner)
+            {
+                var vm = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text);
+                var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
+                builder.ShowDialog(owner);
+            }
+
             e.Handled = true;
         }
 
