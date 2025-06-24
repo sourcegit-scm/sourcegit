@@ -57,16 +57,6 @@ namespace SourceGit.Views
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
                 e.Handled = true;
             }
-            else if (e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Up)
-            {
-                vm.MoveItemUp(item);
-                e.Handled = true;
-            }
-            else if (e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Down)
-            {
-                vm.MoveItemDown(item);
-                e.Handled = true;
-            }
             else
             {
                 base.OnKeyDown(e);
@@ -132,24 +122,6 @@ namespace SourceGit.Views
                     }
                 }
 
-                e.Handled = true;
-            }
-        }
-
-        private void OnMoveItemUp(object sender, RoutedEventArgs e)
-        {
-            if (sender is Control control && DataContext is ViewModels.InteractiveRebase vm)
-            {
-                vm.MoveItemUp(control.DataContext as ViewModels.InteractiveRebaseItem);
-                e.Handled = true;
-            }
-        }
-
-        private void OnMoveItemDown(object sender, RoutedEventArgs e)
-        {
-            if (sender is Control control && DataContext is ViewModels.InteractiveRebase vm)
-            {
-                vm.MoveItemDown(control.DataContext as ViewModels.InteractiveRebaseItem);
                 e.Handled = true;
             }
         }
