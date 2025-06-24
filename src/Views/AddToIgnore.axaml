@@ -21,24 +21,35 @@
                Height="28"
                CornerRadius="3"
                Text="{Binding Pattern, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               v:AutoFocusBehaviour.IsEnabled="True">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12" Margin="6,0,2,0" Data="{StaticResource Icons.Pattern}" Fill="{DynamicResource Brush.FG2}"/>
+        </TextBox.InnerLeftContent>
+      </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.AddToIgnore.Storage}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="28" Padding="4,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:GitIgnoreFile.Supported}}"
                 SelectedItem="{Binding StorageFile, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:GitIgnoreFile">
-            <TextBlock VerticalAlignment="Center">
-              <Run Text="{Binding File, Mode=OneWay}"/>
-              <Run Text="•" Foreground="{DynamicResource Brush.FG2}"/>
-              <Run Text="{Binding Desc, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
-            </TextBlock>
+            <Grid ColumnDefinitions="20,*">
+              <Path Grid.Column="0"
+                    Width="12" Height="12"
+                    Data="{StaticResource Icons.File}"
+                    Fill="{DynamicResource Brush.FG2}"/>
+
+              <TextBlock Grid.Column="1" VerticalAlignment="Center">
+                <Run Text="{Binding File, Mode=OneWay}"/>
+                <Run Text="•" Foreground="{DynamicResource Brush.FG2}"/>
+                <Run Text="{Binding Desc, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+              </TextBlock>
+            </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
