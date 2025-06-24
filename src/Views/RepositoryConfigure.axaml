@@ -230,7 +230,7 @@
                 <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
 
                 <Button Classes="icon_button" Command="{Binding RemoveSelectedCommitTemplate}">
-                  <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
 
                 <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
@@ -332,7 +332,7 @@
                 <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
 
                 <Button Classes="icon_button" Command="{Binding RemoveSelectedIssueTracker}">
-                  <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
 
                 <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
@@ -428,7 +428,7 @@
                         Classes="icon_button"
                         Width="28" Height="28"
                         Command="{Binding RemoveSelectedCustomAction}">
-                  <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
                 <Button Grid.Column="3"
                         Classes="icon_button"

@@ -137,7 +137,7 @@
                           <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
                         </Button>
                         <Button Grid.Column="3" Classes="icon_button" Width="16" Height="16" Margin="8,0,0,0" Click="OnDismissNotification">
-                          <Path Width="10" Height="10" Data="{StaticResource Icons.Window.Close}"/>
+                          <Path Width="10" Height="10" Data="{StaticResource Icons.Close}"/>
                         </Button>
                       </Grid>
 
