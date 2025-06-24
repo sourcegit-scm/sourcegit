@@ -304,6 +304,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDefaultCloneDir, value);
         }
 
+        public bool PreferWorkspaceDefaultCloneDir
+        {
+            get => _preferWorkspaceCloneDir;
+            set => SetProperty(ref _preferWorkspaceCloneDir, value);
+        }
+
         public int ShellOrTerminal
         {
             get => _shellOrTerminal;
@@ -701,7 +707,7 @@ namespace SourceGit.ViewModels
         private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
-
+        private bool _preferWorkspaceCloneDir = false;
         private int _shellOrTerminal = -1;
         private int _externalMergeToolType = 0;
         private string _externalMergeToolPath = string.Empty;

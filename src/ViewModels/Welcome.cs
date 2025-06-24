@@ -150,16 +150,30 @@ namespace SourceGit.ViewModels
 
         public void ScanDefaultCloneDir()
         {
-            var defaultCloneDir = Preferences.Instance.GitDefaultCloneDir;
+            var pref = Preferences.Instance;
+            string defaultCloneDir;
+            string location;
+
+            if (pref.PreferWorkspaceDefaultCloneDir)
+            {
+                defaultCloneDir = pref.GetActiveWorkspace().DefaultCloneDir;
+                location = "workspace";
+            }
+            else
+            {
+                defaultCloneDir = pref.GitDefaultCloneDir;
+                location = "default";
+            }
+
             if (string.IsNullOrEmpty(defaultCloneDir))
             {
-                App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
+                App.RaiseException(string.Empty, $"The {location} clone directory hasn't been configured!");
                 return;
             }
 
             if (!Directory.Exists(defaultCloneDir))
             {
-                App.RaiseException(string.Empty, $"The default clone directory '{defaultCloneDir}' does not exist!");
+                App.RaiseException(string.Empty, $"The {location} clone directory '{defaultCloneDir}' does not exist!");
                 return;
             }
 
