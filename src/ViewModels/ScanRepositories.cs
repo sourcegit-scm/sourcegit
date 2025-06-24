@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,27 +11,45 @@ namespace SourceGit.ViewModels
 {
     public class ScanRepositories : Popup
     {
-        public string RootDir
+        public List<Models.ScanDir> ScanDirs
         {
             get;
         }
 
-        public ScanRepositories(string rootDir)
+        [Required(ErrorMessage = "Scan directory is required!!!")]
+        public Models.ScanDir Selected
         {
+            get => _selected;
+            set => SetProperty(ref _selected, value, true);
+        }
+
+        public ScanRepositories()
+        {
+            ScanDirs = new List<Models.ScanDir>();
+
+            if (!string.IsNullOrEmpty(Preferences.Instance.GitDefaultCloneDir))
+                ScanDirs.Add(new Models.ScanDir(Preferences.Instance.GitDefaultCloneDir, "Global"));
+
+            var workspace = Preferences.Instance.GetActiveWorkspace();
+            if (!string.IsNullOrEmpty(workspace.DefaultCloneDir))
+                ScanDirs.Add(new Models.ScanDir(workspace.DefaultCloneDir, "Workspace"));
+
+            if (ScanDirs.Count > 0)
+                _selected = ScanDirs[0];
+
             GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
-            RootDir = rootDir;
         }
 
         public override Task<bool> Sure()
         {
-            ProgressDescription = $"Scan repositories under '{RootDir}' ...";
+            ProgressDescription = $"Scan repositories under '{_selected.Path}' ...";
 
             return Task.Run(() =>
             {
                 var watch = new Stopwatch();
                 watch.Start();
 
-                var rootDir = new DirectoryInfo(RootDir);
+                var rootDir = new DirectoryInfo(_selected.Path);
                 var found = new List<string>();
                 GetUnmanagedRepositories(rootDir, found, new EnumerationOptions()
                 {
@@ -159,5 +178,6 @@ namespace SourceGit.ViewModels
         }
 
         private HashSet<string> _managed = new();
+        private Models.ScanDir _selected = null;
     }
 }

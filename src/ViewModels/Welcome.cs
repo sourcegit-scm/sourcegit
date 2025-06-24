@@ -150,22 +150,15 @@ namespace SourceGit.ViewModels
 
         public void ScanDefaultCloneDir()
         {
-            var defaultCloneDir = Preferences.Instance.GitDefaultCloneDir;
-            if (string.IsNullOrEmpty(defaultCloneDir))
+            if (!Preferences.Instance.IsGitConfigured())
             {
-                App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
-                return;
-            }
-
-            if (!Directory.Exists(defaultCloneDir))
-            {
-                App.RaiseException(string.Empty, $"The default clone directory '{defaultCloneDir}' does not exist!");
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
             }
 
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
-                activePage.StartPopup(new ScanRepositories(defaultCloneDir));
+                activePage.Popup = new ScanRepositories();
         }
 
         public void ClearSearchFilter()
