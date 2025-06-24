@@ -27,12 +27,12 @@ namespace SourceGit.ViewModels
         {
             ScanDirs = new List<Models.ScanDir>();
 
-            if (!string.IsNullOrEmpty(Preferences.Instance.GitDefaultCloneDir))
-                ScanDirs.Add(new Models.ScanDir(Preferences.Instance.GitDefaultCloneDir, "Global"));
-
             var workspace = Preferences.Instance.GetActiveWorkspace();
             if (!string.IsNullOrEmpty(workspace.DefaultCloneDir))
                 ScanDirs.Add(new Models.ScanDir(workspace.DefaultCloneDir, "Workspace"));
+
+            if (!string.IsNullOrEmpty(Preferences.Instance.GitDefaultCloneDir))
+                ScanDirs.Add(new Models.ScanDir(Preferences.Instance.GitDefaultCloneDir, "Global"));
 
             if (ScanDirs.Count > 0)
                 _selected = ScanDirs[0];
