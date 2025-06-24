@@ -194,7 +194,17 @@
                           Click="OnOpenCommitMessageEditor">
                     <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
                   </Button>
-                  <TextBlock Grid.Column="1" Classes="primary" Margin="0,0,4,0" Text="{Binding Subject}"/>
+
+                  <v:CommitSubjectPresenter Grid.Column="1"
+                                            Margin="0,0,4,0"
+                                            FontFamily="{DynamicResource Fonts.Primary}"
+                                            CodeFontFamily="{DynamicResource Fonts.Monospace}"
+                                            InlineCodeBackground="{DynamicResource Brush.InlineCode}"
+                                            Foreground="{DynamicResource Brush.FG1}"
+                                            LinkForeground="{DynamicResource Brush.Link}"
+                                            Subject="{Binding Subject}"
+                                            IssueTrackerRules="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).IssueTrackerRules}"
+                                            FontWeight="Normal"/>
                 </Grid>
 
                 <!-- Author Avatar -->

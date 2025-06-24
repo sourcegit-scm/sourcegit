@@ -88,6 +88,11 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        {
+            get => _repo.Settings.IssueTrackerRules;
+        }
+
         public bool IsLoading
         {
             get => _isLoading;
