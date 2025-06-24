@@ -246,16 +246,11 @@ namespace SourceGit.Views
             if (branch == null)
                 return;
 
-            _disableSelectionChangingEvent = true;
-
             var treePath = new List<ViewModels.BranchTreeNode>();
             FindTreePath(treePath, Nodes, branch.Name, 0);
 
             if (treePath.Count == 0)
-            {
-                _disableSelectionChangingEvent = false;
                 return;
-            }
 
             var oldRowCount = Rows.Count;
             var rows = Rows;
@@ -276,7 +271,6 @@ namespace SourceGit.Views
             var target = treePath[treePath.Count - 1];
             BranchesPresenter.SelectedItem = target;
             BranchesPresenter.ScrollIntoView(target);
-            _disableSelectionChangingEvent = false;
 
             if (oldRowCount != rows.Count)
                 RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
