@@ -6,9 +6,27 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.53%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.76%25-yellow)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
+
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
+- Text.ExecuteCustomAction.SimpleWait
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-97.31%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -17,6 +35,18 @@ This document shows the translation status of each locale file in the repository
 - Text.AddToIgnore.Pattern
 - Text.AddToIgnore.Storage
 - Text.CommitCM.PushRevision
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
+- Text.ExecuteCustomAction.SimpleWait
 - Text.Merge.Edit
 - Text.Push.Revision
 - Text.Push.Revision.Title
@@ -26,7 +56,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-90.85%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-89.50%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -52,7 +82,18 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.Git.PreferredMergeMode
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
@@ -62,6 +103,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.ExecuteCustomAction.SimpleWait
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -108,7 +150,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-96.17%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-94.75%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -122,11 +164,23 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.ExecuteCustomAction.SimpleWait
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Launcher.Workspaces
@@ -147,7 +201,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-90.61%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-89.26%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -174,7 +228,18 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.Git.PreferredMergeMode
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
@@ -184,6 +249,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.ExecuteCustomAction.SimpleWait
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -231,7 +297,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-82.94%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-81.68%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -271,11 +337,22 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Files.Search
 - Text.CommitDetail.Info.Children
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.WaitForExit
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
@@ -293,6 +370,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Last
 - Text.Diff.Submodule.Deleted
 - Text.Diff.UseBlockNavigation
+- Text.ExecuteCustomAction.SimpleWait
 - Text.Fetch.Force
 - Text.FileCM.ResolveUsing
 - Text.GitFlow.FinishWithPush
@@ -377,7 +455,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.63%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.17%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -385,10 +463,22 @@ This document shows the translation status of each locale file in the repository
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
 - Text.AddToIgnore.Storage
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
+- Text.ExecuteCustomAction.SimpleWait
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-90.73%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-89.38%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -415,7 +505,18 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.Git.PreferredMergeMode
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
@@ -425,6 +526,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.ExecuteCustomAction.SimpleWait
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -471,7 +573,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-91.97%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-90.60%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -497,12 +599,24 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Configure.CustomAction.InputControls
+- Text.Configure.CustomAction.InputControls.Edit
+- Text.Configure.CustomAction.InputControls.Tip
+- Text.ConfigureCustomActionControls
+- Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.Description
+- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.DefaultValue
+- Text.ConfigureCustomActionControls.IsFolder
+- Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Type
 - Text.ConfigureWorkspace.Name
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.ExecuteCustomAction.SimpleWait
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.SwitchWorkspace
