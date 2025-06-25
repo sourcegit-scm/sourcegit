@@ -205,8 +205,9 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">用於本存放庫的使用者名稱</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">編輯自訂動作輸入控件</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">啟用時的指令行參數:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">勾選 CheckBox 後，此值將用於命令列參數中</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">描述:</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Placeholder" xml:space="preserve">在 TextBox/PathSelector 中用作占位符，或在 CheckBox 中用作工具提示</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">在 TextBox/PathSelector 中用作占位符，或在 CheckBox 中用作工具提示</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">預設值:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">目標路徑是否為資料夾:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名稱:</x:String>

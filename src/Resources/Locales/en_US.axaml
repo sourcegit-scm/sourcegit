@@ -201,8 +201,9 @@
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Edit Custom Action Controls</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Checked Value:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">When checked, this value will be used in command-line arguments</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Description:</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Placeholder" xml:space="preserve">Used as placeholder in TextBox/PathSelector or tooltip in CheckBox</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Used as placeholder in TextBox/PathSelector or tooltip in CheckBox</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Default:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Is Folder:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Label:</x:String>
