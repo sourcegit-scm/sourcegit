@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -136,10 +138,12 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
+                log.AppendLine($"$ {CustomAction.Executable} {cmdline}\n");
+
                 if (CustomAction.WaitForExit)
-                    Commands.ExecuteCustomAction.RunAndWait(_repo.FullPath, CustomAction.Executable, cmdline, log);
+                    RunAndWait(cmdline, log);
                 else
-                    Commands.ExecuteCustomAction.Run(_repo.FullPath, CustomAction.Executable, cmdline);
+                    Run(cmdline);
 
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
@@ -169,6 +173,79 @@ namespace SourceGit.ViewModels
         private string GetWorkdir()
         {
             return OperatingSystem.IsWindows() ? _repo.FullPath.Replace("/", "\\") : _repo.FullPath;
+        }
+
+        private void Run(string args)
+        {
+            var start = new ProcessStartInfo();
+            start.FileName = CustomAction.Executable;
+            start.Arguments = args;
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.WorkingDirectory = _repo.FullPath;
+
+            try
+            {
+                Process.Start(start);
+            }
+            catch (Exception e)
+            {
+                CallUIThread(() => App.RaiseException(_repo.FullPath, e.Message));
+            }
+        }
+
+        private void RunAndWait(string args, Models.ICommandLog log)
+        {
+            var start = new ProcessStartInfo();
+            start.FileName = CustomAction.Executable;
+            start.Arguments = args;
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true;
+            start.StandardOutputEncoding = Encoding.UTF8;
+            start.StandardErrorEncoding = Encoding.UTF8;
+            start.WorkingDirectory = _repo.FullPath;
+
+            var proc = new Process() { StartInfo = start };
+            var builder = new StringBuilder();
+
+            proc.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data != null)
+                    log?.AppendLine(e.Data);
+            };
+
+            proc.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data != null)
+                {
+                    log?.AppendLine(e.Data);
+                    builder.AppendLine(e.Data);
+                }
+            };
+
+            try
+            {
+                proc.Start();
+                proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
+                proc.WaitForExit();
+
+                var exitCode = proc.ExitCode;
+                if (exitCode != 0)
+                {
+                    var errMsg = builder.ToString().Trim();
+                    if (!string.IsNullOrEmpty(errMsg))
+                        CallUIThread(() => App.RaiseException(_repo.FullPath, errMsg));
+                }
+            }
+            catch (Exception e)
+            {
+                CallUIThread(() => App.RaiseException(_repo.FullPath, e.Message));
+            }
+
+            proc.Close();
         }
 
         private readonly Repository _repo = null;
