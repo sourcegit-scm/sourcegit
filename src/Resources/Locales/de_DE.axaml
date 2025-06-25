@@ -164,13 +164,17 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">BENUTZERDEFINIERTE AKTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumente:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository Pfad; ${SHA} - SHA-Wert des selektierten Commits</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Vordefinierte Parameter: ${REPO} - Repository Pfad; ${BRANCH} - selektierter Branch; ${SHA} - Hash des selektierten Commits; ${TAG} - selektiertes Tag</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Ausführbare Datei:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Eingabe-Steuerelemente:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Bearbeiten</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">$1, $2 ... können als Argumente in Eingabe-Steuerelementen benutzt werden</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Geltungsbereich:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Tag</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Auf Beenden der Aktion warten</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Adresse</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email Adresse</x:String>
@@ -199,6 +203,15 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP Proxy für dieses Repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Benutzername für dieses Repository</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Bearbeite Steuerelemente für benutzerdefinierte Aktionen</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Wert bei Markierung:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Wenn markiert, wird dieser Wert in Kommandozeilen-Argumenten benutzt</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Beschreibung:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Dient als Platzhalter in TextBox/Path Selector (Pfadeingabe) oder als Tooltip in CheckBox (Kontrollkästchen)</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Standardwert:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Ordner?</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Bezeichnung:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Typ:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Name</x:String>
@@ -304,6 +317,7 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Ausgewählte Gruppe bearbeiten</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Ausgewähltes Repository bearbeiten</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.SimpleWait" xml:space="preserve">Aktion wird durchgeführt, bitte warten...</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Alle Remotes fetchen</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Aktiviere '--force' Option</x:String>
@@ -521,7 +535,7 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Klon Standardordner</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Benutzer Email</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Globale Git Benutzer Email</x:String>
-  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Aktivere --prune beim fetchen</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Aktiviere --prune beim Fetchen</x:String>
   <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Aktiviere --ignore-cr-at-eol beim Unterschied</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Diese App setzt Git (&gt;= 2.25.1) voraus</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Installationspfad</x:String>
@@ -739,6 +753,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Tag-Namen kopieren</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Tag-Nachricht kopieren</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Lösche ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Pushe ${0}$...</x:String>
