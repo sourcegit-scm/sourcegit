@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.29%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.18%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -17,8 +17,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Tag
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -28,7 +29,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-97.08%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-96.96%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -43,8 +44,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Tag
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -60,7 +62,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-89.28%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-89.17%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -93,8 +95,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.Git.PreferredMergeMode
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -156,7 +159,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-94.52%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-94.40%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -176,8 +179,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Tag
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -209,7 +213,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-89.04%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-88.93%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -243,8 +247,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.Git.PreferredMergeMode
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -307,7 +312,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-81.49%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-81.39%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -358,8 +363,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -467,7 +473,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.93%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-97.81%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -481,8 +487,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Tag
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -492,7 +499,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-89.16%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-89.05%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -526,8 +533,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.Git.PreferredMergeMode
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
@@ -589,7 +597,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-90.38%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-90.27%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -621,8 +629,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Tag
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
+- Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Placeholder
+- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
