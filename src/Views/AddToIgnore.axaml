@@ -38,17 +38,17 @@
                 SelectedItem="{Binding StorageFile, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:GitIgnoreFile">
-            <Grid ColumnDefinitions="20,*">
+            <Grid ColumnDefinitions="20,*,Auto">
               <Path Grid.Column="0"
                     Width="12" Height="12"
                     Data="{StaticResource Icons.File}"
                     Fill="{DynamicResource Brush.FG2}"/>
 
-              <TextBlock Grid.Column="1" VerticalAlignment="Center">
-                <Run Text="{Binding File, Mode=OneWay}"/>
-                <Run Text="•" Foreground="{DynamicResource Brush.FG2}"/>
-                <Run Text="{Binding Desc, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
-              </TextBlock>
+              <TextBlock Grid.Column="1" Text="{Binding File, Mode=OneWay}" VerticalAlignment="Center"/>
+
+              <Border Grid.Column="2" Height="16" Background="{Binding Brush}" CornerRadius="8" VerticalAlignment="Center">
+                <TextBlock Classes="primary" Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
+              </Border>
             </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
