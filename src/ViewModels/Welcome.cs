@@ -295,22 +295,13 @@ namespace SourceGit.ViewModels
         {
             if (!node.IsRepository)
             {
-                if (node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                bool hasVisibleSubNode = false;
+                foreach (var subNode in node.SubNodes)
                 {
-                    node.IsVisible = true;
-                    foreach (var subNode in node.SubNodes)
-                        ResetVisibility(subNode);
+                    SetVisibilityBySearch(subNode);
+                    hasVisibleSubNode |= subNode.IsVisible;
                 }
-                else
-                {
-                    bool hasVisibleSubNode = false;
-                    foreach (var subNode in node.SubNodes)
-                    {
-                        SetVisibilityBySearch(subNode);
-                        hasVisibleSubNode |= subNode.IsVisible;
-                    }
-                    node.IsVisible = hasVisibleSubNode;
-                }
+                node.IsVisible = hasVisibleSubNode || node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase);
             }
             else
             {
