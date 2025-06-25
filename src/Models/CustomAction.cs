@@ -8,6 +8,7 @@ namespace SourceGit.Models
         Repository,
         Commit,
         Branch,
+        Tag,
     }
 
     public enum CustomActionControlType

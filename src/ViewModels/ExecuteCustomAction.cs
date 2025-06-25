@@ -111,6 +111,14 @@ namespace SourceGit.ViewModels
             PrepareControlParameters();
         }
 
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Tag tag)
+        {
+            _repo = repo;
+            _commandline = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${TAG}", tag.Name);
+            CustomAction = action;
+            PrepareControlParameters();
+        }
+
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);

@@ -834,6 +834,8 @@ namespace SourceGit.ViewModels
                 popup = new ExecuteCustomAction(this, action, b);
             else if (scope is Models.Commit c)
                 popup = new ExecuteCustomAction(this, action, c);
+            else if (scope is Models.Tag t)
+                popup = new ExecuteCustomAction(this, action, t);
             else
                 popup = new ExecuteCustomAction(this, action);
 
@@ -2388,6 +2390,41 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var menu = new ContextMenu();
+            menu.Items.Add(createBranch);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(pushTag);
+            menu.Items.Add(deleteTag);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(archive);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var actions = GetCustomActions(Models.CustomActionScope.Tag);
+            if (actions.Count > 0)
+            {
+                var custom = new MenuItem();
+                custom.Header = App.Text("TagCM.CustomAction");
+                custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                foreach (var action in actions)
+                {
+                    var dup = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = dup.Name;
+                    item.Click += (_, e) =>
+                    {
+                        ExecCustomAction(dup, tag);
+                        e.Handled = true;
+                    };
+
+                    custom.Items.Add(item);
+                }
+
+                menu.Items.Add(custom);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -2407,14 +2444,6 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var menu = new ContextMenu();
-            menu.Items.Add(createBranch);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(pushTag);
-            menu.Items.Add(deleteTag);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(archive);
-            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
             menu.Items.Add(copyMessage);
             return menu;
