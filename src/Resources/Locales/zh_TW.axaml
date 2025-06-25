@@ -166,6 +166,9 @@
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">指令參數:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">使用 ${REPO} 表示存放庫路徑、${BRANCH} 表示所選的分支、${SHA} 表示所選的提交編號</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控件:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">編輯</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">請使用占位符如 $1, $2 來代表輸入控制項的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">執行範圍:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">選取的分支</x:String>
@@ -199,6 +202,14 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP 網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">用於本存放庫的使用者名稱</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">編輯自訂動作輸入控件</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">啟用時的指令行參數:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">描述:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Placeholder" xml:space="preserve">在 TextBox/PathSelector 中用作占位符，或在 CheckBox 中用作工具提示</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">預設值:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">目標路徑是否為資料夾:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名稱:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">類型:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名稱</x:String>
@@ -304,8 +315,7 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">編輯群組</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯存放庫</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">執行自訂動作</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自訂動作:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.SimpleWait" xml:space="preserve">動作正在執行中，請稍候...</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">強制覆寫本機 REFs</x:String>

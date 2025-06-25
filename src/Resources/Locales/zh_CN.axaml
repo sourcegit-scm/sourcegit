@@ -166,6 +166,9 @@
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">请使用${REPO}代替仓库路径，${BRANCH}代替选中的分支，${SHA}代替提交哈希</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可执行文件路径 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">输入控件 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">编辑</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">请在命令行参数中使用 $1, $2 等占位符表示输入控件的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">作用目标 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">选中的分支</x:String>
@@ -199,6 +202,14 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP网络代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">应用于本仓库的用户名</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">编辑自定义操作输入控件</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">启用时命令行参数 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">描述 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Placeholder" xml:space="preserve">TextBox及Path Selector中用作Placeholder，CheckBox中用作ToolTip</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">默认值 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">目标是否是目录 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名称 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">类型 ：</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作区</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">颜色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名称</x:String>
@@ -304,8 +315,7 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">编辑分组</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">编辑仓库</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">执行自定义操作</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自定义操作 ：</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.SimpleWait" xml:space="preserve">操作正在进行中，请耐心等待...</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">强制覆盖本地REFs</x:String>

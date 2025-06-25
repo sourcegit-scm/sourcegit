@@ -381,7 +381,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" Height="340" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" Height="380" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -487,6 +487,15 @@
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
                   <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
 
+                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>
+                  <Button Margin="0,4,0,0" Classes="flat" Height="28" Click="EditCustomActionControls">
+                    <StackPanel Orientation="Horizontal">
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Edit}" Fill="{DynamicResource Brush.FG1}"/>
+                      <TextBlock Margin="4,0,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Edit}"/>
+                    </StackPanel>
+                  </Button>
+                  <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+                  
                   <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>

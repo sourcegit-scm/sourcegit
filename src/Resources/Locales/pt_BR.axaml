@@ -247,8 +247,6 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Alvo:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Editar Grupo Selecionado</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Editar Repositório Selecionado</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Executar ação customizada</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Nome da ação:</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Buscar</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Buscar todos os remotos</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Buscar sem tags</x:String>

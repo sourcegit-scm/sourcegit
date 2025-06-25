@@ -290,8 +290,6 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destinazione:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Modifica Gruppo Selezionato</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Modifica Repository Selezionato</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Esegui Azione Personalizzata</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Nome Azione:</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Recupera</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Recupera da tutti i remoti</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Forza la sovrascrittura dei riferimenti locali</x:String>

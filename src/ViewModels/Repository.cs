@@ -820,16 +820,33 @@ namespace SourceGit.ViewModels
 
         public void ApplyPatch()
         {
+            if (CanCreatePopup())
+                ShowPopup(new Apply(this));
+        }
+
+        public void ExecCustomAction(Models.CustomAction action, object scope)
+        {
             if (!CanCreatePopup())
                 return;
-            ShowPopup(new Apply(this));
+
+            var popup = null as ExecuteCustomAction;
+            if (scope is Models.Branch b)
+                popup = new ExecuteCustomAction(this, action, b);
+            else if (scope is Models.Commit c)
+                popup = new ExecuteCustomAction(this, action, c);
+            else
+                popup = new ExecuteCustomAction(this, action);
+
+            if (action.Controls.Count == 0)
+                ShowAndStartPopup(popup);
+            else
+                ShowPopup(popup);
         }
 
         public void Cleanup()
         {
-            if (!CanCreatePopup())
-                return;
-            ShowAndStartPopup(new Cleanup(this));
+            if (CanCreatePopup())
+                ShowAndStartPopup(new Cleanup(this));
         }
 
         public void ClearFilter()
@@ -1706,9 +1723,7 @@ namespace SourceGit.ViewModels
                     item.Header = dup.Name;
                     item.Click += (_, e) =>
                     {
-                        if (CanCreatePopup())
-                            ShowAndStartPopup(new ExecuteCustomAction(this, dup));
-
+                        ExecCustomAction(dup, null);
                         e.Handled = true;
                     };
 
@@ -2805,9 +2820,7 @@ namespace SourceGit.ViewModels
                 item.Header = dup.Name;
                 item.Click += (_, e) =>
                 {
-                    if (CanCreatePopup())
-                        ShowAndStartPopup(new ExecuteCustomAction(this, dup, branch));
-
+                    ExecCustomAction(dup, branch);
                     e.Handled = true;
                 };
 
