@@ -173,6 +173,25 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new CreateGroup(null);
         }
 
+        public RepositoryNode FindParentGroup(RepositoryNode node, RepositoryNode group = null)
+        {
+            var collection = (group == null) ? Preferences.Instance.RepositoryNodes : group.SubNodes;
+            if (collection.Contains(node))
+                return group;
+
+            foreach (var item in collection)
+            {
+                if (!item.IsRepository)
+                {
+                    var parent = FindParentGroup(node, item);
+                    if (parent != null)
+                        return parent;
+                }
+            }
+
+            return null;
+        }
+
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
             Preferences.Instance.MoveNode(from, to, true);
