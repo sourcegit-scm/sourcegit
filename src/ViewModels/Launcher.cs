@@ -118,13 +118,8 @@ namespace SourceGit.ViewModels
                 UpdateTitle();
         }
 
-        public void Quit(double width, double height)
+        public void Quit()
         {
-            var pref = Preferences.Instance;
-            pref.Layout.LauncherWidth = width;
-            pref.Layout.LauncherHeight = height;
-            pref.Save();
-
             _ignoreIndexChange = true;
 
             foreach (var one in Pages)

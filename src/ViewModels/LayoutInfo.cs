@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -17,6 +16,18 @@ namespace SourceGit.ViewModels
             get;
             set;
         } = 720;
+
+        public int LauncherPositionX
+        {
+            get;
+            set;
+        } = int.MinValue;
+
+        public int LauncherPositionY
+        {
+            get;
+            set;
+        } = int.MinValue;
 
         public WindowState LauncherWindowState
         {

@@ -11,8 +11,7 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{Binding Title}"
-                    MinWidth="1024" MinHeight="600"
-                    WindowStartupLocation="CenterScreen">
+                    MinWidth="1024" MinHeight="600">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #ThisControl.CaptionHeight}"/>
