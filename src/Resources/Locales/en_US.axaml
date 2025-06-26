@@ -793,6 +793,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Edit)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">You are creating commit on a detached HEAD. Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">You have staged {0} file(s) but only {1} file(s) displayed ({2} files are filtered out). Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">OPEN EXTERNAL MERGETOOL</x:String>

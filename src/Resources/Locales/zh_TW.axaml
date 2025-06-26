@@ -797,6 +797,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交 (修改原始提交)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">您正在向一个分離狀態的 HEAD 提交變更，您確定要繼續提交嗎?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">您已暫存 {0} 個檔案，但只顯示 {1} 個檔案 ({2} 個檔案被篩選器隱藏)。您確定要繼續提交嗎?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">偵測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">使用外部合併工具開啟</x:String>

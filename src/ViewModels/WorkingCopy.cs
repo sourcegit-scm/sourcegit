@@ -261,7 +261,6 @@ namespace SourceGit.ViewModels
             }
 
             _cached = changes;
-            _count = _cached.Count;
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
@@ -1782,7 +1781,7 @@ namespace SourceGit.ViewModels
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
         }
 
-        private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty = false, bool confirmWithFilter = false)
+        private void DoCommit(bool autoStage, bool autoPush, CommitCheckPassed checkPassed = CommitCheckPassed.None)
         {
             if (string.IsNullOrWhiteSpace(_commitMessage))
                 return;
@@ -1793,18 +1792,25 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && !confirmWithFilter)
+            if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < CommitCheckPassed.DetachedHead)
             {
-                var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                App.ShowWindow(new ConfirmCommit(confirmMessage, () => DoCommit(autoStage, autoPush, allowEmpty, true)), true);
+                var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
+                App.ShowWindow(new ConfirmCommit(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead)), true);
                 return;
             }
 
-            if (!_useAmend && !allowEmpty)
+            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < CommitCheckPassed.Filter)
             {
-                if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
+                var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
+                App.ShowWindow(new ConfirmCommit(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter)), true);
+                return;
+            }
+
+            if (checkPassed < CommitCheckPassed.FileCount && !_useAmend)
+            {
+                if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    App.ShowWindow(new ConfirmEmptyCommit(_count > 0, stageAll => DoCommit(stageAll, autoPush, true, confirmWithFilter)), true);
+                    App.ShowWindow(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)), true);
                     return;
                 }
             }
@@ -1871,6 +1877,14 @@ namespace SourceGit.ViewModels
             return false;
         }
 
+        private enum CommitCheckPassed
+        {
+            None = 0,
+            DetachedHead,
+            Filter,
+            FileCount,
+        }
+
         private Repository _repo = null;
         private bool _isLoadingData = false;
         private bool _isStaging = false;
@@ -1886,7 +1900,6 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleStaged = [];
         private List<Models.Change> _selectedUnstaged = [];
         private List<Models.Change> _selectedStaged = [];
-        private int _count = 0;
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;
