@@ -52,6 +52,12 @@ namespace SourceGit.ViewModels
                 var succ = false;
                 var needPopStash = false;
 
+                if (!_repo.ConfirmCheckoutBranch())
+                {
+                    CallUIThread(() => _repo.SetWatcherEnabled(true));
+                    return true;
+                }
+
                 if (DiscardLocalChanges)
                 {
                     succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(LocalBranch.Name, RemoteBranch.Head, true, true);

@@ -1795,14 +1795,14 @@ namespace SourceGit.ViewModels
             if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < CommitCheckPassed.DetachedHead)
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
-                App.ShowWindow(new ConfirmCommit(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead)), true);
+                App.ShowWindow(new Confirm(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead)), true);
                 return;
             }
 
             if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < CommitCheckPassed.Filter)
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                App.ShowWindow(new ConfirmCommit(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter)), true);
+                App.ShowWindow(new Confirm(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter)), true);
                 return;
             }
 

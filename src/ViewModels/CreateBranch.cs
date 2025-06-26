@@ -130,6 +130,13 @@ namespace SourceGit.ViewModels
             return Task.Run(() =>
             {
                 bool succ = false;
+
+                if (CheckoutAfterCreated && !_repo.ConfirmCheckoutBranch())
+                {
+                    CallUIThread(() => _repo.SetWatcherEnabled(true));
+                    return true;
+                }
+
                 if (CheckoutAfterCreated && !_repo.IsBare)
                 {
                     var needPopStash = false;

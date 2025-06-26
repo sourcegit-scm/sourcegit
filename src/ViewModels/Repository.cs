@@ -1330,6 +1330,41 @@ namespace SourceGit.ViewModels
                 ShowPopup(new CreateBranch(this, _currentBranch));
         }
 
+        public bool ConfirmCheckoutBranch()
+        {
+            if (Dispatcher.UIThread.CheckAccess())
+                return true;
+
+            if (_currentBranch is not { IsDetachedHead: true })
+                return true;
+
+            var refs = new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).Result();
+            if (refs.Count == 0)
+            {
+                var confirmCheckout = false;
+                var resetEvent = new AutoResetEvent(false);
+
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    var msg = App.Text("Checkout.WarnLostCommits");
+                    App.ShowWindow(new Confirm(msg, () =>
+                    {
+                        confirmCheckout = true;
+                        resetEvent.Set();
+                    }, () =>
+                    {
+                        confirmCheckout = false;
+                        resetEvent.Set();
+                    }), true);
+                });
+
+                resetEvent.WaitOne();
+                return confirmCheckout;
+            }
+
+            return true;
+        }
+
         public void CheckoutBranch(Models.Branch branch)
         {
             if (branch.IsLocal)
