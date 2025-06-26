@@ -129,7 +129,6 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nome do Template:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">AÇÃO CUSTOMIZADA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumentos:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Caminho do repositório; ${SHA} - SHA do commit selecionado</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Caminho do executável:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nome:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Escopo:</x:String>

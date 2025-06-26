@@ -142,7 +142,6 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">テンプレート名:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">引数:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - リポジトリのパス; ${BRANCH} - 選択中のブランチ; ${SHA} - 選択中のコミットのSHA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">実行ファイル:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名前:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">スコープ:</x:String>

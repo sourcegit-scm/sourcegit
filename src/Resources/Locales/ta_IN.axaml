@@ -142,7 +142,6 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">வார்ப்புரு பெயர்:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">வாதங்கள்:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${களஞ்சிய} - களஞ்சியத்தின் பாதை; ${கிளை} - தேர்ந்தெடுக்கப்பட்ட கிளை; ${பாகொவ} - தேர்ந்தெடுக்கப்பட்ட உறுதிமொழிடியின் பாகொவ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">இயக்கக்கூடிய கோப்பு:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">பெயர்:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">நோக்கம்:</x:String>

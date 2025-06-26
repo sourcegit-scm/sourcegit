@@ -143,7 +143,6 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Назва шаблону:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">СПЕЦІАЛЬНА ДІЯ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Аргументи:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Шлях до сховища; ${BRANCH} - Вибрана гілка; ${SHA} - SHA вибраного коміту</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Виконуваний файл:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Назва:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Область застосування:</x:String>
