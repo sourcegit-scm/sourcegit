@@ -127,7 +127,7 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Run custom action ...";
 
             var cmdline = _commandline;
-            for (var i = 0; i < ControlParameters.Count; i++)
+            for (var i = ControlParameters.Count - 1; i >= 0; i--)
             {
                 var param = ControlParameters[i];
                 cmdline = cmdline.Replace($"${i}", param.GetValue());
