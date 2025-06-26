@@ -6,28 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.18%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.Configure.CustomAction.InputControls
-- Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
-- Text.Configure.CustomAction.Scope.Tag
-- Text.ConfigureCustomActionControls
-- Text.ConfigureCustomActionControls.CheckedValue
-- Text.ConfigureCustomActionControls.CheckedValue.Tip
-- Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
-- Text.ConfigureCustomActionControls.DefaultValue
-- Text.ConfigureCustomActionControls.IsFolder
-- Text.ConfigureCustomActionControls.Label
-- Text.ConfigureCustomActionControls.Type
-- Text.ExecuteCustomAction.SimpleWait
-- Text.TagCM.CustomAction
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-96.96%25-yellow)
 
