@@ -11,6 +11,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public record CommitMessageRecord(string subject)
+    {
+        public string Subject { get; set; } = subject;
+    }
+
     public class WorkingCopy : ObservableObject, IDisposable
     {
         public bool IncludeUntracked
@@ -1555,7 +1560,7 @@ namespace SourceGit.ViewModels
                     var subjectEndIdx = message.IndexOf('\n');
                     var subject = subjectEndIdx > 0 ? message.Substring(0, subjectEndIdx) : message;
                     var item = new MenuItem();
-                    item.Header = subject;
+                    item.Header = new CommitMessageRecord(subject);
                     item.Icon = App.CreateMenuIcon("Icons.Histories");
                     item.Click += (_, e) =>
                     {
