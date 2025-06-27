@@ -126,9 +126,7 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Run custom action ...";
 
-            var cmdline = CustomAction.Arguments.Replace("${REPO}", GetWorkdir());
-            cmdline = PrepareStringByTarget(cmdline);
-
+            var cmdline = PrepareStringByTarget(CustomAction.Arguments);
             for (var i = ControlParameters.Count - 1; i >= 0; i--)
             {
                 var param = ControlParameters[i];
@@ -174,6 +172,8 @@ namespace SourceGit.ViewModels
 
         private string PrepareStringByTarget(string org)
         {
+            org = org.Replace("${REPO}", GetWorkdir());
+
             if (Target is Models.Branch b)
                 return org.Replace("${BRANCH}", b.FriendlyName);
             else if (Target is Models.Commit c)
