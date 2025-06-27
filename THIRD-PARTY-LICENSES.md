@@ -1,13 +1,13 @@
 # Third-Party Licenses
 
-This project incorporates components from the following third parties:
+The project uses the following third-party libraries or assets
 
 ## Packages
 
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.2.5
+- **Version**: 11.2.8
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
@@ -35,16 +35,30 @@ This project incorporates components from the following third parties:
 ### OpenAI .NET SDK
 
 - **Source**: https://github.com/openai/openai-dotnet
-- **Version**: 2.2.0-beta2
+- **Version**: 2.2.0-beta.4
 - **License**: MIT License
 - **License Link**: https://github.com/openai/openai-dotnet/blob/main/LICENSE
 
 ### Azure.AI.OpenAI
 
 - **Source**: https://github.com/Azure/azure-sdk-for-net
-- **Version**: 2.2.0-beta2
+- **Version**: 2.2.0-beta.4
 - **License**: MIT License
 - **License Link**: https://github.com/Azure/azure-sdk-for-net/blob/main/LICENSE.txt
+
+### BitMiracle.LibTiff.NET
+
+- **Source**: https://github.com/BitMiracle/libtiff.net
+- **Version**: 2.4.660
+- **License**: New BSD License
+- **License Link**: https://github.com/BitMiracle/libtiff.net/blob/master/license.txt
+
+### Pfim
+
+- **Source**: https://github.com/nickbabcock/Pfim
+- **Version**: 0.11.3
+- **License**: MIT License
+- **License Link**: https://github.com/nickbabcock/Pfim/blob/master/LICENSE.txt
 
 ## Fonts
 
