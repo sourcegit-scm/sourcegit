@@ -132,7 +132,7 @@ namespace SourceGit.ViewModels
             for (var i = ControlParameters.Count - 1; i >= 0; i--)
             {
                 var param = ControlParameters[i];
-                cmdline = cmdline.Replace($"${i}", param.GetValue());
+                cmdline = cmdline.Replace($"${i+1}", param.GetValue());
             }
 
             var log = _repo.CreateLog(CustomAction.Name);
