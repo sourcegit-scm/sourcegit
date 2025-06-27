@@ -127,12 +127,7 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Run custom action ...";
 
             var cmdline = CustomAction.Arguments.Replace("${REPO}", GetWorkdir());
-            if (Target is Models.Branch b)
-                cmdline = cmdline.Replace("${BRANCH}", b.FriendlyName);
-            else if (Target is Models.Commit c)
-                cmdline = cmdline.Replace("${SHA}", c.SHA);
-            else if (Target is Models.Tag t)
-                cmdline = cmdline.Replace("${TAG}", t.Name);
+            cmdline = PrepareStringByTarget(cmdline);
 
             for (var i = ControlParameters.Count - 1; i >= 0; i--)
             {
@@ -165,16 +160,28 @@ namespace SourceGit.ViewModels
                 switch (ctl.Type)
                 {
                     case Models.CustomActionControlType.TextBox:
-                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, ctl.StringValue));
+                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
                         break;
                     case Models.CustomActionControlType.CheckBox:
                         ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
                         break;
                     case Models.CustomActionControlType.PathSelector:
-                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, ctl.StringValue));
+                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
                         break;
                 }
             }
+        }
+
+        private string PrepareStringByTarget(string org)
+        {
+            if (Target is Models.Branch b)
+                return org.Replace("${BRANCH}", b.FriendlyName);
+            else if (Target is Models.Commit c)
+                return org.Replace("${SHA}", c.SHA);
+            else if (Target is Models.Tag t)
+                return org.Replace("${TAG}", t.Name);
+
+            return org;
         }
 
         private string GetWorkdir()
