@@ -151,6 +151,11 @@
                        Height="28"
                        Text="{Binding StringValue, Mode=TwoWay}"
                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
+              <TextBlock Margin="0,2,0,0"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
               <CheckBox Height="28"
                         Margin="0,4,0,0"
                         IsChecked="{Binding BoolValue, Mode=TwoWay}"
