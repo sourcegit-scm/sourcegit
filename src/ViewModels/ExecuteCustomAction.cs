@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
 
         public CustomActionControlTextBox(string label, string placeholder, string defaultValue)
         {
-            Label = label;
+            Label = label + ":";
             Placeholder = placeholder;
             Text = defaultValue;
         }
@@ -43,7 +43,7 @@ namespace SourceGit.ViewModels
 
         public CustomActionControlPathSelector(string label, string placeholder, bool isFolder, string defaultValue)
         {
-            Label = label;
+            Label = label + ":";
             Placeholder = placeholder;
             IsFolder = isFolder;
             _path = defaultValue;
@@ -79,45 +79,45 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public object Target
+        {
+            get;
+        }
+
         public List<ICustomActionControlParameter> ControlParameters
         {
             get;
         } = [];
 
-        public bool IsSimpleMode
-        {
-            get => ControlParameters.Count == 0;
-        }
-
         public ExecuteCustomAction(Repository repo, Models.CustomAction action)
         {
             _repo = repo;
-            _commandline = action.Arguments.Replace("${REPO}", GetWorkdir());
             CustomAction = action;
+            Target = new Models.Null();
             PrepareControlParameters();
         }
 
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Branch branch)
         {
             _repo = repo;
-            _commandline = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${BRANCH}", branch.FriendlyName);
             CustomAction = action;
+            Target = branch;
             PrepareControlParameters();
         }
 
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
         {
             _repo = repo;
-            _commandline = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${SHA}", commit.SHA);
             CustomAction = action;
+            Target = commit;
             PrepareControlParameters();
         }
 
         public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Tag tag)
         {
             _repo = repo;
-            _commandline = action.Arguments.Replace("${REPO}", GetWorkdir()).Replace("${TAG}", tag.Name);
             CustomAction = action;
+            Target = tag;
             PrepareControlParameters();
         }
 
@@ -126,7 +126,14 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Run custom action ...";
 
-            var cmdline = _commandline;
+            var cmdline = CustomAction.Arguments.Replace("${REPO}", GetWorkdir());
+            if (Target is Models.Branch b)
+                cmdline = cmdline.Replace("${BRANCH}", b.FriendlyName);
+            else if (Target is Models.Commit c)
+                cmdline = cmdline.Replace("${SHA}", c.SHA);
+            else if (Target is Models.Tag t)
+                cmdline = cmdline.Replace("${TAG}", t.Name);
+
             for (var i = ControlParameters.Count - 1; i >= 0; i--)
             {
                 var param = ControlParameters[i];
@@ -249,6 +256,5 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private readonly string _commandline = string.Empty;
     }
 }

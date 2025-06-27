@@ -318,7 +318,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">編輯群組</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯存放庫</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.SimpleWait" xml:space="preserve">動作正在執行中，請稍候...</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">目標:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">本存放庫</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">強制覆寫本機 REFs</x:String>

@@ -2,7 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.ExecuteCustomAction"
              x:DataType="vm:ExecuteCustomAction">
@@ -11,13 +13,47 @@
                Classes="bold"
                Text="{Binding CustomAction.Name}"/>
 
-    <Grid Margin="0,16,0,0" IsVisible="{Binding IsSimpleMode}">
-      <TextBlock Text="{DynamicResource Text.ExecuteCustomAction.SimpleWait}"
-                 HorizontalAlignment="Center"/>
+    <Grid Margin="0,16,0,0" Height="32" ColumnDefinitions="150,*">
+      <TextBlock Grid.Column="0"
+                 Text="{DynamicResource Text.ExecuteCustomAction.Target}"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"/>
+
+      <ContentControl Grid.Column="1" Content="{Binding Target}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:Null">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Repositories}"/>
+              <SelectableTextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="m:Branch">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="m:Commit">
+            <Grid ColumnDefinitions="Auto,Auto,*">
+              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+          </DataTemplate>
+
+          <DataTemplate DataType="m:Tag">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
     </Grid>
 
-    <ListBox Margin="0,16,0,0"
-             IsVisible="{Binding !IsSimpleMode}"
+    <ListBox IsVisible="{Binding ControlParameters, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
              ItemsSource="{Binding ControlParameters, Mode=OneWay}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
@@ -39,7 +75,7 @@
       
       <ListBox.DataTemplates>
         <DataTemplate DataType="vm:CustomActionControlTextBox">
-          <Grid ColumnDefinitions="120,*">
+          <Grid ColumnDefinitions="150,*">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -55,7 +91,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlCheckBox">
-          <Grid ColumnDefinitions="120,*">
+          <Grid ColumnDefinitions="150,*">
             <CheckBox Grid.Column="1"
                       Content="{Binding Label}"
                       ToolTip.Tip="{Binding ToolTip, Mode=OneWay}"
@@ -64,7 +100,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlPathSelector">
-          <Grid ColumnDefinitions="120,*">
+          <Grid ColumnDefinitions="150,*">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
