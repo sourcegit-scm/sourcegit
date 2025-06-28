@@ -594,7 +594,7 @@ namespace SourceGit.ViewModels
             if (_selectedUnstaged.Count == 1)
             {
                 var change = _selectedUnstaged[0];
-                var path = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
+                var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
@@ -602,7 +602,11 @@ namespace SourceGit.ViewModels
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Click += (_, e) =>
                 {
-                    Native.OS.OpenInFileManager(path, true);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        Native.OS.OpenInFileManager(path, true);
+                    else
+                        Native.OS.OpenInFileManager(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder), true);
+
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
@@ -982,7 +986,11 @@ namespace SourceGit.ViewModels
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
                 copy.Click += (_, e) =>
                 {
-                    App.CopyText(change.Path);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(change.Path);
+                    else
+                        App.CopyText(selectedSingleFolder);
+
                     e.Handled = true;
                 };
                 menu.Items.Add(copy);
@@ -992,7 +1000,11 @@ namespace SourceGit.ViewModels
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Click += (_, e) =>
                 {
-                    App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(path);
+                    else
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+
                     e.Handled = true;
                 };
                 menu.Items.Add(copyFullPath);
@@ -1154,6 +1166,27 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(addToIgnore);
+
+                    var copy = new MenuItem();
+                    copy.Header = App.Text("CopyPath");
+                    copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copy.Click += (_, e) =>
+                    {
+                        App.CopyText(selectedSingleFolder);
+                        e.Handled = true;
+                    };
+
+                    var copyFullPath = new MenuItem();
+                    copyFullPath.Header = App.Text("CopyPath");
+                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Click += (_, e) =>
+                    {
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copy);
+                    menu.Items.Add(copyFullPath);
                 }
             }
 
@@ -1205,7 +1238,7 @@ namespace SourceGit.ViewModels
             if (_selectedStaged.Count == 1)
             {
                 var change = _selectedStaged[0];
-                var path = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
+                var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
@@ -1213,7 +1246,11 @@ namespace SourceGit.ViewModels
                 explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
-                    Native.OS.OpenInFileManager(path, true);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        Native.OS.OpenInFileManager(path, true);
+                    else
+                        Native.OS.OpenInFileManager(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder), true);
+
                     e.Handled = true;
                 };
 
@@ -1391,7 +1428,11 @@ namespace SourceGit.ViewModels
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyPath.Click += (_, e) =>
                 {
-                    App.CopyText(change.Path);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(change.Path);
+                    else
+                        App.CopyText(selectedSingleFolder);
+
                     e.Handled = true;
                 };
 
@@ -1400,7 +1441,11 @@ namespace SourceGit.ViewModels
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Click += (_, e) =>
                 {
-                    App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(path);
+                    else
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+
                     e.Handled = true;
                 };
 
@@ -1479,6 +1524,31 @@ namespace SourceGit.ViewModels
                 {
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(ai);
+                }
+
+                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                {
+                    var copyPath = new MenuItem();
+                    copyPath.Header = App.Text("CopyPath");
+                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Click += (_, e) =>
+                    {
+                        App.CopyText(selectedSingleFolder);
+                        e.Handled = true;
+                    };
+
+                    var copyFullPath = new MenuItem();
+                    copyFullPath.Header = App.Text("CopyFullPath");
+                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Click += (_, e) =>
+                    {
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copyPath);
+                    menu.Items.Add(copyFullPath);
                 }
             }
 

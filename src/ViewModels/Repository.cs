@@ -2891,7 +2891,7 @@ namespace SourceGit.ViewModels
 
         private bool IsSearchingCommitsByFilePath()
         {
-            return _isSearching && _searchCommitFilterType == (int)Models.CommitSearchMethod.ByFile;
+            return _isSearching && _searchCommitFilterType == (int)Models.CommitSearchMethod.ByPath;
         }
 
         private void CalcWorktreeFilesForSearching()

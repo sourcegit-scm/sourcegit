@@ -532,7 +532,7 @@
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByCommitter}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByPath}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByContent}"/>
             </ComboBox.Items>
           </ComboBox>
