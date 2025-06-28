@@ -9,7 +9,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"stash list -z --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B\"";
+            Args = "stash list -z --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B\"";
         }
 
         public List<Models.Stash> Result()

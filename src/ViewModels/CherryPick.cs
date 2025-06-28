@@ -67,7 +67,7 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
             _repo.ClearCommitMessage();
-            ProgressDescription = $"Cherry-Pick commit(s) ...";
+            ProgressDescription = "Cherry-Pick commit(s) ...";
 
             var log = _repo.CreateLog("Cherry-Pick");
             Use(log);

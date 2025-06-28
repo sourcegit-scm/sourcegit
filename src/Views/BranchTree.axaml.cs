@@ -268,7 +268,7 @@ namespace SourceGit.Views
                 }
             }
 
-            var target = treePath[treePath.Count - 1];
+            var target = treePath[^1];
             BranchesPresenter.SelectedItem = target;
             BranchesPresenter.ScrollIntoView(target);
 

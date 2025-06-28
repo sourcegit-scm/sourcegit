@@ -110,7 +110,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var succ = false;
+                bool succ;
                 var current = _repo.CurrentBranch;
 
                 var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));

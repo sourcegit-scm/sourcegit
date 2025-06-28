@@ -63,7 +63,7 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(subject))
                 return;
 
-            var typeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal);
+            var typeface = new Typeface(FontFamily);
             var foreground = Foreground;
             var x = 0.0;
             var h = Bounds.Height;
@@ -117,7 +117,7 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var typeface = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Normal);
+            var typeface = new Typeface(FontFamily);
             var test = new FormattedText("fgl|", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, FontSize, Brushes.White);
             var h = Math.Max(18, test.Height);
             return new Size(availableSize.Width, h);

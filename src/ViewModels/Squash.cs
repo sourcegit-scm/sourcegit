@@ -36,7 +36,7 @@ namespace SourceGit.ViewModels
             {
                 var signOff = _repo.Settings.EnableSignOffForCommit;
                 var autoStashed = false;
-                var succ = false;
+                bool succ;
 
                 if (_repo.LocalChangesCount > 0)
                 {

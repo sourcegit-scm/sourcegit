@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
-                bool succ = false;
+                bool succ;
 
                 if (CheckoutAfterCreated && !_repo.ConfirmCheckoutBranch())
                 {

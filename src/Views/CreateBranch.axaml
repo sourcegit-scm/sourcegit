@@ -6,7 +6,6 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
-             xmlns:ac="using:Avalonia.Controls.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.CreateBranch"
              x:DataType="vm:CreateBranch">

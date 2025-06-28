@@ -9,7 +9,7 @@ namespace SourceGit.Commands
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
-            cmd.Args = $"branch --show-current";
+            cmd.Args = "branch --show-current";
             return cmd.ReadToEnd().StdOut.Trim();
         }
 

@@ -25,12 +25,7 @@
                 HorizontalAlignment="Stretch">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:DealWithChangesAfterStashing">
-            <Grid Height="20">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-
+            <Grid Height="20" ColumnDefinitions="Auto,*">
               <TextBlock Grid.Column="0" Text="{Binding Label}"/>
               <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>

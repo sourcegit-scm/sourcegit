@@ -18,7 +18,7 @@ namespace SourceGit.Commands
             if (isLFSFiltered)
             {
                 var pointerStream = QueryFileContent.Run(repo, revision, file);
-                ExecCmd(repo, $"lfs smudge", saveTo, pointerStream);
+                ExecCmd(repo, "lfs smudge", saveTo, pointerStream);
             }
             else
             {

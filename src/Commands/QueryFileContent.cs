@@ -41,7 +41,7 @@ namespace SourceGit.Commands
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
             starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = $"lfs smudge";
+            starter.Arguments = "lfs smudge";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;
