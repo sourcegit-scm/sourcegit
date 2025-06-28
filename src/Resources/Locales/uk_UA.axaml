@@ -591,7 +591,6 @@
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Пошук коміту</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Автор</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Комітер</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">Файл</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Повідомлення</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Поточна гілка</x:String>

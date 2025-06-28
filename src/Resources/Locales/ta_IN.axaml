@@ -586,7 +586,6 @@
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">உறுதிமொழி தேடு</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">ஆசிரியர்</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">உறுதிமொழியாளர்</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">கோப்பு</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">செய்தி</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">பாகொவ</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">தற்போதைய கிளை</x:String>
