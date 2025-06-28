@@ -49,7 +49,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value != null && value.Count == 1)
+                    if (value?.Count == 1)
                         DiffContext = new DiffContext(_repo, new Models.DiffOption(_based.Head, _to.Head, value[0]), _diffContext);
                     else
                         DiffContext = null;

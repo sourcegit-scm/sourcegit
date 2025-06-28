@@ -148,23 +148,21 @@ namespace SourceGit
 
         public static void RaiseException(string context, string message)
         {
-            if (Current is App app && app._launcher != null)
+            if (Current is App { _launcher: not null } app)
                 app._launcher.DispatchNotification(context, message, true);
         }
 
         public static void SendNotification(string context, string message)
         {
-            if (Current is App app && app._launcher != null)
+            if (Current is App { _launcher: not null } app)
                 app._launcher.DispatchNotification(context, message, false);
         }
 
         public static void SetLocale(string localeKey)
         {
             var app = Current as App;
-            if (app == null)
-                return;
 
-            var targetLocale = app.Resources[localeKey] as ResourceDictionary;
+            var targetLocale = app?.Resources[localeKey] as ResourceDictionary;
             if (targetLocale == null || targetLocale == app._activeLocale)
                 return;
 
@@ -286,22 +284,14 @@ namespace SourceGit
 
         public static async void CopyText(string data)
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                if (desktop.MainWindow?.Clipboard is { } clipboard)
-                    await clipboard.SetTextAsync(data ?? "");
-            }
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
+                await clipboard.SetTextAsync(data ?? "");
         }
 
         public static async Task<string> GetClipboardTextAsync()
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                if (desktop.MainWindow?.Clipboard is { } clipboard)
-                {
-                    return await clipboard.GetTextAsync();
-                }
-            }
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
+                return await clipboard.GetTextAsync();
             return null;
         }
 
@@ -562,7 +552,7 @@ namespace SourceGit
             Models.AvatarManager.Instance.Start();
 
             string startupRepo = null;
-            if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
+            if (desktop.Args is { Length: 1 } && Directory.Exists(desktop.Args[0]))
                 startupRepo = desktop.Args[0];
 
             var pref = ViewModels.Preferences.Instance;

@@ -379,9 +379,7 @@ namespace SourceGit.Views
                 }
                 else if (selected.Count > 0)
                 {
-                    var sets = new HashSet<Models.Change>();
-                    foreach (var c in selected)
-                        sets.Add(c);
+                    var sets = new HashSet<Models.Change>(selected);
 
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)
@@ -447,9 +445,7 @@ namespace SourceGit.Views
 
                 if (selected.Count > 0)
                 {
-                    var sets = new HashSet<Models.Change>();
-                    foreach (var c in selected)
-                        sets.Add(c);
+                    var sets = new HashSet<Models.Change>(selected);
 
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)

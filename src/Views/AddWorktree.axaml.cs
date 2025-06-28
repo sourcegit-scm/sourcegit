@@ -25,7 +25,7 @@ namespace SourceGit.Views
                 if (selected.Count == 1)
                 {
                     var folder = selected[0];
-                    var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
+                    var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
                     TxtLocation.Text = folderPath.TrimEnd('\\', '/');
                 }
             }

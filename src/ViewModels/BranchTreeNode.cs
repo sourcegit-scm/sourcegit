@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Avalonia;
+using AvaloniaEdit.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -86,8 +87,7 @@ namespace SourceGit.ViewModels
 
             public void SetExpandedNodes(List<string> expanded)
             {
-                foreach (var node in expanded)
-                    _expanded.Add(node);
+                _expanded.AddRange(expanded);
             }
 
             public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
@@ -165,7 +165,7 @@ namespace SourceGit.ViewModels
                     return;
                 }
 
-                var lastFolder = null as BranchTreeNode;
+                BranchTreeNode lastFolder = null;
                 var start = 0;
 
                 while (sepIdx != -1)
@@ -250,8 +250,7 @@ namespace SourceGit.ViewModels
                     {
                         if (r.Backend is Models.Branch)
                             return r.TimeToSort == l.TimeToSort ? Models.NumericSort.Compare(l.Name, r.Name) : r.TimeToSort.CompareTo(l.TimeToSort);
-                        else
-                            return 1;
+                        return 1;
                     }
 
                     if (r.Backend is Models.Branch)

@@ -83,7 +83,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var autoSelectedRemote = null as Models.Remote;
+                Models.Remote autoSelectedRemote = null;
                 if (!string.IsNullOrEmpty(Current.Upstream))
                 {
                     var remoteNameEndIdx = Current.Upstream.IndexOf('/', 13);
@@ -96,7 +96,7 @@ namespace SourceGit.ViewModels
 
                 if (autoSelectedRemote == null)
                 {
-                    var remote = null as Models.Remote;
+                    Models.Remote remote = null;
                     if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
                         remote = _repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
                     _selectedRemote = remote ?? _repo.Remotes[0];

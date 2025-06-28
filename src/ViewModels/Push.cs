@@ -102,7 +102,7 @@ namespace SourceGit.ViewModels
 
             // Gather all local branches and find current branch.
             LocalBranches = new List<Models.Branch>();
-            var current = null as Models.Branch;
+            Models.Branch current = null;
             foreach (var branch in _repo.Branches)
             {
                 if (branch.IsLocal)
@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
             // Set default remote to the first if it has not been set.
             if (_selectedRemote == null)
             {
-                var remote = null as Models.Remote;
+                Models.Remote remote = null;
                 if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
                     remote = repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
 

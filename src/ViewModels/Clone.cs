@@ -151,7 +151,7 @@ namespace SourceGit.ViewModels
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
                     var launcher = App.GetLauncher();
-                    var page = null as LauncherPage;
+                    LauncherPage page = null;
                     foreach (var one in launcher.Pages)
                     {
                         if (one.Node.Id == _pageId)

@@ -207,14 +207,13 @@ namespace SourceGit.ViewModels
         {
             org = org.Replace("${REPO}", GetWorkdir());
 
-            if (Target is Models.Branch b)
-                return org.Replace("${BRANCH}", b.FriendlyName);
-            else if (Target is Models.Commit c)
-                return org.Replace("${SHA}", c.SHA);
-            else if (Target is Models.Tag t)
-                return org.Replace("${TAG}", t.Name);
-
-            return org;
+            return Target switch
+            {
+                Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName),
+                Models.Commit c => org.Replace("${SHA}", c.SHA),
+                Models.Tag t => org.Replace("${TAG}", t.Name),
+                _ => org
+            };
         }
 
         private string GetWorkdir()

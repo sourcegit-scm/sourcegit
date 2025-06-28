@@ -50,7 +50,7 @@ namespace SourceGit.Models
             var ret = new List<TextInlineChange>();
             var posOld = 0;
             var posNew = 0;
-            var last = null as TextInlineChange;
+            TextInlineChange last = null;
             do
             {
                 while (posOld < sizeOld && posNew < sizeNew && !chunksOld[posOld].Modified && !chunksNew[posNew].Modified)

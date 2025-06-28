@@ -67,7 +67,7 @@ namespace SourceGit.Views
             var foreground = Foreground;
             var x = 0.0;
             var h = Bounds.Height;
-            var prefix = null as FormattedText;
+            FormattedText prefix = null;
 
             var match = REG_KEYWORD_ON().Match(subject);
             if (match.Success)

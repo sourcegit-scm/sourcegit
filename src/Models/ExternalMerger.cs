@@ -96,16 +96,9 @@ namespace SourceGit.Models
             {
                 return Exec.Split(';');
             }
-            else
-            {
-                var patterns = new List<string>();
-                var choices = Exec.Split(';', StringSplitOptions.RemoveEmptyEntries);
-                foreach (var c in choices)
-                {
-                    patterns.Add(Path.GetFileName(c));
-                }
-                return patterns.ToArray();
-            }
+
+            var choices = Exec.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            return Array.ConvertAll(choices, Path.GetFileName);
         }
     }
 }

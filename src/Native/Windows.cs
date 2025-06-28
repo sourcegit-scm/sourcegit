@@ -257,7 +257,7 @@ namespace SourceGit.Native
         {
             // Schedule the DWM frame extension to run in the next render frame
             // to ensure proper timing with the window initialization sequence
-            Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatcher.UIThread.Post(() =>
             {
                 var platformHandle = w.TryGetPlatformHandle();
                 if (platformHandle == null)

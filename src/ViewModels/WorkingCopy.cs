@@ -167,7 +167,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (_selectedStaged != null && _selectedStaged.Count > 0)
+                        if (_selectedStaged?.Count > 0)
                             SelectedStaged = [];
 
                         if (value.Count == 1)
@@ -193,7 +193,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (_selectedUnstaged != null && _selectedUnstaged.Count > 0)
+                        if (_selectedUnstaged?.Count > 0)
                             SelectedUnstaged = [];
 
                         if (value.Count == 1)
@@ -269,12 +269,12 @@ namespace SourceGit.ViewModels
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
-            if (_selectedUnstaged != null && _selectedUnstaged.Count > 0)
+            if (_selectedUnstaged?.Count > 0)
             {
                 foreach (var c in _selectedUnstaged)
                     lastSelectedUnstaged.Add(c.Path);
             }
-            else if (_selectedStaged != null && _selectedStaged.Count > 0)
+            else if (_selectedStaged?.Count > 0)
             {
                 foreach (var c in _selectedStaged)
                     lastSelectedStaged.Add(c.Path);
@@ -1203,7 +1203,7 @@ namespace SourceGit.ViewModels
 
             var menu = new ContextMenu();
 
-            var ai = null as MenuItem;
+            MenuItem ai = null;
             var services = _repo.GetPreferredOpenAIServices();
             if (services.Count > 0)
             {
@@ -1796,7 +1796,7 @@ namespace SourceGit.ViewModels
             else
             {
                 var pathSpecFile = Path.GetTempFileName();
-                using (var writer = new StreamWriter(pathSpecFile))
+                await using (var writer = new StreamWriter(pathSpecFile))
                 {
                     foreach (var c in changes)
                         await writer.WriteLineAsync(c.Path);
@@ -1833,7 +1833,7 @@ namespace SourceGit.ViewModels
             else
             {
                 var pathSpecFile = Path.GetTempFileName();
-                using (var writer = new StreamWriter(pathSpecFile))
+                await using (var writer = new StreamWriter(pathSpecFile))
                 {
                     foreach (var c in changes)
                     {

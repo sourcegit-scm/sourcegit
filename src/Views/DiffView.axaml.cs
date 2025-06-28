@@ -45,10 +45,8 @@ namespace SourceGit.Views
         private void OnUseFullTextDiffClicked(object sender, RoutedEventArgs e)
         {
             var textDiffView = this.FindDescendantOfType<TextDiffView>();
-            if (textDiffView == null)
-                return;
 
-            var presenter = textDiffView.FindDescendantOfType<ThemedTextDiffPresenter>();
+            var presenter = textDiffView?.FindDescendantOfType<ThemedTextDiffPresenter>();
             if (presenter == null)
                 return;
 

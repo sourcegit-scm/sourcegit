@@ -112,10 +112,8 @@ namespace SourceGit.ViewModels
 
                 return ValidationResult.Success;
             }
-            else
-            {
-                return new ValidationResult("Missing runtime context to create branch!");
-            }
+
+            return new ValidationResult("Missing runtime context to create branch!");
         }
 
         public override Task<bool> Sure()
@@ -188,7 +186,7 @@ namespace SourceGit.ViewModels
                     if (succ && CheckoutAfterCreated)
                     {
                         var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
-                        if (BasedOn is Models.Branch based && !based.IsLocal)
+                        if (BasedOn is Models.Branch { IsLocal: false } based)
                             fake.Upstream = based.FullName;
 
                         var folderEndIdx = fake.FullName.LastIndexOf('/');

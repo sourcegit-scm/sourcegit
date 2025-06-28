@@ -199,7 +199,7 @@ namespace SourceGit.Models
             writer.WriteLine($"+++ b/{change.Path}");
 
             // If last line of selection is a change. Find one more line.
-            var tail = null as string;
+            string tail = null;
             if (selection.EndLine < Lines.Count)
             {
                 var lastLine = Lines[selection.EndLine - 1];
@@ -323,7 +323,7 @@ namespace SourceGit.Models
             writer.WriteLine($"+++ b/{change.Path}");
 
             // If last line of selection is a change. Find one more line.
-            var tail = null as string;
+            string tail = null;
             if (selection.EndLine < Lines.Count)
             {
                 var lastLine = Lines[selection.EndLine - 1];

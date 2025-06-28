@@ -101,7 +101,7 @@ namespace SourceGit.Views
 
                 var lines = presenter.GetLines();
                 var view = TextView;
-                if (view != null && view.VisualLinesValid)
+                if (view?.VisualLinesValid ?? false)
                 {
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
@@ -175,7 +175,7 @@ namespace SourceGit.Views
 
                 var lines = presenter.GetLines();
                 var view = TextView;
-                if (view != null && view.VisualLinesValid)
+                if (view?.VisualLinesValid ?? false)
                 {
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
@@ -189,7 +189,7 @@ namespace SourceGit.Views
 
                         var info = lines[index - 1];
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
-                        var indicator = null as FormattedText;
+                        FormattedText indicator = null;
                         if (info.Type == Models.TextDiffLineType.Added)
                         {
                             indicator = new FormattedText(
@@ -545,14 +545,11 @@ namespace SourceGit.Views
         public virtual void GotoFirstChange()
         {
             var blockNavigation = BlockNavigation;
-            if (blockNavigation != null)
+            var prev = blockNavigation?.GotoFirst();
+            if (prev != null)
             {
-                var prev = blockNavigation.GotoFirst();
-                if (prev != null)
-                {
-                    TextArea.Caret.Line = prev.Start;
-                    ScrollToLine(prev.Start);
-                }
+                TextArea.Caret.Line = prev.Start;
+                ScrollToLine(prev.Start);
             }
         }
 
@@ -657,14 +654,11 @@ namespace SourceGit.Views
         public virtual void GotoLastChange()
         {
             var blockNavigation = BlockNavigation;
-            if (blockNavigation != null)
+            var next = blockNavigation?.GotoLast();
+            if (next != null)
             {
-                var next = blockNavigation.GotoLast();
-                if (next != null)
-                {
-                    TextArea.Caret.Line = next.Start;
-                    ScrollToLine(next.Start);
-                }
+                TextArea.Caret.Line = next.Start;
+                ScrollToLine(next.Start);
             }
         }
 
@@ -1830,10 +1824,8 @@ namespace SourceGit.Views
                 return;
 
             var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
 
-            var change = diff.Option.WorkingCopyChange;
+            var change = diff?.Option.WorkingCopyChange;
             if (change == null)
                 return;
 
@@ -1842,10 +1834,8 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
+            var repo = repoView?.DataContext as ViewModels.Repository;
             if (repo == null)
                 return;
 
@@ -1888,10 +1878,8 @@ namespace SourceGit.Views
                 return;
 
             var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
 
-            var change = diff.Option.WorkingCopyChange;
+            var change = diff?.Option.WorkingCopyChange;
             if (change == null)
                 return;
 
@@ -1900,10 +1888,8 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
+            var repo = repoView?.DataContext as ViewModels.Repository;
             if (repo == null)
                 return;
 
@@ -1942,10 +1928,8 @@ namespace SourceGit.Views
                 return;
 
             var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
 
-            var change = diff.Option.WorkingCopyChange;
+            var change = diff?.Option.WorkingCopyChange;
             if (change == null)
                 return;
 
@@ -1954,10 +1938,8 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
+            var repo = repoView?.DataContext as ViewModels.Repository;
             if (repo == null)
                 return;
 

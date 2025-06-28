@@ -18,10 +18,7 @@ namespace SourceGit.Commands
                 return [];
 
             var lines = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
-            var outs = new List<string>();
-            foreach (var line in lines)
-                outs.Add(line);
-            return outs;
+            return [.. lines];
         }
     }
 }

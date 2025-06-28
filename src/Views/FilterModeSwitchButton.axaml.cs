@@ -56,10 +56,8 @@ namespace SourceGit.Views
         private void OnChangeFilterModeButtonClicked(object sender, RoutedEventArgs e)
         {
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
+            var repo = repoView?.DataContext as ViewModels.Repository;
             if (repo == null)
                 return;
 

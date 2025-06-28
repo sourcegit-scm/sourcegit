@@ -205,7 +205,7 @@ namespace SourceGit.Views
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
             var selected = (sender as ListBox)?.SelectedItem;
-            var selectedTag = null as Models.Tag;
+            Models.Tag selectedTag = null;
             if (selected is ViewModels.TagTreeNode node)
                 selectedTag = node.Tag;
             else if (selected is Models.Tag tag)
