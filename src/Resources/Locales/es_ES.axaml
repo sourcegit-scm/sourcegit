@@ -6,6 +6,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">Acerca de</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Acerca de SourceGit</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI de código abierto y gratuito</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Agregar Archivo(s) Para Ignorar</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Patrón:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Almacenar Archivo:</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Agregar Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Ubicación:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Ruta para este worktree. Se admite ruta relativa.</x:String>
@@ -90,6 +93,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Actualizar todos los submódulos</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Rama:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">¡Tu HEAD actual contiene commit(s) que no están conectados a ningunas ramas/etiquetas! ¿Quieres continuar?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward a:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
@@ -124,6 +128,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interactivo ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge a ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ a ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revertir Commit</x:String>
@@ -160,12 +165,17 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nombre de la Plantilla:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ACCIÓN PERSONALIZADA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumentos:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Parámetros incorporados: ${REPO} - ruta del repositorio; ${BRANCH} - rama seleccionada; ${SHA} - hash del commit seleccionado; ${TAG} - etiqueta seleccionada</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Archivo Ejecutable:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Controles de entrada:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Editar</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">Puedes usar $1, $2 ... en argumentos, para valores de los controles de entrada</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nombre:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Alcance:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Rama</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repositorio</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Etiqueta</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Esperar la acción de salida</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Dirección de Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Dirección de email</x:String>
@@ -194,6 +204,15 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizado por este repositorio</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre de Usuario</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nombre de usuario para este repositorio</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Editar Controles de Acción Personalizados</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Valor Comprobado:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Cuando sea comprobado, este valor será usado en argumentos de la línea de comandos</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Descripción:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Utilizado como marcador de posición en CajaDeTexto/SelectorDeRuta ó tooltip en CheckBox</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Por defecto:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Es Carpeta:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Etiqueta:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Tipo:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Espacios de Trabajo</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nombre</x:String>
@@ -299,6 +318,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Editar Grupo Seleccionado</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Editar Repositorio Seleccionado</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Destino:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Este repositorio</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch todos los remotos</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Utilizar opción '--force'</x:String>
@@ -443,6 +464,7 @@
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Espacios de trabajo</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Páginas</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Rama</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Personalizar mensaje de merge</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opción de Merge:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Rama Fuente:</x:String>
@@ -554,6 +576,8 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Forzar push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Rama Local:</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remoto:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revisión:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revisión al Remoto</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Cambios al Remoto</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Rama Remota:</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Establecer como rama de seguimiento</x:String>
@@ -629,6 +653,7 @@
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Contenido</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Mensaje</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Ruta</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Rama Actual</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Mostrar Submódulos como Árbol</x:String>
@@ -691,10 +716,12 @@
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Mensaje:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Información de este stash</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Modo:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Solo cambios staged</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">¡Tanto los cambios staged como los no staged de los archivos seleccionados serán stashed!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Cambios Locales</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplicar</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Copiar Mensaje</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Eliminar</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Eliminar Stash</x:String>
@@ -728,6 +755,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copiar Nombre de la Etiqueta</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copiar Mensaje de la Etiqueta</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
@@ -761,6 +789,7 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorar todos los archivos *{0}</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignorar archivos *{0} en la misma carpeta</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignorar archivos no rastreados en esta carpeta</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignorar solo este archivo</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Enmendar</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Puedes hacer stage a este archivo ahora.</x:String>
@@ -770,6 +799,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Activar evento de clic</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Editar)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Hacer stage a todos los cambios y commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Estas creando un commit en una HEAD separada. ¿Quieres continuar?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Tienes {0} archivo(s) en stage, pero solo {1} archivo(s) mostrado(s) ({2} archivo(s) están filtrados). ¿Quieres continuar?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTOS DETECTADOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">ABRIR HERRAMIENTA DE MERGE EXTERNA</x:String>
