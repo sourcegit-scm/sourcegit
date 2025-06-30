@@ -44,7 +44,8 @@
                 LayoutUpdated="OnCommitListLayoutUpdated"
                 SelectionChanged="OnCommitListSelectionChanged"
                 ContextRequested="OnCommitListContextRequested"
-                DoubleTapped="OnCommitListDoubleTapped">
+                DoubleTapped="OnCommitListDoubleTapped"
+                KeyDown="OnCommitListKeyDown">
         <DataGrid.Resources>
           <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="{DynamicResource Color.Border0}" />
         </DataGrid.Resources>
