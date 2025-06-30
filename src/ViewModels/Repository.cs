@@ -871,7 +871,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                List<Models.Commit> visible = [];
+                var visible = new List<Models.Commit>();
                 var method = (Models.CommitSearchMethod)_searchCommitFilterType;
 
                 if (method == Models.CommitSearchMethod.BySHA)
@@ -880,8 +880,8 @@ namespace SourceGit.ViewModels
                     if (isCommitSHA)
                     {
                         var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
-                        visible = [commit];
-                    }                    
+                        visible.Add(commit);
+                    }
                 }
                 else
                 {

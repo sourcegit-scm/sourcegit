@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
@@ -51,26 +52,40 @@ namespace SourceGit.Views
             if (histories == null)
                 return;
 
-            var list = histories.CommitListContainer;
-            if (list == null)
+            var grid = histories.CommitListContainer;
+            if (grid == null)
                 return;
 
-            var container = list.ItemsPanelRoot as VirtualizingStackPanel;
-            if (container == null)
+            var rowsPresenter = grid.FindDescendantOfType<DataGridRowsPresenter>();
+            if (rowsPresenter == null)
                 return;
 
-            var item = list.ContainerFromIndex(container.FirstRealizedIndex);
-            if (item == null)
-                return;
+            double rowHeight = grid.RowHeight;
+            double startY = 0;
+            foreach (var child in rowsPresenter.Children)
+            {
+                var row = child as DataGridRow;
+                if (row.IsVisible)
+                {
+                    if (rowHeight != row.Bounds.Height)
+                        rowHeight = row.Bounds.Height;
 
-            var width = histories.CommitListHeader.ColumnDefinitions[0].ActualWidth;
-            var height = Bounds.Height;
-            var rowHeight = item.Bounds.Height;
-            var startY = container.FirstRealizedIndex * rowHeight - item.TranslatePoint(new Point(0, 0), list).Value!.Y;
+                    if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
+                    {
+                        var test = rowHeight * row.Index - row.Bounds.Top;
+                        if (startY < test)
+                            startY = test;
+                    }
+                }
+            }
+
+            var headersHeight = grid.ColumnHeaderHeight;
+            var width = histories.CommitListContainer.Columns[0].ActualWidth;
+            var height = Bounds.Height - headersHeight;
             var endY = startY + height + 28;
 
-            using (context.PushClip(new Rect(0, 0, width, height)))
-            using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
+            using (context.PushClip(new Rect(0, headersHeight, width, height)))
+            using (context.PushTransform(Matrix.CreateTranslation(0, headersHeight - startY)))
             {
                 DrawCurves(context, graph, startY, endY, rowHeight);
                 DrawAnchors(context, graph, startY, endY, rowHeight);

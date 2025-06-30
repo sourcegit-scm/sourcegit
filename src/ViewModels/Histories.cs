@@ -300,7 +300,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ContextMenu MakeContextMenu(ListBox list)
+        public ContextMenu MakeContextMenu(DataGrid list)
         {
             var current = _repo.CurrentBranch;
             if (current == null || list.SelectedItems == null)

@@ -129,23 +129,16 @@ namespace SourceGit.Views
 
             if (change.Property == NavigationIdProperty)
             {
-                if (DataContext is ViewModels.Histories)
-                {
-                    var list = CommitListContainer;
-                    if (list is { SelectedItems.Count: 1 })
-                        list.ScrollIntoView(list.SelectedIndex);
-                }
+                var list = CommitListContainer;
+                if (list is { SelectedItems.Count: 1 })
+                    list.ScrollIntoView(list.SelectedItem, null);
             }
         }
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
-            var y = CommitListContainer.Scroll?.Offset.Y ?? 0;
-            var authorNameColumnWidth = ViewModels.Preferences.Instance.Layout.HistoriesAuthorColumnWidth.Value;
-            if (y != _lastScrollY || authorNameColumnWidth != _lastAuthorNameColumnWidth)
+            if (IsLoaded)
             {
-                _lastScrollY = y;
-                _lastAuthorNameColumnWidth = authorNameColumnWidth;
                 CommitGraph.InvalidateVisual();
             }
         }
@@ -161,7 +154,7 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: > 0 } list)
+            if (DataContext is ViewModels.Histories histories && sender is DataGrid { SelectedItems.Count: > 0 } list)
             {
                 var menu = histories.MakeContextMenu(list);
                 menu?.Open(list);
@@ -175,7 +168,7 @@ namespace SourceGit.Views
                 return;
 
             // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
-            if (sender is ListBox { SelectedItems: { Count: > 0 } selected })
+            if (sender is DataGrid { SelectedItems: { Count: > 0 } selected })
             {
                 // CTRL/COMMAND + C -> Copy selected commit SHA and subject.
                 if (e.Key == Key.C)
@@ -212,13 +205,14 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnCommitListItemDoubleTapped(object sender, TappedEventArgs e)
+        private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
             e.Handled = true;
 
             if (DataContext is ViewModels.Histories histories &&
                 CommitListContainer.SelectedItems is { Count: 1 } &&
-                sender is Grid { DataContext: Models.Commit commit })
+                sender is DataGrid grid &&
+                e.Source != grid)
             {
                 if (e.Source is CommitRefsPresenter crp)
                 {
@@ -227,11 +221,9 @@ namespace SourceGit.Views
                         return;
                 }
 
-                histories.CheckoutBranchByCommit(commit);
+                if (e.Source is Control { DataContext: Models.Commit c })
+                    histories.CheckoutBranchByCommit(c);
             }
         }
-
-        private double _lastScrollY = 0;
-        private double _lastAuthorNameColumnWidth = 0;
     }
 }
