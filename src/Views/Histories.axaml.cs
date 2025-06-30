@@ -199,11 +199,14 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is DataGrid { SelectedItems.Count: > 0 } dataGrid)
+            if (DataContext is ViewModels.Histories histories &&
+                sender is DataGrid { SelectedItems.Count: > 0 } dataGrid &&
+                e.Source is Control { DataContext: Models.Commit })
             {
                 var menu = histories.MakeContextMenu(dataGrid);
                 menu?.Open(dataGrid);
             }
+
             e.Handled = true;
         }
 
