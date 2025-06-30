@@ -806,9 +806,7 @@ namespace SourceGit.ViewModels
                     item.Header = dup.Name;
                     item.Click += (_, e) =>
                     {
-                        if (_repo.CanCreatePopup())
-                            _repo.ShowAndStartPopup(new ExecuteCustomAction(_repo, dup, commit));
-
+                        _repo.ExecCustomAction(dup, commit);
                         e.Handled = true;
                     };
 

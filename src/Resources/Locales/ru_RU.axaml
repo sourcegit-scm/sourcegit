@@ -6,6 +6,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">О программе</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">О SourceGit</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Бесплатный графический клиент Git с исходным кодом</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Добавить файл(ы) к игнорируемым</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Шаблон:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Файл хранилища:</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Добавить рабочий каталог</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Расположение:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Путь к рабочему каталогу (поддерживается относительный путь)</x:String>
@@ -90,6 +93,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Обновить все подкаталоги</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Ваша текущая ГОЛОВА содержит ревизию(и), не связанные ни с к какими ветками или метками! Вы хотите продолжить?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Переключиться и перемотать</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Перемотать к:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
@@ -161,13 +165,17 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Название:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ПОЛЬЗОВАТЕЛЬСКОЕ ДЕЙСТВИЕ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Аргументы:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Путь к репозиторию; ${SHA} - SHA ревизий</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Встроенные параметры: ${REPO} — путь к репозиторию; ${BRANCH} — выбранная ветка; ${SHA} — хеш выбранной ревизии; ${TAG} — выбранная метка</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Исполняемый файл:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Элементы управления вводом:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Редактор</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">Вы можете использовать $1, $2 ... в аргументах для значений элемента управления вводом</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Диапазон:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Ветка</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Ревизия</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Репозиторий</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Метка</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Ждать для выполения выхода</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Адрес электронной почты</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Адрес электронной почты</x:String>
@@ -196,6 +204,15 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP-прокси для репозитория</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Имя пользователя</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Имя пользователя репозитория</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Пользовательское редактирование элементами действий</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Проверяемое значение:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Если установлено, то данное значение будет использоваться в аргументах командной строки</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Описание:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Используется в качестве заполнителя в текстовом поле/селекторе пути или всплывающей подсказки в флажке</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">По умолчанию:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Это каталог:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Метка:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Тип:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Рабочие пространства</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Цвет</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Имя</x:String>
@@ -301,8 +318,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Цель:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Редактировать выбранную группу</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Редактировать выбранный репозиторий</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Выполнить пользовательское действие</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Имя действия:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Цель:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Этот репозиторий</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Извлечь все внешние репозитории</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Разрешить опцию (--force)</x:String>
@@ -635,8 +652,8 @@
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Автор</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Ревизор</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Содержимое</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">Файл</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Сообщение</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Путь</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Текущая ветка</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Показывать подмодули как дерево</x:String>
@@ -737,7 +754,8 @@
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL-адрес</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение с метки</x:String>
+  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение метки</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
@@ -781,6 +799,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Запустить событие щелчка</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Зафиксировать (Редактировать)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Сформировать все изменения и зафиксировать</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Вы создаёте ревизию на отсоединённой ГОЛОВЕ. Вы хотите продолжить?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Вы сформировали {0} файл(ов), но отображается только {1} файл(ов) ({2} файл(ов) отфильтровано). Вы хотите продолжить?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">ОТКРЫТЬ ВНЕШНИЙ ИНСТРУМЕНТ СЛИЯНИЯ</x:String>

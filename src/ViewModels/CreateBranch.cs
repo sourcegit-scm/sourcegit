@@ -129,7 +129,14 @@ namespace SourceGit.ViewModels
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             return Task.Run(() =>
             {
-                bool succ = false;
+                bool succ;
+
+                if (CheckoutAfterCreated && !_repo.ConfirmCheckoutBranch())
+                {
+                    CallUIThread(() => _repo.SetWatcherEnabled(true));
+                    return true;
+                }
+
                 if (CheckoutAfterCreated && !_repo.IsBare)
                 {
                     var needPopStash = false;

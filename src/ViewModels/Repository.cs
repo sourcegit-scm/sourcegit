@@ -75,18 +75,12 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedViewIndex, value))
                 {
-                    switch (value)
+                    SelectedView = value switch
                     {
-                        case 1:
-                            SelectedView = _workingCopy;
-                            break;
-                        case 2:
-                            SelectedView = _stashesPage;
-                            break;
-                        default:
-                            SelectedView = _histories;
-                            break;
-                    }
+                        1 => _workingCopy,
+                        2 => _stashesPage,
+                        _ => _histories,
+                    };
                 }
             }
         }
@@ -820,16 +814,35 @@ namespace SourceGit.ViewModels
 
         public void ApplyPatch()
         {
+            if (CanCreatePopup())
+                ShowPopup(new Apply(this));
+        }
+
+        public void ExecCustomAction(Models.CustomAction action, object scope)
+        {
             if (!CanCreatePopup())
                 return;
-            ShowPopup(new Apply(this));
+
+            ExecuteCustomAction popup;
+            if (scope is Models.Branch b)
+                popup = new ExecuteCustomAction(this, action, b);
+            else if (scope is Models.Commit c)
+                popup = new ExecuteCustomAction(this, action, c);
+            else if (scope is Models.Tag t)
+                popup = new ExecuteCustomAction(this, action, t);
+            else
+                popup = new ExecuteCustomAction(this, action);
+
+            if (action.Controls.Count == 0)
+                ShowAndStartPopup(popup);
+            else
+                ShowPopup(popup);
         }
 
         public void Cleanup()
         {
-            if (!CanCreatePopup())
-                return;
-            ShowAndStartPopup(new Cleanup(this));
+            if (CanCreatePopup())
+                ShowAndStartPopup(new Cleanup(this));
         }
 
         public void ClearFilter()
@@ -858,13 +871,17 @@ namespace SourceGit.ViewModels
 
             Task.Run(() =>
             {
-                var visible = null as List<Models.Commit>;
+                List<Models.Commit> visible = [];
                 var method = (Models.CommitSearchMethod)_searchCommitFilterType;
 
                 if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
-                    visible = commit == null ? [] : [commit];
+                    var isCommitSHA = new Commands.IsCommitSHA(_fullpath, _searchCommitFilter).Result();
+                    if (isCommitSHA)
+                    {
+                        var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
+                        visible = [commit];
+                    }                    
                 }
                 else
                 {
@@ -1311,6 +1328,41 @@ namespace SourceGit.ViewModels
                 ShowPopup(new CreateBranch(this, _currentBranch));
         }
 
+        public bool ConfirmCheckoutBranch()
+        {
+            if (Dispatcher.UIThread.CheckAccess())
+                return true;
+
+            if (_currentBranch is not { IsDetachedHead: true })
+                return true;
+
+            var refs = new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).Result();
+            if (refs.Count == 0)
+            {
+                var confirmCheckout = false;
+                var resetEvent = new AutoResetEvent(false);
+
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    var msg = App.Text("Checkout.WarnLostCommits");
+                    App.ShowWindow(new Confirm(msg, () =>
+                    {
+                        confirmCheckout = true;
+                        resetEvent.Set();
+                    }, () =>
+                    {
+                        confirmCheckout = false;
+                        resetEvent.Set();
+                    }), true);
+                });
+
+                resetEvent.WaitOne();
+                return confirmCheckout;
+            }
+
+            return true;
+        }
+
         public void CheckoutBranch(Models.Branch branch)
         {
             if (branch.IsLocal)
@@ -1679,7 +1731,7 @@ namespace SourceGit.ViewModels
                     var log = CreateLog("Install LFS");
                     var succ = new Commands.LFS(_fullpath).Install(log);
                     if (succ)
-                        App.SendNotification(_fullpath, $"LFS enabled successfully!");
+                        App.SendNotification(_fullpath, "LFS enabled successfully!");
 
                     log.Complete();
                     e.Handled = true;
@@ -1706,9 +1758,7 @@ namespace SourceGit.ViewModels
                     item.Header = dup.Name;
                     item.Click += (_, e) =>
                     {
-                        if (CanCreatePopup())
-                            ShowAndStartPopup(new ExecuteCustomAction(this, dup));
-
+                        ExecCustomAction(dup, null);
                         e.Handled = true;
                     };
 
@@ -2373,6 +2423,41 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var menu = new ContextMenu();
+            menu.Items.Add(createBranch);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(pushTag);
+            menu.Items.Add(deleteTag);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(archive);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var actions = GetCustomActions(Models.CustomActionScope.Tag);
+            if (actions.Count > 0)
+            {
+                var custom = new MenuItem();
+                custom.Header = App.Text("TagCM.CustomAction");
+                custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                foreach (var action in actions)
+                {
+                    var dup = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = dup.Name;
+                    item.Click += (_, e) =>
+                    {
+                        ExecCustomAction(dup, tag);
+                        e.Handled = true;
+                    };
+
+                    custom.Items.Add(item);
+                }
+
+                menu.Items.Add(custom);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -2392,14 +2477,6 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var menu = new ContextMenu();
-            menu.Items.Add(createBranch);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(pushTag);
-            menu.Items.Add(deleteTag);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(archive);
-            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
             menu.Items.Add(copyMessage);
             return menu;
@@ -2805,9 +2882,7 @@ namespace SourceGit.ViewModels
                 item.Header = dup.Name;
                 item.Click += (_, e) =>
                 {
-                    if (CanCreatePopup())
-                        ShowAndStartPopup(new ExecuteCustomAction(this, dup, branch));
-
+                    ExecCustomAction(dup, branch);
                     e.Handled = true;
                 };
 
@@ -2820,7 +2895,7 @@ namespace SourceGit.ViewModels
 
         private bool IsSearchingCommitsByFilePath()
         {
-            return _isSearching && _searchCommitFilterType == (int)Models.CommitSearchMethod.ByFile;
+            return _isSearching && _searchCommitFilterType == (int)Models.CommitSearchMethod.ByPath;
         }
 
         private void CalcWorktreeFilesForSearching()

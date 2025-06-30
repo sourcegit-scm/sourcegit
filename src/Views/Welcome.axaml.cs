@@ -215,7 +215,7 @@ namespace SourceGit.Views
                 if (to == null)
                     return;
 
-                e.DragEffects = to.IsRepository ? DragDropEffects.None : DragDropEffects.Move;
+                e.DragEffects = DragDropEffects.Move;
                 e.Handled = true;
             }
         }
@@ -226,11 +226,14 @@ namespace SourceGit.Views
                 return;
 
             var to = grid.DataContext as ViewModels.RepositoryNode;
-            if (to == null || to.IsRepository)
+            if (to == null)
             {
                 e.Handled = true;
                 return;
             }
+
+            if (to.IsRepository)
+                to = ViewModels.Welcome.Instance.FindParentGroup(to);
 
             if (e.Data.Contains("MovedRepositoryTreeNode") &&
                 e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)

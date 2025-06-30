@@ -155,7 +155,6 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nome Template:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">AZIONE PERSONALIZZATA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argomenti:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Percorso del repository; ${SHA} - SHA del commit selezionato</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">File Eseguibile:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nome:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Ambito:</x:String>
@@ -290,8 +289,6 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destinazione:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Modifica Gruppo Selezionato</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Modifica Repository Selezionato</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Esegui Azione Personalizzata</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Nome Azione:</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Recupera</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Recupera da tutti i remoti</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Forza la sovrascrittura dei riferimenti locali</x:String>
@@ -615,7 +612,6 @@
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Autore</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Contenuto</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Messaggio</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Branch Corrente</x:String>

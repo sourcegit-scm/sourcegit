@@ -41,7 +41,7 @@ namespace SourceGit.Commands
 
                 search = argsBuilder.ToString();
             }
-            else if (method == Models.CommitSearchMethod.ByFile)
+            else if (method == Models.CommitSearchMethod.ByPath)
             {
                 search += $"-- \"{filter}\"";
             }

@@ -4,7 +4,6 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:vm="using:SourceGit.ViewModels"
-                    xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120"
                     x:Class="SourceGit.Views.AIAssistant"
                     x:DataType="vm:AIAssistant"

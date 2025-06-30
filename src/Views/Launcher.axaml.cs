@@ -42,13 +42,6 @@ namespace SourceGit.Views
 
         public Launcher()
         {
-            var layout = ViewModels.Preferences.Instance.Layout;
-            if (layout.LauncherWindowState != WindowState.Maximized)
-            {
-                Width = layout.LauncherWidth;
-                Height = layout.LauncherHeight;
-            }
-
             if (OperatingSystem.IsMacOS())
             {
                 HasLeftCaptionButton = true;
@@ -65,6 +58,31 @@ namespace SourceGit.Views
             }
 
             InitializeComponent();
+            PositionChanged += OnPositionChanged;
+
+            var layout = ViewModels.Preferences.Instance.Layout;
+            Width = layout.LauncherWidth;
+            Height = layout.LauncherHeight;
+
+            var x = layout.LauncherPositionX;
+            var y = layout.LauncherPositionY;
+            if (x != int.MinValue && y != int.MinValue && Screens is { } screens)
+            {
+                var position = new PixelPoint(x, y);
+                var size = new PixelSize((int)layout.LauncherWidth, (int)layout.LauncherHeight);
+                var desiredRect = new PixelRect(position, size);
+                for (var i = 0; i < screens.ScreenCount; i++)
+                {
+                    var screen = screens.All[i];
+                    if (screen.WorkingArea.Contains(desiredRect))
+                    {
+                        Position = position;
+                        return;
+                    }
+                }
+            }
+
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         public void BringToTop()
@@ -110,6 +128,18 @@ namespace SourceGit.Views
                     HasLeftCaptionButton = state != WindowState.FullScreen;
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
+            }
+        }
+
+        protected override void OnSizeChanged(SizeChangedEventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            if (WindowState == WindowState.Normal)
+            {
+                var layout = ViewModels.Preferences.Instance.Layout;
+                layout.LauncherWidth = Width;
+                layout.LauncherHeight = Height;
             }
         }
 
@@ -311,7 +341,20 @@ namespace SourceGit.Views
             base.OnClosing(e);
 
             if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
-                launcher.Quit(Width, Height);
+            {
+                ViewModels.Preferences.Instance.Save();
+                launcher.Quit();
+            }
+        }
+
+        private void OnPositionChanged(object sender, PixelPointEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+            {
+                var layout = ViewModels.Preferences.Instance.Layout;
+                layout.LauncherPositionX = Position.X;
+                layout.LauncherPositionY = Position.Y;
+            }
         }
 
         private void OnOpenWorkspaceMenu(object sender, RoutedEventArgs e)

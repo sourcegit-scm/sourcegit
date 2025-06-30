@@ -225,7 +225,7 @@ namespace SourceGit.Views
 
                 var typeface = TextView.CreateTypeface();
                 var test = new FormattedText(
-                    $"-",
+                    "-",
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
@@ -332,17 +332,13 @@ namespace SourceGit.Views
 
             private IBrush GetBrushByLineType(Models.TextDiffLineType type)
             {
-                switch (type)
+                return type switch
                 {
-                    case Models.TextDiffLineType.None:
-                        return _presenter.EmptyContentBackground;
-                    case Models.TextDiffLineType.Added:
-                        return _presenter.AddedContentBackground;
-                    case Models.TextDiffLineType.Deleted:
-                        return _presenter.DeletedContentBackground;
-                    default:
-                        return null;
-                }
+                    Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
+                    Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
+                    Models.TextDiffLineType.Deleted => _presenter.DeletedContentBackground,
+                    _ => null,
+                };
             }
 
             private ThemedTextDiffPresenter _presenter = null;

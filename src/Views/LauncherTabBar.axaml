@@ -109,7 +109,7 @@
                         <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
                       </StackPanel>
                     </ToolTip.Tip>
-                    <Path Width="8" Height="8" Data="{StaticResource Icons.Window.Close}"/>
+                    <Path Width="9" Height="9" Data="{StaticResource Icons.Close}"/>
                   </Button>
                 </Grid>
               </Border>

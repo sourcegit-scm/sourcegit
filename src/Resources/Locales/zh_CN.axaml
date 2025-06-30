@@ -6,6 +6,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">关于软件</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">关于本软件</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">开源免费的Git客户端</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">新增忽略文件</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">匹配模式 ：</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">保存位置 ：</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作树</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">工作树路径 ：</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">填写该工作树的路径。支持相对路径。</x:String>
@@ -90,6 +93,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同时更新所有子模块</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您当前游离的HEAD包含未被任何分支及标签引用的提交！是否继续？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">检出分支并快进</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支 ：</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选提交</x:String>
@@ -161,13 +165,17 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">模板名 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">请使用${REPO}代替仓库路径，${BRANCH}代替选中的分支，${SHA}代替提交哈希</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">内置变量：${REPO} 仓库路径、${BRANCH} 选中的分支、${SHA} 选中的提交哈希，${TAG} 选中的标签</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可执行文件路径 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">输入控件 ：</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">编辑</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">请在命令行参数中使用 $1, $2 等占位符表示输入控件的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">作用目标 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">选中的分支</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">选中的提交</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">仓库</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">选中的标签</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">等待操作执行完成</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">电子邮箱</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">邮箱地址</x:String>
@@ -196,6 +204,15 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP网络代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">应用于本仓库的用户名</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">编辑自定义操作输入控件</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">启用时命令行参数 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">此CheckBox勾选后，该值会被应用于命令行参数</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">描述 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">TextBox及Path Selector中用作Placeholder，CheckBox中用作ToolTip</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">默认值 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">目标是否是目录 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名称 ：</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">类型 ：</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作区</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">颜色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名称</x:String>
@@ -301,8 +318,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">编辑分组</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">编辑仓库</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">执行自定义操作</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自定义操作 ：</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">目标:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">本仓库</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">拉取(fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">拉取所有的远程仓库</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">强制覆盖本地REFs</x:String>
@@ -635,8 +652,8 @@
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">变更内容</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">文件</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交信息</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">路径</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">仅在当前分支中查找</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以树型结构展示</x:String>
@@ -738,6 +755,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">复制标签信息</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
@@ -781,6 +799,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">触发点击事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交（修改原始提交）</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自动暂存所有变更并提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">您正在向一个游离的 HEAD 提交变更，是否继续提交？</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">当前有 {0} 个文件在暂存区中，但仅显示了 {1} 个文件（{2} 个文件被过滤掉了），是否继续提交？</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">检测到冲突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">打开合并工具</x:String>

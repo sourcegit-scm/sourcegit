@@ -2,6 +2,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Add File(s) To Ignore</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Pattern:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Storage File:</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Add Worktree</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Location:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
@@ -86,6 +89,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Update all submodules</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Your current HEAD contains commit(s) not connected to any branches/tags! Do you want to continue?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward to:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
@@ -157,13 +161,17 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${REPO} - Repository's path; ${BRANCH} - Selected branch; ${SHA} - Selected commit's SHA</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Built-in parameters: ${REPO} - repository's path; ${BRANCH} - selected branch; ${SHA} - selected commit's hash; ${TAG} - selected tag</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Executable File:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Input Controls:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Edit</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">You can use $1, $2 ... in arguments for input control values</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Scope:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Tag</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Wait for action exit</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
@@ -192,6 +200,15 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy used by this repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Edit Custom Action Controls</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Checked Value:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">When checked, this value will be used in command-line arguments</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Description:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Used as placeholder in TextBox/PathSelector or tooltip in CheckBox</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Default:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Is Folder:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Label:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Type:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Name</x:String>
@@ -297,8 +314,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Edit Selected Group</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edit Selected Repository</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">Run Custom Action</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">Action Name:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">This repository</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Force override local refs</x:String>
@@ -631,8 +648,8 @@
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Author</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Content</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">File</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Path</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Show Submodules as Tree</x:String>
@@ -734,6 +751,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copy Tag Message</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
@@ -777,6 +795,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Edit)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">You are creating commit on a detached HEAD. Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">You have staged {0} file(s) but only {1} file(s) displayed ({2} files are filtered out). Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">OPEN EXTERNAL MERGETOOL</x:String>

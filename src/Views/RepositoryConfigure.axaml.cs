@@ -12,6 +12,14 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (!e.Handled && e.Key == Key.Escape)
+                Close();
+        }
+
         protected override void OnClosing(WindowClosingEventArgs e)
         {
             base.OnClosing(e);
@@ -35,12 +43,18 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        private async void EditCustomActionControls(object sender, RoutedEventArgs e)
         {
-            base.OnKeyDown(e);
+            if (sender is not Button { DataContext: Models.CustomAction act })
+                return;
 
-            if (!e.Handled && e.Key == Key.Escape)
-                Close();
+            var dialog = new ConfigureCustomActionControls()
+            {
+                DataContext = new ViewModels.ConfigureCustomActionControls(act.Controls)
+            };
+
+            await dialog.ShowDialog(this);
+            e.Handled = true;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
                 return null;
 
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Editing head commit message ...";
+            ProgressDescription = "Editing head commit message ...";
 
             var log = _repo.CreateLog("Reword HEAD");
             Use(log);

@@ -57,21 +57,15 @@ namespace SourceGit.Native
 
         public string FindTerminal(Models.ShellOrTerminal shell)
         {
-            switch (shell.Type)
+            return shell.Type switch
             {
-                case "mac-terminal":
-                    return "Terminal";
-                case "iterm2":
-                    return "iTerm";
-                case "warp":
-                    return "Warp";
-                case "ghostty":
-                    return "Ghostty";
-                case "kitty":
-                    return "kitty";
-            }
-
-            return string.Empty;
+                "mac-terminal" => "Terminal",
+                "iterm2" => "iTerm",
+                "warp" => "Warp",
+                "ghostty" => "Ghostty",
+                "kitty" => "kitty",
+                _ => string.Empty,
+            };
         }
 
         public List<Models.ExternalTool> FindExternalTools()

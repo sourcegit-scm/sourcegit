@@ -22,7 +22,7 @@ namespace SourceGit.ViewModels
         public override Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Pull LFS objects from remote ...";
+            ProgressDescription = "Pull LFS objects from remote ...";
 
             var log = _repo.CreateLog("LFS Pull");
             Use(log);

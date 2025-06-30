@@ -150,22 +150,15 @@ namespace SourceGit.ViewModels
 
         public void ScanDefaultCloneDir()
         {
-            var defaultCloneDir = Preferences.Instance.GitDefaultCloneDir;
-            if (string.IsNullOrEmpty(defaultCloneDir))
+            if (!Preferences.Instance.IsGitConfigured())
             {
-                App.RaiseException(string.Empty, "The default clone directory hasn't been configured!");
-                return;
-            }
-
-            if (!Directory.Exists(defaultCloneDir))
-            {
-                App.RaiseException(string.Empty, $"The default clone directory '{defaultCloneDir}' does not exist!");
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
                 return;
             }
 
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
-                activePage.StartPopup(new ScanRepositories(defaultCloneDir));
+                activePage.Popup = new ScanRepositories();
         }
 
         public void ClearSearchFilter()
@@ -178,6 +171,25 @@ namespace SourceGit.ViewModels
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new CreateGroup(null);
+        }
+
+        public RepositoryNode FindParentGroup(RepositoryNode node, RepositoryNode group = null)
+        {
+            var collection = (group == null) ? Preferences.Instance.RepositoryNodes : group.SubNodes;
+            if (collection.Contains(node))
+                return group;
+
+            foreach (var item in collection)
+            {
+                if (!item.IsRepository)
+                {
+                    var parent = FindParentGroup(node, item);
+                    if (parent != null)
+                        return parent;
+                }
+            }
+
+            return null;
         }
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)

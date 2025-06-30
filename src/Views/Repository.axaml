@@ -532,7 +532,7 @@
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByCommitter}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
-              <TextBlock Text="{DynamicResource Text.Repository.Search.ByFile}"/>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByPath}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByContent}"/>
             </ComboBox.Items>
           </ComboBox>
@@ -812,7 +812,7 @@
                     <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
 
                     <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoriesFilter">
-                      <Path Width="8" Height="8" Data="{StaticResource Icons.Window.Close}"/>
+                      <Path Width="8" Height="8" Data="{StaticResource Icons.Close}"/>
                     </Button>
                   </StackPanel>
                 </Border>

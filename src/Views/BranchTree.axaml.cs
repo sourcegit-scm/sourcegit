@@ -241,6 +241,41 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        public void Select(Models.Branch branch)
+        {
+            if (branch == null)
+                return;
+
+            var treePath = new List<ViewModels.BranchTreeNode>();
+            FindTreePath(treePath, Nodes, branch.Name, 0);
+
+            if (treePath.Count == 0)
+                return;
+
+            var oldRowCount = Rows.Count;
+            var rows = Rows;
+            for (var i = 0; i < treePath.Count - 1; i++)
+            {
+                var node = treePath[i];
+                if (!node.IsExpanded)
+                {
+                    node.IsExpanded = true;
+
+                    var idx = rows.IndexOf(node);
+                    var subtree = new List<ViewModels.BranchTreeNode>();
+                    MakeRows(subtree, node.Children, node.Depth + 1);
+                    rows.InsertRange(idx + 1, subtree);
+                }
+            }
+
+            var target = treePath[^1];
+            BranchesPresenter.SelectedItem = target;
+            BranchesPresenter.ScrollIntoView(target);
+
+            if (oldRowCount != rows.Count)
+                RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+        }
+
         public void UnselectAll()
         {
             BranchesPresenter.SelectedItem = null;
@@ -532,6 +567,23 @@ namespace SourceGit.Views
 
             foreach (var sub in node.Children)
                 CollectBranchesInNode(outs, sub);
+        }
+
+        private void FindTreePath(List<ViewModels.BranchTreeNode> outPath, List<ViewModels.BranchTreeNode> collection, string path, int start)
+        {
+            if (start >= path.Length - 1)
+                return;
+
+            var sepIdx = path.IndexOf('/', start);
+            var name = sepIdx < 0 ? path.Substring(start) : path.Substring(start, sepIdx - start);
+            foreach (var node in collection)
+            {
+                if (node.Name.Equals(name, StringComparison.Ordinal))
+                {
+                    outPath.Add(node);
+                    FindTreePath(outPath, node.Children, path, sepIdx + 1);
+                }
+            }
         }
 
         private bool _disableSelectionChangingEvent = false;

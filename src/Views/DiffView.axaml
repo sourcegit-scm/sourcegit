@@ -37,7 +37,14 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"
-                    ToolTip.Tip="{DynamicResource Text.Diff.First}">
+                    HotKey="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}">
+              <ToolTip.Tip>
+                <TextBlock>
+                  <Run Text="{DynamicResource Text.Diff.First}"/>
+                  <Run Text=" "/>
+                  <Run Text="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </ToolTip.Tip>
               <Button.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                   <Binding Path="IsTextDiff"/>
@@ -51,7 +58,14 @@
                     Width="28"
                     Click="OnGotoPrevChange"
                     IsVisible="{Binding IsTextDiff}"
-                    ToolTip.Tip="{DynamicResource Text.Diff.Prev}">
+                    HotKey="{OnPlatform Ctrl+Alt+Up, macOS=⌘+⌥+Up}">
+              <ToolTip.Tip>
+                <TextBlock>
+                  <Run Text="{DynamicResource Text.Diff.Prev}"/>
+                  <Run Text=" "/>
+                  <Run Text="{OnPlatform Ctrl+Alt+Up, macOS=⌘+⌥+Up}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
             </Button>
 
@@ -70,14 +84,28 @@
                     Width="28"
                     Click="OnGotoNextChange"
                     IsVisible="{Binding IsTextDiff}"
-                    ToolTip.Tip="{DynamicResource Text.Diff.Next}">
+                    HotKey="{OnPlatform Ctrl+Alt+Down, macOS=⌘+Alt+Down}">
+              <ToolTip.Tip>
+                <TextBlock>
+                  <Run Text="{DynamicResource Text.Diff.Next}"/>
+                  <Run Text=" "/>
+                  <Run Text="{OnPlatform Ctrl+Alt+Down, macOS=⌘+⌥+Down}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
             </Button>
 
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
-                    ToolTip.Tip="{DynamicResource Text.Diff.Last}">
+                    HotKey="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}">
+              <ToolTip.Tip>
+                <TextBlock>
+                  <Run Text="{DynamicResource Text.Diff.Last}"/>
+                  <Run Text=" "/>
+                  <Run Text="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </ToolTip.Tip>
               <Button.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                   <Binding Path="IsTextDiff"/>

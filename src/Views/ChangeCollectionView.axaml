@@ -37,7 +37,7 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:ChangeTreeNode">
-            <Grid ColumnDefinitions="16,Auto,Auto,Auto"
+            <Grid ColumnDefinitions="16,16,Auto,*"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   Background="Transparent"
                   DoubleTapped="OnRowDoubleTapped"
@@ -64,7 +64,7 @@
                                   Change="{Binding Change}"
                                   IsVisible="{Binding !IsFolder}"/>
 
-              <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="4,0,0,0">
+              <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,0,0,0">
                 <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
                 <TextBlock Classes="primary" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
               </StackPanel>

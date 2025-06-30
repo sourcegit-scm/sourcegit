@@ -8,15 +8,12 @@ namespace SourceGit.Converters
         public static readonly FuncValueConverter<Models.FilterMode, IBrush> ToBorderBrush =
             new FuncValueConverter<Models.FilterMode, IBrush>(v =>
             {
-                switch (v)
+                return v switch
                 {
-                    case Models.FilterMode.Included:
-                        return Brushes.Green;
-                    case Models.FilterMode.Excluded:
-                        return Brushes.Red;
-                    default:
-                        return Brushes.Transparent;
-                }
+                    Models.FilterMode.Included => Brushes.Green,
+                    Models.FilterMode.Excluded => Brushes.Red,
+                    _ => Brushes.Transparent,
+                };
             });
     }
 }

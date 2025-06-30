@@ -12,7 +12,7 @@ namespace SourceGit.Models
         ByAuthor,
         ByCommitter,
         ByMessage,
-        ByFile,
+        ByPath,
         ByContent,
     }
 

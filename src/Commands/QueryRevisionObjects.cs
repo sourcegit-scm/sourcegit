@@ -51,21 +51,14 @@ namespace SourceGit.Commands
             obj.Type = Models.ObjectType.Blob;
             obj.Path = match.Groups[3].Value;
 
-            switch (match.Groups[1].Value)
+            obj.Type = match.Groups[1].Value switch
             {
-                case "blob":
-                    obj.Type = Models.ObjectType.Blob;
-                    break;
-                case "tree":
-                    obj.Type = Models.ObjectType.Tree;
-                    break;
-                case "tag":
-                    obj.Type = Models.ObjectType.Tag;
-                    break;
-                case "commit":
-                    obj.Type = Models.ObjectType.Commit;
-                    break;
-            }
+                "blob" => Models.ObjectType.Blob,
+                "tree" => Models.ObjectType.Tree,
+                "tag" => Models.ObjectType.Tag,
+                "commit" => Models.ObjectType.Commit,
+                _ => obj.Type,
+            };
 
             _objects.Add(obj);
         }

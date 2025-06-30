@@ -6,6 +6,9 @@
   <x:String x:Key="Text.About" xml:space="preserve">關於</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於 SourceGit</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">開源免費的 Git 客戶端</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">新增忽略檔案</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">匹配模式 ：</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">儲存路徑 ：</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">新增工作區</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">工作區路徑:</x:String>
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">填寫該工作區的路徑。支援相對路徑。</x:String>
@@ -90,6 +93,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您目前的分離的 HEAD 包含與任何分支/標籤無關的提交！您要繼續嗎？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">簽出分支並快轉</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支 ：</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
@@ -161,13 +165,17 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">指令參數:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">使用 ${REPO} 表示存放庫路徑、${BRANCH} 表示所選的分支、${SHA} 表示所選的提交編號</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">內建參數: ${REPO} 存放庫路徑、${BRANCH} 所選的分支、${SHA} 所選的提交編號、${TAG} 所選的標籤</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控件:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">編輯</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">請使用占位符如 $1, $2 來代表輸入控制項的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">執行範圍:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">選取的分支</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">選取的提交</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">存放庫</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">選取的標籤</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">等待自訂動作執行結束</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">電子郵件地址</x:String>
@@ -196,6 +204,15 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP 網路代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">用於本存放庫的使用者名稱</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">編輯自訂動作輸入控件</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">啟用時的指令行參數:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">勾選 CheckBox 後，此值將用於命令列參數中</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">描述:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">在 TextBox/PathSelector 中用作占位符，或在 CheckBox 中用作工具提示</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">預設值:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">目標路徑是否為資料夾:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名稱:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">類型:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名稱</x:String>
@@ -301,8 +318,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">編輯群組</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">編輯存放庫</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">執行自訂動作</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">自訂動作:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">目標:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">本存放庫</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">提取 (fetch)</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">提取所有的遠端存放庫</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">強制覆寫本機 REFs</x:String>
@@ -635,8 +652,8 @@
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">變更內容</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">檔案</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">提交訊息</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">路徑</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">僅搜尋目前分支</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以樹型結構展示</x:String>
@@ -738,6 +755,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
   <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">複製標籤訊息</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合併 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
@@ -781,6 +799,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交 (修改原始提交)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">您正在向一个分離狀態的 HEAD 提交變更，您確定要繼續提交嗎?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">您已暫存 {0} 個檔案，但只顯示 {1} 個檔案 ({2} 個檔案被篩選器隱藏)。您確定要繼續提交嗎?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">偵測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">使用外部合併工具開啟</x:String>

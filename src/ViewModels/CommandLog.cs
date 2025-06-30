@@ -11,7 +11,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = string.Empty;
+        }
 
         public DateTime StartTime
         {

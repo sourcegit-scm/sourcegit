@@ -169,18 +169,12 @@ namespace SourceGit.Commands
             }
 
             // Force using this app as git editor.
-            switch (Editor)
+            start.Arguments += Editor switch
             {
-                case EditorType.CoreEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ";
-                    break;
-                case EditorType.RebaseEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
-                    break;
-                default:
-                    start.Arguments += "-c core.editor=true ";
-                    break;
-            }
+                EditorType.CoreEditor => $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ",
+                EditorType.RebaseEditor => $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ",
+                _ => "-c core.editor=true ",
+            };
 
             // Append command args
             start.Arguments += Args;

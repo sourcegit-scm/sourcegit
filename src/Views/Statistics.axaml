@@ -165,7 +165,7 @@
                     <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
                             Background="Transparent"
                             ToolTip.Tip="{Binding User}">
-                      <Grid ColumnDefinitions="26,*,100">
+                      <Grid ColumnDefinitions="26,*,72">
                         <v:Avatar Grid.Column="0"
                                   Width="16" Height="16"
                                   HorizontalAlignment="Center" VerticalAlignment="Center"

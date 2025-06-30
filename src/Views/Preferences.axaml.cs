@@ -439,6 +439,20 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void EditCustomActionControls(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button { DataContext: Models.CustomAction act })
+                return;
+
+            var dialog = new ConfigureCustomActionControls()
+            {
+                DataContext = new ViewModels.ConfigureCustomActionControls(act.Controls)
+            };
+
+            await dialog.ShowDialog(this);
+            e.Handled = true;
+        }
+
         private void UpdateGitVersion()
         {
             GitVersion = Native.OS.GitVersionString;

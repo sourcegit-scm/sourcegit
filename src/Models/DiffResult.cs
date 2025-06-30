@@ -100,7 +100,7 @@ namespace SourceGit.Models
                         rs.HasChanges = true;
                         break;
                     }
-                    else if (isOldSide)
+                    if (isOldSide)
                     {
                         rs.HasLeftChanges = true;
                     }
@@ -116,7 +116,7 @@ namespace SourceGit.Models
                         rs.HasChanges = true;
                         break;
                     }
-                    else if (isOldSide)
+                    if (isOldSide)
                     {
                         rs.HasChanges = true;
                     }
@@ -163,7 +163,7 @@ namespace SourceGit.Models
             if (revert)
             {
                 var totalLines = Lines.Count - 1;
-                builder.Append($"@@ -0,").Append(totalLines - additions).Append(" +0,").Append(totalLines).Append(" @@");
+                builder.Append("@@ -0,").Append(totalLines - additions).Append(" +0,").Append(totalLines).Append(" @@");
                 for (int i = 1; i <= totalLines; i++)
                 {
                     var line = Lines[i];
@@ -644,12 +644,6 @@ namespace SourceGit.Models
     }
 
     public class NoOrEOLChange;
-
-    public class FileModeDiff
-    {
-        public string Old { get; set; } = string.Empty;
-        public string New { get; set; } = string.Empty;
-    }
 
     public class SubmoduleDiff
     {

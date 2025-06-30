@@ -142,7 +142,6 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">வார்ப்புரு பெயர்:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">வாதங்கள்:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">${களஞ்சிய} - களஞ்சியத்தின் பாதை; ${கிளை} - தேர்ந்தெடுக்கப்பட்ட கிளை; ${பாகொவ} - தேர்ந்தெடுக்கப்பட்ட உறுதிமொழிடியின் பாகொவ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">இயக்கக்கூடிய கோப்பு:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">பெயர்:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">நோக்கம்:</x:String>
@@ -272,8 +271,6 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">இலக்கு:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட குழுவைத் திருத்து</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட களஞ்சியத்தைத் திருத்து</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction" xml:space="preserve">தனிப்பயன் செயலை இயக்கு</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Name" xml:space="preserve">செயல் பெயர்:</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">பெறு</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">எல்லா தொலைகளையும் பெறு</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">உள்ளக குறிப்புகளை கட்டாயமாக மீறு</x:String>
@@ -589,7 +586,6 @@
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">உறுதிமொழி தேடு</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">ஆசிரியர்</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">உறுதிமொழியாளர்</x:String>
-  <x:String x:Key="Text.Repository.Search.ByFile" xml:space="preserve">கோப்பு</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">செய்தி</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">பாகொவ</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">தற்போதைய கிளை</x:String>

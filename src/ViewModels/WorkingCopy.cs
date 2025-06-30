@@ -11,6 +11,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public record CommitMessageRecord(string subject)
+    {
+        public string Subject { get; set; } = subject;
+    }
+
     public class WorkingCopy : ObservableObject, IDisposable
     {
         public bool IncludeUntracked
@@ -261,7 +266,6 @@ namespace SourceGit.ViewModels
             }
 
             _cached = changes;
-            _count = _cached.Count;
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
@@ -590,7 +594,7 @@ namespace SourceGit.ViewModels
             if (_selectedUnstaged.Count == 1)
             {
                 var change = _selectedUnstaged[0];
-                var path = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
+                var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
@@ -598,7 +602,11 @@ namespace SourceGit.ViewModels
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Click += (_, e) =>
                 {
-                    Native.OS.OpenInFileManager(path, true);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        Native.OS.OpenInFileManager(path, true);
+                    else
+                        Native.OS.OpenInFileManager(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder), true);
+
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
@@ -771,7 +779,8 @@ namespace SourceGit.ViewModels
                             ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
                             ignoreFolder.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, $"{selectedSingleFolder}/");
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(ignoreFolder);
@@ -783,7 +792,8 @@ namespace SourceGit.ViewModels
                             singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
                             singleFile.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, change.Path);
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new AddToIgnore(_repo, change.Path));
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(singleFile);
@@ -794,7 +804,8 @@ namespace SourceGit.ViewModels
                                 byExtension.Header = App.Text("WorkingCopy.AddToGitIgnore.Extension", extension);
                                 byExtension.Click += (_, e) =>
                                 {
-                                    Commands.GitIgnore.Add(_repo.FullPath, $"*{extension}");
+                                    if (_repo.CanCreatePopup())
+                                        _repo.ShowPopup(new AddToIgnore(_repo, $"*{extension}"));
                                     e.Handled = true;
                                 };
                                 addToIgnore.Items.Add(byExtension);
@@ -805,7 +816,8 @@ namespace SourceGit.ViewModels
                                 byExtensionInSameFolder.Click += (_, e) =>
                                 {
                                     var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
-                                    Commands.GitIgnore.Add(_repo.FullPath, $"{dir}/*{extension}");
+                                    if (_repo.CanCreatePopup())
+                                        _repo.ShowPopup(new AddToIgnore(_repo, $"{dir}/*{extension}"));
                                     e.Handled = true;
                                 };
                                 addToIgnore.Items.Add(byExtensionInSameFolder);
@@ -827,7 +839,8 @@ namespace SourceGit.ViewModels
                             ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
                             ignoreFolder.Click += (_, e) =>
                             {
-                                Commands.GitIgnore.Add(_repo.FullPath, $"{selectedSingleFolder}/");
+                                if (_repo.CanCreatePopup())
+                                    _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
                                 e.Handled = true;
                             };
                             addToIgnore.Items.Add(ignoreFolder);
@@ -973,7 +986,11 @@ namespace SourceGit.ViewModels
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
                 copy.Click += (_, e) =>
                 {
-                    App.CopyText(change.Path);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(change.Path);
+                    else
+                        App.CopyText(selectedSingleFolder);
+
                     e.Handled = true;
                 };
                 menu.Items.Add(copy);
@@ -983,7 +1000,11 @@ namespace SourceGit.ViewModels
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Click += (_, e) =>
                 {
-                    App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(path);
+                    else
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+
                     e.Handled = true;
                 };
                 menu.Items.Add(copyFullPath);
@@ -1133,7 +1154,8 @@ namespace SourceGit.ViewModels
                     ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
                     ignoreFolder.Click += (_, e) =>
                     {
-                        Commands.GitIgnore.Add(_repo.FullPath, $"{selectedSingleFolder}/");
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
                         e.Handled = true;
                     };
 
@@ -1144,6 +1166,27 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(addToIgnore);
+
+                    var copy = new MenuItem();
+                    copy.Header = App.Text("CopyPath");
+                    copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copy.Click += (_, e) =>
+                    {
+                        App.CopyText(selectedSingleFolder);
+                        e.Handled = true;
+                    };
+
+                    var copyFullPath = new MenuItem();
+                    copyFullPath.Header = App.Text("CopyPath");
+                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Click += (_, e) =>
+                    {
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copy);
+                    menu.Items.Add(copyFullPath);
                 }
             }
 
@@ -1195,7 +1238,7 @@ namespace SourceGit.ViewModels
             if (_selectedStaged.Count == 1)
             {
                 var change = _selectedStaged[0];
-                var path = Path.GetFullPath(Path.Combine(_repo.FullPath, change.Path));
+                var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
@@ -1203,7 +1246,11 @@ namespace SourceGit.ViewModels
                 explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
-                    Native.OS.OpenInFileManager(path, true);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        Native.OS.OpenInFileManager(path, true);
+                    else
+                        Native.OS.OpenInFileManager(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder), true);
+
                     e.Handled = true;
                 };
 
@@ -1381,7 +1428,11 @@ namespace SourceGit.ViewModels
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyPath.Click += (_, e) =>
                 {
-                    App.CopyText(change.Path);
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(change.Path);
+                    else
+                        App.CopyText(selectedSingleFolder);
+
                     e.Handled = true;
                 };
 
@@ -1390,7 +1441,11 @@ namespace SourceGit.ViewModels
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Click += (_, e) =>
                 {
-                    App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
+                    if (string.IsNullOrEmpty(selectedSingleFolder))
+                        App.CopyText(path);
+                    else
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+
                     e.Handled = true;
                 };
 
@@ -1469,6 +1524,31 @@ namespace SourceGit.ViewModels
                 {
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(ai);
+                }
+
+                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                {
+                    var copyPath = new MenuItem();
+                    copyPath.Header = App.Text("CopyPath");
+                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Click += (_, e) =>
+                    {
+                        App.CopyText(selectedSingleFolder);
+                        e.Handled = true;
+                    };
+
+                    var copyFullPath = new MenuItem();
+                    copyFullPath.Header = App.Text("CopyFullPath");
+                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Click += (_, e) =>
+                    {
+                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copyPath);
+                    menu.Items.Add(copyFullPath);
                 }
             }
 
@@ -1550,7 +1630,7 @@ namespace SourceGit.ViewModels
                     var subjectEndIdx = message.IndexOf('\n');
                     var subject = subjectEndIdx > 0 ? message.Substring(0, subjectEndIdx) : message;
                     var item = new MenuItem();
-                    item.Header = subject;
+                    item.Header = new CommitMessageRecord(subject);
                     item.Icon = App.CreateMenuIcon("Icons.Histories");
                     item.Click += (_, e) =>
                     {
@@ -1776,7 +1856,7 @@ namespace SourceGit.ViewModels
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
         }
 
-        private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty = false, bool confirmWithFilter = false)
+        private void DoCommit(bool autoStage, bool autoPush, CommitCheckPassed checkPassed = CommitCheckPassed.None)
         {
             if (string.IsNullOrWhiteSpace(_commitMessage))
                 return;
@@ -1787,18 +1867,25 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && !confirmWithFilter)
+            if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < CommitCheckPassed.DetachedHead)
             {
-                var confirmMessage = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                App.ShowWindow(new ConfirmCommit(confirmMessage, () => DoCommit(autoStage, autoPush, allowEmpty, true)), true);
+                var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
+                App.ShowWindow(new Confirm(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead)), true);
                 return;
             }
 
-            if (!_useAmend && !allowEmpty)
+            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < CommitCheckPassed.Filter)
             {
-                if ((autoStage && _count == 0) || (!autoStage && _staged.Count == 0))
+                var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
+                App.ShowWindow(new Confirm(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter)), true);
+                return;
+            }
+
+            if (checkPassed < CommitCheckPassed.FileCount && !_useAmend)
+            {
+                if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    App.ShowWindow(new ConfirmEmptyCommit(_count > 0, stageAll => DoCommit(stageAll, autoPush, true, confirmWithFilter)), true);
+                    App.ShowWindow(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)), true);
                     return;
                 }
             }
@@ -1865,6 +1952,14 @@ namespace SourceGit.ViewModels
             return false;
         }
 
+        private enum CommitCheckPassed
+        {
+            None = 0,
+            DetachedHead,
+            Filter,
+            FileCount,
+        }
+
         private Repository _repo = null;
         private bool _isLoadingData = false;
         private bool _isStaging = false;
@@ -1880,7 +1975,6 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleStaged = [];
         private List<Models.Change> _selectedUnstaged = [];
         private List<Models.Change> _selectedStaged = [];
-        private int _count = 0;
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;

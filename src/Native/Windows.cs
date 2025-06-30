@@ -94,27 +94,18 @@ namespace SourceGit.Native
                         y = 2;
 
                     var zone = y * 3 + x;
-                    switch (zone)
+                    return zone switch
                     {
-                        case 0:
-                            return 13; // HTTOPLEFT
-                        case 1:
-                            return 12; // HTTOP
-                        case 2:
-                            return 14; // HTTOPRIGHT
-                        case 3:
-                            return 10; // HTLEFT
-                        case 4:
-                            return 1;  // HTCLIENT
-                        case 5:
-                            return 11; // HTRIGHT
-                        case 6:
-                            return 16; // HTBOTTOMLEFT
-                        case 7:
-                            return 15; // HTBOTTOM
-                        default:
-                            return 17; // HTBOTTOMRIGHT
-                    }
+                        0 => 13, // HTTOPLEFT
+                        1 => 12, // HTTOP
+                        2 => 14, // HTTOPRIGHT
+                        3 => 10, // HTLEFT
+                        4 => 1, // HTCLIENT
+                        5 => 11, // HTRIGHT
+                        6 => 16, // HTBOTTOMLEFT
+                        7 => 15, // HTBOTTOM
+                        _ => 17,
+                    };
                 }
 
                 return IntPtr.Zero;
@@ -211,7 +202,7 @@ namespace SourceGit.Native
         {
             if (!File.Exists(OS.ShellOrTerminal))
             {
-                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
+                App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;
             }
 

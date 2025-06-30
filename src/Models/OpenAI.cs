@@ -177,18 +177,10 @@ namespace SourceGit.Models
         {
             var server = new Uri(_server);
             var key = new ApiKeyCredential(_apiKey);
-            var client = null as ChatClient;
-            if (_server.Contains("openai.azure.com/", StringComparison.Ordinal))
-            {
-                var azure = new AzureOpenAIClient(server, key);
-                client = azure.GetChatClient(_model);
-            }
-            else
-            {
-                var openai = new OpenAIClient(key, new() { Endpoint = server });
-                client = openai.GetChatClient(_model);
-            }
-
+            var oaiClient = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
+                ? new AzureOpenAIClient(server, key)
+                : new OpenAIClient(key, new() { Endpoint = server });
+            var client = oaiClient.GetChatClient(_model);
             var messages = new List<ChatMessage>();
             messages.Add(_model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt));
             messages.Add(new UserChatMessage(question));

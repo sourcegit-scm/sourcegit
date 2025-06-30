@@ -284,18 +284,12 @@ namespace SourceGit.ViewModels
                 if (_viewContent is FileHistoriesSingleRevision singleRevision)
                     _prevIsDiffMode = singleRevision.IsDiffMode;
 
-                switch (SelectedCommits.Count)
+                ViewContent = SelectedCommits.Count switch
                 {
-                    case 1:
-                        ViewContent = new FileHistoriesSingleRevision(_repo, file, SelectedCommits[0], _prevIsDiffMode);
-                        break;
-                    case 2:
-                        ViewContent = new FileHistoriesCompareRevisions(_repo, file, SelectedCommits[0], SelectedCommits[1]);
-                        break;
-                    default:
-                        ViewContent = SelectedCommits.Count;
-                        break;
-                }
+                    1 => new FileHistoriesSingleRevision(_repo, file, SelectedCommits[0], _prevIsDiffMode),
+                    2 => new FileHistoriesCompareRevisions(_repo, file, SelectedCommits[0], SelectedCommits[1]),
+                    _ => SelectedCommits.Count,
+                };
             };
         }
 

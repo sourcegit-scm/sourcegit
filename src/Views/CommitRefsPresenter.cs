@@ -186,7 +186,6 @@ namespace SourceGit.Views
                 var fg = Foreground;
                 var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
                 var labelSize = FontSize;
-                var requiredWidth = 0.0;
                 var requiredHeight = 16.0;
                 var x = 0.0;
                 var allowWrap = AllowWrap;
@@ -260,11 +259,9 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (allowWrap && requiredHeight > 16.0)
-                    requiredWidth = availableSize.Width;
-                else
-                    requiredWidth = x + 2;
-
+                var requiredWidth = allowWrap && requiredHeight > 16.0
+                    ? availableSize.Width
+                    : x + 2;
                 InvalidateVisual();
                 return new Size(requiredWidth, requiredHeight);
             }
