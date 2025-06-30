@@ -441,36 +441,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.21%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.AddToIgnore
-- Text.AddToIgnore.Pattern
-- Text.AddToIgnore.Storage
-- Text.Checkout.WarnLostCommits
-- Text.Configure.CustomAction.Arguments.Tip
-- Text.Configure.CustomAction.InputControls
-- Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
-- Text.Configure.CustomAction.Scope.Tag
-- Text.ConfigureCustomActionControls
-- Text.ConfigureCustomActionControls.CheckedValue
-- Text.ConfigureCustomActionControls.CheckedValue.Tip
-- Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
-- Text.ConfigureCustomActionControls.DefaultValue
-- Text.ConfigureCustomActionControls.IsFolder
-- Text.ConfigureCustomActionControls.Label
-- Text.ConfigureCustomActionControls.Type
-- Text.ExecuteCustomAction.Target
-- Text.ExecuteCustomAction.Repository
-- Text.Repository.Search.ByPath
-- Text.TagCM.CustomAction
-- Text.WorkingCopy.ConfirmCommitWithDetachedHead
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-88.48%25-yellow)
 
