@@ -141,7 +141,7 @@ namespace SourceGit.Views
             var dataGrid = CommitListContainer;
             var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
             if (rowsPresenter is { Children: { Count: > 0 } rows })
-                CommitGraph.Layout = new(0, dataGrid.Columns[0].ActualWidth, rows[0].Bounds.Height);
+                CommitGraph.Layout = new(0, dataGrid.Columns[0].ActualWidth - 4, rows[0].Bounds.Height);
 
             if (dataGrid.SelectedItems.Count == 1)
                 dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
@@ -176,7 +176,7 @@ namespace SourceGit.Views
                 }
             }
 
-            var clipWidth = dataGrid.Columns[0].ActualWidth;
+            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
             if (_lastGraphStartY != startY ||
                 _lastGraphClipWidth != clipWidth ||
                 _lastGraphRowHeight != rowHeight)
