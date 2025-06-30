@@ -95,7 +95,7 @@
         </DataGrid.Styles>
         
         <DataGrid.Columns>
-          <DataGridTemplateColumn Width="*">
+          <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -147,7 +147,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="80" Width="100" CanUserResize="True">
+          <DataGridTemplateColumn MinWidth="80" Width="100" CanUserResize="True" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -160,9 +160,9 @@
                             Margin="4,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            IsHitTestVisible="False"
                             User="{Binding Author}"
-                            Opacity="{Binding Opacity}"/>
+                            Opacity="{Binding Opacity}"
+                            IsHitTestVisible="False"/>
 
                   <Border Grid.Column="1" Padding="8,0,4,0" ClipToBounds="True">
                     <TextBlock Classes="primary"
@@ -176,14 +176,14 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="100" CanUserResize="False">
+          <DataGridTemplateColumn MinWidth="100" CanUserResize="False" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
             
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="8,0,0,0" IsHitTestVisible="False" ClipToBounds="True">
+                <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True">
                   <TextBlock Classes="primary"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              FontWeight="{Binding FontWeight}"
@@ -193,7 +193,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="160" CanUserResize="False">
+          <DataGridTemplateColumn MinWidth="160" CanUserResize="False" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <Grid HorizontalAlignment="Center">
                 <TextBlock Classes="table_header"
@@ -209,7 +209,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="8,0" ClipToBounds="True" IsHitTestVisible="False">
+                <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
                   <v:CommitTimeTextBlock Classes="primary"
                                          FontWeight="{Binding FontWeight}"
                                          Opacity="{Binding Opacity}"
