@@ -34,6 +34,20 @@ namespace SourceGit
         }
     }
 
+    public class DataGridLengthConverter : JsonConverter<DataGridLength>
+    {
+        public override DataGridLength Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var size = reader.GetDouble();
+            return new DataGridLength(size, DataGridLengthUnitType.Pixel, 0, size);
+        }
+
+        public override void Write(Utf8JsonWriter writer, DataGridLength value, JsonSerializerOptions options)
+        {
+            writer.WriteNumberValue(value.DisplayValue);
+        }
+    }
+
     [JsonSourceGenerationOptions(
         WriteIndented = true,
         IgnoreReadOnlyFields = true,
@@ -41,6 +55,7 @@ namespace SourceGit
         Converters = [
             typeof(ColorConverter),
             typeof(GridLengthConverter),
+            typeof(DataGridLengthConverter),
         ]
     )]
     [JsonSerializable(typeof(Models.ExternalToolPaths))]

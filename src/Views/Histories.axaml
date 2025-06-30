@@ -149,7 +149,12 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="80" Width="100" CanUserResize="True" IsReadOnly="True">
+          <DataGridTemplateColumn MinWidth="80" CanUserResize="True" IsReadOnly="True">
+            <DataGridTemplateColumn.Width>
+              <Binding Source="{x:Static vm:Preferences.Instance}"
+                       Path="Layout.AuthorColumnWidth"
+                       Mode="TwoWay"/>
+            </DataGridTemplateColumn.Width>
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
