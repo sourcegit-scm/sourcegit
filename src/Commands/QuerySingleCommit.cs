@@ -6,9 +6,6 @@ namespace SourceGit.Commands
     {
         public QuerySingleCommit(string repo, string sha)
         {
-            _repo = repo;
-            _sha = sha;
-
             WorkingDirectory = repo;
             Context = repo;
             Args = $"show --no-show-signature --decorate=full --format=%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s -s {sha}";
@@ -16,10 +13,6 @@ namespace SourceGit.Commands
 
         public Models.Commit Result()
         {
-            var isCommitSHA = new IsCommitSHA(_repo, _sha).Result();
-            if (!isCommitSHA)
-                return null;
-
             var rs = ReadToEnd();
             if (rs.IsSuccess && !string.IsNullOrEmpty(rs.StdOut))
             {
@@ -44,8 +37,5 @@ namespace SourceGit.Commands
 
             return null;
         }
-
-        private readonly string _repo;
-        private readonly string _sha;
     }
 }
