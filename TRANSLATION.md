@@ -8,43 +8,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-96.36%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.AddToIgnore
-- Text.AddToIgnore.Pattern
-- Text.AddToIgnore.Storage
-- Text.Checkout.WarnLostCommits
-- Text.CommitCM.PushRevision
-- Text.Configure.CustomAction.Arguments.Tip
-- Text.Configure.CustomAction.InputControls
-- Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
-- Text.Configure.CustomAction.Scope.Tag
-- Text.ConfigureCustomActionControls
-- Text.ConfigureCustomActionControls.CheckedValue
-- Text.ConfigureCustomActionControls.CheckedValue.Tip
-- Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
-- Text.ConfigureCustomActionControls.DefaultValue
-- Text.ConfigureCustomActionControls.IsFolder
-- Text.ConfigureCustomActionControls.Label
-- Text.ConfigureCustomActionControls.Type
-- Text.ExecuteCustomAction.Target
-- Text.ExecuteCustomAction.Repository
-- Text.Merge.Edit
-- Text.Push.Revision
-- Text.Push.Revision.Title
-- Text.Repository.Search.ByPath
-- Text.Stash.Mode
-- Text.StashCM.CopyMessage
-- Text.TagCM.CustomAction
-- Text.WorkingCopy.AddToGitIgnore.InFolder
-- Text.WorkingCopy.ConfirmCommitWithDetachedHead
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-88.61%25-yellow)
 
