@@ -1,8 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -35,57 +33,39 @@ namespace SourceGit.Views
             set => SetValue(OnlyHighlightCurrentBranchProperty, value);
         }
 
+        public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
+            AvaloniaProperty.Register<CommitGraph, Models.CommitGraphLayout>(nameof(Layout));
+
+        public Models.CommitGraphLayout Layout
+        {
+            get => GetValue(LayoutProperty);
+            set => SetValue(LayoutProperty, value);
+        }
+
         static CommitGraph()
         {
-            AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty, OnlyHighlightCurrentBranchProperty);
+            AffectsRender<CommitGraph>(
+                GraphProperty, 
+                DotBrushProperty, 
+                OnlyHighlightCurrentBranchProperty,
+                LayoutProperty);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            var graph = Graph;
-            if (graph == null)
+            if (Graph is not { } graph || Layout is not { } layout)
                 return;
 
-            var histories = this.FindAncestorOfType<Histories>();
-            if (histories == null)
-                return;
+            var startY = layout.StartY;
+            var clipWidth = layout.ClipWidth;
+            var clipHeight = Bounds.Height;
+            var rowHeight = layout.RowHeight;
+            var endY = startY + clipHeight + 28;
 
-            var grid = histories.CommitListContainer;
-            if (grid == null)
-                return;
-
-            var rowsPresenter = grid.FindDescendantOfType<DataGridRowsPresenter>();
-            if (rowsPresenter == null)
-                return;
-
-            double rowHeight = grid.RowHeight;
-            double startY = 0;
-            foreach (var child in rowsPresenter.Children)
-            {
-                var row = child as DataGridRow;
-                if (row.IsVisible)
-                {
-                    if (rowHeight != row.Bounds.Height)
-                        rowHeight = row.Bounds.Height;
-
-                    if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
-                    {
-                        var test = rowHeight * row.Index - row.Bounds.Top;
-                        if (startY < test)
-                            startY = test;
-                    }
-                }
-            }
-
-            var headersHeight = grid.ColumnHeaderHeight;
-            var width = histories.CommitListContainer.Columns[0].ActualWidth;
-            var height = Bounds.Height - headersHeight;
-            var endY = startY + height + 28;
-
-            using (context.PushClip(new Rect(0, headersHeight, width, height)))
-            using (context.PushTransform(Matrix.CreateTranslation(0, headersHeight - startY)))
+            using (context.PushClip(new Rect(0, 0, clipWidth, clipHeight)))
+            using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
                 DrawCurves(context, graph, startY, endY, rowHeight);
                 DrawAnchors(context, graph, startY, endY, rowHeight);

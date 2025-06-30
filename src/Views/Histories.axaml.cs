@@ -4,6 +4,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
@@ -137,14 +138,55 @@ namespace SourceGit.Views
 
         private void OnCommitListLoaded(object sender, RoutedEventArgs e)
         {
-            if (CommitListContainer is { SelectedItems.Count: 1 } dataGrid)
+            var dataGrid = CommitListContainer;
+            var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
+            if (rowsPresenter is { Children: { Count: > 0 } rows })
+                CommitGraph.Layout = new(0, dataGrid.Columns[0].ActualWidth, rows[0].Bounds.Height);
+
+            if (dataGrid.SelectedItems.Count == 1)
                 dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
         }
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
-            if (IsLoaded)
-                CommitGraph.InvalidateVisual();
+            if (!IsLoaded)
+                return;
+
+            var dataGrid = CommitListContainer;
+            var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
+            if (rowsPresenter == null)
+                return;
+
+            double rowHeight = dataGrid.RowHeight;
+            double startY = 0;
+            foreach (var child in rowsPresenter.Children)
+            {
+                var row = child as DataGridRow;
+                if (row.IsVisible)
+                {
+                    if (rowHeight != row.Bounds.Height)
+                        rowHeight = row.Bounds.Height;
+
+                    if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
+                    {
+                        var test = rowHeight * row.Index - row.Bounds.Top;
+                        if (startY < test)
+                            startY = test;
+                    }
+                }
+            }
+
+            var clipWidth = dataGrid.Columns[0].ActualWidth;
+            if (_lastGraphStartY != startY ||
+                _lastGraphClipWidth != clipWidth ||
+                _lastGraphRowHeight != rowHeight)
+            {
+                _lastGraphStartY = startY;
+                _lastGraphClipWidth = clipWidth;
+                _lastGraphRowHeight = rowHeight;
+
+                CommitGraph.Layout = new(startY, clipWidth, rowHeight);
+            }
         }
 
         private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
@@ -228,5 +270,9 @@ namespace SourceGit.Views
                     histories.CheckoutBranchByCommit(c);
             }
         }
+
+        private double _lastGraphStartY = 0;
+        private double _lastGraphClipWidth = 0;
+        private double _lastGraphRowHeight = 0;
     }
 }
