@@ -7,7 +7,8 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.ExecuteCustomAction"
-             x:DataType="vm:ExecuteCustomAction">
+             x:DataType="vm:ExecuteCustomAction"
+             Loaded="OnLoaded">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <TextBlock FontSize="18"
                Classes="bold"
@@ -24,14 +25,14 @@
           <DataTemplate DataType="m:Null">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Repositories}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="8,0,0,0"/>
+              <SelectableTextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="8,0,0,0" IsTabStop="False"/>
             </StackPanel>
           </DataTemplate>
 
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0" IsTabStop="False"/>
             </StackPanel>
           </DataTemplate>
 
@@ -53,34 +54,27 @@
       </ContentControl>
     </Grid>
 
-    <ListBox IsVisible="{Binding ControlParameters, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
-             ItemsSource="{Binding ControlParameters, Mode=OneWay}">
-      <ListBox.Styles>
-        <Style Selector="ListBoxItem">
-          <Setter Property="Height" Value="32"/>
-          <Setter Property="Margin" Value="0"/>
-          <Setter Property="Padding" Value="0"/>
-          <Setter Property="BorderThickness" Value="0"/>
+    <ItemsControl IsVisible="{Binding ControlParameters, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
+                  ItemsSource="{Binding ControlParameters, Mode=OneWay}">
+      <ItemsControl.Styles>
+        <Style Selector="ContentPresenter">
+          <Setter Property="Margin" Value="0,1,0,1"/>
         </Style>
-        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-          <Setter Property="Background" Value="Transparent"/>
-        </Style>
-      </ListBox.Styles>
+      </ItemsControl.Styles>
 
-      <ListBox.ItemsPanel>
+      <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel Orientation="Vertical"/>
         </ItemsPanelTemplate>
-      </ListBox.ItemsPanel>
-      
-      <ListBox.DataTemplates>
+      </ItemsControl.ItemsPanel>
+
+      <ItemsControl.DataTemplates>
         <DataTemplate DataType="vm:CustomActionControlTextBox">
           <Grid ColumnDefinitions="150,*">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
                        Margin="0,0,8,0"/>
-            
             <TextBox Grid.Column="1"
                      Height="28"
                      VerticalAlignment="Center"
@@ -105,7 +99,6 @@
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
                        Margin="0,0,8,0"/>
-
             <TextBox Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
@@ -119,7 +112,7 @@
             </TextBox>
           </Grid>
         </DataTemplate>
-      </ListBox.DataTemplates>
-    </ListBox>
+      </ItemsControl.DataTemplates>
+    </ItemsControl>
   </StackPanel>
 </UserControl>
