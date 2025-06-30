@@ -40,6 +40,7 @@
                 RowHeight="26"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto"
+                Loaded="OnCommitListLoaded"
                 LayoutUpdated="OnCommitListLayoutUpdated"
                 SelectionChanged="OnCommitListSelectionChanged"
                 ContextRequested="OnCommitListContextRequested"
