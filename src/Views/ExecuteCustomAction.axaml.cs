@@ -1,8 +1,10 @@
 using System;
-
+using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -11,6 +13,15 @@ namespace SourceGit.Views
         public ExecuteCustomAction()
         {
             InitializeComponent();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var firstFocusable = this
+                .GetVisualDescendants()
+                .OfType<InputElement>()
+                .FirstOrDefault(x => x.Focusable && x.IsTabStop);
+            firstFocusable?.Focus();
         }
 
         private async void SelectPath(object sender, RoutedEventArgs e)
