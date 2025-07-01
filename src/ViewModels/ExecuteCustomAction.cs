@@ -72,6 +72,36 @@ namespace SourceGit.ViewModels
         public string GetValue() => IsChecked ? CheckedValue : string.Empty;
     }
 
+    public class CustomActionControlComboBox : ObservableObject, ICustomActionControlParameter
+    {
+        public string Label { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public List<string> Options { get; set; } = [];
+        
+        public string Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value);
+        }
+
+        public CustomActionControlComboBox(string label, string description, string options)
+        {
+            Label = label;
+            Description = description;
+
+            var parts = options.Split('|', StringSplitOptions.TrimEntries);
+            if (parts.Length > 0)
+            {
+                Options.AddRange(parts);
+                _value = parts[0];
+            }
+        }
+
+        public string GetValue() => _value;
+
+        private string _value = string.Empty;
+    }
+
     public class ExecuteCustomAction : Popup
     {
         public Models.CustomAction CustomAction
@@ -160,11 +190,14 @@ namespace SourceGit.ViewModels
                     case Models.CustomActionControlType.TextBox:
                         ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
                         break;
+                    case Models.CustomActionControlType.PathSelector:
+                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
+                        break;
                     case Models.CustomActionControlType.CheckBox:
                         ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
                         break;
-                    case Models.CustomActionControlType.PathSelector:
-                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
+                    case Models.CustomActionControlType.ComboBox:
+                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
                         break;
                 }
             }

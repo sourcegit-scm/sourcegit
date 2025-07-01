@@ -208,7 +208,6 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Проверяемое значение:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Если установлено, то данное значение будет использоваться в аргументах командной строки</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Описание:</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Используется в качестве заполнителя в текстовом поле/селекторе пути или всплывающей подсказки в флажке</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">По умолчанию:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Это каталог:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Метка:</x:String>

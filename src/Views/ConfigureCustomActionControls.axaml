@@ -131,6 +131,7 @@
                 <ComboBoxItem Content="TextBox"/>
                 <ComboBoxItem Content="Path Selector"/>
                 <ComboBoxItem Content="CheckBox"/>
+                <ComboBoxItem Content="ComboBox"/>
               </ComboBox>
 
               <!-- Description -->
@@ -140,22 +141,43 @@
                        Height="28"
                        Text="{Binding Description, Mode=TwoWay}"/>
               <TextBlock Margin="0,2,0,0"
+                         Classes="small"
                          TextWrapping="Wrap"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.Description.Tip}"
                          Foreground="{DynamicResource Brush.FG2}"/>
 
-              <!-- Default value -->
-              <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}"/>
+              <!-- Default value/Options -->
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}"/>
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.Options}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}"/>
               <TextBox Margin="0,4,0,0"
                        CornerRadius="3"
                        Height="28"
                        Text="{Binding StringValue, Mode=TwoWay}"
                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
               <TextBlock Margin="0,2,0,0"
+                         Classes="small"
                          TextWrapping="Wrap"
                          Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
                          Foreground="{DynamicResource Brush.FG2}"
-                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}">
+                <TextBlock.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.TextBox}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}"/>
+                  </MultiBinding>
+                </TextBlock.IsVisible>
+              </TextBlock>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.Options.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}">
+              </TextBlock>
               <CheckBox Height="28"
                         Margin="0,4,0,0"
                         IsChecked="{Binding BoolValue, Mode=TwoWay}"
@@ -180,6 +202,7 @@
                        Text="{Binding StringValue, Mode=TwoWay}"
                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
               <TextBlock Margin="0,2,0,0"
+                         Classes="small"
                          TextWrapping="Wrap"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue.Tip}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"

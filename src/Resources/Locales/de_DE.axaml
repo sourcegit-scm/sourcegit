@@ -208,7 +208,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Wert bei Markierung:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Wenn markiert, wird dieser Wert in Kommandozeilen-Argumenten benutzt</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Beschreibung:</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Dient als Platzhalter in TextBox/Path Selector (Pfadeingabe) oder als Tooltip in CheckBox (Kontrollkästchen)</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">Dient als Platzhalter in TextBox/Path Selector (Pfadeingabe) oder als Tooltip in ComboBox/CheckBox (Kontrollkästchen)</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Standardwert:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Ordner?</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Bezeichnung:</x:String>
