@@ -7,10 +7,10 @@ jobs:
       matrix:
         include:
           - name : Windows x64
-            os: windows-2019
+            os: windows-2022
             runtime: win-x64
           - name : Windows ARM64
-            os: windows-2019
+            os: windows-2022
             runtime: win-arm64
           - name : macOS (Intel)
             os: macos-13
