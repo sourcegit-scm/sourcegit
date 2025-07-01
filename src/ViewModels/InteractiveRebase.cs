@@ -206,7 +206,10 @@ namespace SourceGit.ViewModels
                     Message = item.FullMessage,
                 });
             }
-            File.WriteAllText(saveFile, JsonSerializer.Serialize(collection, JsonCodeGen.Default.InteractiveRebaseJobCollection));
+            using (var stream = File.Create(saveFile))
+            {
+                JsonSerializer.Serialize(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            }
 
             var log = _repo.CreateLog("Interactive Rebase");
             return Task.Run(() =>

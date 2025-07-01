@@ -1787,12 +1787,13 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var paths = new List<string>();
-                foreach (var c in changes)
-                    paths.Add(c.Path);
-
                 var pathSpecFile = Path.GetTempFileName();
-                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                using (var writer = new StreamWriter(pathSpecFile))
+                {
+                    foreach (var c in changes)
+                        await writer.WriteLineAsync(c.Path);
+                }
+
                 await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
                 File.Delete(pathSpecFile);
             }
@@ -1823,16 +1824,17 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var paths = new List<string>();
-                foreach (var c in changes)
+                var pathSpecFile = Path.GetTempFileName();
+                using (var writer = new StreamWriter(pathSpecFile))
                 {
-                    paths.Add(c.Path);
-                    if (c.Index == Models.ChangeState.Renamed)
-                        paths.Add(c.OriginalPath);
+                    foreach (var c in changes)
+                    {
+                        await writer.WriteLineAsync(c.Path);
+                        if (c.Index == Models.ChangeState.Renamed)
+                            await writer.WriteLineAsync(c.OriginalPath);
+                    }
                 }
 
-                var pathSpecFile = Path.GetTempFileName();
-                await File.WriteAllLinesAsync(pathSpecFile, paths);
                 await Task.Run(() => new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).Exec());
                 File.Delete(pathSpecFile);
             }
