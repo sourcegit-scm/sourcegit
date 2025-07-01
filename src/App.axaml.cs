@@ -83,24 +83,25 @@ namespace SourceGit
             if (ex == null)
                 return;
 
-            var builder = new StringBuilder();
-            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-            builder.Append("----------------------------\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion}\n");
-            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-            builder.Append($"Source: {ex.Source}\n");
-            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
-            builder.Append($"User: {Environment.UserName}\n");
-            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
-            builder.Append($"Exception Time: {DateTime.Now}\n");
-            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
-            builder.Append("---------------------------\n\n");
-            builder.Append(ex);
-
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-            File.WriteAllText(file, builder.ToString());
+            using var writer = new StreamWriter(file);
+            writer.WriteLine($"Crash::: {ex.GetType().FullName}: {ex.Message}");
+            writer.WriteLine();
+            writer.WriteLine("----------------------------");
+            writer.WriteLine($"Version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            writer.WriteLine($"OS: {Environment.OSVersion}");
+            writer.WriteLine($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
+            writer.WriteLine($"Source: {ex.Source}");
+            writer.WriteLine($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}");
+            writer.WriteLine($"User: {Environment.UserName}");
+            writer.WriteLine($"App Start Time: {Process.GetCurrentProcess().StartTime}");
+            writer.WriteLine($"Exception Time: {DateTime.Now}");
+            writer.WriteLine($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB");
+            writer.WriteLine("----------------------------");
+            writer.WriteLine();
+            writer.WriteLine(ex);
+            writer.Flush();
         }
         #endregion
 
@@ -436,33 +437,33 @@ namespace SourceGit
                 return true;
 
             var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
-            var lines = new List<string>();
+            using var writer = new StreamWriter(file);
             foreach (var job in collection.Jobs)
             {
                 switch (job.Action)
                 {
                     case Models.InteractiveRebaseAction.Pick:
-                        lines.Add($"p {job.SHA}");
+                        writer.WriteLine($"p {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Edit:
-                        lines.Add($"e {job.SHA}");
+                        writer.WriteLine($"e {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Reword:
-                        lines.Add($"r {job.SHA}");
+                        writer.WriteLine($"r {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Squash:
-                        lines.Add($"s {job.SHA}");
+                        writer.WriteLine($"s {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Fixup:
-                        lines.Add($"f {job.SHA}");
+                        writer.WriteLine($"f {job.SHA}");
                         break;
                     default:
-                        lines.Add($"d {job.SHA}");
+                        writer.WriteLine($"d {job.SHA}");
                         break;
                 }
             }
 
-            File.WriteAllLines(file, lines);
+            writer.Flush();
 
             exitCode = 0;
             return true;

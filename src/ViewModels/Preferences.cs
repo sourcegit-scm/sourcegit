@@ -523,8 +523,8 @@ namespace SourceGit.ViewModels
                 return;
 
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
-            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
-            File.WriteAllText(file, data);
+            using var stream = File.Create(file);
+            JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.Preferences);
         }
 
         private static Preferences Load()
