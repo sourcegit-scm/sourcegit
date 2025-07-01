@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
             Current = current;
             On = on;
             IsLoading = true;
-            DetailContext = new CommitDetail(repo);
+            DetailContext = new CommitDetail(repo, false);
 
             Task.Run(() =>
             {

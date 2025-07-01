@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo);
+                    var commitDetail = new CommitDetail(_repo, true);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -189,7 +189,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo);
+                    var commitDetail = new CommitDetail(_repo, true);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }

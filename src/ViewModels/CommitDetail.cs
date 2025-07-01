@@ -17,14 +17,13 @@ namespace SourceGit.ViewModels
     {
         public int ActivePageIndex
         {
-            get => _repo.CommitDetailActivePageIndex;
+            get => _rememberActivePageIndex ? _repo.CommitDetailActivePageIndex : _activePageIndex;
             set
             {
-                if (_repo.CommitDetailActivePageIndex != value)
-                {
+                if (_rememberActivePageIndex)
                     _repo.CommitDetailActivePageIndex = value;
-                    OnPropertyChanged();
-                }
+                else
+                    _activePageIndex = value;
             }
         }
 
@@ -139,9 +138,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _canOpenRevisionFileWithDefaultEditor, value);
         }
 
-        public CommitDetail(Repository repo)
+        public CommitDetail(Repository repo, bool rememberActivePageIndex)
         {
             _repo = repo;
+            _rememberActivePageIndex = rememberActivePageIndex;
             WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 
@@ -1026,6 +1026,8 @@ namespace SourceGit.ViewModels
         private static partial Regex REG_SHA_FORMAT();
 
         private Repository _repo = null;
+        private bool _rememberActivePageIndex = true;
+        private int _activePageIndex = 0;
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;

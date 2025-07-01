@@ -48,11 +48,11 @@ namespace SourceGit.ViewModels
                 Title = dir;
 
             _repo = repo;
-            _detail = new CommitDetail(repo);
+            _detail = new CommitDetail(repo, false);
 
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {revision??string.Empty} -- \"{dir}\"", false).Result();
+                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {revision ?? string.Empty} -- \"{dir}\"", false).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     Commits = commits;
