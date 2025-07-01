@@ -77,7 +77,7 @@ namespace SourceGit.ViewModels
         public string Label { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public List<string> Options { get; set; } = [];
-        
+
         public string Value
         {
             get => _value;
