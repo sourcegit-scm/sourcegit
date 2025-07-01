@@ -49,6 +49,7 @@ namespace SourceGit.ViewModels
 
             _repo = repo;
             _detail = new CommitDetail(repo, false);
+            _detail.SearchChangeFilter = dir;
 
             Task.Run(() =>
             {
