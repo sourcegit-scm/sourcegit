@@ -293,11 +293,16 @@ namespace SourceGit.Views
                 return;
 
             var shell = Models.ShellOrTerminal.Supported[type];
-            var options = new FilePickerOpenOptions()
+
+            var options = new FilePickerOpenOptions() { AllowMultiple = false };
+            if (shell.Name != "Custom")
+            {
+                options = new FilePickerOpenOptions()
             {
                 FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
                 AllowMultiple = false,
             };
+            }
 
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
@@ -319,11 +324,15 @@ namespace SourceGit.Views
             }
 
             var tool = Models.ExternalMerger.Supported[type];
-            var options = new FilePickerOpenOptions()
+            var options = new FilePickerOpenOptions() { AllowMultiple = false };
+            if (tool.Name != "Custom")
+            {
+                options = new FilePickerOpenOptions()
             {
                 FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
                 AllowMultiple = false,
             };
+            }
 
             var selected = await StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
