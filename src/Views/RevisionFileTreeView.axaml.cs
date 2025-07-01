@@ -281,11 +281,8 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.CommitDetail vm &&
                 sender is Grid { DataContext: ViewModels.RevisionFileTreeNode { Backend: { } obj } } grid)
             {
-                if (obj.Type != Models.ObjectType.Tree)
-                {
-                    var menu = vm.CreateRevisionFileContextMenu(obj);
-                    menu?.Open(grid);
-                }
+                var menu = vm.CreateRevisionFileContextMenu(obj);
+                menu.Open(grid);
             }
 
             e.Handled = true;

@@ -303,6 +303,7 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Increase Number of Visible Lines</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECT FILE TO VIEW CHANGES</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Open in Merge Tool</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">Dir Histories</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Discard Changes</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">All local changes in working copy.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Changes:</x:String>

@@ -238,6 +238,11 @@ namespace SourceGit.ViewModels
 
     public class FileHistories : ObservableObject
     {
+        public string Title
+        {
+            get;
+        }
+
         public bool IsLoading
         {
             get => _isLoading;
@@ -264,6 +269,11 @@ namespace SourceGit.ViewModels
 
         public FileHistories(Repository repo, string file, string commit = null)
         {
+            if (!string.IsNullOrEmpty(commit))
+                Title = $"{file} @ {commit}";
+            else
+                Title = file;
+
             _repo = repo;
 
             Task.Run(() =>

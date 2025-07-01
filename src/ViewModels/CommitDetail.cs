@@ -296,6 +296,85 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
+        {
+            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, node.FullPath);
+            var explore = new MenuItem();
+            explore.Header = App.Text("RevealFile");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = Directory.Exists(fullPath);
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(fullPath, true);
+                ev.Handled = true;
+            };
+
+            var history = new MenuItem();
+            history.Header = App.Text("DirHistories");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                App.ShowWindow(new DirHistories(_repo, node.FullPath, _commit.SHA), false);
+                ev.Handled = true;
+            };
+
+            var patch = new MenuItem();
+            patch.Header = App.Text("FileCM.SaveAsPatch");
+            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = App.GetStorageProvider();
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("FileCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                var baseRevision = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : _commit.Parents[0];
+                var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                if (storageFile != null)
+                {
+                    var saveTo = storageFile.Path.LocalPath;
+                    var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo.FullPath, changes, baseRevision, _commit.SHA, saveTo));
+                    if (succ)
+                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                }
+
+                e.Handled = true;
+            };
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Click += (_, ev) =>
+            {
+                App.CopyText(node.FullPath);
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Click += (_, e) =>
+            {
+                App.CopyText(fullPath);
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(explore);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(history);
+            menu.Items.Add(patch);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
+
+            return menu;
+        }
+
         public ContextMenu CreateChangeContextMenu(Models.Change change)
         {
             var diffWithMerger = new MenuItem();
@@ -428,8 +507,61 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        public ContextMenu CreateRevisionFileContextMenuByFolder(string path)
+        {
+            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, path);
+            var explore = new MenuItem();
+            explore.Header = App.Text("RevealFile");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = Directory.Exists(fullPath);
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(fullPath, true);
+                ev.Handled = true;
+            };
+
+            var history = new MenuItem();
+            history.Header = App.Text("DirHistories");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                App.ShowWindow(new DirHistories(_repo, path, _commit.SHA), false);
+                ev.Handled = true;
+            };
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Click += (_, ev) =>
+            {
+                App.CopyText(path);
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Click += (_, e) =>
+            {
+                App.CopyText(fullPath);
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(explore);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(history);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
+            return menu;
+        }
+
         public ContextMenu CreateRevisionFileContextMenu(Models.Object file)
         {
+            if (file.Type == Models.ObjectType.Tree)
+                return CreateRevisionFileContextMenuByFolder(file.Path);
+
             var menu = new ContextMenu();
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file.Path);
             var explore = new MenuItem();

@@ -307,6 +307,7 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">使用外部比對工具檢視</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">目錄内容變更歷史</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本機未提交的變更。</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">變更:</x:String>
