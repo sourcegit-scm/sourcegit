@@ -24,10 +24,16 @@ namespace SourceGit.Views
             if (topLevel == null)
                 return;
 
+            var preference = ViewModels.Preferences.Instance;
+            var workspace = preference.GetActiveWorkspace();
+            var initDir = workspace.DefaultCloneDir;
+            if (string.IsNullOrEmpty(initDir) || !Directory.Exists(initDir))
+                initDir = preference.GitDefaultCloneDir;
+
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-            if (Directory.Exists(ViewModels.Preferences.Instance.GitDefaultCloneDir))
+            if (Directory.Exists(initDir))
             {
-                var folder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(ViewModels.Preferences.Instance.GitDefaultCloneDir);
+                var folder = await topLevel.StorageProvider.TryGetFolderFromPathAsync(initDir);
                 options.SuggestedStartLocation = folder;
             }
 
