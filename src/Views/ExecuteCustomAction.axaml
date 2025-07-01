@@ -56,12 +56,6 @@
 
     <ItemsControl IsVisible="{Binding ControlParameters, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
                   ItemsSource="{Binding ControlParameters, Mode=OneWay}">
-      <ItemsControl.Styles>
-        <Style Selector="ContentPresenter">
-          <Setter Property="Margin" Value="0,1,0,1"/>
-        </Style>
-      </ItemsControl.Styles>
-
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel Orientation="Vertical"/>
@@ -70,7 +64,7 @@
 
       <ItemsControl.DataTemplates>
         <DataTemplate DataType="vm:CustomActionControlTextBox">
-          <Grid ColumnDefinitions="150,*">
+          <Grid Height="32" ColumnDefinitions="150,*">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -85,7 +79,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlCheckBox">
-          <Grid ColumnDefinitions="150,*">
+          <Grid Height="32" ColumnDefinitions="150,*">
             <CheckBox Grid.Column="1"
                       Content="{Binding Label}"
                       ToolTip.Tip="{Binding ToolTip, Mode=OneWay}"
@@ -94,7 +88,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlPathSelector">
-          <Grid ColumnDefinitions="150,*">
+          <Grid Height="32" ColumnDefinitions="150,*">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"

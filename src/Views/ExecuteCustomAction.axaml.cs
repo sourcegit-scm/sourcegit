@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -17,11 +17,15 @@ namespace SourceGit.Views
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var firstFocusable = this
-                .GetVisualDescendants()
-                .OfType<InputElement>()
-                .FirstOrDefault(x => x.Focusable && x.IsTabStop);
-            firstFocusable?.Focus();
+            var inputs = this.GetVisualDescendants();
+            foreach (var input in inputs)
+            {
+                if (input is InputElement { Focusable: true, IsTabStop: true } focusable)
+                {
+                    focusable.Focus();
+                    return;
+                }
+            }
         }
 
         private async void SelectPath(object sender, RoutedEventArgs e)
