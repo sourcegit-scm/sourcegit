@@ -24,6 +24,8 @@ namespace SourceGit.ViewModels
                     _repo.CommitDetailActivePageIndex = value;
                 else
                     _activePageIndex = value;
+
+                OnPropertyChanged();
             }
         }
 
