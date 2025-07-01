@@ -298,14 +298,23 @@ namespace SourceGit.Views
             if (shell.Name != "Custom")
             {
                 options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
-                AllowMultiple = false,
-            };
+                {
+                    FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
+                    AllowMultiple = false,
+                };
             }
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            IReadOnlyList<IStorageFile> selected = null;
+            try
+            {
+                selected = await StorageProvider.OpenFilePickerAsync(options);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select shell/terminal: {ex.Message}");
+            }
+
+            if (selected is { Count: 1 })
             {
                 ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
             }
@@ -328,14 +337,23 @@ namespace SourceGit.Views
             if (tool.Name != "Custom")
             {
                 options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
-                AllowMultiple = false,
-            };
+                {
+                    FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
+                    AllowMultiple = false,
+                };
             }
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            IReadOnlyList<IStorageFile> selected = null;
+            try
+            {
+                selected = await StorageProvider.OpenFilePickerAsync(options);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select merge tool: {ex.Message}");
+            }
+            
+            if (selected is { Count: 1 })
             {
                 ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
