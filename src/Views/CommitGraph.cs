@@ -45,8 +45,8 @@ namespace SourceGit.Views
         static CommitGraph()
         {
             AffectsRender<CommitGraph>(
-                GraphProperty, 
-                DotBrushProperty, 
+                GraphProperty,
+                DotBrushProperty,
                 OnlyHighlightCurrentBranchProperty,
                 LayoutProperty);
         }
