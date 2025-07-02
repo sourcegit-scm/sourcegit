@@ -52,18 +52,6 @@ namespace SourceGit.Commands
             return ReadToEnd().StdOut.Trim();
         }
 
-        public bool Set(string key, string value, bool allowEmpty = false)
-        {
-            var scope = _isLocal ? "--local" : "--global";
-
-            if (!allowEmpty && string.IsNullOrWhiteSpace(value))
-                Args = $"config {scope} --unset {key}";
-            else
-                Args = $"config {scope} {key} \"{value}\"";
-
-            return Exec();
-        }
-
         public async Task<Dictionary<string, string>> ListAllAsync()
         {
             Args = "config -l";

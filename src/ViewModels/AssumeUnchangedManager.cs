@@ -21,12 +21,12 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Remove(string file)
+        public async Task RemoveAsync(string file)
         {
             if (!string.IsNullOrEmpty(file))
             {
                 var log = _repo.CreateLog("Remove Assume Unchanged File");
-                new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).Exec();
+                await new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).ExecAsync();
                 log.Complete();
                 Files.Remove(file);
             }

@@ -57,62 +57,6 @@ namespace SourceGit.Commands
             return worktrees;
         }
 
-        public bool Lock(string fullpath)
-        {
-            Args = $"worktree lock \"{fullpath}\"";
-            return Exec();
-        }
-
-        public bool Unlock(string fullpath)
-        {
-            Args = $"worktree unlock \"{fullpath}\"";
-            return Exec();
-        }
-
-        public async Task<List<Models.Worktree>> ListAsync()
-        {
-            Args = "worktree list --porcelain";
-
-            var rs = await ReadToEndAsync();
-            var worktrees = new List<Models.Worktree>();
-            var last = null as Models.Worktree;
-            if (rs.IsSuccess)
-            {
-                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-                foreach (var line in lines)
-                {
-                    if (line.StartsWith("worktree ", StringComparison.Ordinal))
-                    {
-                        last = new Models.Worktree() { FullPath = line.Substring(9).Trim() };
-                        last.RelativePath = Path.GetRelativePath(WorkingDirectory, last.FullPath);
-                        worktrees.Add(last);
-                    }
-                    else if (line.StartsWith("bare", StringComparison.Ordinal))
-                    {
-                        last!.IsBare = true;
-                    }
-                    else if (line.StartsWith("HEAD ", StringComparison.Ordinal))
-                    {
-                        last!.Head = line.Substring(5).Trim();
-                    }
-                    else if (line.StartsWith("branch ", StringComparison.Ordinal))
-                    {
-                        last!.Branch = line.Substring(7).Trim();
-                    }
-                    else if (line.StartsWith("detached", StringComparison.Ordinal))
-                    {
-                        last!.IsDetached = true;
-                    }
-                    else if (line.StartsWith("locked", StringComparison.Ordinal))
-                    {
-                        last!.IsLocked = true;
-                    }
-                }
-            }
-
-            return worktrees;
-        }
-
         public async Task<bool> AddAsync(string fullpath, string name, bool createNew, string tracking)
         {
             Args = "worktree add ";

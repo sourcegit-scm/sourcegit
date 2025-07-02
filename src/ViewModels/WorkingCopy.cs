@@ -737,10 +737,10 @@ namespace SourceGit.ViewModels
                     assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
                     assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
                     assumeUnchanged.IsVisible = change.WorkTree != Models.ChangeState.Untracked;
-                    assumeUnchanged.Click += (_, e) =>
+                    assumeUnchanged.Click += async (_, e) =>
                     {
                         var log = _repo.CreateLog("Assume File Unchanged");
-                        new Commands.AssumeUnchanged(_repo.FullPath, change.Path, true).Use(log).Exec();
+                        await new Commands.AssumeUnchanged(_repo.FullPath, change.Path, true).Use(log).ExecAsync();
                         log.Complete();
                         e.Handled = true;
                     };

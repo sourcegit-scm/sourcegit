@@ -721,7 +721,7 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA).ResultAsync();
-                var inlines = ParseInlinesInMessage(message);
+                var inlines = await ParseInlinesInMessageAsync(message);
 
                 if (!token.IsCancellationRequested)
                     await Dispatcher.UIThread.InvokeAsync(() => FullMessage = new Models.CommitFullMessage { Message = message, Inlines = inlines });
@@ -776,7 +776,7 @@ namespace SourceGit.ViewModels
             }, token);
         }
 
-        private Models.InlineElementCollector ParseInlinesInMessage(string message)
+        private async Task<Models.InlineElementCollector> ParseInlinesInMessageAsync(string message)
         {
             var inlines = new Models.InlineElementCollector();
             if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
@@ -815,7 +815,7 @@ namespace SourceGit.ViewModels
                     continue;
 
                 var sha = match.Groups[1].Value;
-                var isCommitSHA = new Commands.IsCommitSHA(_repo.FullPath, sha).Result();
+                var isCommitSHA = await new Commands.IsCommitSHA(_repo.FullPath, sha).ResultAsync();
                 if (isCommitSHA)
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }

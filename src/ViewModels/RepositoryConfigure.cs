@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -316,18 +318,18 @@ namespace SourceGit.ViewModels
                 _repo.Settings.MoveCustomActionDown(_selectedCustomAction);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            SetIfChanged("user.name", UserName, "");
-            SetIfChanged("user.email", UserEmail, "");
-            SetIfChanged("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
-            SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
-            SetIfChanged("user.signingkey", GPGUserSigningKey, "");
-            SetIfChanged("http.proxy", HttpProxy, "");
-            SetIfChanged("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
+            await SetIfChangedAsync("user.name", UserName, "");
+            await SetIfChangedAsync("user.email", UserEmail, "");
+            await SetIfChangedAsync("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
+            await SetIfChangedAsync("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
+            await SetIfChangedAsync("user.signingkey", GPGUserSigningKey, "");
+            await SetIfChangedAsync("http.proxy", HttpProxy, "");
+            await SetIfChangedAsync("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
         }
 
-        private void SetIfChanged(string key, string value, string defValue)
+        private async Task SetIfChangedAsync(string key, string value, string defValue)
         {
             bool changed = false;
             if (_cached.TryGetValue(key, out var old))
@@ -341,7 +343,7 @@ namespace SourceGit.ViewModels
 
             if (changed)
             {
-                new Commands.Config(_repo.FullPath).Set(key, value);
+                await new Commands.Config(_repo.FullPath).SetAsync(key, value);
             }
         }
 

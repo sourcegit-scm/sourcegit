@@ -10,12 +10,6 @@ namespace SourceGit.Commands
             Args = $"cat-file -t {hash}";
         }
 
-        public bool Result()
-        {
-            var rs = ReadToEnd();
-            return rs.IsSuccess && rs.StdOut.Trim().Equals("commit");
-        }
-
         public async Task<bool> ResultAsync()
         {
             var rs = await ReadToEndAsync();

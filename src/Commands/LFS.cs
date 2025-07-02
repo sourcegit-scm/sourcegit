@@ -37,11 +37,6 @@ namespace SourceGit.Commands
             return content.Contains("git lfs pre-push");
         }
 
-        public bool Install(Models.ICommandLog log)
-        {
-            return new SubCmd(_repo, "lfs install --local", log).Exec();
-        }
-
         public async Task<bool> InstallAsync(Models.ICommandLog log)
         {
             return await new SubCmd(_repo, "lfs install --local", log).ExecAsync();

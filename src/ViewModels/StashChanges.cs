@@ -79,7 +79,7 @@ namespace SourceGit.ViewModels
                                 staged.Add(c);
                         }
 
-                        succ = StashWithChanges(staged, keepIndex, log);
+                        succ = await StashWithChangesAsync(staged, keepIndex, log);
                     }
                 }
                 else
@@ -89,7 +89,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                succ = StashWithChanges(_changes, keepIndex, log);
+                succ = await StashWithChangesAsync(_changes, keepIndex, log);
             }
 
             if (mode == DealWithChangesAfterStashing.KeepAll && succ)
@@ -105,7 +105,7 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private bool StashWithChanges(List<Models.Change> changes, bool keepIndex, CommandLog log)
+        private async Task<bool> StashWithChangesAsync(List<Models.Change> changes, bool keepIndex, CommandLog log)
         {
             if (changes.Count == 0)
                 return true;
@@ -118,8 +118,8 @@ namespace SourceGit.ViewModels
                     paths.Add(c.Path);
 
                 var pathSpecFile = Path.GetTempFileName();
-                File.WriteAllLines(pathSpecFile, paths);
-                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, pathSpecFile, keepIndex);
+                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, pathSpecFile, keepIndex);
                 File.Delete(pathSpecFile);
             }
             else
@@ -128,7 +128,7 @@ namespace SourceGit.ViewModels
                 {
                     var count = Math.Min(32, changes.Count - i);
                     var step = changes.GetRange(i, count);
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, step, keepIndex);
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, step, keepIndex);
                     if (!succ)
                         break;
                 }

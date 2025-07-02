@@ -1722,10 +1722,10 @@ namespace SourceGit.ViewModels
                 var install = new MenuItem();
                 install.Header = App.Text("GitLFS.Install");
                 install.Icon = App.CreateMenuIcon("Icons.Init");
-                install.Click += (_, e) =>
+                install.Click += async (_, e) =>
                 {
                     var log = CreateLog("Install LFS");
-                    var succ = new Commands.LFS(_fullpath).Install(log);
+                    var succ = await new Commands.LFS(_fullpath).InstallAsync(log);
                     if (succ)
                         App.SendNotification(_fullpath, "LFS enabled successfully!");
 
@@ -2020,13 +2020,13 @@ namespace SourceGit.ViewModels
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                    compareWithWorktree.Click += (_, _) =>
+                    compareWithWorktree.Click += async (_, _) =>
                     {
                         SelectedSearchedCommit = null;
 
                         if (_histories != null)
                         {
-                            var target = new Commands.QuerySingleCommit(_fullpath, branch.Head).Result();
+                            var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).ResultAsync();
                             _histories.AutoSelectedCommit = null;
                             _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
@@ -2299,13 +2299,13 @@ namespace SourceGit.ViewModels
                 var compareWithWorktree = new MenuItem();
                 compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
                 compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithWorktree.Click += (_, _) =>
+                compareWithWorktree.Click += async (_, _) =>
                 {
                     SelectedSearchedCommit = null;
 
                     if (_histories != null)
                     {
-                        var target = new Commands.QuerySingleCommit(_fullpath, branch.Head).Result();
+                        var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).ResultAsync();
                         _histories.AutoSelectedCommit = null;
                         _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                     }
@@ -2631,11 +2631,11 @@ namespace SourceGit.ViewModels
                 var unlock = new MenuItem();
                 unlock.Header = App.Text("Worktree.Unlock");
                 unlock.Icon = App.CreateMenuIcon("Icons.Unlock");
-                unlock.Click += (_, ev) =>
+                unlock.Click += async (_, ev) =>
                 {
                     SetWatcherEnabled(false);
                     var log = CreateLog("Unlock Worktree");
-                    var succ = new Commands.Worktree(_fullpath).Use(log).Unlock(worktree.FullPath);
+                    var succ = await new Commands.Worktree(_fullpath).Use(log).UnlockAsync(worktree.FullPath);
                     if (succ)
                         worktree.IsLocked = false;
                     log.Complete();
@@ -2649,11 +2649,11 @@ namespace SourceGit.ViewModels
                 var loc = new MenuItem();
                 loc.Header = App.Text("Worktree.Lock");
                 loc.Icon = App.CreateMenuIcon("Icons.Lock");
-                loc.Click += (_, ev) =>
+                loc.Click += async (_, ev) =>
                 {
                     SetWatcherEnabled(false);
                     var log = CreateLog("Lock Worktree");
-                    var succ = new Commands.Worktree(_fullpath).Use(log).Lock(worktree.FullPath);
+                    var succ = await new Commands.Worktree(_fullpath).Use(log).LockAsync(worktree.FullPath);
                     if (succ)
                         worktree.IsLocked = true;
                     log.Complete();
@@ -2945,7 +2945,7 @@ namespace SourceGit.ViewModels
             MatchedFilesForSearching = matched;
         }
 
-        private void AutoFetchImpl(object sender)
+        private async void AutoFetchImpl(object sender)
         {
             try
             {
@@ -2970,7 +2970,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
                 foreach (var remote in remotes)
-                    new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.Exec();
+                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.ExecAsync();
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }
