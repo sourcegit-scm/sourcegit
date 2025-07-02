@@ -800,10 +800,10 @@ namespace SourceGit.ViewModels
 
                 foreach (var action in actions)
                 {
-                    var dup = action;
+                    var (dup, label) = action;
                     var item = new MenuItem();
                     item.Icon = App.CreateMenuIcon("Icons.Action");
-                    item.Header = dup.Name;
+                    item.Header = label;
                     item.Click += (_, e) =>
                     {
                         _repo.ExecCustomAction(dup, commit);

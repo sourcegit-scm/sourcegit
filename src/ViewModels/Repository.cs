@@ -1077,20 +1077,20 @@ namespace SourceGit.ViewModels
             _workingCopy?.AbortMerge();
         }
 
-        public List<Models.CustomAction> GetCustomActions(Models.CustomActionScope scope)
+        public List<(Models.CustomAction, CustomActionContextMenuLabel)> GetCustomActions(Models.CustomActionScope scope)
         {
-            var actions = new List<Models.CustomAction>();
+            var actions = new List<(Models.CustomAction, CustomActionContextMenuLabel)>();
 
             foreach (var act in Preferences.Instance.CustomActions)
             {
                 if (act.Scope == scope)
-                    actions.Add(act);
+                    actions.Add((act, new CustomActionContextMenuLabel(act.Name, true)));
             }
 
             foreach (var act in _settings.CustomActions)
             {
                 if (act.Scope == scope)
-                    actions.Add(act);
+                    actions.Add((act, new CustomActionContextMenuLabel(act.Name, false)));
             }
 
             return actions;
@@ -1748,10 +1748,10 @@ namespace SourceGit.ViewModels
             {
                 foreach (var action in actions)
                 {
-                    var dup = action;
+                    var (dup, label) = action;
                     var item = new MenuItem();
                     item.Icon = App.CreateMenuIcon("Icons.Action");
-                    item.Header = dup.Name;
+                    item.Header = label;
                     item.Click += (_, e) =>
                     {
                         ExecCustomAction(dup, null);
@@ -2437,10 +2437,10 @@ namespace SourceGit.ViewModels
 
                 foreach (var action in actions)
                 {
-                    var dup = action;
+                    var (dup, label) = action;
                     var item = new MenuItem();
                     item.Icon = App.CreateMenuIcon("Icons.Action");
-                    item.Header = dup.Name;
+                    item.Header = label;
                     item.Click += (_, e) =>
                     {
                         ExecCustomAction(dup, tag);
@@ -2872,10 +2872,10 @@ namespace SourceGit.ViewModels
 
             foreach (var action in actions)
             {
-                var dup = action;
+                var (dup, label) = action;
                 var item = new MenuItem();
                 item.Icon = App.CreateMenuIcon("Icons.Action");
-                item.Header = dup.Name;
+                item.Header = label;
                 item.Click += (_, e) =>
                 {
                     ExecCustomAction(dup, branch);

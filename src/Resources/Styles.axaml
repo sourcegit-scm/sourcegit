@@ -843,6 +843,15 @@
                   <DataTemplate DataType="vm:FilterModeInGraph">
                     <v:FilterModeInGraph/>
                   </DataTemplate>
+
+                  <DataTemplate DataType="vm:CustomActionContextMenuLabel">
+                    <StackPanel Orientation="Horizontal">
+                      <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                      <Border Margin="4,0,0,0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" IsVisible="{Binding IsGlobal}">
+                        <TextBlock Classes="primary" Text="GLOBAL" Margin="8,0" FontSize="10" Foreground="White"/>
+                      </Border>
+                    </StackPanel>
+                  </DataTemplate>
                 </ContentPresenter.DataTemplates>
               </ContentPresenter>
 
