@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
             HasSelectedFiles = hasSelectedFiles;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Stash changes ...";
@@ -58,7 +58,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Stash Local Changes");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
                 var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
@@ -98,14 +97,14 @@ namespace SourceGit.ViewModels
                     succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync("stash@{0}", true);
 
                 log.Complete();
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
 
                 return succ;
-            });
+            }
         }
 
         private bool StashWithChanges(List<Models.Change> changes, bool keepIndex, CommandLog log)

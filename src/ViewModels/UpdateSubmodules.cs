@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
             SelectedSubmodule = Submodules.Count > 0 ? Submodules[0] : string.Empty;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -63,7 +63,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Update Submodule");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 await new Commands.Submodule(_repo.FullPath)
                     .Use(log)
@@ -72,7 +71,7 @@ namespace SourceGit.ViewModels
                 log.Complete();
                 await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

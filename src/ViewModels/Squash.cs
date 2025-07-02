@@ -24,7 +24,7 @@ namespace SourceGit.ViewModels
             Target = target;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Squashing ...";
@@ -32,7 +32,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Squash");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var signOff = _repo.Settings.EnableSignOffForCommit;
                 var autoStashed = false;
@@ -61,7 +60,7 @@ namespace SourceGit.ViewModels
                 log.Complete();
                 await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo;

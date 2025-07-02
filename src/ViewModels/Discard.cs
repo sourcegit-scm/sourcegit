@@ -56,7 +56,7 @@ namespace SourceGit.ViewModels
                 Mode = new DiscardMultipleFiles() { Count = _changes.Count };
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
@@ -64,7 +64,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Discard all");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 if (Mode is DiscardAllMode all)
                     await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
@@ -73,14 +72,14 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
 
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

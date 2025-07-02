@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -63,7 +63,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 if (FetchAllRemotes)
                 {
@@ -82,7 +81,7 @@ namespace SourceGit.ViewModels
                 if (!string.IsNullOrEmpty(upstream))
                     upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).ResultAsync();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     if (!string.IsNullOrEmpty(upstreamHead))
                         _repo.NavigateToCommit(upstreamHead, true);
@@ -92,7 +91,7 @@ namespace SourceGit.ViewModels
                 });
 
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

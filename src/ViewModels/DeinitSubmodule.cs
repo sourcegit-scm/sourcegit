@@ -23,7 +23,7 @@ namespace SourceGit.ViewModels
             Force = false;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "De-initialize Submodule";
@@ -31,13 +31,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("De-initialize Submodule");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var succ = await new Commands.Submodule(_repo.FullPath).Use(log).DeinitAsync(Submodule, false);
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private Repository _repo;

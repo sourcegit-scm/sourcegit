@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
             SelectedRemote = _repo.Remotes[0];
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Pushing tag ...";
@@ -42,7 +42,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Tag");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var succ = true;
                 var tag = $"refs/tags/{Target.Name}";
@@ -61,9 +60,9 @@ namespace SourceGit.ViewModels
                 }
 
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

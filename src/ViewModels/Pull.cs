@@ -111,7 +111,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -119,7 +119,6 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(async () =>
             {
                 var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
                 var needPopStash = false;
@@ -135,7 +134,7 @@ namespace SourceGit.ViewModels
                         if (!succ)
                         {
                             log.Complete();
-                            CallUIThread(() => _repo.SetWatcherEnabled(true));
+                            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                             return false;
                         }
 
@@ -165,14 +164,14 @@ namespace SourceGit.ViewModels
                 log.Complete();
 
                 var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.NavigateToCommit(head, true);
                     _repo.SetWatcherEnabled(true);
                 });
 
                 return rs;
-            });
+            }
         }
 
         private void PostRemoteSelected()

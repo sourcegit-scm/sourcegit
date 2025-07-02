@@ -45,17 +45,16 @@ namespace SourceGit.ViewModels
             RefreshViewContent();
         }
 
-        public Task<bool> ResetToSelectedRevision()
+        public async Task<bool> ResetToSelectedRevision()
         {
-            return Task.Run(async () => await new Commands.Checkout(_repo.FullPath).FileWithRevisionAsync(_file, $"{_revision.SHA}"));
+            return await new Commands.Checkout(_repo.FullPath).FileWithRevisionAsync(_file, $"{_revision.SHA}");
         }
 
-        public Task OpenWithDefaultEditor()
+        public async Task OpenWithDefaultEditor()
         {
             if (_viewContent is not FileHistoriesRevisionFile { CanOpenWithDefaultEditor: true })
-                return null;
+                return;
 
-            return Task.Run(async () =>
             {
                 var fullPath = Native.OS.GetAbsPath(_repo.FullPath, _file);
                 var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
@@ -64,7 +63,7 @@ namespace SourceGit.ViewModels
 
                 await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _revision.SHA, _file, tmpFile);
                 Native.OS.OpenWithDefaultEditor(tmpFile);
-            });
+            }
         }
 
         private void RefreshViewContent()
@@ -203,13 +202,12 @@ namespace SourceGit.ViewModels
             RefreshViewContent();
         }
 
-        public Task<bool> SaveAsPatch(string saveTo)
+        public async Task<bool> SaveAsPatch(string saveTo)
         {
-            return Task.Run(async () =>
             {
                 await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo.FullPath, _changes, _startPoint.SHA, _endPoint.SHA, saveTo);
                 return true;
-            });
+            }
         }
 
         private void RefreshViewContent()

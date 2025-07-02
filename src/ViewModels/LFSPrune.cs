@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "LFS prune ...";
@@ -17,13 +17,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Prune");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 await new Commands.LFS(_repo.FullPath).PruneAsync(log);
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

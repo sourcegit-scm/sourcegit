@@ -40,11 +40,10 @@ namespace SourceGit.ViewModels
             GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = $"Scan repositories under '{_selected.Path}' ...";
 
-            return Task.Run(() =>
             {
                 var watch = new Stopwatch();
                 watch.Start();
@@ -63,7 +62,7 @@ namespace SourceGit.ViewModels
                 if (remain > 0)
                     Task.Delay(remain).Wait();
 
-                Dispatcher.UIThread.Invoke(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
 
@@ -89,7 +88,7 @@ namespace SourceGit.ViewModels
                 });
 
                 return true;
-            });
+            }
         }
 
         private void GetManagedRepositories(List<RepositoryNode> group, HashSet<string> repos)

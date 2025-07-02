@@ -100,12 +100,11 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Editing remote '{_remote.Name}' ...";
 
-            return Task.Run(async () =>
             {
                 if (_remote.Name != _name)
                 {
@@ -127,9 +126,9 @@ namespace SourceGit.ViewModels
 
                 await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

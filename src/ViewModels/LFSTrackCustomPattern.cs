@@ -23,7 +23,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding custom LFS tracking pattern ...";
@@ -31,13 +31,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Add Custom Pattern");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(_pattern, IsFilename, log);
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

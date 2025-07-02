@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
             Upstream = upstream;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Fast-Forward ...";
@@ -29,20 +29,19 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 await new Commands.Fetch(_repo.FullPath, Local, Upstream).Use(log).ExecAsync();
                 log.Complete();
 
                 var changedLocalBranchHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).ResultAsync();
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.NavigateToCommit(changedLocalBranchHead, true);
                     _repo.SetWatcherEnabled(true);
                 });
 
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

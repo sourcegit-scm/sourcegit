@@ -188,7 +188,7 @@ namespace SourceGit.ViewModels
             UpdateItems();
         }
 
-        public Task<bool> Start()
+        public async Task<bool> Start()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -206,19 +206,18 @@ namespace SourceGit.ViewModels
                     Message = item.FullMessage,
                 });
             }
-            using (var stream = File.Create(saveFile))
+            await using (var stream = File.Create(saveFile))
             {
-                JsonSerializer.Serialize(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
+                await JsonSerializer.SerializeAsync(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
             }
 
             var log = _repo.CreateLog("Interactive Rebase");
-            return Task.Run(async () =>
             {
                 var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).ExecAsync();
                 log.Complete();
                 await Dispatcher.UIThread.InvokeAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private void UpdateItems()

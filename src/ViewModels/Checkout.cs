@@ -33,7 +33,7 @@ namespace SourceGit.ViewModels
             DiscardLocalChanges = false;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout '{Branch}' ...";
@@ -42,14 +42,13 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(async () =>
             {
                 bool succ;
                 var needPopStash = false;
 
                 if (!_repo.ConfirmCheckoutBranch())
                 {
-                    CallUIThread(() => _repo.SetWatcherEnabled(true));
+                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                     return true;
                 }
 
@@ -66,7 +65,7 @@ namespace SourceGit.ViewModels
                         if (!succ)
                         {
                             log.Complete();
-                            CallUIThread(() => _repo.SetWatcherEnabled(true));
+                            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                             return false;
                         }
 
@@ -91,7 +90,7 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     ProgressDescription = "Waiting for branch updated...";
 
@@ -105,7 +104,7 @@ namespace SourceGit.ViewModels
 
                 Task.Delay(400).Wait();
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

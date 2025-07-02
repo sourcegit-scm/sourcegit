@@ -22,7 +22,7 @@ namespace SourceGit.ViewModels
             Target = tag;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Deleting tag '{Target.Name}' ...";
@@ -31,7 +31,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Tag");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var succ = await Commands.Tag.DeleteAsync(_repo.FullPath, Target.Name, log);
                 if (succ)
@@ -42,13 +41,13 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.MarkTagsDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

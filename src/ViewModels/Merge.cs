@@ -57,7 +57,7 @@ namespace SourceGit.ViewModels
             Mode = AutoSelectMergeMode();
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             _repo.ClearCommitMessage();
@@ -66,19 +66,18 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).ExecAsync();
                 log.Complete();
 
                 var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.NavigateToCommit(head, true);
                     _repo.SetWatcherEnabled(true);
                 });
                 return true;
-            });
+            }
         }
 
         private Models.MergeMode AutoSelectMergeMode()

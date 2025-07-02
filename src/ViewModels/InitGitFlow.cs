@@ -100,7 +100,7 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Init git-flow ...";
@@ -108,7 +108,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Gitflow - Init");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 bool succ;
                 var current = _repo.CurrentBranch;
@@ -120,7 +119,7 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
+                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                         return false;
                     }
                 }
@@ -132,7 +131,7 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
+                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                         return false;
                     }
                 }
@@ -149,7 +148,7 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     if (succ)
                     {
@@ -166,7 +165,7 @@ namespace SourceGit.ViewModels
                 });
 
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo;

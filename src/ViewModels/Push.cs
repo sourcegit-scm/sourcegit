@@ -158,7 +158,7 @@ namespace SourceGit.ViewModels
             return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -168,7 +168,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var succ = await new Commands.Push(
                     _repo.FullPath,
@@ -181,9 +180,9 @@ namespace SourceGit.ViewModels
                     ForcePush).Use(log).ExecAsync();
 
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private void AutoSelectBranchByRemote()

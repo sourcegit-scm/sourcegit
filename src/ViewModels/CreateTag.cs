@@ -74,7 +74,7 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Create tag...";
@@ -83,7 +83,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Create Tag");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 bool succ;
                 if (_annotated)
@@ -98,9 +97,9 @@ namespace SourceGit.ViewModels
                 }
 
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

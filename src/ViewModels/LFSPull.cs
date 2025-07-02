@@ -19,7 +19,7 @@ namespace SourceGit.ViewModels
             SelectedRemote = _repo.Remotes[0];
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Pull LFS objects from remote ...";
@@ -27,13 +27,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Pull");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 await new Commands.LFS(_repo.FullPath).PullAsync(SelectedRemote.Name, log);
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

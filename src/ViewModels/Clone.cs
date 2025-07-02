@@ -97,14 +97,13 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = "Clone ...";
 
             var log = new CommandLog("Clone");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
                 if (!await cmd.ExecAsync())
@@ -166,7 +165,7 @@ namespace SourceGit.ViewModels
                 });
 
                 return true;
-            });
+            }
         }
 
         private string _pageId = string.Empty;

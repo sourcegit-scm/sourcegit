@@ -284,9 +284,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Task OpenRevisionFileWithDefaultEditor(string file)
+        public async Task OpenRevisionFileWithDefaultEditor(string file)
         {
-            return Task.Run(async () =>
             {
                 var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file);
                 var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
@@ -295,7 +294,7 @@ namespace SourceGit.ViewModels
 
                 await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _commit.SHA, file, tmpFile);
                 Native.OS.OpenWithDefaultEditor(tmpFile);
-            });
+            }
         }
 
         public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
@@ -996,29 +995,27 @@ namespace SourceGit.ViewModels
             RevisionFileSearchSuggestion = suggestion;
         }
 
-        private Task ResetToThisRevision(string path)
+        private async Task ResetToThisRevision(string path)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
 
-            return Task.Run(async () =>
             {
                 await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, $"{_commit.SHA}");
                 log.Complete();
-            });
+            }
         }
 
-        private Task ResetToParentRevision(Models.Change change)
+        private async Task ResetToParentRevision(Models.Change change)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
 
-            return Task.Run(async () =>
             {
                 if (change.Index == Models.ChangeState.Renamed)
                     await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
 
                 await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
                 log.Complete();
-            });
+            }
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]

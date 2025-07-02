@@ -27,17 +27,16 @@ namespace SourceGit.ViewModels
             StorageFile = Models.GitIgnoreFile.Supported[0];
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding Ignored File(s) ...";
 
-            return Task.Run(async () =>
             {
                 var file = StorageFile.GetFullPath(_repo.FullPath, _repo.GitDir);
                 if (!File.Exists(file))
                 {
-                    File.WriteAllLines(file, [_pattern]);
+                    await File.WriteAllLinesAsync(file, [_pattern]);
                 }
                 else
                 {
@@ -48,14 +47,14 @@ namespace SourceGit.ViewModels
                         await File.AppendAllLinesAsync(file, [_pattern]);
                 }
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.MarkWorkingCopyDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
 
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo;

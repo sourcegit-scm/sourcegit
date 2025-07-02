@@ -44,11 +44,11 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             var fixedName = FixName(_name);
             if (fixedName == Target.Name)
-                return null;
+                return true;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Rename '{Target.Name}'";
@@ -56,14 +56,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var isCurrent = Target.IsCurrent;
                 var oldName = Target.FullName;
                 var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     ProgressDescription = "Waiting for branch updated...";
 
@@ -88,7 +87,7 @@ namespace SourceGit.ViewModels
                     Task.Delay(400).Wait();
 
                 return succ;
-            });
+            }
         }
 
         private string FixName(string name)

@@ -87,7 +87,7 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding remote ...";
@@ -95,7 +95,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Add Remote");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 var succ = await new Commands.Remote(_repo.FullPath).Use(log).AddAsync(_name, _url);
                 if (succ)
@@ -112,7 +111,7 @@ namespace SourceGit.ViewModels
                     _repo.SetWatcherEnabled(true);
                 });
                 return succ;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

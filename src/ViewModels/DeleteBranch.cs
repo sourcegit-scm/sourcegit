@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting branch...";
@@ -47,7 +47,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Branch");
             Use(log);
 
-            return Task.Run(async () =>
             {
                 if (Target.IsLocal)
                 {
@@ -63,13 +62,13 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.MarkBranchesDirtyManually();
                     _repo.SetWatcherEnabled(true);
                 });
                 return true;
-            });
+            }
         }
 
         private readonly Repository _repo = null;

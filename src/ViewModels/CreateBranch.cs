@@ -118,7 +118,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -127,13 +127,12 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(async () =>
             {
                 bool succ;
 
                 if (CheckoutAfterCreated && !_repo.ConfirmCheckoutBranch())
                 {
-                    CallUIThread(() => _repo.SetWatcherEnabled(true));
+                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                     return true;
                 }
 
@@ -153,7 +152,7 @@ namespace SourceGit.ViewModels
                             if (!succ)
                             {
                                 log.Complete();
-                                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                                 return false;
                             }
 
@@ -183,7 +182,7 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     if (succ && CheckoutAfterCreated)
                     {
@@ -209,7 +208,7 @@ namespace SourceGit.ViewModels
                     Task.Delay(400).Wait();
 
                 return true;
-            });
+            }
         }
 
         private string FixName(string name)
