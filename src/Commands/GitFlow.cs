@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Avalonia.Threading;
 
 namespace SourceGit.Commands
 {
@@ -43,7 +42,7 @@ namespace SourceGit.Commands
                     start.Args = $"flow hotfix start {name}";
                     break;
                 default:
-                    Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, "Bad git-flow branch type!!!"));
+                    App.RaiseException(repo, "Bad git-flow branch type!!!");
                     return false;
             }
 
@@ -68,7 +67,7 @@ namespace SourceGit.Commands
                     builder.Append("hotfix");
                     break;
                 default:
-                    Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, "Bad git-flow branch type!!!"));
+                    App.RaiseException(repo, "Bad git-flow branch type!!!");
                     return false;
             }
 

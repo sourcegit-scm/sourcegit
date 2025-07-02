@@ -124,7 +124,7 @@ namespace SourceGit.ViewModels
             {
                 var succ = Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
                 if (succ)
-                    Dispatcher.UIThread.Invoke(() => App.SendNotification(_repo, App.Text("SaveAsPatchSuccess")));
+                    App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
             });
         }
 

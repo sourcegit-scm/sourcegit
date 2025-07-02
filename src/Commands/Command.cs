@@ -5,8 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public partial class Command
@@ -68,7 +66,7 @@ namespace SourceGit.Commands
             catch (Exception e)
             {
                 if (RaiseError)
-                    Dispatcher.UIThread.Post(() => App.RaiseException(Context, e.Message));
+                    App.RaiseException(Context, e.Message);
 
                 Log?.AppendLine(string.Empty);
                 return false;
@@ -96,7 +94,7 @@ namespace SourceGit.Commands
                 {
                     var errMsg = string.Join("\n", errs).Trim();
                     if (!string.IsNullOrEmpty(errMsg))
-                        Dispatcher.UIThread.Post(() => App.RaiseException(Context, errMsg));
+                        App.RaiseException(Context, errMsg);
                 }
 
                 return false;

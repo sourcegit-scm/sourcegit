@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public static class Discard
@@ -36,10 +34,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
-                });
+                App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
             }
 
             new Reset(repo, "HEAD", "--hard") { Log = log }.Exec();
@@ -78,10 +73,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
-                });
+                App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
             }
 
             if (restores.Count > 0)

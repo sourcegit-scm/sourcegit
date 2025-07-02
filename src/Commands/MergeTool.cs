@@ -1,7 +1,5 @@
 ﻿using System.IO;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public static class MergeTool
@@ -24,14 +22,14 @@ namespace SourceGit.Commands
 
             if (!File.Exists(toolPath))
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!"));
+                App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!");
                 return false;
             }
 
             var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
             if (supported == null)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, "Invalid merge tool in preference setting!"));
+                App.RaiseException(repo, "Invalid merge tool in preference setting!");
                 return false;
             }
 
@@ -54,14 +52,14 @@ namespace SourceGit.Commands
 
             if (!File.Exists(toolPath))
             {
-                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!"));
+                App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!");
                 return false;
             }
 
             var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
             if (supported == null)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, "Invalid merge tool in preference setting!"));
+                App.RaiseException(repo, "Invalid merge tool in preference setting!");
                 return false;
             }
 
