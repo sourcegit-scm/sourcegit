@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -22,6 +23,74 @@ namespace SourceGit.Commands
         public List<Models.Change> Result()
         {
             var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return [];
+
+            var changes = new List<Models.Change>();
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                var match = REG_FORMAT2().Match(line);
+                if (match.Success)
+                {
+                    var change = new Models.Change()
+                    {
+                        Path = match.Groups[3].Value,
+                        DataForAmend = new Models.ChangeDataForAmend()
+                        {
+                            FileMode = match.Groups[1].Value,
+                            ObjectHash = match.Groups[2].Value,
+                            ParentSHA = _parent,
+                        },
+                    };
+                    change.Set(Models.ChangeState.Renamed);
+                    changes.Add(change);
+                    continue;
+                }
+
+                match = REG_FORMAT1().Match(line);
+                if (match.Success)
+                {
+                    var change = new Models.Change()
+                    {
+                        Path = match.Groups[4].Value,
+                        DataForAmend = new Models.ChangeDataForAmend()
+                        {
+                            FileMode = match.Groups[1].Value,
+                            ObjectHash = match.Groups[2].Value,
+                            ParentSHA = _parent,
+                        },
+                    };
+
+                    var type = match.Groups[3].Value;
+                    switch (type)
+                    {
+                        case "A":
+                            change.Set(Models.ChangeState.Added);
+                            break;
+                        case "C":
+                            change.Set(Models.ChangeState.Copied);
+                            break;
+                        case "D":
+                            change.Set(Models.ChangeState.Deleted);
+                            break;
+                        case "M":
+                            change.Set(Models.ChangeState.Modified);
+                            break;
+                        case "T":
+                            change.Set(Models.ChangeState.TypeChanged);
+                            break;
+                    }
+                    changes.Add(change);
+                }
+            }
+
+            return changes;
+        }
+
+        public async Task<List<Models.Change>> ResultAsync()
+        {
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return [];
 

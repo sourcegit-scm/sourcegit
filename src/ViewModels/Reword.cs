@@ -26,10 +26,10 @@ namespace SourceGit.ViewModels
             Head = head;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             if (string.Compare(_message, _oldMessage, StringComparison.Ordinal) == 0)
-                return null;
+                return true;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Editing head commit message ...";
@@ -38,14 +38,11 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var signOff = _repo.Settings.EnableSignOffForCommit;
-            return Task.Run(() =>
-            {
-                // For reword (only changes the commit message), disable `--reset-author`
-                var succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).Run();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            // For reword (only changes the commit message), disable `--reset-author`
+            var succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo;

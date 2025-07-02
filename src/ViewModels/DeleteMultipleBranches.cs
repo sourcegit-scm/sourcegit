@@ -17,7 +17,7 @@ namespace SourceGit.ViewModels
             Targets = branches;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting multiple branches...";
@@ -25,29 +25,26 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Multiple Branches");
             Use(log);
 
-            return Task.Run(() =>
+            if (_isLocal)
             {
-                if (_isLocal)
-                {
-                    foreach (var target in Targets)
-                        Commands.Branch.DeleteLocal(_repo.FullPath, target.Name, log);
-                }
-                else
-                {
-                    foreach (var target in Targets)
-                        Commands.Branch.DeleteRemote(_repo.FullPath, target.Remote, target.Name, log);
-                }
+                foreach (var target in Targets)
+                    await Commands.Branch.DeleteLocalAsync(_repo.FullPath, target.Name, log);
+            }
+            else
+            {
+                foreach (var target in Targets)
+                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, target.Remote, target.Name, log);
+            }
 
-                log.Complete();
+            log.Complete();
 
-                CallUIThread(() =>
-                {
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
+            await CallUIThreadAsync(() =>
+            {
+                _repo.MarkBranchesDirtyManually();
+                _repo.SetWatcherEnabled(true);
             });
+
+            return true;
         }
 
         private Repository _repo = null;

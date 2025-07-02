@@ -46,6 +46,11 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(action);
         }
 
+        protected async Task CallUIThreadAsync(Action action)
+        {
+            await Dispatcher.UIThread.InvokeAsync(action);
+        }
+
         protected void Use(CommandLog log)
         {
             log.Register(SetDescription);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -19,9 +20,9 @@ namespace SourceGit.Commands
             _result.File = file;
         }
 
-        public Models.BlameData Result()
+        public async Task<Models.BlameData> ResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return _result;
 

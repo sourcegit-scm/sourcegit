@@ -131,9 +131,9 @@ namespace SourceGit.ViewModels
             IsLoading = true;
             DetailContext = new CommitDetail(repo, false);
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var commits = new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).Result();
+                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).ResultAsync();
                 var list = new List<InteractiveRebaseItem>();
 
                 for (var i = 0; i < commits.Count; i++)
@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
                     list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
                 }
 
-                Dispatcher.UIThread.Invoke(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     Items.AddRange(list);
                     IsLoading = false;
@@ -188,7 +188,7 @@ namespace SourceGit.ViewModels
             UpdateItems();
         }
 
-        public Task<bool> Start()
+        public async Task<bool> Start()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -206,19 +206,16 @@ namespace SourceGit.ViewModels
                     Message = item.FullMessage,
                 });
             }
-            using (var stream = File.Create(saveFile))
+            await using (var stream = File.Create(saveFile))
             {
-                JsonSerializer.Serialize(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
+                await JsonSerializer.SerializeAsync(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
             }
 
             var log = _repo.CreateLog("Interactive Rebase");
-            return Task.Run(() =>
-            {
-                var succ = new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).Exec();
-                log.Complete();
-                Dispatcher.UIThread.Invoke(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).ExecAsync();
+            log.Complete();
+            await Dispatcher.UIThread.InvokeAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private void UpdateItems()

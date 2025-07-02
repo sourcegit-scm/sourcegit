@@ -50,7 +50,7 @@ namespace SourceGit.ViewModels
             HasSelectedFiles = hasSelectedFiles;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Stash changes ...";
@@ -58,57 +58,54 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Stash Local Changes");
             Use(log);
 
-            return Task.Run(() =>
+            var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
+            var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
+            bool succ;
+
+            if (!HasSelectedFiles)
             {
-                var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
-                var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
-                bool succ;
-
-                if (!HasSelectedFiles)
+                if (OnlyStaged)
                 {
-                    if (OnlyStaged)
+                    if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                     {
-                        if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
-                        {
-                            succ = new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStaged(Message, keepIndex);
-                        }
-                        else
-                        {
-                            var staged = new List<Models.Change>();
-                            foreach (var c in _changes)
-                            {
-                                if (c.Index != Models.ChangeState.None && c.Index != Models.ChangeState.Untracked)
-                                    staged.Add(c);
-                            }
-
-                            succ = StashWithChanges(staged, keepIndex, log);
-                        }
+                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStagedAsync(Message, keepIndex);
                     }
                     else
                     {
-                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, IncludeUntracked, keepIndex);
+                        var staged = new List<Models.Change>();
+                        foreach (var c in _changes)
+                        {
+                            if (c.Index != Models.ChangeState.None && c.Index != Models.ChangeState.Untracked)
+                                staged.Add(c);
+                        }
+
+                        succ = await StashWithChangesAsync(staged, keepIndex, log);
                     }
                 }
                 else
                 {
-                    succ = StashWithChanges(_changes, keepIndex, log);
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, IncludeUntracked, keepIndex);
                 }
+            }
+            else
+            {
+                succ = await StashWithChangesAsync(_changes, keepIndex, log);
+            }
 
-                if (mode == DealWithChangesAfterStashing.KeepAll && succ)
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Apply("stash@{0}", true);
+            if (mode == DealWithChangesAfterStashing.KeepAll && succ)
+                succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync("stash@{0}", true);
 
-                log.Complete();
-                CallUIThread(() =>
-                {
-                    _repo.MarkWorkingCopyDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return succ;
+            log.Complete();
+            await CallUIThreadAsync(() =>
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+                _repo.SetWatcherEnabled(true);
             });
+
+            return succ;
         }
 
-        private bool StashWithChanges(List<Models.Change> changes, bool keepIndex, CommandLog log)
+        private async Task<bool> StashWithChangesAsync(List<Models.Change> changes, bool keepIndex, CommandLog log)
         {
             if (changes.Count == 0)
                 return true;
@@ -121,8 +118,8 @@ namespace SourceGit.ViewModels
                     paths.Add(c.Path);
 
                 var pathSpecFile = Path.GetTempFileName();
-                File.WriteAllLines(pathSpecFile, paths);
-                succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, pathSpecFile, keepIndex);
+                await File.WriteAllLinesAsync(pathSpecFile, paths);
+                succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, pathSpecFile, keepIndex);
                 File.Delete(pathSpecFile);
             }
             else
@@ -131,7 +128,7 @@ namespace SourceGit.ViewModels
                 {
                     var count = Math.Min(32, changes.Count - i);
                     var step = changes.GetRange(i, count);
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, step, keepIndex);
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, step, keepIndex);
                     if (!succ)
                         break;
                 }

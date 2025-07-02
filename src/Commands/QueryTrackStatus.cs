@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -16,6 +17,26 @@ namespace SourceGit.Commands
             var status = new Models.BranchTrackStatus();
 
             var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return status;
+
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                if (line[0] == '>')
+                    status.Behind.Add(line.Substring(1));
+                else
+                    status.Ahead.Add(line.Substring(1));
+            }
+
+            return status;
+        }
+
+        public async Task<Models.BranchTrackStatus> ResultAsync()
+        {
+            var status = new Models.BranchTrackStatus();
+
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return status;
 

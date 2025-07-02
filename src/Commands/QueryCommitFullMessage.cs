@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SourceGit.Commands
 {
     public class QueryCommitFullMessage : Command
@@ -12,6 +14,14 @@ namespace SourceGit.Commands
         public string Result()
         {
             var rs = ReadToEnd();
+            if (rs.IsSuccess)
+                return rs.StdOut.TrimEnd();
+            return string.Empty;
+        }
+
+        public async Task<string> ResultAsync()
+        {
+            var rs = await ReadToEndAsync();
             if (rs.IsSuccess)
                 return rs.StdOut.TrimEnd();
             return string.Empty;

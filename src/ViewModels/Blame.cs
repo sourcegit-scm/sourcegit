@@ -132,11 +132,11 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var result = new Commands.QuerySingleCommit(_repo, commitSHA).Result();
+                    var result = await new Commands.QuerySingleCommit(_repo, commitSHA).ResultAsync();
 
-                    Dispatcher.UIThread.Invoke(() =>
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (!token.IsCancellationRequested)
                         {
@@ -147,11 +147,11 @@ namespace SourceGit.ViewModels
                 }, token);
             }
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var result = new Commands.Blame(_repo, FilePath, commitSHA).Result();
+                var result = await new Commands.Blame(_repo, FilePath, commitSHA).ResultAsync();
 
-                Dispatcher.UIThread.Invoke(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     if (!token.IsCancellationRequested)
                         Data = result;

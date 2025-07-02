@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -35,9 +36,9 @@ namespace SourceGit.Commands
                 Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
-        public Models.DiffResult Result()
+        public async Task<Models.DiffResult> ResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync();
             var start = 0;
             var end = rs.StdOut.IndexOf('\n', start);
             while (end > 0)

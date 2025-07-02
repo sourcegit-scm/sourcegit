@@ -105,7 +105,7 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding worktree ...";
@@ -116,14 +116,11 @@ namespace SourceGit.ViewModels
 
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Worktree(_repo.FullPath).Use(log).Add(_path, branchName, _createNewBranch, tracking);
-                log.Complete();
+            var succ = await new Commands.Worktree(_repo.FullPath).Use(log).AddAsync(_path, branchName, _createNewBranch, tracking);
+            log.Complete();
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private Repository _repo = null;

@@ -1,30 +1,31 @@
 ﻿using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class GitFlow
     {
-        public static bool Init(string repo, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
+        public static async Task<bool> InitAsync(string repo, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
         {
             var config = new Config(repo);
-            config.Set("gitflow.branch.master", master);
-            config.Set("gitflow.branch.develop", develop);
-            config.Set("gitflow.prefix.feature", feature);
-            config.Set("gitflow.prefix.bugfix", "bugfix/");
-            config.Set("gitflow.prefix.release", release);
-            config.Set("gitflow.prefix.hotfix", hotfix);
-            config.Set("gitflow.prefix.support", "support/");
-            config.Set("gitflow.prefix.versiontag", version, true);
+            await config.SetAsync("gitflow.branch.master", master);
+            await config.SetAsync("gitflow.branch.develop", develop);
+            await config.SetAsync("gitflow.prefix.feature", feature);
+            await config.SetAsync("gitflow.prefix.bugfix", "bugfix/");
+            await config.SetAsync("gitflow.prefix.release", release);
+            await config.SetAsync("gitflow.prefix.hotfix", hotfix);
+            await config.SetAsync("gitflow.prefix.support", "support/");
+            await config.SetAsync("gitflow.prefix.versiontag", version, true);
 
             var init = new Command();
             init.WorkingDirectory = repo;
             init.Context = repo;
             init.Args = "flow init -d";
             init.Log = log;
-            return init.Exec();
+            return await init.ExecAsync();
         }
 
-        public static bool Start(string repo, Models.GitFlowBranchType type, string name, Models.ICommandLog log)
+        public static async Task<bool> StartAsync(string repo, Models.GitFlowBranchType type, string name, Models.ICommandLog log)
         {
             var start = new Command();
             start.WorkingDirectory = repo;
@@ -47,10 +48,10 @@ namespace SourceGit.Commands
             }
 
             start.Log = log;
-            return start.Exec();
+            return await start.ExecAsync();
         }
 
-        public static bool Finish(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
+        public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
         {
             var builder = new StringBuilder();
             builder.Append("flow ");
@@ -85,7 +86,7 @@ namespace SourceGit.Commands
             finish.Context = repo;
             finish.Args = builder.ToString();
             finish.Log = log;
-            return finish.Exec();
+            return await finish.ExecAsync();
         }
     }
 }

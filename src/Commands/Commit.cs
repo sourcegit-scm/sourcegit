@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -18,9 +19,9 @@ namespace SourceGit.Commands
                 Args += resetAuthor ? " --amend --reset-author --no-edit" : " --amend --no-edit";
         }
 
-        public bool Run()
+        public async Task<bool> RunAsync()
         {
-            var succ = Exec();
+            var succ = await ExecAsync();
 
             try
             {

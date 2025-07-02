@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -56,7 +57,7 @@ namespace SourceGit.Commands
             return worktrees;
         }
 
-        public bool Add(string fullpath, string name, bool createNew, string tracking)
+        public async Task<bool> AddAsync(string fullpath, string name, bool createNew, string tracking)
         {
             Args = "worktree add ";
 
@@ -78,35 +79,35 @@ namespace SourceGit.Commands
             else if (!string.IsNullOrEmpty(name) && !createNew)
                 Args += name;
 
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Prune()
+        public async Task<bool> PruneAsync()
         {
             Args = "worktree prune -v";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Lock(string fullpath)
+        public async Task<bool> LockAsync(string fullpath)
         {
             Args = $"worktree lock \"{fullpath}\"";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Unlock(string fullpath)
+        public async Task<bool> UnlockAsync(string fullpath)
         {
             Args = $"worktree unlock \"{fullpath}\"";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Remove(string fullpath, bool force)
+        public async Task<bool> RemoveAsync(string fullpath, bool force)
         {
             if (force)
                 Args = $"worktree remove -f \"{fullpath}\"";
             else
                 Args = $"worktree remove \"{fullpath}\"";
 
-            return Exec();
+            return await ExecAsync();
         }
     }
 }

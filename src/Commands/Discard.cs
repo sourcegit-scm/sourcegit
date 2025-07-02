@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -12,9 +13,9 @@ namespace SourceGit.Commands
         /// <param name="repo"></param>
         /// <param name="includeIgnored"></param>
         /// <param name="log"></param>
-        public static void All(string repo, bool includeIgnored, Models.ICommandLog log)
+        public static async Task AllAsync(string repo, bool includeIgnored, Models.ICommandLog log)
         {
-            var changes = new QueryLocalChanges(repo).Result();
+            var changes = await new QueryLocalChanges(repo).ResultAsync();
             try
             {
                 foreach (var c in changes)
@@ -37,10 +38,10 @@ namespace SourceGit.Commands
                 App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
             }
 
-            new Reset(repo, "HEAD", "--hard") { Log = log }.Exec();
+            await new Reset(repo, "HEAD", "--hard") { Log = log }.ExecAsync();
 
             if (includeIgnored)
-                new Clean(repo) { Log = log }.Exec();
+                await new Clean(repo) { Log = log }.ExecAsync();
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace SourceGit.Commands
         /// <param name="repo"></param>
         /// <param name="changes"></param>
         /// <param name="log"></param>
-        public static void Changes(string repo, List<Models.Change> changes, Models.ICommandLog log)
+        public static async Task ChangesAsync(string repo, List<Models.Change> changes, Models.ICommandLog log)
         {
             var restores = new List<string>();
 
@@ -79,8 +80,8 @@ namespace SourceGit.Commands
             if (restores.Count > 0)
             {
                 var pathSpecFile = Path.GetTempFileName();
-                File.WriteAllLines(pathSpecFile, restores);
-                new Restore(repo, pathSpecFile, false) { Log = log }.Exec();
+                await File.WriteAllLinesAsync(pathSpecFile, restores);
+                await new Restore(repo, pathSpecFile, false) { Log = log }.ExecAsync();
                 File.Delete(pathSpecFile);
             }
         }

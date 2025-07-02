@@ -14,19 +14,19 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Files = new AvaloniaList<string>();
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var collect = new Commands.QueryAssumeUnchangedFiles(_repo.FullPath).Result();
-                Dispatcher.UIThread.Invoke(() => Files.AddRange(collect));
+                var collect = await new Commands.QueryAssumeUnchangedFiles(_repo.FullPath).ResultAsync();
+                await Dispatcher.UIThread.InvokeAsync(() => Files.AddRange(collect));
             });
         }
 
-        public void Remove(string file)
+        public async Task RemoveAsync(string file)
         {
             if (!string.IsNullOrEmpty(file))
             {
                 var log = _repo.CreateLog("Remove Assume Unchanged File");
-                new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).Exec();
+                await new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).ExecAsync();
                 log.Complete();
                 Files.Remove(file);
             }

@@ -1,10 +1,11 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class MergeTool
     {
-        public static bool OpenForMerge(string repo, int toolType, string toolPath, string file)
+        public static async Task<bool> OpenForMergeAsync(string repo, int toolType, string toolPath, string file)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
@@ -17,7 +18,7 @@ namespace SourceGit.Commands
             if (toolType == 0)
             {
                 cmd.Args = $"mergetool {fileArg}";
-                return cmd.Exec();
+                return await cmd.ExecAsync();
             }
 
             if (!File.Exists(toolPath))
@@ -34,10 +35,10 @@ namespace SourceGit.Commands
             }
 
             cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {fileArg}";
-            return cmd.Exec();
+            return await cmd.ExecAsync();
         }
 
-        public static bool OpenForDiff(string repo, int toolType, string toolPath, Models.DiffOption option)
+        public static async Task<bool> OpenForDiffAsync(string repo, int toolType, string toolPath, Models.DiffOption option)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
@@ -47,7 +48,7 @@ namespace SourceGit.Commands
             if (toolType == 0)
             {
                 cmd.Args = $"difftool -g --no-prompt {option}";
-                return cmd.Exec();
+                return await cmd.ExecAsync();
             }
 
             if (!File.Exists(toolPath))
@@ -64,7 +65,7 @@ namespace SourceGit.Commands
             }
 
             cmd.Args = $"-c difftool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.DiffCmd}\" difftool --tool=sourcegit --no-prompt {option}";
-            return cmd.Exec();
+            return await cmd.ExecAsync();
         }
     }
 }

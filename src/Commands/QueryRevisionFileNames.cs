@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,9 +12,9 @@ namespace SourceGit.Commands
             Args = $"ls-tree -r -z --name-only {revision}";
         }
 
-        public List<string> Result()
+        public async Task<List<string>> ResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return [];
 

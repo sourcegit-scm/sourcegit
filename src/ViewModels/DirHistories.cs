@@ -51,10 +51,10 @@ namespace SourceGit.ViewModels
             _detail = new CommitDetail(repo, false);
             _detail.SearchChangeFilter = dir;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {revision ?? string.Empty} -- \"{dir}\"", false).Result();
-                Dispatcher.UIThread.Invoke(() =>
+                var commits = await new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {revision ?? string.Empty} -- \"{dir}\"", false).ResultAsync();
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     Commits = commits;
                     IsLoading = false;

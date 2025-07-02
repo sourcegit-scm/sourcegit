@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -63,36 +63,33 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
-            return Task.Run(() =>
+            if (FetchAllRemotes)
             {
-                if (FetchAllRemotes)
-                {
-                    foreach (var remote in _repo.Remotes)
-                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force).Use(log).Exec();
-                }
-                else
-                {
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force).Use(log).Exec();
-                }
+                foreach (var remote in _repo.Remotes)
+                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force).Use(log).ExecAsync();
+            }
+            else
+            {
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force).Use(log).ExecAsync();
+            }
 
-                log.Complete();
+            log.Complete();
 
-                var upstream = _repo.CurrentBranch?.Upstream;
-                var upstreamHead = string.Empty;
-                if (!string.IsNullOrEmpty(upstream))
-                    upstreamHead = new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).Result();
+            var upstream = _repo.CurrentBranch?.Upstream;
+            var upstreamHead = string.Empty;
+            if (!string.IsNullOrEmpty(upstream))
+                upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).ResultAsync();
 
-                CallUIThread(() =>
-                {
-                    if (!string.IsNullOrEmpty(upstreamHead))
-                        _repo.NavigateToCommit(upstreamHead, true);
+            await CallUIThreadAsync(() =>
+            {
+                if (!string.IsNullOrEmpty(upstreamHead))
+                    _repo.NavigateToCommit(upstreamHead, true);
 
-                    _repo.MarkFetched();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
+                _repo.MarkFetched();
+                _repo.SetWatcherEnabled(true);
             });
+
+            return true;
         }
 
         private readonly Repository _repo = null;

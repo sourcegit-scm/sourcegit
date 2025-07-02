@@ -30,7 +30,7 @@ namespace SourceGit.ViewModels
             To = to;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Reset {Target.Name} to {_revision} ...";
@@ -38,13 +38,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Reset '{Target.Name}' to '{_revision}'");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = Commands.Branch.Create(_repo.FullPath, Target.Name, _revision, true, log);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await Commands.Branch.CreateAsync(_repo.FullPath, Target.Name, _revision, true, log);
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo = null;

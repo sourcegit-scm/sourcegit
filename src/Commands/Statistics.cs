@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,10 +12,10 @@ namespace SourceGit.Commands
             Args = $"log --date-order --branches --remotes -{max} --format=%ct$%aN±%aE";
         }
 
-        public Models.Statistics Result()
+        public async Task<Models.Statistics> ResultAsync()
         {
             var statistics = new Models.Statistics();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return statistics;
 

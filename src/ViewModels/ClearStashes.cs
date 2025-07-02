@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Clear all stashes...";
@@ -17,13 +17,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Clear Stashes");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Stash(_repo.FullPath).Use(log).Clear();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            await new Commands.Stash(_repo.FullPath).Use(log).ClearAsync();
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

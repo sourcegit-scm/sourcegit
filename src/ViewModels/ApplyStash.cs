@@ -28,20 +28,17 @@ namespace SourceGit.ViewModels
             Stash = stash;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = $"Applying stash: {Stash.Name}";
 
             var log = _repo.CreateLog("Apply Stash");
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Stash(_repo.FullPath).Use(log).Apply(Stash.Name, RestoreIndex);
-                if (succ && DropAfterApply)
-                    new Commands.Stash(_repo.FullPath).Use(log).Drop(Stash.Name);
+            var succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync(Stash.Name, RestoreIndex);
+            if (succ && DropAfterApply)
+                await new Commands.Stash(_repo.FullPath).Use(log).DropAsync(Stash.Name);
 
-                log.Complete();
-                return true;
-            });
+            log.Complete();
+            return true;
         }
 
         private readonly Repository _repo;

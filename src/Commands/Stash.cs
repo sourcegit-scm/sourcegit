@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,7 +12,7 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Push(string message, bool includeUntracked = true, bool keepIndex = false)
+        public async Task<bool> PushAsync(string message, bool includeUntracked = true, bool keepIndex = false)
         {
             var builder = new StringBuilder();
             builder.Append("stash push ");
@@ -24,10 +25,10 @@ namespace SourceGit.Commands
             builder.Append("\"");
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Push(string message, List<Models.Change> changes, bool keepIndex)
+        public async Task<bool> PushAsync(string message, List<Models.Change> changes, bool keepIndex)
         {
             var builder = new StringBuilder();
             builder.Append("stash push --include-untracked ");
@@ -41,10 +42,10 @@ namespace SourceGit.Commands
                 builder.Append($"\"{c.Path}\" ");
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Push(string message, string pathspecFromFile, bool keepIndex)
+        public async Task<bool> PushAsync(string message, string pathspecFromFile, bool keepIndex)
         {
             var builder = new StringBuilder();
             builder.Append("stash push --include-untracked --pathspec-from-file=\"");
@@ -57,10 +58,10 @@ namespace SourceGit.Commands
             builder.Append("\"");
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool PushOnlyStaged(string message, bool keepIndex)
+        public async Task<bool> PushOnlyStagedAsync(string message, bool keepIndex)
         {
             var builder = new StringBuilder();
             builder.Append("stash push --staged ");
@@ -70,32 +71,32 @@ namespace SourceGit.Commands
             builder.Append(message);
             builder.Append("\"");
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Apply(string name, bool restoreIndex)
+        public async Task<bool> ApplyAsync(string name, bool restoreIndex)
         {
             var opts = restoreIndex ? "--index" : string.Empty;
             Args = $"stash apply -q {opts} \"{name}\"";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Pop(string name)
+        public async Task<bool> PopAsync(string name)
         {
             Args = $"stash pop -q --index \"{name}\"";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Drop(string name)
+        public async Task<bool> DropAsync(string name)
         {
             Args = $"stash drop -q \"{name}\"";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Clear()
+        public async Task<bool> ClearAsync()
         {
             Args = "stash clear";
-            return Exec();
+            return await ExecAsync();
         }
     }
 }

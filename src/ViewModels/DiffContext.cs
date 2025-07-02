@@ -97,7 +97,7 @@ namespace SourceGit.ViewModels
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, _option));
+            Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, _option));
         }
 
         private void LoadDiffContent()
@@ -109,11 +109,11 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
                 var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
-                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWhitespace).Result();
+                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace).ResultAsync();
                 var info = new Info(_option, numLines, ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
@@ -199,13 +199,13 @@ namespace SourceGit.ViewModels
                         var binaryDiff = new Models.BinaryDiff();
                         if (_option.Revisions.Count == 2)
                         {
-                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).Result();
-                            binaryDiff.NewSize = new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).Result();
+                            binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).ResultAsync();
+                            binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).ResultAsync();
                         }
                         else
                         {
                             var fullPath = Path.Combine(_repo, _option.Path);
-                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, "HEAD").Result();
+                            binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, "HEAD").ResultAsync();
                             binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                         }
                         rs = binaryDiff;

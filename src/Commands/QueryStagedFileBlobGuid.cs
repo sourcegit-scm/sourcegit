@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -14,9 +15,9 @@ namespace SourceGit.Commands
             Args = $"ls-files -s -- \"{file}\"";
         }
 
-        public string Result()
+        public async Task<string> ResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync();
             var match = REG_FORMAT().Match(rs.StdOut.Trim());
             if (match.Success)
             {

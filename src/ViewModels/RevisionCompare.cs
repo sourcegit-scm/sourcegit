@@ -117,9 +117,9 @@ namespace SourceGit.ViewModels
 
         public void SaveAsPatch(string saveTo)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var succ = Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+                var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
                 if (succ)
                     App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
             });
@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
 
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
+                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);

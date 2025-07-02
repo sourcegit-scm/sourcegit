@@ -133,7 +133,7 @@ namespace SourceGit.ViewModels
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_based.Head, _to.Head, change);
 
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
+                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);
@@ -178,20 +178,20 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 if (_baseHead == null)
                 {
-                    var baseHead = new Commands.QuerySingleCommit(_repo, _based.Head).Result();
-                    var toHead = new Commands.QuerySingleCommit(_repo, _to.Head).Result();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based.Head).ResultAsync();
+                    var toHead = await new Commands.QuerySingleCommit(_repo, _to.Head).ResultAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         BaseHead = baseHead;
                         ToHead = toHead;
                     });
                 }
 
-                _changes = new Commands.CompareRevisions(_repo, _based.Head, _to.Head).Result();
+                _changes = await new Commands.CompareRevisions(_repo, _based.Head, _to.Head).ResultAsync();
 
                 var visible = _changes;
                 if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -204,7 +204,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+                await Dispatcher.UIThread.InvokeAsync(() => VisibleChanges = visible);
             });
         }
 

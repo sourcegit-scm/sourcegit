@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -15,9 +16,9 @@ namespace SourceGit.Commands
             RaiseError = false;
         }
 
-        public bool Result()
+        public async Task<bool> ResultAsync()
         {
-            return REG_TEST().IsMatch(ReadToEnd().StdOut);
+            return REG_TEST().IsMatch((await ReadToEndAsync()).StdOut);
         }
     }
 }

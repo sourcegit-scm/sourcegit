@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
             BasedOn = tag;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Archiving ...";
@@ -52,20 +52,17 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Archive");
             Use(log);
 
-            return Task.Run(() =>
+            var succ = await new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).ExecAsync();
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
             {
-                var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).Exec();
-                log.Complete();
-
-                CallUIThread(() =>
-                {
-                    _repo.SetWatcherEnabled(true);
-                    if (succ)
-                        App.SendNotification(_repo.FullPath, $"Save archive to : {_saveFile}");
-                });
-
-                return succ;
+                _repo.SetWatcherEnabled(true);
+                if (succ)
+                    App.SendNotification(_repo.FullPath, $"Save archive to : {_saveFile}");
             });
+
+            return succ;
         }
 
         private readonly Repository _repo = null;

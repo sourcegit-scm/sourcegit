@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,16 +12,16 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Add(string url, string relativePath, bool recursive)
+        public async Task<bool> AddAsync(string url, string relativePath, bool recursive)
         {
             Args = $"-c protocol.file.allow=always submodule add \"{url}\" \"{relativePath}\"";
-            if (!Exec())
+            if (!await ExecAsync())
                 return false;
 
             if (recursive)
             {
                 Args = $"submodule update --init --recursive -- \"{relativePath}\"";
-                return Exec();
+                return await ExecAsync();
             }
             else
             {
@@ -29,7 +30,7 @@ namespace SourceGit.Commands
             }
         }
 
-        public bool Update(List<string> modules, bool init, bool recursive, bool useRemote = false)
+        public async Task<bool> UpdateAsync(List<string> modules, bool init, bool recursive, bool useRemote = false)
         {
             var builder = new StringBuilder();
             builder.Append("submodule update");
@@ -48,19 +49,19 @@ namespace SourceGit.Commands
             }
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Deinit(string module, bool force)
+        public async Task<bool> DeinitAsync(string module, bool force)
         {
             Args = force ? $"submodule deinit -f -- \"{module}\"" : $"submodule deinit -- \"{module}\"";
-            return Exec();
+            return await ExecAsync();
         }
 
-        public bool Delete(string module)
+        public async Task<bool> DeleteAsync(string module)
         {
             Args = $"rm -rf \"{module}\"";
-            return Exec();
+            return await ExecAsync();
         }
     }
 }

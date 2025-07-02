@@ -44,11 +44,11 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             var fixedName = FixName(_name);
             if (fixedName == Target.Name)
-                return null;
+                return true;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Rename '{Target.Name}'";
@@ -56,39 +56,36 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
-            return Task.Run(() =>
+            var isCurrent = Target.IsCurrent;
+            var oldName = Target.FullName;
+            var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
             {
-                var isCurrent = Target.IsCurrent;
-                var oldName = Target.FullName;
-                var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, fixedName, log);
-                log.Complete();
+                ProgressDescription = "Waiting for branch updated...";
 
-                CallUIThread(() =>
+                if (succ)
                 {
-                    ProgressDescription = "Waiting for branch updated...";
-
-                    if (succ)
+                    foreach (var filter in _repo.Settings.HistoriesFilters)
                     {
-                        foreach (var filter in _repo.Settings.HistoriesFilters)
+                        if (filter.Type == Models.FilterType.LocalBranch &&
+                            filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                         {
-                            if (filter.Type == Models.FilterType.LocalBranch &&
-                                filter.Pattern.Equals(oldName, StringComparison.Ordinal))
-                            {
-                                filter.Pattern = $"refs/heads/{fixedName}";
-                                break;
-                            }
+                            filter.Pattern = $"refs/heads/{fixedName}";
+                            break;
                         }
                     }
+                }
 
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                if (isCurrent)
-                    Task.Delay(400).Wait();
-
-                return succ;
+                _repo.MarkBranchesDirtyManually();
+                _repo.SetWatcherEnabled(true);
             });
+
+            if (isCurrent)
+                Task.Delay(400).Wait();
+
+            return succ;
         }
 
         private string FixName(string name)

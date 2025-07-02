@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
@@ -393,7 +392,7 @@ namespace SourceGit.ViewModels
                             for (var i = 0; i < selected.Count; i++)
                             {
                                 var saveTo = GetPatchFileName(folderPath, selected[i], i);
-                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Use(log).Exec());
+                                succ = await new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Use(log).ExecAsync();
                                 if (!succ)
                                     break;
                             }
@@ -588,7 +587,7 @@ namespace SourceGit.ViewModels
                     var cherryPick = new MenuItem();
                     cherryPick.Header = App.Text("CommitCM.CherryPick");
                     cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
-                    cherryPick.Click += (_, e) =>
+                    cherryPick.Click += async (_, e) =>
                     {
                         if (_repo.CanCreatePopup())
                         {
@@ -601,7 +600,7 @@ namespace SourceGit.ViewModels
                                 var parents = new List<Models.Commit>();
                                 foreach (var sha in commit.Parents)
                                 {
-                                    var parent = _commits.Find(x => x.SHA == sha) ?? new Commands.QuerySingleCommit(_repo.FullPath, sha).Result();
+                                    var parent = _commits.Find(x => x.SHA == sha) ?? await new Commands.QuerySingleCommit(_repo.FullPath, sha).ResultAsync();
 
                                     if (parent != null)
                                         parents.Add(parent);
@@ -685,13 +684,13 @@ namespace SourceGit.ViewModels
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithHead.Click += (_, e) =>
+                compareWithHead.Click += async (_, e) =>
                 {
                     var head = _commits.Find(x => x.SHA == current.Head);
                     if (head == null)
                     {
                         _repo.SelectedSearchedCommit = null;
-                        head = new Commands.QuerySingleCommit(_repo.FullPath, current.Head).Result();
+                        head = await new Commands.QuerySingleCommit(_repo.FullPath, current.Head).ResultAsync();
                         if (head != null)
                             DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
                     }
@@ -764,7 +763,7 @@ namespace SourceGit.ViewModels
                         var folder = selected[0];
                         var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
                         var saveTo = GetPatchFileName(folderPath, commit);
-                        var succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).Exec());
+                        var succ = await new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).ExecAsync();
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }

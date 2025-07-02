@@ -50,26 +50,23 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = "Setting upstream...";
 
             var upstream = (_unset || SelectedRemoteBranch == null) ? string.Empty : SelectedRemoteBranch.FullName;
             if (upstream == Local.Upstream)
-                return null;
+                return true;
 
             var log = _repo.CreateLog("Set Upstream");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = Commands.Branch.SetUpstream(_repo.FullPath, Local.Name, upstream.Replace("refs/remotes/", ""), log);
-                if (succ)
-                    _repo.RefreshBranches();
+            var succ = await Commands.Branch.SetUpstreamAsync(_repo.FullPath, Local.Name, upstream.Replace("refs/remotes/", ""), log);
+            if (succ)
+                _repo.RefreshBranches();
 
-                log.Complete();
-                return true;
-            });
+            log.Complete();
+            return true;
         }
 
         private readonly Repository _repo;
