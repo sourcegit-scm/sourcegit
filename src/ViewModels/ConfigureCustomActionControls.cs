@@ -23,7 +23,12 @@ namespace SourceGit.ViewModels
 
         public void Add()
         {
-            var added = new Models.CustomActionControl() { Type = Models.CustomActionControlType.TextBox };
+            var added = new Models.CustomActionControl()
+            {
+                Label = "Unnamed",
+                Type = Models.CustomActionControlType.TextBox
+            };
+
             Controls.Add(added);
             Edit = added;
         }

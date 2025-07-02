@@ -129,7 +129,7 @@
               <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.Type}"/>
               <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Type, Mode=TwoWay}">
                 <ComboBoxItem Content="TextBox"/>
-                <ComboBoxItem Content="Path Selector"/>
+                <ComboBoxItem Content="PathSelector"/>
                 <ComboBoxItem Content="CheckBox"/>
                 <ComboBoxItem Content="ComboBox"/>
               </ComboBox>
@@ -146,24 +146,33 @@
                          Text="{DynamicResource Text.ConfigureCustomActionControls.Description.Tip}"
                          Foreground="{DynamicResource Brush.FG2}"/>
 
-              <!-- Default value/Options -->
+              <!-- BoolValue is needed by CheckBox/PathSelector -->
               <TextBlock Margin="0,12,0,0"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}"
-                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}"/>
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.IsFolder}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.PathSelector}}"/>
+              <CheckBox Height="28"
+                        Margin="0,4,0,0"
+                        IsChecked="{Binding BoolValue, Mode=TwoWay}">
+                <CheckBox.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.CheckBox}}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}}"/>
+                  </MultiBinding>
+                </CheckBox.IsVisible>
+              </CheckBox>
+
+              <!-- StringValue -->
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
               <TextBlock Margin="0,12,0,0"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.Options}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}"/>
-              <TextBox Margin="0,4,0,0"
-                       CornerRadius="3"
-                       Height="28"
-                       Text="{Binding StringValue, Mode=TwoWay}"
-                       IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
-              <TextBlock Margin="0,2,0,0"
-                         Classes="small"
-                         TextWrapping="Wrap"
-                         Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
-                         Foreground="{DynamicResource Brush.FG2}"
-                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}">
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}">
                 <TextBlock.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.Or}">
                     <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.TextBox}"/>
@@ -171,6 +180,16 @@
                   </MultiBinding>
                 </TextBlock.IsVisible>
               </TextBlock>
+              <TextBox Margin="0,4,0,0"
+                       CornerRadius="3"
+                       Height="28"
+                       Text="{Binding StringValue, Mode=TwoWay}"/>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue.Tip}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
               <TextBlock Margin="0,2,0,0"
                          Classes="small"
                          TextWrapping="Wrap"
@@ -178,35 +197,18 @@
                          Foreground="{DynamicResource Brush.FG2}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}">
               </TextBlock>
-              <CheckBox Height="28"
-                        Margin="0,4,0,0"
-                        IsChecked="{Binding BoolValue, Mode=TwoWay}"
-                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
-
-              <!-- PathSelector needs a bool to determine whether we want a folder or a file -->
-              <TextBlock Margin="0,12,0,0"
-                         Text="{DynamicResource Text.ConfigureCustomActionControls.IsFolder}"
-                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.PathSelector}}"/>
-              <CheckBox Height="28"
-                        Margin="0,4,0,0"
-                        IsChecked="{Binding BoolValue, Mode=TwoWay}"
-                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.PathSelector}}"/>
-
-              <!-- CheckBox needs a checked value for commandline -->
-              <TextBlock Margin="0,12,0,0"
-                         Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue}"
-                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
-              <TextBox Margin="0,4,0,0"
-                       CornerRadius="3"
-                       Height="28"
-                       Text="{Binding StringValue, Mode=TwoWay}"
-                       IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
               <TextBlock Margin="0,2,0,0"
                          Classes="small"
                          TextWrapping="Wrap"
-                         Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue.Tip}"
-                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"
-                         Foreground="{DynamicResource Brush.FG2}"/>
+                         Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}">
+                <TextBlock.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.TextBox}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}"/>
+                  </MultiBinding>
+                </TextBlock.IsVisible>
+              </TextBlock>              
             </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>
