@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -15,6 +16,29 @@ namespace SourceGit.Commands
         {
             var statistics = new Models.Statistics();
             var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return statistics;
+
+            var start = 0;
+            var end = rs.StdOut.IndexOf('\n', start);
+            while (end > 0)
+            {
+                ParseLine(statistics, rs.StdOut.Substring(start, end - start));
+                start = end + 1;
+                end = rs.StdOut.IndexOf('\n', start);
+            }
+
+            if (start < rs.StdOut.Length)
+                ParseLine(statistics, rs.StdOut.Substring(start));
+
+            statistics.Complete();
+            return statistics;
+        }
+
+        public async Task<Models.Statistics> ResultAsync()
+        {
+            var statistics = new Models.Statistics();
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return statistics;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -49,6 +50,46 @@ namespace SourceGit.Commands
                     {
                         b.IsUpstreamGone = false;
                         b.TrackStatus ??= new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).Result();
+                    }
+                    else
+                    {
+                        b.IsUpstreamGone = true;
+                        b.TrackStatus ??= new Models.BranchTrackStatus();
+                    }
+                }
+            }
+
+            return branches;
+        }
+
+        public async Task<List<Models.Branch>> ResultAsync()
+        {
+            var branches = new List<Models.Branch>();
+            var rs = await ReadToEndAsync();
+            if (!rs.IsSuccess)
+                return branches;
+
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            var remoteHeads = new Dictionary<string, string>();
+            foreach (var line in lines)
+            {
+                var b = ParseLine(line);
+                if (b != null)
+                {
+                    branches.Add(b);
+                    if (!b.IsLocal)
+                        remoteHeads.Add(b.FullName, b.Head);
+                }
+            }
+
+            foreach (var b in branches)
+            {
+                if (b.IsLocal && !string.IsNullOrEmpty(b.Upstream))
+                {
+                    if (remoteHeads.TryGetValue(b.Upstream, out var upstreamHead))
+                    {
+                        b.IsUpstreamGone = false;
+                        b.TrackStatus ??= await new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).ResultAsync();
                     }
                     else
                     {

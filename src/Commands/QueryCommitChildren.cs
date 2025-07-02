@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -16,6 +17,23 @@ namespace SourceGit.Commands
         public List<string> Result()
         {
             var rs = ReadToEnd();
+            var outs = new List<string>();
+            if (rs.IsSuccess)
+            {
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    if (line.Contains(_commit))
+                        outs.Add(line.Substring(0, 40));
+                }
+            }
+
+            return outs;
+        }
+
+        public async Task<List<string>> ResultAsync()
+        {
+            var rs = await ReadToEndAsync();
             var outs = new List<string>();
             if (rs.IsSuccess)
             {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -21,6 +22,28 @@ namespace SourceGit.Commands
         public List<Models.Object> Result()
         {
             var rs = ReadToEnd();
+            if (rs.IsSuccess)
+            {
+                var start = 0;
+                var end = rs.StdOut.IndexOf('\0', start);
+                while (end > 0)
+                {
+                    var line = rs.StdOut.Substring(start, end - start);
+                    Parse(line);
+                    start = end + 1;
+                    end = rs.StdOut.IndexOf('\0', start);
+                }
+
+                if (start < rs.StdOut.Length)
+                    Parse(rs.StdOut.Substring(start));
+            }
+
+            return _objects;
+        }
+
+        public async Task<List<Models.Object>> ResultAsync()
+        {
+            var rs = await ReadToEndAsync();
             if (rs.IsSuccess)
             {
                 var start = 0;

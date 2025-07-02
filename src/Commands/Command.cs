@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -129,6 +130,109 @@ namespace SourceGit.Commands
             };
 
             proc.WaitForExit();
+            rs.IsSuccess = proc.ExitCode == 0;
+            proc.Close();
+
+            return rs;
+        }
+
+        public async Task<bool> ExecAsync()
+        {
+            Log?.AppendLine($"$ git {Args}\n");
+
+            var start = CreateGitStartInfo();
+            var errs = new List<string>();
+            var proc = new Process() { StartInfo = start };
+
+            proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
+            proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
+
+            var dummy = null as Process;
+            var dummyProcLock = new object();
+            try
+            {
+                proc.Start();
+
+                // It not safe, please only use `CancellationToken` in readonly commands.
+                if (CancellationToken.CanBeCanceled)
+                {
+                    dummy = proc;
+                    CancellationToken.Register(() =>
+                    {
+                        lock (dummyProcLock)
+                        {
+                            if (dummy is { HasExited: false })
+                                dummy.Kill();
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                if (RaiseError)
+                    App.RaiseException(Context, e.Message);
+
+                Log?.AppendLine(string.Empty);
+                return false;
+            }
+
+            proc.BeginOutputReadLine();
+            proc.BeginErrorReadLine();
+            await proc.WaitForExitAsync(CancellationToken);
+
+            if (dummy != null)
+            {
+                lock (dummyProcLock)
+                {
+                    dummy = null;
+                }
+            }
+
+            int exitCode = proc.ExitCode;
+            proc.Close();
+            Log?.AppendLine(string.Empty);
+
+            if (!CancellationToken.IsCancellationRequested && exitCode != 0)
+            {
+                if (RaiseError)
+                {
+                    var errMsg = string.Join("\n", errs).Trim();
+                    if (!string.IsNullOrEmpty(errMsg))
+                        App.RaiseException(Context, errMsg);
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<ReadToEndResult> ReadToEndAsync()
+        {
+            var start = CreateGitStartInfo();
+            var proc = new Process() { StartInfo = start };
+
+            try
+            {
+                proc.Start();
+            }
+            catch (Exception e)
+            {
+                return new ReadToEndResult()
+                {
+                    IsSuccess = false,
+                    StdOut = string.Empty,
+                    StdErr = e.Message,
+                };
+            }
+
+            var rs = new ReadToEndResult()
+            {
+                StdOut = await proc.StandardOutput.ReadToEndAsync(CancellationToken),
+                StdErr = await proc.StandardError.ReadToEndAsync(CancellationToken),
+            };
+
+            await proc.WaitForExitAsync(CancellationToken);
             rs.IsSuccess = proc.ExitCode == 0;
             proc.Close();
 

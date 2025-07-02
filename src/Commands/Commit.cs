@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -21,6 +22,22 @@ namespace SourceGit.Commands
         public bool Run()
         {
             var succ = Exec();
+
+            try
+            {
+                File.Delete(_tmpFile);
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            return succ;
+        }
+
+        public async Task<bool> RunAsync()
+        {
+            var succ = await ExecAsync();
 
             try
             {

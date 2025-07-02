@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -20,6 +21,24 @@ namespace SourceGit.Commands
         {
             var outs = new List<string>();
             var rs = ReadToEnd();
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                var match = REG_PARSE().Match(line);
+                if (!match.Success)
+                    continue;
+
+                if (match.Groups[1].Value == "h")
+                    outs.Add(match.Groups[2].Value);
+            }
+
+            return outs;
+        }
+
+        public async Task<List<string>> ResultAsync()
+        {
+            var outs = new List<string>();
+            var rs = await ReadToEndAsync();
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -61,6 +62,48 @@ namespace SourceGit.Commands
                 Args = $"config {scope} {key} \"{value}\"";
 
             return Exec();
+        }
+
+        public async Task<Dictionary<string, string>> ListAllAsync()
+        {
+            Args = "config -l";
+
+            var output = await ReadToEndAsync();
+            var rs = new Dictionary<string, string>();
+            if (output.IsSuccess)
+            {
+                var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    var idx = line.IndexOf('=', StringComparison.Ordinal);
+                    if (idx != -1)
+                    {
+                        var key = line.Substring(0, idx).Trim();
+                        var val = line.Substring(idx + 1).Trim();
+                        rs[key] = val;
+                    }
+                }
+            }
+
+            return rs;
+        }
+
+        public async Task<string> GetAsync(string key)
+        {
+            Args = $"config {key}";
+            return (await ReadToEndAsync()).StdOut.Trim();
+        }
+
+        public async Task<bool> SetAsync(string key, string value, bool allowEmpty = false)
+        {
+            var scope = _isLocal ? "--local" : "--global";
+
+            if (!allowEmpty && string.IsNullOrWhiteSpace(value))
+                Args = $"config {scope} --unset {key}";
+            else
+                Args = $"config {scope} {key} \"{value}\"";
+
+            return await ExecAsync();
         }
 
         private bool _isLocal = false;

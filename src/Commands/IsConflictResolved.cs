@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class IsConflictResolved : Command
     {
@@ -14,6 +16,11 @@
         public bool Result()
         {
             return ReadToEnd().IsSuccess;
+        }
+
+        public async Task<bool> ResultAsync()
+        {
+            return (await ReadToEndAsync()).IsSuccess;
         }
     }
 }

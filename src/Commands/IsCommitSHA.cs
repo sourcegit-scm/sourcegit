@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class IsCommitSHA : Command
     {
@@ -11,6 +13,12 @@
         public bool Result()
         {
             var rs = ReadToEnd();
+            return rs.IsSuccess && rs.StdOut.Trim().Equals("commit");
+        }
+
+        public async Task<bool> ResultAsync()
+        {
+            var rs = await ReadToEndAsync();
             return rs.IsSuccess && rs.StdOut.Trim().Equals("commit");
         }
     }

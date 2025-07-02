@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -32,6 +33,20 @@ namespace SourceGit.Commands
         public List<Models.Change> Result()
         {
             var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return _changes;
+
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+                ParseLine(line);
+
+            _changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
+            return _changes;
+        }
+
+        public async Task<List<Models.Change>> ResultAsync()
+        {
+            var rs = await ReadToEndAsync();
             if (!rs.IsSuccess)
                 return _changes;
 
