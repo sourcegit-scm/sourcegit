@@ -293,14 +293,28 @@ namespace SourceGit.Views
                 return;
 
             var shell = Models.ShellOrTerminal.Supported[type];
-            var options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
-                AllowMultiple = false,
-            };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            var options = new FilePickerOpenOptions() { AllowMultiple = false };
+            if (shell.Name != "Custom")
+            {
+                options = new FilePickerOpenOptions()
+                {
+                    FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
+                    AllowMultiple = false,
+                };
+            }
+
+            IReadOnlyList<IStorageFile> selected = null;
+            try
+            {
+                selected = await StorageProvider.OpenFilePickerAsync(options);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select shell/terminal: {ex.Message}");
+            }
+
+            if (selected is { Count: 1 })
             {
                 ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
             }
@@ -319,14 +333,27 @@ namespace SourceGit.Views
             }
 
             var tool = Models.ExternalMerger.Supported[type];
-            var options = new FilePickerOpenOptions()
+            var options = new FilePickerOpenOptions() { AllowMultiple = false };
+            if (tool.Name != "Custom")
             {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
-                AllowMultiple = false,
-            };
+                options = new FilePickerOpenOptions()
+                {
+                    FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
+                    AllowMultiple = false,
+                };
+            }
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            IReadOnlyList<IStorageFile> selected = null;
+            try
+            {
+                selected = await StorageProvider.OpenFilePickerAsync(options);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select merge tool: {ex.Message}");
+            }
+            
+            if (selected is { Count: 1 })
             {
                 ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
