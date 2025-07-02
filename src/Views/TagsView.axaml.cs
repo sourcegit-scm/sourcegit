@@ -217,6 +217,9 @@ namespace SourceGit.Views
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key is not (Key.Delete or Key.Back))
+                return;
+
             if (DataContext is not ViewModels.Repository repo)
                 return;
 
