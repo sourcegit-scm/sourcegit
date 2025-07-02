@@ -214,10 +214,15 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preferences.Instance.ThemeOverrides = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    ViewModels.Preferences.Instance.ThemeOverrides = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select theme: {ex.Message}");
             }
 
             e.Handled = true;
@@ -232,11 +237,18 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preferences.Instance.GitInstallPath = selected[0].Path.LocalPath;
-                UpdateGitVersion();
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                {
+                    ViewModels.Preferences.Instance.GitInstallPath = selected[0].Path.LocalPath;
+                    UpdateGitVersion();
+                }
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select git executable: {ex.Message}");
             }
 
             e.Handled = true;
@@ -277,10 +289,15 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                GPGExecutableFile = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    GPGExecutableFile = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select gpg program: {ex.Message}");
             }
 
             e.Handled = true;
@@ -293,9 +310,8 @@ namespace SourceGit.Views
                 return;
 
             var shell = Models.ShellOrTerminal.Supported[type];
-
             var options = new FilePickerOpenOptions() { AllowMultiple = false };
-            if (shell.Name != "Custom")
+            if (shell.Type != "custom")
             {
                 options = new FilePickerOpenOptions()
                 {
@@ -304,19 +320,15 @@ namespace SourceGit.Views
                 };
             }
 
-            IReadOnlyList<IStorageFile> selected = null;
             try
             {
-                selected = await StorageProvider.OpenFilePickerAsync(options);
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
             }
             catch (Exception ex)
             {
                 App.RaiseException(string.Empty, $"Failed to select shell/terminal: {ex.Message}");
-            }
-
-            if (selected is { Count: 1 })
-            {
-                ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
             }
 
             e.Handled = true;
@@ -325,7 +337,7 @@ namespace SourceGit.Views
         private async void SelectExternalMergeTool(object _, RoutedEventArgs e)
         {
             var type = ViewModels.Preferences.Instance.ExternalMergeToolType;
-            if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
+            if (type <= 0 || type >= Models.ExternalMerger.Supported.Count)
             {
                 ViewModels.Preferences.Instance.ExternalMergeToolType = 0;
                 e.Handled = true;
@@ -333,29 +345,21 @@ namespace SourceGit.Views
             }
 
             var tool = Models.ExternalMerger.Supported[type];
-            var options = new FilePickerOpenOptions() { AllowMultiple = false };
-            if (tool.Name != "Custom")
+            var options = new FilePickerOpenOptions()
             {
-                options = new FilePickerOpenOptions()
-                {
-                    FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
-                    AllowMultiple = false,
-                };
-            }
+                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
+                AllowMultiple = false,
+            };
 
-            IReadOnlyList<IStorageFile> selected = null;
             try
             {
-                selected = await StorageProvider.OpenFilePickerAsync(options);
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
             catch (Exception ex)
             {
                 App.RaiseException(string.Empty, $"Failed to select merge tool: {ex.Message}");
-            }
-            
-            if (selected is { Count: 1 })
-            {
-                ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
             }
 
             e.Handled = true;
@@ -425,9 +429,16 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1 && sender is Button { DataContext: Models.CustomAction action })
-                action.Executable = selected[0].Path.LocalPath;
+            try
+            {
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 } && sender is Button { DataContext: Models.CustomAction action })
+                    action.Executable = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select program for custom action: {ex.Message}");
+            }
 
             e.Handled = true;
         }
