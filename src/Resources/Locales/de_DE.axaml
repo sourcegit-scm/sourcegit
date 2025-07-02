@@ -211,6 +211,8 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Standardwert:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Ordner?</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Bezeichnung:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Einträge:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Nutze '|', um Einträge zu trennen</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Typ:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
@@ -306,6 +308,7 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Mehr Zeilen anzeigen</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">WÄHLE EINE DATEI AUS UM ÄNDERUNGEN ANZUZEIGEN</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Öffne in Merge Tool</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">Verzeichnisverlauf</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Änderungen verwerfen</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Alle Änderungen in der Arbeitskopie.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Änderungen:</x:String>
