@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public static class SaveRevisionFile
@@ -53,10 +51,7 @@ namespace SourceGit.Commands
                 }
                 catch (Exception e)
                 {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(repo, "Save file failed: " + e.Message);
-                    });
+                    App.RaiseException(repo, "Save file failed: " + e.Message);
                 }
             }
         }

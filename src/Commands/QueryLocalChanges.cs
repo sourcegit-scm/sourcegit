@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public partial class QueryLocalChanges : Command
@@ -25,7 +23,7 @@ namespace SourceGit.Commands
             var rs = ReadToEnd();
             if (!rs.IsSuccess)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(Context, rs.StdErr));
+                App.RaiseException(Context, rs.StdErr);
                 return outs;
             }
 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public class UnstageChangesForAmend
@@ -75,16 +73,13 @@ namespace SourceGit.Commands
                 proc.Close();
 
                 if (!rs)
-                    Dispatcher.UIThread.Invoke(() => App.RaiseException(_repo, err));
+                    App.RaiseException(_repo, err);
 
                 return rs;
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(_repo, "Failed to unstage changes: " + e.Message);
-                });
+                App.RaiseException(_repo, "Failed to unstage changes: " + e.Message);
                 return false;
             }
         }

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     /// <summary>
@@ -86,7 +84,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(_repo, $"Failed to generate commit message: {e}"));
+                App.RaiseException(_repo, $"Failed to generate commit message: {e}");
             }
         }
 

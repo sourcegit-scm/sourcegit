@@ -4,6 +4,7 @@ using System.IO;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -394,6 +395,12 @@ namespace SourceGit.ViewModels
 
         public void DispatchNotification(string pageId, string message, bool isError)
         {
+            if (!Dispatcher.UIThread.CheckAccess())
+            {
+                Dispatcher.UIThread.Invoke(() => DispatchNotification(pageId, message, isError));
+                return;
+            }
+
             var notification = new Models.Notification()
             {
                 IsError = isError,

@@ -237,7 +237,7 @@ namespace SourceGit.ViewModels
             }
             catch (Exception e)
             {
-                CallUIThread(() => App.RaiseException(_repo.FullPath, e.Message));
+                App.RaiseException(_repo.FullPath, e.Message);
             }
         }
 
@@ -284,12 +284,12 @@ namespace SourceGit.ViewModels
                 {
                     var errMsg = builder.ToString().Trim();
                     if (!string.IsNullOrEmpty(errMsg))
-                        CallUIThread(() => App.RaiseException(_repo.FullPath, errMsg));
+                        App.RaiseException(_repo.FullPath, errMsg);
                 }
             }
             catch (Exception e)
             {
-                CallUIThread(() => App.RaiseException(_repo.FullPath, e.Message));
+                App.RaiseException(_repo.FullPath, e.Message);
             }
 
             proc.Close();

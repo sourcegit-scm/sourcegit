@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-using Avalonia.Threading;
-
 namespace SourceGit.Commands
 {
     public static class SaveChangesAsPatch
@@ -74,10 +72,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, "Save change to patch failed: " + e.Message);
-                });
+                App.RaiseException(repo, "Save change to patch failed: " + e.Message);
                 return false;
             }
         }
