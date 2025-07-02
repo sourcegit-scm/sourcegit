@@ -64,22 +64,20 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Discard all");
             Use(log);
 
+            if (Mode is DiscardAllMode all)
+                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
+            else
+                await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
+
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
             {
-                if (Mode is DiscardAllMode all)
-                    await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
-                else
-                    await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
+                _repo.MarkWorkingCopyDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
 
-                log.Complete();
-
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.MarkWorkingCopyDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
-            }
+            return true;
         }
 
         private readonly Repository _repo = null;

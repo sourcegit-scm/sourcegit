@@ -36,21 +36,19 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Revision");
             Use(log);
 
-            {
-                var succ = await new Commands.Push(
-                    _repo.FullPath,
-                    Revision.SHA,
-                    RemoteBranch.Remote,
-                    RemoteBranch.Name,
-                    false,
-                    false,
-                    false,
-                    Force).Use(log).ExecAsync();
+            var succ = await new Commands.Push(
+                _repo.FullPath,
+                Revision.SHA,
+                RemoteBranch.Remote,
+                RemoteBranch.Name,
+                false,
+                false,
+                false,
+                Force).Use(log).ExecAsync();
 
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo;

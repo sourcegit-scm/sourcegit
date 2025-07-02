@@ -51,12 +51,10 @@ namespace SourceGit.ViewModels
             var prefix = _repo.GitFlow.GetPrefix(Type);
             var name = Branch.Name.StartsWith(prefix) ? Branch.Name.Substring(prefix.Length) : Branch.Name;
 
-            {
-                var succ = await Commands.GitFlow.FinishAsync(_repo.FullPath, Type, name, Squash, AutoPush, KeepBranch, log);
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            var succ = await Commands.GitFlow.FinishAsync(_repo.FullPath, Type, name, Squash, AutoPush, KeepBranch, log);
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo;

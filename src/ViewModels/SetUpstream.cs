@@ -61,14 +61,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Set Upstream");
             Use(log);
 
-            {
-                var succ = await Commands.Branch.SetUpstreamAsync(_repo.FullPath, Local.Name, upstream.Replace("refs/remotes/", ""), log);
-                if (succ)
-                    _repo.RefreshBranches();
+            var succ = await Commands.Branch.SetUpstreamAsync(_repo.FullPath, Local.Name, upstream.Replace("refs/remotes/", ""), log);
+            if (succ)
+                _repo.RefreshBranches();
 
-                log.Complete();
-                return true;
-            }
+            log.Complete();
+            return true;
         }
 
         private readonly Repository _repo;

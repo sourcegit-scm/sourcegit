@@ -104,68 +104,66 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Clone");
             Use(log);
 
+            var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
+            if (!await cmd.ExecAsync())
+                return false;
+
+            var path = _parentFolder;
+            if (!string.IsNullOrEmpty(_local))
             {
-                var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
-                if (!await cmd.ExecAsync())
-                    return false;
-
-                var path = _parentFolder;
-                if (!string.IsNullOrEmpty(_local))
-                {
-                    path = Path.GetFullPath(Path.Combine(path, _local));
-                }
-                else
-                {
-                    var name = Path.GetFileName(_remote)!;
-                    if (name.EndsWith(".git", StringComparison.Ordinal))
-                        name = name.Substring(0, name.Length - 4);
-                    else if (name.EndsWith(".bundle", StringComparison.Ordinal))
-                        name = name.Substring(0, name.Length - 7);
-
-                    path = Path.GetFullPath(Path.Combine(path, name));
-                }
-
-                if (!Directory.Exists(path))
-                {
-                    App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
-                    return false;
-                }
-
-                if (_useSSH && !string.IsNullOrEmpty(_sshKey))
-                {
-                    var config = new Commands.Config(path);
-                    await config.SetAsync("remote.origin.sshkey", _sshKey);
-                }
-
-                if (InitAndUpdateSubmodules)
-                {
-                    var submodules = await new Commands.QueryUpdatableSubmodules(path).ResultAsync();
-                    if (submodules.Count > 0)
-                        await new Commands.Submodule(path).Use(log).UpdateAsync(submodules, true, true);
-                }
-
-                log.Complete();
-
-                await CallUIThreadAsync(() =>
-                {
-                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
-                    var launcher = App.GetLauncher();
-                    var page = null as LauncherPage;
-                    foreach (var one in launcher.Pages)
-                    {
-                        if (one.Node.Id == _pageId)
-                        {
-                            page = one;
-                            break;
-                        }
-                    }
-
-                    Welcome.Instance.Refresh();
-                    launcher.OpenRepositoryInTab(node, page);
-                });
-
-                return true;
+                path = Path.GetFullPath(Path.Combine(path, _local));
             }
+            else
+            {
+                var name = Path.GetFileName(_remote)!;
+                if (name.EndsWith(".git", StringComparison.Ordinal))
+                    name = name.Substring(0, name.Length - 4);
+                else if (name.EndsWith(".bundle", StringComparison.Ordinal))
+                    name = name.Substring(0, name.Length - 7);
+
+                path = Path.GetFullPath(Path.Combine(path, name));
+            }
+
+            if (!Directory.Exists(path))
+            {
+                App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
+                return false;
+            }
+
+            if (_useSSH && !string.IsNullOrEmpty(_sshKey))
+            {
+                var config = new Commands.Config(path);
+                await config.SetAsync("remote.origin.sshkey", _sshKey);
+            }
+
+            if (InitAndUpdateSubmodules)
+            {
+                var submodules = await new Commands.QueryUpdatableSubmodules(path).ResultAsync();
+                if (submodules.Count > 0)
+                    await new Commands.Submodule(path).Use(log).UpdateAsync(submodules, true, true);
+            }
+
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
+            {
+                var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+                var launcher = App.GetLauncher();
+                var page = null as LauncherPage;
+                foreach (var one in launcher.Pages)
+                {
+                    if (one.Node.Id == _pageId)
+                    {
+                        page = one;
+                        break;
+                    }
+                }
+
+                Welcome.Instance.Refresh();
+                launcher.OpenRepositoryInTab(node, page);
+            });
+
+            return true;
         }
 
         private string _pageId = string.Empty;

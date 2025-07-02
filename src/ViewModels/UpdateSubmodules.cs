@@ -63,15 +63,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Update Submodule");
             Use(log);
 
-            {
-                await new Commands.Submodule(_repo.FullPath)
-                    .Use(log)
-                    .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
+            await new Commands.Submodule(_repo.FullPath)
+                .Use(log)
+                .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
 
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
-            }
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

@@ -166,18 +166,16 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog(CustomAction.Name);
             Use(log);
 
-            {
-                log.AppendLine($"$ {CustomAction.Executable} {cmdline}\n");
+            log.AppendLine($"$ {CustomAction.Executable} {cmdline}\n");
 
-                if (CustomAction.WaitForExit)
-                    RunAndWait(cmdline, log);
-                else
-                    Run(cmdline);
+            if (CustomAction.WaitForExit)
+                RunAndWait(cmdline, log);
+            else
+                Run(cmdline);
 
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
-            }
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private void PrepareControlParameters()

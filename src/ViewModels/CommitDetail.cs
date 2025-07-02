@@ -999,23 +999,19 @@ namespace SourceGit.ViewModels
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
 
-            {
-                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, $"{_commit.SHA}");
-                log.Complete();
-            }
+            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, $"{_commit.SHA}");
+            log.Complete();
         }
 
         private async Task ResetToParentRevision(Models.Change change)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
 
-            {
-                if (change.Index == Models.ChangeState.Renamed)
-                    await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
+            if (change.Index == Models.ChangeState.Renamed)
+                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
 
-                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
-                log.Complete();
-            }
+            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+            log.Complete();
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]

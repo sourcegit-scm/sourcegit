@@ -95,23 +95,21 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Add Remote");
             Use(log);
 
+            var succ = await new Commands.Remote(_repo.FullPath).Use(log).AddAsync(_name, _url);
+            if (succ)
             {
-                var succ = await new Commands.Remote(_repo.FullPath).Use(log).AddAsync(_name, _url);
-                if (succ)
-                {
-                    await new Commands.Config(_repo.FullPath).Use(log).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-                    await new Commands.Fetch(_repo.FullPath, _name, false, false).Use(log).ExecAsync();
-                }
-
-                log.Complete();
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.MarkFetched();
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return succ;
+                await new Commands.Config(_repo.FullPath).Use(log).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+                await new Commands.Fetch(_repo.FullPath, _name, false, false).Use(log).ExecAsync();
             }
+
+            log.Complete();
+            await CallUIThreadAsync(() =>
+            {
+                _repo.MarkFetched();
+                _repo.MarkBranchesDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
+            return succ;
         }
 
         private readonly Repository _repo = null;

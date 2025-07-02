@@ -52,19 +52,17 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Archive");
             Use(log);
 
+            var succ = await new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).ExecAsync();
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
             {
-                var succ = await new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).ExecAsync();
-                log.Complete();
+                _repo.SetWatcherEnabled(true);
+                if (succ)
+                    App.SendNotification(_repo.FullPath, $"Save archive to : {_saveFile}");
+            });
 
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.SetWatcherEnabled(true);
-                    if (succ)
-                        App.SendNotification(_repo.FullPath, $"Save archive to : {_saveFile}");
-                });
-
-                return succ;
-            }
+            return succ;
         }
 
         private readonly Repository _repo = null;

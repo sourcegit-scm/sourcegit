@@ -42,69 +42,67 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
+            bool succ;
+            var needPopStash = false;
+
+            if (!_repo.ConfirmCheckoutBranch())
             {
-                bool succ;
-                var needPopStash = false;
-
-                if (!_repo.ConfirmCheckoutBranch())
-                {
-                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                    return true;
-                }
-
-                if (DiscardLocalChanges)
-                {
-                    succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(Branch, true);
-                }
-                else
-                {
-                    var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
-                    if (changes > 0)
-                    {
-                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("CHECKOUT_AUTO_STASH");
-                        if (!succ)
-                        {
-                            log.Complete();
-                            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                            return false;
-                        }
-
-                        needPopStash = true;
-                    }
-
-                    succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(Branch, false);
-                }
-
-                if (succ)
-                {
-                    if (updateSubmodules)
-                    {
-                        var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
-                        if (submodules.Count > 0)
-                            await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
-                    }
-
-                    if (needPopStash)
-                        await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
-                }
-
-                log.Complete();
-
-                await CallUIThreadAsync(() =>
-                {
-                    ProgressDescription = "Waiting for branch updated...";
-
-                    var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
-                    if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
-                        _repo.SetBranchFilterMode(b, Models.FilterMode.Included, true, false);
-
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                Task.Delay(400).Wait();
-                return succ;
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                return true;
             }
+
+            if (DiscardLocalChanges)
+            {
+                succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(Branch, true);
+            }
+            else
+            {
+                var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
+                if (changes > 0)
+                {
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("CHECKOUT_AUTO_STASH");
+                    if (!succ)
+                    {
+                        log.Complete();
+                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                        return false;
+                    }
+
+                    needPopStash = true;
+                }
+
+                succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(Branch, false);
+            }
+
+            if (succ)
+            {
+                if (updateSubmodules)
+                {
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
+                    if (submodules.Count > 0)
+                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
+                }
+
+                if (needPopStash)
+                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+            }
+
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
+            {
+                ProgressDescription = "Waiting for branch updated...";
+
+                var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
+                if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                    _repo.SetBranchFilterMode(b, Models.FilterMode.Included, true, false);
+
+                _repo.MarkBranchesDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
+
+            Task.Delay(400).Wait();
+            return succ;
         }
 
         private readonly Repository _repo = null;

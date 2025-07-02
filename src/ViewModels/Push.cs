@@ -168,21 +168,19 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push");
             Use(log);
 
-            {
-                var succ = await new Commands.Push(
-                    _repo.FullPath,
-                    _selectedLocalBranch.Name,
-                    _selectedRemote.Name,
-                    remoteBranchName,
-                    PushAllTags,
-                    _repo.Submodules.Count > 0 && CheckSubmodules,
-                    _isSetTrackOptionVisible && Tracking,
-                    ForcePush).Use(log).ExecAsync();
+            var succ = await new Commands.Push(
+                _repo.FullPath,
+                _selectedLocalBranch.Name,
+                _selectedRemote.Name,
+                remoteBranchName,
+                PushAllTags,
+                _repo.Submodules.Count > 0 && CheckSubmodules,
+                _isSetTrackOptionVisible && Tracking,
+                ForcePush).Use(log).ExecAsync();
 
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private void AutoSelectBranchByRemote()

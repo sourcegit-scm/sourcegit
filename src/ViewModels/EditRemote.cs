@@ -105,30 +105,28 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Editing remote '{_remote.Name}' ...";
 
+            if (_remote.Name != _name)
             {
-                if (_remote.Name != _name)
-                {
-                    var succ = await new Commands.Remote(_repo.FullPath).RenameAsync(_remote.Name, _name);
-                    if (succ)
-                        _remote.Name = _name;
-                }
-
-                if (_remote.URL != _url)
-                {
-                    var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false);
-                    if (succ)
-                        _remote.URL = _url;
-                }
-
-                var pushURL = await new Commands.Remote(_repo.FullPath).GetURLAsync(_name, true);
-                if (pushURL != _url)
-                    await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
-
-                await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
+                var succ = await new Commands.Remote(_repo.FullPath).RenameAsync(_remote.Name, _name);
+                if (succ)
+                    _remote.Name = _name;
             }
+
+            if (_remote.URL != _url)
+            {
+                var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false);
+                if (succ)
+                    _remote.URL = _url;
+            }
+
+            var pushURL = await new Commands.Remote(_repo.FullPath).GetURLAsync(_name, true);
+            if (pushURL != _url)
+                await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
+
+            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

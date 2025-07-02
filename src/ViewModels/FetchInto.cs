@@ -29,19 +29,17 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
             Use(log);
 
+            await new Commands.Fetch(_repo.FullPath, Local, Upstream).Use(log).ExecAsync();
+            log.Complete();
+
+            var changedLocalBranchHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).ResultAsync();
+            await CallUIThreadAsync(() =>
             {
-                await new Commands.Fetch(_repo.FullPath, Local, Upstream).Use(log).ExecAsync();
-                log.Complete();
+                _repo.NavigateToCommit(changedLocalBranchHead, true);
+                _repo.SetWatcherEnabled(true);
+            });
 
-                var changedLocalBranchHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).ResultAsync();
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.NavigateToCommit(changedLocalBranchHead, true);
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
-            }
+            return true;
         }
 
         private readonly Repository _repo = null;

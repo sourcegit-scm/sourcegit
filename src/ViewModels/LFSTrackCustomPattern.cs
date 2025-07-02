@@ -31,12 +31,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Add Custom Pattern");
             Use(log);
 
-            {
-                var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(_pattern, IsFilename, log);
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(_pattern, IsFilename, log);
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo = null;

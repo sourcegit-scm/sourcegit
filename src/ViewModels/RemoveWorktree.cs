@@ -29,12 +29,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Remove worktree");
             Use(log);
 
-            {
-                var succ = await new Commands.Worktree(_repo.FullPath).Use(log).RemoveAsync(Target.FullPath, Force);
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            var succ = await new Commands.Worktree(_repo.FullPath).Use(log).RemoveAsync(Target.FullPath, Force);
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo = null;

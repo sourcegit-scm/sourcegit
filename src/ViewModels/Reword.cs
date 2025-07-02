@@ -38,13 +38,11 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var signOff = _repo.Settings.EnableSignOffForCommit;
-            {
-                // For reword (only changes the commit message), disable `--reset-author`
-                var succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            // For reword (only changes the commit message), disable `--reset-author`
+            var succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo;

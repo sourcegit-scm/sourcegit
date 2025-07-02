@@ -66,18 +66,16 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            {
-                await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).ExecAsync();
-                log.Complete();
+            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).ExecAsync();
+            log.Complete();
 
-                var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.NavigateToCommit(head, true);
-                    _repo.SetWatcherEnabled(true);
-                });
-                return true;
-            }
+            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
+            await CallUIThreadAsync(() =>
+            {
+                _repo.NavigateToCommit(head, true);
+                _repo.SetWatcherEnabled(true);
+            });
+            return true;
         }
 
         private Models.MergeMode AutoSelectMergeMode()

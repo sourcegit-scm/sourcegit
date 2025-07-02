@@ -119,59 +119,57 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
+            var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
+            var needPopStash = false;
+            if (changes > 0)
             {
-                var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
-                var needPopStash = false;
-                if (changes > 0)
+                if (DiscardLocalChanges)
                 {
-                    if (DiscardLocalChanges)
-                    {
-                        await Commands.Discard.AllAsync(_repo.FullPath, false, log);
-                    }
-                    else
-                    {
-                        var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH");
-                        if (!succ)
-                        {
-                            log.Complete();
-                            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                            return false;
-                        }
-
-                        needPopStash = true;
-                    }
+                    await Commands.Discard.AllAsync(_repo.FullPath, false, log);
                 }
-
-                bool rs = await new Commands.Pull(
-                    _repo.FullPath,
-                    _selectedRemote.Name,
-                    !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                    UseRebase).Use(log).ExecAsync();
-
-                if (rs)
+                else
                 {
-                    if (updateSubmodules)
+                    var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH");
+                    if (!succ)
                     {
-                        var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
-                        if (submodules.Count > 0)
-                            await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
+                        log.Complete();
+                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                        return false;
                     }
 
-                    if (needPopStash)
-                        await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+                    needPopStash = true;
                 }
-
-                log.Complete();
-
-                var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.NavigateToCommit(head, true);
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return rs;
             }
+
+            bool rs = await new Commands.Pull(
+                _repo.FullPath,
+                _selectedRemote.Name,
+                !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
+                UseRebase).Use(log).ExecAsync();
+
+            if (rs)
+            {
+                if (updateSubmodules)
+                {
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
+                    if (submodules.Count > 0)
+                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
+                }
+
+                if (needPopStash)
+                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+            }
+
+            log.Complete();
+
+            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
+            await CallUIThreadAsync(() =>
+            {
+                _repo.NavigateToCommit(head, true);
+                _repo.SetWatcherEnabled(true);
+            });
+
+            return rs;
         }
 
         private void PostRemoteSelected()

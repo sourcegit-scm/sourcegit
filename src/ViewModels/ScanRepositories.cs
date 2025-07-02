@@ -44,51 +44,49 @@ namespace SourceGit.ViewModels
         {
             ProgressDescription = $"Scan repositories under '{_selected.Path}' ...";
 
+            var watch = new Stopwatch();
+            watch.Start();
+
+            var rootDir = new DirectoryInfo(_selected.Path);
+            var found = new List<string>();
+            GetUnmanagedRepositories(rootDir, found, new EnumerationOptions()
             {
-                var watch = new Stopwatch();
-                watch.Start();
+                AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
+                IgnoreInaccessible = true,
+            });
 
-                var rootDir = new DirectoryInfo(_selected.Path);
-                var found = new List<string>();
-                GetUnmanagedRepositories(rootDir, found, new EnumerationOptions()
+            // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
+            var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
+            watch.Stop();
+            if (remain > 0)
+                Task.Delay(remain).Wait();
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
+
+                foreach (var f in found)
                 {
-                    AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
-                    IgnoreInaccessible = true,
-                });
-
-                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
-                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
-                watch.Stop();
-                if (remain > 0)
-                    Task.Delay(remain).Wait();
-
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
-
-                    foreach (var f in found)
+                    var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
+                    if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                     {
-                        var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
-                        if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
-                        {
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
-                        }
-                        else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
-                        {
-                            var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
-                            var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
-                        }
+                        Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
                     }
+                    else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
+                    {
+                        var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
+                        var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
+                        Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    }
+                }
 
-                    Preferences.Instance.AutoRemoveInvalidNode();
-                    Preferences.Instance.Save();
+                Preferences.Instance.AutoRemoveInvalidNode();
+                Preferences.Instance.Save();
 
-                    Welcome.Instance.Refresh();
-                });
+                Welcome.Instance.Refresh();
+            });
 
-                return true;
-            }
+            return true;
         }
 
         private void GetManagedRepositories(List<RepositoryNode> group, HashSet<string> repos)

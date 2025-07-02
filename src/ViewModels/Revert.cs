@@ -31,12 +31,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Revert '{Target.SHA}'");
             Use(log);
 
-            {
-                await new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Use(log).ExecAsync();
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
-            }
+            await new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Use(log).ExecAsync();
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

@@ -55,15 +55,13 @@ namespace SourceGit.ViewModels
             if (_viewContent is not FileHistoriesRevisionFile { CanOpenWithDefaultEditor: true })
                 return;
 
-            {
-                var fullPath = Native.OS.GetAbsPath(_repo.FullPath, _file);
-                var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
-                var fileExt = Path.GetExtension(fullPath) ?? "";
-                var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_revision.SHA.Substring(0, 10)}{fileExt}");
+            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, _file);
+            var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
+            var fileExt = Path.GetExtension(fullPath) ?? "";
+            var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_revision.SHA.Substring(0, 10)}{fileExt}");
 
-                await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _revision.SHA, _file, tmpFile);
-                Native.OS.OpenWithDefaultEditor(tmpFile);
-            }
+            await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _revision.SHA, _file, tmpFile);
+            Native.OS.OpenWithDefaultEditor(tmpFile);
         }
 
         private void RefreshViewContent()

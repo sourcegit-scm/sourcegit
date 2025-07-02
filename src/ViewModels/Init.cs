@@ -31,21 +31,19 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Initialize");
             Use(log);
 
+            var succ = await new Commands.Init(_pageId, _targetPath).Use(log).ExecAsync();
+            log.Complete();
+
+            if (succ)
             {
-                var succ = await new Commands.Init(_pageId, _targetPath).Use(log).ExecAsync();
-                log.Complete();
-
-                if (succ)
+                await CallUIThreadAsync(() =>
                 {
-                    await CallUIThreadAsync(() =>
-                    {
-                        Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
-                        Welcome.Instance.Refresh();
-                    });
-                }
-
-                return succ;
+                    Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                    Welcome.Instance.Refresh();
+                });
             }
+
+            return succ;
         }
 
         private readonly string _pageId = null;

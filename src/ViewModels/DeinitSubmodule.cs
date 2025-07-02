@@ -31,12 +31,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("De-initialize Submodule");
             Use(log);
 
-            {
-                var succ = await new Commands.Submodule(_repo.FullPath).Use(log).DeinitAsync(Submodule, false);
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            }
+            var succ = await new Commands.Submodule(_repo.FullPath).Use(log).DeinitAsync(Submodule, false);
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private Repository _repo;

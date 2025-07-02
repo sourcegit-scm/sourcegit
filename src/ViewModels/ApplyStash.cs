@@ -33,14 +33,12 @@ namespace SourceGit.ViewModels
             ProgressDescription = $"Applying stash: {Stash.Name}";
 
             var log = _repo.CreateLog("Apply Stash");
-            {
-                var succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync(Stash.Name, RestoreIndex);
-                if (succ && DropAfterApply)
-                    await new Commands.Stash(_repo.FullPath).Use(log).DropAsync(Stash.Name);
+            var succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync(Stash.Name, RestoreIndex);
+            if (succ && DropAfterApply)
+                await new Commands.Stash(_repo.FullPath).Use(log).DropAsync(Stash.Name);
 
-                log.Complete();
-                return true;
-            }
+            log.Complete();
+            return true;
         }
 
         private readonly Repository _repo;

@@ -47,28 +47,26 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Branch");
             Use(log);
 
+            if (Target.IsLocal)
             {
-                if (Target.IsLocal)
-                {
-                    await Commands.Branch.DeleteLocalAsync(_repo.FullPath, Target.Name, log);
+                await Commands.Branch.DeleteLocalAsync(_repo.FullPath, Target.Name, log);
 
-                    if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
-                        await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
-                }
-                else
-                {
-                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, Target.Remote, Target.Name, log);
-                }
-
-                log.Complete();
-
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return true;
+                if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
+                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
             }
+            else
+            {
+                await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, Target.Remote, Target.Name, log);
+            }
+
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
+            {
+                _repo.MarkBranchesDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
+            return true;
         }
 
         private readonly Repository _repo = null;

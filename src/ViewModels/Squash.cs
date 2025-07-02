@@ -32,35 +32,33 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Squash");
             Use(log);
 
+            var signOff = _repo.Settings.EnableSignOffForCommit;
+            var autoStashed = false;
+            bool succ;
+
+            if (_repo.LocalChangesCount > 0)
             {
-                var signOff = _repo.Settings.EnableSignOffForCommit;
-                var autoStashed = false;
-                bool succ;
-
-                if (_repo.LocalChangesCount > 0)
+                succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("SQUASH_AUTO_STASH");
+                if (!succ)
                 {
-                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("SQUASH_AUTO_STASH");
-                    if (!succ)
-                    {
-                        log.Complete();
-                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                        return false;
-                    }
-
-                    autoStashed = true;
+                    log.Complete();
+                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                    return false;
                 }
 
-                succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).ExecAsync();
-                if (succ)
-                    succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
-
-                if (succ && autoStashed)
-                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
-
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
+                autoStashed = true;
             }
+
+            succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).ExecAsync();
+            if (succ)
+                succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
+
+            if (succ && autoStashed)
+                await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo;

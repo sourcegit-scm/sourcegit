@@ -17,12 +17,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Cleanup (GC & prune)");
             Use(log);
 
-            {
-                await new Commands.GC(_repo.FullPath).Use(log).ExecAsync();
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
-            }
+            await new Commands.GC(_repo.FullPath).Use(log).ExecAsync();
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

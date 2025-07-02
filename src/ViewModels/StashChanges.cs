@@ -58,53 +58,51 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Stash Local Changes");
             Use(log);
 
+            var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
+            var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
+            bool succ;
+
+            if (!HasSelectedFiles)
             {
-                var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
-                var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
-                bool succ;
-
-                if (!HasSelectedFiles)
+                if (OnlyStaged)
                 {
-                    if (OnlyStaged)
+                    if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                     {
-                        if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
-                        {
-                            succ = await new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStagedAsync(Message, keepIndex);
-                        }
-                        else
-                        {
-                            var staged = new List<Models.Change>();
-                            foreach (var c in _changes)
-                            {
-                                if (c.Index != Models.ChangeState.None && c.Index != Models.ChangeState.Untracked)
-                                    staged.Add(c);
-                            }
-
-                            succ = StashWithChanges(staged, keepIndex, log);
-                        }
+                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStagedAsync(Message, keepIndex);
                     }
                     else
                     {
-                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, IncludeUntracked, keepIndex);
+                        var staged = new List<Models.Change>();
+                        foreach (var c in _changes)
+                        {
+                            if (c.Index != Models.ChangeState.None && c.Index != Models.ChangeState.Untracked)
+                                staged.Add(c);
+                        }
+
+                        succ = StashWithChanges(staged, keepIndex, log);
                     }
                 }
                 else
                 {
-                    succ = StashWithChanges(_changes, keepIndex, log);
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, IncludeUntracked, keepIndex);
                 }
-
-                if (mode == DealWithChangesAfterStashing.KeepAll && succ)
-                    succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync("stash@{0}", true);
-
-                log.Complete();
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.MarkWorkingCopyDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return succ;
             }
+            else
+            {
+                succ = StashWithChanges(_changes, keepIndex, log);
+            }
+
+            if (mode == DealWithChangesAfterStashing.KeepAll && succ)
+                succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync("stash@{0}", true);
+
+            log.Complete();
+            await CallUIThreadAsync(() =>
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
+
+            return succ;
         }
 
         private bool StashWithChanges(List<Models.Change> changes, bool keepIndex, CommandLog log)

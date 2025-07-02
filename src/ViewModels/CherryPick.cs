@@ -72,30 +72,28 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Cherry-Pick");
             Use(log);
 
+            if (IsMergeCommit)
             {
-                if (IsMergeCommit)
-                {
-                    await new Commands.CherryPick(
-                        _repo.FullPath,
-                        Targets[0].SHA,
-                        !AutoCommit,
-                        AppendSourceToMessage,
-                        $"-m {MainlineForMergeCommit + 1}").Use(log).ExecAsync();
-                }
-                else
-                {
-                    await new Commands.CherryPick(
-                        _repo.FullPath,
-                        string.Join(' ', Targets.ConvertAll(c => c.SHA)),
-                        !AutoCommit,
-                        AppendSourceToMessage,
-                        string.Empty).Use(log).ExecAsync();
-                }
-
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
+                await new Commands.CherryPick(
+                    _repo.FullPath,
+                    Targets[0].SHA,
+                    !AutoCommit,
+                    AppendSourceToMessage,
+                    $"-m {MainlineForMergeCommit + 1}").Use(log).ExecAsync();
             }
+            else
+            {
+                await new Commands.CherryPick(
+                    _repo.FullPath,
+                    string.Join(' ', Targets.ConvertAll(c => c.SHA)),
+                    !AutoCommit,
+                    AppendSourceToMessage,
+                    string.Empty).Use(log).ExecAsync();
+            }
+
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

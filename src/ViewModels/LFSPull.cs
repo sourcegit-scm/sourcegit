@@ -27,12 +27,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Pull");
             Use(log);
 
-            {
-                await new Commands.LFS(_repo.FullPath).PullAsync(SelectedRemote.Name, log);
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
-            }
+            await new Commands.LFS(_repo.FullPath).PullAsync(SelectedRemote.Name, log);
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return true;
         }
 
         private readonly Repository _repo = null;

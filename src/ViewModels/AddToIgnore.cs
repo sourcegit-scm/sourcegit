@@ -32,29 +32,27 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Adding Ignored File(s) ...";
 
+            var file = StorageFile.GetFullPath(_repo.FullPath, _repo.GitDir);
+            if (!File.Exists(file))
             {
-                var file = StorageFile.GetFullPath(_repo.FullPath, _repo.GitDir);
-                if (!File.Exists(file))
-                {
-                    await File.WriteAllLinesAsync(file, [_pattern]);
-                }
-                else
-                {
-                    var org = await File.ReadAllTextAsync(file);
-                    if (!org.EndsWith('\n'))
-                        await File.AppendAllLinesAsync(file, ["", _pattern]);
-                    else
-                        await File.AppendAllLinesAsync(file, [_pattern]);
-                }
-
-                await CallUIThreadAsync(() =>
-                {
-                    _repo.MarkWorkingCopyDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
+                await File.WriteAllLinesAsync(file, [_pattern]);
             }
+            else
+            {
+                var org = await File.ReadAllTextAsync(file);
+                if (!org.EndsWith('\n'))
+                    await File.AppendAllLinesAsync(file, ["", _pattern]);
+                else
+                    await File.AppendAllLinesAsync(file, [_pattern]);
+            }
+
+            await CallUIThreadAsync(() =>
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
+
+            return true;
         }
 
         private readonly Repository _repo;

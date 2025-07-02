@@ -42,27 +42,25 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Tag");
             Use(log);
 
+            var succ = true;
+            var tag = $"refs/tags/{Target.Name}";
+            if (_pushAllRemotes)
             {
-                var succ = true;
-                var tag = $"refs/tags/{Target.Name}";
-                if (_pushAllRemotes)
+                foreach (var remote in _repo.Remotes)
                 {
-                    foreach (var remote in _repo.Remotes)
-                    {
-                        succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).ExecAsync();
-                        if (!succ)
-                            break;
-                    }
+                    succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).ExecAsync();
+                    if (!succ)
+                        break;
                 }
-                else
-                {
-                    succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).ExecAsync();
-                }
-
-                log.Complete();
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return succ;
             }
+            else
+            {
+                succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).ExecAsync();
+            }
+
+            log.Complete();
+            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            return succ;
         }
 
         private readonly Repository _repo = null;

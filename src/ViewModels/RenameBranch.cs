@@ -56,38 +56,36 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
+            var isCurrent = Target.IsCurrent;
+            var oldName = Target.FullName;
+            var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
+            log.Complete();
+
+            await CallUIThreadAsync(() =>
             {
-                var isCurrent = Target.IsCurrent;
-                var oldName = Target.FullName;
-                var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
-                log.Complete();
+                ProgressDescription = "Waiting for branch updated...";
 
-                await CallUIThreadAsync(() =>
+                if (succ)
                 {
-                    ProgressDescription = "Waiting for branch updated...";
-
-                    if (succ)
+                    foreach (var filter in _repo.Settings.HistoriesFilters)
                     {
-                        foreach (var filter in _repo.Settings.HistoriesFilters)
+                        if (filter.Type == Models.FilterType.LocalBranch &&
+                            filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                         {
-                            if (filter.Type == Models.FilterType.LocalBranch &&
-                                filter.Pattern.Equals(oldName, StringComparison.Ordinal))
-                            {
-                                filter.Pattern = $"refs/heads/{fixedName}";
-                                break;
-                            }
+                            filter.Pattern = $"refs/heads/{fixedName}";
+                            break;
                         }
                     }
+                }
 
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
+                _repo.MarkBranchesDirtyManually();
+                _repo.SetWatcherEnabled(true);
+            });
 
-                if (isCurrent)
-                    Task.Delay(400).Wait();
+            if (isCurrent)
+                Task.Delay(400).Wait();
 
-                return succ;
-            }
+            return succ;
         }
 
         private string FixName(string name)
