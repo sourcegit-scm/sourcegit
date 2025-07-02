@@ -208,7 +208,6 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">启用时命令行参数 ：</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">此CheckBox勾选后，该值会被应用于命令行参数</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">描述 ：</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Description.Tip" xml:space="preserve">TextBox及Path Selector中用作Placeholder，CheckBox及ComboBox中用作ToolTip</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">默认值 ：</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">目标是否是目录 ：</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名称 ：</x:String>

@@ -140,11 +140,6 @@
                        CornerRadius="3"
                        Height="28"
                        Text="{Binding Description, Mode=TwoWay}"/>
-              <TextBlock Margin="0,2,0,0"
-                         Classes="small"
-                         TextWrapping="Wrap"
-                         Text="{DynamicResource Text.ConfigureCustomActionControls.Description.Tip}"
-                         Foreground="{DynamicResource Brush.FG2}"/>
 
               <!-- BoolValue is needed by CheckBox/PathSelector -->
               <TextBlock Margin="0,12,0,0"
