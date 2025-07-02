@@ -36,9 +36,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Revision");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Push(
+                var succ = await new Commands.Push(
                     _repo.FullPath,
                     Revision.SHA,
                     RemoteBranch.Remote,
@@ -46,7 +46,7 @@ namespace SourceGit.ViewModels
                     false,
                     false,
                     false,
-                    Force).Use(log).Exec();
+                    Force).Use(log).ExecAsync();
 
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

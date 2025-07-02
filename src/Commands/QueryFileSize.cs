@@ -15,19 +15,6 @@ namespace SourceGit.Commands
             Args = $"ls-tree {revision} -l -- \"{file}\"";
         }
 
-        public long Result()
-        {
-            var rs = ReadToEnd();
-            if (rs.IsSuccess)
-            {
-                var match = REG_FORMAT().Match(rs.StdOut);
-                if (match.Success)
-                    return long.Parse(match.Groups[1].Value);
-            }
-
-            return 0;
-        }
-
         public async Task<long> ResultAsync()
         {
             var rs = await ReadToEndAsync();

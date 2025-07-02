@@ -47,9 +47,9 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Apply patch...";
 
             var log = _repo.CreateLog("Apply Patch");
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null).Use(log).Exec();
+                var succ = await new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null).Use(log).ExecAsync();
                 log.Complete();
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

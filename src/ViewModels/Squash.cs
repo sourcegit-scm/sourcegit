@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Squash");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 var signOff = _repo.Settings.EnableSignOffForCommit;
                 var autoStashed = false;
@@ -40,26 +40,26 @@ namespace SourceGit.ViewModels
 
                 if (_repo.LocalChangesCount > 0)
                 {
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push("SQUASH_AUTO_STASH");
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("SQUASH_AUTO_STASH");
                     if (!succ)
                     {
                         log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
+                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                         return false;
                     }
 
                     autoStashed = true;
                 }
 
-                succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).Exec();
+                succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).ExecAsync();
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).Run();
+                    succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
 
                 if (succ && autoStashed)
-                    new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
 
                 log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
+                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
                 return succ;
             });
         }

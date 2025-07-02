@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -10,27 +11,27 @@ namespace SourceGit.ViewModels
             _cmd = cmd;
         }
 
-        public bool Abort()
+        public Task<bool> AbortAsync()
         {
             return new Commands.Command()
             {
                 WorkingDirectory = _repo,
                 Context = _repo,
                 Args = $"{_cmd} --abort",
-            }.Exec();
+            }.ExecAsync();
         }
 
-        public virtual bool Skip()
+        public virtual Task<bool> SkipAsync()
         {
             return new Commands.Command()
             {
                 WorkingDirectory = _repo,
                 Context = _repo,
                 Args = $"{_cmd} --skip",
-            }.Exec();
+            }.ExecAsync();
         }
 
-        public virtual bool Continue()
+        public virtual Task<bool> ContinueAsync()
         {
             return new Commands.Command()
             {
@@ -38,7 +39,7 @@ namespace SourceGit.ViewModels
                 Context = _repo,
                 Editor = Commands.Command.EditorType.None,
                 Args = $"{_cmd} --continue",
-            }.Exec();
+            }.ExecAsync();
         }
 
         protected string GetFriendlyNameOfCommit(Models.Commit commit)
@@ -123,7 +124,7 @@ namespace SourceGit.ViewModels
             Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
         }
 
-        public override bool Continue()
+        public override Task<bool> ContinueAsync()
         {
             return new Commands.Command()
             {
@@ -131,7 +132,7 @@ namespace SourceGit.ViewModels
                 Context = _repo,
                 Editor = Commands.Command.EditorType.RebaseEditor,
                 Args = "rebase --continue",
-            }.Exec();
+            }.ExecAsync();
         }
     }
 
@@ -177,9 +178,9 @@ namespace SourceGit.ViewModels
             Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result() ?? new Models.Commit() { SHA = sourceSHA };
         }
 
-        public override bool Skip()
+        public override Task<bool> SkipAsync()
         {
-            return true;
+            return Task.FromResult(true);
         }
     }
 }

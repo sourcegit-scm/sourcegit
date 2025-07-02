@@ -174,49 +174,6 @@ namespace SourceGit.Models
                 """;
         }
 
-        public void Chat(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
-        {
-            var server = new Uri(_server);
-            var key = new ApiKeyCredential(_apiKey);
-            var oaiClient = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(server, key)
-                : new OpenAIClient(key, new() { Endpoint = server });
-            var client = oaiClient.GetChatClient(_model);
-            var messages = new List<ChatMessage>();
-            messages.Add(_model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt));
-            messages.Add(new UserChatMessage(question));
-
-            try
-            {
-                var rsp = new OpenAIResponse(onUpdate);
-
-                if (_streaming)
-                {
-                    var updates = client.CompleteChatStreaming(messages, null, cancellation);
-
-                    foreach (var update in updates)
-                    {
-                        if (update.ContentUpdate.Count > 0)
-                            rsp.Append(update.ContentUpdate[0].Text);
-                    }
-                }
-                else
-                {
-                    var completion = client.CompleteChat(messages, null, cancellation);
-
-                    if (completion.Value.Content.Count > 0)
-                        rsp.Append(completion.Value.Content[0].Text);
-                }
-
-                rsp.End();
-            }
-            catch
-            {
-                if (!cancellation.IsCancellationRequested)
-                    throw;
-            }
-        }
-
         public async Task ChatAsync(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
             var server = new Uri(_server);

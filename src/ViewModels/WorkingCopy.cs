@@ -410,7 +410,7 @@ namespace SourceGit.ViewModels
 
             if (files.Count > 0)
             {
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).Use(log).UseTheirs(files));
+                var succ = await new Commands.Checkout(_repo.FullPath).Use(log).UseTheirsAsync(files);
                 if (succ)
                     needStage.AddRange(files);
             }
@@ -419,7 +419,7 @@ namespace SourceGit.ViewModels
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, needStage);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
 
@@ -459,7 +459,7 @@ namespace SourceGit.ViewModels
 
             if (files.Count > 0)
             {
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).Use(log).UseMine(files));
+                var succ = await new Commands.Checkout(_repo.FullPath).Use(log).UseMineAsync(files);
                 if (succ)
                     needStage.AddRange(files);
             }
@@ -468,7 +468,7 @@ namespace SourceGit.ViewModels
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, needStage);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
 
@@ -482,7 +482,7 @@ namespace SourceGit.ViewModels
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
             var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on every file with merge conflicts!
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, file));
+            await Commands.MergeTool.OpenForMergeAsync(_repo.FullPath, toolType, toolPath, file);
         }
 
         public void ContinueMerge()
@@ -492,14 +492,14 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
                     if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
-                        File.WriteAllText(mergeMsgFile, _commitMessage);
+                        await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                    var succ = _inProgressContext.Continue();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var succ = await _inProgressContext.ContinueAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (succ)
                             CommitMessage = string.Empty;
@@ -523,10 +523,10 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var succ = _inProgressContext.Skip();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var succ = await _inProgressContext.SkipAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (succ)
                             CommitMessage = string.Empty;
@@ -550,10 +550,10 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var succ = _inProgressContext.Abort();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var succ = await _inProgressContext.AbortAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (succ)
                             CommitMessage = string.Empty;
@@ -725,7 +725,7 @@ namespace SourceGit.ViewModels
                         var storageFile = await storageProvider.SaveFilePickerAsync(options);
                         if (storageFile != null)
                         {
-                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath);
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                         }
@@ -850,7 +850,7 @@ namespace SourceGit.ViewModels
                             lfsTrackThisFile.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Track LFS");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(filename, true, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
 
@@ -866,7 +866,7 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Track LFS");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track($"*{extension}", false, log));
+                                    var succ = await new Commands.LFS(_repo.FullPath).TrackAsync($"*{extension}", false, log);
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
@@ -888,7 +888,7 @@ namespace SourceGit.ViewModels
                             lfsLock.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Lock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, change.Path, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -906,7 +906,7 @@ namespace SourceGit.ViewModels
                                 lockRemote.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Lock LFS File");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path, log));
+                                    var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, change.Path, log);
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -927,7 +927,7 @@ namespace SourceGit.ViewModels
                             lfsUnlock.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Unlock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, change.Path, false, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -945,7 +945,7 @@ namespace SourceGit.ViewModels
                                 unlockRemote.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Unlock LFS File");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false, log));
+                                    var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, change.Path, false, log);
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -1127,7 +1127,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                        var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath);
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1302,7 +1302,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath);
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1334,7 +1334,7 @@ namespace SourceGit.ViewModels
                         lfsLock.Click += async (_, e) =>
                         {
                             var log = _repo.CreateLog("Lock LFS File");
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path, log));
+                            var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, change.Path, log);
                             if (succ)
                                 App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -1352,7 +1352,7 @@ namespace SourceGit.ViewModels
                             lockRemote.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Lock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, change.Path, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -1373,7 +1373,7 @@ namespace SourceGit.ViewModels
                         lfsUnlock.Click += async (_, e) =>
                         {
                             var log = _repo.CreateLog("Unlock LFS File");
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false, log));
+                            var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, change.Path, false, log);
                             if (succ)
                                 App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -1391,7 +1391,7 @@ namespace SourceGit.ViewModels
                             unlockRemote.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Unlock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, change.Path, false, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -1505,7 +1505,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath);
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1791,18 +1791,18 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Stage");
             if (count == _unstaged.Count)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync();
             }
             else
             {
                 var pathSpecFile = Path.GetTempFileName();
-                using (var writer = new StreamWriter(pathSpecFile))
+                await using (var writer = new StreamWriter(pathSpecFile))
                 {
                     foreach (var c in changes)
                         await writer.WriteLineAsync(c.Path);
                 }
 
-                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
             log.Complete();
@@ -1828,12 +1828,12 @@ namespace SourceGit.ViewModels
             if (_useAmend)
             {
                 log.AppendLine("$ git update-index --index-info ");
-                await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
+                await new Commands.UnstageChangesForAmend(_repo.FullPath, changes).ExecAsync();
             }
             else
             {
                 var pathSpecFile = Path.GetTempFileName();
-                using (var writer = new StreamWriter(pathSpecFile))
+                await using (var writer = new StreamWriter(pathSpecFile))
                 {
                     foreach (var c in changes)
                     {
@@ -1843,7 +1843,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                await Task.Run(() => new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).Exec());
+                await new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
             log.Complete();
@@ -1906,14 +1906,14 @@ namespace SourceGit.ViewModels
 
             var signOff = _repo.Settings.EnableSignOffForCommit;
             var log = _repo.CreateLog("Commit");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 var succ = true;
                 if (autoStage && _unstaged.Count > 0)
-                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
+                    succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync();
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).Run();
+                    succ = await new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).RunAsync();
 
                 log.Complete();
 

@@ -105,27 +105,27 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Editing remote '{_remote.Name}' ...";
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 if (_remote.Name != _name)
                 {
-                    var succ = new Commands.Remote(_repo.FullPath).Rename(_remote.Name, _name);
+                    var succ = await new Commands.Remote(_repo.FullPath).RenameAsync(_remote.Name, _name);
                     if (succ)
                         _remote.Name = _name;
                 }
 
                 if (_remote.URL != _url)
                 {
-                    var succ = new Commands.Remote(_repo.FullPath).SetURL(_name, _url, false);
+                    var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false);
                     if (succ)
                         _remote.URL = _url;
                 }
 
-                var pushURL = new Commands.Remote(_repo.FullPath).GetURL(_name, true);
+                var pushURL = await new Commands.Remote(_repo.FullPath).GetURLAsync(_name, true);
                 if (pushURL != _url)
-                    new Commands.Remote(_repo.FullPath).SetURL(_name, _url, true);
+                    await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
 
-                new Commands.Config(_repo.FullPath).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+                await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;

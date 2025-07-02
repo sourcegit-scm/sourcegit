@@ -20,36 +20,6 @@ namespace SourceGit.Commands
             _result.File = file;
         }
 
-        public Models.BlameData Result()
-        {
-            var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                return _result;
-
-            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                ParseLine(line);
-
-                if (_result.IsBinary)
-                    break;
-            }
-
-            if (_needUnifyCommitSHA)
-            {
-                foreach (var line in _result.LineInfos)
-                {
-                    if (line.CommitSHA.Length > _minSHALen)
-                    {
-                        line.CommitSHA = line.CommitSHA.Substring(0, _minSHALen);
-                    }
-                }
-            }
-
-            _result.Content = _content.ToString();
-            return _result;
-        }
-
         public async Task<Models.BlameData> ResultAsync()
         {
             var rs = await ReadToEndAsync();

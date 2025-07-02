@@ -19,22 +19,6 @@ namespace SourceGit.Commands
                 Args += resetAuthor ? " --amend --reset-author --no-edit" : " --amend --no-edit";
         }
 
-        public bool Run()
-        {
-            var succ = Exec();
-
-            try
-            {
-                File.Delete(_tmpFile);
-            }
-            catch
-            {
-                // Ignore
-            }
-
-            return succ;
-        }
-
         public async Task<bool> RunAsync()
         {
             var succ = await ExecAsync();

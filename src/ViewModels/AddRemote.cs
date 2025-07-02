@@ -95,17 +95,17 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Add Remote");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Remote(_repo.FullPath).Use(log).Add(_name, _url);
+                var succ = await new Commands.Remote(_repo.FullPath).Use(log).AddAsync(_name, _url);
                 if (succ)
                 {
-                    new Commands.Config(_repo.FullPath).Use(log).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-                    new Commands.Fetch(_repo.FullPath, _name, false, false).Use(log).Exec();
+                    await new Commands.Config(_repo.FullPath).Use(log).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+                    await new Commands.Fetch(_repo.FullPath, _name, false, false).Use(log).ExecAsync();
                 }
 
                 log.Complete();
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     _repo.MarkFetched();
                     _repo.MarkBranchesDirtyManually();

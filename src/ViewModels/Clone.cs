@@ -74,7 +74,7 @@ namespace SourceGit.ViewModels
                 {
                     var text = await App.GetClipboardTextAsync();
                     if (Models.Remote.IsValidURL(text))
-                        Dispatcher.UIThread.Invoke(() => Remote = text);
+                        await Dispatcher.UIThread.InvokeAsync(() => Remote = text);
                 }
                 catch
                 {
@@ -104,10 +104,10 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Clone");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
-                if (!cmd.Exec())
+                if (!await cmd.ExecAsync())
                     return false;
 
                 var path = _parentFolder;
@@ -135,19 +135,19 @@ namespace SourceGit.ViewModels
                 if (_useSSH && !string.IsNullOrEmpty(_sshKey))
                 {
                     var config = new Commands.Config(path);
-                    config.Set("remote.origin.sshkey", _sshKey);
+                    await config.SetAsync("remote.origin.sshkey", _sshKey);
                 }
 
                 if (InitAndUpdateSubmodules)
                 {
-                    var submodules = new Commands.QueryUpdatableSubmodules(path).Result();
+                    var submodules = await new Commands.QueryUpdatableSubmodules(path).ResultAsync();
                     if (submodules.Count > 0)
-                        new Commands.Submodule(path).Use(log).Update(submodules, true, true);
+                        await new Commands.Submodule(path).Use(log).UpdateAsync(submodules, true, true);
                 }
 
                 log.Complete();
 
-                CallUIThread(() =>
+                await CallUIThreadAsync(() =>
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
                     var launcher = App.GetLauncher();

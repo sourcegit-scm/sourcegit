@@ -12,19 +12,6 @@ namespace SourceGit.Commands
             Args = $"ls-tree -r -z --name-only {revision}";
         }
 
-        public List<string> Result()
-        {
-            var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                return [];
-
-            var lines = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
-            var outs = new List<string>();
-            foreach (var line in lines)
-                outs.Add(line);
-            return outs;
-        }
-
         public async Task<List<string>> ResultAsync()
         {
             var rs = await ReadToEndAsync();

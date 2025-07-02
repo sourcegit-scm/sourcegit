@@ -31,9 +31,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("De-initialize Submodule");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Deinit(Submodule, false);
+                var succ = await new Commands.Submodule(_repo.FullPath).Use(log).DeinitAsync(Submodule, false);
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

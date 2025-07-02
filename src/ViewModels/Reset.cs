@@ -36,9 +36,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Reset HEAD to '{To.SHA}'");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Reset(_repo.FullPath, To.SHA, SelectedMode.Arg).Use(log).Exec();
+                var succ = await new Commands.Reset(_repo.FullPath, To.SHA, SelectedMode.Arg).Use(log).ExecAsync();
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

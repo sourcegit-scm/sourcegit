@@ -59,9 +59,9 @@ namespace SourceGit.ViewModels
                     relativePath = Path.GetFileName(_url);
             }
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Add(_url, relativePath, Recursive);
+                var succ = await new Commands.Submodule(_repo.FullPath).Use(log).AddAsync(_url, relativePath, Recursive);
                 log.Complete();
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

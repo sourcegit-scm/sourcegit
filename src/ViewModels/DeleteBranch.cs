@@ -47,18 +47,18 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Branch");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 if (Target.IsLocal)
                 {
-                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name, log);
+                    await Commands.Branch.DeleteLocalAsync(_repo.FullPath, Target.Name, log);
 
                     if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
-                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
+                        await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
                 }
                 else
                 {
-                    Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name, log);
+                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, Target.Remote, Target.Name, log);
                 }
 
                 log.Complete();

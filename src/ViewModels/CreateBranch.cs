@@ -127,7 +127,7 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 bool succ;
 
@@ -142,14 +142,14 @@ namespace SourceGit.ViewModels
                     var needPopStash = false;
                     if (DiscardLocalChanges)
                     {
-                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, true, _allowOverwrite);
+                        succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(fixedName, _baseOnRevision, true, _allowOverwrite);
                     }
                     else
                     {
-                        var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
+                        var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
                         if (changes > 0)
                         {
-                            succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CREATE_BRANCH_AUTO_STASH");
+                            succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("CREATE_BRANCH_AUTO_STASH");
                             if (!succ)
                             {
                                 log.Complete();
@@ -160,25 +160,25 @@ namespace SourceGit.ViewModels
                             needPopStash = true;
                         }
 
-                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, false, _allowOverwrite);
+                        succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(fixedName, _baseOnRevision, false, _allowOverwrite);
                     }
 
                     if (succ)
                     {
                         if (updateSubmodules)
                         {
-                            var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
+                            var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
                             if (submodules.Count > 0)
-                                new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
+                                await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
                         }
 
                         if (needPopStash)
-                            new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                            await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
                     }
                 }
                 else
                 {
-                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
+                    succ = await Commands.Branch.CreateAsync(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
                 }
 
                 log.Complete();

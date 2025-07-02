@@ -57,9 +57,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("GitFlow - Start");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = Commands.GitFlow.Start(_repo.FullPath, Type, _name, log);
+                var succ = await Commands.GitFlow.StartAsync(_repo.FullPath, Type, _name, log);
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return succ;

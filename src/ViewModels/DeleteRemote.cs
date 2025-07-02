@@ -24,9 +24,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Remote");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Remote(_repo.FullPath).Use(log).Delete(Remote.Name);
+                var succ = await new Commands.Remote(_repo.FullPath).Use(log).DeleteAsync(Remote.Name);
                 log.Complete();
 
                 CallUIThread(() =>

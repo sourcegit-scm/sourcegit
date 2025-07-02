@@ -30,65 +30,6 @@ namespace SourceGit.Commands
             _onResponse = onResponse;
         }
 
-        public void Exec()
-        {
-            try
-            {
-                _onResponse?.Invoke("Waiting for pre-file analyzing to completed...\n\n");
-
-                var responseBuilder = new StringBuilder();
-                var summaryBuilder = new StringBuilder();
-                foreach (var change in _changes)
-                {
-                    if (_cancelToken.IsCancellationRequested)
-                        return;
-
-                    responseBuilder.Append("- ");
-                    summaryBuilder.Append("- ");
-
-                    var rs = new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadToEnd();
-                    if (rs.IsSuccess)
-                    {
-                        _service.Chat(
-                            _service.AnalyzeDiffPrompt,
-                            $"Here is the `git diff` output: {rs.StdOut}",
-                            _cancelToken,
-                            update =>
-                            {
-                                responseBuilder.Append(update);
-                                summaryBuilder.Append(update);
-
-                                _onResponse?.Invoke($"Waiting for pre-file analyzing to completed...\n\n{responseBuilder}");
-                            });
-                    }
-
-                    responseBuilder.Append("\n");
-                    summaryBuilder.Append("(file: ");
-                    summaryBuilder.Append(change.Path);
-                    summaryBuilder.Append(")\n");
-                }
-
-                if (_cancelToken.IsCancellationRequested)
-                    return;
-
-                var responseBody = responseBuilder.ToString();
-                var subjectBuilder = new StringBuilder();
-                _service.Chat(
-                    _service.GenerateSubjectPrompt,
-                    $"Here are the summaries changes:\n{summaryBuilder}",
-                    _cancelToken,
-                    update =>
-                    {
-                        subjectBuilder.Append(update);
-                        _onResponse?.Invoke($"{subjectBuilder}\n\n{responseBody}");
-                    });
-            }
-            catch (Exception e)
-            {
-                App.RaiseException(_repo, $"Failed to generate commit message: {e}");
-            }
-        }
-
         public async Task ExecAsync()
         {
             try

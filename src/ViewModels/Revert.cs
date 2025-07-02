@@ -31,9 +31,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Revert '{Target.SHA}'");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Use(log).Exec();
+                await new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Use(log).ExecAsync();
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;

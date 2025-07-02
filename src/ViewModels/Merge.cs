@@ -66,12 +66,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).Exec();
+                await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).ExecAsync();
                 log.Complete();
 
-                var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
+                var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
                 CallUIThread(() =>
                 {
                     _repo.NavigateToCommit(head, true);

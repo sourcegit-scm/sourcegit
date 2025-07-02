@@ -58,14 +58,14 @@ namespace SourceGit.ViewModels
             IsGenerating = true;
 
             _cancel = new CancellationTokenSource();
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                new Commands.GenerateCommitMessage(_service, _repo.FullPath, _changes, _cancel.Token, message =>
+                await new Commands.GenerateCommitMessage(_service, _repo.FullPath, _changes, _cancel.Token, message =>
                 {
                     Dispatcher.UIThread.Invoke(() => Text = message);
-                }).Exec();
+                }).ExecAsync();
 
-                Dispatcher.UIThread.Invoke(() => IsGenerating = false);
+                await Dispatcher.UIThread.InvokeAsync(() => IsGenerating = false);
             }, _cancel.Token);
         }
 

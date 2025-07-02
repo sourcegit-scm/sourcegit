@@ -31,9 +31,9 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Initialize");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Init(_pageId, _targetPath).Use(log).Exec();
+                var succ = await new Commands.Init(_pageId, _targetPath).Use(log).ExecAsync();
                 log.Complete();
 
                 if (succ)

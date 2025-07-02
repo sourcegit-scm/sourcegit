@@ -57,37 +57,6 @@ namespace SourceGit.Commands
             return worktrees;
         }
 
-        public bool Add(string fullpath, string name, bool createNew, string tracking)
-        {
-            Args = "worktree add ";
-
-            if (!string.IsNullOrEmpty(tracking))
-                Args += "--track ";
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                if (createNew)
-                    Args += $"-b {name} ";
-                else
-                    Args += $"-B {name} ";
-            }
-
-            Args += $"\"{fullpath}\" ";
-
-            if (!string.IsNullOrEmpty(tracking))
-                Args += tracking;
-            else if (!string.IsNullOrEmpty(name) && !createNew)
-                Args += name;
-
-            return Exec();
-        }
-
-        public bool Prune()
-        {
-            Args = "worktree prune -v";
-            return Exec();
-        }
-
         public bool Lock(string fullpath)
         {
             Args = $"worktree lock \"{fullpath}\"";
@@ -97,16 +66,6 @@ namespace SourceGit.Commands
         public bool Unlock(string fullpath)
         {
             Args = $"worktree unlock \"{fullpath}\"";
-            return Exec();
-        }
-
-        public bool Remove(string fullpath, bool force)
-        {
-            if (force)
-                Args = $"worktree remove -f \"{fullpath}\"";
-            else
-                Args = $"worktree remove \"{fullpath}\"";
-
             return Exec();
         }
 

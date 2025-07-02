@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
@@ -393,7 +392,7 @@ namespace SourceGit.ViewModels
                             for (var i = 0; i < selected.Count; i++)
                             {
                                 var saveTo = GetPatchFileName(folderPath, selected[i], i);
-                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Use(log).Exec());
+                                succ = await new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Use(log).ExecAsync();
                                 if (!succ)
                                     break;
                             }
@@ -764,7 +763,7 @@ namespace SourceGit.ViewModels
                         var folder = selected[0];
                         var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
                         var saveTo = GetPatchFileName(folderPath, commit);
-                        var succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).Exec());
+                        var succ = await new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Use(log).ExecAsync();
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }

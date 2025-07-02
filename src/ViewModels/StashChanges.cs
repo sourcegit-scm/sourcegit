@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Stash Local Changes");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 var mode = (DealWithChangesAfterStashing)ChangesAfterStashing;
                 var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
@@ -70,7 +70,7 @@ namespace SourceGit.ViewModels
                     {
                         if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                         {
-                            succ = new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStaged(Message, keepIndex);
+                            succ = await new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStagedAsync(Message, keepIndex);
                         }
                         else
                         {
@@ -86,7 +86,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push(Message, IncludeUntracked, keepIndex);
+                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, IncludeUntracked, keepIndex);
                     }
                 }
                 else
@@ -95,7 +95,7 @@ namespace SourceGit.ViewModels
                 }
 
                 if (mode == DealWithChangesAfterStashing.KeepAll && succ)
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Apply("stash@{0}", true);
+                    succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync("stash@{0}", true);
 
                 log.Complete();
                 CallUIThread(() =>

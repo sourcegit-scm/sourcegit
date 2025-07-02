@@ -14,10 +14,10 @@ namespace SourceGit.ViewModels
             _repo = repo;
             Files = new AvaloniaList<string>();
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var collect = new Commands.QueryAssumeUnchangedFiles(_repo.FullPath).Result();
-                Dispatcher.UIThread.Invoke(() => Files.AddRange(collect));
+                var collect = await new Commands.QueryAssumeUnchangedFiles(_repo.FullPath).ResultAsync();
+                await Dispatcher.UIThread.InvokeAsync(() => Files.AddRange(collect));
             });
         }
 

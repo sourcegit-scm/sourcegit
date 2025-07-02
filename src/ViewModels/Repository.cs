@@ -649,9 +649,9 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var config = new Commands.Config(_fullpath).ListAll();
+                var config = await new Commands.Config(_fullpath).ListAllAsync();
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
 
                 if (config.TryGetValue("gitflow.branch.master", out var masterName))
@@ -869,26 +869,26 @@ namespace SourceGit.ViewModels
             SelectedSearchedCommit = null;
             MatchedFilesForSearching = null;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 var visible = new List<Models.Commit>();
                 var method = (Models.CommitSearchMethod)_searchCommitFilterType;
 
                 if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    var isCommitSHA = new Commands.IsCommitSHA(_fullpath, _searchCommitFilter).Result();
+                    var isCommitSHA = await new Commands.IsCommitSHA(_fullpath, _searchCommitFilter).ResultAsync();
                     if (isCommitSHA)
                     {
-                        var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
+                        var commit = await new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).ResultAsync();
                         visible.Add(commit);
                     }
                 }
                 else
                 {
-                    visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch).Result();
+                    visible = await new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch).ResultAsync();
                 }
 
-                Dispatcher.UIThread.Invoke(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     SearchedCommits = visible;
                     IsSearchLoadingVisible = false;
@@ -1102,13 +1102,13 @@ namespace SourceGit.ViewModels
             SetWatcherEnabled(false);
 
             var log = CreateLog($"Bisect({subcmd})");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var succ = new Commands.Bisect(_fullpath, subcmd).Use(log).Exec();
+                var succ = await new Commands.Bisect(_fullpath, subcmd).Use(log).ExecAsync();
                 log.Complete();
 
-                var head = new Commands.QueryRevisionByRefName(_fullpath, "HEAD").Result();
-                Dispatcher.UIThread.Invoke(() =>
+                var head = await new Commands.QueryRevisionByRefName(_fullpath, "HEAD").ResultAsync();
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     if (!succ)
                         App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
@@ -2910,10 +2910,10 @@ namespace SourceGit.ViewModels
 
             _requestingWorktreeFiles = true;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                _worktreeFiles = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
-                Dispatcher.UIThread.Invoke(() =>
+                _worktreeFiles = await new Commands.QueryRevisionFileNames(_fullpath, "HEAD").ResultAsync();
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     if (IsSearchingCommitsByFilePath() && _requestingWorktreeFiles)
                         CalcMatchedFilesForSearching();

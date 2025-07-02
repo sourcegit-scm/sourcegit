@@ -17,9 +17,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Prune Worktrees");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                new Commands.Worktree(_repo.FullPath).Use(log).Prune();
+                await new Commands.Worktree(_repo.FullPath).Use(log).PruneAsync();
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;

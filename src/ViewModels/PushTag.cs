@@ -42,7 +42,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Tag");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 var succ = true;
                 var tag = $"refs/tags/{Target.Name}";
@@ -50,14 +50,14 @@ namespace SourceGit.ViewModels
                 {
                     foreach (var remote in _repo.Remotes)
                     {
-                        succ = new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).Exec();
+                        succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).ExecAsync();
                         if (!succ)
                             break;
                     }
                 }
                 else
                 {
-                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).Exec();
+                    succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).ExecAsync();
                 }
 
                 log.Complete();

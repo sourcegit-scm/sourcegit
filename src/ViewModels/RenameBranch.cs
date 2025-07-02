@@ -56,11 +56,11 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 var isCurrent = Target.IsCurrent;
                 var oldName = Target.FullName;
-                var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, fixedName, log);
+                var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
                 log.Complete();
 
                 CallUIThread(() =>

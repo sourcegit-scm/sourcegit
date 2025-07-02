@@ -83,18 +83,18 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Create Tag");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 bool succ;
                 if (_annotated)
-                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log);
+                    succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log);
                 else
-                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, log);
+                    succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, log);
 
                 if (succ && remotes != null)
                 {
                     foreach (var remote in remotes)
-                        new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Use(log).Exec();
+                        await new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Use(log).ExecAsync();
                 }
 
                 log.Complete();

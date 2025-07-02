@@ -45,10 +45,10 @@ namespace SourceGit.ViewModels
 
             HasValidUserName = !string.IsNullOrEmpty(_userName);
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                _cachedLocks = new Commands.LFS(_repo.FullPath).Locks(_remote);
-                Dispatcher.UIThread.Invoke(() =>
+                _cachedLocks = await new Commands.LFS(_repo.FullPath).LocksAsync(_remote);
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     UpdateVisibleLocks();
                     IsLoading = false;
@@ -64,12 +64,12 @@ namespace SourceGit.ViewModels
             IsLoading = true;
 
             var log = _repo.CreateLog("Unlock LFS File");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var succ = new Commands.LFS(_repo.FullPath).Unlock(_remote, lfsLock.ID, force, log);
+                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_remote, lfsLock.ID, force, log);
                 log.Complete();
 
-                Dispatcher.UIThread.Invoke(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     if (succ)
                     {

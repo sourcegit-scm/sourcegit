@@ -168,9 +168,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Push(
+                var succ = await new Commands.Push(
                     _repo.FullPath,
                     _selectedLocalBranch.Name,
                     _selectedRemote.Name,
@@ -178,7 +178,7 @@ namespace SourceGit.ViewModels
                     PushAllTags,
                     _repo.Submodules.Count > 0 && CheckSubmodules,
                     _isSetTrackOptionVisible && Tracking,
-                    ForcePush).Use(log).Exec();
+                    ForcePush).Use(log).ExecAsync();
 
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

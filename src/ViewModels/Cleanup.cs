@@ -17,9 +17,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Cleanup (GC & prune)");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                new Commands.GC(_repo.FullPath).Use(log).Exec();
+                await new Commands.GC(_repo.FullPath).Use(log).ExecAsync();
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));
                 return true;

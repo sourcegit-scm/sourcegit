@@ -47,13 +47,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Merge Multiple Heads");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                new Commands.Merge(
+                await new Commands.Merge(
                     _repo.FullPath,
                     ConvertTargetToMergeSources(),
                     AutoCommit,
-                    Strategy.Arg).Use(log).Exec();
+                    Strategy.Arg).Use(log).ExecAsync();
 
                 log.Complete();
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

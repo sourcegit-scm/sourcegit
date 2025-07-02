@@ -116,9 +116,9 @@ namespace SourceGit.ViewModels
 
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Worktree(_repo.FullPath).Use(log).Add(_path, branchName, _createNewBranch, tracking);
+                var succ = await new Commands.Worktree(_repo.FullPath).Use(log).AddAsync(_path, branchName, _createNewBranch, tracking);
                 log.Complete();
 
                 CallUIThread(() => _repo.SetWatcherEnabled(true));

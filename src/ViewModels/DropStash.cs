@@ -19,9 +19,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Drop Stash");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                new Commands.Stash(_repo.FullPath).Use(log).Drop(Stash.Name);
+                await new Commands.Stash(_repo.FullPath).Use(log).DropAsync(Stash.Name);
                 log.Complete();
                 return true;
             });

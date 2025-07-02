@@ -52,9 +52,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Archive");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
-                var succ = new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).Exec();
+                var succ = await new Commands.Archive(_repo.FullPath, _revision, _saveFile).Use(log).ExecAsync();
                 log.Complete();
 
                 CallUIThread(() =>

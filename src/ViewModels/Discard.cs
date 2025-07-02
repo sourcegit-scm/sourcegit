@@ -64,12 +64,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Discard all");
             Use(log);
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 if (Mode is DiscardAllMode all)
-                    Commands.Discard.All(_repo.FullPath, all.IncludeIgnored, log);
+                    await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
                 else
-                    Commands.Discard.Changes(_repo.FullPath, _changes, log);
+                    await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
 
                 log.Complete();
 

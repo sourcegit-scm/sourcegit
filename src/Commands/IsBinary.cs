@@ -16,11 +16,6 @@ namespace SourceGit.Commands
             RaiseError = false;
         }
 
-        public bool Result()
-        {
-            return REG_TEST().IsMatch(ReadToEnd().StdOut);
-        }
-
         public async Task<bool> ResultAsync()
         {
             return REG_TEST().IsMatch((await ReadToEndAsync()).StdOut);

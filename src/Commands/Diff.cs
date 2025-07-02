@@ -36,36 +36,6 @@ namespace SourceGit.Commands
                 Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
-        public Models.DiffResult Result()
-        {
-            var rs = ReadToEnd();
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
-            {
-                var line = rs.StdOut.Substring(start, end - start);
-                ParseLine(line);
-
-                start = end + 1;
-                end = rs.StdOut.IndexOf('\n', start);
-            }
-
-            if (start < rs.StdOut.Length)
-                ParseLine(rs.StdOut.Substring(start));
-
-            if (_result.IsBinary || _result.IsLFS || _result.TextDiff.Lines.Count == 0)
-            {
-                _result.TextDiff = null;
-            }
-            else
-            {
-                ProcessInlineHighlights();
-                _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
-            }
-
-            return _result;
-        }
-
         public async Task<Models.DiffResult> ResultAsync()
         {
             var rs = await ReadToEndAsync();
