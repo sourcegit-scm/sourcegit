@@ -1587,13 +1587,9 @@ namespace SourceGit.ViewModels
                 init.Click += (_, e) =>
                 {
                     if (_currentBranch == null)
-                    {
                         App.RaiseException(_fullpath, "Git flow init failed: No branch found!!!");
-                    }
                     else if (CanCreatePopup())
-                    {
                         ShowPopup(new InitGitFlow(this));
-                    }
 
                     e.Handled = true;
                 };
