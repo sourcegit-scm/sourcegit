@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -84,9 +83,9 @@ namespace SourceGit.ViewModels
         private Models.MergeMode AutoSelectMergeMode()
         {
             return
-                GetGitConfigBranchMergeOptions()
-                ?? GetGitConfigMergeFF()
-                ?? GetSettingsPreferredMergeMode();
+                GetGitConfigBranchMergeOptions() // Branch
+                ?? GetSettingsPreferredMergeMode() // Repository
+                ?? GetGitConfigMergeFF(); // Global
         }
 
         private Models.MergeMode GetSettingsPreferredMergeMode()
