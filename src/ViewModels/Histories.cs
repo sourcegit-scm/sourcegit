@@ -150,16 +150,9 @@ namespace SourceGit.ViewModels
 
             if (commit != null)
             {
-                if (_detailContext is CommitDetail detail)
-                {
-                    detail.Commit = commit;
-                }
-                else
-                {
-                    var commitDetail = new CommitDetail(_repo, true);
-                    commitDetail.Commit = commit;
-                    DetailContext = commitDetail;
-                }
+                var commitDetail = new CommitDetail(_repo, true);
+                commitDetail.Commit = commit;
+                DetailContext = commitDetail;
             }
             else
             {
@@ -183,16 +176,9 @@ namespace SourceGit.ViewModels
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
 
-                if (_detailContext is CommitDetail detail)
-                {
-                    detail.Commit = commit;
-                }
-                else
-                {
-                    var commitDetail = new CommitDetail(_repo, true);
-                    commitDetail.Commit = commit;
-                    DetailContext = commitDetail;
-                }
+                var commitDetail = new CommitDetail(_repo, true);
+                commitDetail.Commit = commit;
+                DetailContext = commitDetail;
             }
             else if (commits.Count == 2)
             {
