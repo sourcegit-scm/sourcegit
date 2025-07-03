@@ -65,7 +65,7 @@ namespace SourceGit.Commands
             if (submodules.Count > 0)
             {
                 Args = "config --file .gitmodules --list";
-                rs = await ReadToEndAsync();
+                rs = await ReadToEndAsync().ConfigureAwait(false);
                 if (rs.IsSuccess)
                 {
                     var modules = new Dictionary<string, ModuleInfo>();
@@ -114,7 +114,7 @@ namespace SourceGit.Commands
                 }
 
                 Args = $"--no-optional-locks status --porcelain -- {builder}";
-                rs = await ReadToEndAsync();
+                rs = await ReadToEndAsync().ConfigureAwait(false);
                 if (!rs.IsSuccess)
                     return submodules;
 
