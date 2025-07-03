@@ -85,29 +85,7 @@ namespace SourceGit.ViewModels
             return
                 GetGitConfigBranchMergeOptions() // Branch
                 ?? GetSettingsPreferredMergeMode() // Repository
-                ?? GetGitConfigMergeFF() // Global
-                ?? Models.MergeMode.Default; // Fallback
-        }
-
-        private Models.MergeMode GetSettingsPreferredMergeMode()
-        {
-            var preferredMergeModeIdx = _repo.Settings.PreferredMergeMode;
-            if (preferredMergeModeIdx < 0 || preferredMergeModeIdx > Models.MergeMode.Supported.Length)
-                return Models.MergeMode.Supported[preferredMergeModeIdx];
-
-            return Models.MergeMode.Default;
-        }
-
-        private Models.MergeMode GetGitConfigMergeFF()
-        {
-            var config = new Commands.Config(_repo.FullPath).Get("merge.ff");
-            return config switch
-            {
-                null or "" => null,
-                "false" => Models.MergeMode.NoFastForward,
-                "only" => Models.MergeMode.FastForward,
-                _ => null
-            };
+                ?? GetGitConfigMergeFF(); // Global
         }
 
         private Models.MergeMode GetGitConfigBranchMergeOptions()
@@ -121,6 +99,26 @@ namespace SourceGit.ViewModels
                 "--squash" => Models.MergeMode.Squash,
                 "--no-commit" or "--no-ff --no-commit" => Models.MergeMode.DontCommit,
                 _ => null
+            };
+        }
+
+        private Models.MergeMode GetSettingsPreferredMergeMode()
+        {
+            var preferredMergeModeIdx = _repo.Settings.PreferredMergeMode;
+            if (preferredMergeModeIdx < 0 || preferredMergeModeIdx > Models.MergeMode.Supported.Length)
+                return null;
+
+            return Models.MergeMode.Supported[preferredMergeModeIdx];
+        }
+
+        private Models.MergeMode GetGitConfigMergeFF()
+        {
+            var config = new Commands.Config(_repo.FullPath).Get("merge.ff");
+            return config switch
+            {
+                "false" => Models.MergeMode.NoFastForward,
+                "only" => Models.MergeMode.FastForward,
+                _ => Models.MergeMode.Default
             };
         }
 
