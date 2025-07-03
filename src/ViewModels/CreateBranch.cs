@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class CreateBranch : Popup
+    public partial class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
         [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
@@ -101,7 +102,7 @@ namespace SourceGit.ViewModels
             {
                 if (!creator._allowOverwrite)
                 {
-                    var fixedName = creator.FixName(name);
+                    var fixedName = FixName(name);
                     foreach (var b in creator._repo.Branches)
                     {
                         if (b.FriendlyName == fixedName)
@@ -227,13 +228,12 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private string FixName(string name)
-        {
-            if (!name.Contains(' '))
-                return name;
+        [GeneratedRegex(@"\s+")]
+        private static partial Regex REG_FIX_NAME();
 
-            var parts = name.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
-            return string.Join("-", parts);
+        private static string FixName(string name)
+        {
+            return REG_FIX_NAME().Replace(name, "-");
         }
 
         private readonly Repository _repo = null;
