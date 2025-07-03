@@ -167,7 +167,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (_selectedStaged?.Count > 0)
+                        if (_selectedStaged is { Count: > 0 })
                             SelectedStaged = [];
 
                         if (value.Count == 1)
@@ -193,7 +193,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (_selectedUnstaged?.Count > 0)
+                        if (_selectedUnstaged is { Count: > 0 })
                             SelectedUnstaged = [];
 
                         if (value.Count == 1)
@@ -269,12 +269,12 @@ namespace SourceGit.ViewModels
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
-            if (_selectedUnstaged?.Count > 0)
+            if (_selectedUnstaged is { Count: > 0 })
             {
                 foreach (var c in _selectedUnstaged)
                     lastSelectedUnstaged.Add(c.Path);
             }
-            else if (_selectedStaged?.Count > 0)
+            else if (_selectedStaged is { Count: > 0 })
             {
                 foreach (var c in _selectedStaged)
                     lastSelectedStaged.Add(c.Path);

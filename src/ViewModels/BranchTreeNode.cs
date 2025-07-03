@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Avalonia;
-using AvaloniaEdit.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -87,7 +86,8 @@ namespace SourceGit.ViewModels
 
             public void SetExpandedNodes(List<string> expanded)
             {
-                _expanded.AddRange(expanded);
+                foreach (var node in expanded)
+                    _expanded.Add(node);
             }
 
             public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)

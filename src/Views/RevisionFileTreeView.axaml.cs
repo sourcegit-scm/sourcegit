@@ -216,7 +216,7 @@ namespace SourceGit.Views
             if (node.IsExpanded)
             {
                 var subtree = GetChildrenOfTreeNode(node);
-                if (subtree?.Count > 0)
+                if (subtree is { Count: > 0 })
                 {
                     var subrows = new List<ViewModels.RevisionFileTreeNode>();
                     MakeRows(subrows, subtree, depth + 1);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -86,10 +87,17 @@ namespace SourceGit.ViewModels
         {
             var visible = new List<Models.LFSLock>();
 
-            foreach (var lfsLock in _cachedLocks)
+            if (!_showOnlyMyLocks)
             {
-                if (!_showOnlyMyLocks || lfsLock.User == _userName)
-                    visible.Add(lfsLock);
+                visible.AddRange(_cachedLocks);
+            }
+            else
+            {
+                foreach (var lfsLock in _cachedLocks)
+                {
+                    if (lfsLock.User.Equals(_userName, StringComparison.Ordinal))
+                        visible.Add(lfsLock);
+                }
             }
 
             VisibleLocks = visible;

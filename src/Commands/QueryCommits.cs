@@ -133,7 +133,6 @@ namespace SourceGit.Commands
                 return;
 
             var set = new HashSet<string>(shas);
-
             foreach (var c in _commits)
             {
                 if (set.Contains(c.SHA))

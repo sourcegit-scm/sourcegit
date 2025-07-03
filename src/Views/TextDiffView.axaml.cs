@@ -101,7 +101,7 @@ namespace SourceGit.Views
 
                 var lines = presenter.GetLines();
                 var view = TextView;
-                if (view?.VisualLinesValid ?? false)
+                if (view is { VisualLinesValid: true })
                 {
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
@@ -175,7 +175,7 @@ namespace SourceGit.Views
 
                 var lines = presenter.GetLines();
                 var view = TextView;
-                if (view?.VisualLinesValid ?? false)
+                if (view is { VisualLinesValid: true })
                 {
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)

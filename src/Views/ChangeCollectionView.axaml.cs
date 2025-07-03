@@ -380,7 +380,6 @@ namespace SourceGit.Views
                 else if (selected.Count > 0)
                 {
                     var sets = new HashSet<Models.Change>(selected);
-
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)
                     {
