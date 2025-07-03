@@ -184,7 +184,7 @@ namespace SourceGit.ViewModels
                 {
                     var baseHead = new Commands.QuerySingleCommit(_repo, _based.Head).Result();
                     var toHead = new Commands.QuerySingleCommit(_repo, _to.Head).Result();
-                    Dispatcher.UIThread.Invoke(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         BaseHead = baseHead;
                         ToHead = toHead;
@@ -204,7 +204,15 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    VisibleChanges = visible;
+
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
             });
         }
 
