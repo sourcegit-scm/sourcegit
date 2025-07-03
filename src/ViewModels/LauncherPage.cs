@@ -105,28 +105,19 @@ namespace SourceGit.ViewModels
                     return;
 
                 dump.InProgress = true;
-                var task = dump.Sure();
-                var finished = false;
-                if (task != null)
-                {
-                    try
-                    {
-                        finished = await task;
-                    }
-                    catch (Exception e)
-                    {
-                        App.LogException(e);
-                    }
 
-                    dump.InProgress = false;
+                try
+                {
+                    var finished = await dump.Sure();
                     if (finished)
                         Popup = null;
                 }
-                else
+                catch (Exception e)
                 {
-                    dump.InProgress = false;
-                    Popup = null;
+                    App.LogException(e);
                 }
+
+                dump.InProgress = false;
             }
         }
 

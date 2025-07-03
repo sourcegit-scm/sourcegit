@@ -45,7 +45,7 @@ namespace SourceGit.ViewModels
             bool succ;
             var needPop = false;
 
-            var confirmed = await _repo.ConfirmCheckoutBranchAsync().ConfigureAwait(false);
+            var confirmed = await _repo.ConfirmCheckoutBranchAsync();
             if (!confirmed)
             {
                 _repo.SetWatcherEnabled(true);

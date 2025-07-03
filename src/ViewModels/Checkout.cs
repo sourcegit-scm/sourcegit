@@ -45,7 +45,7 @@ namespace SourceGit.ViewModels
             var succ = false;
             var needPopStash = false;
 
-            var confirmed = await _repo.ConfirmCheckoutBranchAsync().ConfigureAwait(false);
+            var confirmed = await _repo.ConfirmCheckoutBranchAsync();
             if (!confirmed)
             {
                 _repo.SetWatcherEnabled(true);
