@@ -285,6 +285,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commitChangeViewMode, value);
         }
 
+        public Models.ChangeViewMode StashChangeViewMode
+        {
+            get => _stashChangeViewMode;
+            set => SetProperty(ref _stashChangeViewMode, value);
+        }
+
         public string GitInstallPath
         {
             get => Native.OS.GitExecutable;
@@ -692,6 +698,7 @@ namespace SourceGit.ViewModels
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
+        private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
 

@@ -93,23 +93,23 @@ namespace SourceGit.ViewModels
             private set
             {
                 if (SetProperty(ref _changes, value))
-                    SelectedChange = value is { Count: > 0 } ? value[0] : null;
+                    SelectedChanges = value is { Count: > 0 } ? [value[0]] : [];
             }
         }
 
-        public Models.Change SelectedChange
+        public List<Models.Change> SelectedChanges
         {
-            get => _selectedChange;
+            get => _selectedChanges;
             set
             {
-                if (SetProperty(ref _selectedChange, value))
+                if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value == null)
+                    if (value is not { Count: 1 })
                         DiffContext = null;
-                    else if (_untracked.Contains(value))
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], value), _diffContext);
+                    else if (_untracked.Contains(value[0]))
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], value[0]), _diffContext);
                     else
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value[0]), _diffContext);
                 }
             }
         }
@@ -129,11 +129,11 @@ namespace SourceGit.ViewModels
         {
             _stashes?.Clear();
             _changes?.Clear();
+            _selectedChanges?.Clear();
             _untracked.Clear();
 
             _repo = null;
             _selectedStash = null;
-            _selectedChange = null;
             _diffContext = null;
         }
 
@@ -217,11 +217,12 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public ContextMenu MakeContextMenuForChange(Models.Change change)
+        public ContextMenu MakeContextMenuForChange()
         {
-            if (change == null)
+            if (_selectedChanges is not { Count: 1 })
                 return null;
 
+            var change = _selectedChanges[0];
             var diffWithMerger = new MenuItem();
             diffWithMerger.Header = App.Text("DiffWithMerger");
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
@@ -339,7 +340,7 @@ namespace SourceGit.ViewModels
         private Models.Stash _selectedStash = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _untracked = [];
-        private Models.Change _selectedChange = null;
+        private List<Models.Change> _selectedChanges = [];
         private DiffContext _diffContext = null;
     }
 }
