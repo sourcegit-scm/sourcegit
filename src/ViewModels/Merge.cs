@@ -85,17 +85,17 @@ namespace SourceGit.ViewModels
             return
                 GetGitConfigBranchMergeOptions() // Branch
                 ?? GetSettingsPreferredMergeMode() // Repository
-                ?? GetGitConfigMergeFF(); // Global
+                ?? GetGitConfigMergeFF() // Global
+                ?? Models.MergeMode.Default; // Fallback
         }
 
         private Models.MergeMode GetSettingsPreferredMergeMode()
         {
             var preferredMergeModeIdx = _repo.Settings.PreferredMergeMode;
             if (preferredMergeModeIdx < 0 || preferredMergeModeIdx > Models.MergeMode.Supported.Length)
-                preferredMergeModeIdx = 0;
+                return Models.MergeMode.Supported[preferredMergeModeIdx];
 
-            var defaultMergeMode = Models.MergeMode.Supported[preferredMergeModeIdx];
-            return defaultMergeMode;
+            return Models.MergeMode.Default;
         }
 
         private Models.MergeMode GetGitConfigMergeFF()
