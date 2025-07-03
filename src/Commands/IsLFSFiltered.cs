@@ -20,15 +20,9 @@ namespace SourceGit.Commands
             RaiseError = false;
         }
 
-        public bool Result()
+        public async Task<bool> GetResultAsync()
         {
-            var rs = ReadToEnd();
-            return rs.IsSuccess && rs.StdOut.Contains("filter\0lfs");
-        }
-
-        public async Task<bool> ResultAsync()
-        {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             return rs.IsSuccess && rs.StdOut.Contains("filter\0lfs");
         }
     }

@@ -17,9 +17,13 @@ namespace SourceGit.ViewModels
 
         public ConflictSourceBranch(Repository repo, Models.Branch branch)
         {
+            var revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync().Result;
+            if (revision == null)
+                revision = new Models.Commit() { SHA = branch.Head };
+
             Name = branch.Name;
             Head = branch.Head;
-            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).Result() ?? new Models.Commit() { SHA = branch.Head };
+            Revision = revision;
         }
     }
 
@@ -65,10 +69,10 @@ namespace SourceGit.ViewModels
             _change = change;
 
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
-            if (!isSubmodule && (_change.ConflictReason == Models.ConflictReason.BothAdded || _change.ConflictReason == Models.ConflictReason.BothModified))
+            if (!isSubmodule && (_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified))
             {
                 CanUseExternalMergeTool = true;
-                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
+                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResultAsync().Result;
             }
 
             var context = wc.InProgressContext;

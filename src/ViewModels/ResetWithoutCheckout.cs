@@ -38,9 +38,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Reset '{Target.Name}' to '{_revision}'");
             Use(log);
 
-            var succ = await Commands.Branch.CreateAsync(_repo.FullPath, Target.Name, _revision, true, log);
+            var succ = await Commands.Branch
+                .CreateAsync(_repo.FullPath, Target.Name, _revision, true, log)
+                .ConfigureAwait(false);
+
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

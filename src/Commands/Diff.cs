@@ -36,9 +36,9 @@ namespace SourceGit.Commands
                 Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
-        public async Task<Models.DiffResult> ResultAsync()
+        public async Task<Models.DiffResult> ReadAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var start = 0;
             var end = rs.StdOut.IndexOf('\n', start);
             while (end > 0)

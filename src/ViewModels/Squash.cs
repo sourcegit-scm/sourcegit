@@ -20,7 +20,7 @@ namespace SourceGit.ViewModels
         public Squash(Repository repo, Models.Commit target, string shaToGetPreferMessage)
         {
             _repo = repo;
-            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).Result();
+            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).GetResultAsync().Result;
             Target = target;
         }
 
@@ -38,26 +38,40 @@ namespace SourceGit.ViewModels
 
             if (_repo.LocalChangesCount > 0)
             {
-                succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("SQUASH_AUTO_STASH");
+                succ = await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PushAsync("SQUASH_AUTO_STASH")
+                    .ConfigureAwait(false);
+
                 if (!succ)
                 {
                     log.Complete();
-                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
 
                 autoStashed = true;
             }
 
-            succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).ExecAsync();
+            succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft")
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
             if (succ)
-                succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).RunAsync();
+                succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false)
+                    .Use(log)
+                    .RunAsync()
+                    .ConfigureAwait(false);
 
             if (succ && autoStashed)
-                await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+                await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PopAsync("stash@{0}")
+                    .ConfigureAwait(false);
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

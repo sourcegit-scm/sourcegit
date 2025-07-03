@@ -510,7 +510,7 @@ namespace SourceGit.ViewModels
                 var gitDirForWatcher = _gitDir;
                 if (_gitDir.Replace('\\', '/').IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
                 {
-                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
+                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).GetResultAsync().Result;
                     if (!string.IsNullOrEmpty(commonDir))
                         gitDirForWatcher = commonDir;
                 }
@@ -651,7 +651,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var config = await new Commands.Config(_fullpath).ListAllAsync();
+                var config = await new Commands.Config(_fullpath).ReadAllAsync().ConfigureAwait(false);
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
 
                 if (config.TryGetValue("gitflow.branch.master", out var masterName))
@@ -876,19 +876,26 @@ namespace SourceGit.ViewModels
 
                 if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    var isCommitSHA = await new Commands.IsCommitSHA(_fullpath, _searchCommitFilter).ResultAsync();
+                    var isCommitSHA = await new Commands.IsCommitSHA(_fullpath, _searchCommitFilter)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
                     if (isCommitSHA)
                     {
-                        var commit = await new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).ResultAsync();
+                        var commit = await new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
                         visible.Add(commit);
                     }
                 }
                 else
                 {
-                    visible = await new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch).ResultAsync();
+                    visible = await new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
                 }
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     SearchedCommits = visible;
                     IsSearchLoadingVisible = false;
@@ -1096,31 +1103,29 @@ namespace SourceGit.ViewModels
             return actions;
         }
 
-        public void Bisect(string subcmd)
+        public async Task ExecBisectCommandAsync(string subcmd)
         {
             IsBisectCommandRunning = true;
             SetWatcherEnabled(false);
 
             var log = CreateLog($"Bisect({subcmd})");
-            Task.Run(async () =>
-            {
-                var succ = await new Commands.Bisect(_fullpath, subcmd).Use(log).ExecAsync();
-                log.Complete();
 
-                var head = await new Commands.QueryRevisionByRefName(_fullpath, "HEAD").ResultAsync();
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    if (!succ)
-                        App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
-                    else if (log.Content.Contains("is the first bad commit"))
-                        App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+            var succ = await new Commands.Bisect(_fullpath, subcmd).Use(log).ExecAsync();
+            log.Complete();
 
-                    MarkBranchesDirtyManually();
-                    NavigateToCommit(head, true);
-                    SetWatcherEnabled(true);
-                    IsBisectCommandRunning = false;
-                });
-            });
+            var head = await new Commands.QueryRevisionByRefName(_fullpath, "HEAD")
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            if (!succ)
+                App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+            else if (log.Content.Contains("is the first bad commit"))
+                App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+
+            MarkBranchesDirtyManually();
+            NavigateToCommit(head, true);
+            SetWatcherEnabled(true);
+            IsBisectCommandRunning = false;
         }
 
         public bool MayHaveSubmodules()
@@ -1132,8 +1137,8 @@ namespace SourceGit.ViewModels
 
         public void RefreshBranches()
         {
-            var branches = new Commands.QueryBranches(_fullpath).Result(out var localBranchesCount);
-            var remotes = new Commands.QueryRemotes(_fullpath).Result();
+            var branches = new Commands.QueryBranches(_fullpath).GetResultAsync().Result;
+            var remotes = new Commands.QueryRemotes(_fullpath).GetResultAsync().Result;
             var builder = BuildBranchTree(branches, remotes);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1145,6 +1150,13 @@ namespace SourceGit.ViewModels
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
+
+                var localBranchesCount = 0;
+                foreach (var b in branches)
+                {
+                    if (b.IsLocal && !b.IsDetachedHead)
+                        localBranchesCount++;
+                }
                 LocalBranchesCount = localBranchesCount;
 
                 if (_workingCopy != null)
@@ -1157,7 +1169,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshWorktrees()
         {
-            var worktrees = new Commands.Worktree(_fullpath).List();
+            var worktrees = new Commands.Worktree(_fullpath).ReadAllAsync().Result;
             var cleaned = new List<Models.Worktree>();
 
             foreach (var worktree in worktrees)
@@ -1176,7 +1188,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshTags()
         {
-            var tags = new Commands.QueryTags(_fullpath).Result();
+            var tags = new Commands.QueryTags(_fullpath).GetResultAsync().Result;
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
@@ -1207,7 +1219,7 @@ namespace SourceGit.ViewModels
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).GetResultAsync().Result;
             var graph = Models.CommitGraph.Parse(commits, _settings.EnableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1244,7 +1256,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var submodules = new Commands.QuerySubmodules(_fullpath).Result();
+            var submodules = new Commands.QuerySubmodules(_fullpath).GetResultAsync().Result;
             _watcher?.SetSubmodules(submodules);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1286,7 +1298,7 @@ namespace SourceGit.ViewModels
             if (IsBare)
                 return;
 
-            var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).Result();
+            var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).GetResultAsync().Result;
             if (_workingCopy == null)
                 return;
 
@@ -1306,7 +1318,7 @@ namespace SourceGit.ViewModels
             if (IsBare)
                 return;
 
-            var stashes = new Commands.QueryStashes(_fullpath).Result();
+            var stashes = new Commands.QueryStashes(_fullpath).GetResultAsync().Result;
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (_stashesPage != null)
@@ -1328,36 +1340,16 @@ namespace SourceGit.ViewModels
                 ShowPopup(new CreateBranch(this, _currentBranch));
         }
 
-        public bool ConfirmCheckoutBranch()
+        public async Task<bool> ConfirmCheckoutBranchAsync()
         {
-            if (Dispatcher.UIThread.CheckAccess())
-                return true;
-
             if (_currentBranch is not { IsDetachedHead: true })
                 return true;
 
-            var refs = new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).Result();
+            var refs = await new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).GetResultAsync().ConfigureAwait(false);
             if (refs.Count == 0)
             {
-                var confirmCheckout = false;
-                var resetEvent = new AutoResetEvent(false);
-
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    var msg = App.Text("Checkout.WarnLostCommits");
-                    App.ShowWindow(new Confirm(msg, () =>
-                    {
-                        confirmCheckout = true;
-                        resetEvent.Set();
-                    }, () =>
-                    {
-                        confirmCheckout = false;
-                        resetEvent.Set();
-                    }), true);
-                });
-
-                resetEvent.WaitOne();
-                return confirmCheckout;
+                var msg = App.Text("Checkout.WarnLostCommits");
+                return await App.AskConfirmAsync(msg, null);
             }
 
             return true;
@@ -2026,7 +2018,7 @@ namespace SourceGit.ViewModels
 
                         if (_histories != null)
                         {
-                            var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).ResultAsync();
+                            var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync().ConfigureAwait(false);
                             _histories.AutoSelectedCommit = null;
                             _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
@@ -2143,9 +2135,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(branch.Name);
+                await App.CopyTextAsync(branch.Name);
                 e.Handled = true;
             };
             menu.Items.Add(copy);
@@ -2215,9 +2207,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("RemoteCM.CopyURL");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(remote.URL);
+                await App.CopyTextAsync(remote.URL);
                 e.Handled = true;
             };
 
@@ -2305,7 +2297,7 @@ namespace SourceGit.ViewModels
 
                     if (_histories != null)
                     {
-                        var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).ResultAsync();
+                        var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync().ConfigureAwait(false);
                         _histories.AutoSelectedCommit = null;
                         _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                     }
@@ -2357,9 +2349,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(name);
+                await App.CopyTextAsync(name);
                 e.Handled = true;
             };
 
@@ -2457,9 +2449,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(tag.Name);
+                await App.CopyTextAsync(tag.Name);
                 ev.Handled = true;
             };
 
@@ -2467,9 +2459,9 @@ namespace SourceGit.ViewModels
             copyMessage.Header = App.Text("TagCM.CopyMessage");
             copyMessage.Icon = App.CreateMenuIcon("Icons.Copy");
             copyMessage.IsEnabled = !string.IsNullOrEmpty(tag.Message);
-            copyMessage.Click += (_, ev) =>
+            copyMessage.Click += async (_, ev) =>
             {
-                App.CopyText(tag.Message);
+                await App.CopyTextAsync(tag.Message);
                 ev.Handled = true;
             };
 
@@ -2606,9 +2598,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("Submodule.CopyPath");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(submodule.Path);
+                await App.CopyTextAsync(submodule.Path);
                 ev.Handled = true;
             };
 
@@ -2677,9 +2669,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("Worktree.CopyPath");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(worktree.FullPath);
+                await App.CopyTextAsync(worktree.FullPath);
                 e.Handled = true;
             };
             menu.Items.Add(new MenuItem() { Header = "-" });
@@ -2912,8 +2904,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                _worktreeFiles = await new Commands.QueryRevisionFileNames(_fullpath, "HEAD").ResultAsync();
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                _worktreeFiles = await new Commands.QueryRevisionFileNames(_fullpath, "HEAD")
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
                 {
                     if (IsSearchingCommitsByFilePath() && _requestingWorktreeFiles)
                         CalcMatchedFilesForSearching();

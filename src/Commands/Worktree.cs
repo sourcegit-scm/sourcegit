@@ -13,11 +13,11 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public List<Models.Worktree> List()
+        public async Task<List<Models.Worktree>> ReadAllAsync()
         {
             Args = "worktree list --porcelain";
 
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var worktrees = new List<Models.Worktree>();
             Models.Worktree last = null;
             if (rs.IsSuccess)
@@ -79,25 +79,25 @@ namespace SourceGit.Commands
             else if (!string.IsNullOrEmpty(name) && !createNew)
                 Args += name;
 
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> PruneAsync()
         {
             Args = "worktree prune -v";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> LockAsync(string fullpath)
         {
             Args = $"worktree lock \"{fullpath}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string fullpath)
         {
             Args = $"worktree unlock \"{fullpath}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> RemoveAsync(string fullpath, bool force)
@@ -107,7 +107,7 @@ namespace SourceGit.Commands
             else
                 Args = $"worktree remove \"{fullpath}\"";
 
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
     }
 }

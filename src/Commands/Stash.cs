@@ -25,7 +25,7 @@ namespace SourceGit.Commands
             builder.Append("\"");
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> PushAsync(string message, List<Models.Change> changes, bool keepIndex)
@@ -42,7 +42,7 @@ namespace SourceGit.Commands
                 builder.Append($"\"{c.Path}\" ");
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> PushAsync(string message, string pathspecFromFile, bool keepIndex)
@@ -58,7 +58,7 @@ namespace SourceGit.Commands
             builder.Append("\"");
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> PushOnlyStagedAsync(string message, bool keepIndex)
@@ -71,32 +71,32 @@ namespace SourceGit.Commands
             builder.Append(message);
             builder.Append("\"");
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> ApplyAsync(string name, bool restoreIndex)
         {
             var opts = restoreIndex ? "--index" : string.Empty;
             Args = $"stash apply -q {opts} \"{name}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> PopAsync(string name)
         {
             Args = $"stash pop -q --index \"{name}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> DropAsync(string name)
         {
             Args = $"stash drop -q \"{name}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> ClearAsync()
         {
             Args = "stash clear";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
     }
 }

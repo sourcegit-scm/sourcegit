@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -42,22 +40,22 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _remote = remote;
-            _userName = new Commands.Config(repo.FullPath).Get("user.name");
-
-            HasValidUserName = !string.IsNullOrEmpty(_userName);
 
             Task.Run(async () =>
             {
-                _cachedLocks = await new Commands.LFS(_repo.FullPath).LocksAsync(_remote);
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                _userName = await new Commands.Config(repo.FullPath).GetAsync("user.name").ConfigureAwait(false);
+                _cachedLocks = await new Commands.LFS(_repo.FullPath).GetLocksAsync(_remote).ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
                 {
                     UpdateVisibleLocks();
                     IsLoading = false;
+                    HasValidUserName = !string.IsNullOrEmpty(_userName);
                 });
             });
         }
 
-        public void Unlock(Models.LFSLock lfsLock, bool force)
+        public async Task UnlockAsync(Models.LFSLock lfsLock, bool force)
         {
             if (_isLoading)
                 return;
@@ -65,22 +63,19 @@ namespace SourceGit.ViewModels
             IsLoading = true;
 
             var log = _repo.CreateLog("Unlock LFS File");
-            Task.Run(async () =>
+            var succ = await new Commands.LFS(_repo.FullPath)
+                .UnlockAsync(_remote, lfsLock.ID, force, log)
+                .ConfigureAwait(false);
+
+            log.Complete();
+
+            if (succ)
             {
-                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_remote, lfsLock.ID, force, log);
-                log.Complete();
+                _cachedLocks.Remove(lfsLock);
+                UpdateVisibleLocks();
+            }
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    if (succ)
-                    {
-                        _cachedLocks.Remove(lfsLock);
-                        UpdateVisibleLocks();
-                    }
-
-                    IsLoading = false;
-                });
-            });
+            IsLoading = false;
         }
 
         private void UpdateVisibleLocks()

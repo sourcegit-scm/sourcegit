@@ -10,9 +10,9 @@ namespace SourceGit.Commands
             Args = $"cat-file -t {hash}";
         }
 
-        public async Task<bool> ResultAsync()
+        public async Task<bool> GetResultAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             return rs.IsSuccess && rs.StdOut.Trim().Equals("commit");
         }
     }

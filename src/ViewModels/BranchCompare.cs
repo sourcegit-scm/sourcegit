@@ -156,9 +156,9 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
+            copyPath.Click += async (_, ev) =>
             {
-                App.CopyText(change.Path);
+                await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
             menu.Items.Add(copyPath);
@@ -166,9 +166,9 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
+            copyFullPath.Click += async (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo, change.Path));
+                await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
                 e.Handled = true;
             };
             menu.Items.Add(copyFullPath);
@@ -182,8 +182,14 @@ namespace SourceGit.ViewModels
             {
                 if (_baseHead == null)
                 {
-                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based.Head).ResultAsync();
-                    var toHead = await new Commands.QuerySingleCommit(_repo, _to.Head).ResultAsync();
+                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based.Head)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    var toHead = await new Commands.QuerySingleCommit(_repo, _to.Head)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         BaseHead = baseHead;
@@ -191,7 +197,9 @@ namespace SourceGit.ViewModels
                     });
                 }
 
-                _changes = await new Commands.CompareRevisions(_repo, _based.Head, _to.Head).ResultAsync();
+                _changes = await new Commands.CompareRevisions(_repo, _based.Head, _to.Head)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
 
                 var visible = _changes;
                 if (!string.IsNullOrWhiteSpace(_searchFilter))

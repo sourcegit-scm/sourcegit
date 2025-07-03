@@ -51,36 +51,41 @@ namespace SourceGit.ViewModels
 
         public void AppendLine(string line = null)
         {
-            var newline = line ?? string.Empty;
-
-            Dispatcher.UIThread.Invoke(() =>
+            if (!Dispatcher.UIThread.CheckAccess())
             {
+                Dispatcher.UIThread.Invoke(() => AppendLine(line));
+            }
+            else
+            {
+                var newline = line ?? string.Empty;
                 _builder.AppendLine(newline);
                 _onNewLineReceived?.Invoke(newline);
-            });
+            }
         }
 
         public void Complete()
         {
-            IsComplete = true;
-
-            Dispatcher.UIThread.Invoke(() =>
+            if (!Dispatcher.UIThread.CheckAccess())
             {
-                _content = _builder.ToString();
-                _builder.Clear();
-                _builder = null;
+                Dispatcher.UIThread.Invoke(Complete);
+                return;
+            }
 
-                EndTime = DateTime.Now;
+            IsComplete = true;
+            EndTime = DateTime.Now;
 
-                OnPropertyChanged(nameof(IsComplete));
+            _content = _builder.ToString();
+            _builder.Clear();
+            _builder = null;
 
-                if (_onNewLineReceived != null)
-                {
-                    var dumpHandlers = _onNewLineReceived.GetInvocationList();
-                    foreach (var d in dumpHandlers)
-                        _onNewLineReceived -= (Action<string>)d;
-                }
-            });
+            OnPropertyChanged(nameof(IsComplete));
+
+            if (_onNewLineReceived != null)
+            {
+                var dumpHandlers = _onNewLineReceived.GetInvocationList();
+                foreach (var d in dumpHandlers)
+                    _onNewLineReceived -= (Action<string>)d;
+            }
         }
 
         private string _content = string.Empty;

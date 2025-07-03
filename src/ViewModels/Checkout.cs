@@ -42,66 +42,84 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            bool succ;
+            var succ = false;
             var needPopStash = false;
 
-            if (!_repo.ConfirmCheckoutBranch())
+            var confirmed = await _repo.ConfirmCheckoutBranchAsync().ConfigureAwait(false);
+            if (!confirmed)
             {
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                _repo.SetWatcherEnabled(true);
                 return true;
             }
 
             if (DiscardLocalChanges)
             {
-                succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(Branch, true);
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(Branch, true)
+                    .ConfigureAwait(false);
             }
             else
             {
-                var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
+                var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
                 if (changes > 0)
                 {
-                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("CHECKOUT_AUTO_STASH");
+                    succ = await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PushAsync("CHECKOUT_AUTO_STASH")
+                        .ConfigureAwait(false);
                     if (!succ)
                     {
                         log.Complete();
-                        await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                        _repo.SetWatcherEnabled(true);
                         return false;
                     }
 
                     needPopStash = true;
                 }
 
-                succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(Branch, false);
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(Branch, false)
+                    .ConfigureAwait(false);
             }
 
             if (succ)
             {
                 if (updateSubmodules)
                 {
-                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
                     if (submodules.Count > 0)
-                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
+                        await new Commands.Submodule(_repo.FullPath)
+                            .Use(log)
+                            .UpdateAsync(submodules, true, true)
+                            .ConfigureAwait(false);
                 }
 
                 if (needPopStash)
-                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+                    await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PopAsync("stash@{0}")
+                        .ConfigureAwait(false);
             }
 
             log.Complete();
 
-            await CallUIThreadAsync(() =>
-            {
-                ProgressDescription = "Waiting for branch updated...";
+            var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
+            if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+                _repo.SetBranchFilterMode(b, Models.FilterMode.Included, true, false);
 
-                var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
-                if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
-                    _repo.SetBranchFilterMode(b, Models.FilterMode.Included, true, false);
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
 
-                _repo.MarkBranchesDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
-
-            Task.Delay(400).Wait();
+            ProgressDescription = "Waiting for branch updated...";
+            await Task.Delay(400);
             return succ;
         }
 

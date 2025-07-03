@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-
 using Avalonia.Collections;
 using Avalonia.Threading;
 
@@ -16,7 +15,10 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var collect = await new Commands.QueryAssumeUnchangedFiles(_repo.FullPath).ResultAsync();
+                var collect = await new Commands.QueryAssumeUnchangedFiles(_repo.FullPath)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
                 await Dispatcher.UIThread.InvokeAsync(() => Files.AddRange(collect));
             });
         }
@@ -26,7 +28,12 @@ namespace SourceGit.ViewModels
             if (!string.IsNullOrEmpty(file))
             {
                 var log = _repo.CreateLog("Remove Assume Unchanged File");
-                await new Commands.AssumeUnchanged(_repo.FullPath, file, false).Use(log).ExecAsync();
+
+                await new Commands.AssumeUnchanged(_repo.FullPath, file, false)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
+
                 log.Complete();
                 Files.Remove(file);
             }

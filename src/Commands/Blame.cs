@@ -20,9 +20,9 @@ namespace SourceGit.Commands
             _result.File = file;
         }
 
-        public async Task<Models.BlameData> ResultAsync()
+        public async Task<Models.BlameData> ReadAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return _result;
 

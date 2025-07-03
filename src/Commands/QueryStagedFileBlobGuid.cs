@@ -15,16 +15,11 @@ namespace SourceGit.Commands
             Args = $"ls-files -s -- \"{file}\"";
         }
 
-        public async Task<string> ResultAsync()
+        public async Task<string> GetResultAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var match = REG_FORMAT().Match(rs.StdOut.Trim());
-            if (match.Success)
-            {
-                return match.Groups[1].Value;
-            }
-
-            return string.Empty;
+            return match.Success ? match.Groups[1].Value : string.Empty;
         }
     }
 }

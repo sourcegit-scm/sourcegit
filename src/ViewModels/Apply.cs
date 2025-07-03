@@ -47,10 +47,15 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Apply patch...";
 
             var log = _repo.CreateLog("Apply Patch");
-            var succ = await new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null).Use(log).ExecAsync();
-            log.Complete();
+            Use(log);
 
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            var succ = await new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

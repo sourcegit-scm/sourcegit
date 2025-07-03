@@ -176,10 +176,13 @@ namespace SourceGit.ViewModels
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
                 _isSetTrackOptionVisible && Tracking,
-                ForcePush).Use(log).ExecAsync();
+                ForcePush)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

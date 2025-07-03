@@ -21,10 +21,10 @@ namespace SourceGit.ViewModels
         {
             LFS = lfs;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var oldImage = ImageSource.FromLFSObject(repo, lfs.Old, decoder);
-                var newImage = ImageSource.FromLFSObject(repo, lfs.New, decoder);
+                var oldImage = await ImageSource.FromLFSObjectAsync(repo, lfs.Old, decoder).ConfigureAwait(false);
+                var newImage = await ImageSource.FromLFSObjectAsync(repo, lfs.New, decoder).ConfigureAwait(false);
 
                 var img = new Models.ImageDiff()
                 {
@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
                     NewFileSize = newImage.Size
                 };
 
-                Dispatcher.UIThread.Invoke(() => Image = img);
+                Dispatcher.UIThread.Post(() => Image = img);
             });
         }
 

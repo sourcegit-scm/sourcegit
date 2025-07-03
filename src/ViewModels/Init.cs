@@ -31,18 +31,18 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Initialize");
             Use(log);
 
-            var succ = await new Commands.Init(_pageId, _targetPath).Use(log).ExecAsync();
+            var succ = await new Commands.Init(_pageId, _targetPath)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
             log.Complete();
 
             if (succ)
             {
-                await CallUIThreadAsync(() =>
-                {
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
-                    Welcome.Instance.Refresh();
-                });
+                Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                Welcome.Instance.Refresh();
             }
-
             return succ;
         }
 

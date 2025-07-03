@@ -19,6 +19,11 @@ namespace SourceGit.Commands
                 Context = repo;
                 Args = $"diff --diff-algorithm=minimal {opt}";
             }
+
+            public async Task<Result> ReadAsync()
+            {
+                return await ReadToEndAsync().ConfigureAwait(false);
+            }
         }
 
         public GenerateCommitMessage(Models.OpenAIService service, string repo, List<Models.Change> changes, CancellationToken cancelToken, Action<string> onResponse)
@@ -46,7 +51,7 @@ namespace SourceGit.Commands
                     responseBuilder.Append("- ");
                     summaryBuilder.Append("- ");
 
-                    var rs = await new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadToEndAsync();
+                    var rs = await new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadAsync();
                     if (rs.IsSuccess)
                     {
                         await _service.ChatAsync(

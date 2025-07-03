@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -65,7 +63,10 @@ namespace SourceGit.ViewModels
             if (_commitMessages.TryGetValue(sha, out var msg))
                 return msg;
 
-            msg = new Commands.QueryCommitFullMessage(_repo, sha).Result();
+            msg = new Commands.QueryCommitFullMessage(_repo, sha)
+                .GetResultAsync()
+                .Result;
+
             _commitMessages[sha] = msg;
             return msg;
         }
@@ -134,7 +135,9 @@ namespace SourceGit.ViewModels
             {
                 Task.Run(async () =>
                 {
-                    var result = await new Commands.QuerySingleCommit(_repo, commitSHA).ResultAsync();
+                    var result = await new Commands.QuerySingleCommit(_repo, commitSHA)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
 
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
@@ -149,7 +152,9 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var result = await new Commands.Blame(_repo, FilePath, commitSHA).ResultAsync();
+                var result = await new Commands.Blame(_repo, FilePath, commitSHA)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {

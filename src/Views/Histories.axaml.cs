@@ -208,7 +208,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnCommitListKeyDown(object sender, KeyEventArgs e)
+        private async void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
             if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 return;
@@ -226,7 +226,7 @@ namespace SourceGit.Views
                             builder.AppendLine($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
                     }
 
-                    App.CopyText(builder.ToString());
+                    await App.CopyTextAsync(builder.ToString());
                     e.Handled = true;
                     return;
                 }

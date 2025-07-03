@@ -13,15 +13,15 @@ namespace SourceGit.Commands
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            var isLFSFiltered = await new IsLFSFiltered(repo, revision, file).ResultAsync();
+            var isLFSFiltered = await new IsLFSFiltered(repo, revision, file).GetResultAsync().ConfigureAwait(false);
             if (isLFSFiltered)
             {
-                var pointerStream = await QueryFileContent.RunAsync(repo, revision, file);
-                await ExecCmdAsync(repo, "lfs smudge", saveTo, pointerStream);
+                var pointerStream = await QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
+                await ExecCmdAsync(repo, "lfs smudge", saveTo, pointerStream).ConfigureAwait(false);
             }
             else
             {
-                await ExecCmdAsync(repo, $"show {revision}:\"{file}\"", saveTo);
+                await ExecCmdAsync(repo, $"show {revision}:\"{file}\"", saveTo).ConfigureAwait(false);
             }
         }
 

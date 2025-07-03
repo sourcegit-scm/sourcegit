@@ -120,7 +120,7 @@ namespace SourceGit.Views
 
             if (pref.IsGitConfigured())
             {
-                var config = new Commands.Config(null).ListAll();
+                var config = new Commands.Config(null).ReadAllAsync().Result;
 
                 if (config.TryGetValue("user.name", out var name))
                     DefaultUser = name;
@@ -160,7 +160,7 @@ namespace SourceGit.Views
 
             if (change.Property == GPGFormatProperty)
             {
-                var config = await new Commands.Config(null).ListAllAsync();
+                var config = await new Commands.Config(null).ReadAllAsync();
                 if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
                     GPGExecutableFile = openpgp;
                 else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
@@ -175,7 +175,7 @@ namespace SourceGit.Views
             if (Design.IsDesignMode)
                 return;
 
-            var config = await new Commands.Config(null).ListAllAsync();
+            var config = await new Commands.Config(null).ReadAllAsync();
             await SetIfChangedAsync(config, "user.name", DefaultUser, "");
             await SetIfChangedAsync(config, "user.email", DefaultEmail, "");
             await SetIfChangedAsync(config, "user.signingkey", GPGUserKey, "");

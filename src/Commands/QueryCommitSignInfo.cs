@@ -14,9 +14,9 @@ namespace SourceGit.Commands
             Args = $"{(useFakeSignersFile ? fakeSignersFileArg : string.Empty)} {baseArgs} {sha}";
         }
 
-        public async Task<Models.CommitSignInfo> ResultAsync()
+        public async Task<Models.CommitSignInfo> GetResultAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return null;
 

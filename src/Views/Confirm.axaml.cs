@@ -5,28 +5,26 @@ namespace SourceGit.Views
 {
     public partial class Confirm : ChromelessWindow
     {
+        public Action OnSure
+        {
+            get;
+            set;
+        }
+
         public Confirm()
         {
             InitializeComponent();
         }
 
-        protected override void OnClosed(EventArgs e)
-        {
-            (DataContext as ViewModels.Confirm)?.Done(_isOkPressed);
-            base.OnClosed(e);
-        }
-
         private void Sure(object _1, RoutedEventArgs _2)
         {
-            _isOkPressed = true;
-            Close();
+            OnSure?.Invoke();
+            Close(true);
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
-            Close();
+            Close(false);
         }
-
-        private bool _isOkPressed = false;
     }
 }

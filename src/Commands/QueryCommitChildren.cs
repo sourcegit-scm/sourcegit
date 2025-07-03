@@ -14,9 +14,9 @@ namespace SourceGit.Commands
             Args = $"rev-list -{max} --parents --branches --remotes --ancestry-path ^{commit}";
         }
 
-        public async Task<List<string>> ResultAsync()
+        public async Task<List<string>> GetResultAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var outs = new List<string>();
             if (rs.IsSuccess)
             {

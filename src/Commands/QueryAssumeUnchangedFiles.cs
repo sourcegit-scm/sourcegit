@@ -17,10 +17,10 @@ namespace SourceGit.Commands
             RaiseError = false;
         }
 
-        public async Task<List<string>> ResultAsync()
+        public async Task<List<string>> GetResultAsync()
         {
             var outs = new List<string>();
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {

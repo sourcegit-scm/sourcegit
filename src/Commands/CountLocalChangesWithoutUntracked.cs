@@ -12,9 +12,9 @@ namespace SourceGit.Commands
             Args = "--no-optional-locks status -uno --ignore-submodules=all --porcelain";
         }
 
-        public async Task<int> ResultAsync()
+        public async Task<int> GetResultAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
                 var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);

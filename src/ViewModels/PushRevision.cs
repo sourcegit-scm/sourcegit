@@ -44,10 +44,10 @@ namespace SourceGit.ViewModels
                 false,
                 false,
                 false,
-                Force).Use(log).ExecAsync();
+                Force).Use(log).ExecAsync().ConfigureAwait(false);
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

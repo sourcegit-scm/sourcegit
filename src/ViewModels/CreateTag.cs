@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
             _basedOn = branch.Head;
 
             BasedOn = branch;
-            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
+            SignTag = new Commands.Config(repo.FullPath).GetAsync("tag.gpgsign").Result.Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public CreateTag(Repository repo, Models.Commit commit)
@@ -60,7 +60,7 @@ namespace SourceGit.ViewModels
             _basedOn = commit.SHA;
 
             BasedOn = commit;
-            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
+            SignTag = new Commands.Config(repo.FullPath).GetAsync("tag.gpgsign").Result.Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public static ValidationResult ValidateTagName(string name, ValidationContext ctx)
@@ -85,18 +85,21 @@ namespace SourceGit.ViewModels
 
             bool succ;
             if (_annotated)
-                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log);
+                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log).ConfigureAwait(false);
             else
-                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, log);
+                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, log).ConfigureAwait(false);
 
             if (succ && remotes != null)
             {
                 foreach (var remote in remotes)
-                    await new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Use(log).ExecAsync();
+                    await new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false)
+                        .Use(log)
+                        .ExecAsync()
+                        .ConfigureAwait(false);
             }
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

@@ -12,7 +12,7 @@ namespace SourceGit.Commands
             cmd.Context = repo;
             cmd.Args = $"tag --no-sign {name} {basedOn}";
             cmd.Log = log;
-            return await cmd.ExecAsync();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
         public static async Task<bool> AddAsync(string repo, string name, string basedOn, string message, bool sign, Models.ICommandLog log)
@@ -30,13 +30,13 @@ namespace SourceGit.Commands
                 await File.WriteAllTextAsync(tmp, message);
                 cmd.Args += $"-F \"{tmp}\"";
 
-                var succ = await cmd.ExecAsync();
+                var succ = await cmd.ExecAsync().ConfigureAwait(false);
                 File.Delete(tmp);
                 return succ;
             }
 
             cmd.Args += $"-m {name}";
-            return await cmd.ExecAsync();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
         public static async Task<bool> DeleteAsync(string repo, string name, Models.ICommandLog log)
@@ -46,7 +46,7 @@ namespace SourceGit.Commands
             cmd.Context = repo;
             cmd.Args = $"tag --delete {name}";
             cmd.Log = log;
-            return await cmd.ExecAsync();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
     }
 }

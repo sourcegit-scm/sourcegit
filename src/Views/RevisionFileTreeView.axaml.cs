@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -16,13 +16,13 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ToggleButton);
 
-        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        protected override async void OnPointerPressed(PointerPressedEventArgs e)
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
                 DataContext is ViewModels.RevisionFileTreeNode { IsFolder: true } node)
             {
                 var tree = this.FindAncestorOfType<RevisionFileTreeView>();
-                tree?.ToggleNodeIsExpanded(node);
+                await tree?.ToggleNodeIsExpandedAsync(node);
             }
 
             e.Handled = true;
@@ -107,13 +107,14 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        protected override async void OnKeyDown(KeyEventArgs e)
         {
             if (SelectedItem is ViewModels.RevisionFileTreeNode { IsFolder: true } node && e.KeyModifiers == KeyModifiers.None)
             {
                 if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
                 {
-                    this.FindAncestorOfType<RevisionFileTreeView>()?.ToggleNodeIsExpanded(node);
+                    var tree = this.FindAncestorOfType<RevisionFileTreeView>();
+                    await tree?.ToggleNodeIsExpandedAsync(node);
                     e.Handled = true;
                 }
             }
@@ -141,7 +142,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public void SetSearchResult(string file)
+        public async Task SetSearchResultAsync(string file)
         {
             Rows.Clear();
             _searchResult.Clear();
@@ -157,7 +158,7 @@ namespace SourceGit.Views
                 if (vm?.Commit == null)
                     return;
 
-                var objects = vm.GetRevisionFilesUnderFolder(file);
+                var objects = await vm.GetRevisionFilesUnderFolderAsync(file).ConfigureAwait(false);
                 if (objects is not { Count: 1 })
                     return;
 
@@ -203,7 +204,7 @@ namespace SourceGit.Views
             GC.Collect();
         }
 
-        public void ToggleNodeIsExpanded(ViewModels.RevisionFileTreeNode node)
+        public async Task ToggleNodeIsExpandedAsync(ViewModels.RevisionFileTreeNode node)
         {
             _disableSelectionChangingEvent = true;
             node.IsExpanded = !node.IsExpanded;
@@ -215,7 +216,7 @@ namespace SourceGit.Views
 
             if (node.IsExpanded)
             {
-                var subtree = GetChildrenOfTreeNode(node);
+                var subtree = await GetChildrenOfTreeNodeAsync(node);
                 if (subtree is { Count: > 0 })
                 {
                     var subrows = new List<ViewModels.RevisionFileTreeNode>();
@@ -240,7 +241,7 @@ namespace SourceGit.Views
             _disableSelectionChangingEvent = false;
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
@@ -257,7 +258,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var objects = vm.GetRevisionFilesUnderFolder(null);
+                var objects = await vm.GetRevisionFilesUnderFolderAsync(null).ConfigureAwait(false);
                 if (objects == null || objects.Count == 0)
                 {
                     GC.Collect();
@@ -288,7 +289,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnTreeNodeDoubleTapped(object sender, TappedEventArgs e)
+        private async void OnTreeNodeDoubleTapped(object sender, TappedEventArgs e)
         {
             if (sender is Grid { DataContext: ViewModels.RevisionFileTreeNode { IsFolder: true } node })
             {
@@ -296,22 +297,22 @@ namespace SourceGit.Views
                 if (posX < node.Depth * 16 + 16)
                     return;
 
-                ToggleNodeIsExpanded(node);
+                await ToggleNodeIsExpandedAsync(node);
             }
         }
 
-        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs _)
+        private async void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs _)
         {
             if (_disableSelectionChangingEvent || DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             if (sender is ListBox { SelectedItem: ViewModels.RevisionFileTreeNode { IsFolder: false } node })
-                vm.ViewRevisionFile(node.Backend);
+                await vm.ViewRevisionFileAsync(node.Backend);
             else
-                vm.ViewRevisionFile(null);
+                await vm.ViewRevisionFileAsync(null);
         }
 
-        private List<ViewModels.RevisionFileTreeNode> GetChildrenOfTreeNode(ViewModels.RevisionFileTreeNode node)
+        private async Task<List<ViewModels.RevisionFileTreeNode>> GetChildrenOfTreeNodeAsync(ViewModels.RevisionFileTreeNode node)
         {
             if (!node.IsFolder)
                 return null;
@@ -320,8 +321,10 @@ namespace SourceGit.Views
                 return node.Children;
 
             var vm = DataContext as ViewModels.CommitDetail;
+            if (vm == null)
+                return null;
 
-            var objects = vm?.GetRevisionFilesUnderFolder(node.Backend.Path + "/");
+            var objects = await vm.GetRevisionFilesUnderFolderAsync(node.Backend.Path + "/").ConfigureAwait(false);
             if (objects == null || objects.Count == 0)
                 return null;
 

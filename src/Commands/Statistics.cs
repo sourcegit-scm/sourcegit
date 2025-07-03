@@ -12,10 +12,10 @@ namespace SourceGit.Commands
             Args = $"log --date-order --branches --remotes -{max} --format=%ct$%aN±%aE";
         }
 
-        public async Task<Models.Statistics> ResultAsync()
+        public async Task<Models.Statistics> ReadAsync()
         {
             var statistics = new Models.Statistics();
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return statistics;
 

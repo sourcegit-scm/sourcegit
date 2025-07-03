@@ -9,31 +9,19 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = workDir;
             Args = "rev-parse --git-dir";
-            RaiseError = false;
         }
 
-        public string Result()
+        public async Task<string> GetResultAsync()
         {
-            var rs = ReadToEnd().StdOut;
-            if (string.IsNullOrEmpty(rs))
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            if (!rs.IsSuccess)
                 return null;
 
-            rs = rs.Trim();
-            if (Path.IsPathRooted(rs))
-                return rs;
-            return Path.GetFullPath(Path.Combine(WorkingDirectory, rs));
-        }
-
-        public async Task<string> ResultAsync()
-        {
-            var rs = (await ReadToEndAsync()).StdOut;
-            if (string.IsNullOrEmpty(rs))
+            var stdout = rs.StdOut.Trim();
+            if (string.IsNullOrEmpty(stdout))
                 return null;
 
-            rs = rs.Trim();
-            if (Path.IsPathRooted(rs))
-                return rs;
-            return Path.GetFullPath(Path.Combine(WorkingDirectory, rs));
+            return Path.IsPathRooted(stdout) ? stdout : Path.GetFullPath(Path.Combine(WorkingDirectory, stdout));
         }
     }
 }

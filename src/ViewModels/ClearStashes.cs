@@ -17,9 +17,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Clear Stashes");
             Use(log);
 
-            await new Commands.Stash(_repo.FullPath).Use(log).ClearAsync();
+            await new Commands.Stash(_repo.FullPath)
+                .Use(log)
+                .ClearAsync()
+                .ConfigureAwait(false);
+
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

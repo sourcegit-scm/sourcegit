@@ -23,9 +23,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Prune Remote '{Remote.Name}'");
             Use(log);
 
-            var succ = await new Commands.Remote(_repo.FullPath).Use(log).PruneAsync(Remote.Name);
+            var succ = await new Commands.Remote(_repo.FullPath)
+                .Use(log)
+                .PruneAsync(Remote.Name)
+                .ConfigureAwait(false);
+
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

@@ -114,11 +114,11 @@ namespace SourceGit.ViewModels
             var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
             if (masterBranch == null)
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _master, current.Head, true, log);
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _master, current.Head, true, log).ConfigureAwait(false);
                 if (!succ)
                 {
                     log.Complete();
-                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
@@ -126,11 +126,11 @@ namespace SourceGit.ViewModels
             var developBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_develop, StringComparison.Ordinal));
             if (developBranch == null)
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _develop, current.Head, true, log);
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _develop, current.Head, true, log).ConfigureAwait(false);
                 if (!succ)
                 {
                     log.Complete();
-                    await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
@@ -143,26 +143,22 @@ namespace SourceGit.ViewModels
                 _releasePrefix,
                 _hotfixPrefix,
                 _tagPrefix,
-                log);
+                log).ConfigureAwait(false);
 
             log.Complete();
 
-            await CallUIThreadAsync(() =>
+            if (succ)
             {
-                if (succ)
-                {
-                    var gitflow = new Models.GitFlow();
-                    gitflow.Master = _master;
-                    gitflow.Develop = _develop;
-                    gitflow.FeaturePrefix = _featurePrefix;
-                    gitflow.ReleasePrefix = _releasePrefix;
-                    gitflow.HotfixPrefix = _hotfixPrefix;
-                    _repo.GitFlow = gitflow;
-                }
+                var gitflow = new Models.GitFlow();
+                gitflow.Master = _master;
+                gitflow.Develop = _develop;
+                gitflow.FeaturePrefix = _featurePrefix;
+                gitflow.ReleasePrefix = _releasePrefix;
+                gitflow.HotfixPrefix = _hotfixPrefix;
+                _repo.GitFlow = gitflow;
+            }
 
-                _repo.SetWatcherEnabled(true);
-            });
-
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

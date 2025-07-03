@@ -11,20 +11,10 @@ namespace SourceGit.Commands
             Args = $"show --no-show-signature --format=%B -s {sha}";
         }
 
-        public string Result()
+        public async Task<string> GetResultAsync()
         {
-            var rs = ReadToEnd();
-            if (rs.IsSuccess)
-                return rs.StdOut.TrimEnd();
-            return string.Empty;
-        }
-
-        public async Task<string> ResultAsync()
-        {
-            var rs = await ReadToEndAsync();
-            if (rs.IsSuccess)
-                return rs.StdOut.TrimEnd();
-            return string.Empty;
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return rs.IsSuccess ? rs.StdOut.TrimEnd() : string.Empty;
         }
     }
 }

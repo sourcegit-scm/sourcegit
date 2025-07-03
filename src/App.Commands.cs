@@ -43,16 +43,16 @@ namespace SourceGit
         public static readonly Command OpenAboutCommand = new Command(_ => ShowWindow(new Views.About(), false));
         public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
         public static readonly Command QuitCommand = new Command(_ => Quit(0));
-        public static readonly Command CopyTextBlockCommand = new Command(p =>
+        public static readonly Command CopyTextBlockCommand = new Command(async p =>
         {
             var textBlock = p as TextBlock;
             if (textBlock == null)
                 return;
 
             if (textBlock.Inlines is { Count: > 0 } inlines)
-                CopyText(inlines.Text);
+                await CopyTextAsync(inlines.Text);
             else if (!string.IsNullOrEmpty(textBlock.Text))
-                CopyText(textBlock.Text);
+                await CopyTextAsync(textBlock.Text);
         });
     }
 }

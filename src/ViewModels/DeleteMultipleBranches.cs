@@ -28,22 +28,21 @@ namespace SourceGit.ViewModels
             if (_isLocal)
             {
                 foreach (var target in Targets)
-                    await Commands.Branch.DeleteLocalAsync(_repo.FullPath, target.Name, log);
+                    await Commands.Branch
+                        .DeleteLocalAsync(_repo.FullPath, target.Name, log)
+                        .ConfigureAwait(false);
             }
             else
             {
                 foreach (var target in Targets)
-                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, target.Remote, target.Name, log);
+                    await Commands.Branch
+                        .DeleteRemoteAsync(_repo.FullPath, target.Remote, target.Name, log)
+                        .ConfigureAwait(false);
             }
 
             log.Complete();
-
-            await CallUIThreadAsync(() =>
-            {
-                _repo.MarkBranchesDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
-
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

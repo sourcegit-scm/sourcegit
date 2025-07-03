@@ -66,29 +66,32 @@ namespace SourceGit.ViewModels
             if (FetchAllRemotes)
             {
                 foreach (var remote in _repo.Remotes)
-                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force).Use(log).ExecAsync();
+                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
+                        .Use(log)
+                        .ExecAsync()
+                        .ConfigureAwait(false);
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force).Use(log).ExecAsync();
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
             }
 
             log.Complete();
 
             var upstream = _repo.CurrentBranch?.Upstream;
-            var upstreamHead = string.Empty;
             if (!string.IsNullOrEmpty(upstream))
-                upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).ResultAsync();
-
-            await CallUIThreadAsync(() =>
             {
-                if (!string.IsNullOrEmpty(upstreamHead))
-                    _repo.NavigateToCommit(upstreamHead, true);
+                var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13))
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+                _repo.NavigateToCommit(upstreamHead, true);
+            }
 
-                _repo.MarkFetched();
-                _repo.SetWatcherEnabled(true);
-            });
-
+            _repo.MarkFetched();
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

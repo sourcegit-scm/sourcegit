@@ -29,16 +29,19 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
             Use(log);
 
-            await new Commands.Fetch(_repo.FullPath, Local, Upstream).Use(log).ExecAsync();
+            await new Commands.Fetch(_repo.FullPath, Local, Upstream)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
             log.Complete();
 
-            var changedLocalBranchHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).ResultAsync();
-            await CallUIThreadAsync(() =>
-            {
-                _repo.NavigateToCommit(changedLocalBranchHead, true);
-                _repo.SetWatcherEnabled(true);
-            });
+            var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name)
+                .GetResultAsync()
+                .ConfigureAwait(false);
 
+            _repo.NavigateToCommit(newHead, true);
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

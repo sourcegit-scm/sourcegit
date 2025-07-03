@@ -96,7 +96,7 @@ namespace SourceGit.ViewModels
                 foreach (var w in pref.Workspaces)
                     w.IsActive = false;
 
-                var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
+                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResultAsync().Result;
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
                     Pages[0].Notifications.Add(new Models.Notification
@@ -346,7 +346,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var isBare = new Commands.IsBareRepository(node.Id).Result();
+            var isBare = new Commands.IsBareRepository(node.Id).GetResultAsync().Result;
             var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
             if (string.IsNullOrEmpty(gitDir))
             {
@@ -523,9 +523,9 @@ namespace SourceGit.ViewModels
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (_, e) =>
+                copyPath.Click += async (_, e) =>
                 {
-                    page.CopyPath();
+                    await page.CopyPathAsync();
                     e.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -563,7 +563,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            return new Commands.QueryGitDir(repo).Result();
+            return new Commands.QueryGitDir(repo).GetResultAsync().Result;
         }
 
         private void CloseRepositoryInTab(LauncherPage page, bool removeFromWorkspace = true)

@@ -75,7 +75,7 @@ namespace SourceGit.ViewModels
         public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick")
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = headSHA };
         }
     }
 
@@ -115,13 +115,13 @@ namespace SourceGit.ViewModels
             var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
             var stoppedSHA = File.Exists(stoppedSHAPath)
                 ? File.ReadAllText(stoppedSHAPath).Trim()
-                : new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).Result();
+                : new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).GetResultAsync().Result;
 
             if (!string.IsNullOrEmpty(stoppedSHA))
-                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
+                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = stoppedSHA };
 
             var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
-            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
+            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = ontoSHA };
         }
 
         public override Task<bool> ContinueAsync()
@@ -147,7 +147,7 @@ namespace SourceGit.ViewModels
         public RevertInProgress(Repository repo) : base(repo.FullPath, "revert")
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "REVERT_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = headSHA };
         }
     }
 
@@ -172,10 +172,10 @@ namespace SourceGit.ViewModels
 
         public MergeInProgress(Repository repo) : base(repo.FullPath, "merge")
         {
-            Current = Commands.Branch.ShowCurrent(repo.FullPath);
+            Current = new Commands.QueryCurrentBranch(repo.FullPath).GetResultAsync().Result;
 
             var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
-            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result() ?? new Models.Commit() { SHA = sourceSHA };
+            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = sourceSHA };
         }
 
         public override Task<bool> SkipAsync()

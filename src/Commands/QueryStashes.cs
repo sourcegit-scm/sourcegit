@@ -13,63 +13,10 @@ namespace SourceGit.Commands
             Args = "stash list -z --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B\"";
         }
 
-        public List<Models.Stash> Result()
+        public async Task<List<Models.Stash>> GetResultAsync()
         {
             var outs = new List<Models.Stash>();
-            var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                return outs;
-
-            var items = rs.StdOut.Split('\0', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in items)
-            {
-                var current = new Models.Stash();
-
-                var nextPartIdx = 0;
-                var start = 0;
-                var end = item.IndexOf('\n', start);
-                while (end > 0 && nextPartIdx < 4)
-                {
-                    var line = item.Substring(start, end - start);
-
-                    switch (nextPartIdx)
-                    {
-                        case 0:
-                            current.SHA = line;
-                            break;
-                        case 1:
-                            if (line.Length > 6)
-                                current.Parents.AddRange(line.Split(' ', StringSplitOptions.RemoveEmptyEntries));
-                            break;
-                        case 2:
-                            current.Time = ulong.Parse(line);
-                            break;
-                        case 3:
-                            current.Name = line;
-                            break;
-                    }
-
-                    nextPartIdx++;
-
-                    start = end + 1;
-                    if (start >= item.Length - 1)
-                        break;
-
-                    end = item.IndexOf('\n', start);
-                }
-
-                if (start < item.Length)
-                    current.Message = item.Substring(start);
-
-                outs.Add(current);
-            }
-            return outs;
-        }
-
-        public async Task<List<Models.Stash>> ResultAsync()
-        {
-            var outs = new List<Models.Stash>();
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return outs;
 

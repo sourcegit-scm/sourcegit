@@ -133,7 +133,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).ResultAsync();
+                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).GetResultAsync().ConfigureAwait(false);
                 var list = new List<InteractiveRebaseItem>();
 
                 for (var i = 0; i < commits.Count; i++)
@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
                     list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
                 }
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
                     IsLoading = false;
@@ -212,9 +212,13 @@ namespace SourceGit.ViewModels
             }
 
             var log = _repo.CreateLog("Interactive Rebase");
-            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).ExecAsync();
+            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
             log.Complete();
-            await Dispatcher.UIThread.InvokeAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

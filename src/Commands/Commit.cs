@@ -8,7 +8,7 @@ namespace SourceGit.Commands
         public Commit(string repo, string message, bool signOff, bool amend, bool resetAuthor)
         {
             _tmpFile = Path.GetTempFileName();
-            File.WriteAllText(_tmpFile, message);
+            _message = message;
 
             WorkingDirectory = repo;
             Context = repo;
@@ -21,20 +21,20 @@ namespace SourceGit.Commands
 
         public async Task<bool> RunAsync()
         {
-            var succ = await ExecAsync();
-
             try
             {
+                await File.WriteAllTextAsync(_tmpFile, _message).ConfigureAwait(false);
+                var succ = await ExecAsync().ConfigureAwait(false);
                 File.Delete(_tmpFile);
+                return succ;
             }
             catch
             {
-                // Ignore
+                return false;
             }
-
-            return succ;
         }
 
-        private readonly string _tmpFile;
+        private readonly string _tmpFile = string.Empty;
+        private readonly string _message = string.Empty;
     }
 }

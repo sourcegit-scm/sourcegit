@@ -13,14 +13,10 @@ namespace SourceGit.Commands
             Args = $"diff -a --ignore-cr-at-eol --check {opt}";
         }
 
-        public bool Result()
+        public async Task<bool> GetResultAsync()
         {
-            return ReadToEnd().IsSuccess;
-        }
-
-        public async Task<bool> ResultAsync()
-        {
-            return (await ReadToEndAsync()).IsSuccess;
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return rs.IsSuccess;
         }
     }
 }

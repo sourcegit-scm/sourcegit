@@ -135,9 +135,9 @@ namespace SourceGit.Views
                             var copy = new MenuItem();
                             copy.Header = App.Text("SHALinkCM.CopySHA");
                             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                            copy.Click += (_, ev) =>
+                            copy.Click += async (_, ev) =>
                             {
-                                App.CopyText(link);
+                                await App.CopyTextAsync(link);
                                 ev.Handled = true;
                             };
 
@@ -168,9 +168,9 @@ namespace SourceGit.Views
                         var copy = new MenuItem();
                         copy.Header = App.Text("IssueLinkCM.CopyLink");
                         copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                        copy.Click += (_, ev) =>
+                        copy.Click += async (_, ev) =>
                         {
-                            App.CopyText(link);
+                            await App.CopyTextAsync(link);
                             ev.Handled = true;
                         };
 
@@ -256,7 +256,7 @@ namespace SourceGit.Views
                 var lastDetailCommit = detail.Commit.SHA;
                 Task.Run(() =>
                 {
-                    var c = detail.GetParent(sha);
+                    var c = detail.GetCommitAsync(sha).Result;
                     Dispatcher.UIThread.Invoke(() =>
                     {
                         // Make sure the DataContext of CommitBaseInfo is not changed.

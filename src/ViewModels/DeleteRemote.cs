@@ -24,14 +24,14 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Remote");
             Use(log);
 
-            var succ = await new Commands.Remote(_repo.FullPath).Use(log).DeleteAsync(Remote.Name);
-            log.Complete();
+            var succ = await new Commands.Remote(_repo.FullPath)
+                .Use(log)
+                .DeleteAsync(Remote.Name)
+                .ConfigureAwait(false);
 
-            await CallUIThreadAsync(() =>
-            {
-                _repo.MarkBranchesDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

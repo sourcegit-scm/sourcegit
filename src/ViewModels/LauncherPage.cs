@@ -1,8 +1,7 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Media;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -59,10 +58,10 @@ namespace SourceGit.ViewModels
             Notifications.Clear();
         }
 
-        public void CopyPath()
+        public async Task CopyPathAsync()
         {
             if (_node.IsRepository)
-                App.CopyText(_node.Id);
+                await App.CopyTextAsync(_node.Id);
         }
 
         public void ChangeDirtyState(Models.DirtyState flag, bool remove)

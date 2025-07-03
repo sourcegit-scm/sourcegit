@@ -2,22 +2,19 @@
 
 namespace SourceGit.Commands
 {
-    public class QueryRevisionByRefName : Command
+    public class QueryCurrentBranch : Command
     {
-        public QueryRevisionByRefName(string repo, string refname)
+        public QueryCurrentBranch(string repo)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"rev-parse {refname}";
+            Args = "branch --show-current";
         }
 
         public async Task<string> GetResultAsync()
         {
             var rs = await ReadToEndAsync().ConfigureAwait(false);
-            if (rs.IsSuccess && !string.IsNullOrEmpty(rs.StdOut))
-                return rs.StdOut.Trim();
-
-            return null;
+            return rs.StdOut.Trim();
         }
     }
 }

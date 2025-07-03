@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
-
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -758,13 +758,13 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTextAreaKeyDown(object sender, KeyEventArgs e)
+        private async void OnTextAreaKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyModifiers.Equals(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
                 if (e.Key == Key.C)
                 {
-                    CopyWithoutIndicators();
+                    await CopyWithoutIndicatorsAsync();
                     e.Handled = true;
                 }
             }
@@ -788,9 +788,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                CopyWithoutIndicators();
+                await CopyWithoutIndicatorsAsync();
                 ev.Handled = true;
             };
 
@@ -983,12 +983,12 @@ namespace SourceGit.Views
             }
         }
 
-        private void CopyWithoutIndicators()
+        private async Task CopyWithoutIndicatorsAsync()
         {
             var selection = TextArea.Selection;
             if (selection.IsEmpty)
             {
-                App.CopyText(string.Empty);
+                await App.CopyTextAsync(string.Empty);
                 return;
             }
 
@@ -1009,11 +1009,11 @@ namespace SourceGit.Views
                 if (line.Type == Models.TextDiffLineType.Indicator ||
                     line.Type == Models.TextDiffLineType.None)
                 {
-                    App.CopyText(string.Empty);
+                    await App.CopyTextAsync(string.Empty);
                     return;
                 }
 
-                App.CopyText(SelectedText);
+                await App.CopyTextAsync(SelectedText);
                 return;
             }
 
@@ -1058,7 +1058,7 @@ namespace SourceGit.Views
                 builder.AppendLine(line.Content);
             }
 
-            App.CopyText(builder.ToString());
+            await App.CopyTextAsync(builder.ToString());
         }
 
         private TextMate.Installation _textMate = null;
@@ -1843,7 +1843,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                await new Commands.Add(repo.FullPath, change).ExecAsync();
+                await new Commands.Add(repo.FullPath, change).ExecAsync().ConfigureAwait(false);
             }
             else
             {
@@ -1854,16 +1854,16 @@ namespace SourceGit.Views
                 }
                 else if (chunk.Combined)
                 {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).ResultAsync();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync().ConfigureAwait(false);
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
                 }
                 else
                 {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).ResultAsync();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync().ConfigureAwait(false);
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
                 }
 
-                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
+                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").ExecAsync().ConfigureAwait(false);
                 File.Delete(tmpFile);
             }
 
@@ -1898,13 +1898,13 @@ namespace SourceGit.Views
             if (!selection.HasLeftChanges)
             {
                 if (change.DataForAmend != null)
-                    await new Commands.UnstageChangesForAmend(repo.FullPath, [change]).ExecAsync();
+                    await new Commands.UnstageChangesForAmend(repo.FullPath, [change]).ExecAsync().ConfigureAwait(false);
                 else
-                    await new Commands.Restore(repo.FullPath, change).ExecAsync();
+                    await new Commands.Restore(repo.FullPath, change).ExecAsync().ConfigureAwait(false);
             }
             else
             {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).ResultAsync();
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync().ConfigureAwait(false);
                 var tmpFile = Path.GetTempFileName();
                 if (change.Index == Models.ChangeState.Added)
                     diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
@@ -1913,7 +1913,7 @@ namespace SourceGit.Views
                 else
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
-                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
+                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync().ConfigureAwait(false);
                 File.Delete(tmpFile);
             }
 
@@ -1947,7 +1947,7 @@ namespace SourceGit.Views
 
             if (!selection.HasLeftChanges)
             {
-                await Commands.Discard.ChangesAsync(repo.FullPath, [change], null);
+                await Commands.Discard.ChangesAsync(repo.FullPath, [change], null).ConfigureAwait(false);
             }
             else
             {
@@ -1958,16 +1958,16 @@ namespace SourceGit.Views
                 }
                 else if (chunk.Combined)
                 {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).ResultAsync();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync().ConfigureAwait(false);
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
                 }
                 else
                 {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).ResultAsync();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync().ConfigureAwait(false);
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
                 }
 
-                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").ExecAsync();
+                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").ExecAsync().ConfigureAwait(false);
                 File.Delete(tmpFile);
             }
 

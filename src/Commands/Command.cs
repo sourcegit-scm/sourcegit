@@ -10,11 +10,13 @@ namespace SourceGit.Commands
 {
     public partial class Command
     {
-        public class ReadToEndResult
+        public class Result
         {
             public bool IsSuccess { get; set; } = false;
-            public string StdOut { get; set; } = "";
-            public string StdErr { get; set; } = "";
+            public string StdOut { get; set; } = string.Empty;
+            public string StdErr { get; set; } = string.Empty;
+
+            public static Result Failed(string reason) => new Result() { StdErr = reason };
         }
 
         public enum EditorType
@@ -25,45 +27,15 @@ namespace SourceGit.Commands
         }
 
         public string Context { get; set; } = string.Empty;
-        public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public string WorkingDirectory { get; set; } = null;
-        public EditorType Editor { get; set; } = EditorType.CoreEditor; // Only used in Exec() mode
+        public EditorType Editor { get; set; } = EditorType.CoreEditor;
         public string SSHKey { get; set; } = string.Empty;
         public string Args { get; set; } = string.Empty;
+
+        // Only used in `ExecAsync` mode.
+        public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
-
-        public ReadToEndResult ReadToEnd()
-        {
-            var start = CreateGitStartInfo();
-            var proc = new Process() { StartInfo = start };
-
-            try
-            {
-                proc.Start();
-            }
-            catch (Exception e)
-            {
-                return new ReadToEndResult()
-                {
-                    IsSuccess = false,
-                    StdOut = string.Empty,
-                    StdErr = e.Message,
-                };
-            }
-
-            var rs = new ReadToEndResult()
-            {
-                StdOut = proc.StandardOutput.ReadToEnd(),
-                StdErr = proc.StandardError.ReadToEnd(),
-            };
-
-            proc.WaitForExit();
-            rs.IsSuccess = proc.ExitCode == 0;
-            proc.Close();
-
-            return rs;
-        }
 
         public async Task<bool> ExecAsync()
         {
@@ -107,7 +79,15 @@ namespace SourceGit.Commands
 
             proc.BeginOutputReadLine();
             proc.BeginErrorReadLine();
-            await proc.WaitForExitAsync(CancellationToken);
+
+            try
+            {
+                await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                HandleOutput(e.Message, errs);
+            }
 
             if (dummy != null)
             {
@@ -136,7 +116,7 @@ namespace SourceGit.Commands
             return true;
         }
 
-        public async Task<ReadToEndResult> ReadToEndAsync()
+        protected async Task<Result> ReadToEndAsync()
         {
             var start = CreateGitStartInfo();
             var proc = new Process() { StartInfo = start };
@@ -147,24 +127,16 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                return new ReadToEndResult()
-                {
-                    IsSuccess = false,
-                    StdOut = string.Empty,
-                    StdErr = e.Message,
-                };
+                return Result.Failed(e.Message);
             }
 
-            var rs = new ReadToEndResult()
-            {
-                StdOut = await proc.StandardOutput.ReadToEndAsync(CancellationToken),
-                StdErr = await proc.StandardError.ReadToEndAsync(CancellationToken),
-            };
+            var rs = new Result() { IsSuccess = true };
+            rs.StdOut = await proc.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+            rs.StdErr = await proc.StandardError.ReadToEndAsync().ConfigureAwait(false);
+            await proc.WaitForExitAsync().ConfigureAwait(false);
 
-            await proc.WaitForExitAsync(CancellationToken);
             rs.IsSuccess = proc.ExitCode == 0;
             proc.Close();
-
             return rs;
         }
 

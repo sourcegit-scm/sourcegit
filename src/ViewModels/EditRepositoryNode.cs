@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
                 Welcome.Instance.Refresh();
             }
 
-            return null;
+            return Task.FromResult(true);
         }
 
         private RepositoryNode _node = null;

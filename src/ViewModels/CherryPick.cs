@@ -79,7 +79,10 @@ namespace SourceGit.ViewModels
                     Targets[0].SHA,
                     !AutoCommit,
                     AppendSourceToMessage,
-                    $"-m {MainlineForMergeCommit + 1}").Use(log).ExecAsync();
+                    $"-m {MainlineForMergeCommit + 1}")
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
             }
             else
             {
@@ -88,11 +91,14 @@ namespace SourceGit.ViewModels
                     string.Join(' ', Targets.ConvertAll(c => c.SHA)),
                     !AutoCommit,
                     AppendSourceToMessage,
-                    string.Empty).Use(log).ExecAsync();
+                    string.Empty)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
             }
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

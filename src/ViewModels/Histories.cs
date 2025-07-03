@@ -139,7 +139,7 @@ namespace SourceGit.ViewModels
             if (commit == null)
             {
                 AutoSelectedCommit = null;
-                commit = new Commands.QuerySingleCommit(_repo.FullPath, commitSHA).Result();
+                commit = new Commands.QuerySingleCommit(_repo.FullPath, commitSHA).GetResultAsync().Result;
             }
             else
             {
@@ -415,26 +415,26 @@ namespace SourceGit.ViewModels
                 var copyMultipleSHAs = new MenuItem();
                 copyMultipleSHAs.Header = App.Text("CommitCM.CopySHA");
                 copyMultipleSHAs.Icon = App.CreateMenuIcon("Icons.Fingerprint");
-                copyMultipleSHAs.Click += (_, e) =>
+                copyMultipleSHAs.Click += async (_, e) =>
                 {
                     var builder = new StringBuilder();
                     foreach (var c in selected)
                         builder.AppendLine(c.SHA);
 
-                    App.CopyText(builder.ToString());
+                    await App.CopyTextAsync(builder.ToString());
                     e.Handled = true;
                 };
 
                 var copyMultipleInfo = new MenuItem();
                 copyMultipleInfo.Header = App.Text("CommitCM.CopyInfo");
                 copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Info");
-                copyMultipleInfo.Click += (_, e) =>
+                copyMultipleInfo.Click += async (_, e) =>
                 {
                     var builder = new StringBuilder();
                     foreach (var c in selected)
                         builder.AppendLine($"{c.SHA.AsSpan(0, 10)} - {c.Subject}");
 
-                    App.CopyText(builder.ToString());
+                    await App.CopyTextAsync(builder.ToString());
                     e.Handled = true;
                 };
 
@@ -600,7 +600,9 @@ namespace SourceGit.ViewModels
                                 var parents = new List<Models.Commit>();
                                 foreach (var sha in commit.Parents)
                                 {
-                                    var parent = _commits.Find(x => x.SHA == sha) ?? await new Commands.QuerySingleCommit(_repo.FullPath, sha).ResultAsync();
+                                    var parent = _commits.Find(x => x.SHA == sha);
+                                    if (parent == null)
+                                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync().ConfigureAwait(false);
 
                                     if (parent != null)
                                         parents.Add(parent);
@@ -690,7 +692,7 @@ namespace SourceGit.ViewModels
                     if (head == null)
                     {
                         _repo.SelectedSearchedCommit = null;
-                        head = await new Commands.QuerySingleCommit(_repo.FullPath, current.Head).ResultAsync();
+                        head = await new Commands.QuerySingleCommit(_repo.FullPath, current.Head).GetResultAsync().ConfigureAwait(false);
                         if (head != null)
                             DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
                     }
@@ -819,45 +821,45 @@ namespace SourceGit.ViewModels
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
-            copySHA.Click += (_, e) =>
+            copySHA.Click += async (_, e) =>
             {
-                App.CopyText(commit.SHA);
+                await App.CopyTextAsync(commit.SHA);
                 e.Handled = true;
             };
 
             var copySubject = new MenuItem();
             copySubject.Header = App.Text("CommitCM.CopySubject");
             copySubject.Icon = App.CreateMenuIcon("Icons.Subject");
-            copySubject.Click += (_, e) =>
+            copySubject.Click += async (_, e) =>
             {
-                App.CopyText(commit.Subject);
+                await App.CopyTextAsync(commit.Subject);
                 e.Handled = true;
             };
 
             var copyInfo = new MenuItem();
             copyInfo.Header = App.Text("CommitCM.CopyInfo");
             copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
-            copyInfo.Click += (_, e) =>
+            copyInfo.Click += async (_, e) =>
             {
-                App.CopyText($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
+                await App.CopyTextAsync($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
                 e.Handled = true;
             };
 
             var copyAuthor = new MenuItem();
             copyAuthor.Header = App.Text("CommitCM.CopyAuthor");
             copyAuthor.Icon = App.CreateMenuIcon("Icons.User");
-            copyAuthor.Click += (_, e) =>
+            copyAuthor.Click += async (_, e) =>
             {
-                App.CopyText(commit.Author.ToString());
+                await App.CopyTextAsync(commit.Author.ToString());
                 e.Handled = true;
             };
 
             var copyCommitter = new MenuItem();
             copyCommitter.Header = App.Text("CommitCM.CopyCommitter");
             copyCommitter.Icon = App.CreateMenuIcon("Icons.User");
-            copyCommitter.Click += (_, e) =>
+            copyCommitter.Click += async (_, e) =>
             {
-                App.CopyText(commit.Committer.ToString());
+                await App.CopyTextAsync(commit.Committer.ToString());
                 e.Handled = true;
             };
 
@@ -965,9 +967,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(current.Name);
+                await App.CopyTextAsync(current.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
@@ -1057,9 +1059,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(branch.Name);
+                await App.CopyTextAsync(branch.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
@@ -1119,9 +1121,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(name);
+                await App.CopyTextAsync(name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
@@ -1183,9 +1185,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(tag.Name);
+                await App.CopyTextAsync(tag.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);

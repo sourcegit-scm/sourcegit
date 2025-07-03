@@ -21,7 +21,7 @@ namespace SourceGit.Commands
             builder.Append(branch);
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> BranchAsync(string branch, string basedOn, bool force, bool allowOverwrite)
@@ -36,14 +36,14 @@ namespace SourceGit.Commands
             builder.Append(basedOn);
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> CommitAsync(string commitId, bool force)
         {
             var option = force ? "--force" : string.Empty;
             Args = $"checkout {option} --detach --progress {commitId}";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UseTheirsAsync(List<string> files)
@@ -57,7 +57,7 @@ namespace SourceGit.Commands
                 builder.Append("\"");
             }
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UseMineAsync(List<string> files)
@@ -72,13 +72,13 @@ namespace SourceGit.Commands
             }
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> FileWithRevisionAsync(string file, string revision)
         {
             Args = $"checkout --no-overlay {revision} -- \"{file}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
     }
 }

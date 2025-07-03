@@ -8,21 +8,21 @@ namespace SourceGit.Commands
         public static async Task<bool> InitAsync(string repo, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
         {
             var config = new Config(repo);
-            await config.SetAsync("gitflow.branch.master", master);
-            await config.SetAsync("gitflow.branch.develop", develop);
-            await config.SetAsync("gitflow.prefix.feature", feature);
-            await config.SetAsync("gitflow.prefix.bugfix", "bugfix/");
-            await config.SetAsync("gitflow.prefix.release", release);
-            await config.SetAsync("gitflow.prefix.hotfix", hotfix);
-            await config.SetAsync("gitflow.prefix.support", "support/");
-            await config.SetAsync("gitflow.prefix.versiontag", version, true);
+            await config.SetAsync("gitflow.branch.master", master).ConfigureAwait(false);
+            await config.SetAsync("gitflow.branch.develop", develop).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.feature", feature).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.bugfix", "bugfix/").ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.release", release).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.hotfix", hotfix).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.support", "support/").ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.versiontag", version, true).ConfigureAwait(false);
 
             var init = new Command();
             init.WorkingDirectory = repo;
             init.Context = repo;
             init.Args = "flow init -d";
             init.Log = log;
-            return await init.ExecAsync();
+            return await init.ExecAsync().ConfigureAwait(false);
         }
 
         public static async Task<bool> StartAsync(string repo, Models.GitFlowBranchType type, string name, Models.ICommandLog log)
@@ -48,7 +48,7 @@ namespace SourceGit.Commands
             }
 
             start.Log = log;
-            return await start.ExecAsync();
+            return await start.ExecAsync().ConfigureAwait(false);
         }
 
         public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
@@ -86,7 +86,7 @@ namespace SourceGit.Commands
             finish.Context = repo;
             finish.Args = builder.ToString();
             finish.Log = log;
-            return await finish.ExecAsync();
+            return await finish.ExecAsync().ConfigureAwait(false);
         }
     }
 }

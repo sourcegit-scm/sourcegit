@@ -65,18 +65,13 @@ namespace SourceGit.ViewModels
             Use(log);
 
             if (Mode is DiscardAllMode all)
-                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
+                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log).ConfigureAwait(false);
             else
-                await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
+                await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log).ConfigureAwait(false);
 
             log.Complete();
-
-            await CallUIThreadAsync(() =>
-            {
-                _repo.MarkWorkingCopyDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
-
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

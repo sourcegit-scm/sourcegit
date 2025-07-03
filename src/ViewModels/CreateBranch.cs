@@ -125,10 +125,14 @@ namespace SourceGit.ViewModels
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             bool succ;
 
-            if (CheckoutAfterCreated && !_repo.ConfirmCheckoutBranch())
+            if (CheckoutAfterCreated)
             {
-                await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
-                return true;
+                var confirmed = await _repo.ConfirmCheckoutBranchAsync();
+                if (!confirmed)
+                {
+                    _repo.SetWatcherEnabled(true);
+                    return true;
+                }
             }
 
             if (CheckoutAfterCreated && !_repo.IsBare)
@@ -136,71 +140,94 @@ namespace SourceGit.ViewModels
                 var needPopStash = false;
                 if (DiscardLocalChanges)
                 {
-                    succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(fixedName, _baseOnRevision, true, _allowOverwrite);
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(fixedName, _baseOnRevision, true, _allowOverwrite)
+                        .ConfigureAwait(false);
                 }
                 else
                 {
-                    var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).ResultAsync();
+                    var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
                     if (changes > 0)
                     {
-                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("CREATE_BRANCH_AUTO_STASH");
+                        succ = await new Commands.Stash(_repo.FullPath)
+                            .Use(log)
+                            .PushAsync("CREATE_BRANCH_AUTO_STASH")
+                            .ConfigureAwait(false);
+
                         if (!succ)
                         {
                             log.Complete();
-                            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+                            _repo.SetWatcherEnabled(true);
                             return false;
                         }
 
                         needPopStash = true;
                     }
 
-                    succ = await new Commands.Checkout(_repo.FullPath).Use(log).BranchAsync(fixedName, _baseOnRevision, false, _allowOverwrite);
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(fixedName, _baseOnRevision, false, _allowOverwrite)
+                        .ConfigureAwait(false);
                 }
 
                 if (succ)
                 {
                     if (updateSubmodules)
                     {
-                        var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).ResultAsync();
+                        var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
+
                         if (submodules.Count > 0)
-                            await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
+                            await new Commands.Submodule(_repo.FullPath)
+                                .Use(log)
+                                .UpdateAsync(submodules, true, true)
+                                .ConfigureAwait(false);
                     }
 
                     if (needPopStash)
-                        await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+                        await new Commands.Stash(_repo.FullPath)
+                            .Use(log)
+                            .PopAsync("stash@{0}")
+                            .ConfigureAwait(false);
                 }
             }
             else
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
+                succ = await Commands.Branch
+                    .CreateAsync(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log)
+                    .ConfigureAwait(false);
             }
 
             log.Complete();
 
-            await CallUIThreadAsync(() =>
+            if (succ && CheckoutAfterCreated)
             {
-                if (succ && CheckoutAfterCreated)
-                {
-                    var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
-                    if (BasedOn is Models.Branch { IsLocal: false } based)
-                        fake.Upstream = based.FullName;
+                var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
+                if (BasedOn is Models.Branch { IsLocal: false } based)
+                    fake.Upstream = based.FullName;
 
-                    var folderEndIdx = fake.FullName.LastIndexOf('/');
-                    if (folderEndIdx > 10)
-                        _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
+                var folderEndIdx = fake.FullName.LastIndexOf('/');
+                if (folderEndIdx > 10)
+                    _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
 
-                    if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
-                        _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
+                if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
+                    _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
 
-                    ProgressDescription = "Waiting for branch updated...";
-                }
+            }
 
-                _repo.MarkBranchesDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
 
             if (CheckoutAfterCreated)
-                Task.Delay(400).Wait();
+            {
+                ProgressDescription = "Waiting for branch updated...";
+                await Task.Delay(400);
+            }
 
             return true;
         }

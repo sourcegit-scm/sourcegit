@@ -1,9 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-
-using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -39,16 +35,6 @@ namespace SourceGit.ViewModels
         public virtual Task<bool> Sure()
         {
             return null;
-        }
-
-        protected void CallUIThread(Action action)
-        {
-            Dispatcher.UIThread.Invoke(action);
-        }
-
-        protected async Task CallUIThreadAsync(Action action)
-        {
-            await Dispatcher.UIThread.InvokeAsync(action);
         }
 
         protected void Use(CommandLog log)

@@ -394,9 +394,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(selected);
+                await App.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 

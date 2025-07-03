@@ -64,8 +64,8 @@ namespace SourceGit.Commands
             {
                 var proc = new Process() { StartInfo = starter };
                 proc.Start();
-                await proc.StandardOutput.BaseStream.CopyToAsync(writer);
-                await proc.WaitForExitAsync();
+                await proc.StandardOutput.BaseStream.CopyToAsync(writer).ConfigureAwait(false);
+                await proc.WaitForExitAsync().ConfigureAwait(false);
                 var rs = proc.ExitCode == 0;
                 proc.Close();
 

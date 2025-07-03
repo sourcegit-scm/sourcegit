@@ -53,8 +53,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var commits = await new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {revision ?? string.Empty} -- \"{dir}\"", false).ResultAsync();
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                var commits = await new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {revision ?? string.Empty} -- \"{dir}\"", false)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
                 {
                     Commits = commits;
                     IsLoading = false;
@@ -76,7 +79,7 @@ namespace SourceGit.ViewModels
             if (_cachedCommitFullMessage.TryGetValue(sha, out var msg))
                 return msg;
 
-            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).Result();
+            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResultAsync().Result;
             _cachedCommitFullMessage[sha] = msg;
             return msg;
         }

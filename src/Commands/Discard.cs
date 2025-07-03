@@ -15,7 +15,7 @@ namespace SourceGit.Commands
         /// <param name="log"></param>
         public static async Task AllAsync(string repo, bool includeIgnored, Models.ICommandLog log)
         {
-            var changes = await new QueryLocalChanges(repo).ResultAsync();
+            var changes = await new QueryLocalChanges(repo).GetResultAsync().ConfigureAwait(false);
             try
             {
                 foreach (var c in changes)
@@ -38,10 +38,10 @@ namespace SourceGit.Commands
                 App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
             }
 
-            await new Reset(repo, "HEAD", "--hard") { Log = log }.ExecAsync();
+            await new Reset(repo, "HEAD", "--hard") { Log = log }.ExecAsync().ConfigureAwait(false);
 
             if (includeIgnored)
-                await new Clean(repo) { Log = log }.ExecAsync();
+                await new Clean(repo) { Log = log }.ExecAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace SourceGit.Commands
             if (restores.Count > 0)
             {
                 var pathSpecFile = Path.GetTempFileName();
-                await File.WriteAllLinesAsync(pathSpecFile, restores);
-                await new Restore(repo, pathSpecFile, false) { Log = log }.ExecAsync();
+                await File.WriteAllLinesAsync(pathSpecFile, restores).ConfigureAwait(false);
+                await new Restore(repo, pathSpecFile, false) { Log = log }.ExecAsync().ConfigureAwait(false);
                 File.Delete(pathSpecFile);
             }
         }

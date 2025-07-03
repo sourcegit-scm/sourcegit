@@ -68,7 +68,10 @@ namespace SourceGit.ViewModels
                 {
                     if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                     {
-                        succ = await new Commands.Stash(_repo.FullPath).Use(log).PushOnlyStagedAsync(Message, keepIndex);
+                        succ = await new Commands.Stash(_repo.FullPath)
+                            .Use(log)
+                            .PushOnlyStagedAsync(Message, keepIndex)
+                            .ConfigureAwait(false);
                     }
                     else
                     {
@@ -84,7 +87,10 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, IncludeUntracked, keepIndex);
+                    succ = await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PushAsync(Message, IncludeUntracked, keepIndex)
+                        .ConfigureAwait(false);
                 }
             }
             else
@@ -93,15 +99,14 @@ namespace SourceGit.ViewModels
             }
 
             if (mode == DealWithChangesAfterStashing.KeepAll && succ)
-                succ = await new Commands.Stash(_repo.FullPath).Use(log).ApplyAsync("stash@{0}", true);
+                succ = await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .ApplyAsync("stash@{0}", true)
+                    .ConfigureAwait(false);
 
             log.Complete();
-            await CallUIThreadAsync(() =>
-            {
-                _repo.MarkWorkingCopyDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
-
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 
@@ -119,7 +124,10 @@ namespace SourceGit.ViewModels
 
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, paths);
-                succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, pathSpecFile, keepIndex);
+                succ = await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PushAsync(Message, pathSpecFile, keepIndex)
+                    .ConfigureAwait(false);
                 File.Delete(pathSpecFile);
             }
             else
@@ -128,7 +136,10 @@ namespace SourceGit.ViewModels
                 {
                     var count = Math.Min(32, changes.Count - i);
                     var step = changes.GetRange(i, count);
-                    succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync(Message, step, keepIndex);
+                    succ = await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PushAsync(Message, step, keepIndex)
+                        .ConfigureAwait(false);
                     if (!succ)
                         break;
                 }

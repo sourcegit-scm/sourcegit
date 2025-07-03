@@ -170,9 +170,9 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
+            copyPath.Click += async (_, ev) =>
             {
-                App.CopyText(change.Path);
+                await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
             menu.Items.Add(copyPath);
@@ -180,9 +180,9 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
+            copyFullPath.Click += async (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo, change.Path));
+                await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
                 e.Handled = true;
             };
             menu.Items.Add(copyFullPath);
@@ -214,7 +214,7 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).Result();
+            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).ReadAsync().Result;
 
             var visible = _changes;
             if (!string.IsNullOrWhiteSpace(_searchFilter))

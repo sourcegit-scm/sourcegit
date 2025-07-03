@@ -65,15 +65,19 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit).Use(log).ExecAsync();
+            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
             log.Complete();
 
-            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").ResultAsync();
-            await CallUIThreadAsync(() =>
-            {
-                _repo.NavigateToCommit(head, true);
-                _repo.SetWatcherEnabled(true);
-            });
+            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD")
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            _repo.NavigateToCommit(head, true);
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 
@@ -87,7 +91,7 @@ namespace SourceGit.ViewModels
 
         private Models.MergeMode GetGitConfigBranchMergeOptions()
         {
-            var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
+            var config = new Commands.Config(_repo.FullPath).GetAsync($"branch.{Into}.mergeoptions").Result;
             return config switch
             {
                 null or "" => null,
@@ -110,7 +114,7 @@ namespace SourceGit.ViewModels
 
         private Models.MergeMode GetGitConfigMergeFF()
         {
-            var config = new Commands.Config(_repo.FullPath).Get("merge.ff");
+            var config = new Commands.Config(_repo.FullPath).GetAsync("merge.ff").Result;
             return config switch
             {
                 "false" => Models.MergeMode.NoFastForward,

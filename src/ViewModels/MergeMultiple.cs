@@ -51,10 +51,13 @@ namespace SourceGit.ViewModels
                 _repo.FullPath,
                 ConvertTargetToMergeSources(),
                 AutoCommit,
-                Strategy.Arg).Use(log).ExecAsync();
+                Strategy.Arg)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

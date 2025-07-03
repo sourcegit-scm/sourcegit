@@ -116,7 +116,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void StartBisect(object sender, RoutedEventArgs e)
+        private async void StartBisect(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false, InProgressContext: null } repo &&
                 repo.CanCreatePopup())
@@ -126,7 +126,7 @@ namespace SourceGit.Views
                 else if (repo.IsBisectCommandRunning || repo.BisectState != Models.BisectState.None)
                     App.RaiseException(repo.FullPath, "Bisect is running! Please abort it before starting a new one.");
                 else
-                    repo.Bisect("start");
+                    await repo.ExecBisectCommandAsync("start");
             }
 
             e.Handled = true;

@@ -116,10 +116,13 @@ namespace SourceGit.ViewModels
 
             Use(log);
 
-            var succ = await new Commands.Worktree(_repo.FullPath).Use(log).AddAsync(_path, branchName, _createNewBranch, tracking);
-            log.Complete();
+            var succ = await new Commands.Worktree(_repo.FullPath)
+                .Use(log)
+                .AddAsync(_path, branchName, _createNewBranch, tracking)
+                .ConfigureAwait(false);
 
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

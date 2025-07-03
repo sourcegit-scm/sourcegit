@@ -46,12 +46,8 @@ namespace SourceGit.ViewModels
                     await File.AppendAllLinesAsync(file, [_pattern]);
             }
 
-            await CallUIThreadAsync(() =>
-            {
-                _repo.MarkWorkingCopyDirtyManually();
-                _repo.SetWatcherEnabled(true);
-            });
-
+            _repo.MarkWorkingCopyDirtyManually();
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

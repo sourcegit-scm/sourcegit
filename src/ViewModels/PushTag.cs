@@ -48,18 +48,24 @@ namespace SourceGit.ViewModels
             {
                 foreach (var remote in _repo.Remotes)
                 {
-                    succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).ExecAsync();
+                    succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false)
+                        .Use(log)
+                        .ExecAsync()
+                        .ConfigureAwait(false);
                     if (!succ)
                         break;
                 }
             }
             else
             {
-                succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).ExecAsync();
+                succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
             }
 
             log.Complete();
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

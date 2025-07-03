@@ -58,8 +58,8 @@ namespace SourceGit.ViewModels
         {
             Task.Run(async () =>
             {
-                var result = await new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).ResultAsync();
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                var result = await new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).ReadAsync().ConfigureAwait(false);
+                Dispatcher.UIThread.Post(() =>
                 {
                     _data = result;
                     RefreshReport();

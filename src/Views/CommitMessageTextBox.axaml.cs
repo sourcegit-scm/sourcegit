@@ -212,9 +212,9 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void CopyAllText(object sender, RoutedEventArgs e)
+        private async void CopyAllText(object sender, RoutedEventArgs e)
         {
-            App.CopyText(Text);
+            await App.CopyTextAsync(Text);
             e.Handled = true;
         }
 

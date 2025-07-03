@@ -59,21 +59,24 @@ namespace SourceGit.ViewModels
                     {
                         Task.Run(async () =>
                         {
-                            var changes = await new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).ResultAsync();
-                            var untracked = new List<Models.Change>();
+                            var changes = await new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA)
+                                .ReadAsync()
+                                .ConfigureAwait(false);
 
+                            var untracked = new List<Models.Change>();
                             if (value.Parents.Count == 3)
                             {
-                                untracked = await new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2]).ResultAsync();
+                                untracked = await new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2])
+                                    .ReadAsync()
+                                    .ConfigureAwait(false);
+
                                 var needSort = changes.Count > 0 && untracked.Count > 0;
-
                                 changes.AddRange(untracked);
-
                                 if (needSort)
                                     changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                             }
 
-                            await Dispatcher.UIThread.InvokeAsync(() =>
+                            Dispatcher.UIThread.Post(() =>
                             {
                                 _untracked = untracked;
                                 Changes = changes;
@@ -198,9 +201,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("StashCM.CopyMessage");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(stash.Message);
+                await App.CopyTextAsync(stash.Message);
                 ev.Handled = true;
             };
 
@@ -272,18 +275,18 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
+            copyPath.Click += async (_, ev) =>
             {
-                App.CopyText(change.Path);
+                await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
 
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
+            copyFullPath.Click += async (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
+                await App.CopyTextAsync(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
                 e.Handled = true;
             };
 

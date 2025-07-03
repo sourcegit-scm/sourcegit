@@ -15,18 +15,20 @@ namespace SourceGit.Commands
         public async Task<bool> AddAsync(string url, string relativePath, bool recursive)
         {
             Args = $"-c protocol.file.allow=always submodule add \"{url}\" \"{relativePath}\"";
-            if (!await ExecAsync())
+
+            var succ = await ExecAsync().ConfigureAwait(false);
+            if (!succ)
                 return false;
 
             if (recursive)
             {
                 Args = $"submodule update --init --recursive -- \"{relativePath}\"";
-                return await ExecAsync();
+                return await ExecAsync().ConfigureAwait(false);
             }
             else
             {
                 Args = $"submodule update --init -- \"{relativePath}\"";
-                return true;
+                return await ExecAsync().ConfigureAwait(false);
             }
         }
 
@@ -49,19 +51,19 @@ namespace SourceGit.Commands
             }
 
             Args = builder.ToString();
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> DeinitAsync(string module, bool force)
         {
             Args = force ? $"submodule deinit -f -- \"{module}\"" : $"submodule deinit -- \"{module}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> DeleteAsync(string module)
         {
             Args = $"rm -rf \"{module}\"";
-            return await ExecAsync();
+            return await ExecAsync().ConfigureAwait(false);
         }
     }
 }

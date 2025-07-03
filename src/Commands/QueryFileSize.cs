@@ -15,9 +15,9 @@ namespace SourceGit.Commands
             Args = $"ls-tree {revision} -l -- \"{file}\"";
         }
 
-        public async Task<long> ResultAsync()
+        public async Task<long> GetResultAsync()
         {
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
                 var match = REG_FORMAT().Match(rs.StdOut);

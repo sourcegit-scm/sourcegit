@@ -3,8 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia.Threading;
-
 namespace SourceGit.ViewModels
 {
     public class Clone : Popup
@@ -68,19 +66,16 @@ namespace SourceGit.ViewModels
             if (string.IsNullOrEmpty(ParentFolder))
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
 
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    var text = await App.GetClipboardTextAsync();
-                    if (Models.Remote.IsValidURL(text))
-                        await Dispatcher.UIThread.InvokeAsync(() => Remote = text);
-                }
-                catch
-                {
-                    // ignore
-                }
-            });
+                var text = App.GetClipboardTextAsync().Result;
+                if (Models.Remote.IsValidURL(text))
+                    Remote = text;
+            }
+            catch
+            {
+                // Ignore
+            }
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
@@ -104,8 +99,12 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Clone");
             Use(log);
 
-            var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
-            if (!await cmd.ExecAsync())
+            var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs)
+                .Use(log)
+                .ExecAsync()
+                .ConfigureAwait(false);
+
+            if (succ)
                 return false;
 
             var path = _parentFolder;
@@ -132,37 +131,41 @@ namespace SourceGit.ViewModels
 
             if (_useSSH && !string.IsNullOrEmpty(_sshKey))
             {
-                var config = new Commands.Config(path);
-                await config.SetAsync("remote.origin.sshkey", _sshKey);
+                await new Commands.Config(path)
+                    .Use(log)
+                    .SetAsync("remote.origin.sshkey", _sshKey)
+                    .ConfigureAwait(false);
             }
 
             if (InitAndUpdateSubmodules)
             {
-                var submodules = await new Commands.QueryUpdatableSubmodules(path).ResultAsync();
+                var submodules = await new Commands.QueryUpdatableSubmodules(path)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
                 if (submodules.Count > 0)
-                    await new Commands.Submodule(path).Use(log).UpdateAsync(submodules, true, true);
+                    await new Commands.Submodule(path)
+                        .Use(log)
+                        .UpdateAsync(submodules, true, true)
+                        .ConfigureAwait(false);
             }
 
             log.Complete();
 
-            await CallUIThreadAsync(() =>
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+            var launcher = App.GetLauncher();
+            LauncherPage page = null;
+            foreach (var one in launcher.Pages)
             {
-                var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
-                var launcher = App.GetLauncher();
-                LauncherPage page = null;
-                foreach (var one in launcher.Pages)
+                if (one.Node.Id == _pageId)
                 {
-                    if (one.Node.Id == _pageId)
-                    {
-                        page = one;
-                        break;
-                    }
+                    page = one;
+                    break;
                 }
+            }
 
-                Welcome.Instance.Refresh();
-                launcher.OpenRepositoryInTab(node, page);
-            });
-
+            Welcome.Instance.Refresh();
+            launcher.OpenRepositoryInTab(node, page);
             return true;
         }
 

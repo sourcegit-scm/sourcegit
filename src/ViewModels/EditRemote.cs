@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
 
             if (_useSSH)
             {
-                SSHKey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
+                SSHKey = new Commands.Config(repo.FullPath).GetAsync($"remote.{remote.Name}.sshkey").Result;
             }
         }
 
@@ -107,25 +107,36 @@ namespace SourceGit.ViewModels
 
             if (_remote.Name != _name)
             {
-                var succ = await new Commands.Remote(_repo.FullPath).RenameAsync(_remote.Name, _name);
+                var succ = await new Commands.Remote(_repo.FullPath)
+                    .RenameAsync(_remote.Name, _name)
+                    .ConfigureAwait(false);
                 if (succ)
                     _remote.Name = _name;
             }
 
             if (_remote.URL != _url)
             {
-                var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false);
+                var succ = await new Commands.Remote(_repo.FullPath)
+                    .SetURLAsync(_name, _url, false)
+                    .ConfigureAwait(false);
                 if (succ)
                     _remote.URL = _url;
             }
 
-            var pushURL = await new Commands.Remote(_repo.FullPath).GetURLAsync(_name, true);
+            var pushURL = await new Commands.Remote(_repo.FullPath)
+                .GetURLAsync(_name, true)
+                .ConfigureAwait(false);
+
             if (pushURL != _url)
-                await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
+                await new Commands.Remote(_repo.FullPath)
+                    .SetURLAsync(_name, _url, true)
+                    .ConfigureAwait(false);
 
-            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+            await new Commands.Config(_repo.FullPath)
+                .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null)
+                .ConfigureAwait(false);
 
-            await CallUIThreadAsync(() => _repo.SetWatcherEnabled(true));
+            _repo.SetWatcherEnabled(true);
             return true;
         }
 

@@ -20,6 +20,11 @@ namespace SourceGit.Commands
                 Args = args;
                 Log = log;
             }
+
+            public async Task<Result> ReadAsync()
+            {
+                return await ReadToEndAsync().ConfigureAwait(false);
+            }
         }
 
         public LFS(string repo)
@@ -39,40 +44,40 @@ namespace SourceGit.Commands
 
         public async Task<bool> InstallAsync(Models.ICommandLog log)
         {
-            return await new SubCmd(_repo, "lfs install --local", log).ExecAsync();
+            return await new SubCmd(_repo, "lfs install --local", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> TrackAsync(string pattern, bool isFilenameMode, Models.ICommandLog log)
         {
             var opt = isFilenameMode ? "--filename" : "";
-            return await new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", log).ExecAsync();
+            return await new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task FetchAsync(string remote, Models.ICommandLog log)
         {
-            await new SubCmd(_repo, $"lfs fetch {remote}", log).ExecAsync();
+            await new SubCmd(_repo, $"lfs fetch {remote}", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task PullAsync(string remote, Models.ICommandLog log)
         {
-            await new SubCmd(_repo, $"lfs pull {remote}", log).ExecAsync();
+            await new SubCmd(_repo, $"lfs pull {remote}", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task PushAsync(string remote, Models.ICommandLog log)
         {
-            await new SubCmd(_repo, $"lfs push {remote}", log).ExecAsync();
+            await new SubCmd(_repo, $"lfs push {remote}", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task PruneAsync(Models.ICommandLog log)
         {
-            await new SubCmd(_repo, "lfs prune", log).ExecAsync();
+            await new SubCmd(_repo, "lfs prune", log).ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<List<Models.LFSLock>> LocksAsync(string remote)
+        public async Task<List<Models.LFSLock>> GetLocksAsync(string remote)
         {
             var locks = new List<Models.LFSLock>();
             var cmd = new SubCmd(_repo, $"lfs locks --remote={remote}", null);
-            var rs = await cmd.ReadToEndAsync();
+            var rs = await cmd.ReadAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
                 var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
@@ -96,19 +101,19 @@ namespace SourceGit.Commands
 
         public async Task<bool> LockAsync(string remote, string file, Models.ICommandLog log)
         {
-            return await new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", log).ExecAsync();
+            return await new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string remote, string file, bool force, Models.ICommandLog log)
         {
             var opt = force ? "-f" : "";
-            return await new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", log).ExecAsync();
+            return await new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string remote, long id, bool force, Models.ICommandLog log)
         {
             var opt = force ? "-f" : "";
-            return await new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} --id={id}", log).ExecAsync();
+            return await new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} --id={id}", log).ExecAsync().ConfigureAwait(false);
         }
 
         private readonly string _repo;

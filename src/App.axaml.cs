@@ -146,6 +146,18 @@ namespace SourceGit
             }
         }
 
+        public static async Task<bool> AskConfirmAsync(string message, Action onSure)
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var confirm = new Views.Confirm();
+                confirm.Message.Text = message;
+                return await confirm.ShowDialog<bool>(owner);
+            }
+
+            return false;
+        }
+
         public static void RaiseException(string context, string message)
         {
             if (Current is App { _launcher: not null } app)
@@ -281,7 +293,7 @@ namespace SourceGit
             }
         }
 
-        public static async void CopyText(string data)
+        public static async Task CopyTextAsync(string data)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
                 await clipboard.SetTextAsync(data ?? "");
@@ -571,7 +583,7 @@ namespace SourceGit
         {
             if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
-                var test = new Commands.QueryRepositoryRootPath(repo).ReadToEnd();
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResultAsync().Result;
                 if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                 {
                     Dispatcher.UIThread.Invoke(() =>

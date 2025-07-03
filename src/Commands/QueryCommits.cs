@@ -57,9 +57,9 @@ namespace SourceGit.Commands
             _findFirstMerged = false;
         }
 
-        public List<Models.Commit> Result()
+        public async Task<List<Models.Commit>> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return _commits;
 
@@ -111,7 +111,7 @@ namespace SourceGit.Commands
                 _current.Subject = rs.StdOut.Substring(start);
 
             if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
-                MarkFirstMerged();
+                await MarkFirstMergedAsync().ConfigureAwait(false);
 
             return _commits;
         }
@@ -124,90 +124,11 @@ namespace SourceGit.Commands
             _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private void MarkFirstMerged()
-        {
-            Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
-
-            var rs = ReadToEnd();
-            var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            if (shas.Length == 0)
-                return;
-
-            var set = new HashSet<string>(shas);
-            foreach (var c in _commits)
-            {
-                if (set.Contains(c.SHA))
-                {
-                    c.IsMerged = true;
-                    break;
-                }
-            }
-        }
-
-        public async Task<List<Models.Commit>> ResultAsync()
-        {
-            var rs = await ReadToEndAsync();
-            if (!rs.IsSuccess)
-                return _commits;
-
-            var nextPartIdx = 0;
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
-            {
-                var line = rs.StdOut.Substring(start, end - start);
-                switch (nextPartIdx)
-                {
-                    case 0:
-                        _current = new Models.Commit() { SHA = line };
-                        _commits.Add(_current);
-                        break;
-                    case 1:
-                        ParseParent(line);
-                        break;
-                    case 2:
-                        _current.ParseDecorators(line);
-                        if (_current.IsMerged && !_isHeadFounded)
-                            _isHeadFounded = true;
-                        break;
-                    case 3:
-                        _current.Author = Models.User.FindOrAdd(line);
-                        break;
-                    case 4:
-                        _current.AuthorTime = ulong.Parse(line);
-                        break;
-                    case 5:
-                        _current.Committer = Models.User.FindOrAdd(line);
-                        break;
-                    case 6:
-                        _current.CommitterTime = ulong.Parse(line);
-                        break;
-                    case 7:
-                        _current.Subject = line;
-                        nextPartIdx = -1;
-                        break;
-                }
-
-                nextPartIdx++;
-
-                start = end + 1;
-                end = rs.StdOut.IndexOf('\n', start);
-            }
-
-            if (start < rs.StdOut.Length)
-                _current.Subject = rs.StdOut.Substring(start);
-
-            if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
-                await MarkFirstMergedAsync();
-
-            return _commits;
-        }
-
         private async Task MarkFirstMergedAsync()
         {
             Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
 
-            var rs = await ReadToEndAsync();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             if (shas.Length == 0)
                 return;

@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
         {
             Preferences.Instance.RemoveNode(Node, true);
             Welcome.Instance.Refresh();
-            return null;
+            return Task.FromResult(true);
         }
     }
 }
