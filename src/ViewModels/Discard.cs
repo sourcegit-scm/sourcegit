@@ -64,6 +64,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Discard all");
             Use(log);
 
+            if (Preferences.Instance.DiscardChangedOnBin)
+                await Commands.SaveDiscardOnTrash.ProcessSaveDiscardOnTrash(_repo.FullPath, _changes);
+
             if (Mode is DiscardAllMode all)
                 await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
             else
