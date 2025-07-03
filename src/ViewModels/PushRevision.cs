@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
                 false,
                 false,
                 false,
-                Force).Use(log).ExecAsync().ConfigureAwait(false);
+                Force).Use(log).RunAsync();
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

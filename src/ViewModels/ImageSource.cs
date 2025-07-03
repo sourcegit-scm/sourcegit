@@ -38,13 +38,13 @@ namespace SourceGit.ViewModels
         public static async Task<ImageSource> FromFileAsync(string fullpath, Models.ImageDecoder decoder)
         {
             await using (var stream = File.OpenRead(fullpath))
-                return await Task.Run(() => LoadFromStream(stream, decoder));
+                return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
         public static async Task<ImageSource> FromRevisionAsync(string repo, string revision, string file, Models.ImageDecoder decoder)
         {
             var stream = await Commands.QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
-            return await Task.Run(() => LoadFromStream(stream, decoder));
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
         public static async Task<ImageSource> FromLFSObjectAsync(string repo, Models.LFSObject lfs, Models.ImageDecoder decoder)
@@ -53,7 +53,7 @@ namespace SourceGit.ViewModels
                 return new ImageSource(null, 0);
 
             var stream = await Commands.QueryFileContent.FromLFSAsync(repo, lfs.Oid, lfs.Size).ConfigureAwait(false);
-            return await Task.Run(() => LoadFromStream(stream, decoder));
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
         private static ImageSource LoadFromStream(Stream stream, Models.ImageDecoder decoder)

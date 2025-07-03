@@ -59,8 +59,7 @@ namespace SourceGit.ViewModels
             var isCurrent = Target.IsCurrent;
             var oldName = Target.FullName;
             var succ = await Commands.Branch
-                .RenameAsync(_repo.FullPath, Target.Name, fixedName, log)
-                .ConfigureAwait(false);
+                .RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
 
             if (succ)
             {

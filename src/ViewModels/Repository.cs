@@ -1113,10 +1113,7 @@ namespace SourceGit.ViewModels
             var succ = await new Commands.Bisect(_fullpath, subcmd).Use(log).ExecAsync();
             log.Complete();
 
-            var head = await new Commands.QueryRevisionByRefName(_fullpath, "HEAD")
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var head = await new Commands.QueryRevisionByRefName(_fullpath, "HEAD").GetResultAsync();
             if (!succ)
                 App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
             else if (log.Content.Contains("is the first bad commit"))
@@ -1345,7 +1342,7 @@ namespace SourceGit.ViewModels
             if (_currentBranch is not { IsDetachedHead: true })
                 return true;
 
-            var refs = await new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).GetResultAsync().ConfigureAwait(false);
+            var refs = await new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).GetResultAsync();
             if (refs.Count == 0)
             {
                 var msg = App.Text("Checkout.WarnLostCommits");
@@ -2018,7 +2015,7 @@ namespace SourceGit.ViewModels
 
                         if (_histories != null)
                         {
-                            var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync().ConfigureAwait(false);
+                            var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync();
                             _histories.AutoSelectedCommit = null;
                             _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
@@ -2297,7 +2294,7 @@ namespace SourceGit.ViewModels
 
                     if (_histories != null)
                     {
-                        var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync().ConfigureAwait(false);
+                        var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync();
                         _histories.AutoSelectedCommit = null;
                         _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                     }
@@ -2965,7 +2962,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
                 foreach (var remote in remotes)
-                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.ExecAsync();
+                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }

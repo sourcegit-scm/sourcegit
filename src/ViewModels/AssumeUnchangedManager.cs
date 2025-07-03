@@ -18,8 +18,7 @@ namespace SourceGit.ViewModels
                 var collect = await new Commands.QueryAssumeUnchangedFiles(_repo.FullPath)
                     .GetResultAsync()
                     .ConfigureAwait(false);
-
-                await Dispatcher.UIThread.InvokeAsync(() => Files.AddRange(collect));
+                Dispatcher.UIThread.Post(() => Files.AddRange(collect));
             });
         }
 
@@ -31,8 +30,7 @@ namespace SourceGit.ViewModels
 
                 await new Commands.AssumeUnchanged(_repo.FullPath, file, false)
                     .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                    .ExecAsync();
 
                 log.Complete();
                 Files.Remove(file);

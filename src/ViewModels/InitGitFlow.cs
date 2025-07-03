@@ -114,7 +114,7 @@ namespace SourceGit.ViewModels
             var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
             if (masterBranch == null)
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _master, current.Head, true, log).ConfigureAwait(false);
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _master, current.Head, true, log);
                 if (!succ)
                 {
                     log.Complete();
@@ -126,7 +126,7 @@ namespace SourceGit.ViewModels
             var developBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_develop, StringComparison.Ordinal));
             if (developBranch == null)
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _develop, current.Head, true, log).ConfigureAwait(false);
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _develop, current.Head, true, log);
                 if (!succ)
                 {
                     log.Complete();
@@ -143,7 +143,7 @@ namespace SourceGit.ViewModels
                 _releasePrefix,
                 _hotfixPrefix,
                 _tagPrefix,
-                log).ConfigureAwait(false);
+                log);
 
             log.Complete();
 

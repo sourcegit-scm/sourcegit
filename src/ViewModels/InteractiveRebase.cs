@@ -214,8 +214,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Interactive Rebase");
             var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .ExecAsync();
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

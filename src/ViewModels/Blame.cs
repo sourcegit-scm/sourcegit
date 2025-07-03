@@ -139,7 +139,7 @@ namespace SourceGit.ViewModels
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         if (!token.IsCancellationRequested)
                         {
@@ -156,7 +156,7 @@ namespace SourceGit.ViewModels
                     .ReadAsync()
                     .ConfigureAwait(false);
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     if (!token.IsCancellationRequested)
                         Data = result;

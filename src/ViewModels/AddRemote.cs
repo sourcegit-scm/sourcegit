@@ -97,20 +97,17 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Remote(_repo.FullPath)
                 .Use(log)
-                .AddAsync(_name, _url)
-                .ConfigureAwait(false);
+                .AddAsync(_name, _url);
 
             if (succ)
             {
                 await new Commands.Config(_repo.FullPath)
                     .Use(log)
-                    .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null)
-                    .ConfigureAwait(false);
+                    .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
                 await new Commands.Fetch(_repo.FullPath, _name, false, false)
                     .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                    .RunAsync();
             }
 
             log.Complete();

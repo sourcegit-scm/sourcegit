@@ -125,7 +125,7 @@ namespace SourceGit.Views
                 if (tooltip is Models.Commit commit && commit.SHA.Equals(sha, StringComparison.Ordinal))
                     return;
 
-                var c = await detail.GetCommitAsync(sha).ConfigureAwait(false);
+                var c = await detail.GetCommitAsync(sha);
                 if (c is not null && ctl is { IsEffectivelyVisible: true, DataContext: string newSHA } && sha.Equals(newSHA, StringComparison.Ordinal))
                     ToolTip.SetTip(ctl, c);
             }

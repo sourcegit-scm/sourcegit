@@ -31,17 +31,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Tag");
             Use(log);
 
-            var succ = await Commands.Tag
-                .DeleteAsync(_repo.FullPath, Target.Name, log)
-                .ConfigureAwait(false);
-
+            var succ = await Commands.Tag.DeleteAsync(_repo.FullPath, Target.Name, log);
             if (succ)
             {
                 foreach (var r in remotes)
                     await new Commands.Push(_repo.FullPath, r.Name, $"refs/tags/{Target.Name}", true)
                         .Use(log)
-                        .ExecAsync()
-                        .ConfigureAwait(false);
+                        .RunAsync();
             }
 
             log.Complete();

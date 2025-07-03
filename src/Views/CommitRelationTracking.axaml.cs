@@ -13,7 +13,7 @@ namespace SourceGit.Views
         public async Task SetDataAsync(ViewModels.CommitDetail detail)
         {
             LoadingIcon.IsVisible = true;
-            var containsIn = await detail.GetRefsContainsThisCommitAsync().ConfigureAwait(false);
+            var containsIn = await detail.GetRefsContainsThisCommitAsync();
             Container.ItemsSource = containsIn;
             LoadingIcon.IsVisible = false;
         }

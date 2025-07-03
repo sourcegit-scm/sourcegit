@@ -85,17 +85,16 @@ namespace SourceGit.ViewModels
 
             bool succ;
             if (_annotated)
-                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log).ConfigureAwait(false);
+                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log);
             else
-                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, log).ConfigureAwait(false);
+                succ = await Commands.Tag.AddAsync(_repo.FullPath, _tagName, _basedOn, log);
 
             if (succ && remotes != null)
             {
                 foreach (var remote in remotes)
                     await new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false)
                         .Use(log)
-                        .ExecAsync()
-                        .ConfigureAwait(false);
+                        .RunAsync();
             }
 
             log.Complete();

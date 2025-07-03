@@ -50,8 +50,7 @@ namespace SourceGit.ViewModels
                 {
                     succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false)
                         .Use(log)
-                        .ExecAsync()
-                        .ConfigureAwait(false);
+                        .RunAsync();
                     if (!succ)
                         break;
                 }
@@ -60,8 +59,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false)
                     .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                    .RunAsync();
             }
 
             log.Complete();

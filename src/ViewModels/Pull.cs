@@ -119,25 +119,17 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath)
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
             var needPopStash = false;
             if (changes > 0)
             {
                 if (DiscardLocalChanges)
                 {
-                    await Commands.Discard
-                        .AllAsync(_repo.FullPath, false, log)
-                        .ConfigureAwait(false);
+                    await Commands.Discard.AllAsync(_repo.FullPath, false, log);
                 }
                 else
                 {
-                    var succ = await new Commands.Stash(_repo.FullPath)
-                        .Use(log)
-                        .PushAsync("PULL_AUTO_STASH")
-                        .ConfigureAwait(false);
+                    var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH");
                     if (!succ)
                     {
                         log.Complete();
@@ -153,38 +145,23 @@ namespace SourceGit.ViewModels
                 _repo.FullPath,
                 _selectedRemote.Name,
                 !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                UseRebase)
-                .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
-
+                UseRebase).Use(log).RunAsync();
             if (rs)
             {
                 if (updateSubmodules)
                 {
-                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
                     if (submodules.Count > 0)
-                        await new Commands.Submodule(_repo.FullPath)
-                            .Use(log)
-                            .UpdateAsync(submodules, true, true)
-                            .ConfigureAwait(false);
+                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
                 }
 
                 if (needPopStash)
-                    await new Commands.Stash(_repo.FullPath)
-                        .Use(log)
-                        .PopAsync("stash@{0}")
-                        .ConfigureAwait(false);
+                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
             }
 
             log.Complete();
 
-            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD")
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
             _repo.NavigateToCommit(head, true);
             _repo.SetWatcherEnabled(true);
             return rs;

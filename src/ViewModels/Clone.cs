@@ -101,9 +101,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
-
+                .ExecAsync();
             if (succ)
                 return false;
 
@@ -133,21 +131,16 @@ namespace SourceGit.ViewModels
             {
                 await new Commands.Config(path)
                     .Use(log)
-                    .SetAsync("remote.origin.sshkey", _sshKey)
-                    .ConfigureAwait(false);
+                    .SetAsync("remote.origin.sshkey", _sshKey);
             }
 
             if (InitAndUpdateSubmodules)
             {
-                var submodules = await new Commands.QueryUpdatableSubmodules(path)
-                    .GetResultAsync()
-                    .ConfigureAwait(false);
-
+                var submodules = await new Commands.QueryUpdatableSubmodules(path).GetResultAsync();
                 if (submodules.Count > 0)
                     await new Commands.Submodule(path)
                         .Use(log)
-                        .UpdateAsync(submodules, true, true)
-                        .ConfigureAwait(false);
+                        .UpdateAsync(submodules, true, true);
             }
 
             log.Complete();

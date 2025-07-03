@@ -1924,7 +1924,7 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                await Dispatcher.UIThread.InvokeAsync(async () =>
+                Dispatcher.UIThread.Post(async () =>
                 {
                     if (succ)
                     {
@@ -1935,7 +1935,7 @@ namespace SourceGit.ViewModels
                         {
                             if (_repo.CurrentBranch == null)
                             {
-                                var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync().ConfigureAwait(false);
+                                var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync();
                                 var tmp = new Models.Branch() { Name = currentBranchName };
                                 _repo.ShowAndStartPopup(new Push(_repo, tmp));
                             }

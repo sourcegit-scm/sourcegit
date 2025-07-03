@@ -31,9 +31,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Add Custom Pattern");
             Use(log);
 
-            var succ = await new Commands.LFS(_repo.FullPath)
-                .TrackAsync(_pattern, IsFilename, log)
-                .ConfigureAwait(false);
+            var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(_pattern, IsFilename, log);
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

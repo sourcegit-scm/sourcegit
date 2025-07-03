@@ -70,8 +70,7 @@ namespace SourceGit.ViewModels
                     {
                         succ = await new Commands.Stash(_repo.FullPath)
                             .Use(log)
-                            .PushOnlyStagedAsync(Message, keepIndex)
-                            .ConfigureAwait(false);
+                            .PushOnlyStagedAsync(Message, keepIndex);
                     }
                     else
                     {
@@ -89,8 +88,7 @@ namespace SourceGit.ViewModels
                 {
                     succ = await new Commands.Stash(_repo.FullPath)
                         .Use(log)
-                        .PushAsync(Message, IncludeUntracked, keepIndex)
-                        .ConfigureAwait(false);
+                        .PushAsync(Message, IncludeUntracked, keepIndex);
                 }
             }
             else
@@ -101,8 +99,7 @@ namespace SourceGit.ViewModels
             if (mode == DealWithChangesAfterStashing.KeepAll && succ)
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .ApplyAsync("stash@{0}", true)
-                    .ConfigureAwait(false);
+                    .ApplyAsync("stash@{0}", true);
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();

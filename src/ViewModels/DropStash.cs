@@ -21,8 +21,7 @@ namespace SourceGit.ViewModels
 
             await new Commands.Stash(_repo.FullPath)
                 .Use(log)
-                .DropAsync(Stash.Name)
-                .ConfigureAwait(false);
+                .DropAsync(Stash.Name);
 
             log.Complete();
             return true;

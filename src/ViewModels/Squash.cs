@@ -40,8 +40,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PushAsync("SQUASH_AUTO_STASH")
-                    .ConfigureAwait(false);
+                    .PushAsync("SQUASH_AUTO_STASH");
 
                 if (!succ)
                 {
@@ -55,20 +54,17 @@ namespace SourceGit.ViewModels
 
             succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft")
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .ExecAsync();
 
             if (succ)
                 succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false)
                     .Use(log)
-                    .RunAsync()
-                    .ConfigureAwait(false);
+                    .RunAsync();
 
             if (succ && autoStashed)
                 await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PopAsync("stash@{0}")
-                    .ConfigureAwait(false);
+                    .PopAsync("stash@{0}");
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

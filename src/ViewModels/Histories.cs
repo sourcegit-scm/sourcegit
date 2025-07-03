@@ -602,7 +602,7 @@ namespace SourceGit.ViewModels
                                 {
                                     var parent = _commits.Find(x => x.SHA == sha);
                                     if (parent == null)
-                                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync().ConfigureAwait(false);
+                                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
 
                                     if (parent != null)
                                         parents.Add(parent);
@@ -692,7 +692,7 @@ namespace SourceGit.ViewModels
                     if (head == null)
                     {
                         _repo.SelectedSearchedCommit = null;
-                        head = await new Commands.QuerySingleCommit(_repo.FullPath, current.Head).GetResultAsync().ConfigureAwait(false);
+                        head = await new Commands.QuerySingleCommit(_repo.FullPath, current.Head).GetResultAsync();
                         if (head != null)
                             DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
                     }

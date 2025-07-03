@@ -26,8 +26,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Remote(_repo.FullPath)
                 .Use(log)
-                .DeleteAsync(Remote.Name)
-                .ConfigureAwait(false);
+                .DeleteAsync(Remote.Name);
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();

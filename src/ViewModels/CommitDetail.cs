@@ -282,10 +282,7 @@ namespace SourceGit.ViewModels
                 if (storageFile != null)
                 {
                     var saveTo = storageFile.Path.LocalPath;
-                    var succ = await Commands.SaveChangesAsPatch
-                        .ProcessRevisionCompareChangesAsync(_repo.FullPath, changes, baseRevision, _commit.SHA, saveTo)
-                        .ConfigureAwait(false);
-
+                    var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo.FullPath, changes, baseRevision, _commit.SHA, saveTo);
                     if (succ)
                         App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                 }
@@ -334,7 +331,7 @@ namespace SourceGit.ViewModels
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_commit, change);
 
-                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt));
+                _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
                 ev.Handled = true;
             };
 
@@ -829,10 +826,7 @@ namespace SourceGit.ViewModels
                 lfsLock.Click += async (_, e) =>
                 {
                     var log = _repo.CreateLog("Lock LFS file");
-                    var succ = await new Commands.LFS(_repo.FullPath)
-                        .LockAsync(_repo.Remotes[0].Name, path, log)
-                        .ConfigureAwait(false);
-
+                    var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, path, log);
                     if (succ)
                         App.SendNotification(_repo.FullPath, $"Lock file \"{path}\" successfully!");
 
@@ -850,10 +844,7 @@ namespace SourceGit.ViewModels
                     lockRemote.Click += async (_, e) =>
                     {
                         var log = _repo.CreateLog("Lock LFS file");
-                        var succ = await new Commands.LFS(_repo.FullPath)
-                            .LockAsync(remoteName, path, log)
-                            .ConfigureAwait(false);
-
+                        var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, path, log);
                         if (succ)
                             App.SendNotification(_repo.FullPath, $"Lock file \"{path}\" successfully!");
 
@@ -873,10 +864,7 @@ namespace SourceGit.ViewModels
                 lfsUnlock.Click += async (_, e) =>
                 {
                     var log = _repo.CreateLog("Unlock LFS file");
-                    var succ = await new Commands.LFS(_repo.FullPath)
-                        .UnlockAsync(_repo.Remotes[0].Name, path, false, log)
-                        .ConfigureAwait(false);
-
+                    var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, path, false, log);
                     if (succ)
                         App.SendNotification(_repo.FullPath, $"Unlock file \"{path}\" successfully!");
 
@@ -894,10 +882,7 @@ namespace SourceGit.ViewModels
                     unlockRemote.Click += async (_, e) =>
                     {
                         var log = _repo.CreateLog("Unlock LFS file");
-                        var succ = await new Commands.LFS(_repo.FullPath)
-                            .UnlockAsync(remoteName, path, false, log)
-                            .ConfigureAwait(false);
-
+                        var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, path, false, log);
                         if (succ)
                             App.SendNotification(_repo.FullPath, $"Unlock file \"{path}\" successfully!");
 
@@ -974,36 +959,26 @@ namespace SourceGit.ViewModels
 
         private async Task SetViewingBlobAsync(Models.Object file)
         {
-            var isBinary = await new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path)
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var isBinary = await new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path).GetResultAsync();
             if (isBinary)
             {
                 var imgDecoder = ImageSource.GetDecoder(file.Path);
                 if (imgDecoder != Models.ImageDecoder.None)
                 {
-                    var source = await ImageSource.FromRevisionAsync(_repo.FullPath, _commit.SHA, file.Path, imgDecoder).ConfigureAwait(false);
+                    var source = await ImageSource.FromRevisionAsync(_repo.FullPath, _commit.SHA, file.Path, imgDecoder);
                     ViewRevisionFileContent = new Models.RevisionImageFile(file.Path, source.Bitmap, source.Size);
                 }
                 else
                 {
-                    var size = await new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
+                    var size = await new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).GetResultAsync();
                     ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
                 }
 
                 return;
             }
 
-            var contentStream = await Commands.QueryFileContent
-                .RunAsync(_repo.FullPath, _commit.SHA, file.Path)
-                .ConfigureAwait(false);
-            var content = await new StreamReader(contentStream)
-                .ReadToEndAsync()
-                .ConfigureAwait(false);
-
+            var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _commit.SHA, file.Path);
+            var content = await new StreamReader(contentStream).ReadToEndAsync();
             var lfs = Models.LFSObject.Parse(content);
             if (lfs != null)
             {
@@ -1022,10 +997,7 @@ namespace SourceGit.ViewModels
         private async Task SetViewingCommitAsync(Models.Object file)
         {
             var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
-            var commit = await new Commands.QuerySingleCommit(submoduleRoot, file.SHA)
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var commit = await new Commands.QuerySingleCommit(submoduleRoot, file.SHA).GetResultAsync();
             if (commit == null)
             {
                 ViewRevisionFileContent = new Models.RevisionSubmodule()
@@ -1036,10 +1008,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var message = await new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA)
-                    .GetResultAsync()
-                    .ConfigureAwait(false);
-
+                var message = await new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).GetResultAsync();
                 ViewRevisionFileContent = new Models.RevisionSubmodule()
                 {
                     Commit = commit,

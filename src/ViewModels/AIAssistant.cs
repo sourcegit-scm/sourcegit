@@ -62,10 +62,10 @@ namespace SourceGit.ViewModels
             {
                 await new Commands.GenerateCommitMessage(_service, _repo.FullPath, _changes, _cancel.Token, message =>
                 {
-                    Dispatcher.UIThread.Invoke(() => Text = message);
-                }).ExecAsync();
+                    Dispatcher.UIThread.Post(() => Text = message);
+                }).ExecAsync().ConfigureAwait(false);
 
-                await Dispatcher.UIThread.InvokeAsync(() => IsGenerating = false);
+                Dispatcher.UIThread.Post(() => IsGenerating = false);
             }, _cancel.Token);
         }
 

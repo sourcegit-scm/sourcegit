@@ -118,8 +118,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Worktree(_repo.FullPath)
                 .Use(log)
-                .AddAsync(_path, branchName, _createNewBranch, tracking)
-                .ConfigureAwait(false);
+                .AddAsync(_path, branchName, _createNewBranch, tracking);
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

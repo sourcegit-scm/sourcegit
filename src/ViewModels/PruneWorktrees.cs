@@ -19,8 +19,7 @@ namespace SourceGit.ViewModels
 
             await new Commands.Worktree(_repo.FullPath)
                 .Use(log)
-                .PruneAsync()
-                .ConfigureAwait(false);
+                .PruneAsync();
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

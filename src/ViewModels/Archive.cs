@@ -54,8 +54,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Archive(_repo.FullPath, _revision, _saveFile)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .ExecAsync();
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

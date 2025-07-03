@@ -81,8 +81,7 @@ namespace SourceGit.ViewModels
                     AppendSourceToMessage,
                     $"-m {MainlineForMergeCommit + 1}")
                     .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                    .ExecAsync();
             }
             else
             {
@@ -93,8 +92,7 @@ namespace SourceGit.ViewModels
                     AppendSourceToMessage,
                     string.Empty)
                     .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                    .ExecAsync();
             }
 
             log.Complete();

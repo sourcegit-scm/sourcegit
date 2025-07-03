@@ -67,15 +67,11 @@ namespace SourceGit.ViewModels
 
             await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .ExecAsync();
 
             log.Complete();
 
-            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD")
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
             _repo.NavigateToCommit(head, true);
             _repo.SetWatcherEnabled(true);
             return true;

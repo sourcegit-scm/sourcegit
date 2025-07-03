@@ -68,15 +68,13 @@ namespace SourceGit.ViewModels
                 foreach (var remote in _repo.Remotes)
                     await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
                         .Use(log)
-                        .ExecAsync()
-                        .ConfigureAwait(false);
+                        .RunAsync();
             }
             else
             {
                 await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
                     .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                    .RunAsync();
             }
 
             log.Complete();
@@ -84,9 +82,7 @@ namespace SourceGit.ViewModels
             var upstream = _repo.CurrentBranch?.Upstream;
             if (!string.IsNullOrEmpty(upstream))
             {
-                var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13))
-                    .GetResultAsync()
-                    .ConfigureAwait(false);
+                var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
                 _repo.NavigateToCommit(upstreamHead, true);
             }
 

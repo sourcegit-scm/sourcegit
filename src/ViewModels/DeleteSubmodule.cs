@@ -26,8 +26,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Submodule(_repo.FullPath)
                 .Use(log)
-                .DeleteAsync(Submodule)
-                .ConfigureAwait(false);
+                .DeleteAsync(Submodule);
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

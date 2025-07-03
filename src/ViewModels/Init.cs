@@ -33,8 +33,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Init(_pageId, _targetPath)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .ExecAsync();
 
             log.Complete();
 

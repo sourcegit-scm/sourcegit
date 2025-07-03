@@ -31,15 +31,11 @@ namespace SourceGit.ViewModels
 
             await new Commands.Fetch(_repo.FullPath, Local, Upstream)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .RunAsync();
 
             log.Complete();
 
-            var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name)
-                .GetResultAsync()
-                .ConfigureAwait(false);
-
+            var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).GetResultAsync();
             _repo.NavigateToCommit(newHead, true);
             _repo.SetWatcherEnabled(true);
             return true;

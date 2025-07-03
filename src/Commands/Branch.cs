@@ -62,7 +62,7 @@ namespace SourceGit.Commands
         {
             bool exists = await new Remote(repo).HasBranchAsync(remote, name).ConfigureAwait(false);
             if (exists)
-                return await new Push(repo, remote, $"refs/heads/{name}", true) { Log = log }.ExecAsync().ConfigureAwait(false);
+                return await new Push(repo, remote, $"refs/heads/{name}", true) { Log = log }.RunAsync().ConfigureAwait(false);
 
             var cmd = new Command();
             cmd.WorkingDirectory = repo;

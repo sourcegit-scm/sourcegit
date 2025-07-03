@@ -33,8 +33,7 @@ namespace SourceGit.ViewModels
 
             await new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit)
                 .Use(log)
-                .ExecAsync()
-                .ConfigureAwait(false);
+                .ExecAsync();
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

@@ -53,9 +53,7 @@ namespace SourceGit.ViewModels
             _useSSH = Models.Remote.IsSSH(remote.URL);
 
             if (_useSSH)
-            {
                 SSHKey = new Commands.Config(repo.FullPath).GetAsync($"remote.{remote.Name}.sshkey").Result;
-            }
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)
@@ -107,34 +105,23 @@ namespace SourceGit.ViewModels
 
             if (_remote.Name != _name)
             {
-                var succ = await new Commands.Remote(_repo.FullPath)
-                    .RenameAsync(_remote.Name, _name)
-                    .ConfigureAwait(false);
+                var succ = await new Commands.Remote(_repo.FullPath).RenameAsync(_remote.Name, _name);
                 if (succ)
                     _remote.Name = _name;
             }
 
             if (_remote.URL != _url)
             {
-                var succ = await new Commands.Remote(_repo.FullPath)
-                    .SetURLAsync(_name, _url, false)
-                    .ConfigureAwait(false);
+                var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false);
                 if (succ)
                     _remote.URL = _url;
             }
 
-            var pushURL = await new Commands.Remote(_repo.FullPath)
-                .GetURLAsync(_name, true)
-                .ConfigureAwait(false);
-
+            var pushURL = await new Commands.Remote(_repo.FullPath).GetURLAsync(_name, true);
             if (pushURL != _url)
-                await new Commands.Remote(_repo.FullPath)
-                    .SetURLAsync(_name, _url, true)
-                    .ConfigureAwait(false);
+                await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
 
-            await new Commands.Config(_repo.FullPath)
-                .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null)
-                .ConfigureAwait(false);
+            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
             _repo.SetWatcherEnabled(true);
             return true;

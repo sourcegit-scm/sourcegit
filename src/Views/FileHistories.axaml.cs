@@ -29,7 +29,7 @@ namespace SourceGit.Views
         {
             if (sender is Button { DataContext: ViewModels.FileHistoriesSingleRevision single })
             {
-                await single.ResetToSelectedRevisionAsync().ConfigureAwait(false);
+                await single.ResetToSelectedRevisionAsync();
                 NotifyDonePanel.IsVisible = true;
             }
 

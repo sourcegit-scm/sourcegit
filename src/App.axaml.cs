@@ -148,14 +148,6 @@ namespace SourceGit
 
         public static async Task<bool> AskConfirmAsync(string message, Action onSure)
         {
-            if (!Dispatcher.UIThread.CheckAccess())
-            {
-                return await Dispatcher.UIThread.InvokeAsync<bool>(async () =>
-                {
-                    return await AskConfirmAsync(message, onSure);
-                });
-            }
-
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
             {
                 var confirm = new Views.Confirm();

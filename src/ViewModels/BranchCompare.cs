@@ -133,7 +133,7 @@ namespace SourceGit.ViewModels
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_based.Head, _to.Head, change);
 
-                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
+                _ = Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt);
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);
@@ -190,7 +190,7 @@ namespace SourceGit.ViewModels
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         BaseHead = baseHead;
                         ToHead = toHead;
@@ -212,7 +212,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                await Dispatcher.UIThread.InvokeAsync(() => VisibleChanges = visible);
+                Dispatcher.UIThread.Post(() => VisibleChanges = visible);
             });
         }
 

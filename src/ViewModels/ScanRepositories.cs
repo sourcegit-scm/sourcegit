@@ -44,6 +44,7 @@ namespace SourceGit.ViewModels
             var minDelay = Task.Delay(500);
             var rootDir = new DirectoryInfo(_selected.Path);
             var found = new List<string>();
+
             await GetUnmanagedRepositoriesAsync(rootDir, found, new EnumerationOptions()
             {
                 AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,

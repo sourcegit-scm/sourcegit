@@ -38,14 +38,12 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Stash(_repo.FullPath)
                 .Use(log)
-                .ApplyAsync(Stash.Name, RestoreIndex)
-                .ConfigureAwait(false);
+                .ApplyAsync(Stash.Name, RestoreIndex);
 
             if (succ && DropAfterApply)
                 await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .DropAsync(Stash.Name)
-                    .ConfigureAwait(false);
+                    .DropAsync(Stash.Name);
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

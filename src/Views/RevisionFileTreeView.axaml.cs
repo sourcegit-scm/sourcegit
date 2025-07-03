@@ -158,7 +158,7 @@ namespace SourceGit.Views
                 if (vm?.Commit == null)
                     return;
 
-                var objects = await vm.GetRevisionFilesUnderFolderAsync(file).ConfigureAwait(false);
+                var objects = await vm.GetRevisionFilesUnderFolderAsync(file);
                 if (objects is not { Count: 1 })
                     return;
 
@@ -258,7 +258,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var objects = await vm.GetRevisionFilesUnderFolderAsync(null).ConfigureAwait(false);
+                var objects = await vm.GetRevisionFilesUnderFolderAsync(null);
                 if (objects == null || objects.Count == 0)
                 {
                     GC.Collect();
@@ -324,7 +324,7 @@ namespace SourceGit.Views
             if (vm == null)
                 return null;
 
-            var objects = await vm.GetRevisionFilesUnderFolderAsync(node.Backend.Path + "/").ConfigureAwait(false);
+            var objects = await vm.GetRevisionFilesUnderFolderAsync(node.Backend.Path + "/");
             if (objects == null || objects.Count == 0)
                 return null;
 
