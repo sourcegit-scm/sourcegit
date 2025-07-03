@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -9,6 +10,13 @@ namespace SourceGit.Views
         public Conflict()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.Conflict vm)
+                vm.Load();
         }
 
         private void OnPressedSHA(object sender, PointerPressedEventArgs e)

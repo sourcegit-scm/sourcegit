@@ -123,17 +123,19 @@ namespace SourceGit.ViewModels
 
         public InteractiveRebase(Repository repo, Models.Branch current, Models.Commit on)
         {
-            var repoPath = repo.FullPath;
             _repo = repo;
 
             Current = current;
             On = on;
             IsLoading = true;
             DetailContext = new CommitDetail(repo, false);
+        }
 
+        public void Load()
+        {
             Task.Run(() =>
             {
-                var commits = new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).Result();
+                var commits = new Commands.QueryCommitsForInteractiveRebase(_repo.FullPath, On.SHA).Result();
                 var list = new List<InteractiveRebaseItem>();
 
                 for (var i = 0; i < commits.Count; i++)

@@ -12,6 +12,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.Clone vm)
+                vm.Load();
+        }
+
         private async void SelectParentFolder(object _, RoutedEventArgs e)
         {
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };

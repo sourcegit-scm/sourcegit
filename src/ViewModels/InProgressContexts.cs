@@ -71,10 +71,16 @@ namespace SourceGit.ViewModels
             get => GetFriendlyNameOfCommit(Head);
         }
 
-        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick")
+        public static CherryPickInProgress Create(Repository repo)
         {
+            var ipc = new CherryPickInProgress(repo);
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+            ipc.Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+            return ipc;
+        }
+
+        private CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick")
+        {
         }
     }
 
@@ -103,24 +109,30 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
+        public static RebaseInProgress Create(Repository repo)
         {
-            HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
-            if (HeadName.StartsWith("refs/heads/"))
-                HeadName = HeadName.Substring(11);
-            else if (HeadName.StartsWith("refs/tags/"))
-                HeadName = HeadName.Substring(10);
+            var ipc = new RebaseInProgress(repo);
+            ipc.HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
+            if (ipc.HeadName.StartsWith("refs/heads/"))
+                ipc.HeadName = ipc.HeadName.Substring(11);
+            else if (ipc.HeadName.StartsWith("refs/tags/"))
+                ipc.HeadName = ipc.HeadName.Substring(10);
 
             var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
             var stoppedSHA = File.Exists(stoppedSHAPath)
                 ? File.ReadAllText(stoppedSHAPath).Trim()
-                : new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).Result();
+                : new Commands.QueryRevisionByRefName(repo.FullPath, ipc.HeadName).Result();
 
             if (!string.IsNullOrEmpty(stoppedSHA))
-                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
+                ipc.StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).Result() ?? new Models.Commit() { SHA = stoppedSHA };
 
             var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
-            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
+            ipc.Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).Result() ?? new Models.Commit() { SHA = ontoSHA };
+            return ipc;
+        }
+
+        private RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
+        {
         }
 
         public override bool Continue()
@@ -143,10 +155,16 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert")
+        public static RevertInProgress Create(Repository repo)
         {
+            var ipc = new RevertInProgress(repo);
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "REVERT_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+            ipc.Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).Result() ?? new Models.Commit() { SHA = headSHA };
+            return ipc;
+        }
+
+        private RevertInProgress(Repository repo) : base(repo.FullPath, "revert")
+        {
         }
     }
 
@@ -169,12 +187,18 @@ namespace SourceGit.ViewModels
             get => GetFriendlyNameOfCommit(Source);
         }
 
-        public MergeInProgress(Repository repo) : base(repo.FullPath, "merge")
+        public static MergeInProgress Create(Repository repo)
         {
-            Current = Commands.Branch.ShowCurrent(repo.FullPath);
+            var ipc = new MergeInProgress(repo);
+            ipc.Current = Commands.Branch.ShowCurrent(repo.FullPath);
 
             var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
-            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result() ?? new Models.Commit() { SHA = sourceSHA };
+            ipc.Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).Result() ?? new Models.Commit() { SHA = sourceSHA };
+            return ipc;
+        }
+
+        private MergeInProgress(Repository repo) : base(repo.FullPath, "merge")
+        {
         }
 
         public override bool Skip()

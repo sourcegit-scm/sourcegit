@@ -12,6 +12,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.RevisionCompare vm)
+                vm.Refresh();
+        }
+
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.RevisionCompare vm && sender is ChangeCollectionView view)

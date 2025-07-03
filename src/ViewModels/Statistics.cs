@@ -56,9 +56,14 @@ namespace SourceGit.ViewModels
 
         public Statistics(string repo)
         {
+            _repo = repo;
+        }
+
+        public void Load()
+        {
             Task.Run(() =>
             {
-                var result = new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).Result();
+                var result = new Commands.Statistics(_repo, Preferences.Instance.MaxHistoryCommits).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     _data = result;
@@ -84,6 +89,7 @@ namespace SourceGit.ViewModels
             SelectedReport = report;
         }
 
+        private readonly string _repo;
         private bool _isLoading = true;
         private Models.Statistics _data = null;
         private Models.StatisticsReport _selectedReport = null;

@@ -15,11 +15,11 @@ namespace SourceGit.ViewModels
             Revision = revision;
         }
 
-        public ConflictSourceBranch(Repository repo, Models.Branch branch)
+        public ConflictSourceBranch(Models.Branch branch, Models.Commit revision)
         {
             Name = branch.Name;
             Head = branch.Head;
-            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).Result() ?? new Models.Commit() { SHA = branch.Head };
+            Revision = revision ?? new Models.Commit() { SHA = branch.Head };
         }
     }
 
@@ -61,25 +61,31 @@ namespace SourceGit.ViewModels
 
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
+            _repo = repo;
             _wc = wc;
             _change = change;
+        }
 
-            var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
+        public void Load()
+        {
+            var isSubmodule = _repo.Submodules.Find(x => x.Path.Equals(_change.Path, StringComparison.Ordinal)) != null;
             if (!isSubmodule && (_change.ConflictReason == Models.ConflictReason.BothAdded || _change.ConflictReason == Models.ConflictReason.BothModified))
             {
                 CanUseExternalMergeTool = true;
-                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
+                IsResolved = new Commands.IsConflictResolved(_repo.FullPath, _change).Result();
             }
 
-            var context = wc.InProgressContext;
+            var context = _wc.InProgressContext;
+            var revision = new Commands.QuerySingleCommit(_repo.FullPath, _repo.CurrentBranch.Head).Result();
+            var mine = new ConflictSourceBranch(_repo.CurrentBranch, revision);
             if (context is CherryPickInProgress cherryPick)
             {
                 Theirs = cherryPick.Head;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                Mine = mine;
             }
             else if (context is RebaseInProgress rebase)
             {
-                var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
+                var b = _repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
                 if (b != null)
                     Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
                 else
@@ -90,17 +96,17 @@ namespace SourceGit.ViewModels
             else if (context is RevertInProgress revert)
             {
                 Theirs = revert.Head;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                Mine = mine;
             }
             else if (context is MergeInProgress merge)
             {
                 Theirs = merge.Source;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                Mine = mine;
             }
             else
             {
                 Theirs = "Stash or Patch";
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                Mine = mine;
             }
         }
 
@@ -119,6 +125,7 @@ namespace SourceGit.ViewModels
             _wc.UseExternalMergeTool(_change);
         }
 
+        private readonly Repository _repo;
         private WorkingCopy _wc = null;
         private Models.Change _change = null;
     }

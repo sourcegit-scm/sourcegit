@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            _remote = remote;
             Args = "fetch --progress --verbose ";
 
             if (noTags)
@@ -24,8 +24,16 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote.Remote}.sshkey");
+            _remote = remote.Remote;
             Args = $"fetch --progress --verbose {remote.Remote} {remote.Name}:{local.Name}";
         }
+
+        public override bool Exec()
+        {
+            SSHKey = new Config(Context).Get($"remote.{_remote}.sshkey");
+            return base.Exec();
+        }
+
+        private readonly string _remote;
     }
 }

@@ -1746,11 +1746,11 @@ namespace SourceGit.ViewModels
 
             if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
             {
-                InProgressContext = new CherryPickInProgress(_repo);
+                InProgressContext = CherryPickInProgress.Create(_repo);
             }
             else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
             {
-                var rebasing = new RebaseInProgress(_repo);
+                var rebasing = RebaseInProgress.Create(_repo);
                 InProgressContext = rebasing;
 
                 if (string.IsNullOrEmpty(_commitMessage))
@@ -1764,11 +1764,11 @@ namespace SourceGit.ViewModels
             }
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
             {
-                InProgressContext = new RevertInProgress(_repo);
+                InProgressContext = RevertInProgress.Create(_repo);
             }
             else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
             {
-                InProgressContext = new MergeInProgress(_repo);
+                InProgressContext = MergeInProgress.Create(_repo);
             }
             else
             {

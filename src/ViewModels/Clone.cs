@@ -67,7 +67,10 @@ namespace SourceGit.ViewModels
             _parentFolder = activeWorkspace?.DefaultCloneDir;
             if (string.IsNullOrEmpty(ParentFolder))
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
+        }
 
+        public void Load()
+        {
             Task.Run(async () =>
             {
                 try

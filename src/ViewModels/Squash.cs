@@ -20,8 +20,13 @@ namespace SourceGit.ViewModels
         public Squash(Repository repo, Models.Commit target, string shaToGetPreferMessage)
         {
             _repo = repo;
-            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).Result();
             Target = target;
+            _shaToGetPreferMessage = shaToGetPreferMessage;
+        }
+
+        public void Load()
+        {
+            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, _shaToGetPreferMessage).Result();
         }
 
         public override Task<bool> Sure()
@@ -66,5 +71,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo;
         private string _message;
+        private readonly string _shaToGetPreferMessage;
     }
 }

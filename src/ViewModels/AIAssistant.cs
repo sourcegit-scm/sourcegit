@@ -30,8 +30,6 @@ namespace SourceGit.ViewModels
             _changes = changes;
             _onApply = onApply;
             _cancel = new CancellationTokenSource();
-
-            Gen();
         }
 
         public void Regen()
@@ -52,7 +50,7 @@ namespace SourceGit.ViewModels
             _cancel?.Cancel();
         }
 
-        private void Gen()
+        public void Gen()
         {
             Text = string.Empty;
             IsGenerating = true;

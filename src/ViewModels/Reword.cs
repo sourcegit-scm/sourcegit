@@ -21,9 +21,13 @@ namespace SourceGit.ViewModels
         public Reword(Repository repo, Models.Commit head)
         {
             _repo = repo;
-            _oldMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).Result();
-            _message = _oldMessage;
             Head = head;
+        }
+
+        public void Load()
+        {
+            _oldMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, Head.SHA).Result();
+            _message = _oldMessage;
         }
 
         public override Task<bool> Sure()
@@ -49,7 +53,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private readonly string _oldMessage;
+        private string _oldMessage;
         private string _message;
     }
 }
