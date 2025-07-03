@@ -212,7 +212,15 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                Dispatcher.UIThread.Post(() => VisibleChanges = visible);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    VisibleChanges = visible;
+
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
             });
         }
 
