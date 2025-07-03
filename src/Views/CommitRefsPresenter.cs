@@ -174,8 +174,7 @@ namespace SourceGit.Views
         {
             _items.Clear();
 
-            var commit = DataContext as Models.Commit;
-            if (commit == null)
+            if (DataContext is not Models.Commit commit)
                 return new Size(0, 0);
 
             var refs = commit.Decorators;
@@ -196,8 +195,7 @@ namespace SourceGit.Views
                     if (!showTags && decorator.Type == Models.DecoratorType.Tag)
                         continue;
 
-                    var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead ||
-                        decorator.Type == Models.DecoratorType.CurrentCommitHead;
+                    var isHead = decorator.Type is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead;
 
                     var label = new FormattedText(
                         decorator.Name,

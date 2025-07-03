@@ -21,15 +21,10 @@ namespace SourceGit.Commands
                 return false;
 
             if (recursive)
-            {
                 Args = $"submodule update --init --recursive -- \"{relativePath}\"";
-                return await ExecAsync().ConfigureAwait(false);
-            }
             else
-            {
                 Args = $"submodule update --init -- \"{relativePath}\"";
-                return await ExecAsync().ConfigureAwait(false);
-            }
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> SetURL(string path, string url)

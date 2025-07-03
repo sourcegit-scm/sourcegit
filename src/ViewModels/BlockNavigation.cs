@@ -70,9 +70,7 @@ namespace SourceGit.ViewModels
             foreach (var line in lines)
             {
                 lineIdx++;
-                if (line.Type == Models.TextDiffLineType.Added ||
-                    line.Type == Models.TextDiffLineType.Deleted ||
-                    line.Type == Models.TextDiffLineType.None)
+                if (line.Type is Models.TextDiffLineType.Added or Models.TextDiffLineType.Deleted or Models.TextDiffLineType.None)
                 {
                     if (isNewBlock)
                     {

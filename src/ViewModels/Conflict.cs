@@ -17,13 +17,9 @@ namespace SourceGit.ViewModels
 
         public ConflictSourceBranch(Repository repo, Models.Branch branch)
         {
-            var revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync().Result;
-            if (revision == null)
-                revision = new Models.Commit() { SHA = branch.Head };
-
             Name = branch.Name;
             Head = branch.Head;
-            Revision = revision;
+            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync().Result ?? new Models.Commit() { SHA = branch.Head };
         }
     }
 
@@ -75,36 +71,33 @@ namespace SourceGit.ViewModels
                 IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResultAsync().Result;
             }
 
-            var context = wc.InProgressContext;
-            if (context is CherryPickInProgress cherryPick)
+            switch (wc.InProgressContext)
             {
-                Theirs = cherryPick.Head;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-            }
-            else if (context is RebaseInProgress rebase)
-            {
-                var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
-                if (b != null)
-                    Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
-                else
-                    Theirs = new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
+                case CherryPickInProgress cherryPick:
+                    Theirs = cherryPick.Head;
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
+                case RebaseInProgress rebase:
+                    var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
+                    if (b != null)
+                        Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
+                    else
+                        Theirs = new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
 
-                Mine = rebase.Onto;
-            }
-            else if (context is RevertInProgress revert)
-            {
-                Theirs = revert.Head;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-            }
-            else if (context is MergeInProgress merge)
-            {
-                Theirs = merge.Source;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-            }
-            else
-            {
-                Theirs = "Stash or Patch";
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    Mine = rebase.Onto;
+                    break;
+                case RevertInProgress revert:
+                    Theirs = revert.Head;
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
+                case MergeInProgress merge:
+                    Theirs = merge.Source;
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
+                default:
+                    Theirs = "Stash or Patch";
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
             }
         }
 

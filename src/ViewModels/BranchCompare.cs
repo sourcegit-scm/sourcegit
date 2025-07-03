@@ -63,9 +63,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     RefreshVisible();
-                }
             }
         }
 
@@ -127,13 +125,13 @@ namespace SourceGit.ViewModels
             var diffWithMerger = new MenuItem();
             diffWithMerger.Header = App.Text("DiffWithMerger");
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
+            diffWithMerger.Click += async (_, ev) =>
             {
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_based.Head, _to.Head, change);
 
-                _ = Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt);
+                await Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt);
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);

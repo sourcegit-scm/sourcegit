@@ -40,9 +40,7 @@ namespace SourceGit.Commands
                 foreach (var line in _result.LineInfos)
                 {
                     if (line.CommitSHA.Length > _minSHALen)
-                    {
                         line.CommitSHA = line.CommitSHA.Substring(0, _minSHALen);
-                    }
                 }
             }
 

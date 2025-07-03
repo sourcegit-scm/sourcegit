@@ -37,8 +37,7 @@ namespace SourceGit.Views
             if (topLevel == null)
                 return;
 
-            var vm = DataContext as ViewModels.RevisionCompare;
-            if (vm == null)
+            if (DataContext is not ViewModels.RevisionCompare vm)
                 return;
 
             var options = new FilePickerSaveOptions();

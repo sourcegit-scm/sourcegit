@@ -45,8 +45,7 @@ namespace SourceGit
         public static readonly Command QuitCommand = new Command(_ => Quit(0));
         public static readonly Command CopyTextBlockCommand = new Command(async p =>
         {
-            var textBlock = p as TextBlock;
-            if (textBlock == null)
+            if (p is not TextBlock textBlock)
                 return;
 
             if (textBlock.Inlines is { Count: > 0 } inlines)

@@ -13,8 +13,7 @@ namespace SourceGit.Views
 
         private async void OnSearchBoxKeyDown(object _, KeyEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             if (e.Key == Key.Enter)
@@ -47,8 +46,7 @@ namespace SourceGit.Views
 
         private async void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             if (e.Key == Key.Escape)
@@ -67,8 +65,7 @@ namespace SourceGit.Views
 
         private async void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             var content = (sender as StackPanel)?.DataContext as string;

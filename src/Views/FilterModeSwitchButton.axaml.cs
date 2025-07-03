@@ -57,12 +57,10 @@ namespace SourceGit.Views
         {
             var repoView = this.FindAncestorOfType<Repository>();
 
-            var repo = repoView?.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            var button = sender as Button;
-            if (button == null)
+            if (sender is not Button button)
                 return;
 
             var menu = new ContextMenu();

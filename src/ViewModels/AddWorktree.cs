@@ -82,8 +82,7 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)
         {
-            var creator = ctx.ObjectInstance as AddWorktree;
-            if (creator == null)
+            if (ctx.ObjectInstance is not AddWorktree creator)
                 return new ValidationResult("Missing runtime context to create branch!");
 
             if (string.IsNullOrEmpty(path))

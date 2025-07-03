@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public partial class CreateBranch : Popup
+    public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
         [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]

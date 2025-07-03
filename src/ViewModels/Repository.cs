@@ -823,15 +823,13 @@ namespace SourceGit.ViewModels
             if (!CanCreatePopup())
                 return;
 
-            ExecuteCustomAction popup;
-            if (scope is Models.Branch b)
-                popup = new ExecuteCustomAction(this, action, b);
-            else if (scope is Models.Commit c)
-                popup = new ExecuteCustomAction(this, action, c);
-            else if (scope is Models.Tag t)
-                popup = new ExecuteCustomAction(this, action, t);
-            else
-                popup = new ExecuteCustomAction(this, action);
+            var popup = scope switch
+            {
+                Models.Branch b => new ExecuteCustomAction(this, action, b),
+                Models.Commit c => new ExecuteCustomAction(this, action, c),
+                Models.Tag t => new ExecuteCustomAction(this, action, t),
+                _ => new ExecuteCustomAction(this, action)
+            };
 
             if (action.Controls.Count == 0)
                 ShowAndStartPopup(popup);

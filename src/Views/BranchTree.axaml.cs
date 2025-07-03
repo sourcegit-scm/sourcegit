@@ -70,8 +70,7 @@ namespace SourceGit.Views
 
         private void CreateContent(Thickness margin, string iconKey, bool highlight)
         {
-            var geo = this.FindResource(iconKey) as StreamGeometry;
-            if (geo == null)
+            if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
             var path = new Path()
@@ -481,7 +480,7 @@ namespace SourceGit.Views
                 };
                 menu.Items.Add(deleteMulti);
 
-                menu?.Open(this);
+                menu.Open(this);
             }
         }
 

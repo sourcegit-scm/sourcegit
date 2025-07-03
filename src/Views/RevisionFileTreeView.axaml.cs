@@ -81,8 +81,7 @@ namespace SourceGit.Views
 
         private void CreateContent(string iconKey, Thickness margin, IBrush fill = null)
         {
-            var geo = this.FindResource(iconKey) as StreamGeometry;
-            if (geo == null)
+            if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
             var icon = new Avalonia.Controls.Shapes.Path()
@@ -320,8 +319,7 @@ namespace SourceGit.Views
             if (node.Children.Count > 0)
                 return node.Children;
 
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return null;
 
             var objects = await vm.GetRevisionFilesUnderFolderAsync(node.Backend.Path + "/");

@@ -331,20 +331,8 @@ namespace SourceGit.ViewModels
 
         private async Task SetIfChangedAsync(string key, string value, string defValue)
         {
-            bool changed = false;
-            if (_cached.TryGetValue(key, out var old))
-            {
-                changed = old != value;
-            }
-            else if (!string.IsNullOrEmpty(value) && value != defValue)
-            {
-                changed = true;
-            }
-
-            if (changed)
-            {
+            if (value != _cached.GetValueOrDefault(key, defValue))
                 await new Commands.Config(_repo.FullPath).SetAsync(key, value);
-            }
         }
 
         private readonly Repository _repo = null;

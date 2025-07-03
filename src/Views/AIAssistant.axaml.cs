@@ -72,9 +72,7 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == ContentProperty)
-            {
                 Text = Content;
-            }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)

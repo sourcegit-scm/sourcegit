@@ -210,21 +210,12 @@ namespace SourceGit.Models
                         var line = Lines[i];
                         if (line.Type == TextDiffLineType.Indicator)
                             break;
-                        if (revert)
+                        if (line.Type == TextDiffLineType.Normal ||
+                            (revert && line.Type == TextDiffLineType.Added) ||
+                            (!revert && line.Type == TextDiffLineType.Deleted))
                         {
-                            if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Added)
-                            {
-                                tail = line.Content;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Deleted)
-                            {
-                                tail = line.Content;
-                                break;
-                            }
+                            tail = line.Content;
+                            break;
                         }
                     }
                 }
@@ -290,9 +281,7 @@ namespace SourceGit.Models
                 if (line.Type == TextDiffLineType.Indicator)
                 {
                     if (!ProcessIndicatorForPatch(writer, line, i, selection.StartLine, selection.EndLine, selection.IgnoredDeletes, selection.IgnoredAdds, revert, tail != null))
-                    {
                         break;
-                    }
                 }
                 else if (line.Type == TextDiffLineType.Normal)
                 {
@@ -414,9 +403,7 @@ namespace SourceGit.Models
                 if (line.Type == TextDiffLineType.Indicator)
                 {
                     if (!ProcessIndicatorForPatchSingleSide(writer, line, i, selection.StartLine, selection.EndLine, selection.IgnoredDeletes, selection.IgnoredAdds, revert, isOldSide, tail != null))
-                    {
                         break;
-                    }
                 }
                 else if (line.Type == TextDiffLineType.Normal)
                 {
