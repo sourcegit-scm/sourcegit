@@ -46,8 +46,7 @@ namespace SourceGit.ViewModels
 
             return Task.Run(() =>
             {
-                var watch = new Stopwatch();
-                watch.Start();
+                var delay = Task.Delay(500);
 
                 var rootDir = new DirectoryInfo(_selected.Path);
                 var found = new List<string>();
@@ -57,11 +56,8 @@ namespace SourceGit.ViewModels
                     IgnoreInaccessible = true,
                 });
 
-                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
-                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
-                watch.Stop();
-                if (remain > 0)
-                    Task.Delay(remain).Wait();
+                // Make sure this task takes at least 0.5s so the popup panel doesn't disappear too quickly.
+                delay.Wait();
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
