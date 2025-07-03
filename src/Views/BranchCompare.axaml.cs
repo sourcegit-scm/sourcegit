@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -8,6 +9,13 @@ namespace SourceGit.Views
         public BranchCompare()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.BranchCompare vm)
+                vm.Refresh();
         }
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)

@@ -10,6 +10,13 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.InteractiveRebase vm)
+                vm.Load();
+        }
+
         /// <summary>
         ///     Prevent ListBox handle the arrow keys.
         /// </summary>
@@ -69,6 +76,13 @@ namespace SourceGit.Views
         public InteractiveRebase()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.InteractiveRebase vm)
+                vm.Load();
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)

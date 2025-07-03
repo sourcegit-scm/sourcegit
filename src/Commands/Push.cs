@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            _remote = remote;
             Args = "push --progress --verbose ";
 
             if (withTags)
@@ -25,7 +25,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            _remote = remote;
             Args = "push ";
 
             if (isDelete)
@@ -33,5 +33,13 @@
 
             Args += $"{remote} {refname}";
         }
+
+        public override bool Exec()
+        {
+            SSHKey = new Config(Context).Get($"remote.{_remote}.sshkey");
+            return base.Exec();
+        }
+
+        private readonly string _remote;
     }
 }

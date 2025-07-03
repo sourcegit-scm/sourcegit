@@ -158,8 +158,11 @@ namespace SourceGit.ViewModels
 
             if (!AvailableOpenAIServices.Contains(PreferredOpenAIService))
                 PreferredOpenAIService = "---";
+        }
 
-            _cached = new Commands.Config(repo.FullPath).ListAll();
+        public void Load()
+        {
+            _cached = new Commands.Config(_repo.FullPath).ListAll();
             if (_cached.TryGetValue("user.name", out var name))
                 UserName = name;
             if (_cached.TryGetValue("user.email", out var email))
@@ -346,7 +349,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private readonly Dictionary<string, string> _cached = null;
+        private Dictionary<string, string> _cached = null;
         private string _httpProxy;
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTrackerRule _selectedIssueTrackerRule = null;

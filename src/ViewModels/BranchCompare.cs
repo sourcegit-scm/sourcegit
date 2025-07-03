@@ -80,8 +80,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _based = baseBranch;
             _to = toBranch;
-
-            Refresh();
         }
 
         public void NavigateTo(string commitSHA)
@@ -176,7 +174,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             Task.Run(() =>
             {

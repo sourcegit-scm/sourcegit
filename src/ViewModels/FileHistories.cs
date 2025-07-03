@@ -34,15 +34,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistoriesSingleRevision(Repository repo, string file, Models.Commit revision, bool prevIsDiffMode)
+        public static FileHistoriesSingleRevision Create(Repository repo, string file, Models.Commit revision, bool prevIsDiffMode)
+        {
+            var obj = new FileHistoriesSingleRevision(repo, file, revision, prevIsDiffMode);
+            obj.RefreshViewContent();
+            return obj;
+        }
+
+        private FileHistoriesSingleRevision(Repository repo, string file, Models.Commit revision, bool prevIsDiffMode)
         {
             _repo = repo;
             _file = file;
             _revision = revision;
             _isDiffMode = prevIsDiffMode;
             _viewContent = null;
-
-            RefreshViewContent();
         }
 
         public Task<bool> ResetToSelectedRevision()
@@ -188,13 +193,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistoriesCompareRevisions(Repository repo, string file, Models.Commit start, Models.Commit end)
+        public static FileHistoriesCompareRevisions Create(Repository repo, string file, Models.Commit start, Models.Commit end)
+        {
+            var obj = new FileHistoriesCompareRevisions(repo, file, start, end);
+            obj.RefreshViewContent();
+            return obj;
+        }
+
+        private FileHistoriesCompareRevisions(Repository repo, string file, Models.Commit start, Models.Commit end)
         {
             _repo = repo;
             _file = file;
             _startPoint = start;
             _endPoint = end;
-            RefreshViewContent();
         }
 
         public void Swap()
@@ -275,11 +286,16 @@ namespace SourceGit.ViewModels
                 Title = file;
 
             _repo = repo;
+            _file = file;
+            _commit = commit;
+        }
 
+        public void Load()
+        {
             Task.Run(() =>
             {
-                var based = commit ?? string.Empty;
-                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {based} -- \"{file}\"", false).Result();
+                var based = _commit ?? string.Empty;
+                var commits = new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {based} -- \"{_file}\"", false).Result();
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     IsLoading = false;
@@ -296,8 +312,8 @@ namespace SourceGit.ViewModels
 
                 ViewContent = SelectedCommits.Count switch
                 {
-                    1 => new FileHistoriesSingleRevision(_repo, file, SelectedCommits[0], _prevIsDiffMode),
-                    2 => new FileHistoriesCompareRevisions(_repo, file, SelectedCommits[0], SelectedCommits[1]),
+                    1 => FileHistoriesSingleRevision.Create(_repo, _file, SelectedCommits[0], _prevIsDiffMode),
+                    2 => FileHistoriesCompareRevisions.Create(_repo, _file, SelectedCommits[0], SelectedCommits[1]),
                     _ => SelectedCommits.Count,
                 };
             };
@@ -320,6 +336,8 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
+        private readonly string _file;
+        private readonly string _commit;
         private bool _isLoading = true;
         private bool _prevIsDiffMode = true;
         private List<Models.Commit> _commits = null;

@@ -41,7 +41,11 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _remote = remote;
-            _userName = new Commands.Config(repo.FullPath).Get("user.name");
+        }
+
+        public void Load()
+        {
+            _userName = new Commands.Config(_repo.FullPath).Get("user.name");
 
             HasValidUserName = !string.IsNullOrEmpty(_userName);
 

@@ -53,13 +53,18 @@ namespace SourceGit.ViewModels
 
         public Launcher(string startupRepo)
         {
+            _startupRepo = startupRepo;
             _ignoreIndexChange = true;
 
             Pages = new AvaloniaList<LauncherPage>();
+        }
+
+        public void Load()
+        {
             AddNewTab();
 
             var pref = Preferences.Instance;
-            if (string.IsNullOrEmpty(startupRepo))
+            if (string.IsNullOrEmpty(_startupRepo))
             {
                 ActiveWorkspace = pref.GetActiveWorkspace();
 
@@ -96,13 +101,13 @@ namespace SourceGit.ViewModels
                 foreach (var w in pref.Workspaces)
                     w.IsActive = false;
 
-                var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
+                var test = new Commands.QueryRepositoryRootPath(_startupRepo).ReadToEnd();
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
                     Pages[0].Notifications.Add(new Models.Notification
                     {
                         IsError = true,
-                        Message = $"Given path: '{startupRepo}' is NOT a valid repository!"
+                        Message = $"Given path: '{_startupRepo}' is NOT a valid repository!"
                     });
                 }
                 else
@@ -607,6 +612,7 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private readonly string _startupRepo;
         private Workspace _activeWorkspace = null;
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;

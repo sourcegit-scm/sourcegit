@@ -76,8 +76,6 @@ namespace SourceGit.ViewModels
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
             CanSaveAsPatch = startPoint != null && endPoint != null;
-
-            Task.Run(Refresh);
         }
 
         public void Dispose()
@@ -212,7 +210,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).Result();
 

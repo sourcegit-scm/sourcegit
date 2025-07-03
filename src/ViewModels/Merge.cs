@@ -33,7 +33,9 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            Mode = forceFastForward ? Models.MergeMode.FastForward : AutoSelectMergeMode();
+
+            if (forceFastForward)
+                Mode = Models.MergeMode.FastForward;
         }
 
         public Merge(Repository repo, Models.Commit source, string into)
@@ -43,7 +45,6 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            Mode = AutoSelectMergeMode();
         }
 
         public Merge(Repository repo, Models.Tag source, string into)
@@ -53,7 +54,12 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            Mode = AutoSelectMergeMode();
+        }
+
+        public void Load()
+        {
+            if (Mode == null)
+                Mode = AutoSelectMergeMode();
         }
 
         public override Task<bool> Sure()

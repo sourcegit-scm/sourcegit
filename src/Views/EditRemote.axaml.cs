@@ -11,6 +11,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.EditRemote vm)
+                vm.Load();
+        }
+
         private async void SelectSSHKey(object _, RoutedEventArgs e)
         {
             var toplevel = TopLevel.GetTopLevel(this);

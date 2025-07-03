@@ -51,10 +51,13 @@ namespace SourceGit.ViewModels
             _name = remote.Name;
             _url = remote.URL;
             _useSSH = Models.Remote.IsSSH(remote.URL);
+        }
 
+        public void Load()
+        {
             if (_useSSH)
             {
-                SSHKey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
+                SSHKey = new Commands.Config(_repo.FullPath).Get($"remote.{_remote.Name}.sshkey");
             }
         }
 

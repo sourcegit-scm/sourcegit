@@ -32,7 +32,7 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
-        public bool Exec()
+        public virtual bool Exec()
         {
             Log?.AppendLine($"$ git {Args}\n");
 

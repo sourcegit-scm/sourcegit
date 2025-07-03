@@ -10,6 +10,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.AssumeUnchangedManager vm)
+                vm.Load();
+        }
+
         private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.AssumeUnchangedManager vm && sender is Button button)

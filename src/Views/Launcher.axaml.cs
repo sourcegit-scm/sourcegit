@@ -85,6 +85,13 @@ namespace SourceGit.Views
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.Launcher vm)
+                vm.Load();
+        }
+
         public void BringToTop()
         {
             if (WindowState == WindowState.Minimized)

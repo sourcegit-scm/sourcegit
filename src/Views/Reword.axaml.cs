@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -7,6 +8,13 @@ namespace SourceGit.Views
         public Reword()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.Reword vm)
+                vm.Load();
         }
     }
 }

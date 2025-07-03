@@ -14,6 +14,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            if (DataContext is ViewModels.FileHistories vm)
+                vm.Load();
+        }
+
         private void OnPressCommitSHA(object sender, PointerPressedEventArgs e)
         {
             if (sender is TextBlock { DataContext: Models.Commit commit } &&

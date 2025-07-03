@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
+            _remote = remote;
             Args = "pull --verbose --progress ";
 
             if (useRebase)
@@ -14,5 +14,13 @@
 
             Args += $"{remote} {branch}";
         }
+
+        public override bool Exec()
+        {
+            SSHKey = new Config(Context).Get($"remote.{_remote}.sshkey");
+            return base.Exec();
+        }
+
+        private readonly string _remote;
     }
 }
