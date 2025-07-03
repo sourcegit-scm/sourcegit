@@ -43,7 +43,7 @@ namespace SourceGit.Commands
             proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
             proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
 
-            var dummy = null as Process;
+            Process dummy = null;
             var dummyProcLock = new object();
             try
             {

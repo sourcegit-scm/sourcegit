@@ -161,11 +161,9 @@ namespace SourceGit.Views
             double startY = 0;
             foreach (var child in rowsPresenter.Children)
             {
-                var row = child as DataGridRow;
-                if (row.IsVisible)
+                if (child is DataGridRow { IsVisible: true } row)
                 {
-                    if (rowHeight != row.Bounds.Height)
-                        rowHeight = row.Bounds.Height;
+                    rowHeight = row.Bounds.Height;
 
                     if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
                     {
@@ -237,10 +235,8 @@ namespace SourceGit.Views
                 if (e.Key == Key.B)
                 {
                     var repoView = this.FindAncestorOfType<Repository>();
-                    if (repoView == null)
-                        return;
 
-                    var repo = repoView.DataContext as ViewModels.Repository;
+                    var repo = repoView?.DataContext as ViewModels.Repository;
                     if (repo == null || !repo.CanCreatePopup())
                         return;
 
@@ -260,7 +256,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories &&
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 sender is DataGrid grid &&
-                e.Source != grid)
+                !Equals(e.Source, grid))
             {
                 if (e.Source is CommitRefsPresenter crp)
                 {

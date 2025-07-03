@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 
 using Avalonia.Interactivity;
@@ -10,12 +9,6 @@ namespace SourceGit.Views
         public ConfirmRestart()
         {
             InitializeComponent();
-        }
-
-        private void CloseWindow(object _1, RoutedEventArgs _2)
-        {
-            Console.Out.WriteLine("No passphrase entered.");
-            App.Quit(-1);
         }
 
         private void Restart(object _1, RoutedEventArgs _2)

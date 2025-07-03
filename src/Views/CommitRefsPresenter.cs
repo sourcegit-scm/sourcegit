@@ -179,7 +179,7 @@ namespace SourceGit.Views
                 return new Size(0, 0);
 
             var refs = commit.Decorators;
-            if (refs != null && refs.Count > 0)
+            if (refs?.Count > 0)
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);

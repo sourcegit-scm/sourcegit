@@ -18,7 +18,7 @@ namespace SourceGit.Commands
 
             var rs = ReadToEnd();
             var worktrees = new List<Models.Worktree>();
-            var last = null as Models.Worktree;
+            Models.Worktree last = null;
             if (rs.IsSuccess)
             {
                 var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);

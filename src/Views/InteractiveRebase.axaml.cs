@@ -87,7 +87,7 @@ namespace SourceGit.Views
 
         private void OnRowHeaderPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (sender is Border border && border.DataContext is ViewModels.InteractiveRebaseItem item)
+            if (sender is Border { DataContext: ViewModels.InteractiveRebaseItem item })
             {
                 var data = new DataObject();
                 data.Set("InteractiveRebaseItem", item);

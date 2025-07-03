@@ -261,7 +261,7 @@ namespace SourceGit.ViewModels
             if (commit.IsCurrentHead)
                 return;
 
-            var firstRemoteBranch = null as Models.Branch;
+            Models.Branch firstRemoteBranch = null;
             foreach (var d in commit.Decorators)
             {
                 if (d.Type == Models.DecoratorType.LocalBranchHead)
@@ -379,7 +379,7 @@ namespace SourceGit.ViewModels
                         return;
 
                     var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                    var log = null as CommandLog;
+                    CommandLog log = null;
                     try
                     {
                         var picker = await storageProvider.OpenFolderPickerAsync(options);
@@ -753,7 +753,7 @@ namespace SourceGit.ViewModels
                     return;
 
                 var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                var log = null as CommandLog;
+                CommandLog log = null;
                 try
                 {
                     var selected = await storageProvider.OpenFolderPickerAsync(options);

@@ -401,7 +401,7 @@ namespace SourceGit.Views
             if (selected == null || selected.Count == 0)
                 return;
 
-            var prev = null as ViewModels.BranchTreeNode;
+            ViewModels.BranchTreeNode prev = null;
             foreach (var row in Rows)
             {
                 if (row.IsSelected)

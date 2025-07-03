@@ -118,8 +118,7 @@ namespace SourceGit.Views
 
         private void StartBisect(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
-                repo.InProgressContext == null &&
+            if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false, InProgressContext: null } repo &&
                 repo.CanCreatePopup())
             {
                 if (repo.LocalChangesCount > 0)

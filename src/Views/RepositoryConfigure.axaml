@@ -499,7 +499,7 @@
                     </StackPanel>
                   </Button>
                   <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
-                  
+
                   <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>

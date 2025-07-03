@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
 
         public bool IsBinary
         {
-            get => _data != null && _data.IsBinary;
+            get => _data?.IsBinary ?? false;
         }
 
         public bool CanBack

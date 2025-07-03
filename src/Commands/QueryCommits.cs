@@ -132,9 +132,7 @@ namespace SourceGit.Commands
             if (shas.Length == 0)
                 return;
 
-            var set = new HashSet<string>();
-            foreach (var sha in shas)
-                set.Add(sha);
+            var set = new HashSet<string>(shas);
 
             foreach (var c in _commits)
             {

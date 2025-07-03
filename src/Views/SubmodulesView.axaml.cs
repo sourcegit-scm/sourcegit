@@ -164,7 +164,7 @@ namespace SourceGit.Views
         {
             if (sender is Control control && DataContext is ViewModels.Repository repo)
             {
-                if (control.DataContext is ViewModels.SubmoduleTreeNode node && node.Module != null)
+                if (control.DataContext is ViewModels.SubmoduleTreeNode { Module: not null } node)
                 {
                     var menu = repo.CreateContextMenuForSubmodule(node.Module);
                     menu?.Open(control);

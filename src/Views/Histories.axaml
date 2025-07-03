@@ -47,10 +47,6 @@
                 ContextRequested="OnCommitListContextRequested"
                 DoubleTapped="OnCommitListDoubleTapped"
                 KeyDown="OnCommitListKeyDown">
-        <DataGrid.Resources>
-          <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="{DynamicResource Color.Border0}" />
-        </DataGrid.Resources>
-        
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
@@ -75,7 +71,7 @@
                                VerticalAlignment="Stretch"
                                Fill="{DynamicResource Brush.Border0}"
                                IsVisible="{TemplateBinding AreSeparatorsVisible}" />
-                  </Grid>                  
+                  </Grid>
                 </Border>
               </ControlTemplate>
             </Setter>
@@ -96,13 +92,13 @@
             </Setter>
           </Style>
         </DataGrid.Styles>
-        
+
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
-            
+
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="{Binding Margin}" ClipToBounds="True" Background="Transparent">
@@ -159,7 +155,7 @@
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
-            
+
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Grid ColumnDefinitions="20,*" Background="Transparent">
@@ -188,7 +184,7 @@
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
-            
+
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True">

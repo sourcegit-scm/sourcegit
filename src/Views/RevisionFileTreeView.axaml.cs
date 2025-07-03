@@ -216,7 +216,7 @@ namespace SourceGit.Views
             if (node.IsExpanded)
             {
                 var subtree = GetChildrenOfTreeNode(node);
-                if (subtree != null && subtree.Count > 0)
+                if (subtree?.Count > 0)
                 {
                     var subrows = new List<ViewModels.RevisionFileTreeNode>();
                     MakeRows(subrows, subtree, depth + 1);
@@ -320,10 +320,8 @@ namespace SourceGit.Views
                 return node.Children;
 
             var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
-                return null;
 
-            var objects = vm.GetRevisionFilesUnderFolder(node.Backend.Path + "/");
+            var objects = vm?.GetRevisionFilesUnderFolder(node.Backend.Path + "/");
             if (objects == null || objects.Count == 0)
                 return null;
 

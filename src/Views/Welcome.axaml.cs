@@ -208,10 +208,8 @@ namespace SourceGit.Views
             if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files))
             {
                 var grid = sender as Grid;
-                if (grid == null)
-                    return;
 
-                var to = grid.DataContext as ViewModels.RepositoryNode;
+                var to = grid?.DataContext as ViewModels.RepositoryNode;
                 if (to == null)
                     return;
 

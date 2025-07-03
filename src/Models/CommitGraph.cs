@@ -82,7 +82,7 @@ namespace SourceGit.Models
 
             foreach (var commit in commits)
             {
-                var major = null as PathHelper;
+                PathHelper major = null;
                 var isMerged = commit.IsMerged;
 
                 // Update current y offset

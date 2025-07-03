@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value != null && value.Count == 1)
+                    if (value?.Count == 1)
                     {
                         var option = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value[0]);
                         DiffContext = new DiffContext(_repo, option, _diffContext);
@@ -85,12 +85,9 @@ namespace SourceGit.ViewModels
             _repo = null;
             _startPoint = null;
             _endPoint = null;
-            if (_changes != null)
-                _changes.Clear();
-            if (_visibleChanges != null)
-                _visibleChanges.Clear();
-            if (_selectedChanges != null)
-                _selectedChanges.Clear();
+            _changes?.Clear();
+            _visibleChanges?.Clear();
+            _selectedChanges?.Clear();
             _searchFilter = null;
             _diffContext = null;
         }

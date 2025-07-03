@@ -584,13 +584,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void SortNodesRecursive(List<RepositoryNode> collection)
-        {
-            SortNodes(collection);
-            foreach (var node in collection)
-                SortNodesRecursive(node.SubNodes);
-        }
-
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
         {
             foreach (var node in collection)

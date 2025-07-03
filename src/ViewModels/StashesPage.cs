@@ -67,8 +67,7 @@ namespace SourceGit.ViewModels
                                 untracked = new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2]).Result();
                                 var needSort = changes.Count > 0 && untracked.Count > 0;
 
-                                foreach (var c in untracked)
-                                    changes.Add(c);
+                                changes.AddRange(untracked);
 
                                 if (needSort)
                                     changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));

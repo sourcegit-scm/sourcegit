@@ -86,18 +86,10 @@ namespace SourceGit.ViewModels
         {
             var visible = new List<Models.LFSLock>();
 
-            if (!_showOnlyMyLocks)
+            foreach (var lfsLock in _cachedLocks)
             {
-                foreach (var lfsLock in _cachedLocks)
+                if (!_showOnlyMyLocks || lfsLock.User == _userName)
                     visible.Add(lfsLock);
-            }
-            else
-            {
-                foreach (var lfsLock in _cachedLocks)
-                {
-                    if (lfsLock.User == _userName)
-                        visible.Add(lfsLock);
-                }
             }
 
             VisibleLocks = visible;

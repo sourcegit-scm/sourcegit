@@ -32,7 +32,7 @@
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
-      
+
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
                  Margin="0,8,8,0"
@@ -54,7 +54,7 @@
                  Margin="0,2,4,4"
                  Text="{DynamicResource Text.PopupEnterKeyTip}"
                  TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"/>     
+                 Foreground="{DynamicResource Brush.FG2}"/>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Height="32"

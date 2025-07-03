@@ -417,8 +417,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (_activePage != null)
-                _activePage.Notifications.Add(notification);
+            _activePage?.Notifications.Add(notification);
         }
 
         public ContextMenu CreateContextForWorkspace()

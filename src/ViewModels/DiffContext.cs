@@ -120,7 +120,7 @@ namespace SourceGit.ViewModels
 
                 _info = info;
 
-                var rs = null as object;
+                object rs = null;
                 if (latest.TextDiff != null)
                 {
                     var count = latest.TextDiff.Lines.Count;
