@@ -1337,21 +1337,6 @@ namespace SourceGit.ViewModels
                 ShowPopup(new CreateBranch(this, _currentBranch));
         }
 
-        public async Task<bool> ConfirmCheckoutBranchAsync()
-        {
-            if (_currentBranch is not { IsDetachedHead: true })
-                return true;
-
-            var refs = await new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).GetResultAsync();
-            if (refs.Count == 0)
-            {
-                var msg = App.Text("Checkout.WarnLostCommits");
-                return await App.AskConfirmAsync(msg, null);
-            }
-
-            return true;
-        }
-
         public void CheckoutBranch(Models.Branch branch)
         {
             if (branch.IsLocal)

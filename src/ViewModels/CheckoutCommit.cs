@@ -45,11 +45,19 @@ namespace SourceGit.ViewModels
             bool succ;
             var needPop = false;
 
-            var confirmed = await _repo.ConfirmCheckoutBranchAsync();
-            if (!confirmed)
+            if (_repo.CurrentBranch is { IsDetachedHead: true })
             {
-                _repo.SetWatcherEnabled(true);
-                return true;
+                var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _repo.CurrentBranch.Head).GetResultAsync();
+                if (refs.Count == 0)
+                {
+                    var msg = App.Text("Checkout.WarnLostCommits");
+                    var shouldContinue = await App.AskConfirmAsync(msg, null);
+                    if (!shouldContinue)
+                    {
+                        _repo.SetWatcherEnabled(true);
+                        return true;
+                    }
+                }
             }
 
             if (DiscardLocalChanges)

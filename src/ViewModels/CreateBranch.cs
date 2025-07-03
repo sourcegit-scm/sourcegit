@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -67,7 +68,7 @@ namespace SourceGit.ViewModels
         public CreateBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
-            _baseOnRevision = branch.IsDetachedHead ? branch.Head : branch.FullName;
+            _baseOnRevision = branch.Head;
 
             if (!branch.IsLocal && repo.Branches.Find(x => x.IsLocal && x.Name == branch.Name) == null)
                 Name = branch.Name;
@@ -127,11 +128,19 @@ namespace SourceGit.ViewModels
 
             if (CheckoutAfterCreated)
             {
-                var confirmed = await _repo.ConfirmCheckoutBranchAsync();
-                if (!confirmed)
+                if (_repo.CurrentBranch is { IsDetachedHead: true } && !_repo.CurrentBranch.Head.Equals(_baseOnRevision, StringComparison.Ordinal))
                 {
-                    _repo.SetWatcherEnabled(true);
-                    return true;
+                    var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _repo.CurrentBranch.Head).GetResultAsync();
+                    if (refs.Count == 0)
+                    {
+                        var msg = App.Text("Checkout.WarnLostCommits");
+                        var shouldContinue = await App.AskConfirmAsync(msg, null);
+                        if (!shouldContinue)
+                        {
+                            _repo.SetWatcherEnabled(true);
+                            return true;
+                        }
+                    }
                 }
             }
 
