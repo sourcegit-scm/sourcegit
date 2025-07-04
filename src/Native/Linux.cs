@@ -56,6 +56,14 @@ namespace SourceGit.Native
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox");
             finder.SublimeText(() => FindExecutable("subl"));
             finder.Zed(() => FindExecutable("zeditor"));
+
+            var flatpakPath = FindExecutable("flatpak");
+            TryAddFlatpakApp(finder.VSCode, flatpakPath,"com.visualstudio.code");
+            TryAddFlatpakApp(finder.VSCodeInsiders, flatpakPath,"com.vscodium.codium-insiders");
+            TryAddFlatpakApp(finder.VSCodium, flatpakPath,"com.vscodium.codium");
+            TryAddFlatpakApp(finder.SublimeText, flatpakPath,"com.sublimetext.three");
+            TryAddFlatpakApp(finder.Zed, flatpakPath,"dev.zed.Zed");
+
             return finder.Founded;
         }
 
@@ -135,6 +143,21 @@ namespace SourceGit.Native
         {
             var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet";
             return File.Exists(path) ? path : FindExecutable("fleet");
+        }
+
+        private static void TryAddFlatpakApp(Action<Func<string>,Func<string,string>> adder, string flatpakPath, string appId)
+        {
+            if (flatpakPath != null && IsFlatpakAppInstalled(flatpakPath, appId))
+                adder(() => flatpakPath, repo => $"run {appId} \"{repo}\"");
+        }
+
+        private static bool IsFlatpakAppInstalled(string flatpakPath, string appId)
+        {
+            using var proc = Process.Start(flatpakPath, "info " + appId);
+            if (proc == null)
+                return false;
+            proc.WaitForExit();
+            return proc.ExitCode == 0;
         }
     }
 }

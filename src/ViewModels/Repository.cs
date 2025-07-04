@@ -702,7 +702,7 @@ namespace SourceGit.ViewModels
             {
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                foreach (var tool in Native.OS.ExternalTools)
+                foreach (var tool in tools)
                 {
                     var dupTool = tool;
 
