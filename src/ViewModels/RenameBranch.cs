@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -32,10 +31,10 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is RenameBranch rename)
             {
-                var fixedName = FixName(name);
+                var fixedName = Models.Branch.FixName(name);
                 foreach (var b in rename._repo.Branches)
                 {
-                    if (b.IsLocal && b != rename.Target && b.Name == fixedName)
+                    if (b.IsLocal && b != rename.Target && b.Name.Equals(fixedName, StringComparison.Ordinal))
                     {
                         return new ValidationResult("A branch with same name already exists!!!");
                     }
@@ -47,8 +46,8 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            var fixedName = FixName(_name);
-            if (fixedName == Target.Name)
+            var fixedName = Models.Branch.FixName(_name);
+            if (fixedName.Equals(Target.Name, StringComparison.Ordinal))
                 return true;
 
             _repo.SetWatcherEnabled(false);
@@ -59,9 +58,8 @@ namespace SourceGit.ViewModels
 
             var isCurrent = Target.IsCurrent;
             var oldName = Target.FullName;
-            var succ = await Commands.Branch
-                .RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
 
+            var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
             if (succ)
             {
                 foreach (var filter in _repo.Settings.HistoriesFilters)
@@ -86,14 +84,6 @@ namespace SourceGit.ViewModels
             }
 
             return succ;
-        }
-
-        [GeneratedRegex(@"\s+")]
-        private static partial Regex REG_FIX_NAME();
-
-        private static string FixName(string name)
-        {
-            return REG_FIX_NAME().Replace(name, "-");
         }
 
         private readonly Repository _repo;

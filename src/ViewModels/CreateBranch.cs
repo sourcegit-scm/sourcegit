@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -102,10 +101,10 @@ namespace SourceGit.ViewModels
             {
                 if (!creator._allowOverwrite)
                 {
-                    var fixedName = FixName(name);
+                    var fixedName = Models.Branch.FixName(name);
                     foreach (var b in creator._repo.Branches)
                     {
-                        if (b.FriendlyName == fixedName)
+                        if (b.FriendlyName.Equals(fixedName, StringComparison.Ordinal))
                             return new ValidationResult("A branch with same name already exists!");
                     }
                 }
@@ -120,7 +119,7 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
 
-            var fixedName = FixName(_name);
+            var fixedName = Models.Branch.FixName(_name);
             var log = _repo.CreateLog($"Create Branch '{fixedName}'");
             Use(log);
 
@@ -226,14 +225,6 @@ namespace SourceGit.ViewModels
             }
 
             return true;
-        }
-
-        [GeneratedRegex(@"\s+")]
-        private static partial Regex REG_FIX_NAME();
-
-        private static string FixName(string name)
-        {
-            return REG_FIX_NAME().Replace(name, "-");
         }
 
         private readonly Repository _repo = null;
