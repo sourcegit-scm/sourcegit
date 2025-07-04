@@ -6,24 +6,31 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.40%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.92%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Update
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.04%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.56%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
 - Text.DirHistories
@@ -31,11 +38,12 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Update
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-87.86%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-87.44%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -52,6 +60,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
@@ -121,6 +132,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -144,7 +156,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-93.03%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-92.58%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -154,6 +166,9 @@ This document shows the translation status of each locale file in the repository
 - Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
@@ -202,6 +217,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Update
 - Text.TagCM.CustomAction
 - Text.WorkingCopy.AddToGitIgnore.InFolder
@@ -210,7 +226,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-87.62%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-87.20%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -228,6 +244,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
@@ -298,6 +317,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -321,7 +341,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-80.17%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-79.78%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -347,6 +367,9 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.MergeMultiBranches
 - Text.BranchCM.ResetToSelectedCommit
 - Text.BranchUpstreamInvalid
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
@@ -469,6 +492,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.SaveAsPatch
 - Text.Submodule.Deinit
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -494,11 +518,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.04%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.56%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
 - Text.DirHistories
@@ -506,11 +533,12 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Update
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-87.74%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-87.32%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -528,6 +556,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
@@ -597,6 +628,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
@@ -620,7 +652,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-88.94%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-88.52%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -637,6 +669,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
@@ -702,6 +737,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.CopyMessage
 - Text.Submodule.Deinit
 - Text.Submodule.Move
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
