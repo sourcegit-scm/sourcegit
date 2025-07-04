@@ -20,6 +20,12 @@ namespace SourceGit.Views
                 TxtCopyright.Text = copyright.Copyright;
         }
 
+        private void OnVisitGithubRelease(object _, RoutedEventArgs e)
+        {
+            Native.OS.OpenBrowser($"https://github.com/sourcegit-scm/sourcegit/releases/tag/v{TxtVersion.Text}");
+            e.Handled = true;
+        }
+
         private void OnVisitWebsite(object _, RoutedEventArgs e)
         {
             Native.OS.OpenBrowser("https://sourcegit-scm.github.io/");
