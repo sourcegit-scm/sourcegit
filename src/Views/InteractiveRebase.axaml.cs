@@ -68,6 +68,7 @@ namespace SourceGit.Views
     {
         public InteractiveRebase()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

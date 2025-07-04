@@ -26,6 +26,15 @@ namespace SourceGit.Views
                 layout.WorkingCopyLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
         }
 
+        private async void OnOpenAssumeUnchanged(object sender, RoutedEventArgs e)
+        {
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView is { DataContext: ViewModels.Repository repo })
+                await App.ShowDailog(new ViewModels.AssumeUnchangedManager(repo));
+
+            e.Handled = true;
+        }
+
         private void OnUnstagedContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)

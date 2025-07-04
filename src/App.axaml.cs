@@ -106,43 +106,56 @@ namespace SourceGit
         #endregion
 
         #region Utility Functions
-        public static void ShowWindow(object data, bool showAsDialog)
+        public static object CreateViewForViewModel(object data)
         {
-            var impl = (Views.ChromelessWindow target, bool isDialog) =>
-            {
-                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                {
-                    if (isDialog)
-                        target.ShowDialog(owner);
-                    else
-                        target.Show(owner);
-                }
-                else
-                {
-                    target.Show();
-                }
-            };
-
-            if (data is Views.ChromelessWindow window)
-            {
-                impl(window, showAsDialog);
-                return;
-            }
-
             var dataTypeName = data.GetType().FullName;
             if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
-                return;
+                return null;
 
             var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
             var viewType = Type.GetType(viewTypeName);
-            if (viewType == null || !viewType.IsSubclassOf(typeof(Views.ChromelessWindow)))
-                return;
+            if (viewType != null)
+                return Activator.CreateInstance(viewType);
 
-            window = Activator.CreateInstance(viewType) as Views.ChromelessWindow;
+            return null;
+        }
+
+        public static Task ShowDailog(object data, Window owner = null)
+        {
+            if (owner == null)
+            {
+                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } mainWindow })
+                    owner = mainWindow;
+                else
+                    return null;
+            }
+
+            if (data is Views.ChromelessWindow window)
+                return window.ShowDialog(owner);
+
+            window = CreateViewForViewModel(data) as Views.ChromelessWindow;
             if (window != null)
             {
                 window.DataContext = data;
-                impl(window, showAsDialog);
+                return window.ShowDialog(owner);
+            }
+
+            return null;
+        }
+
+        public static void ShowWindow(object data)
+        {
+            if (data is Views.ChromelessWindow window)
+            {
+                window.Show();
+                return;
+            }
+
+            window = CreateViewForViewModel(data) as Views.ChromelessWindow;
+            if (window != null)
+            {
+                window.DataContext = data;
+                window.Show();
             }
         }
 
@@ -651,9 +664,9 @@ namespace SourceGit
 
         private void ShowSelfUpdateResult(object data)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Post(async () =>
             {
-                ShowWindow(new ViewModels.SelfUpdate() { Data = data }, true);
+                await ShowDailog(new ViewModels.SelfUpdate { Data = data });
             });
         }
 

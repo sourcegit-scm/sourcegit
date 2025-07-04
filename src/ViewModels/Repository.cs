@@ -1666,9 +1666,9 @@ namespace SourceGit.ViewModels
                 locks.IsEnabled = _remotes.Count > 0;
                 if (_remotes.Count == 1)
                 {
-                    locks.Click += (_, e) =>
+                    locks.Click += async (_, e) =>
                     {
-                        App.ShowWindow(new LFSLocks(this, _remotes[0].Name), true);
+                        await App.ShowDailog(new LFSLocks(this, _remotes[0].Name));
                         e.Handled = true;
                     };
                 }
@@ -1679,9 +1679,9 @@ namespace SourceGit.ViewModels
                         var remoteName = remote.Name;
                         var lockRemote = new MenuItem();
                         lockRemote.Header = remoteName;
-                        lockRemote.Click += (_, e) =>
+                        lockRemote.Click += async (_, e) =>
                         {
-                            App.ShowWindow(new LFSLocks(this, remoteName), true);
+                            await App.ShowDailog(new LFSLocks(this, remoteName));
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);
@@ -1984,7 +1984,7 @@ namespace SourceGit.ViewModels
                 compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithCurrent.Click += (_, _) =>
                 {
-                    App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
+                    App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch));
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithCurrent);
@@ -2264,7 +2264,7 @@ namespace SourceGit.ViewModels
             compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
             compareWithHead.Click += (_, _) =>
             {
-                App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
+                App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch));
             };
             menu.Items.Add(compareWithHead);
 

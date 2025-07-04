@@ -7,6 +7,7 @@ namespace SourceGit.Views
     {
         public LFSLocks()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

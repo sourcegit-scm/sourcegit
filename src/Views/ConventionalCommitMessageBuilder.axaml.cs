@@ -6,6 +6,7 @@ namespace SourceGit.Views
     {
         public ConventionalCommitMessageBuilder()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

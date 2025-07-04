@@ -645,7 +645,7 @@ namespace SourceGit.ViewModels
                     var interactiveRebase = new MenuItem();
                     interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase", current.Name);
                     interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
-                    interactiveRebase.Click += (_, e) =>
+                    interactiveRebase.Click += async (_, e) =>
                     {
                         if (_repo.LocalChangesCount > 0)
                         {
@@ -653,7 +653,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        App.ShowWindow(new InteractiveRebase(_repo, current, commit), true);
+                        await App.ShowDailog(new InteractiveRebase(_repo, current, commit));
                         e.Handled = true;
                     };
 

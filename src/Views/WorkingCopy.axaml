@@ -73,7 +73,7 @@
                     Width="26" Height="14"
                     Padding="0"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchanged}"
-                    Command="{Binding OpenAssumeUnchanged}">
+                    Click="OnOpenAssumeUnchanged">
               <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
             </Button>
             <ToggleButton Grid.Column="5"

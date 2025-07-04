@@ -115,6 +115,7 @@ namespace SourceGit.Views
     {
         public AIAssistant()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

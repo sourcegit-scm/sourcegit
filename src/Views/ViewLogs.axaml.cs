@@ -7,6 +7,7 @@ namespace SourceGit.Views
     {
         public ViewLogs()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

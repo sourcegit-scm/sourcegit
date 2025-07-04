@@ -334,11 +334,6 @@ namespace SourceGit.ViewModels
             UseExternalMergeTool(null);
         }
 
-        public void OpenAssumeUnchanged()
-        {
-            App.ShowWindow(new AssumeUnchangedManager(_repo), true);
-        }
-
         public void StashAll(bool autoStart)
         {
             if (!_repo.CanCreatePopup())
@@ -973,9 +968,9 @@ namespace SourceGit.ViewModels
                 history.Click += (_, e) =>
                 {
                     if (hasSelectedFolder)
-                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder), false);
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
                     else
-                        App.ShowWindow(new FileHistories(_repo, change.Path), false);
+                        App.ShowWindow(new FileHistories(_repo, change.Path));
 
                     e.Handled = true;
                 };
@@ -1166,7 +1161,7 @@ namespace SourceGit.ViewModels
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder), false);
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
                         e.Handled = true;
                     };
                     menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1215,9 +1210,9 @@ namespace SourceGit.ViewModels
 
                 if (services.Count == 1)
                 {
-                    ai.Click += (_, e) =>
+                    ai.Click += async (_, e) =>
                     {
-                        App.ShowWindow(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t), true);
+                        await App.ShowDailog(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t));
                         e.Handled = true;
                     };
                 }
@@ -1229,9 +1224,9 @@ namespace SourceGit.ViewModels
 
                         var item = new MenuItem();
                         item.Header = service.Name;
-                        item.Click += (_, e) =>
+                        item.Click += async (_, e) =>
                         {
-                            App.ShowWindow(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t), true);
+                            await App.ShowDailog(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t));
                             e.Handled = true;
                         };
 
@@ -1421,9 +1416,9 @@ namespace SourceGit.ViewModels
                 history.Click += (_, e) =>
                 {
                     if (hasSelectedFolder)
-                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder), false);
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
                     else
-                        App.ShowWindow(new FileHistories(_repo, change.Path), false);
+                        App.ShowWindow(new FileHistories(_repo, change.Path));
                     e.Handled = true;
                 };
 
@@ -1532,7 +1527,7 @@ namespace SourceGit.ViewModels
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder), false);
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -1672,7 +1667,7 @@ namespace SourceGit.ViewModels
 
             if (services.Count == 1)
             {
-                App.ShowWindow(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t), true);
+                _ = App.ShowDailog(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t));
                 return null;
             }
 
@@ -1682,9 +1677,9 @@ namespace SourceGit.ViewModels
                 var dup = service;
                 var item = new MenuItem();
                 item.Header = service.Name;
-                item.Click += (_, e) =>
+                item.Click += async (_, e) =>
                 {
-                    App.ShowWindow(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t), true);
+                    await App.ShowDailog(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t));
                     e.Handled = true;
                 };
 
@@ -1902,7 +1897,7 @@ namespace SourceGit.ViewModels
             {
                 if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    App.ShowWindow(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)), true);
+                    _ = App.ShowDailog(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)));
                     return;
                 }
             }

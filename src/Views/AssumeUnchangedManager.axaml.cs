@@ -7,6 +7,7 @@ namespace SourceGit.Views
     {
         public AssumeUnchangedManager()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

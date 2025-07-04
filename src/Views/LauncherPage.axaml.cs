@@ -56,28 +56,9 @@ namespace SourceGit.Views
             if (sender is ContentPresenter presenter)
             {
                 if (presenter.DataContext is not ViewModels.Popup)
-                {
                     presenter.Content = null;
-                    return;
-                }
-
-                var dataTypeName = presenter.DataContext.GetType().FullName;
-                if (string.IsNullOrEmpty(dataTypeName))
-                {
-                    presenter.Content = null;
-                    return;
-                }
-
-                var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
-                var viewType = Type.GetType(viewTypeName);
-                if (viewType == null)
-                {
-                    presenter.Content = null;
-                    return;
-                }
-
-                var view = Activator.CreateInstance(viewType);
-                presenter.Content = view;
+                else
+                    presenter.Content = App.CreateViewForViewModel(presenter.DataContext);
             }
         }
     }

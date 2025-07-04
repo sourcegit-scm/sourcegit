@@ -117,6 +117,7 @@ namespace SourceGit.Views
         {
             var pref = ViewModels.Preferences.Instance;
             DataContext = pref;
+            CloseOnESC = true;
 
             if (pref.IsGitConfigured())
             {
@@ -378,12 +379,12 @@ namespace SourceGit.Views
                 await new Commands.Config(null).SetAsync(key, value);
         }
 
-        private void OnUseNativeWindowFrameChanged(object sender, RoutedEventArgs e)
+        private async void OnUseNativeWindowFrameChanged(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox box)
             {
                 ViewModels.Preferences.Instance.UseSystemWindowFrame = box.IsChecked == true;
-                App.ShowWindow(new ConfirmRestart(), true);
+                await App.ShowDailog(new ConfirmRestart());
             }
 
             e.Handled = true;

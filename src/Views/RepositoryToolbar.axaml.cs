@@ -22,20 +22,20 @@ namespace SourceGit.Views
             }
         }
 
-        private void OpenStatistics(object _, RoutedEventArgs e)
+        private async void OpenStatistics(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                App.ShowWindow(new ViewModels.Statistics(repo.FullPath), true);
+                await App.ShowDailog(new ViewModels.Statistics(repo.FullPath));
                 e.Handled = true;
             }
         }
 
-        private void OpenConfigure(object sender, RoutedEventArgs e)
+        private async void OpenConfigure(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                App.ShowWindow(new ViewModels.RepositoryConfigure(repo), true);
+                await App.ShowDailog(new ViewModels.RepositoryConfigure(repo));
                 e.Handled = true;
             }
         }
@@ -143,11 +143,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OpenGitLogs(object sender, RoutedEventArgs e)
+        private async void OpenGitLogs(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                App.ShowWindow(new ViewModels.ViewLogs(repo), true);
+                await App.ShowDailog(new ViewModels.ViewLogs(repo));
                 e.Handled = true;
             }
         }

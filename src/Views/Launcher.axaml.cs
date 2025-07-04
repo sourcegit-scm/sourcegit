@@ -143,7 +143,7 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        protected override async void OnKeyDown(KeyEventArgs e)
         {
             var vm = DataContext as ViewModels.Launcher;
             if (vm == null)
@@ -166,7 +166,7 @@ namespace SourceGit.Views
             // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
             {
-                App.ShowWindow(new Preferences(), true);
+                await App.ShowDailog(new Preferences());
                 e.Handled = true;
                 return;
             }
@@ -174,7 +174,7 @@ namespace SourceGit.Views
             // F1 opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
             {
-                App.ShowWindow(new Hotkeys(), true);
+                await App.ShowDailog(new Hotkeys());
                 return;
             }
 

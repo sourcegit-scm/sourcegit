@@ -450,9 +450,9 @@ namespace SourceGit.ViewModels
 
             var configure = new MenuItem();
             configure.Header = App.Text("Workspace.Configure");
-            configure.Click += (_, e) =>
+            configure.Click += async (_, e) =>
             {
-                App.ShowWindow(new ConfigureWorkspace(), true);
+                await App.ShowDailog(new ConfigureWorkspace());
                 e.Handled = true;
             };
             menu.Items.Add(configure);

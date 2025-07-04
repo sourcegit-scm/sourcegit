@@ -13,6 +13,12 @@ namespace SourceGit.Views
             get => Native.OS.UseSystemWindowFrame;
         }
 
+        public bool CloseOnESC
+        {
+            get;
+            set;
+        } = false;
+
         protected override Type StyleKeyOverride => typeof(Window);
 
         public ChromelessWindow()
@@ -65,6 +71,17 @@ namespace SourceGit.Views
                         border.PointerPressed += OnWindowBorderPointerPressed;
                     }
                 }
+            }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e is { Handled: false, Key: Key.Escape, KeyModifiers: KeyModifiers.None } && CloseOnESC)
+            {
+                Close();
+                e.Handled = true;
             }
         }
 

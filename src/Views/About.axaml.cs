@@ -7,6 +7,7 @@ namespace SourceGit.Views
     {
         public About()
         {
+            CloseOnESC = true;
             InitializeComponent();
 
             var assembly = Assembly.GetExecutingAssembly();
