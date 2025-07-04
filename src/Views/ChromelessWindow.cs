@@ -73,5 +73,13 @@ namespace SourceGit.Views
             if (sender is Border { Tag: WindowEdge edge } && CanResize)
                 BeginResizeDrag(edge, e);
         }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e is { Handled: false, Key: Key.Escape })
+                Close();
+        }
     }
 }
