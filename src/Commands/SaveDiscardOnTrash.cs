@@ -11,36 +11,16 @@ namespace SourceGit.Commands
         {
             changes ??= await new QueryLocalChanges(repo).GetResultAsync().ConfigureAwait(false);
 
-            var succ = false;
-            string fullName = $"discard_{DateTime.Now.Ticks}.patch";
-            string trashDirectory;
+            string tempFolder = Path.GetTempPath();
+            string fileName = $"discard_{DateTime.Now.Ticks}.patch";
+            string fileNameTemp = Path.Combine(tempFolder, fileName);
 
-            if (OperatingSystem.IsLinux())
-            {
-                trashDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share", "Trash", "files");
-                fullName = Path.Combine(trashDirectory, fullName);
-                succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
-                if (succ) return false;
-            }
-            else if (OperatingSystem.IsMacOS())
-            {
-                trashDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".Trash");
-                fullName = Path.Combine(trashDirectory, fullName);
-                succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
-                if (succ)
-                    return false;
-            }
-            else
-            {
-                trashDirectory = Path.GetTempPath();
-                fullName = Path.Combine(trashDirectory, fullName);
-                succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
-                if (succ)
-                    return false;
+            // Save the patch in the Temp Folder
+            var succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fileNameTemp);
+            if (succ) return false;
 
-                if (!SaveDiscardOnTrashWindows.MoveFileToTrash(fullName))
-                    return false;
-            }
+            // Move the file in the Trash
+            if(!Native.OS.MoveFileToTrash(fileNameTemp)) return false;
 
             return false;
         }
