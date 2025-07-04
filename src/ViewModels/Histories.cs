@@ -845,6 +845,17 @@ namespace SourceGit.ViewModels
                 e.Handled = true;
             };
 
+            var copyFullInfo = new MenuItem();
+            copyFullInfo.Header = App.Text("CommitCM.CopyCommitMessage");
+            copyFullInfo.Icon = App.CreateMenuIcon("Icons.Info");
+            copyFullInfo.Click += async (_, e) =>
+            {
+                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA).
+                                   GetResultAsync().ConfigureAwait(false);
+                await App.CopyTextAsync(message);
+                e.Handled = true;
+            };
+
             var copyAuthor = new MenuItem();
             copyAuthor.Header = App.Text("CommitCM.CopyAuthor");
             copyAuthor.Icon = App.CreateMenuIcon("Icons.User");
@@ -869,6 +880,7 @@ namespace SourceGit.ViewModels
             copy.Items.Add(copySHA);
             copy.Items.Add(copySubject);
             copy.Items.Add(copyInfo);
+            copy.Items.Add(copyFullInfo);
             copy.Items.Add(copyAuthor);
             copy.Items.Add(copyCommitter);
             menu.Items.Add(copy);
