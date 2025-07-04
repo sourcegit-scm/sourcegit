@@ -384,7 +384,7 @@ namespace SourceGit.Views
             if (sender is CheckBox box)
             {
                 ViewModels.Preferences.Instance.UseSystemWindowFrame = box.IsChecked == true;
-                await App.ShowDailog(new ConfirmRestart());
+                await App.ShowDialog(new ConfirmRestart());
             }
 
             e.Handled = true;

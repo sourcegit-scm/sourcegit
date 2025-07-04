@@ -30,7 +30,7 @@ namespace SourceGit.Views
         {
             var repoView = this.FindAncestorOfType<Repository>();
             if (repoView is { DataContext: ViewModels.Repository repo })
-                await App.ShowDailog(new ViewModels.AssumeUnchangedManager(repo));
+                await App.ShowDialog(new ViewModels.AssumeUnchangedManager(repo));
 
             e.Handled = true;
         }

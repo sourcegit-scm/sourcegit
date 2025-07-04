@@ -120,7 +120,7 @@ namespace SourceGit
             return null;
         }
 
-        public static Task ShowDailog(object data, Window owner = null)
+        public static Task ShowDialog(object data, Window owner = null)
         {
             if (owner == null)
             {
@@ -666,7 +666,7 @@ namespace SourceGit
         {
             Dispatcher.UIThread.Post(async () =>
             {
-                await ShowDailog(new ViewModels.SelfUpdate { Data = data });
+                await ShowDialog(new ViewModels.SelfUpdate { Data = data });
             });
         }
 

@@ -166,7 +166,7 @@ namespace SourceGit.Views
             // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
             {
-                await App.ShowDailog(new Preferences());
+                await App.ShowDialog(new Preferences());
                 e.Handled = true;
                 return;
             }
@@ -174,7 +174,7 @@ namespace SourceGit.Views
             // F1 opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
             {
-                await App.ShowDailog(new Hotkeys());
+                await App.ShowDialog(new Hotkeys());
                 return;
             }
 

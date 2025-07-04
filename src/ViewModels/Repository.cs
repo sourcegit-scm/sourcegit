@@ -1668,7 +1668,7 @@ namespace SourceGit.ViewModels
                 {
                     locks.Click += async (_, e) =>
                     {
-                        await App.ShowDailog(new LFSLocks(this, _remotes[0].Name));
+                        await App.ShowDialog(new LFSLocks(this, _remotes[0].Name));
                         e.Handled = true;
                     };
                 }
@@ -1681,7 +1681,7 @@ namespace SourceGit.ViewModels
                         lockRemote.Header = remoteName;
                         lockRemote.Click += async (_, e) =>
                         {
-                            await App.ShowDailog(new LFSLocks(this, remoteName));
+                            await App.ShowDialog(new LFSLocks(this, remoteName));
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);

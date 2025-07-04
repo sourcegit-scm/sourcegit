@@ -1212,7 +1212,7 @@ namespace SourceGit.ViewModels
                 {
                     ai.Click += async (_, e) =>
                     {
-                        await App.ShowDailog(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t));
+                        await App.ShowDialog(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t));
                         e.Handled = true;
                     };
                 }
@@ -1226,7 +1226,7 @@ namespace SourceGit.ViewModels
                         item.Header = service.Name;
                         item.Click += async (_, e) =>
                         {
-                            await App.ShowDailog(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t));
+                            await App.ShowDialog(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t));
                             e.Handled = true;
                         };
 
@@ -1667,7 +1667,7 @@ namespace SourceGit.ViewModels
 
             if (services.Count == 1)
             {
-                _ = App.ShowDailog(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t));
+                _ = App.ShowDialog(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t));
                 return null;
             }
 
@@ -1679,7 +1679,7 @@ namespace SourceGit.ViewModels
                 item.Header = service.Name;
                 item.Click += async (_, e) =>
                 {
-                    await App.ShowDailog(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t));
+                    await App.ShowDialog(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t));
                     e.Handled = true;
                 };
 
@@ -1897,7 +1897,7 @@ namespace SourceGit.ViewModels
             {
                 if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    _ = App.ShowDailog(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)));
+                    _ = App.ShowDialog(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)));
                     return;
                 }
             }

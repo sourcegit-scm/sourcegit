@@ -653,7 +653,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        await App.ShowDailog(new InteractiveRebase(_repo, current, commit));
+                        await App.ShowDialog(new InteractiveRebase(_repo, current, commit));
                         e.Handled = true;
                     };
 

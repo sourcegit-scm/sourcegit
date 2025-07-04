@@ -26,7 +26,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await App.ShowDailog(new ViewModels.Statistics(repo.FullPath));
+                await App.ShowDialog(new ViewModels.Statistics(repo.FullPath));
                 e.Handled = true;
             }
         }
@@ -35,7 +35,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await App.ShowDailog(new ViewModels.RepositoryConfigure(repo));
+                await App.ShowDialog(new ViewModels.RepositoryConfigure(repo));
                 e.Handled = true;
             }
         }
@@ -147,7 +147,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await App.ShowDailog(new ViewModels.ViewLogs(repo));
+                await App.ShowDialog(new ViewModels.ViewLogs(repo));
                 e.Handled = true;
             }
         }
