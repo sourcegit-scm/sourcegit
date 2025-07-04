@@ -753,6 +753,7 @@
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">not initialized</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revision changed</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">unmerged</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Update Submodule</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>

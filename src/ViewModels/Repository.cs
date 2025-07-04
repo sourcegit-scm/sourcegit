@@ -1440,7 +1440,7 @@ namespace SourceGit.ViewModels
         public void UpdateSubmodules()
         {
             if (CanCreatePopup())
-                ShowPopup(new UpdateSubmodules(this));
+                ShowPopup(new UpdateSubmodules(this, null));
         }
 
         public void OpenSubmodule(string submodule)
@@ -2556,6 +2556,16 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var update = new MenuItem();
+            update.Header = App.Text("Submodule.Update");
+            update.Icon = App.CreateMenuIcon("Icons.Loading");
+            update.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new UpdateSubmodules(this, submodule));
+                ev.Handled = true;
+            };
+
             var move = new MenuItem();
             move.Header = App.Text("Submodule.Move");
             move.Icon = App.CreateMenuIcon("Icons.MoveTo");
@@ -2599,6 +2609,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             menu.Items.Add(open);
             menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(update);
             menu.Items.Add(move);
             menu.Items.Add(deinit);
             menu.Items.Add(rm);
