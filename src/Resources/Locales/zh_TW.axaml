@@ -474,6 +474,9 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">提交變更</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">合併策略:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">目標列表:</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">移動子模組</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">移動到:</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">子模組:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">調整存放庫分組</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名稱:</x:String>
@@ -744,6 +747,7 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">複製路徑</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">提取子模組</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移動子模組</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">開啟存放庫</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本機存放的相對路徑。</x:String>

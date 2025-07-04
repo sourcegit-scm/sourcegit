@@ -470,6 +470,9 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit all changes</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategy:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Targets:</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Move Submodule</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Move To:</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
@@ -740,6 +743,7 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize Submodule</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Move Submodule</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Submodule Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relative folder to store this module.</x:String>

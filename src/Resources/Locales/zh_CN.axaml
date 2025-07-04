@@ -474,6 +474,9 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">提交变化</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">合并策略 ：</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">目标列表 ：</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">移动子模块</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">移动到 ：</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">调整仓库分组</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">请选择目标分组：</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名称 ：</x:String>
@@ -744,6 +747,7 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">复制路径</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">拉取子孙模块</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移动子模块</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">打开仓库</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相对仓库路径 ：</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本地存放的相对路径。</x:String>

@@ -276,7 +276,7 @@ namespace SourceGit.ViewModels
 
             var move = new MenuItem();
             move.Header = App.Text("Welcome.Move");
-            move.Icon = App.CreateMenuIcon("Icons.MoveToAnotherGroup");
+            move.Icon = App.CreateMenuIcon("Icons.MoveTo");
             move.Click += (_, e) =>
             {
                 var activePage = App.GetLauncher().ActivePage;
