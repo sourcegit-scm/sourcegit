@@ -15,34 +15,31 @@ namespace SourceGit.Commands
             string fullName = $"discard_{DateTime.Now.Ticks}.patch";
             string trashDirectory;
 
-            switch (Environment.OSVersion.Platform)
+            if (OperatingSystem.IsLinux())
             {
-                case PlatformID.Unix:
-                    trashDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share", "Trash", "files");
-                    fullName = Path.Combine(trashDirectory, fullName);
-                    succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
-                    if(succ) return false;
+                trashDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share", "Trash", "files");
+                fullName = Path.Combine(trashDirectory, fullName);
+                succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
+                if (succ) return false;
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                trashDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".Trash");
+                fullName = Path.Combine(trashDirectory, fullName);
+                succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
+                if (succ)
+                    return false;
+            }
+            else
+            {
+                trashDirectory = Path.GetTempPath();
+                fullName = Path.Combine(trashDirectory, fullName);
+                succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
+                if (succ)
+                    return false;
 
-                    break;
-                case PlatformID.MacOSX:
-                    trashDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".Trash");
-                    fullName = Path.Combine(trashDirectory, fullName);
-                    succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
-                    if (succ)
-                        return false;
-
-                    break;
-                default:
-                    trashDirectory = Path.GetTempPath();
-                    fullName = Path.Combine(trashDirectory, fullName);
-                    succ = await SaveChangesAsPatch.ProcessLocalChangesAsync(repo, changes, true, fullName);
-                    if (succ)
-                        return false;
-
-                    if (!SaveDiscardOnTrashWindows.MoveFileToTrash(fullName))
-                        return false;
-
-                    break;
+                if (!SaveDiscardOnTrashWindows.MoveFileToTrash(fullName))
+                    return false;
             }
 
             return false;
