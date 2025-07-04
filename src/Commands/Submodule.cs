@@ -32,6 +32,12 @@ namespace SourceGit.Commands
             }
         }
 
+        public async Task<bool> SetURL(string path, string url)
+        {
+            Args = $"submodule set-url -- \"{path}\" \"{url}\"";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
         public async Task<bool> UpdateAsync(List<string> modules, bool init, bool recursive, bool useRemote = false)
         {
             var builder = new StringBuilder();

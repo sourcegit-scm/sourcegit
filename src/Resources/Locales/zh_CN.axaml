@@ -84,6 +84,9 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">文件名+路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">文件目录树形结构模式</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">修改子模块远程地址</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">子模块 ：</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">远程地址 ：</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">检出(checkout)分支</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">检出(checkout)提交</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">提交 ：</x:String>
@@ -747,17 +750,18 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">复制路径</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">拉取子孙模块</x:String>
-  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移动子模块</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移动</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">打开仓库</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相对仓库路径 ：</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本地存放的相对路径。</x:String>
-  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">删除子模块</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">删除</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">修改远程地址</x:String>
   <x:String x:Key="Text.Submodule.Status" xml:space="preserve">状态</x:String>
   <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">未提交修改</x:String>
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">未初始化</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">SHA变更</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解决冲突</x:String>
-  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新子模块</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">仓库</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>

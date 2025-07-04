@@ -80,6 +80,9 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Show as File and Dir List</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Show as Path List</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Show as Filesystem Tree</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Change Submodule's URL</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
@@ -741,19 +744,20 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>
-  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize Submodule</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
-  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Move Submodule</x:String>
-  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Submodule Repository</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Move To</x:String>
+  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relative folder to store this module.</x:String>
-  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Delete Submodule</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Delete</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">Change URL</x:String>
   <x:String x:Key="Text.Submodule.Status" xml:space="preserve">STATUS</x:String>
   <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">modified</x:String>
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">not initialized</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revision changed</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">unmerged</x:String>
-  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Update Submodule</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Update</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copy Tag Name</x:String>

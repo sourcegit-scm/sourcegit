@@ -2576,6 +2576,16 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var setURL = new MenuItem();
+            setURL.Header = App.Text("Submodule.SetURL");
+            setURL.Icon = App.CreateMenuIcon("Icons.Edit");
+            setURL.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new ChangeSubmoduleUrl(this, submodule));
+                ev.Handled = true;
+            };
+
             var deinit = new MenuItem();
             deinit.Header = App.Text("Submodule.Deinit");
             deinit.Icon = App.CreateMenuIcon("Icons.Undo");
@@ -2610,6 +2620,7 @@ namespace SourceGit.ViewModels
             menu.Items.Add(open);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(update);
+            menu.Items.Add(setURL);
             menu.Items.Add(move);
             menu.Items.Add(deinit);
             menu.Items.Add(rm);

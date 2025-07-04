@@ -84,6 +84,9 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">檔案名稱 + 路徑列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路徑列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">檔案目錄樹狀結構模式</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">修改子模組的遠端網址</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">子模組:</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">遠端網址:</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">簽出 (checkout) 分支</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">簽出 (checkout) 提交</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">提交:</x:String>
@@ -747,17 +750,18 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">複製路徑</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">提取子模組</x:String>
-  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移動子模組</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移動</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">開啟存放庫</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">本機存放的相對路徑。</x:String>
-  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">刪除子模組</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">刪除</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">更改遠端網址</x:String>
   <x:String x:Key="Text.Submodule.Status" xml:space="preserve">狀態</x:String>
   <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">未提交變更</x:String>
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">未初始化</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">SHA 變更</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解決的衝突</x:String>
-  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新子模組</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
