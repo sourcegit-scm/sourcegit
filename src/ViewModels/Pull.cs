@@ -211,9 +211,9 @@ namespace SourceGit.ViewModels
                 SelectedBranch = null;
         }
 
-        private readonly Repository _repo = null;
-        private Models.Remote _selectedRemote = null;
-        private List<Models.Branch> _remoteBranches = null;
-        private Models.Branch _selectedBranch = null;
+        private readonly Repository _repo;
+        private Models.Remote _selectedRemote;
+        private List<Models.Branch> _remoteBranches;
+        private Models.Branch _selectedBranch;
     }
 }

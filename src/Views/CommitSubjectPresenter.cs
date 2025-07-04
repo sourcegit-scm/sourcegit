@@ -343,9 +343,9 @@ namespace SourceGit.Views
 
         private class Inline
         {
-            public double X { get; set; } = 0;
-            public FormattedText Text { get; set; } = null;
-            public Models.InlineElement Element { get; set; } = null;
+            public double X { get; set; }
+            public FormattedText Text { get; set; }
+            public Models.InlineElement Element { get; set; }
 
             public Inline(double x, FormattedText text, Models.InlineElement elem)
             {
@@ -355,9 +355,9 @@ namespace SourceGit.Views
             }
         }
 
-        private Models.InlineElementCollector _elements = new();
-        private List<Inline> _inlines = [];
-        private Models.InlineElement _lastHover = null;
-        private bool _needRebuildInlines = false;
+        private readonly Models.InlineElementCollector _elements = new();
+        private readonly List<Inline> _inlines = [];
+        private Models.InlineElement _lastHover;
+        private bool _needRebuildInlines;
     }
 }

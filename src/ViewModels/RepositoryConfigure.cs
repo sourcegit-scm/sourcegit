@@ -347,11 +347,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private readonly Repository _repo = null;
-        private readonly Dictionary<string, string> _cached = null;
+        private readonly Repository _repo;
+        private readonly Dictionary<string, string> _cached;
         private string _httpProxy;
-        private Models.CommitTemplate _selectedCommitTemplate = null;
-        private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
-        private Models.CustomAction _selectedCustomAction = null;
+        private Models.CommitTemplate _selectedCommitTemplate;
+        private Models.IssueTrackerRule _selectedIssueTrackerRule;
+        private Models.CustomAction _selectedCustomAction;
     }
 }

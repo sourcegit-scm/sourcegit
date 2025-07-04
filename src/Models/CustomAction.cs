@@ -55,7 +55,7 @@ namespace SourceGit.Models
         private string _label = string.Empty;
         private string _description = string.Empty;
         private string _stringValue = string.Empty;
-        private bool _boolValue = false;
+        private bool _boolValue;
     }
 
     public class CustomAction : ObservableObject

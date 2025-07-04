@@ -26,7 +26,7 @@ namespace SourceGit.Models
 
     public class StatisticsReport
     {
-        public int Total { get; set; } = 0;
+        public int Total { get; set; }
         public List<StatisticsAuthor> Authors { get; set; } = new();
         public List<ISeries> Series { get; set; } = new();
         public List<Axis> XAxes { get; set; } = new();
@@ -171,11 +171,11 @@ namespace SourceGit.Models
         }
 
         private static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        private StatisticsMode _mode;
-        private Dictionary<User, int> _mapUsers = new();
-        private Dictionary<DateTime, int> _mapSamples = new();
-        private Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new();
-        private StatisticsAuthor _selectedAuthor = null;
+        private readonly StatisticsMode _mode;
+        private readonly Dictionary<User, int> _mapUsers = new();
+        private readonly Dictionary<DateTime, int> _mapSamples = new();
+        private readonly Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new();
+        private StatisticsAuthor _selectedAuthor;
         private uint _fillColor = 255;
     }
 

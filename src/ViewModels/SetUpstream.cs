@@ -70,6 +70,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private bool _unset = false;
+        private bool _unset;
     }
 }

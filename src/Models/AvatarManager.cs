@@ -30,17 +30,17 @@ namespace SourceGit.Models
             }
         }
 
-        private static AvatarManager _instance = null;
+        private static AvatarManager _instance;
 
         [GeneratedRegex(@"^(?:(\d+)\+)?(.+?)@.+\.github\.com$")]
         private static partial Regex REG_GITHUB_USER_EMAIL();
 
         private readonly Lock _synclock = new();
+        private readonly List<IAvatarHost> _avatars = new List<IAvatarHost>();
+        private readonly Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
+        private readonly HashSet<string> _requesting = new HashSet<string>();
+        private readonly HashSet<string> _defaultAvatars = new HashSet<string>();
         private string _storePath;
-        private List<IAvatarHost> _avatars = new List<IAvatarHost>();
-        private Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
-        private HashSet<string> _requesting = new HashSet<string>();
-        private HashSet<string> _defaultAvatars = new HashSet<string>();
 
         public void Start()
         {

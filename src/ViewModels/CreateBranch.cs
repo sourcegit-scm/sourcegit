@@ -227,9 +227,9 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private readonly Repository _repo = null;
-        private string _name = null;
-        private readonly string _baseOnRevision = null;
-        private bool _allowOverwrite = false;
+        private readonly Repository _repo;
+        private readonly string _baseOnRevision;
+        private string _name;
+        private bool _allowOverwrite;
     }
 }

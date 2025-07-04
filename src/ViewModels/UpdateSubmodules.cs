@@ -92,7 +92,7 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private bool _updateAll = true;
     }
 }

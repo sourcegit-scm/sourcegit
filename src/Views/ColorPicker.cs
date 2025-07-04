@@ -225,16 +225,16 @@ namespace SourceGit.Views
             return newColor.ToRgb();
         }
 
-        private BoxShadows _shadow = BoxShadows.Parse("0 0 6 0 #A9000000");
+        private readonly BoxShadows _shadow = BoxShadows.Parse("0 0 6 0 #A9000000");
 
-        private Rect _colorTableRect = new Rect(0, 0, 32 * 8, 32 * 6);
-        private RoundedRect _darkestRect = new RoundedRect(new Rect(0, 200, 32, 32), new CornerRadius(4, 0, 0, 4));
-        private Rect _darkerRect = new Rect(32, 200, 32, 32);
-        private Rect _darkRect = new Rect(64, 200, 32, 32);
-        private Rect _lightRect = new Rect(160, 200, 32, 32);
-        private Rect _lighterRect = new Rect(192, 200, 32, 32);
-        private RoundedRect _lightestRect = new RoundedRect(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
-        private Rect? _highlightedTableRect = null;
+        private readonly Rect _colorTableRect = new Rect(0, 0, 32 * 8, 32 * 6);
+        private readonly RoundedRect _darkestRect = new RoundedRect(new Rect(0, 200, 32, 32), new CornerRadius(4, 0, 0, 4));
+        private readonly Rect _darkerRect = new Rect(32, 200, 32, 32);
+        private readonly Rect _darkRect = new Rect(64, 200, 32, 32);
+        private readonly Rect _lightRect = new Rect(160, 200, 32, 32);
+        private readonly Rect _lighterRect = new Rect(192, 200, 32, 32);
+        private readonly RoundedRect _lightestRect = new RoundedRect(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
+        private Rect? _highlightedTableRect;
 
         private Color _darkestColor;
         private Color _darkerColor;

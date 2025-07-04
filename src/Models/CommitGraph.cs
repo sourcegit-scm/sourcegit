@@ -243,7 +243,7 @@ namespace SourceGit.Models
                     _colorsQueue.Enqueue(idx);
             }
 
-            private Queue<int> _colorsQueue = new Queue<int>();
+            private readonly Queue<int> _colorsQueue = new Queue<int>();
         }
 
         private class PathHelper
@@ -372,11 +372,11 @@ namespace SourceGit.Models
                 }
             }
 
-            private double _lastY = 0;
-            private double _endY = 0;
+            private double _lastY;
+            private double _endY;
         }
 
-        private static int s_penCount = 0;
+        private static int s_penCount;
         private static readonly List<Color> s_defaultPenColors = [
             Colors.Orange,
             Colors.ForestGreen,

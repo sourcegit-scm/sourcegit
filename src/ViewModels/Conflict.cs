@@ -55,13 +55,13 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = false;
+        }
 
         public bool CanUseExternalMergeTool
         {
             get;
             private set;
-        } = false;
+        }
 
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
@@ -123,7 +123,7 @@ namespace SourceGit.ViewModels
             _wc.UseExternalMergeTool(_change);
         }
 
-        private WorkingCopy _wc = null;
-        private Models.Change _change = null;
+        private readonly WorkingCopy _wc;
+        private readonly Models.Change _change;
     }
 }

@@ -12,7 +12,7 @@ namespace SourceGit.Commands
     {
         public class Result
         {
-            public bool IsSuccess { get; set; } = false;
+            public bool IsSuccess { get; set; }
             public string StdOut { get; set; } = string.Empty;
             public string StdErr { get; set; } = string.Empty;
 

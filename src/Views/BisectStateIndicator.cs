@@ -132,9 +132,9 @@ namespace SourceGit.Views
                 context.DrawGeometry(Foreground, null, icon);
         }
 
-        private Geometry _prefix = null;
-        private Geometry _good = null;
-        private Geometry _bad = null;
+        private Geometry _prefix;
+        private Geometry _good;
+        private Geometry _bad;
         private Models.BisectCommitFlag _flags = Models.BisectCommitFlag.None;
     }
 }

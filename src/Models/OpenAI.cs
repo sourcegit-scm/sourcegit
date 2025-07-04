@@ -91,10 +91,10 @@ namespace SourceGit.Models
         [GeneratedRegex(@"<(think|thought|thinking|thought_chain)>.*?</\1>", RegexOptions.Singleline)]
         private static partial Regex REG_COT();
 
-        private Action<string> _onUpdate = null;
-        private StringBuilder _thinkTail = new StringBuilder();
-        private HashSet<string> _thinkTags = ["think", "thought", "thinking", "thought_chain"];
-        private bool _hasTrimmedStart = false;
+        private readonly Action<string> _onUpdate;
+        private readonly StringBuilder _thinkTail = new StringBuilder();
+        private readonly HashSet<string> _thinkTags = ["think", "thought", "thinking", "thought_chain"];
+        private bool _hasTrimmedStart;
     }
 
     public class OpenAIService : ObservableObject

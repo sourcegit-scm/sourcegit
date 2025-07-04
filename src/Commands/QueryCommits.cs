@@ -147,9 +147,9 @@ namespace SourceGit.Commands
             }
         }
 
-        private List<Models.Commit> _commits = new List<Models.Commit>();
-        private Models.Commit _current = null;
-        private bool _findFirstMerged = false;
-        private bool _isHeadFounded = false;
+        private readonly List<Models.Commit> _commits = new List<Models.Commit>();
+        private readonly bool _findFirstMerged;
+        private Models.Commit _current;
+        private bool _isHeadFounded;
     }
 }

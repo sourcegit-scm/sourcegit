@@ -108,7 +108,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private TextMate.Installation _textMate = null;
+        private TextMate.Installation _textMate;
     }
 
     public partial class AIAssistant : ChromelessWindow

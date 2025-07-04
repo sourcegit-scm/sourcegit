@@ -59,7 +59,7 @@ namespace SourceGit.Views
                 Text = ver.Body;
         }
 
-        private TextMate.Installation _textMate = null;
+        private TextMate.Installation _textMate;
     }
 
     public partial class SelfUpdate : ChromelessWindow
