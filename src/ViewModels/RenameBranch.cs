@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class RenameBranch : Popup
+    public partial class RenameBranch : Popup
     {
         public Models.Branch Target
         {
@@ -31,7 +32,7 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is RenameBranch rename)
             {
-                var fixedName = rename.FixName(name);
+                var fixedName = FixName(name);
                 foreach (var b in rename._repo.Branches)
                 {
                     if (b.IsLocal && b != rename.Target && b.Name == fixedName)
@@ -87,13 +88,12 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private string FixName(string name)
-        {
-            if (!name.Contains(' '))
-                return name;
+        [GeneratedRegex(@"\s+")]
+        private static partial Regex REG_FIX_NAME();
 
-            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            return string.Join("-", parts);
+        private static string FixName(string name)
+        {
+            return REG_FIX_NAME().Replace(name, "-");
         }
 
         private readonly Repository _repo;
