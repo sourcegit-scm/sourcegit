@@ -750,6 +750,7 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">複製路徑</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">提取子模組</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">變更歷史</x:String>
   <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移動</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">開啟存放庫</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相對存放庫路徑:</x:String>

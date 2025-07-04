@@ -2607,6 +2607,15 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var histories = new MenuItem();
+            histories.Header = App.Text("Submodule.Histories");
+            histories.Icon = App.CreateMenuIcon("Icons.Histories");
+            histories.Click += (_, ev) =>
+            {
+                App.ShowWindow(new FileHistories(this, submodule.Path));
+                ev.Handled = true;
+            };
+
             var copy = new MenuItem();
             copy.Header = App.Text("Submodule.CopyPath");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -2624,6 +2633,8 @@ namespace SourceGit.ViewModels
             menu.Items.Add(move);
             menu.Items.Add(deinit);
             menu.Items.Add(rm);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(histories);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
             return menu;

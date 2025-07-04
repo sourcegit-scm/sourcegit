@@ -746,6 +746,7 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copy Relative Path</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">Histories</x:String>
   <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Move To</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
