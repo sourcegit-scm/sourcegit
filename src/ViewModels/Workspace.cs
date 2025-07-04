@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = 0;
+        }
 
         public bool IsActive
         {
@@ -59,7 +59,7 @@ namespace SourceGit.ViewModels
 
         private string _name = string.Empty;
         private uint _color = 4278221015;
-        private bool _isActive = false;
+        private bool _isActive;
         private bool _restoreOnStartup = true;
         private string _defaultCloneDir = string.Empty;
     }

@@ -26,10 +26,10 @@ namespace SourceGit.Models
     {
         public TextDiffLineType Type { get; set; } = TextDiffLineType.None;
         public string Content { get; set; } = "";
-        public int OldLineNumber { get; set; } = 0;
-        public int NewLineNumber { get; set; } = 0;
+        public int OldLineNumber { get; set; }
+        public int NewLineNumber { get; set; }
         public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
-        public bool NoNewLineEndOfFile { get; set; } = false;
+        public bool NoNewLineEndOfFile { get; set; }
 
         public string OldLine => OldLineNumber == 0 ? string.Empty : OldLineNumber.ToString();
         public string NewLine => NewLineNumber == 0 ? string.Empty : NewLineNumber.ToString();
@@ -46,12 +46,12 @@ namespace SourceGit.Models
 
     public class TextDiffSelection
     {
-        public int StartLine { get; set; } = 0;
-        public int EndLine { get; set; } = 0;
-        public bool HasChanges { get; set; } = false;
-        public bool HasLeftChanges { get; set; } = false;
-        public int IgnoredAdds { get; set; } = 0;
-        public int IgnoredDeletes { get; set; } = 0;
+        public int StartLine { get; set; }
+        public int EndLine { get; set; }
+        public bool HasChanges { get; set; }
+        public bool HasLeftChanges { get; set; }
+        public int IgnoredAdds { get; set; }
+        public int IgnoredDeletes { get; set; }
 
         public bool IsInRange(int idx)
         {
@@ -66,8 +66,8 @@ namespace SourceGit.Models
         public Vector ScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
 
-        public string Repo { get; set; } = null;
-        public DiffOption Option { get; set; } = null;
+        public string Repo { get; set; }
+        public DiffOption Option { get; set; }
 
         public TextDiffSelection MakeSelection(int startLine, int endLine, bool isCombined, bool isOldSide)
         {
@@ -612,17 +612,17 @@ namespace SourceGit.Models
 
     public class BinaryDiff
     {
-        public long OldSize { get; set; } = 0;
-        public long NewSize { get; set; } = 0;
+        public long OldSize { get; set; }
+        public long NewSize { get; set; }
     }
 
     public class ImageDiff
     {
-        public Bitmap Old { get; set; } = null;
-        public Bitmap New { get; set; } = null;
+        public Bitmap Old { get; set; }
+        public Bitmap New { get; set; }
 
-        public long OldFileSize { get; set; } = 0;
-        public long NewFileSize { get; set; } = 0;
+        public long OldFileSize { get; set; }
+        public long NewFileSize { get; set; }
 
         public string OldImageSize => Old != null ? $"{Old.PixelSize.Width} x {Old.PixelSize.Height}" : "0 x 0";
         public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
@@ -632,20 +632,20 @@ namespace SourceGit.Models
 
     public class SubmoduleDiff
     {
-        public RevisionSubmodule Old { get; set; } = null;
-        public RevisionSubmodule New { get; set; } = null;
+        public RevisionSubmodule Old { get; set; }
+        public RevisionSubmodule New { get; set; }
     }
 
     public class DiffResult
     {
-        public bool IsBinary { get; set; } = false;
-        public bool IsLFS { get; set; } = false;
+        public bool IsBinary { get; set; }
+        public bool IsLFS { get; set; }
         public string OldHash { get; set; } = string.Empty;
         public string NewHash { get; set; } = string.Empty;
         public string OldMode { get; set; } = string.Empty;
         public string NewMode { get; set; } = string.Empty;
-        public TextDiff TextDiff { get; set; } = null;
-        public LFSDiff LFSDiff { get; set; } = null;
+        public TextDiff TextDiff { get; set; }
+        public LFSDiff LFSDiff { get; set; }
 
         public string FileModeChange
         {

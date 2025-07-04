@@ -275,17 +275,17 @@ namespace SourceGit.Models
             _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
         }
 
-        private readonly IRepository _repo = null;
-        private List<FileSystemWatcher> _watchers = [];
-        private Timer _timer = null;
-        private int _lockCount = 0;
-        private long _updateWC = 0;
-        private long _updateBranch = 0;
-        private long _updateSubmodules = 0;
-        private long _updateStashes = 0;
-        private long _updateTags = 0;
+        private readonly IRepository _repo;
+        private readonly List<FileSystemWatcher> _watchers = [];
+        private Timer _timer;
+        private int _lockCount;
+        private long _updateWC;
+        private long _updateBranch;
+        private long _updateSubmodules;
+        private long _updateStashes;
+        private long _updateTags;
 
         private readonly Lock _lockSubmodule = new();
-        private List<string> _submodules = new List<string>();
+        private readonly List<string> _submodules = new List<string>();
     }
 }

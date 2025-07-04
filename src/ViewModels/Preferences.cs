@@ -180,7 +180,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public bool ShowTagsInGraph
         {
@@ -192,7 +192,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public bool UseTwoColumnsLayoutInHistories
         {
@@ -659,7 +659,7 @@ namespace SourceGit.ViewModels
             return changed;
         }
 
-        private static Preferences _instance = null;
+        private static Preferences _instance;
 
         private bool _isLoading = true;
         private bool _isReadonly = true;
@@ -677,24 +677,24 @@ namespace SourceGit.ViewModels
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
-        private bool _showAuthorTimeInGraph = false;
-        private bool _showChildren = false;
+        private bool _showAuthorTimeInGraph;
+        private bool _showChildren;
 
         private bool _check4UpdatesOnStartup = true;
-        private double _lastCheckUpdateTime = 0;
+        private double _lastCheckUpdateTime;
         private string _ignoreUpdateTag = string.Empty;
 
         private bool _showTagsInGraph = true;
-        private bool _useTwoColumnsLayoutInHistories = false;
-        private bool _displayTimeAsPeriodInHistories = false;
-        private bool _useSideBySideDiff = false;
-        private bool _ignoreWhitespaceChangesInDiff = false;
-        private bool _useSyntaxHighlighting = false;
-        private bool _enableDiffViewWordWrap = false;
-        private bool _showHiddenSymbolsInDiffView = false;
-        private bool _useFullTextDiff = false;
-        private bool _useBlockNavigationInDiffView = false;
-        private int _lfsImageActiveIdx = 0;
+        private bool _useTwoColumnsLayoutInHistories;
+        private bool _displayTimeAsPeriodInHistories;
+        private bool _useSideBySideDiff;
+        private bool _ignoreWhitespaceChangesInDiff;
+        private bool _useSyntaxHighlighting;
+        private bool _enableDiffViewWordWrap;
+        private bool _showHiddenSymbolsInDiffView;
+        private bool _useFullTextDiff;
+        private bool _useBlockNavigationInDiffView;
+        private int _lfsImageActiveIdx;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
@@ -704,7 +704,7 @@ namespace SourceGit.ViewModels
         private string _gitDefaultCloneDir = string.Empty;
 
         private int _shellOrTerminal = -1;
-        private int _externalMergeToolType = 0;
+        private int _externalMergeToolType;
         private string _externalMergeToolPath = string.Empty;
 
         private uint _statisticsSampleColor = 0xFF00FF00;

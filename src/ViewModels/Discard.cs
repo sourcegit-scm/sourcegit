@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
     }
 
     public class DiscardSingleFile
@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = 0;
+        }
     }
 
     public class Discard : Popup
@@ -75,7 +75,7 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private readonly Repository _repo = null;
-        private readonly List<Models.Change> _changes = null;
+        private readonly Repository _repo;
+        private readonly List<Models.Change> _changes;
     }
 }

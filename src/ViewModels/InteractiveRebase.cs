@@ -248,8 +248,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Repository _repo = null;
-        private bool _isLoading = false;
-        private InteractiveRebaseItem _selectedItem = null;
+        private readonly Repository _repo;
+        private bool _isLoading;
+        private InteractiveRebaseItem _selectedItem;
     }
 }

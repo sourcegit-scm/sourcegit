@@ -18,25 +18,25 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public bool EnableFirstParentInHistories
         {
             get;
             set;
-        } = false;
+        }
 
         public bool EnableTopoOrderInHistories
         {
             get;
             set;
-        } = false;
+        }
 
         public bool OnlyHighlightCurrentBranchInHistories
         {
             get;
             set;
-        } = false;
+        }
 
         public BranchSortMode LocalBranchSortMode
         {
@@ -66,13 +66,13 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public bool FetchWithoutTags
         {
             get;
             set;
-        } = false;
+        }
 
         public bool PreferRebaseInsteadOfMerge
         {
@@ -90,7 +90,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public bool PushToRemoteWhenCreateTag
         {
@@ -102,7 +102,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public bool CheckoutBranchOnCreateBranch
         {
@@ -150,7 +150,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public int AutoFetchInterval
         {
@@ -162,7 +162,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public bool IncludeUntrackedWhenStash
         {
@@ -174,13 +174,13 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public int ChangesAfterStashing
         {
             get;
             set;
-        } = 0;
+        }
 
         public string PreferredOpenAIService
         {
@@ -198,25 +198,25 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = false;
+        }
 
         public bool IsTagsExpandedInSideBar
         {
             get;
             set;
-        } = false;
+        }
 
         public bool IsSubmodulesExpandedInSideBar
         {
             get;
             set;
-        } = false;
+        }
 
         public bool IsWorktreeExpandedInSideBar
         {
             get;
             set;
-        } = false;
+        }
 
         public List<string> ExpandedBranchNodesInSideBar
         {
@@ -228,7 +228,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = 0;
+        }
 
         public string LastCommitMessage
         {

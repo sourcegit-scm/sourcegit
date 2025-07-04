@@ -29,6 +29,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Models.RevisionImageFile _image = null;
+        private Models.RevisionImageFile _image;
     }
 }

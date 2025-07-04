@@ -45,7 +45,7 @@
         public ChangeState WorkTree { get; set; } = ChangeState.None;
         public string Path { get; set; } = "";
         public string OriginalPath { get; set; } = "";
-        public ChangeDataForAmend DataForAmend { get; set; } = null;
+        public ChangeDataForAmend DataForAmend { get; set; }
         public ConflictReason ConflictReason { get; set; } = ConflictReason.None;
 
         public bool IsConflicted => WorkTree == ChangeState.Conflicted;

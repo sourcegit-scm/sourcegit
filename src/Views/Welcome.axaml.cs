@@ -277,8 +277,8 @@ namespace SourceGit.Views
             }
         }
 
-        private bool _pressedTreeNode = false;
-        private Point _pressedTreeNodePosition = new Point();
-        private bool _startDragTreeNode = false;
+        private bool _pressedTreeNode;
+        private Point _pressedTreeNodePosition;
+        private bool _startDragTreeNode;
     }
 }

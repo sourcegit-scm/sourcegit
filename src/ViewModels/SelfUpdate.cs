@@ -10,6 +10,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _data, value);
         }
 
-        private object _data = null;
+        private object _data;
     }
 }

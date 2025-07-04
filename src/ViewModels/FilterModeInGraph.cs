@@ -55,8 +55,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Repository _repo = null;
-        private object _target = null;
+        private readonly Repository _repo;
+        private readonly object _target;
         private Models.FilterMode _mode = Models.FilterMode.None;
     }
 }

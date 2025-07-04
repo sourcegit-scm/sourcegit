@@ -60,6 +60,6 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        private bool _isLocal = false;
+        private readonly bool _isLocal;
     }
 }

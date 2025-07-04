@@ -102,7 +102,7 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private Action<string> _onApply = null;
+        private readonly Action<string> _onApply;
         private Models.ConventionalCommitType _type = Models.ConventionalCommitType.Supported[0];
         private string _scope = string.Empty;
         private string _description = string.Empty;

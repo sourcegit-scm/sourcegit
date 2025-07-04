@@ -197,7 +197,7 @@ namespace SourceGit.Views
             return _label != null ? new Size(_label.Width + 18 /* Padding */ + 16 /* Margin */, 18) : new Size(0, 0);
         }
 
-        private FormattedText _label = null;
+        private FormattedText _label;
     }
 
     public partial class BranchTree : UserControl
@@ -585,6 +585,6 @@ namespace SourceGit.Views
             }
         }
 
-        private bool _disableSelectionChangingEvent = false;
+        private bool _disableSelectionChangingEvent;
     }
 }

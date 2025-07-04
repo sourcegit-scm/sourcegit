@@ -282,11 +282,11 @@ namespace SourceGit.ViewModels
         }
 
         private readonly string _repo;
-        private readonly Models.DiffOption _option = null;
+        private readonly Models.DiffOption _option;
         private string _fileModeChange = string.Empty;
         private int _unifiedLines = 4;
-        private bool _isTextDiff = false;
-        private object _content = null;
-        private Info _info = null;
+        private bool _isTextDiff;
+        private object _content;
+        private Info _info;
     }
 }

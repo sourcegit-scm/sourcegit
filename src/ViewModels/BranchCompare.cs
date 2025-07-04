@@ -264,16 +264,16 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private string _repo;
+        private readonly string _repo;
         private bool _isLoading = true;
-        private Models.Branch _based = null;
-        private Models.Branch _to = null;
-        private Models.Commit _baseHead = null;
-        private Models.Commit _toHead = null;
-        private List<Models.Change> _changes = null;
-        private List<Models.Change> _visibleChanges = null;
-        private List<Models.Change> _selectedChanges = null;
+        private Models.Branch _based;
+        private Models.Branch _to;
+        private Models.Commit _baseHead;
+        private Models.Commit _toHead;
+        private List<Models.Change> _changes;
+        private List<Models.Change> _visibleChanges;
+        private List<Models.Change> _selectedChanges;
         private string _searchFilter = string.Empty;
-        private DiffContext _diffContext = null;
+        private DiffContext _diffContext;
     }
 }

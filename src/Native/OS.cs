@@ -232,8 +232,8 @@ namespace SourceGit.Native
         [GeneratedRegex(@"^git version[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
         private static partial Regex REG_GIT_VERSION();
 
-        private static IBackend _backend = null;
+        private static readonly IBackend _backend;
         private static string _gitExecutable = string.Empty;
-        private static bool _enableSystemWindowFrame = false;
+        private static bool _enableSystemWindowFrame;
     }
 }

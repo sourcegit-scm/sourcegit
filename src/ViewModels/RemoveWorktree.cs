@@ -13,7 +13,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public RemoveWorktree(Repository repo, Models.Worktree target)
         {
@@ -38,6 +38,6 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
     }
 }

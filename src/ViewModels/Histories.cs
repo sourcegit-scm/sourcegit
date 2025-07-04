@@ -1219,15 +1219,15 @@ namespace SourceGit.ViewModels
             return Path.Combine(dir, builder.ToString());
         }
 
-        private Repository _repo = null;
+        private Repository _repo;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
-        private Models.CommitGraph _graph = null;
-        private Models.Commit _autoSelectedCommit = null;
-        private long _navigationId = 0;
-        private IDisposable _detailContext = null;
+        private Models.CommitGraph _graph;
+        private Models.Commit _autoSelectedCommit;
+        private long _navigationId;
+        private IDisposable _detailContext;
 
-        private Models.Bisect _bisect = null;
+        private Models.Bisect _bisect;
 
         private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
         private GridLength _rightArea = new GridLength(1, GridUnitType.Star);

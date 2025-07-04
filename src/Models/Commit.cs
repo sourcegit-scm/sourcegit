@@ -29,9 +29,9 @@ namespace SourceGit.Models
 
         public string SHA { get; set; } = string.Empty;
         public User Author { get; set; } = User.Invalid;
-        public ulong AuthorTime { get; set; } = 0;
+        public ulong AuthorTime { get; set; }
         public User Committer { get; set; } = User.Invalid;
-        public ulong CommitterTime { get; set; } = 0;
+        public ulong CommitterTime { get; set; }
         public string Subject { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new();
         public List<Decorator> Decorators { get; set; } = new();
@@ -42,11 +42,11 @@ namespace SourceGit.Models
         public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
         public string CommitterTimeShortStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
 
-        public bool IsMerged { get; set; } = false;
+        public bool IsMerged { get; set; }
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
 
-        public int Color { get; set; } = 0;
+        public int Color { get; set; }
         public double Opacity => IsMerged ? 1 : OpacityForNotMerged;
         public FontWeight FontWeight => IsCurrentHead ? FontWeight.Bold : FontWeight.Regular;
         public Thickness Margin { get; set; } = new(0);

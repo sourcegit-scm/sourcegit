@@ -27,7 +27,7 @@ namespace SourceGit.Views
         {
             get;
             set;
-        } = null;
+        }
 
         public bool EnablePruneOnFetch
         {
@@ -93,7 +93,7 @@ namespace SourceGit.Views
         {
             get;
             set;
-        } = false;
+        }
 
         public static readonly StyledProperty<Models.OpenAIService> SelectedOpenAIServiceProperty =
             AvaloniaProperty.Register<Preferences, Models.OpenAIService>(nameof(SelectedOpenAIService));

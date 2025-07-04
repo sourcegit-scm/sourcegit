@@ -85,8 +85,8 @@ namespace SourceGit.ViewModels
         }
 
         private bool _isLoading = true;
-        private Models.Statistics _data = null;
-        private Models.StatisticsReport _selectedReport = null;
-        private int _selectedIndex = 0;
+        private Models.Statistics _data;
+        private Models.StatisticsReport _selectedReport;
+        private int _selectedIndex;
     }
 }

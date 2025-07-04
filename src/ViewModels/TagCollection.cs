@@ -23,11 +23,11 @@ namespace SourceGit.ViewModels
     public class TagTreeNode : ObservableObject
     {
         public string FullPath { get; private set; }
-        public int Depth { get; private set; } = 0;
-        public Models.Tag Tag { get; private set; } = null;
-        public TagTreeNodeToolTip ToolTip { get; private set; } = null;
+        public int Depth { get; private set; }
+        public Models.Tag Tag { get; private set; }
+        public TagTreeNodeToolTip ToolTip { get; private set; }
         public List<TagTreeNode> Children { get; private set; } = [];
-        public int Counter { get; set; } = 0;
+        public int Counter { get; set; }
 
         public bool IsFolder
         {

@@ -220,6 +220,6 @@ namespace SourceGit.Views
             menu.Open(this);
         }
 
-        private Bitmap _img = null;
+        private Bitmap _img;
     }
 }

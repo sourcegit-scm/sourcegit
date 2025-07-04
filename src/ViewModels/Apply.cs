@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private string _patchFile = string.Empty;
         private bool _ignoreWhiteSpace = true;
     }

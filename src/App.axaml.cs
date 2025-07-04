@@ -703,10 +703,10 @@ namespace SourceGit
         [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,40})(\s+.*)?$")]
         private static partial Regex REG_REBASE_TODO();
 
-        private Models.IpcChannel _ipcChannel = null;
-        private ViewModels.Launcher _launcher = null;
-        private ResourceDictionary _activeLocale = null;
-        private ResourceDictionary _themeOverrides = null;
-        private ResourceDictionary _fontsOverrides = null;
+        private Models.IpcChannel _ipcChannel;
+        private ViewModels.Launcher _launcher;
+        private ResourceDictionary _activeLocale;
+        private ResourceDictionary _themeOverrides;
+        private ResourceDictionary _fontsOverrides;
     }
 }

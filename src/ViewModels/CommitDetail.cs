@@ -1036,25 +1036,25 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
 
-        private Repository _repo = null;
-        private bool _rememberActivePageIndex = true;
-        private int _activePageIndex = 0;
-        private Models.Commit _commit = null;
-        private Models.CommitFullMessage _fullMessage = null;
-        private Models.CommitSignInfo _signInfo = null;
-        private List<string> _children = null;
-        private List<Models.Change> _changes = null;
-        private List<Models.Change> _visibleChanges = null;
-        private List<Models.Change> _selectedChanges = null;
+        private Repository _repo;
+        private readonly bool _rememberActivePageIndex = true;
+        private int _activePageIndex;
+        private Models.Commit _commit;
+        private Models.CommitFullMessage _fullMessage;
+        private Models.CommitSignInfo _signInfo;
+        private List<string> _children;
+        private List<Models.Change> _changes;
+        private List<Models.Change> _visibleChanges;
+        private List<Models.Change> _selectedChanges;
         private string _searchChangeFilter = string.Empty;
-        private DiffContext _diffContext = null;
+        private DiffContext _diffContext;
         private string _viewRevisionFilePath = string.Empty;
-        private object _viewRevisionFileContent = null;
-        private CancellationTokenSource _cancellationSource = null;
-        private bool _requestingRevisionFiles = false;
-        private List<string> _revisionFiles = null;
+        private object _viewRevisionFileContent;
+        private CancellationTokenSource _cancellationSource;
+        private bool _requestingRevisionFiles;
+        private List<string> _revisionFiles;
         private string _revisionFileSearchFilter = string.Empty;
-        private List<string> _revisionFileSearchSuggestion = null;
-        private bool _canOpenRevisionFileWithDefaultEditor = false;
+        private List<string> _revisionFileSearchSuggestion;
+        private bool _canOpenRevisionFileWithDefaultEditor;
     }
 }

@@ -470,7 +470,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = 0;
+        }
 
         public AvaloniaList<CommandLog> Logs
         {
@@ -3100,51 +3100,51 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
-        private Models.RepositorySettings _settings = null;
+        private Models.RepositorySettings _settings;
         private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
-        private bool _hasAllowedSignersFile = false;
+        private bool _hasAllowedSignersFile;
 
-        private Models.Watcher _watcher = null;
-        private Histories _histories = null;
-        private WorkingCopy _workingCopy = null;
-        private StashesPage _stashesPage = null;
-        private int _selectedViewIndex = 0;
-        private object _selectedView = null;
+        private Models.Watcher _watcher;
+        private Histories _histories;
+        private WorkingCopy _workingCopy;
+        private StashesPage _stashesPage;
+        private int _selectedViewIndex;
+        private object _selectedView;
 
-        private int _localBranchesCount = 0;
-        private int _localChangesCount = 0;
-        private int _stashesCount = 0;
+        private int _localBranchesCount;
+        private int _localChangesCount;
+        private int _stashesCount;
 
-        private bool _isSearching = false;
-        private bool _isSearchLoadingVisible = false;
+        private bool _isSearching;
+        private bool _isSearchLoadingVisible;
         private int _searchCommitFilterType = (int)Models.CommitSearchMethod.ByMessage;
-        private bool _onlySearchCommitsInCurrentBranch = false;
+        private bool _onlySearchCommitsInCurrentBranch;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
-        private Models.Commit _selectedSearchedCommit = null;
-        private bool _requestingWorktreeFiles = false;
-        private List<string> _worktreeFiles = null;
-        private List<string> _matchedFilesForSearching = null;
+        private Models.Commit _selectedSearchedCommit;
+        private bool _requestingWorktreeFiles;
+        private List<string> _worktreeFiles;
+        private List<string> _matchedFilesForSearching;
 
         private string _filter = string.Empty;
         private readonly Lock _lockRemotes = new();
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
-        private Models.Branch _currentBranch = null;
+        private Models.Branch _currentBranch;
         private List<BranchTreeNode> _localBranchTrees = new List<BranchTreeNode>();
         private List<BranchTreeNode> _remoteBranchTrees = new List<BranchTreeNode>();
         private List<Models.Worktree> _worktrees = new List<Models.Worktree>();
         private List<Models.Tag> _tags = new List<Models.Tag>();
-        private object _visibleTags = null;
+        private object _visibleTags;
         private List<Models.Submodule> _submodules = new List<Models.Submodule>();
-        private object _visibleSubmodules = null;
+        private object _visibleSubmodules;
 
-        private bool _isAutoFetching = false;
-        private Timer _autoFetchTimer = null;
+        private bool _isAutoFetching;
+        private Timer _autoFetchTimer;
         private DateTime _lastFetchTime = DateTime.MinValue;
 
         private Models.BisectState _bisectState = Models.BisectState.None;
-        private bool _isBisectCommandRunning = false;
+        private bool _isBisectCommandRunning;
 
         private string _navigateToCommitDelayed = string.Empty;
     }

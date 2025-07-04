@@ -152,7 +152,7 @@ namespace SourceGit.ViewModels
             KeepAll,
         }
 
-        private readonly Repository _repo = null;
-        private readonly List<Models.Change> _changes = null;
+        private readonly Repository _repo;
+        private readonly List<Models.Change> _changes;
     }
 }

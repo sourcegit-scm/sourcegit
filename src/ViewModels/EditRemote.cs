@@ -127,11 +127,11 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private readonly Repository _repo = null;
-        private readonly Models.Remote _remote = null;
-        private string _name = null;
-        private string _url = null;
-        private bool _useSSH = false;
+        private readonly Repository _repo;
+        private readonly Models.Remote _remote;
+        private string _name;
+        private string _url;
+        private bool _useSSH;
         private string _sshkey = string.Empty;
     }
 }

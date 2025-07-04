@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = false;
+        }
 
         public bool IsLoading
         {
@@ -92,12 +92,12 @@ namespace SourceGit.ViewModels
             VisibleLocks = visible;
         }
 
-        private Repository _repo;
-        private string _remote;
+        private readonly Repository _repo;
+        private readonly string _remote;
         private bool _isLoading = true;
         private List<Models.LFSLock> _cachedLocks = [];
         private List<Models.LFSLock> _visibleLocks = [];
-        private bool _showOnlyMyLocks = false;
+        private bool _showOnlyMyLocks;
         private string _userName;
     }
 }

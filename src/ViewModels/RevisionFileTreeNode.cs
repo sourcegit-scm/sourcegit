@@ -7,8 +7,8 @@ namespace SourceGit.ViewModels
 {
     public class RevisionFileTreeNode : ObservableObject
     {
-        public Models.Object Backend { get; set; } = null;
-        public int Depth { get; set; } = 0;
+        public Models.Object Backend { get; set; }
+        public int Depth { get; set; }
         public List<RevisionFileTreeNode> Children { get; set; } = new List<RevisionFileTreeNode>();
 
         public string Name
@@ -27,6 +27,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        private bool _isExpanded = false;
+        private bool _isExpanded;
     }
 }

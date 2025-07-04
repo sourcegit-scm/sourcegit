@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
             Logs.Clear();
         }
 
-        private Repository _repo = null;
-        private CommandLog _selectedLog = null;
+        private readonly Repository _repo;
+        private CommandLog _selectedLog;
     }
 }

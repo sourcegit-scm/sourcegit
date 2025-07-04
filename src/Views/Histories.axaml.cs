@@ -293,8 +293,8 @@ namespace SourceGit.Views
             }
         }
 
-        private double _lastGraphStartY = 0;
-        private double _lastGraphClipWidth = 0;
-        private double _lastGraphRowHeight = 0;
+        private double _lastGraphStartY;
+        private double _lastGraphClipWidth;
+        private double _lastGraphRowHeight;
     }
 }

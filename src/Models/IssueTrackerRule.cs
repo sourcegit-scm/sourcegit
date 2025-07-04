@@ -73,6 +73,6 @@ namespace SourceGit.Models
         private string _name;
         private string _regexString;
         private string _urlTemplate;
-        private Regex _regex = null;
+        private Regex _regex;
     }
 }

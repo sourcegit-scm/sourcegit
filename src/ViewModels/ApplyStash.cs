@@ -20,7 +20,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public ApplyStash(Repository repo, Models.Stash stash)
         {

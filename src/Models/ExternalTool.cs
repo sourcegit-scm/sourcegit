@@ -13,7 +13,7 @@ namespace SourceGit.Models
     public class ExternalTool
     {
         public string Name { get; private set; }
-        public Bitmap IconImage { get; private set; } = null;
+        public Bitmap IconImage { get; private set; }
 
         public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null)
         {
@@ -44,8 +44,8 @@ namespace SourceGit.Models
             });
         }
 
-        private string _execFile = string.Empty;
-        private Func<string, string> _execArgsGenerator = null;
+        private readonly string _execFile = string.Empty;
+        private readonly Func<string, string> _execArgsGenerator;
     }
 
     public class VisualStudioInstance
@@ -57,13 +57,13 @@ namespace SourceGit.Models
         public string ProductPath { get; set; } = string.Empty;
 
         [JsonPropertyName("isPrerelease")]
-        public bool IsPrerelease { get; set; } = false;
+        public bool IsPrerelease { get; set; }
     }
 
     public class JetBrainsState
     {
         [JsonPropertyName("version")]
-        public int Version { get; set; } = 0;
+        public int Version { get; set; }
         [JsonPropertyName("appVersion")]
         public string AppVersion { get; set; } = string.Empty;
         [JsonPropertyName("tools")]
@@ -196,6 +196,6 @@ namespace SourceGit.Models
             }
         }
 
-        private ExternalToolPaths _customPaths = null;
+        private readonly ExternalToolPaths _customPaths;
     }
 }

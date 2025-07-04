@@ -90,7 +90,7 @@ namespace SourceGit.Commands
         private readonly StringBuilder _content = new StringBuilder();
         private readonly string _dateFormat = Models.DateTimeFormat.Active.DateOnly;
         private string _lastSHA = string.Empty;
-        private bool _needUnifyCommitSHA = false;
+        private bool _needUnifyCommitSHA;
         private int _minSHALen = 64;
     }
 }

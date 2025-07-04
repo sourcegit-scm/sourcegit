@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public bool PushToRemotes
         {
@@ -103,7 +103,7 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private string _tagName = string.Empty;
         private bool _annotated = true;
         private readonly string _basedOn;

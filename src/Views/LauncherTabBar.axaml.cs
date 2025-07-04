@@ -362,8 +362,8 @@ namespace SourceGit.Views
             }
         }
 
-        private bool _pressedTab = false;
-        private Point _pressedTabPosition = new Point();
-        private bool _startDragTab = false;
+        private bool _pressedTab;
+        private Point _pressedTabPosition;
+        private bool _startDragTab;
     }
 }

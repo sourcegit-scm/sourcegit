@@ -22,7 +22,7 @@ namespace SourceGit
             public bool CanExecute(object parameter) => _action != null;
             public void Execute(object parameter) => _action?.Invoke(parameter);
 
-            private Action<object> _action = null;
+            private readonly Action<object> _action;
         }
 
         public static bool IsCheckForUpdateCommandVisible

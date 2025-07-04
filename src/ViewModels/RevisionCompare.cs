@@ -254,12 +254,12 @@ namespace SourceGit.ViewModels
 
         private string _repo;
         private bool _isLoading = true;
-        private object _startPoint = null;
-        private object _endPoint = null;
-        private List<Models.Change> _changes = null;
-        private List<Models.Change> _visibleChanges = null;
-        private List<Models.Change> _selectedChanges = null;
+        private object _startPoint;
+        private object _endPoint;
+        private List<Models.Change> _changes;
+        private List<Models.Change> _visibleChanges;
+        private List<Models.Change> _selectedChanges;
         private string _searchFilter = string.Empty;
-        private DiffContext _diffContext = null;
+        private DiffContext _diffContext;
     }
 }

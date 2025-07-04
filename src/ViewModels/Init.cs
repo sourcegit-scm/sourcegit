@@ -45,8 +45,8 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private readonly string _pageId = null;
-        private string _targetPath = null;
-        private readonly RepositoryNode _parentNode = null;
+        private readonly string _pageId;
+        private readonly RepositoryNode _parentNode;
+        private string _targetPath;
     }
 }

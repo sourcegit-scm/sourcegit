@@ -262,8 +262,8 @@ namespace SourceGit.Commands
         private readonly Models.DiffResult _result = new Models.DiffResult();
         private readonly List<Models.TextDiffLine> _deleted = new List<Models.TextDiffLine>();
         private readonly List<Models.TextDiffLine> _added = new List<Models.TextDiffLine>();
-        private Models.TextDiffLine _last = null;
-        private int _oldLine = 0;
-        private int _newLine = 0;
+        private Models.TextDiffLine _last;
+        private int _oldLine;
+        private int _newLine;
     }
 }

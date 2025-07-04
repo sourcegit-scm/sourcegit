@@ -93,8 +93,8 @@ namespace SourceGit.Models
             }
         }
 
-        private FileStream _singletonLock = null;
-        private NamedPipeServerStream _server = null;
-        private CancellationTokenSource _cancellationTokenSource = null;
+        private readonly FileStream _singletonLock;
+        private readonly NamedPipeServerStream _server;
+        private readonly CancellationTokenSource _cancellationTokenSource;
     }
 }

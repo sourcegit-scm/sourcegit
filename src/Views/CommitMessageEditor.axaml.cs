@@ -51,7 +51,7 @@ namespace SourceGit.Views
             Close();
         }
 
-        private Action<string> _onSave = null;
+        private Action<string> _onSave;
         private bool _shouldExitApp = true;
         private int _exitCode = -1;
     }

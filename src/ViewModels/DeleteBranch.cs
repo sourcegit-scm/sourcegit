@@ -85,7 +85,7 @@ namespace SourceGit.ViewModels
                     .ConfigureAwait(false);
         }
 
-        private readonly Repository _repo = null;
-        private bool _alsoDeleteTrackingRemote = false;
+        private readonly Repository _repo;
+        private bool _alsoDeleteTrackingRemote;
     }
 }

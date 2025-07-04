@@ -339,14 +339,14 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Repository _repo = null;
+        private Repository _repo;
         private List<Models.Stash> _stashes = [];
         private List<Models.Stash> _visibleStashes = [];
         private string _searchFilter = string.Empty;
-        private Models.Stash _selectedStash = null;
-        private List<Models.Change> _changes = null;
+        private Models.Stash _selectedStash;
+        private List<Models.Change> _changes;
         private List<Models.Change> _untracked = [];
         private List<Models.Change> _selectedChanges = [];
-        private DiffContext _diffContext = null;
+        private DiffContext _diffContext;
     }
 }

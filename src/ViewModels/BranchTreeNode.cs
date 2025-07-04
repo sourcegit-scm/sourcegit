@@ -9,12 +9,12 @@ namespace SourceGit.ViewModels
     {
         public string Name { get; private set; } = string.Empty;
         public string Path { get; private set; } = string.Empty;
-        public object Backend { get; private set; } = null;
-        public ulong TimeToSort { get; private set; } = 0;
-        public int Depth { get; set; } = 0;
-        public bool IsSelected { get; set; } = false;
+        public object Backend { get; private set; }
+        public ulong TimeToSort { get; private set; }
+        public int Depth { get; set; }
+        public bool IsSelected { get; set; }
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
-        public int Counter { get; set; } = 0;
+        public int Counter { get; set; }
 
         public Models.FilterMode FilterMode
         {
@@ -69,7 +69,7 @@ namespace SourceGit.ViewModels
         }
 
         private Models.FilterMode _filterMode = Models.FilterMode.None;
-        private bool _isExpanded = false;
+        private bool _isExpanded;
         private CornerRadius _cornerRadius = new CornerRadius(4);
 
         public class Builder

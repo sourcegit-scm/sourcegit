@@ -72,9 +72,9 @@ namespace SourceGit.ViewModels
             SelectedWorkspace = visible.Count == 0 ? null : visible[0];
         }
 
-        private Launcher _launcher = null;
-        private List<Workspace> _visibleWorkspaces = null;
+        private readonly Launcher _launcher;
+        private List<Workspace> _visibleWorkspaces;
         private string _searchFilter = string.Empty;
-        private Workspace _selectedWorkspace = null;
+        private Workspace _selectedWorkspace;
     }
 }

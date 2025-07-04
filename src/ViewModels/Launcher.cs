@@ -606,10 +606,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Workspace _activeWorkspace = null;
-        private LauncherPage _activePage = null;
-        private bool _ignoreIndexChange = false;
+        private Workspace _activeWorkspace;
+        private LauncherPage _activePage;
+        private bool _ignoreIndexChange;
         private string _title = string.Empty;
-        private IDisposable _switcher = null;
+        private IDisposable _switcher;
     }
 }

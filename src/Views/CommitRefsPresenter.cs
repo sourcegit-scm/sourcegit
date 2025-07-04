@@ -12,12 +12,12 @@ namespace SourceGit.Views
     {
         public class RenderItem
         {
-            public Geometry Icon { get; set; } = null;
-            public FormattedText Label { get; set; } = null;
-            public IBrush Brush { get; set; } = null;
-            public bool IsHead { get; set; } = false;
-            public double Width { get; set; } = 0.0;
-            public Models.Decorator Decorator { get; set; } = null;
+            public Geometry Icon { get; set; }
+            public FormattedText Label { get; set; }
+            public IBrush Brush { get; set; }
+            public bool IsHead { get; set; }
+            public double Width { get; set; }
+            public Models.Decorator Decorator { get; set; }
         }
 
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
@@ -268,6 +268,6 @@ namespace SourceGit.Views
             return new Size(0, 0);
         }
 
-        private List<RenderItem> _items = new List<RenderItem>();
+        private readonly List<RenderItem> _items = new List<RenderItem>();
     }
 }

@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
             return Task.FromResult(true);
         }
 
-        private readonly RepositoryNode _parent = null;
+        private readonly RepositoryNode _parent;
         private string _name = string.Empty;
     }
 }

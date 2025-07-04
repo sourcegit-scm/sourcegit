@@ -8,7 +8,7 @@ namespace SourceGit.Models
         private static partial Regex REG_FORMAT();
 
         public string Oid { get; set; } = string.Empty;
-        public long Size { get; set; } = 0;
+        public long Size { get; set; }
 
         public static LFSObject Parse(string content)
         {

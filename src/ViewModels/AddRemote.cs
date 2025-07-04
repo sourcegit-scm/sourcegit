@@ -118,10 +118,10 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private string _name = string.Empty;
         private string _url = string.Empty;
-        private bool _useSSH = false;
+        private bool _useSSH;
         private string _sshkey = string.Empty;
     }
 }

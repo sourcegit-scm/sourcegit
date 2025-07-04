@@ -130,10 +130,10 @@ namespace SourceGit.ViewModels
             Popup = null;
         }
 
-        private RepositoryNode _node = null;
-        private object _data = null;
-        private IBrush _dirtyBrush = null;
+        private RepositoryNode _node;
+        private object _data;
+        private IBrush _dirtyBrush;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;
-        private Popup _popup = null;
+        private Popup _popup;
     }
 }

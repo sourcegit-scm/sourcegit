@@ -232,7 +232,7 @@ namespace SourceGit.Views
                 }
             }
 
-            private readonly BlameTextEditor _editor = null;
+            private readonly BlameTextEditor _editor;
         }
 
         public class VerticalSeparatorMargin : AbstractMargin
@@ -253,7 +253,7 @@ namespace SourceGit.Views
                 return new Size(1, 0);
             }
 
-            private readonly BlameTextEditor _editor = null;
+            private readonly BlameTextEditor _editor;
         }
 
         public static readonly StyledProperty<Models.BlameData> BlameDataProperty =
@@ -421,7 +421,7 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private TextMate.Installation _textMate = null;
+        private TextMate.Installation _textMate;
         private string _highlight = string.Empty;
     }
 

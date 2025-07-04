@@ -49,7 +49,7 @@ namespace SourceGit.Views
             }
         }
 
-        private DrawingBrush _bgBrush = null;
+        private DrawingBrush _bgBrush;
     }
 
     public class ImageView : ImageContainer
@@ -243,8 +243,8 @@ namespace SourceGit.Views
                 context.DrawImage(img, src, dst);
         }
 
-        private bool _pressedOnSlider = false;
-        private bool _lastInSlider = false;
+        private bool _pressedOnSlider;
+        private bool _lastInSlider;
     }
 
     public class ImageBlendControl : ImageContainer

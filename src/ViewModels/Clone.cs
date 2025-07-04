@@ -166,9 +166,9 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private string _pageId = string.Empty;
+        private readonly string _pageId = string.Empty;
         private string _remote = string.Empty;
-        private bool _useSSH = false;
+        private bool _useSSH;
         private string _sshKey = string.Empty;
         private string _parentFolder = string.Empty;
         private string _local = string.Empty;

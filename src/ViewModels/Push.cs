@@ -229,11 +229,11 @@ namespace SourceGit.ViewModels
             SelectedRemoteBranch = fake;
         }
 
-        private readonly Repository _repo = null;
-        private Models.Branch _selectedLocalBranch = null;
-        private Models.Remote _selectedRemote = null;
+        private readonly Repository _repo;
+        private Models.Branch _selectedLocalBranch;
+        private Models.Remote _selectedRemote;
         private List<Models.Branch> _remoteBranches = [];
-        private Models.Branch _selectedRemoteBranch = null;
-        private bool _isSetTrackOptionVisible = false;
+        private Models.Branch _selectedRemoteBranch;
+        private bool _isSetTrackOptionVisible;
     }
 }

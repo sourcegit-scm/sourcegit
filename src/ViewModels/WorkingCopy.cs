@@ -2031,14 +2031,14 @@ namespace SourceGit.ViewModels
             FileCount,
         }
 
-        private Repository _repo = null;
-        private bool _isLoadingData = false;
-        private bool _isStaging = false;
-        private bool _isUnstaging = false;
-        private bool _isCommitting = false;
-        private bool _useAmend = false;
-        private bool _resetAuthor = false;
-        private bool _hasRemotes = false;
+        private Repository _repo;
+        private bool _isLoadingData;
+        private bool _isStaging;
+        private bool _isUnstaging;
+        private bool _isCommitting;
+        private bool _useAmend;
+        private bool _resetAuthor;
+        private bool _hasRemotes;
         private List<Models.Change> _cached = [];
         private List<Models.Change> _unstaged = [];
         private List<Models.Change> _visibleUnstaged = [];
@@ -2046,11 +2046,11 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleStaged = [];
         private List<Models.Change> _selectedUnstaged = [];
         private List<Models.Change> _selectedStaged = [];
-        private object _detailContext = null;
+        private object _detailContext;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;
 
-        private bool _hasUnsolvedConflicts = false;
-        private InProgressContext _inProgressContext = null;
+        private bool _hasUnsolvedConflicts;
+        private InProgressContext _inProgressContext;
     }
 }
