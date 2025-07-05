@@ -140,7 +140,7 @@ namespace SourceGit.ViewModels
                     }
                 }
             }
-            
+
             bool succ;
             if (CheckoutAfterCreated && !_repo.IsBare)
             {
@@ -163,7 +163,7 @@ namespace SourceGit.ViewModels
                         needPopStash = true;
                     }
                 }
-                
+
                 succ = await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
                     .BranchAsync(fixedName, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);

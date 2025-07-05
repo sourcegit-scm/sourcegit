@@ -663,7 +663,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">コミット: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">サブモジュール</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">サブモジュールを追加</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相対パスをコピー</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相対パス</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">ネストされたサブモジュールを取得する</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">サブモジュールのリポジトリを開く</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相対パス:</x:String>

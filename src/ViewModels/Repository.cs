@@ -2614,14 +2614,39 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var copy = new MenuItem();
-            copy.Header = App.Text("Submodule.CopyPath");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += async (_, ev) =>
+            var copySHA = new MenuItem();
+            copySHA.Header = App.Text("CommitDetail.Info.SHA");
+            copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+            copySHA.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.SHA);
+                ev.Handled = true;
+            };
+
+            var copyRelativePath = new MenuItem();
+            copyRelativePath.Header = App.Text("Submodule.CopyPath");
+            copyRelativePath.Icon = App.CreateMenuIcon("Icons.Folder");
+            copyRelativePath.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(submodule.Path);
                 ev.Handled = true;
             };
+
+            var copyURL = new MenuItem();
+            copyURL.Header = App.Text("Submodule.URL");
+            copyURL.Icon = App.CreateMenuIcon("Icons.Link");
+            copyURL.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.URL);
+                ev.Handled = true;
+            };
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Items.Add(copySHA);
+            copy.Items.Add(copyRelativePath);
+            copy.Items.Add(copyURL);
 
             var menu = new ContextMenu();
             menu.Items.Add(open);

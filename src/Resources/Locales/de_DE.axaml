@@ -741,7 +741,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Submodul hinzufügen</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relativen Pfad kopieren</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relativen Pfad</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialisiere Submodul</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Untergeordnete Submodule fetchen</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Öffne Submodul Repository</x:String>

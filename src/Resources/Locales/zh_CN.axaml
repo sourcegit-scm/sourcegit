@@ -747,7 +747,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次数: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模块</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">添加子模块</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">复制路径</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相对路径</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">拉取子孙模块</x:String>
   <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">变更历史</x:String>

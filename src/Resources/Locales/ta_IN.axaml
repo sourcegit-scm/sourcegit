@@ -664,7 +664,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">உறுதிமொழிகள்: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">துணைத் தொகுதி</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">துணைத் தொகுதியைச் சேர்</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">உறவு பாதையை நகலெடு</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">உறவு பாதை</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">உள்ளமைக்கப்பட்ட துணைத் தொகுதிகளை எடு</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">துணைத் தொகுதி களஞ்சியத்தைத் திற</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">உறவு பாதை:</x:String>

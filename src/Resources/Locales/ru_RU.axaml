@@ -738,7 +738,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">РЕВИЗИИ: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">ПОДМОДУЛИ</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Добавить подмодули</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Копировать относительный путь</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Каталог</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Извлечение вложенных подмодулей</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Открыть подмодуль репозитория</x:String>

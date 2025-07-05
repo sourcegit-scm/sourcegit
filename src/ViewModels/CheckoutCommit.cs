@@ -55,7 +55,7 @@ namespace SourceGit.ViewModels
                     }
                 }
             }
-            
+
             var succ = false;
             var needPop = false;
 
@@ -77,7 +77,7 @@ namespace SourceGit.ViewModels
                     needPop = true;
                 }
             }
-            
+
             succ = await new Commands.Checkout(_repo.FullPath)
                 .Use(log)
                 .CommitAsync(Commit.SHA, DiscardLocalChanges);

@@ -665,11 +665,9 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SOUS-MODULES</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Ajouter un sous-module</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copier le chemin relatif</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Chemin relatif</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch les sous-modules imbriqués</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Ouvrir le dépôt de sous-module</x:String>
-  <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
-  <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relative folder to store this module.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Supprimer le sous-module</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copier le nom du Tag</x:String>

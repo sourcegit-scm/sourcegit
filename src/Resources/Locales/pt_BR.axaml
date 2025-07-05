@@ -603,7 +603,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Adicionar Submódulo</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copiar Caminho Relativo</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Caminho Relativo</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Buscar submódulos aninhados</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Abrir Repositório do Submódulo</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Caminho Relativo:</x:String>
