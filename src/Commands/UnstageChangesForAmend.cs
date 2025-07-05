@@ -44,7 +44,7 @@ namespace SourceGit.Commands
                     _patchBuilder.Append(c.Path);
                 }
 
-                _patchBuilder.Append("\n");
+                _patchBuilder.AppendLine();
             }
         }
 
@@ -63,15 +63,13 @@ namespace SourceGit.Commands
 
             try
             {
-                var proc = new Process() { StartInfo = starter };
-                proc.Start();
+                using var proc = Process.Start(starter);
                 await proc.StandardInput.WriteAsync(_patchBuilder.ToString());
                 proc.StandardInput.Close();
 
                 var err = await proc.StandardError.ReadToEndAsync().ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
                 var rs = proc.ExitCode == 0;
-                proc.Close();
 
                 if (!rs)
                     App.RaiseException(_repo, err);

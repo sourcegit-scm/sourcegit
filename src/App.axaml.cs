@@ -221,7 +221,8 @@ namespace SourceGit
                 try
                 {
                     var resDic = new ResourceDictionary();
-                    var overrides = JsonSerializer.Deserialize(File.ReadAllText(themeOverridesFile), JsonCodeGen.Default.ThemeOverrides);
+                    using var stream = File.OpenRead(themeOverridesFile);
+                    var overrides = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.ThemeOverrides);
                     foreach (var kv in overrides.BasicColors)
                     {
                         if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
@@ -449,31 +450,21 @@ namespace SourceGit
             if (!File.Exists(jobsFile))
                 return true;
 
-            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            using var stream = File.OpenRead(jobsFile);
+            var collection = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.InteractiveRebaseJobCollection);
             using var writer = new StreamWriter(file);
             foreach (var job in collection.Jobs)
             {
-                switch (job.Action)
+                var code = job.Action switch
                 {
-                    case Models.InteractiveRebaseAction.Pick:
-                        writer.WriteLine($"p {job.SHA}");
-                        break;
-                    case Models.InteractiveRebaseAction.Edit:
-                        writer.WriteLine($"e {job.SHA}");
-                        break;
-                    case Models.InteractiveRebaseAction.Reword:
-                        writer.WriteLine($"r {job.SHA}");
-                        break;
-                    case Models.InteractiveRebaseAction.Squash:
-                        writer.WriteLine($"s {job.SHA}");
-                        break;
-                    case Models.InteractiveRebaseAction.Fixup:
-                        writer.WriteLine($"f {job.SHA}");
-                        break;
-                    default:
-                        writer.WriteLine($"d {job.SHA}");
-                        break;
-                }
+                    Models.InteractiveRebaseAction.Pick => 'p',
+                    Models.InteractiveRebaseAction.Edit => 'e',
+                    Models.InteractiveRebaseAction.Reword => 'r',
+                    Models.InteractiveRebaseAction.Squash => 's',
+                    Models.InteractiveRebaseAction.Fixup => 'f',
+                    _ => 'p'
+                };
+                writer.WriteLine($"{code} {job.SHA}");
             }
 
             writer.Flush();
@@ -506,7 +497,8 @@ namespace SourceGit
 
             var origHead = File.ReadAllText(origHeadFile).Trim();
             var onto = File.ReadAllText(ontoFile).Trim();
-            var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            using var stream = File.OpenRead(jobsFile);
+            var collection = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.InteractiveRebaseJobCollection);
             if (!collection.Onto.Equals(onto) || !collection.OrigHead.Equals(origHead))
                 return true;
 
@@ -626,7 +618,8 @@ namespace SourceGit
                 try
                 {
                     // Fetch latest release information.
-                    var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
+                    using var client = new HttpClient();
+                    client.Timeout = TimeSpan.FromSeconds(5);
                     var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
 
                     // Parse JSON into Models.Version.

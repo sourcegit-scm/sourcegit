@@ -272,7 +272,7 @@ namespace SourceGit.ViewModels
                     _repo.CheckoutBranch(b);
                     return;
                 }
-                else if (d.Type == Models.DecoratorType.RemoteBranchHead)
+                if (d.Type == Models.DecoratorType.RemoteBranchHead)
                 {
                     var rb = _repo.Branches.Find(x => x.FriendlyName == d.Name);
                     if (rb == null)

@@ -170,18 +170,18 @@ namespace SourceGit.Models
         {
             if (Next() != VARIABLE_START)
                 return null;
-            int name_start = _pos;
+            var nameStart = _pos;
             while (Next() is { } c)
             {
                 // name character, continue advancing
                 if (IsNameChar(c))
                     continue;
 
-                var name_end = _pos - 1;
+                var nameEnd = _pos - 1;
                 // not a name character but name is empty, cancel
-                if (name_start >= name_end)
+                if (nameStart >= nameEnd)
                     return null;
-                var name = new string(_chars, name_start, name_end - name_start);
+                var name = new string(_chars, nameStart, nameEnd - nameStart);
 
                 return c switch
                 {

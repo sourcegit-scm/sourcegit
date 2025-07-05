@@ -607,7 +607,7 @@
   <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">By Committer Date</x:String>
   <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">By Name</x:String>
-  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Cleanup(GC &amp; Prune)</x:String>
+  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Cleanup (GC &amp; Prune)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Run `git gc` command for this repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Clear all</x:String>
   <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Clear</x:String>

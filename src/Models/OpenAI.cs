@@ -85,7 +85,7 @@ namespace SourceGit.Models
                 _hasTrimmedStart = true;
             }
 
-            _onUpdate.Invoke(text);
+            _onUpdate?.Invoke(text);
         }
 
         [GeneratedRegex(@"<(think|thought|thinking|thought_chain)>.*?</\1>", RegexOptions.Singleline)]

@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
                 IgnoreInaccessible = true,
             });
 
-            // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
+            // Make sure this task takes at least 0.5s to avoid the popup panel disappearing too quickly.
             await minDelay;
 
             var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');

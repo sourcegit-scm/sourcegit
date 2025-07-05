@@ -96,7 +96,6 @@ namespace SourceGit.Models
         /// <summary>
         ///     Converts to diff command arguments.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             var builder = new StringBuilder();

@@ -771,12 +771,8 @@ namespace SourceGit.ViewModels
             }
 
             var urlMatches = REG_URL_FORMAT().Matches(message);
-            for (int i = 0; i < urlMatches.Count; i++)
+            foreach (Match match in urlMatches)
             {
-                var match = urlMatches[i];
-                if (!match.Success)
-                    continue;
-
                 var start = match.Index;
                 var len = match.Length;
                 if (inlines.Intersect(start, len) != null)
@@ -788,12 +784,8 @@ namespace SourceGit.ViewModels
             }
 
             var shaMatches = REG_SHA_FORMAT().Matches(message);
-            for (int i = 0; i < shaMatches.Count; i++)
+            foreach (Match match in shaMatches)
             {
-                var match = shaMatches[i];
-                if (!match.Success)
-                    continue;
-
                 var start = match.Index;
                 var len = match.Length;
                 if (inlines.Intersect(start, len) != null)

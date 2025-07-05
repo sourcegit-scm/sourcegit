@@ -110,10 +110,10 @@ namespace SourceGit.Models
 
             Decorators.Sort((l, r) =>
             {
-                if (l.Type != r.Type)
-                    return (int)l.Type - (int)r.Type;
-                else
-                    return NumericSort.Compare(l.Name, r.Name);
+                var delta = (int)l.Type - (int)r.Type;
+                if (delta != 0)
+                    return delta;
+                return NumericSort.Compare(l.Name, r.Name);
             });
         }
     }

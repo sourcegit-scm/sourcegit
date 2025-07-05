@@ -185,11 +185,11 @@ namespace SourceGit.Native
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
             finder.Cursor(FindCursor);
-            finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
-            finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
+            finder.Fleet(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Fleet\Fleet.exe"));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
             finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
-            return finder.Founded;
+            return finder.Tools;
         }
 
         public void OpenBrowser(string url)
