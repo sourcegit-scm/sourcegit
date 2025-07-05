@@ -71,8 +71,7 @@ namespace SourceGit.Views
 
         private void CreateContent(Thickness margin, string iconKey)
         {
-            var geo = this.FindResource(iconKey) as StreamGeometry;
-            if (geo == null)
+            if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
             Content = new Avalonia.Controls.Shapes.Path()
@@ -181,8 +180,7 @@ namespace SourceGit.Views
 
         private void OnItemContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            var control = sender as Control;
-            if (control == null)
+            if (sender is not Control control)
                 return;
 
             Models.Tag selected;

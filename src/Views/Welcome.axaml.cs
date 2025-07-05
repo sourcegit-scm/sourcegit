@@ -209,8 +209,7 @@ namespace SourceGit.Views
             {
                 var grid = sender as Grid;
 
-                var to = grid?.DataContext as ViewModels.RepositoryNode;
-                if (to == null)
+                if (grid?.DataContext is not ViewModels.RepositoryNode)
                     return;
 
                 e.DragEffects = DragDropEffects.Move;
@@ -223,8 +222,7 @@ namespace SourceGit.Views
             if (sender is not Grid grid)
                 return;
 
-            var to = grid.DataContext as ViewModels.RepositoryNode;
-            if (to == null)
+            if (grid.DataContext is not ViewModels.RepositoryNode to)
             {
                 e.Handled = true;
                 return;

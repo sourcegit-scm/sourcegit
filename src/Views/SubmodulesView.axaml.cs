@@ -71,8 +71,7 @@ namespace SourceGit.Views
 
         private void CreateContent(Thickness margin, string iconKey)
         {
-            var geo = this.FindResource(iconKey) as StreamGeometry;
-            if (geo == null)
+            if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
             Content = new Avalonia.Controls.Shapes.Path()

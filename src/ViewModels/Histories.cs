@@ -426,7 +426,7 @@ namespace SourceGit.ViewModels
                 };
 
                 var copyMultipleInfo = new MenuItem();
-                copyMultipleInfo.Header = App.Text("CommitCM.CopyInfo");
+                copyMultipleInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
                 copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Info");
                 copyMultipleInfo.Click += async (_, e) =>
                 {
@@ -456,25 +456,24 @@ namespace SourceGit.ViewModels
             {
                 foreach (var d in commit.Decorators)
                 {
-                    if (d.Type == Models.DecoratorType.CurrentBranchHead)
+                    switch (d.Type)
                     {
-                        FillCurrentBranchMenu(menu, current);
-                    }
-                    else if (d.Type == Models.DecoratorType.LocalBranchHead)
-                    {
-                        var b = _repo.Branches.Find(x => x.IsLocal && d.Name == x.Name);
-                        FillOtherLocalBranchMenu(menu, b, current, commit.IsMerged);
-                    }
-                    else if (d.Type == Models.DecoratorType.RemoteBranchHead)
-                    {
-                        var b = _repo.Branches.Find(x => !x.IsLocal && d.Name == x.FriendlyName);
-                        FillRemoteBranchMenu(menu, b, current, commit.IsMerged);
-                    }
-                    else if (d.Type == Models.DecoratorType.Tag)
-                    {
-                        var t = _repo.Tags.Find(x => x.Name == d.Name);
-                        if (t != null)
-                            tags.Add(t);
+                        case Models.DecoratorType.CurrentBranchHead:
+                            FillCurrentBranchMenu(menu, current);
+                            break;
+                        case Models.DecoratorType.LocalBranchHead:
+                            var lb = _repo.Branches.Find(x => x.IsLocal && d.Name == x.Name);
+                            FillOtherLocalBranchMenu(menu, lb, current, commit.IsMerged);
+                            break;
+                        case Models.DecoratorType.RemoteBranchHead:
+                            var rb = _repo.Branches.Find(x => !x.IsLocal && d.Name == x.FriendlyName);
+                            FillRemoteBranchMenu(menu, rb, current, commit.IsMerged);
+                            break;
+                        case Models.DecoratorType.Tag:
+                            var t = _repo.Tags.Find(x => x.Name == d.Name);
+                            if (t != null)
+                                tags.Add(t);
+                            break;
                     }
                 }
 
@@ -602,7 +601,8 @@ namespace SourceGit.ViewModels
                                 {
                                     var parent = _commits.Find(x => x.SHA == sha);
                                     if (parent == null)
-                                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
+                                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha)
+                                            .GetResultAsync();
 
                                     if (parent != null)
                                         parents.Add(parent);
@@ -837,7 +837,7 @@ namespace SourceGit.ViewModels
             };
 
             var copyInfo = new MenuItem();
-            copyInfo.Header = App.Text("CommitCM.CopyInfo");
+            copyInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
             copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
             copyInfo.Click += async (_, e) =>
             {

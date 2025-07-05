@@ -2,7 +2,7 @@
 
 namespace SourceGit.Models
 {
-    public class ResetMode
+    public class ResetMode(string n, string d, string a, string k, IBrush b)
     {
         public static readonly ResetMode[] Supported =
         [
@@ -13,19 +13,10 @@ namespace SourceGit.Models
             new ResetMode("Hard", "Discard all changes", "--hard", "H", Brushes.Red),
         ];
 
-        public string Name { get; set; }
-        public string Desc { get; set; }
-        public string Arg { get; set; }
-        public string Key { get; set; }
-        public IBrush Color { get; set; }
-
-        public ResetMode(string n, string d, string a, string k, IBrush b)
-        {
-            Name = n;
-            Desc = d;
-            Arg = a;
-            Key = k;
-            Color = b;
-        }
+        public string Name { get; set; } = n;
+        public string Desc { get; set; } = d;
+        public string Arg { get; set; } = a;
+        public string Key { get; set; } = k;
+        public IBrush Color { get; set; } = b;
     }
 }

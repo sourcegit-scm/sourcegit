@@ -823,15 +823,13 @@ namespace SourceGit.ViewModels
             if (!CanCreatePopup())
                 return;
 
-            ExecuteCustomAction popup;
-            if (scope is Models.Branch b)
-                popup = new ExecuteCustomAction(this, action, b);
-            else if (scope is Models.Commit c)
-                popup = new ExecuteCustomAction(this, action, c);
-            else if (scope is Models.Tag t)
-                popup = new ExecuteCustomAction(this, action, t);
-            else
-                popup = new ExecuteCustomAction(this, action);
+            var popup = scope switch
+            {
+                Models.Branch b => new ExecuteCustomAction(this, action, b),
+                Models.Commit c => new ExecuteCustomAction(this, action, c),
+                Models.Tag t => new ExecuteCustomAction(this, action, t),
+                _ => new ExecuteCustomAction(this, action)
+            };
 
             if (action.Controls.Count == 0)
                 ShowAndStartPopup(popup);
@@ -1274,8 +1272,9 @@ namespace SourceGit.ViewModels
                         }
 
                         hasChanged = !exist.SHA.Equals(module.SHA, StringComparison.Ordinal) ||
-                            !exist.URL.Equals(module.URL, StringComparison.Ordinal) ||
-                            exist.Status != module.Status;
+                                     !exist.Branch.Equals(module.Branch, StringComparison.Ordinal) ||
+                                     !exist.URL.Equals(module.URL, StringComparison.Ordinal) ||
+                                     exist.Status != module.Status;
 
                         if (hasChanged)
                             break;
@@ -2586,6 +2585,16 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var setBranch = new MenuItem();
+            setBranch.Header = App.Text("Submodule.SetBranch");
+            setBranch.Icon = App.CreateMenuIcon("Icons.Track");
+            setBranch.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new SetSubmoduleBranch(this, submodule));
+                ev.Handled = true;
+            };
+
             var deinit = new MenuItem();
             deinit.Header = App.Text("Submodule.Deinit");
             deinit.Icon = App.CreateMenuIcon("Icons.Undo");
@@ -2616,20 +2625,56 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var copy = new MenuItem();
-            copy.Header = App.Text("Submodule.CopyPath");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += async (_, ev) =>
+            var copySHA = new MenuItem();
+            copySHA.Header = App.Text("CommitDetail.Info.SHA");
+            copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+            copySHA.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.SHA);
+                ev.Handled = true;
+            };
+
+            var copyRelativePath = new MenuItem();
+            copyRelativePath.Header = App.Text("Submodule.CopyPath");
+            copyRelativePath.Icon = App.CreateMenuIcon("Icons.Folder");
+            copyRelativePath.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(submodule.Path);
                 ev.Handled = true;
             };
+
+            var copyURL = new MenuItem();
+            copyURL.Header = App.Text("Submodule.URL");
+            copyURL.Icon = App.CreateMenuIcon("Icons.Link");
+            copyURL.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.URL);
+                ev.Handled = true;
+            };
+
+            var copyBranch = new MenuItem();
+            copyBranch.Header = App.Text("Submodule.Branch");
+            copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
+            copyBranch.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.Branch);
+                ev.Handled = true;
+            };
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Items.Add(copySHA);
+            copy.Items.Add(copyBranch);
+            copy.Items.Add(copyRelativePath);
+            copy.Items.Add(copyURL);
 
             var menu = new ContextMenu();
             menu.Items.Add(open);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(update);
             menu.Items.Add(setURL);
+            menu.Items.Add(setBranch);
             menu.Items.Add(move);
             menu.Items.Add(deinit);
             menu.Items.Add(rm);

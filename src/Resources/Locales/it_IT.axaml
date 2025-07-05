@@ -113,7 +113,6 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Autore</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Committer</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Informazioni</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Oggetto</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Azione Personalizzata</x:String>
@@ -693,7 +692,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMIT:</x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SOTTOMODULI</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Aggiungi Sottomodulo</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copia Percorso Relativo</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Percorso Relativo</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Recupera sottomoduli annidati</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Apri Repository del Sottomodulo</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Percorso Relativo:</x:String>

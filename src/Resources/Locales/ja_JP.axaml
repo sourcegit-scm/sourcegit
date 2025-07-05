@@ -102,7 +102,6 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">チェリーピック...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">HEADと比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">情報</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">${0}$ ブランチをここにインタラクティブリベース</x:String>
@@ -663,7 +662,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">コミット: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">サブモジュール</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">サブモジュールを追加</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相対パスをコピー</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相対パス</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">ネストされたサブモジュールを取得する</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">サブモジュールのリポジトリを開く</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">相対パス:</x:String>

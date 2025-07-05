@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public partial class CreateBranch : Popup
+    public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
         [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
@@ -123,9 +123,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Create Branch '{fixedName}'");
             Use(log);
 
-            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            bool succ;
-
             if (CheckoutAfterCreated)
             {
                 if (_repo.CurrentBranch is { IsDetachedHead: true } && !_repo.CurrentBranch.Head.Equals(_baseOnRevision, StringComparison.Ordinal))
@@ -144,16 +141,11 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            bool succ;
             if (CheckoutAfterCreated && !_repo.IsBare)
             {
                 var needPopStash = false;
-                if (DiscardLocalChanges)
-                {
-                    succ = await new Commands.Checkout(_repo.FullPath)
-                        .Use(log)
-                        .BranchAsync(fixedName, _baseOnRevision, true, _allowOverwrite);
-                }
-                else
+                if (!DiscardLocalChanges)
                 {
                     var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
                     if (changes > 0)
@@ -170,15 +162,15 @@ namespace SourceGit.ViewModels
 
                         needPopStash = true;
                     }
-
-                    succ = await new Commands.Checkout(_repo.FullPath)
-                        .Use(log)
-                        .BranchAsync(fixedName, _baseOnRevision, false, _allowOverwrite);
                 }
+
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(fixedName, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);
 
                 if (succ)
                 {
-                    if (updateSubmodules)
+                    if (IsRecurseSubmoduleVisible && RecurseSubmodules)
                     {
                         var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
                         if (submodules.Count > 0)

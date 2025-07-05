@@ -16,8 +16,7 @@ namespace SourceGit.Views
         /// <param name="e"></param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            var vm = DataContext as ViewModels.InteractiveRebase;
-            if (vm == null)
+            if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
             var item = vm.SelectedItem;
@@ -154,8 +153,7 @@ namespace SourceGit.Views
 
         private async void OnStartJobs(object _1, RoutedEventArgs _2)
         {
-            var vm = DataContext as ViewModels.InteractiveRebase;
-            if (vm == null)
+            if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
             Running.IsVisible = true;

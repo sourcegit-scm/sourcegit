@@ -93,7 +93,6 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Comparar com HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Comparar com Worktree</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Informações</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Ação customizada</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interativo ${0}$ até Aqui</x:String>
@@ -603,7 +602,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Adicionar Submódulo</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Copiar Caminho Relativo</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Caminho Relativo</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Buscar submódulos aninhados</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Abrir Repositório do Submódulo</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Caminho Relativo:</x:String>

@@ -47,7 +47,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Submodule(_repo.FullPath)
                 .Use(log)
-                .SetURL(Submodule.Path, _url);
+                .SetURLAsync(Submodule.Path, _url);
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

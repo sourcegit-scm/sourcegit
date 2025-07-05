@@ -37,13 +37,13 @@ namespace SourceGit.ViewModels
 
         public static async Task<ImageSource> FromFileAsync(string fullpath, Models.ImageDecoder decoder)
         {
-            await using (var stream = File.OpenRead(fullpath))
-                return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
+            await using var stream = File.OpenRead(fullpath);
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
         public static async Task<ImageSource> FromRevisionAsync(string repo, string revision, string file, Models.ImageDecoder decoder)
         {
-            var stream = await Commands.QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
+            await using var stream = await Commands.QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
             return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 

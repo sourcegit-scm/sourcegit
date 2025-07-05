@@ -41,10 +41,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Checkout Commit");
             Use(log);
 
-            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            bool succ;
-            var needPop = false;
-
             if (_repo.CurrentBranch is { IsDetachedHead: true })
             {
                 var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _repo.CurrentBranch.Head).GetResultAsync();
@@ -60,13 +56,10 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (DiscardLocalChanges)
-            {
-                succ = await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .CommitAsync(Commit.SHA, true);
-            }
-            else
+            var succ = false;
+            var needPop = false;
+
+            if (!DiscardLocalChanges)
             {
                 var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
                 if (changes > 0)
@@ -83,15 +76,15 @@ namespace SourceGit.ViewModels
 
                     needPop = true;
                 }
-
-                succ = await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .CommitAsync(Commit.SHA, false);
             }
+
+            succ = await new Commands.Checkout(_repo.FullPath)
+                .Use(log)
+                .CommitAsync(Commit.SHA, DiscardLocalChanges);
 
             if (succ)
             {
-                if (updateSubmodules)
+                if (IsRecurseSubmoduleVisible && RecurseSubmodules)
                 {
                     var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
                     if (submodules.Count > 0)

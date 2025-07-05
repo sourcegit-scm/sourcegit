@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public partial class RenameBranch : Popup
+    public class RenameBranch : Popup
     {
         public Models.Branch Target
         {
@@ -35,9 +35,7 @@ namespace SourceGit.ViewModels
                 foreach (var b in rename._repo.Branches)
                 {
                     if (b.IsLocal && b != rename.Target && b.Name.Equals(fixedName, StringComparison.Ordinal))
-                    {
                         return new ValidationResult("A branch with same name already exists!!!");
-                    }
                 }
             }
 

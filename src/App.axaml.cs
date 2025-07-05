@@ -186,9 +186,9 @@ namespace SourceGit
 
         public static void SetLocale(string localeKey)
         {
-            var app = Current as App;
-            var targetLocale = app?.Resources[localeKey] as ResourceDictionary;
-            if (targetLocale == null || targetLocale == app._activeLocale)
+            if (Current is not App app ||
+                app.Resources[localeKey] is not ResourceDictionary targetLocale ||
+                targetLocale == app._activeLocale)
                 return;
 
             if (app._activeLocale != null)
@@ -200,8 +200,7 @@ namespace SourceGit
 
         public static void SetTheme(string theme, string themeOverridesFile)
         {
-            var app = Current as App;
-            if (app == null)
+            if (Current is not App app)
                 return;
 
             if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
@@ -254,8 +253,7 @@ namespace SourceGit
 
         public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
         {
-            var app = Current as App;
-            if (app == null)
+            if (Current is not App app)
                 return;
 
             if (app._fontsOverrides != null)
