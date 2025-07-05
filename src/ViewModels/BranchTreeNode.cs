@@ -15,6 +15,11 @@ namespace SourceGit.ViewModels
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
         public int Counter { get; set; } = 0;
+        public int UnstagedFiles
+        {
+            get => _unstagedFiles;
+            set => SetProperty(ref _unstagedFiles, value);
+        }
 
         public Models.FilterMode FilterMode
         {
@@ -71,6 +76,7 @@ namespace SourceGit.ViewModels
         private Models.FilterMode _filterMode = Models.FilterMode.None;
         private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(4);
+        private int _unstagedFiles = 0;
 
         public class Builder
         {
@@ -90,7 +96,7 @@ namespace SourceGit.ViewModels
                     _expanded.Add(node);
             }
 
-            public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded)
+            public void Run(List<Models.Branch> branches, List<Models.Remote> remotes, bool bForceExpanded, Repository repo)
             {
                 var folders = new Dictionary<string, BranchTreeNode>();
 
@@ -116,7 +122,7 @@ namespace SourceGit.ViewModels
                 {
                     if (branch.IsLocal)
                     {
-                        MakeBranchNode(branch, Locals, folders, "refs/heads", bForceExpanded);
+                        MakeBranchNode(branch, Locals, folders, "refs/heads", bForceExpanded, repo);
                         continue;
                     }
 
@@ -124,7 +130,7 @@ namespace SourceGit.ViewModels
                     if (folders.TryGetValue(rk, out var remote))
                     {
                         remote.Counter++;
-                        MakeBranchNode(branch, remote.Children, folders, rk, bForceExpanded);
+                        MakeBranchNode(branch, remote.Children, folders, rk, bForceExpanded, repo);
                     }
                 }
 
@@ -147,13 +153,14 @@ namespace SourceGit.ViewModels
                     SortNodesByTime(Remotes);
             }
 
-            private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded)
+            private void MakeBranchNode(Models.Branch branch, List<BranchTreeNode> roots, Dictionary<string, BranchTreeNode> folders, string prefix, bool bForceExpanded, Repository repo)
             {
                 var time = branch.CommitterDate;
                 var fullpath = $"{prefix}/{branch.Name}";
                 var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
                 if (sepIdx == -1 || branch.IsDetachedHead)
                 {
+                    var files = new Commands.QueryUnstagedFiles(repo.FullPath).GetResultAsync().Result;
                     roots.Add(new BranchTreeNode()
                     {
                         Name = branch.Name,
@@ -161,6 +168,7 @@ namespace SourceGit.ViewModels
                         Backend = branch,
                         IsExpanded = false,
                         TimeToSort = time,
+                        UnstagedFiles = files.Count,
                     });
                     return;
                 }

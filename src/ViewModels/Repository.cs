@@ -2683,7 +2683,7 @@ namespace SourceGit.ViewModels
             if (string.IsNullOrEmpty(_filter))
             {
                 builder.SetExpandedNodes(_settings.ExpandedBranchNodesInSideBar);
-                builder.Run(branches, remotes, false);
+                builder.Run(branches, remotes, false, this);
 
                 foreach (var invalid in builder.InvalidExpandedNodes)
                     _settings.ExpandedBranchNodesInSideBar.Remove(invalid);
@@ -2697,7 +2697,7 @@ namespace SourceGit.ViewModels
                         visibles.Add(b);
                 }
 
-                builder.Run(visibles, remotes, true);
+                builder.Run(visibles, remotes, true, this);
             }
 
             var historiesFilters = _settings.CollectHistoriesFilters();
