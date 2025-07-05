@@ -45,7 +45,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-87.34%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-87.10%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -135,6 +135,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
+- Text.Submodule.RelativePath
+- Text.Submodule.RelativePath.Placeholder
 - Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
