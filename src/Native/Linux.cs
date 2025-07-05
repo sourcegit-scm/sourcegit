@@ -13,6 +13,8 @@ namespace SourceGit.Native
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
     {
+        private static readonly string LOCAL_APP_DATA_DIR = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new X11PlatformOptions() { EnableIme = true });
@@ -48,16 +50,16 @@ namespace SourceGit.Native
 
         public List<Models.ExternalTool> FindExternalTools()
         {
-            var localAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var finder = new Models.ExternalToolsFinder();
-            finder.VSCode(() => FindExecutable("code"));
-            finder.VSCodeInsiders(() => FindExecutable("code-insiders"));
-            finder.VSCodium(() => FindExecutable("codium"));
+            finder.VSCode(() => FindExecutable("code", "com.visualstudio.code"));
+            finder.VSCodeInsiders(() => FindExecutable("code-insiders", "com.vscodium.codium-insiders"));
+            finder.VSCodium(() => FindExecutable("codium", "com.vscodium.codium"));
             finder.Cursor(() => FindExecutable("cursor"));
-            finder.Fleet(() => FindJetBrainsFleet(localAppDataDir));
-            finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, "JetBrains/Toolbox"));
-            finder.SublimeText(() => FindExecutable("subl"));
-            finder.Zed(() => FindExecutable("zeditor"));
+            finder.Fleet(FindJetBrainsFleet);
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(LOCAL_APP_DATA_DIR, "JetBrains/Toolbox"));
+            FindJetBrainsFromFlatpak(finder);
+            finder.SublimeText(() => FindExecutable("subl", "com.sublimetext.three"));
+            finder.Zed(() => FindExecutable("zeditor", "dev.zed.Zed"));
             return finder.Tools;
         }
 
@@ -119,7 +121,7 @@ namespace SourceGit.Native
             }
         }
 
-        private string FindExecutable(string filename)
+        private static string FindExecutable(string filename, string flatpakAppId = null)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
             var paths = pathVariable.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
@@ -130,13 +132,51 @@ namespace SourceGit.Native
                     return test;
             }
 
+            if (flatpakAppId != null)
+            {
+                foreach (var path in new[] { "/var/lib", LOCAL_APP_DATA_DIR })
+                {
+                    var test = Path.Combine(path, "flatpak/exports/bin", flatpakAppId);
+                    if (File.Exists(test))
+                        return test;
+                }
+            }
+
             return string.Empty;
         }
 
-        private string FindJetBrainsFleet(string localAppDataDir)
+        private static string FindJetBrainsFleet()
         {
-            var path = Path.Combine(localAppDataDir, "JetBrains/Toolbox/apps/fleet/bin/Fleet");
+            var path = Path.Combine(LOCAL_APP_DATA_DIR, "JetBrains/Toolbox/apps/fleet/bin/Fleet");
             return File.Exists(path) ? path : FindExecutable("fleet");
+        }
+
+        private static void FindJetBrainsFromFlatpak(Models.ExternalToolsFinder finder)
+        {
+            foreach (var basePath in new[] { "/var/lib", LOCAL_APP_DATA_DIR })
+            {
+                var binPath = Path.Combine(basePath, "flatpak/exports/bin");
+                if (Directory.Exists(binPath))
+                {
+                    foreach (var file in Directory.GetFiles(binPath, "com.jetbrains.*"))
+                    {
+                        var fileName = Path.GetFileName(file);
+                        var appName = fileName[14..].Replace("-", " ");
+                        var icon = new string(Array.FindAll(fileName.ToCharArray(), char.IsUpper));
+                        if (icon.Length > 2)
+                            icon = icon[..2];
+                        icon = icon switch
+                        {
+                            "DG" => "DB", // DataGrip
+                            "GL" => "GO", // GoLand
+                            "IJ" => "JB", // IntelliJ
+                            "R" => "RD",  // Rider
+                            _ => icon
+                        };
+                        finder.Tools.Add(new Models.ExternalTool(appName, "JetBrains/" + icon, file));
+                    }
+                }
+            }
         }
     }
 }
