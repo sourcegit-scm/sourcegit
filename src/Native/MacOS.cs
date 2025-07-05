@@ -105,5 +105,10 @@ namespace SourceGit.Native
         {
             Process.Start("open", $"\"{file}\"");
         }
+
+        public bool MoveFileToTrash(string file)
+        {
+            return true;
+        }
     }
 }
