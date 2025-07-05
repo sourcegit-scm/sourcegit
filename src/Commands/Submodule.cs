@@ -27,9 +27,19 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> SetURL(string path, string url)
+        public async Task<bool> SetURLAsync(string path, string url)
         {
             Args = $"submodule set-url -- \"{path}\" \"{url}\"";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> SetBranchAsync(string path, string branch)
+        {
+            if (string.IsNullOrEmpty(branch))
+                Args = $"submodule set-branch -d -- \"{path}\"";
+            else
+                Args = $"submodule set-branch -b \"{branch}\" -- \"{path}\"";
+
             return await ExecAsync().ConfigureAwait(false);
         }
 
