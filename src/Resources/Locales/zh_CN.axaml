@@ -124,7 +124,6 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">提交者</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">简要信息</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>

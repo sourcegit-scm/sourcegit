@@ -102,7 +102,6 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">チェリーピック...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">HEADと比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">情報</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">${0}$ ブランチをここにインタラクティブリベース</x:String>

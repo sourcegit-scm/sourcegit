@@ -426,7 +426,7 @@ namespace SourceGit.ViewModels
                 };
 
                 var copyMultipleInfo = new MenuItem();
-                copyMultipleInfo.Header = App.Text("CommitCM.CopyInfo");
+                copyMultipleInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
                 copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Info");
                 copyMultipleInfo.Click += async (_, e) =>
                 {
@@ -837,7 +837,7 @@ namespace SourceGit.ViewModels
             };
 
             var copyInfo = new MenuItem();
-            copyInfo.Header = App.Text("CommitCM.CopyInfo");
+            copyInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
             copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
             copyInfo.Click += async (_, e) =>
             {

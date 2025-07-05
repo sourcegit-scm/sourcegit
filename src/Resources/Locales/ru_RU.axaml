@@ -121,7 +121,6 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Автор</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Ревизор</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Информацию</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Субъект</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
