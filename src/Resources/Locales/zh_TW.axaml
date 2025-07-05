@@ -123,6 +123,7 @@
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">提交訊息</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">標題</x:String>
