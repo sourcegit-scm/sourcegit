@@ -70,6 +70,7 @@ namespace SourceGit.Models
                     new ExternalMerger(5, "meld", "Meld", "/usr/bin/meld", "\"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(6, "codium", "VSCodium", "/usr/share/codium/bin/codium", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(7, "p4merge", "P4Merge", "/usr/local/bin/p4merge", "-tw 4 \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"", "-tw 4 \"$LOCAL\" \"$REMOTE\""),
+                    new ExternalMerger(8, "meld", "Meld (Flatpak)", "/usr/bin/flatpak", "run org.gnome.meld \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"", "run org.gnome.meld \"$LOCAL\" \"$REMOTE\""),
                 };
             }
             else

@@ -124,19 +124,19 @@ namespace SourceGit.Models
             }
         }
 
-        public void VSCode(Func<string> platformFinder)
+        public void VSCode(Func<string> platformFinder, Func<string, string> execArgsGenerator = null)
         {
-            TryAdd("Visual Studio Code", "vscode", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", platformFinder, execArgsGenerator);
         }
 
-        public void VSCodeInsiders(Func<string> platformFinder)
+        public void VSCodeInsiders(Func<string> platformFinder, Func<string, string> execArgsGenerator = null)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder, execArgsGenerator);
         }
 
-        public void VSCodium(Func<string> platformFinder)
+        public void VSCodium(Func<string> platformFinder, Func<string, string> execArgsGenerator = null)
         {
-            TryAdd("VSCodium", "codium", platformFinder);
+            TryAdd("VSCodium", "codium", platformFinder, execArgsGenerator);
         }
 
         public void Fleet(Func<string> platformFinder)
@@ -144,14 +144,14 @@ namespace SourceGit.Models
             TryAdd("Fleet", "fleet", platformFinder);
         }
 
-        public void SublimeText(Func<string> platformFinder)
+        public void SublimeText(Func<string> platformFinder, Func<string, string> execArgsGenerator = null)
         {
-            TryAdd("Sublime Text", "sublime_text", platformFinder);
+            TryAdd("Sublime Text", "sublime_text", platformFinder, execArgsGenerator);
         }
 
-        public void Zed(Func<string> platformFinder)
+        public void Zed(Func<string> platformFinder, Func<string, string> execArgsGenerator = null)
         {
-            TryAdd("Zed", "zed", platformFinder);
+            TryAdd("Zed", "zed", platformFinder, execArgsGenerator);
         }
 
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
