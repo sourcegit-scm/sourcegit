@@ -35,6 +35,6 @@ namespace SourceGit.Models
             }
         }
 
-        private bool _isLocked = false;
+        private bool _isLocked;
     }
 }

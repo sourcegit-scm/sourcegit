@@ -124,10 +124,10 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo;
         private string _path = string.Empty;
         private bool _createNewBranch = true;
         private string _selectedBranch = string.Empty;
-        private bool _setTrackingBranch = false;
+        private bool _setTrackingBranch;
     }
 }

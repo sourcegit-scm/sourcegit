@@ -89,8 +89,8 @@ namespace SourceGit.Commands
             _current.Commit.Parents.AddRange(data.Split(' ', StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private List<Models.InteractiveCommit> _commits = [];
-        private Models.InteractiveCommit _current = null;
+        private readonly List<Models.InteractiveCommit> _commits = [];
         private readonly string _boundary;
+        private Models.InteractiveCommit _current;
     }
 }

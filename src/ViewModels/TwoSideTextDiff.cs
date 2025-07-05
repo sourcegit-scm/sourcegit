@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         public string File { get; set; }
         public List<Models.TextDiffLine> Old { get; set; } = new List<Models.TextDiffLine>();
         public List<Models.TextDiffLine> New { get; set; } = new List<Models.TextDiffLine>();
-        public int MaxLineNumber = 0;
+        public int MaxLineNumber;
 
         public Vector SyncScrollOffset
         {

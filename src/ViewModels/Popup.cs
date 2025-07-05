@@ -49,7 +49,7 @@ namespace SourceGit.ViewModels
                 ProgressDescription = desc;
         }
 
-        private bool _inProgress = false;
+        private bool _inProgress;
         private string _progressDescription = string.Empty;
     }
 }

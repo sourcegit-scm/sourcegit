@@ -167,6 +167,6 @@ namespace SourceGit.Views
             return App.Text("Period.YearsAgo", diffYear);
         }
 
-        private IDisposable _refreshTimer = null;
+        private IDisposable _refreshTimer;
     }
 }

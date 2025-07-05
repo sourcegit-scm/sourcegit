@@ -26,8 +26,8 @@ namespace SourceGit.Models
     {
         public TextDiffLineType Type { get; set; } = TextDiffLineType.None;
         public string Content { get; set; } = "";
-        public int OldLineNumber { get; set; } = 0;
-        public int NewLineNumber { get; set; } = 0;
+        public int OldLineNumber { get; set; }
+        public int NewLineNumber { get; set; }
         public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
         public bool NoNewLineEndOfFile { get; set; } = false;
 
@@ -46,12 +46,12 @@ namespace SourceGit.Models
 
     public class TextDiffSelection
     {
-        public int StartLine { get; set; } = 0;
-        public int EndLine { get; set; } = 0;
-        public bool HasChanges { get; set; } = false;
-        public bool HasLeftChanges { get; set; } = false;
-        public int IgnoredAdds { get; set; } = 0;
-        public int IgnoredDeletes { get; set; } = 0;
+        public int StartLine { get; set; }
+        public int EndLine { get; set; }
+        public bool HasChanges { get; set; }
+        public bool HasLeftChanges { get; set; }
+        public int IgnoredAdds { get; set; }
+        public int IgnoredDeletes { get; set; }
 
         public bool IsInRange(int idx)
         {

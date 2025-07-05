@@ -119,7 +119,7 @@ namespace SourceGit.ViewModels
             };
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private readonly string _sourceName;
     }
 }

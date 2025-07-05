@@ -64,6 +64,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private string _name = null;
+        private string _name;
     }
 }

@@ -164,13 +164,13 @@ namespace SourceGit.ViewModels
             }, token);
         }
 
-        private string _repo;
+        private readonly string _repo;
+        private readonly List<string> _navigationHistory = [];
+        private readonly Dictionary<string, Models.Commit> _commits = new();
+        private readonly Dictionary<string, string> _commitMessages = new();
         private Models.Commit _revision;
-        private CancellationTokenSource _cancellationSource = null;
-        private int _navigationActiveIndex = 0;
-        private List<string> _navigationHistory = [];
-        private Models.BlameData _data = null;
-        private Dictionary<string, Models.Commit> _commits = new();
-        private Dictionary<string, string> _commitMessages = new();
+        private CancellationTokenSource _cancellationSource;
+        private int _navigationActiveIndex;
+        private Models.BlameData _data;
     }
 }

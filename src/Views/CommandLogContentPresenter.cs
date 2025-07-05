@@ -147,6 +147,6 @@ namespace SourceGit.Views
             AppendText(newline);
         }
 
-        private TextMate.Installation _textMate = null;
+        private TextMate.Installation _textMate;
     }
 }

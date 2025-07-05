@@ -342,7 +342,7 @@ namespace SourceGit.Models
             return variable.regex.Replace(str, variable.replacement);
         }
 
-        private int _pos = 0;
+        private int _pos;
         private char[] _chars = [];
         private readonly List<object> _tokens = [];
 

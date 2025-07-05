@@ -33,7 +33,7 @@ namespace SourceGit.ViewModels
     {
         public string Label { get; set; } = string.Empty;
         public string Placeholder { get; set; } = string.Empty;
-        public bool IsFolder { get; set; } = false;
+        public bool IsFolder { get; set; }
 
         public string Path
         {
@@ -291,6 +291,6 @@ namespace SourceGit.ViewModels
             proc.Close();
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
     }
 }

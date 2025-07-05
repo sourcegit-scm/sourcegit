@@ -27,6 +27,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        private bool _isExpanded = false;
+        private bool _isExpanded;
     }
 }
