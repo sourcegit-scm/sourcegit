@@ -67,7 +67,7 @@ namespace SourceGit.Native
             window.ExtendClientAreaToDecorationsHint = true;
             window.Classes.Add("fix_maximized_padding");
 
-            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
             {
                 // Custom WM_NCHITTEST
                 if (msg == 0x0084)

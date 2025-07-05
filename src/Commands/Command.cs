@@ -131,9 +131,9 @@ namespace SourceGit.Commands
             }
 
             var rs = new Result() { IsSuccess = true };
-            rs.StdOut = await proc.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
-            rs.StdErr = await proc.StandardError.ReadToEndAsync().ConfigureAwait(false);
-            await proc.WaitForExitAsync().ConfigureAwait(false);
+            rs.StdOut = await proc.StandardOutput.ReadToEndAsync(CancellationToken).ConfigureAwait(false);
+            rs.StdErr = await proc.StandardError.ReadToEndAsync(CancellationToken).ConfigureAwait(false);
+            await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
 
             rs.IsSuccess = proc.ExitCode == 0;
             proc.Close();

@@ -93,9 +93,7 @@ namespace SourceGit.Models
         public string[] GetPatterns()
         {
             if (OperatingSystem.IsWindows())
-            {
                 return Exec.Split(';');
-            }
 
             var choices = Exec.Split(';', StringSplitOptions.RemoveEmptyEntries);
             return Array.ConvertAll(choices, Path.GetFileName);

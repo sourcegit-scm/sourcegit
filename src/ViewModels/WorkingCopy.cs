@@ -389,9 +389,7 @@ namespace SourceGit.ViewModels
                 if (!change.IsConflicted)
                     continue;
 
-                if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
-                    change.ConflictReason == Models.ConflictReason.DeletedByThem ||
-                    change.ConflictReason == Models.ConflictReason.AddedByUs)
+                if (change.ConflictReason is Models.ConflictReason.BothDeleted or Models.ConflictReason.DeletedByThem or Models.ConflictReason.AddedByUs)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -438,9 +436,7 @@ namespace SourceGit.ViewModels
                 if (!change.IsConflicted)
                     continue;
 
-                if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
-                    change.ConflictReason == Models.ConflictReason.DeletedByUs ||
-                    change.ConflictReason == Models.ConflictReason.AddedByThem)
+                if (change.ConflictReason is Models.ConflictReason.BothDeleted or Models.ConflictReason.DeletedByUs or Models.ConflictReason.AddedByThem)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -622,7 +618,6 @@ namespace SourceGit.ViewModels
                 {
                     var useTheirs = new MenuItem();
                     useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
-                    useTheirs.Header = App.Text("FileCM.UseTheirs");
                     useTheirs.Click += (_, e) =>
                     {
                         UseTheirs(_selectedUnstaged);
@@ -631,7 +626,6 @@ namespace SourceGit.ViewModels
 
                     var useMine = new MenuItem();
                     useMine.Icon = App.CreateMenuIcon("Icons.Local");
-                    useMine.Header = App.Text("FileCM.UseMine");
                     useMine.Click += (_, e) =>
                     {
                         UseMine(_selectedUnstaged);
@@ -647,25 +641,28 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    switch (_inProgressContext)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is RebaseInProgress rebase)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
-                    }
-                    else if (_inProgressContext is RevertInProgress revert)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is MergeInProgress merge)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        case CherryPickInProgress cherryPick:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case RebaseInProgress rebase:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
+                            break;
+                        case RevertInProgress revert:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case MergeInProgress merge:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        default:
+                            useTheirs.Header = App.Text("FileCM.UseTheirs");
+                            useMine.Header = App.Text("FileCM.UseMine");
+                            break;
                     }
 
                     menu.Items.Add(useTheirs);
@@ -1020,7 +1017,6 @@ namespace SourceGit.ViewModels
 
                     var useTheirs = new MenuItem();
                     useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
-                    useTheirs.Header = App.Text("FileCM.UseTheirs");
                     useTheirs.Click += (_, e) =>
                     {
                         UseTheirs(_selectedUnstaged);
@@ -1029,32 +1025,34 @@ namespace SourceGit.ViewModels
 
                     var useMine = new MenuItem();
                     useMine.Icon = App.CreateMenuIcon("Icons.Local");
-                    useMine.Header = App.Text("FileCM.UseMine");
                     useMine.Click += (_, e) =>
                     {
                         UseMine(_selectedUnstaged);
                         e.Handled = true;
                     };
 
-                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    switch (_inProgressContext)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is RebaseInProgress rebase)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
-                    }
-                    else if (_inProgressContext is RevertInProgress revert)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is MergeInProgress merge)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        case CherryPickInProgress cherryPick:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case RebaseInProgress rebase:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
+                            break;
+                        case RevertInProgress revert:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case MergeInProgress merge:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        default:
+                            useTheirs.Header = App.Text("FileCM.UseTheirs");
+                            useMine.Header = App.Text("FileCM.UseMine");
+                            break;
                     }
 
                     menu.Items.Add(useTheirs);

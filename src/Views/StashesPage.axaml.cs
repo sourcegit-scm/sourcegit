@@ -12,8 +12,7 @@ namespace SourceGit.Views
 
         private void OnMainLayoutSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null)
+            if (sender is not Grid grid)
                 return;
 
             var layout = ViewModels.Preferences.Instance.Layout;

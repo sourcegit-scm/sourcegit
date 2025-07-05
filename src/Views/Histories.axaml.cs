@@ -236,8 +236,7 @@ namespace SourceGit.Views
                 {
                     var repoView = this.FindAncestorOfType<Repository>();
 
-                    var repo = repoView?.DataContext as ViewModels.Repository;
-                    if (repo == null || !repo.CanCreatePopup())
+                    if (repoView?.DataContext is not ViewModels.Repository repo || !repo.CanCreatePopup())
                         return;
 
                     if (selected.Count == 1 && selected[0] is Models.Commit commit)

@@ -36,8 +36,7 @@ namespace SourceGit.Views
 
             var control = sender as Control;
 
-            var selector = control?.DataContext as ViewModels.CustomActionControlPathSelector;
-            if (selector == null)
+            if (control?.DataContext is not ViewModels.CustomActionControlPathSelector selector)
                 return;
 
             if (selector.IsFolder)

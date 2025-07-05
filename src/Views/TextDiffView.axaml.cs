@@ -634,9 +634,7 @@ namespace SourceGit.Views
             for (var idx = lastLineIdx + 1; idx < lines.Count; idx++)
             {
                 var nextType = lines[idx].Type;
-                if (nextType == Models.TextDiffLineType.None ||
-                    nextType == Models.TextDiffLineType.Added ||
-                    nextType == Models.TextDiffLineType.Deleted)
+                if (nextType is Models.TextDiffLineType.None or Models.TextDiffLineType.Added or Models.TextDiffLineType.Deleted)
                 {
                     if (findNormalLine)
                     {
@@ -1005,15 +1003,10 @@ namespace SourceGit.Views
 
             if (startIdx == endIdx)
             {
-                var line = lines[startIdx];
-                if (line.Type == Models.TextDiffLineType.Indicator ||
-                    line.Type == Models.TextDiffLineType.None)
-                {
+                if (lines[startIdx].Type is Models.TextDiffLineType.Indicator or Models.TextDiffLineType.None)
                     await App.CopyTextAsync(string.Empty);
-                    return;
-                }
-
-                await App.CopyTextAsync(SelectedText);
+                else
+                    await App.CopyTextAsync(SelectedText);
                 return;
             }
 
@@ -1021,8 +1014,7 @@ namespace SourceGit.Views
             for (var i = startIdx; i <= endIdx && i <= lines.Count - 1; i++)
             {
                 var line = lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator ||
-                    line.Type == Models.TextDiffLineType.None)
+                if (line.Type is Models.TextDiffLineType.Indicator or Models.TextDiffLineType.None)
                     continue;
 
                 // The first selected line (partial selection)
@@ -1094,8 +1086,7 @@ namespace SourceGit.Views
 
         public override void UpdateSelectedChunk(double y)
         {
-            var diff = DataContext as Models.TextDiff;
-            if (diff == null)
+            if (DataContext is not Models.TextDiff diff)
                 return;
 
             var view = TextArea.TextView;
@@ -1321,8 +1312,7 @@ namespace SourceGit.Views
 
         public override void UpdateSelectedChunk(double y)
         {
-            var diff = DataContext as ViewModels.TwoSideTextDiff;
-            if (diff == null)
+            if (DataContext is not ViewModels.TwoSideTextDiff diff)
                 return;
 
             var parent = this.FindAncestorOfType<TextDiffView>();
@@ -1835,8 +1825,7 @@ namespace SourceGit.Views
 
             var repoView = this.FindAncestorOfType<Repository>();
 
-            var repo = repoView?.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             repo.SetWatcherEnabled(false);
@@ -1889,8 +1878,7 @@ namespace SourceGit.Views
 
             var repoView = this.FindAncestorOfType<Repository>();
 
-            var repo = repoView?.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             repo.SetWatcherEnabled(false);
@@ -1939,8 +1927,7 @@ namespace SourceGit.Views
 
             var repoView = this.FindAncestorOfType<Repository>();
 
-            var repo = repoView?.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             repo.SetWatcherEnabled(false);

@@ -41,10 +41,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Checkout '{Branch}'");
             Use(log);
 
-            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            var succ = false;
-            var needPopStash = false;
-
             if (_repo.CurrentBranch is { IsDetachedHead: true })
             {
                 var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _repo.CurrentBranch.Head).GetResultAsync();
@@ -59,6 +55,9 @@ namespace SourceGit.ViewModels
                     }
                 }
             }
+
+            var succ = false;
+            var needPopStash = false;
 
             if (DiscardLocalChanges)
             {
@@ -91,7 +90,7 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
-                if (updateSubmodules)
+                if (IsRecurseSubmoduleVisible && RecurseSubmodules)
                 {
                     var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
                     if (submodules.Count > 0)

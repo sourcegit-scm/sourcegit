@@ -88,9 +88,7 @@ namespace SourceGit.Models
         {
             var c = Peek();
             if (c is not null)
-            {
                 _pos++;
-            }
             return c;
         }
 
@@ -129,7 +127,7 @@ namespace SourceGit.Models
                 {
                     case ESCAPE:
                         // allow to escape only \ and $
-                        if (Peek() is { } nc && (nc == ESCAPE || nc == VARIABLE_ANCHOR))
+                        if (Peek() is ESCAPE or VARIABLE_ANCHOR)
                         {
                             esc = true;
                             FlushText(tok, _pos - 1);
@@ -320,9 +318,7 @@ namespace SourceGit.Models
         private static string EvalVariable(Context context, string name)
         {
             if (!s_variables.TryGetValue(name, out var getter))
-            {
                 return string.Empty;
-            }
             return getter(context);
         }
 
@@ -334,9 +330,7 @@ namespace SourceGit.Models
         private static string EvalVariable(Context context, SlicedVariable variable)
         {
             if (!s_slicedVariables.TryGetValue(variable.name, out var getter))
-            {
                 return string.Empty;
-            }
             return getter(context, variable.count);
         }
 

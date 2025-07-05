@@ -1,6 +1,6 @@
 ﻿namespace SourceGit.Models
 {
-    public class MergeMode
+    public class MergeMode(string n, string d, string a)
     {
         public static readonly MergeMode Default =
             new MergeMode("Default", "Fast-forward if possible", "");
@@ -26,15 +26,8 @@
             DontCommit,
         ];
 
-        public string Name { get; set; }
-        public string Desc { get; set; }
-        public string Arg { get; set; }
-
-        public MergeMode(string n, string d, string a)
-        {
-            Name = n;
-            Desc = d;
-            Arg = a;
-        }
+        public string Name { get; set; } = n;
+        public string Desc { get; set; } = d;
+        public string Arg { get; set; } = a;
     }
 }

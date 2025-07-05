@@ -295,16 +295,12 @@ namespace SourceGit.Models
 
         private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start)
         {
-            if (hashes.TryGetValue(data, out var hash))
-            {
-                chunks.Add(new Chunk(hash, start, data.Length));
-            }
-            else
+            if (!hashes.TryGetValue(data, out var hash))
             {
                 hash = hashes.Count;
                 hashes.Add(data, hash);
-                chunks.Add(new Chunk(hash, start, data.Length));
             }
+            chunks.Add(new Chunk(hash, start, data.Length));
         }
     }
 }

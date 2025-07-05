@@ -197,7 +197,10 @@ namespace SourceGit.Models
 
                 _resources[email] = image;
 
-                _requesting.Remove(email);
+                lock (_synclock)
+                {
+                    _requesting.Remove(email);
+                }
 
                 var store = Path.Combine(_storePath, GetEmailHash(email));
                 File.Copy(file, store, true);

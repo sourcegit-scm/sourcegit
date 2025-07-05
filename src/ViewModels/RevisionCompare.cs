@@ -58,9 +58,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     RefreshVisible();
-                }
             }
         }
 
