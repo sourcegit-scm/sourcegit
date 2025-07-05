@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.98%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.87%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -14,6 +14,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
+- Text.CommitCM.CopyCommitMessage
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
@@ -31,7 +32,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-97.63%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-97.51%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -39,6 +40,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
+- Text.CommitCM.CopyCommitMessage
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
 - Text.DirHistories
@@ -59,7 +61,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-86.36%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-86.26%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -85,6 +87,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitter
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
@@ -182,7 +185,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-91.70%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-91.59%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -198,6 +201,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
 - Text.Configure.CustomAction.Arguments.Tip
@@ -260,7 +264,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-86.36%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-86.26%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -287,6 +291,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitter
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
@@ -383,7 +388,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-79.00%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-78.91%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -419,6 +424,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Clone.RecurseSubmodules
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitter
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopySubject
 - Text.CommitCM.Merge
 - Text.CommitCM.MergeMultiple
@@ -568,7 +574,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.63%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-97.51%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -576,6 +582,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
+- Text.CommitCM.CopyCommitMessage
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
 - Text.DirHistories
@@ -596,7 +603,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-86.48%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-86.37%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -623,6 +630,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitter
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
@@ -718,7 +726,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-87.66%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-87.56%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -744,6 +752,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitter
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
@@ -830,6 +839,20 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.88%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.CommitCM.CopyCommitMessage
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.88%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.CommitCM.CopyCommitMessage
+
+</details>
