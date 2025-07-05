@@ -184,6 +184,7 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
+            finder.Cursor(FindCursor);
             finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
             finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
             finder.SublimeText(FindSublimeText);
@@ -384,6 +385,16 @@ namespace SourceGit.Native
                     devenv.GetValue(string.Empty) is string localServer32)
                     return localServer32!.Trim('\"');
             }
+
+            return string.Empty;
+        }
+
+        private string FindCursor()
+        {
+            var cursorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "Cursor", "Cursor.exe");
+            
+            if (File.Exists(cursorPath))
+                return cursorPath;
 
             return string.Empty;
         }
