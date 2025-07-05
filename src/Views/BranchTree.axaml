@@ -85,6 +85,17 @@
                                                     Foreground="{DynamicResource Brush.BadgeFG}"
                                                     Background="{DynamicResource Brush.Badge}"/>
 
+              <!-- Badge number of uncommitted files -->
+              <v:CounterPresenter Grid.Column="2"
+                                      Margin="6,0"
+                                      VerticalAlignment="Center"
+                                      Count="{Binding UnstagedFiles}"
+                                      FontFamily="{DynamicResource Fonts.Monospace}"
+                                      FontSize="10"
+                                      Foreground="{DynamicResource Brush.BadgeFG}"
+                                      Background="{DynamicResource Brush.Badge}"
+                                      IsVisible="{Binding IsCurrent}"/>
+
               <!-- Filter Mode Switcher -->
               <v:FilterModeSwitchButton Grid.Column="3"
                                         Margin="0,0,12,0"
