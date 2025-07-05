@@ -58,14 +58,8 @@ namespace SourceGit.ViewModels
 
             var succ = false;
             var needPopStash = false;
-
-            if (DiscardLocalChanges)
-            {
-                succ = await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .BranchAsync(Branch, true);
-            }
-            else
+            
+            if (!DiscardLocalChanges)
             {
                 var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
                 if (changes > 0)
@@ -82,11 +76,11 @@ namespace SourceGit.ViewModels
 
                     needPopStash = true;
                 }
-
-                succ = await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .BranchAsync(Branch, false);
             }
+            
+            succ = await new Commands.Checkout(_repo.FullPath)
+                .Use(log)
+                .BranchAsync(Branch, DiscardLocalChanges);
 
             if (succ)
             {

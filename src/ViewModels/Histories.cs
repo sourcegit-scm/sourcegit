@@ -599,7 +599,11 @@ namespace SourceGit.ViewModels
                                 var parents = new List<Models.Commit>();
                                 foreach (var sha in commit.Parents)
                                 {
-                                    var parent = _commits.Find(x => x.SHA == sha) ?? await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
+                                    var parent = _commits.Find(x => x.SHA == sha);
+                                    if (parent == null)
+                                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha)
+                                            .GetResultAsync();
+
                                     if (parent != null)
                                         parents.Add(parent);
                                 }

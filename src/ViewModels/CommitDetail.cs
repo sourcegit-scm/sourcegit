@@ -325,13 +325,13 @@ namespace SourceGit.ViewModels
             var diffWithMerger = new MenuItem();
             diffWithMerger.Header = App.Text("DiffWithMerger");
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += async (_, ev) =>
+            diffWithMerger.Click += (sender, ev) =>
             {
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_commit, change);
 
-                await Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
+                _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
                 ev.Handled = true;
             };
 

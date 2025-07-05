@@ -92,7 +92,6 @@ namespace SourceGit.ViewModels
                 if (IsRecurseSubmoduleVisible && RecurseSubmodules)
                 {
                     var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
-
                     if (submodules.Count > 0)
                         await new Commands.Submodule(_repo.FullPath)
                             .Use(log)

@@ -186,7 +186,9 @@ namespace SourceGit
 
         public static void SetLocale(string localeKey)
         {
-            if (Current is not App app || app.Resources[localeKey] is not ResourceDictionary targetLocale || targetLocale == app._activeLocale)
+            if (Current is not App app ||
+                app.Resources[localeKey] is not ResourceDictionary targetLocale ||
+                targetLocale == app._activeLocale)
                 return;
 
             if (app._activeLocale != null)
