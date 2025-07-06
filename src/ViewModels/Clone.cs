@@ -66,16 +66,19 @@ namespace SourceGit.ViewModels
             if (string.IsNullOrEmpty(ParentFolder))
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
 
-            try
+            Task.Run(async () =>
             {
-                var text = App.GetClipboardTextAsync().Result;
-                if (Models.Remote.IsValidURL(text))
-                    Remote = text;
-            }
-            catch
-            {
-                // Ignore
-            }
+                try
+                {
+                    var text = await App.GetClipboardTextAsync();
+                    if (Models.Remote.IsValidURL(text))
+                        Remote = text;
+                }
+                catch
+                {
+                    // Ignore
+                }
+            });
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
