@@ -17,7 +17,7 @@
 
     <TabItem>
       <TabItem.Header>
-        <TextBlock Text="SIDE-BY-SIDE" FontSize="11"/>
+        <TextBlock Text="{DynamicResource Text.Diff.Image.SideBySide}" FontSize="11"/>
       </TabItem.Header>
 
       <UniformGrid Rows="1" Margin="0,16" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -63,7 +63,7 @@
 
     <TabItem>
       <TabItem.Header>
-        <TextBlock Text="SWIPE" FontSize="11"/>
+        <TextBlock Text="{DynamicResource Text.Diff.Image.Swipe}" FontSize="11"/>
       </TabItem.Header>
 
       <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
@@ -97,7 +97,7 @@
 
     <TabItem>
       <TabItem.Header>
-        <TextBlock Text="BLEND" FontSize="11"/>
+        <TextBlock Text="{DynamicResource Text.Diff.Image.Blend}" FontSize="11"/>
       </TabItem.Header>
 
       <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
@@ -129,7 +129,7 @@
 
         <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
           <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Classes="primary" Text="OLD"/>
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.Old}"/>
             <TextBlock Classes="primary"
                        Margin="8,0,0,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
@@ -147,7 +147,7 @@
                   Value="0.5"/>
 
           <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
-            <TextBlock Classes="primary" Text="NEW"/>
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}"/>
             <TextBlock Classes="primary"
                        Margin="8,0,0,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"

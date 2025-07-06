@@ -80,7 +80,7 @@
                       VerticalAlignment="Center"
                       Background="Green"
                       IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
-                <TextBlock Text="NEW" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock Text="{DynamicResource Text.Push.New}" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
               </Border>
             </StackPanel>
           </DataTemplate>
