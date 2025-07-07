@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using Avalonia;
@@ -198,11 +199,21 @@ namespace SourceGit.Views
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories &&
-                sender is DataGrid { SelectedItems.Count: > 0 } dataGrid &&
+                sender is DataGrid { SelectedItems: { } selected } dataGrid &&
                 e.Source is Control { DataContext: Models.Commit })
             {
-                var menu = histories.MakeContextMenu(dataGrid);
-                menu?.Open(dataGrid);
+                var commits = new List<Models.Commit>();
+                for (var i = selected.Count - 1; i >= 0; i--)
+                {
+                    if (selected[i] is Models.Commit c)
+                        commits.Add(c);
+                }
+
+                if (selected.Count > 0)
+                {
+                    var menu = histories.CreateContextMenuForSelectedCommits(commits, c => dataGrid.SelectedItems.Add(c));
+                    menu?.Open(dataGrid);
+                }
             }
 
             e.Handled = true;

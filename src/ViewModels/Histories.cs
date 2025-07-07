@@ -299,38 +299,29 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ContextMenu MakeContextMenu(DataGrid list)
+        public ContextMenu CreateContextMenuForSelectedCommits(List<Models.Commit> selected, Action<Models.Commit> onAddSelected)
         {
             var current = _repo.CurrentBranch;
-            if (current == null || list.SelectedItems == null)
+            if (current == null)
                 return null;
 
-            if (list.SelectedItems.Count > 1)
+            if (selected.Count > 1)
             {
-                var selected = new List<Models.Commit>();
                 var canCherryPick = true;
                 var canMerge = true;
 
-                foreach (var item in list.SelectedItems)
+                foreach (var c in selected)
                 {
-                    if (item is Models.Commit c)
+                    if (c.IsMerged)
                     {
-                        selected.Add(c);
-
-                        if (c.IsMerged)
-                        {
-                            canMerge = false;
-                            canCherryPick = false;
-                        }
-                        else if (c.Parents.Count > 1)
-                        {
-                            canCherryPick = false;
-                        }
+                        canMerge = false;
+                        canCherryPick = false;
+                    }
+                    else if (c.Parents.Count > 1)
+                    {
+                        canCherryPick = false;
                     }
                 }
-
-                // Sort selected commits in order.
-                selected.Sort((l, r) => _commits.IndexOf(r) - _commits.IndexOf(l));
 
                 var multipleMenu = new ContextMenu();
 
@@ -449,7 +440,7 @@ namespace SourceGit.ViewModels
                 return multipleMenu;
             }
 
-            var commit = (list.SelectedItem as Models.Commit)!;
+            var commit = selected[0];
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
 
@@ -699,7 +690,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        list.SelectedItems.Add(head);
+                        onAddSelected?.Invoke(head);
                     }
 
                     e.Handled = true;
