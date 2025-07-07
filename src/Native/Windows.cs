@@ -391,8 +391,12 @@ namespace SourceGit.Native
 
         private string FindCursor()
         {
-            var cursorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "Cursor", "Cursor.exe");
-            
+            var cursorPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Programs",
+                "Cursor",
+                "Cursor.exe");
+
             if (File.Exists(cursorPath))
                 return cursorPath;
 
