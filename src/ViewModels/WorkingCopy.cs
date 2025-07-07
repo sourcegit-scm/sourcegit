@@ -978,6 +978,17 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
+                var blame = new MenuItem();
+                blame.Header = App.Text("Blame");
+                blame.Icon = App.CreateMenuIcon("Icons.Blame");
+                blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
+                blame.Click += async (_, ev) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
+                    App.ShowWindow(new Blame(_repo.FullPath, change.Path, commit));
+                    ev.Handled = true;
+                };
+
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -997,6 +1008,10 @@ namespace SourceGit.ViewModels
                 };
 
                 menu.Items.Add(history);
+                if (hasSelectedFolder == false)
+                {
+                    menu.Items.Add(blame);
+                }
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copy);
                 menu.Items.Add(copyFullPath);
@@ -1442,6 +1457,17 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
+                var blame = new MenuItem();
+                blame.Header = App.Text("Blame");
+                blame.Icon = App.CreateMenuIcon("Icons.Blame");
+                blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
+                blame.Click += async (_, ev) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
+                    App.ShowWindow(new Blame(_repo.FullPath, change.Path, commit));
+                    ev.Handled = true;
+                };
+
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -1462,6 +1488,10 @@ namespace SourceGit.ViewModels
                 };
 
                 menu.Items.Add(history);
+                if (hasSelectedFolder == false)
+                {
+                    menu.Items.Add(blame);
+                }
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copyPath);
                 menu.Items.Add(copyFullPath);
