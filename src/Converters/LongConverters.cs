@@ -6,17 +6,20 @@ namespace SourceGit.Converters
     {
         public static readonly FuncValueConverter<long, string> ToFileSize = new(bytes =>
         {
-            var suffixes = new[] { "", "ki", "Mi", "Gi", "Ti", "Pi", "Ei" };
-            double dbl = bytes;
-            var i = 0;
+            if (bytes < KB)
+                return $"{bytes} B";
 
-            while (dbl > 1024 && i < suffixes.Length - 1)
-            {
-                dbl /= 1024;
-                i++;
-            }
+            if (bytes < MB)
+                return $"{(bytes / KB):F3} KB ({bytes} B)";
 
-            return $"{dbl:0.#} {suffixes[i]}B";
+            if (bytes < GB)
+                return $"{(bytes / MB):F3} MB ({bytes} B)";
+
+            return $"{(bytes / GB):F3} GB ({bytes} B)";
         });
+
+        private const double KB = 1024;
+        private const double MB = 1024 * 1024;
+        private const double GB = 1024 * 1024 * 1024;
     }
 }
