@@ -60,6 +60,20 @@ namespace SourceGit.Views
             }
             else
             {
+                if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                {
+                    if (e.Key == Key.Up)
+                    {
+                        vm.MoveItemUp(item);
+                        e.Handled = true;
+                    }
+                    else if (e.Key == Key.Down)
+                    {
+                        vm.MoveItemDown(item);
+                        e.Handled = true;
+                    }
+                }
+
                 base.OnKeyDown(e);
             }
         }
