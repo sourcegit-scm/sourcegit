@@ -52,6 +52,7 @@ namespace SourceGit.Native
             finder.VSCode(() => FindExecutable("code"));
             finder.VSCodeInsiders(() => FindExecutable("code-insiders"));
             finder.VSCodium(() => FindExecutable("codium"));
+            finder.Cursor(() => FindExecutable("cursor"));
             finder.Fleet(FindJetBrainsFleet);
             finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox");
             finder.SublimeText(() => FindExecutable("subl"));
