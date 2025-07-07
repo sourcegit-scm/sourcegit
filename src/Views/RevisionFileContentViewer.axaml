@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFileContentViewer">
@@ -14,7 +15,6 @@
         <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
           <TextBlock Classes="primary" Text="{Binding Size}" Foreground="{DynamicResource Brush.FG2}"/>
-          <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
       </StackPanel>
     </DataTemplate>
@@ -43,8 +43,7 @@
           </Border>
 
           <TextBlock Classes="primary" Text="{Binding ImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Classes="primary" Text="{Binding FileSize}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-          <TextBlock Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" Margin="2,0,0,0"/>
+          <TextBlock Classes="primary" Text="{Binding FileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
         </StackPanel>
       </Grid>
     </DataTemplate>
@@ -55,8 +54,7 @@
         <Path Width="64" Height="64" Margin="0,24,0,0" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
         <SelectableTextBlock Margin="0,16,0,0" Text="{Binding Object.Oid}" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-          <TextBlock Classes="primary" Text="{Binding Object.Size}" Foreground="{DynamicResource Brush.FG2}"/>
-          <TextBlock Text="{DynamicResource Text.Bytes}" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+          <TextBlock Classes="primary" Text="{Binding Object.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
       </StackPanel>
     </DataTemplate>
