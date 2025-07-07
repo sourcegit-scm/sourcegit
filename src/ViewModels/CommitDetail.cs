@@ -509,16 +509,6 @@ namespace SourceGit.ViewModels
 
             var menu = new ContextMenu();
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file.Path);
-            var explore = new MenuItem();
-            explore.Header = App.Text("RevealFile");
-            explore.Icon = App.CreateMenuIcon("Icons.Explore");
-            explore.IsEnabled = File.Exists(fullPath);
-            explore.Click += (_, ev) =>
-            {
-                Native.OS.OpenInFileManager(fullPath, file.Type == Models.ObjectType.Blob);
-                ev.Handled = true;
-            };
-
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
@@ -562,9 +552,19 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            menu.Items.Add(explore);
+            var explore = new MenuItem();
+            explore.Header = App.Text("RevealFile");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = File.Exists(fullPath);
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(fullPath, file.Type == Models.ObjectType.Blob);
+                ev.Handled = true;
+            };
+
             menu.Items.Add(openWith);
             menu.Items.Add(saveAs);
+            menu.Items.Add(explore);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var history = new MenuItem();

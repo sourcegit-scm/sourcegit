@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -593,6 +593,7 @@ namespace SourceGit.ViewModels
                 var diffWithMerger = new MenuItem();
                 diffWithMerger.Header = App.Text("DiffWithMerger");
                 diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                 diffWithMerger.Click += (sender, ev) =>
                 {
                     var toolType = Preferences.Instance.ExternalMergeToolType;
@@ -603,6 +604,17 @@ namespace SourceGit.ViewModels
                     ev.Handled = true;
                 };
                 menu.Items.Add(diffWithMerger);
+
+                var openWith = new MenuItem();
+                openWith.Header = App.Text("OpenWith");
+                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWith.IsEnabled = File.Exists(path);
+                openWith.Click += (_, e) =>
+                {
+                    Native.OS.OpenWithDefaultEditor(path);
+                    e.Handled = true;
+                };
+                menu.Items.Add(openWith);
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
@@ -615,17 +627,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
-
-                var openWith = new MenuItem();
-                openWith.Header = App.Text("OpenWith");
-                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWith.IsEnabled = File.Exists(path);
-                openWith.Click += (_, e) =>
-                {
-                    Native.OS.OpenWithDefaultEditor(path);
-                    e.Handled = true;
-                };
-                menu.Items.Add(openWith);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
                 if (change.IsConflicted)
@@ -1260,6 +1261,7 @@ namespace SourceGit.ViewModels
                 var diffWithMerger = new MenuItem();
                 diffWithMerger.Header = App.Text("DiffWithMerger");
                 diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                 diffWithMerger.Click += (sender, ev) =>
                 {
                     var toolType = Preferences.Instance.ExternalMergeToolType;
@@ -1270,6 +1272,16 @@ namespace SourceGit.ViewModels
                     ev.Handled = true;
                 };
 
+                var openWith = new MenuItem();
+                openWith.Header = App.Text("OpenWith");
+                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWith.IsEnabled = File.Exists(path);
+                openWith.Click += (_, e) =>
+                {
+                    Native.OS.OpenWithDefaultEditor(path);
+                    e.Handled = true;
+                };
+
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
@@ -1278,16 +1290,6 @@ namespace SourceGit.ViewModels
                 {
                     var target = hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path;
                     Native.OS.OpenInFileManager(target, true);
-                    e.Handled = true;
-                };
-
-                var openWith = new MenuItem();
-                openWith.Header = App.Text("OpenWith");
-                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWith.IsEnabled = File.Exists(path);
-                openWith.Click += (_, e) =>
-                {
-                    Native.OS.OpenWithDefaultEditor(path);
                     e.Handled = true;
                 };
 
@@ -1338,8 +1340,8 @@ namespace SourceGit.ViewModels
                 };
 
                 menu.Items.Add(diffWithMerger);
-                menu.Items.Add(explore);
                 menu.Items.Add(openWith);
+                menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(unstage);
                 menu.Items.Add(stash);
