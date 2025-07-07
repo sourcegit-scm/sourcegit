@@ -87,7 +87,7 @@
                     Padding="0"
                     IsVisible="{Binding HasUnsolvedConflicts}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts}"
-                    Command="{Binding OpenExternalMergeToolAllConflicts}">
+                    Click="OnOpenExternalMergeToolAllConflicts">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
             </Button>
             <Button Grid.Column="7"

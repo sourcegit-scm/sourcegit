@@ -328,12 +328,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void OpenExternalMergeToolAllConflicts()
-        {
-            // No <file> arg, mergetool runs on all files with merge conflicts!
-            UseExternalMergeTool(null);
-        }
-
         public void StashAll(bool autoStart)
         {
             if (!_repo.CanCreatePopup())
@@ -470,11 +464,11 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(true);
         }
 
-        public async void UseExternalMergeTool(Models.Change change)
+        public async Task UseExternalMergeTool(Models.Change change)
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on every file with merge conflicts!
+            var file = change?.Path;
             await Commands.MergeTool.OpenForMergeAsync(_repo.FullPath, toolType, toolPath, file);
         }
 
@@ -590,20 +584,26 @@ namespace SourceGit.ViewModels
                 var change = _selectedUnstaged[0];
                 var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
-                var diffWithMerger = new MenuItem();
-                diffWithMerger.Header = App.Text("DiffWithMerger");
-                diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                diffWithMerger.Click += (sender, ev) =>
+                var openMerger = new MenuItem();
+                openMerger.Header = App.Text("OpenInExternalMergeTool");
+                openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openMerger.Click += async (_, e) =>
                 {
-                    var toolType = Preferences.Instance.ExternalMergeToolType;
-                    var toolPath = Preferences.Instance.ExternalMergeToolPath;
-                    var opt = new Models.DiffOption(change, true);
+                    if (change.IsConflicted)
+                    {
+                        await UseExternalMergeTool(change);
+                    }
+                    else
+                    {
+                        var toolType = Preferences.Instance.ExternalMergeToolType;
+                        var toolPath = Preferences.Instance.ExternalMergeToolPath;
+                        var opt = new Models.DiffOption(change, true);
+                        _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
+                    }
 
-                    _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
-                    ev.Handled = true;
+                    e.Handled = true;
                 };
-                menu.Items.Add(diffWithMerger);
+                menu.Items.Add(openMerger);
 
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
@@ -647,15 +647,6 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    var openMerger = new MenuItem();
-                    openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                    openMerger.Header = App.Text("FileCM.OpenWithExternalMerger");
-                    openMerger.Click += (_, e) =>
-                    {
-                        UseExternalMergeTool(change);
-                        e.Handled = true;
-                    };
-
                     switch (_inProgressContext)
                     {
                         case CherryPickInProgress cherryPick:
@@ -682,8 +673,6 @@ namespace SourceGit.ViewModels
 
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(openMerger);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
                 else
@@ -1258,11 +1247,10 @@ namespace SourceGit.ViewModels
                 var change = _selectedStaged[0];
                 var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
-                var diffWithMerger = new MenuItem();
-                diffWithMerger.Header = App.Text("DiffWithMerger");
-                diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                diffWithMerger.Click += (sender, ev) =>
+                var openWithMerger = new MenuItem();
+                openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWithMerger.Click += (sender, ev) =>
                 {
                     var toolType = Preferences.Instance.ExternalMergeToolType;
                     var toolPath = Preferences.Instance.ExternalMergeToolPath;
@@ -1339,7 +1327,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
-                menu.Items.Add(diffWithMerger);
+                menu.Items.Add(openWithMerger);
                 menu.Items.Add(openWith);
                 menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem() { Header = "-" });

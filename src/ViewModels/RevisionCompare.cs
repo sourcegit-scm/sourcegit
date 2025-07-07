@@ -136,10 +136,10 @@ namespace SourceGit.ViewModels
             var change = _selectedChanges[0];
             var menu = new ContextMenu();
 
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
+            var openWithMerger = new MenuItem();
+            openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+            openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWithMerger.Click += (_, ev) =>
             {
                 var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
                 var toolType = Preferences.Instance.ExternalMergeToolType;
@@ -148,7 +148,7 @@ namespace SourceGit.ViewModels
                 Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
                 ev.Handled = true;
             };
-            menu.Items.Add(diffWithMerger);
+            menu.Items.Add(openWithMerger);
 
             if (change.Index != Models.ChangeState.Deleted)
             {

@@ -258,7 +258,6 @@
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Réduit le nombre de ligne visibles</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Augmente le nombre de ligne visibles</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SÉLECTIONNEZ UN FICHIER POUR VOIR LES CHANGEMENTS</x:String>
-  <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Ouvrir dans l'outil de fusion</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Rejeter les changements</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Tous les changements dans la copie de travail.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Changements :</x:String>
@@ -280,7 +279,6 @@
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Rejeter...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Rejeter {0} fichiers...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Rejeter les changements dans les lignes sélectionnées</x:String>
-  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Ouvrir l'outil de fusion externe</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Résoudre en utilisant ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Enregistrer en tant que patch...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Indexer</x:String>
@@ -418,6 +416,7 @@
   <x:String x:Key="Text.Name" xml:space="preserve">Nom :</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git n'a PAS été configuré. Veuillez d'abord le faire dans le menu Préférence.</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Ouvrir le dossier AppData</x:String>
+  <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Ouvrir dans l'outil de fusion</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Ouvrir avec...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optionnel.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Créer un nouvel onglet</x:String>

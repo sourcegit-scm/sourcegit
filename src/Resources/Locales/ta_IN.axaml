@@ -257,7 +257,6 @@
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">தெரியும் வரிகளின் எண்ணிக்கையைக் குறை</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">தெரியும் வரிகளின் எண்ணிக்கையை அதிகரி</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">மாற்றங்களைக் காண கோப்பைத் தேர்ந்தெடு</x:String>
-  <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">ஒன்றிணை கருவியில் திற</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">மாற்றங்களை நிராகரி</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">செயல்படும் நகலில் உள்ள அனைத்து உள்ளக மாற்றங்கள்.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">மாற்றங்கள்:</x:String>
@@ -279,7 +278,6 @@
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">நிராகரி...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">{0} கோப்புகளை நிராகரி...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட வரிகளில் மாற்றங்களை நிராகரி</x:String>
-  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">வெளிப்புற இணைப்பு கருவியைத் திற</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">${0}$ஐப் பயன்படுத்தி தீர்</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">ஒட்டு என சேமி...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">நிலைபடுத்து</x:String>
@@ -417,6 +415,7 @@
   <x:String x:Key="Text.Name" xml:space="preserve">பெயர்:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">அறிவிலி உள்ளமைக்கப்படவில்லை. [விருப்பத்தேர்வுகள்]க்குச் சென்று முதலில் அதை உள்ளமை. </x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">தரவு சேமிப்பக கோப்பகத்தைத் திற</x:String>
+  <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">ஒன்றிணை கருவியில் திற</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">இதனுடன் திற...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">விருப்பத்தேர்வு.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">புதிய பக்கத்தை உருவாக்கு</x:String>

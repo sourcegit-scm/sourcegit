@@ -141,5 +141,12 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private async void OnOpenExternalMergeToolAllConflicts(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.UseExternalMergeTool(null);
+            e.Handled = true;
+        }
     }
 }

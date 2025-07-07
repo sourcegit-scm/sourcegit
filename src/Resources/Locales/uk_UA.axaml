@@ -262,7 +262,6 @@
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Зменшити кількість видимих рядків</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Збільшити кількість видимих рядків</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">ОБЕРІТЬ ФАЙЛ ДЛЯ ПЕРЕГЛЯДУ ЗМІН</x:String>
-  <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Відкрити в інструменті злиття</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Скасувати зміни</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Усі локальні зміни в робочій копії.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Зміни:</x:String>
@@ -284,7 +283,6 @@
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Скасувати...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Скасувати {0} файлів...</x:String>
   <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Скасувати зміни в вибраних рядках</x:String>
-  <x:String x:Key="Text.FileCM.OpenWithExternalMerger" xml:space="preserve">Відкрити зовнішній інструмент злиття</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Розв'язати за допомогою ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Зберегти як патч...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Стагнути</x:String>
@@ -422,6 +420,7 @@
   <x:String x:Key="Text.Name" xml:space="preserve">Назва:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git не налаштовано. Будь ласка, перейдіть до [Налаштування] та налаштуйте його.</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Відкрити теку зберігання даних</x:String>
+  <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Відкрити в інструменті злиття</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Відкрити за допомогою...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необов'язково.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Створити нову вкладку</x:String>

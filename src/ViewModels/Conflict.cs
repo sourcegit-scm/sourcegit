@@ -111,9 +111,9 @@ namespace SourceGit.ViewModels
             _wc.UseMine([_change]);
         }
 
-        public void OpenExternalMergeTool()
+        public async void OpenExternalMergeTool()
         {
-            _wc.UseExternalMergeTool(_change);
+            await _wc.UseExternalMergeTool(_change);
         }
 
         private WorkingCopy _wc = null;
