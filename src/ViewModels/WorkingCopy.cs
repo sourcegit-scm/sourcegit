@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 
@@ -677,7 +676,7 @@ namespace SourceGit.ViewModels
                     var stage = new MenuItem();
                     stage.Header = App.Text("FileCM.Stage");
                     stage.Icon = App.CreateMenuIcon("Icons.File.Add");
-                    stage.InputGesture = new KeyGesture(Key.Enter);
+                    stage.Tag = "Enter/Space";
                     stage.Click += (_, e) =>
                     {
                         StageChanges(_selectedUnstaged, null);
@@ -687,7 +686,7 @@ namespace SourceGit.ViewModels
                     var discard = new MenuItem();
                     discard.Header = App.Text("FileCM.Discard");
                     discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                    discard.InputGesture = new KeyGesture(Key.Delete);
+                    discard.Tag = "Back/Delete";
                     discard.Click += (_, e) =>
                     {
                         Discard(_selectedUnstaged);
@@ -1082,7 +1081,7 @@ namespace SourceGit.ViewModels
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.StageMulti", _selectedUnstaged.Count);
                 stage.Icon = App.CreateMenuIcon("Icons.File.Add");
-                stage.InputGesture = new KeyGesture(Key.Enter);
+                stage.Tag = "Enter/Space";
                 stage.Click += (_, e) =>
                 {
                     StageChanges(_selectedUnstaged, null);
@@ -1092,7 +1091,7 @@ namespace SourceGit.ViewModels
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.DiscardMulti", _selectedUnstaged.Count);
                 discard.Icon = App.CreateMenuIcon("Icons.Undo");
-                discard.InputGesture = new KeyGesture(Key.Delete);
+                discard.Tag = "Back/Delete";
                 discard.Click += (_, e) =>
                 {
                     Discard(_selectedUnstaged);
@@ -1268,7 +1267,7 @@ namespace SourceGit.ViewModels
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.Unstage");
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
-                unstage.InputGesture = new KeyGesture(Key.Enter);
+                unstage.Tag = "Enter/Space";
                 unstage.Click += (_, e) =>
                 {
                     UnstageChanges(_selectedStaged, null);
@@ -1472,7 +1471,7 @@ namespace SourceGit.ViewModels
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", _selectedStaged.Count);
                 unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
-                unstage.InputGesture = new KeyGesture(Key.Enter);
+                unstage.Tag = "Enter/Space";
                 unstage.Click += (_, e) =>
                 {
                     UnstageChanges(_selectedStaged, null);

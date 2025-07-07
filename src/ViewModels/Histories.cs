@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Platform.Storage;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -429,7 +428,7 @@ namespace SourceGit.ViewModels
                 var copyMultipleInfo = new MenuItem();
                 copyMultipleInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
                 copyMultipleInfo.Icon = App.CreateMenuIcon("Icons.Info");
-                copyMultipleInfo.InputGesture = new KeyGesture(Key.C, OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control);
+                copyMultipleInfo.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                 copyMultipleInfo.Click += async (_, e) =>
                 {
                     var builder = new StringBuilder();
@@ -726,7 +725,7 @@ namespace SourceGit.ViewModels
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
-            createBranch.InputGesture = new KeyGesture(Key.B, OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control);
+            createBranch.Tag = OperatingSystem.IsMacOS() ? "⌘+B" : "Ctrl+B";
             createBranch.Click += (_, e) =>
             {
                 if (_repo.CanCreatePopup())
@@ -842,7 +841,7 @@ namespace SourceGit.ViewModels
             var copyInfo = new MenuItem();
             copyInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
             copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
-            copyInfo.InputGesture = new KeyGesture(Key.C, OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control);
+            copyInfo.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyInfo.Click += async (_, e) =>
             {
                 await App.CopyTextAsync($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
