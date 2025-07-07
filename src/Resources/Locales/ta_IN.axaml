@@ -157,7 +157,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">மாதிரி அசூர் வளர்பணிகள் விதியைச் சேர்</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">மாதிரி அறிவிலிஈ சிக்கலுக்கான விதியைச் சேர்</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">மாதிரி அறிவிலிஈ இழு கோரிக்கை விதியைச் சேர்</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">மாதிரி அறிவிலிமையம் விதியைச் சேர்</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">மாதிரி அறிவிலிமையம் விதியைச் சேர்</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">மாதிரி அறிவிலிஆய்வு சிக்கலுக்கான விதியைச் சேர்</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">மாதிரி அறிவிலிஆய்வு இணைப்பு கோரிக்கை  விதியைச் சேர்</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">மாதிரி சீரா விதியைச் சேர்</x:String>

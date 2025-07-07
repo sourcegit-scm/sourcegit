@@ -197,7 +197,7 @@ namespace SourceGit.ViewModels
             SelectedCommitTemplate = null;
         }
 
-        public void AddSampleGithubIssueTracker()
+        public void AddSampleGitHubIssueTracker()
         {
             var link = "https://github.com/username/repository/issues/$1";
             foreach (var remote in _repo.Remotes)
@@ -210,7 +210,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Github ISSUE", "#(\\d+)", link);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitHub ISSUE", "#(\\d+)", link);
         }
 
         public void AddSampleJiraIssueTracker()

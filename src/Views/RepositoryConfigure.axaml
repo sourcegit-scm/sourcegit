@@ -317,7 +317,7 @@
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.NewRule}" Command="{Binding NewIssueTracker}"/>
                       <MenuItem Header="-"/>
-                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGithub}" Command="{Binding AddSampleGithubIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitHub}" Command="{Binding AddSampleGitHubIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleAzure}" Command="{Binding AddSampleAzureWorkItemTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabIssue}" Command="{Binding AddSampleGitLabIssueTracker}"/>
