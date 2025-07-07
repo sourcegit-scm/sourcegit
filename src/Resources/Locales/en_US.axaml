@@ -307,7 +307,7 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Increase Number of Visible Lines</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECT FILE TO VIEW CHANGES</x:String>
   <x:String x:Key="Text.DiffWithMerger" xml:space="preserve">Open in Merge Tool</x:String>
-  <x:String x:Key="Text.DirHistories" xml:space="preserve">Dir Histories</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">Dir History</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Discard Changes</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">All local changes in working copy.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Changes:</x:String>
@@ -434,7 +434,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Stage/Unstage selected changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'Changes'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'Histories'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'History'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'Stashes'</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXT EDITOR</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Close search panel</x:String>
@@ -673,7 +673,7 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">By Name</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Use relative time in histories</x:String>
+  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Use relative time in history</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">View Logs</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visit '{0}' in Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
@@ -752,7 +752,7 @@
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relative Path</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
-  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">Histories</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">History</x:String>
   <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Move To</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relative Path:</x:String>
@@ -810,7 +810,7 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">You can stage this file now.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Histories</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/History</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Edit)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
