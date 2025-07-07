@@ -9,6 +9,7 @@ namespace SourceGit.Views
     {
         public CommitMessageEditor()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

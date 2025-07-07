@@ -43,7 +43,7 @@ namespace SourceGit.ViewModels
                 Welcome.Instance.Refresh();
             }
 
-            return null;
+            return Task.FromResult(true);
         }
 
         private void MakeRows(List<RepositoryNode> collection, int depth)

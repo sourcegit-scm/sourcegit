@@ -93,11 +93,11 @@ namespace SourceGit.ViewModels
                     return;
             }
 
-            var isBare = new Commands.IsBareRepository(path).Result();
+            var isBare = new Commands.IsBareRepository(path).GetResultAsync().Result;
             var repoRoot = path;
             if (!isBare)
             {
-                var test = new Commands.QueryRepositoryRootPath(path).ReadToEnd();
+                var test = new Commands.QueryRepositoryRootPath(path).GetResultAsync().Result;
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
                     InitRepository(path, parent, test.StdErr);
@@ -276,7 +276,7 @@ namespace SourceGit.ViewModels
 
             var move = new MenuItem();
             move.Header = App.Text("Welcome.Move");
-            move.Icon = App.CreateMenuIcon("Icons.MoveToAnotherGroup");
+            move.Icon = App.CreateMenuIcon("Icons.MoveTo");
             move.Click += (_, e) =>
             {
                 var activePage = App.GetLauncher().ActivePage;

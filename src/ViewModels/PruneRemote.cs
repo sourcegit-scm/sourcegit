@@ -15,7 +15,7 @@ namespace SourceGit.ViewModels
             Remote = remote;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Run `prune` on remote ...";
@@ -23,13 +23,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Prune Remote '{Remote.Name}'");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Remote(_repo.FullPath).Use(log).Prune(Remote.Name);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.Remote(_repo.FullPath)
+                .Use(log)
+                .PruneAsync(Remote.Name);
+
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return succ;
         }
 
         private readonly Repository _repo = null;

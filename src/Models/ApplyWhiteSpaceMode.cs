@@ -1,6 +1,6 @@
 ﻿namespace SourceGit.Models
 {
-    public class ApplyWhiteSpaceMode
+    public class ApplyWhiteSpaceMode(string n, string d, string a)
     {
         public static readonly ApplyWhiteSpaceMode[] Supported =
         [
@@ -10,15 +10,8 @@
             new ApplyWhiteSpaceMode("Error All", "Similar to 'error', but shows more", "error-all"),
         ];
 
-        public string Name { get; set; }
-        public string Desc { get; set; }
-        public string Arg { get; set; }
-
-        public ApplyWhiteSpaceMode(string n, string d, string a)
-        {
-            Name = n;
-            Desc = d;
-            Arg = a;
-        }
+        public string Name { get; set; } = n;
+        public string Desc { get; set; } = d;
+        public string Arg { get; set; } = a;
     }
 }

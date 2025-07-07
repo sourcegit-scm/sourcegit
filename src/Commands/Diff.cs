@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -35,9 +36,9 @@ namespace SourceGit.Commands
                 Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
-        public Models.DiffResult Result()
+        public async Task<Models.DiffResult> ReadAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var start = 0;
             var end = rs.StdOut.IndexOf('\n', start);
             while (end > 0)
@@ -248,14 +249,10 @@ namespace SourceGit.Commands
                         foreach (var chunk in chunks)
                         {
                             if (chunk.DeletedCount > 0)
-                            {
                                 left.Highlights.Add(new Models.TextInlineRange(chunk.DeletedStart, chunk.DeletedCount));
-                            }
 
                             if (chunk.AddedCount > 0)
-                            {
                                 right.Highlights.Add(new Models.TextInlineRange(chunk.AddedStart, chunk.AddedCount));
-                            }
                         }
                     }
                 }

@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -34,42 +33,38 @@ namespace SourceGit.Views
             set => SetValue(OnlyHighlightCurrentBranchProperty, value);
         }
 
+        public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
+            AvaloniaProperty.Register<CommitGraph, Models.CommitGraphLayout>(nameof(Layout));
+
+        public Models.CommitGraphLayout Layout
+        {
+            get => GetValue(LayoutProperty);
+            set => SetValue(LayoutProperty, value);
+        }
+
         static CommitGraph()
         {
-            AffectsRender<CommitGraph>(GraphProperty, DotBrushProperty, OnlyHighlightCurrentBranchProperty);
+            AffectsRender<CommitGraph>(
+                GraphProperty,
+                DotBrushProperty,
+                OnlyHighlightCurrentBranchProperty,
+                LayoutProperty);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            var graph = Graph;
-            if (graph == null)
+            if (Graph is not { } graph || Layout is not { } layout)
                 return;
 
-            var histories = this.FindAncestorOfType<Histories>();
-            if (histories == null)
-                return;
+            var startY = layout.StartY;
+            var clipWidth = layout.ClipWidth;
+            var clipHeight = Bounds.Height;
+            var rowHeight = layout.RowHeight;
+            var endY = startY + clipHeight + 28;
 
-            var list = histories.CommitListContainer;
-            if (list == null)
-                return;
-
-            var container = list.ItemsPanelRoot as VirtualizingStackPanel;
-            if (container == null)
-                return;
-
-            var item = list.ContainerFromIndex(container.FirstRealizedIndex);
-            if (item == null)
-                return;
-
-            var width = histories.CommitListHeader.ColumnDefinitions[0].ActualWidth;
-            var height = Bounds.Height;
-            var rowHeight = item.Bounds.Height;
-            var startY = container.FirstRealizedIndex * rowHeight - item.TranslatePoint(new Point(0, 0), list).Value!.Y;
-            var endY = startY + height + 28;
-
-            using (context.PushClip(new Rect(0, 0, width, height)))
+            using (context.PushClip(new Rect(0, 0, clipWidth, clipHeight)))
             using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
                 DrawCurves(context, graph, startY, endY, rowHeight);

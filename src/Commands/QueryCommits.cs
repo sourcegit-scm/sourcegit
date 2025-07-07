@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -56,9 +57,9 @@ namespace SourceGit.Commands
             _findFirstMerged = false;
         }
 
-        public List<Models.Commit> Result()
+        public async Task<List<Models.Commit>> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return _commits;
 
@@ -110,7 +111,7 @@ namespace SourceGit.Commands
                 _current.Subject = rs.StdOut.Substring(start);
 
             if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
-                MarkFirstMerged();
+                await MarkFirstMergedAsync().ConfigureAwait(false);
 
             return _commits;
         }
@@ -120,21 +121,19 @@ namespace SourceGit.Commands
             if (data.Length < 8)
                 return;
 
-            _current.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
+            _current.Parents.AddRange(data.Split(' ', StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private void MarkFirstMerged()
+        private async Task MarkFirstMergedAsync()
         {
             Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
 
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             if (shas.Length == 0)
                 return;
 
-            var set = new HashSet<string>();
-            foreach (var sha in shas)
-                set.Add(sha);
+            var set = new HashSet<string>(shas);
 
             foreach (var c in _commits)
             {

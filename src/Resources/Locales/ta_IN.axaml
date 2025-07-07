@@ -102,7 +102,6 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">கனி-பறி ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">தலையுடன் ஒப்பிடுக</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">தகவலை</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">பாகொவ-வை</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">இங்கே ${0}$ ஐ ஊடாடும் வகையில் மறுதளம்</x:String>
@@ -664,7 +663,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">உறுதிமொழிகள்: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">துணைத் தொகுதி</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">துணைத் தொகுதியைச் சேர்</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">உறவு பாதையை நகலெடு</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">உறவு பாதை</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">உள்ளமைக்கப்பட்ட துணைத் தொகுதிகளை எடு</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">துணைத் தொகுதி களஞ்சியத்தைத் திற</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">உறவு பாதை:</x:String>

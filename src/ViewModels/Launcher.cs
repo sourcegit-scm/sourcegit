@@ -4,6 +4,7 @@ using System.IO;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -95,7 +96,7 @@ namespace SourceGit.ViewModels
                 foreach (var w in pref.Workspaces)
                     w.IsActive = false;
 
-                var test = new Commands.QueryRepositoryRootPath(startupRepo).ReadToEnd();
+                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResultAsync().Result;
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
                     Pages[0].Notifications.Add(new Models.Notification
@@ -345,7 +346,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var isBare = new Commands.IsBareRepository(node.Id).Result();
+            var isBare = new Commands.IsBareRepository(node.Id).GetResultAsync().Result;
             var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
             if (string.IsNullOrEmpty(gitDir))
             {
@@ -394,6 +395,12 @@ namespace SourceGit.ViewModels
 
         public void DispatchNotification(string pageId, string message, bool isError)
         {
+            if (!Dispatcher.UIThread.CheckAccess())
+            {
+                Dispatcher.UIThread.Invoke(() => DispatchNotification(pageId, message, isError));
+                return;
+            }
+
             var notification = new Models.Notification()
             {
                 IsError = isError,
@@ -410,8 +417,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (_activePage != null)
-                _activePage.Notifications.Add(notification);
+            _activePage?.Notifications.Add(notification);
         }
 
         public ContextMenu CreateContextForWorkspace()
@@ -444,9 +450,9 @@ namespace SourceGit.ViewModels
 
             var configure = new MenuItem();
             configure.Header = App.Text("Workspace.Configure");
-            configure.Click += (_, e) =>
+            configure.Click += async (_, e) =>
             {
-                App.ShowWindow(new ConfigureWorkspace(), true);
+                await App.ShowDialog(new ConfigureWorkspace());
                 e.Handled = true;
             };
             menu.Items.Add(configure);
@@ -517,9 +523,9 @@ namespace SourceGit.ViewModels
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (_, e) =>
+                copyPath.Click += async (_, e) =>
                 {
-                    page.CopyPath();
+                    await page.CopyPathAsync();
                     e.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -557,7 +563,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            return new Commands.QueryGitDir(repo).Result();
+            return new Commands.QueryGitDir(repo).GetResultAsync().Result;
         }
 
         private void CloseRepositoryInTab(LauncherPage page, bool removeFromWorkspace = true)

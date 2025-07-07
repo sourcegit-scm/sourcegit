@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,9 +12,9 @@ namespace SourceGit.Commands
             Args = $"show --no-show-signature --decorate=full --format=%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s -s {sha}";
         }
 
-        public Models.Commit Result()
+        public async Task<Models.Commit> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess && !string.IsNullOrEmpty(rs.StdOut))
             {
                 var commit = new Models.Commit();

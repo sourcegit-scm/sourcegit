@@ -103,7 +103,6 @@
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-pick ...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Порівняти з HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
-  <x:String x:Key="Text.CommitCM.CopyInfo" xml:space="preserve">Iнформацію</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Інтерактивно перебазувати ${0}$ сюди</x:String>
@@ -669,7 +668,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">КОМІТІВ: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">ПІДМОДУЛІ</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Додати підмодуль</x:String>
-  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Копіювати відносний шлях</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">відносний шлях</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Отримати вкладені підмодулі</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Відкрити сховище підмодуля</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Відносний шлях:</x:String>

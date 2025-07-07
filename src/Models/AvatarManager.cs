@@ -55,7 +55,7 @@ namespace SourceGit.Models
             {
                 while (true)
                 {
-                    var email = null as string;
+                    string email = null;
 
                     lock (_synclock)
                     {
@@ -79,7 +79,7 @@ namespace SourceGit.Models
                         $"https://www.gravatar.com/avatar/{md5}?d=404";
 
                     var localFile = Path.Combine(_storePath, md5);
-                    var img = null as Bitmap;
+                    Bitmap img = null;
                     try
                     {
                         var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
@@ -113,7 +113,7 @@ namespace SourceGit.Models
                         _requesting.Remove(email);
                     }
 
-                    Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         _resources[email] = img;
                         NotifyResourceChanged(email, img);
@@ -197,7 +197,10 @@ namespace SourceGit.Models
 
                 _resources[email] = image;
 
-                _requesting.Remove(email);
+                lock (_synclock)
+                {
+                    _requesting.Remove(email);
+                }
 
                 var store = Path.Combine(_storePath, GetEmailHash(email));
                 File.Copy(file, store, true);

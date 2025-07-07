@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -18,9 +19,10 @@ namespace SourceGit.Commands
                 Args += $" -- \"{parentFolder}\"";
         }
 
-        public List<Models.Object> Result()
+        public async Task<List<Models.Object>> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var outs = new List<Models.Object>();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
                 var start = 0;
@@ -28,19 +30,19 @@ namespace SourceGit.Commands
                 while (end > 0)
                 {
                     var line = rs.StdOut.Substring(start, end - start);
-                    Parse(line);
+                    Parse(outs, line);
                     start = end + 1;
                     end = rs.StdOut.IndexOf('\0', start);
                 }
 
                 if (start < rs.StdOut.Length)
-                    Parse(rs.StdOut.Substring(start));
+                    Parse(outs, rs.StdOut.Substring(start));
             }
 
-            return _objects;
+            return outs;
         }
 
-        private void Parse(string line)
+        private void Parse(List<Models.Object> outs, string line)
         {
             var match = REG_FORMAT().Match(line);
             if (!match.Success)
@@ -60,9 +62,7 @@ namespace SourceGit.Commands
                 _ => obj.Type,
             };
 
-            _objects.Add(obj);
+            outs.Add(obj);
         }
-
-        private List<Models.Object> _objects = new List<Models.Object>();
     }
 }

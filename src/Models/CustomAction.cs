@@ -16,6 +16,7 @@ namespace SourceGit.Models
         TextBox = 0,
         PathSelector,
         CheckBox,
+        ComboBox,
     }
 
     public class CustomActionControl : ObservableObject

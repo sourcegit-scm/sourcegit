@@ -37,22 +37,21 @@ namespace SourceGit
             }
         }
 
-        public static readonly Command OpenPreferencesCommand = new Command(_ => ShowWindow(new Views.Preferences(), false));
-        public static readonly Command OpenHotkeysCommand = new Command(_ => ShowWindow(new Views.Hotkeys(), false));
+        public static readonly Command OpenPreferencesCommand = new Command(async _ => await ShowDialog(new Views.Preferences()));
+        public static readonly Command OpenHotkeysCommand = new Command(async _ => await ShowDialog(new Views.Hotkeys()));
         public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
-        public static readonly Command OpenAboutCommand = new Command(_ => ShowWindow(new Views.About(), false));
+        public static readonly Command OpenAboutCommand = new Command(async _ => await ShowDialog(new Views.About()));
         public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
         public static readonly Command QuitCommand = new Command(_ => Quit(0));
-        public static readonly Command CopyTextBlockCommand = new Command(p =>
+        public static readonly Command CopyTextBlockCommand = new Command(async p =>
         {
-            var textBlock = p as TextBlock;
-            if (textBlock == null)
+            if (p is not TextBlock textBlock)
                 return;
 
             if (textBlock.Inlines is { Count: > 0 } inlines)
-                CopyText(inlines.Text);
+                await CopyTextAsync(inlines.Text);
             else if (!string.IsNullOrEmpty(textBlock.Text))
-                CopyText(textBlock.Text);
+                await CopyTextAsync(textBlock.Text);
         });
     }
 }

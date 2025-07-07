@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value != null && value.Count == 1)
+                    if (value is { Count: 1 })
                     {
                         var option = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value[0]);
                         DiffContext = new DiffContext(_repo, option, _diffContext);
@@ -58,9 +58,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     RefreshVisible();
-                }
             }
         }
 
@@ -85,12 +83,9 @@ namespace SourceGit.ViewModels
             _repo = null;
             _startPoint = null;
             _endPoint = null;
-            if (_changes != null)
-                _changes.Clear();
-            if (_visibleChanges != null)
-                _visibleChanges.Clear();
-            if (_selectedChanges != null)
-                _selectedChanges.Clear();
+            _changes?.Clear();
+            _visibleChanges?.Clear();
+            _selectedChanges?.Clear();
             _searchFilter = null;
             _diffContext = null;
         }
@@ -120,11 +115,11 @@ namespace SourceGit.ViewModels
 
         public void SaveAsPatch(string saveTo)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var succ = Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+                var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
                 if (succ)
-                    Dispatcher.UIThread.Invoke(() => App.SendNotification(_repo, App.Text("SaveAsPatchSuccess")));
+                    App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
             });
         }
 
@@ -150,7 +145,7 @@ namespace SourceGit.ViewModels
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
 
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
+                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);
@@ -173,9 +168,9 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
+            copyPath.Click += async (_, ev) =>
             {
-                App.CopyText(change.Path);
+                await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
             menu.Items.Add(copyPath);
@@ -183,9 +178,9 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
+            copyFullPath.Click += async (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo, change.Path));
+                await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
                 e.Handled = true;
             };
             menu.Items.Add(copyFullPath);
@@ -217,7 +212,7 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).Result();
+            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).ReadAsync().Result;
 
             var visible = _changes;
             if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -230,7 +225,15 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+            Dispatcher.UIThread.Post(() =>
+            {
+                VisibleChanges = visible;
+
+                if (VisibleChanges.Count > 0)
+                    SelectedChanges = [VisibleChanges[0]];
+                else
+                    SelectedChanges = [];
+            });
         }
 
         private string GetSHA(object obj)

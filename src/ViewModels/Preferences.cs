@@ -285,6 +285,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commitChangeViewMode, value);
         }
 
+        public Models.ChangeViewMode StashChangeViewMode
+        {
+            get => _stashChangeViewMode;
+            set => SetProperty(ref _stashChangeViewMode, value);
+        }
+
         public string GitInstallPath
         {
             get => Native.OS.GitExecutable;
@@ -523,8 +529,8 @@ namespace SourceGit.ViewModels
                 return;
 
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
-            var data = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
-            File.WriteAllText(file, data);
+            using var stream = File.Create(file);
+            JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.Preferences);
         }
 
         private static Preferences Load()
@@ -582,13 +588,6 @@ namespace SourceGit.ViewModels
                     workspace.ActiveIdx = 0;
                 }
             }
-        }
-
-        private void SortNodesRecursive(List<RepositoryNode> collection)
-        {
-            SortNodes(collection);
-            foreach (var node in collection)
-                SortNodesRecursive(node.SubNodes);
         }
 
         private RepositoryNode FindNodeRecursive(string id, List<RepositoryNode> collection)
@@ -699,6 +698,7 @@ namespace SourceGit.ViewModels
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
+        private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
 

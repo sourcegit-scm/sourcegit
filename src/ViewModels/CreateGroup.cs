@@ -29,7 +29,7 @@ namespace SourceGit.ViewModels
             }, _parent, true);
 
             Welcome.Instance.Refresh();
-            return null;
+            return Task.FromResult(true);
         }
 
         private readonly RepositoryNode _parent = null;

@@ -33,7 +33,7 @@ namespace SourceGit.Models
             var extension = Path.GetExtension(file);
             if (extension == ".h")
                 extension = ".cpp";
-            else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
+            else if (extension is ".resx" or ".plist" or ".manifest")
                 extension = ".xml";
             else if (extension == ".command")
                 extension = ".sh";

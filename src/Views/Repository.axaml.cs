@@ -121,8 +121,7 @@ namespace SourceGit.Views
 
         private void OnSearchKeyDown(object _, KeyEventArgs e)
         {
-            var repo = DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (DataContext is not ViewModels.Repository repo)
                 return;
 
             if (e.Key == Key.Enter)
@@ -199,9 +198,7 @@ namespace SourceGit.Views
         private void OnDoubleTappedWorktree(object sender, TappedEventArgs e)
         {
             if (sender is ListBox { SelectedItem: Models.Worktree worktree } && DataContext is ViewModels.Repository repo)
-            {
                 repo.OpenWorktree(worktree);
-            }
 
             e.Handled = true;
         }
@@ -343,8 +340,7 @@ namespace SourceGit.Views
 
         private void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
         {
-            var repo = DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (DataContext is not ViewModels.Repository repo)
                 return;
 
             if (e.Key == Key.Escape)
@@ -363,8 +359,7 @@ namespace SourceGit.Views
 
         private void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
         {
-            var repo = DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (DataContext is not ViewModels.Repository repo)
                 return;
 
             var content = (sender as StackPanel)?.DataContext as string;
@@ -437,12 +432,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnBisectCommand(object sender, RoutedEventArgs e)
+        private async void OnBisectCommand(object sender, RoutedEventArgs e)
         {
             if (sender is Button button &&
                 DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
                 repo.CanCreatePopup())
-                repo.Bisect(button.Tag as string);
+                await repo.ExecBisectCommandAsync(button.Tag as string);
 
             e.Handled = true;
         }

@@ -66,6 +66,7 @@ namespace SourceGit.Views
     {
         public SelfUpdate()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

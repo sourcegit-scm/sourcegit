@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -19,13 +18,13 @@ namespace SourceGit.Commands
             Args = $"--no-optional-locks status -u{UNTRACKED[includeUntracked ? 1 : 0]} --ignore-submodules=dirty --porcelain";
         }
 
-        public List<Models.Change> Result()
+        public async Task<List<Models.Change>> GetResultAsync()
         {
             var outs = new List<Models.Change>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(Context, rs.StdErr));
+                App.RaiseException(Context, rs.StdErr);
                 return outs;
             }
 

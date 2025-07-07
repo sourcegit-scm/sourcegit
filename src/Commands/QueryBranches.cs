@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -17,12 +18,10 @@ namespace SourceGit.Commands
             Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
         }
 
-        public List<Models.Branch> Result(out int localBranchesCount)
+        public async Task<List<Models.Branch>> GetResultAsync()
         {
-            localBranchesCount = 0;
-
             var branches = new List<Models.Branch>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return branches;
 
@@ -36,8 +35,6 @@ namespace SourceGit.Commands
                     branches.Add(b);
                     if (!b.IsLocal)
                         remoteHeads.Add(b.FullName, b.Head);
-                    else
-                        localBranchesCount++;
                 }
             }
 
@@ -48,7 +45,7 @@ namespace SourceGit.Commands
                     if (remoteHeads.TryGetValue(b.Upstream, out var upstreamHead))
                     {
                         b.IsUpstreamGone = false;
-                        b.TrackStatus ??= new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).Result();
+                        b.TrackStatus ??= await new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).GetResultAsync().ConfigureAwait(false);
                     }
                     else
                     {

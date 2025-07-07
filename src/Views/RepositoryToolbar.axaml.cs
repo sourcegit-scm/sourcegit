@@ -22,20 +22,20 @@ namespace SourceGit.Views
             }
         }
 
-        private void OpenStatistics(object _, RoutedEventArgs e)
+        private async void OpenStatistics(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                App.ShowWindow(new ViewModels.Statistics(repo.FullPath), true);
+                await App.ShowDialog(new ViewModels.Statistics(repo.FullPath));
                 e.Handled = true;
             }
         }
 
-        private void OpenConfigure(object sender, RoutedEventArgs e)
+        private async void OpenConfigure(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                App.ShowWindow(new ViewModels.RepositoryConfigure(repo), true);
+                await App.ShowDialog(new ViewModels.RepositoryConfigure(repo));
                 e.Handled = true;
             }
         }
@@ -116,10 +116,9 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void StartBisect(object sender, RoutedEventArgs e)
+        private async void StartBisect(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
-                repo.InProgressContext == null &&
+            if (DataContext is ViewModels.Repository { IsBisectCommandRunning: false, InProgressContext: null } repo &&
                 repo.CanCreatePopup())
             {
                 if (repo.LocalChangesCount > 0)
@@ -127,7 +126,7 @@ namespace SourceGit.Views
                 else if (repo.IsBisectCommandRunning || repo.BisectState != Models.BisectState.None)
                     App.RaiseException(repo.FullPath, "Bisect is running! Please abort it before starting a new one.");
                 else
-                    repo.Bisect("start");
+                    await repo.ExecBisectCommandAsync("start");
             }
 
             e.Handled = true;
@@ -144,11 +143,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OpenGitLogs(object sender, RoutedEventArgs e)
+        private async void OpenGitLogs(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                App.ShowWindow(new ViewModels.ViewLogs(repo), true);
+                await App.ShowDialog(new ViewModels.ViewLogs(repo));
                 e.Handled = true;
             }
         }

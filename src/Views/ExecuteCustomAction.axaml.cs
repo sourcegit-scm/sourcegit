@@ -1,8 +1,10 @@
 using System;
 
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -13,6 +15,19 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var inputs = this.GetVisualDescendants();
+            foreach (var input in inputs)
+            {
+                if (input is InputElement { Focusable: true, IsTabStop: true } focusable)
+                {
+                    focusable.Focus();
+                    return;
+                }
+            }
+        }
+
         private async void SelectPath(object sender, RoutedEventArgs e)
         {
             var topLevel = TopLevel.GetTopLevel(this);
@@ -20,11 +35,8 @@ namespace SourceGit.Views
                 return;
 
             var control = sender as Control;
-            if (control == null)
-                return;
 
-            var selector = control.DataContext as ViewModels.CustomActionControlPathSelector;
-            if (selector == null)
+            if (control?.DataContext is not ViewModels.CustomActionControlPathSelector selector)
                 return;
 
             if (selector.IsFolder)

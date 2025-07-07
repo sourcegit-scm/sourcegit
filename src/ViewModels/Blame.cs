@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -34,7 +32,7 @@ namespace SourceGit.ViewModels
 
         public bool IsBinary
         {
-            get => _data != null && _data.IsBinary;
+            get => _data?.IsBinary ?? false;
         }
 
         public bool CanBack
@@ -65,7 +63,10 @@ namespace SourceGit.ViewModels
             if (_commitMessages.TryGetValue(sha, out var msg))
                 return msg;
 
-            msg = new Commands.QueryCommitFullMessage(_repo, sha).Result();
+            msg = new Commands.QueryCommitFullMessage(_repo, sha)
+                .GetResultAsync()
+                .Result;
+
             _commitMessages[sha] = msg;
             return msg;
         }
@@ -132,11 +133,13 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var result = new Commands.QuerySingleCommit(_repo, commitSHA).Result();
+                    var result = await new Commands.QuerySingleCommit(_repo, commitSHA)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
 
-                    Dispatcher.UIThread.Invoke(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         if (!token.IsCancellationRequested)
                         {
@@ -147,11 +150,13 @@ namespace SourceGit.ViewModels
                 }, token);
             }
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var result = new Commands.Blame(_repo, FilePath, commitSHA).Result();
+                var result = await new Commands.Blame(_repo, FilePath, commitSHA)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
 
-                Dispatcher.UIThread.Invoke(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     if (!token.IsCancellationRequested)
                         Data = result;

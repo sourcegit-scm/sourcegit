@@ -1,19 +1,11 @@
 ﻿using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class Branch
     {
-        public static string ShowCurrent(string repo)
-        {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.Args = "branch --show-current";
-            return cmd.ReadToEnd().StdOut.Trim();
-        }
-
-        public static bool Create(string repo, string name, string basedOn, bool force, Models.ICommandLog log)
+        public static async Task<bool> CreateAsync(string repo, string name, string basedOn, bool force, Models.ICommandLog log)
         {
             var builder = new StringBuilder();
             builder.Append("branch ");
@@ -28,20 +20,20 @@ namespace SourceGit.Commands
             cmd.Context = repo;
             cmd.Args = builder.ToString();
             cmd.Log = log;
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool Rename(string repo, string name, string to, Models.ICommandLog log)
+        public static async Task<bool> RenameAsync(string repo, string name, string to, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -M {name} {to}";
             cmd.Log = log;
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool SetUpstream(string repo, string name, string upstream, Models.ICommandLog log)
+        public static async Task<bool> SetUpstreamAsync(string repo, string name, string upstream, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
@@ -53,31 +45,31 @@ namespace SourceGit.Commands
             else
                 cmd.Args = $"branch {name} -u {upstream}";
 
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool DeleteLocal(string repo, string name, Models.ICommandLog log)
+        public static async Task<bool> DeleteLocalAsync(string repo, string name, Models.ICommandLog log)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -D {name}";
             cmd.Log = log;
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool DeleteRemote(string repo, string remote, string name, Models.ICommandLog log)
+        public static async Task<bool> DeleteRemoteAsync(string repo, string remote, string name, Models.ICommandLog log)
         {
-            bool exists = new Remote(repo).HasBranch(remote, name);
+            bool exists = await new Remote(repo).HasBranchAsync(remote, name).ConfigureAwait(false);
             if (exists)
-                return new Push(repo, remote, $"refs/heads/{name}", true) { Log = log }.Exec();
+                return await new Push(repo, remote, $"refs/heads/{name}", true) { Log = log }.RunAsync().ConfigureAwait(false);
 
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
             cmd.Context = repo;
             cmd.Args = $"branch -D -r {remote}/{name}";
             cmd.Log = log;
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
     }
 }

@@ -37,7 +37,7 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"
-                    HotKey="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}">
+                    HotKey="{OnPlatform Ctrl+Alt+Home, macOS=⌘+Alt+Home}">
               <ToolTip.Tip>
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.First}"/>
@@ -58,7 +58,7 @@
                     Width="28"
                     Click="OnGotoPrevChange"
                     IsVisible="{Binding IsTextDiff}"
-                    HotKey="{OnPlatform Ctrl+Alt+Up, macOS=⌘+⌥+Up}">
+                    HotKey="{OnPlatform Ctrl+Alt+Up, macOS=⌘+Alt+Up}">
               <ToolTip.Tip>
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.Prev}"/>
@@ -98,7 +98,7 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
-                    HotKey="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}">
+                    HotKey="{OnPlatform Ctrl+Alt+End, macOS=⌘+Alt+End}">
               <ToolTip.Tip>
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.Last}"/>

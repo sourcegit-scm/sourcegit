@@ -100,7 +100,7 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Init git-flow ...";
@@ -108,65 +108,58 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Gitflow - Init");
             Use(log);
 
-            return Task.Run(() =>
+            bool succ;
+            var current = _repo.CurrentBranch;
+
+            var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
+            if (masterBranch == null)
             {
-                bool succ;
-                var current = _repo.CurrentBranch;
-
-                var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
-                if (masterBranch == null)
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _master, current.Head, true, log);
+                if (!succ)
                 {
-                    succ = Commands.Branch.Create(_repo.FullPath, _master, current.Head, true, log);
-                    if (!succ)
-                    {
-                        log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
-                        return false;
-                    }
-                }
-
-                var developBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_develop, StringComparison.Ordinal));
-                if (developBranch == null)
-                {
-                    succ = Commands.Branch.Create(_repo.FullPath, _develop, current.Head, true, log);
-                    if (!succ)
-                    {
-                        log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
-                        return false;
-                    }
-                }
-
-                succ = Commands.GitFlow.Init(
-                    _repo.FullPath,
-                    _master,
-                    _develop,
-                    _featurePrefix,
-                    _releasePrefix,
-                    _hotfixPrefix,
-                    _tagPrefix,
-                    log);
-
-                log.Complete();
-
-                CallUIThread(() =>
-                {
-                    if (succ)
-                    {
-                        var gitflow = new Models.GitFlow();
-                        gitflow.Master = _master;
-                        gitflow.Develop = _develop;
-                        gitflow.FeaturePrefix = _featurePrefix;
-                        gitflow.ReleasePrefix = _releasePrefix;
-                        gitflow.HotfixPrefix = _hotfixPrefix;
-                        _repo.GitFlow = gitflow;
-                    }
-
+                    log.Complete();
                     _repo.SetWatcherEnabled(true);
-                });
+                    return false;
+                }
+            }
 
-                return succ;
-            });
+            var developBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_develop, StringComparison.Ordinal));
+            if (developBranch == null)
+            {
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _develop, current.Head, true, log);
+                if (!succ)
+                {
+                    log.Complete();
+                    _repo.SetWatcherEnabled(true);
+                    return false;
+                }
+            }
+
+            succ = await Commands.GitFlow.InitAsync(
+                _repo.FullPath,
+                _master,
+                _develop,
+                _featurePrefix,
+                _releasePrefix,
+                _hotfixPrefix,
+                _tagPrefix,
+                log);
+
+            log.Complete();
+
+            if (succ)
+            {
+                var gitflow = new Models.GitFlow();
+                gitflow.Master = _master;
+                gitflow.Develop = _develop;
+                gitflow.FeaturePrefix = _featurePrefix;
+                gitflow.ReleasePrefix = _releasePrefix;
+                gitflow.HotfixPrefix = _hotfixPrefix;
+                _repo.GitFlow = gitflow;
+            }
+
+            _repo.SetWatcherEnabled(true);
+            return succ;
         }
 
         private readonly Repository _repo;

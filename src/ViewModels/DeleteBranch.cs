@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting branch...";
@@ -47,29 +47,22 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Branch");
             Use(log);
 
-            return Task.Run(() =>
+            if (Target.IsLocal)
             {
-                if (Target.IsLocal)
-                {
-                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name, log);
+                await Commands.Branch.DeleteLocalAsync(_repo.FullPath, Target.Name, log);
+                if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
+                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
+            }
+            else
+            {
+                await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, Target.Remote, Target.Name, log);
+            }
 
-                    if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
-                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
-                }
-                else
-                {
-                    Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name, log);
-                }
+            log.Complete();
 
-                log.Complete();
-
-                CallUIThread(() =>
-                {
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return true;
-            });
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
+            return true;
         }
 
         private readonly Repository _repo = null;

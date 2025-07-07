@@ -56,15 +56,11 @@ namespace SourceGit.Views
         private void OnChangeFilterModeButtonClicked(object sender, RoutedEventArgs e)
         {
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
+
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
-            if (repo == null)
-                return;
-
-            var button = sender as Button;
-            if (button == null)
+            if (sender is not Button button)
                 return;
 
             var menu = new ContextMenu();

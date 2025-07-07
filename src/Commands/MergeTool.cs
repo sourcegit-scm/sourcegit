@@ -1,12 +1,11 @@
 ﻿using System.IO;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class MergeTool
     {
-        public static bool OpenForMerge(string repo, int toolType, string toolPath, string file)
+        public static async Task<bool> OpenForMergeAsync(string repo, int toolType, string toolPath, string file)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
@@ -19,27 +18,27 @@ namespace SourceGit.Commands
             if (toolType == 0)
             {
                 cmd.Args = $"mergetool {fileArg}";
-                return cmd.Exec();
+                return await cmd.ExecAsync().ConfigureAwait(false);
             }
 
             if (!File.Exists(toolPath))
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!"));
+                App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!");
                 return false;
             }
 
             var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
             if (supported == null)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, "Invalid merge tool in preference setting!"));
+                App.RaiseException(repo, "Invalid merge tool in preference setting!");
                 return false;
             }
 
             cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {fileArg}";
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool OpenForDiff(string repo, int toolType, string toolPath, Models.DiffOption option)
+        public static async Task<bool> OpenForDiffAsync(string repo, int toolType, string toolPath, Models.DiffOption option)
         {
             var cmd = new Command();
             cmd.WorkingDirectory = repo;
@@ -49,24 +48,24 @@ namespace SourceGit.Commands
             if (toolType == 0)
             {
                 cmd.Args = $"difftool -g --no-prompt {option}";
-                return cmd.Exec();
+                return await cmd.ExecAsync();
             }
 
             if (!File.Exists(toolPath))
             {
-                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!"));
+                App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!");
                 return false;
             }
 
             var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
             if (supported == null)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, "Invalid merge tool in preference setting!"));
+                App.RaiseException(repo, "Invalid merge tool in preference setting!");
                 return false;
             }
 
             cmd.Args = $"-c difftool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.DiffCmd}\" difftool --tool=sourcegit --no-prompt {option}";
-            return cmd.Exec();
+            return await cmd.ExecAsync().ConfigureAwait(false);
         }
     }
 }

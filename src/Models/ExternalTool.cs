@@ -154,6 +154,11 @@ namespace SourceGit.Models
             TryAdd("Zed", "zed", platformFinder);
         }
 
+        public void Cursor(Func<string> platformFinder)
+        {
+            TryAdd("Cursor", "cursor", platformFinder);
+        }
+
         public void FindJetBrainsFromToolbox(Func<string> platformFinder)
         {
             var exclude = new List<string> { "fleet", "dotmemory", "dottrace", "resharper-u", "androidstudio" };

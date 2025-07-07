@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -14,9 +15,9 @@ namespace SourceGit.Commands
             Args = $"log --date-order --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}..HEAD";
         }
 
-        public List<Models.InteractiveCommit> Result()
+        public async Task<List<Models.InteractiveCommit>> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return _commits;
 
@@ -85,7 +86,7 @@ namespace SourceGit.Commands
             if (data.Length < 8)
                 return;
 
-            _current.Commit.Parents.AddRange(data.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries));
+            _current.Commit.Parents.AddRange(data.Split(' ', StringSplitOptions.RemoveEmptyEntries));
         }
 
         private List<Models.InteractiveCommit> _commits = [];

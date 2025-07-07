@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -19,9 +20,9 @@ namespace SourceGit.Commands
             _result.File = file;
         }
 
-        public Models.BlameData Result()
+        public async Task<Models.BlameData> ReadAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return _result;
 
@@ -39,9 +40,7 @@ namespace SourceGit.Commands
                 foreach (var line in _result.LineInfos)
                 {
                     if (line.CommitSHA.Length > _minSHALen)
-                    {
                         line.CommitSHA = line.CommitSHA.Substring(0, _minSHALen);
-                    }
                 }
             }
 

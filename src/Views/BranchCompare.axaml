@@ -11,8 +11,7 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.BranchCompare}"
-                    MinWidth="1280" MinHeight="720"
-                    WindowStartupLocation="CenterOwner">
+                    MinWidth="1280" MinHeight="720">
   <Grid RowDefinitions="Auto,64,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
@@ -128,7 +127,6 @@
             <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
                                     Changes="{Binding VisibleChanges}"
                                     SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
-                                    AutoSelectFirstChange="True"
                                     ContextRequested="OnChangeContextRequested"/>
           </Border>
         </Grid>

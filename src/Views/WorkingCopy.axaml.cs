@@ -14,8 +14,7 @@ namespace SourceGit.Views
 
         private void OnMainLayoutSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null)
+            if (sender is not Grid grid)
                 return;
 
             var layout = ViewModels.Preferences.Instance.Layout;
@@ -24,6 +23,15 @@ namespace SourceGit.Views
 
             if (layout.WorkingCopyLeftWidth.Value - maxLeft > 1.0)
                 layout.WorkingCopyLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
+        }
+
+        private async void OnOpenAssumeUnchanged(object sender, RoutedEventArgs e)
+        {
+            var repoView = this.FindAncestorOfType<Repository>();
+            if (repoView is { DataContext: ViewModels.Repository repo })
+                await App.ShowDialog(new ViewModels.AssumeUnchangedManager(repo));
+
+            e.Handled = true;
         }
 
         private void OnUnstagedContextRequested(object sender, ContextRequestedEventArgs e)

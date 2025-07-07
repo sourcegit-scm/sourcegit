@@ -6,11 +6,62 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.87%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-88.61%25-yellow)
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
+- Text.CommitCM.CopyCommitMessage
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
+- Text.Submodule.Branch
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
+- Text.Submodule.Update
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-97.51%25-yellow)
+
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
+- Text.CommitCM.CopyCommitMessage
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
+- Text.DirHistories
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
+- Text.Submodule.Branch
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
+- Text.Submodule.Update
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-86.26%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -27,11 +78,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
@@ -47,10 +102,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.CheckedValue
 - Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -61,6 +117,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -71,6 +128,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Pull.RecurseSubmodules
 - Text.Push.Revision
@@ -87,14 +147,27 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.Submodule.Branch
 - Text.Submodule.Deinit
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.RelativePath
+- Text.Submodule.RelativePath.Placeholder
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
 - Text.Submodule.Status.RevisionChanged
 - Text.Submodule.Status.Unmerged
+- Text.Submodule.Update
 - Text.Submodule.URL
 - Text.TagCM.CustomAction
 - Text.ViewLogs
@@ -112,7 +185,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-93.82%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-91.59%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -122,9 +195,13 @@ This document shows the translation status of each locale file in the repository
 - Text.AddToIgnore.Storage
 - Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.PushRevision
 - Text.CommitDetail.Changes.Count
 - Text.Configure.CustomAction.Arguments.Tip
@@ -136,16 +213,18 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.CheckedValue
 - Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -153,6 +232,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
 - Text.Pull.RecurseSubmodules
 - Text.Push.Revision
 - Text.Push.Revision.Title
@@ -161,9 +243,20 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.Submodule.Branch
 - Text.Submodule.Deinit
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
+- Text.Submodule.Update
 - Text.TagCM.CustomAction
 - Text.WorkingCopy.AddToGitIgnore.InFolder
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
@@ -171,7 +264,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-88.36%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-86.26%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -189,11 +282,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
@@ -209,10 +306,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.CheckedValue
 - Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -223,6 +321,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -233,6 +332,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Pull.RecurseSubmodules
 - Text.Push.Revision
@@ -250,14 +352,25 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.Submodule.Branch
 - Text.Submodule.Deinit
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
 - Text.Submodule.Status.RevisionChanged
 - Text.Submodule.Status.Unmerged
+- Text.Submodule.Update
 - Text.Submodule.URL
 - Text.TagCM.CustomAction
 - Text.ViewLogs
@@ -275,7 +388,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-80.85%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-78.91%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -301,12 +414,16 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.MergeMultiBranches
 - Text.BranchCM.ResetToSelectedCommit
 - Text.BranchUpstreamInvalid
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.Clone.RecurseSubmodules
 - Text.CommitCM.CopyAuthor
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
 - Text.CommitCM.CopySubject
 - Text.CommitCM.Merge
@@ -330,10 +447,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.CheckedValue
 - Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -352,6 +470,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Last
 - Text.Diff.Submodule.Deleted
 - Text.Diff.UseBlockNavigation
+- Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.Fetch.Force
@@ -374,6 +493,9 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
 - Text.MergeMultiple.Targets
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
 - Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.General.DateFormat
@@ -408,6 +530,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
 - Text.SetUpstream
 - Text.SetUpstream.Local
 - Text.SetUpstream.Unset
@@ -416,12 +543,18 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.StashCM.SaveAsPatch
+- Text.Submodule.Branch
 - Text.Submodule.Deinit
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
 - Text.Submodule.Status.RevisionChanged
 - Text.Submodule.Status.Unmerged
+- Text.Submodule.Update
 - Text.Submodule.URL
 - Text.TagCM.CustomAction
 - Text.ViewLogs
@@ -443,7 +576,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-88.48%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-86.37%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -461,11 +594,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
@@ -481,10 +618,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.CheckedValue
 - Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -495,6 +633,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -505,6 +644,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Pull.RecurseSubmodules
 - Text.Push.Revision
@@ -521,14 +663,25 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.Submodule.Branch
 - Text.Submodule.Deinit
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
 - Text.Submodule.Status.RevisionChanged
 - Text.Submodule.Status.Unmerged
+- Text.Submodule.Update
 - Text.Submodule.URL
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.Target
@@ -546,7 +699,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-89.70%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-87.56%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -563,11 +716,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.ChangeSubmoduleUrl
+- Text.ChangeSubmoduleUrl.Submodule
+- Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.RecurseSubmodules
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
+- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
 - Text.CommitCM.CopySubject
 - Text.CommitCM.PushRevision
@@ -582,10 +739,11 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.CheckedValue
 - Text.ConfigureCustomActionControls.CheckedValue.Tip
 - Text.ConfigureCustomActionControls.Description
-- Text.ConfigureCustomActionControls.Description.Tip
 - Text.ConfigureCustomActionControls.DefaultValue
 - Text.ConfigureCustomActionControls.IsFolder
 - Text.ConfigureCustomActionControls.Label
+- Text.ConfigureCustomActionControls.Options
+- Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfigureWorkspace.Name
 - Text.CreateBranch.OverwriteExisting
@@ -593,6 +751,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
 - Text.Diff.Submodule.Deleted
+- Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -603,6 +762,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
+- Text.MoveSubmodule
+- Text.MoveSubmodule.MoveTo
+- Text.MoveSubmodule.Submodule
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Pull.RecurseSubmodules
 - Text.Push.Revision
@@ -619,14 +781,25 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.SetSubmoduleBranch
+- Text.SetSubmoduleBranch.Submodule
+- Text.SetSubmoduleBranch.Current
+- Text.SetSubmoduleBranch.New
+- Text.SetSubmoduleBranch.New.Tip
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
+- Text.Submodule.Branch
 - Text.Submodule.Deinit
+- Text.Submodule.Histories
+- Text.Submodule.Move
+- Text.Submodule.SetBranch
+- Text.Submodule.SetURL
 - Text.Submodule.Status
 - Text.Submodule.Status.Modified
 - Text.Submodule.Status.NotInited
 - Text.Submodule.Status.RevisionChanged
 - Text.Submodule.Status.Unmerged
+- Text.Submodule.Update
 - Text.Submodule.URL
 - Text.TagCM.CustomAction
 - Text.ViewLogs

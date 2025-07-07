@@ -40,7 +40,7 @@ namespace SourceGit.ViewModels
             AutoStash = true;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             _repo.ClearCommitMessage();
@@ -49,13 +49,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Rebase");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Rebase(_repo.FullPath, _revision, AutoStash).Use(log).Exec();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            await new Commands.Rebase(_repo.FullPath, _revision, AutoStash)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return true;
         }
 
         private readonly Repository _repo;

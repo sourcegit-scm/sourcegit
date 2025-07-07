@@ -12,8 +12,7 @@ namespace SourceGit.Views
 
         private void OnMainLayoutSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null)
+            if (sender is not Grid grid)
                 return;
 
             var layout = ViewModels.Preferences.Instance.Layout;
@@ -48,10 +47,10 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.StashesPage vm && sender is Grid grid)
+            if (DataContext is ViewModels.StashesPage vm && sender is ChangeCollectionView view)
             {
-                var menu = vm.MakeContextMenuForChange(grid.DataContext as Models.Change);
-                menu?.Open(grid);
+                var menu = vm.MakeContextMenuForChange();
+                menu?.Open(view);
             }
             e.Handled = true;
         }

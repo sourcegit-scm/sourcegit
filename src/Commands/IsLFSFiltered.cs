@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class IsLFSFiltered : Command
     {
@@ -18,9 +20,9 @@
             RaiseError = false;
         }
 
-        public bool Result()
+        public async Task<bool> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             return rs.IsSuccess && rs.StdOut.Contains("filter\0lfs");
         }
     }

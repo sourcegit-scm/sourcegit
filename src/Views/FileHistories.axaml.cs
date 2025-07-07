@@ -29,7 +29,7 @@ namespace SourceGit.Views
         {
             if (sender is Button { DataContext: ViewModels.FileHistoriesSingleRevision single })
             {
-                await single.ResetToSelectedRevision();
+                await single.ResetToSelectedRevisionAsync();
                 NotifyDonePanel.IsVisible = true;
             }
 
@@ -80,7 +80,7 @@ namespace SourceGit.Views
         private async void OnOpenFileWithDefaultEditor(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.FileHistories { ViewContent: ViewModels.FileHistoriesSingleRevision revision })
-                await revision.OpenWithDefaultEditor();
+                await revision.OpenWithDefaultEditorAsync();
 
             e.Handled = true;
         }

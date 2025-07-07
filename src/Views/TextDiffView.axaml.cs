@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
-
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -101,7 +101,7 @@ namespace SourceGit.Views
 
                 var lines = presenter.GetLines();
                 var view = TextView;
-                if (view != null && view.VisualLinesValid)
+                if (view is { VisualLinesValid: true })
                 {
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
@@ -175,7 +175,7 @@ namespace SourceGit.Views
 
                 var lines = presenter.GetLines();
                 var view = TextView;
-                if (view != null && view.VisualLinesValid)
+                if (view is { VisualLinesValid: true })
                 {
                     var typeface = view.CreateTypeface();
                     foreach (var line in view.VisualLines)
@@ -189,7 +189,7 @@ namespace SourceGit.Views
 
                         var info = lines[index - 1];
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
-                        var indicator = null as FormattedText;
+                        FormattedText indicator = null;
                         if (info.Type == Models.TextDiffLineType.Added)
                         {
                             indicator = new FormattedText(
@@ -545,14 +545,11 @@ namespace SourceGit.Views
         public virtual void GotoFirstChange()
         {
             var blockNavigation = BlockNavigation;
-            if (blockNavigation != null)
+            var prev = blockNavigation?.GotoFirst();
+            if (prev != null)
             {
-                var prev = blockNavigation.GotoFirst();
-                if (prev != null)
-                {
-                    TextArea.Caret.Line = prev.Start;
-                    ScrollToLine(prev.Start);
-                }
+                TextArea.Caret.Line = prev.Start;
+                ScrollToLine(prev.Start);
             }
         }
 
@@ -637,9 +634,7 @@ namespace SourceGit.Views
             for (var idx = lastLineIdx + 1; idx < lines.Count; idx++)
             {
                 var nextType = lines[idx].Type;
-                if (nextType == Models.TextDiffLineType.None ||
-                    nextType == Models.TextDiffLineType.Added ||
-                    nextType == Models.TextDiffLineType.Deleted)
+                if (nextType is Models.TextDiffLineType.None or Models.TextDiffLineType.Added or Models.TextDiffLineType.Deleted)
                 {
                     if (findNormalLine)
                     {
@@ -657,14 +652,11 @@ namespace SourceGit.Views
         public virtual void GotoLastChange()
         {
             var blockNavigation = BlockNavigation;
-            if (blockNavigation != null)
+            var next = blockNavigation?.GotoLast();
+            if (next != null)
             {
-                var next = blockNavigation.GotoLast();
-                if (next != null)
-                {
-                    TextArea.Caret.Line = next.Start;
-                    ScrollToLine(next.Start);
-                }
+                TextArea.Caret.Line = next.Start;
+                ScrollToLine(next.Start);
             }
         }
 
@@ -764,13 +756,13 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTextAreaKeyDown(object sender, KeyEventArgs e)
+        private async void OnTextAreaKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyModifiers.Equals(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
                 if (e.Key == Key.C)
                 {
-                    CopyWithoutIndicators();
+                    await CopyWithoutIndicatorsAsync();
                     e.Handled = true;
                 }
             }
@@ -794,9 +786,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                CopyWithoutIndicators();
+                await CopyWithoutIndicatorsAsync();
                 ev.Handled = true;
             };
 
@@ -989,12 +981,12 @@ namespace SourceGit.Views
             }
         }
 
-        private void CopyWithoutIndicators()
+        private async Task CopyWithoutIndicatorsAsync()
         {
             var selection = TextArea.Selection;
             if (selection.IsEmpty)
             {
-                App.CopyText(string.Empty);
+                await App.CopyTextAsync(string.Empty);
                 return;
             }
 
@@ -1011,15 +1003,10 @@ namespace SourceGit.Views
 
             if (startIdx == endIdx)
             {
-                var line = lines[startIdx];
-                if (line.Type == Models.TextDiffLineType.Indicator ||
-                    line.Type == Models.TextDiffLineType.None)
-                {
-                    App.CopyText(string.Empty);
-                    return;
-                }
-
-                App.CopyText(SelectedText);
+                if (lines[startIdx].Type is Models.TextDiffLineType.Indicator or Models.TextDiffLineType.None)
+                    await App.CopyTextAsync(string.Empty);
+                else
+                    await App.CopyTextAsync(SelectedText);
                 return;
             }
 
@@ -1027,8 +1014,7 @@ namespace SourceGit.Views
             for (var i = startIdx; i <= endIdx && i <= lines.Count - 1; i++)
             {
                 var line = lines[i];
-                if (line.Type == Models.TextDiffLineType.Indicator ||
-                    line.Type == Models.TextDiffLineType.None)
+                if (line.Type is Models.TextDiffLineType.Indicator or Models.TextDiffLineType.None)
                     continue;
 
                 // The first selected line (partial selection)
@@ -1064,7 +1050,7 @@ namespace SourceGit.Views
                 builder.AppendLine(line.Content);
             }
 
-            App.CopyText(builder.ToString());
+            await App.CopyTextAsync(builder.ToString());
         }
 
         private TextMate.Installation _textMate = null;
@@ -1100,8 +1086,7 @@ namespace SourceGit.Views
 
         public override void UpdateSelectedChunk(double y)
         {
-            var diff = DataContext as Models.TextDiff;
-            if (diff == null)
+            if (DataContext is not Models.TextDiff diff)
                 return;
 
             var view = TextArea.TextView;
@@ -1327,8 +1312,7 @@ namespace SourceGit.Views
 
         public override void UpdateSelectedChunk(double y)
         {
-            var diff = DataContext as ViewModels.TwoSideTextDiff;
-            if (diff == null)
+            if (DataContext is not ViewModels.TwoSideTextDiff diff)
                 return;
 
             var parent = this.FindAncestorOfType<TextDiffView>();
@@ -1823,17 +1807,15 @@ namespace SourceGit.Views
             TryRaiseBlockNavigationChanged();
         }
 
-        private void OnStageChunk(object _1, RoutedEventArgs _2)
+        private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
                 return;
 
             var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
 
-            var change = diff.Option.WorkingCopyChange;
+            var change = diff?.Option.WorkingCopyChange;
             if (change == null)
                 return;
 
@@ -1842,18 +1824,15 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             repo.SetWatcherEnabled(false);
 
             if (!selection.HasLeftChanges)
             {
-                new Commands.Add(repo.FullPath, change).Exec();
+                await new Commands.Add(repo.FullPath, change).ExecAsync();
             }
             else
             {
@@ -1864,16 +1843,16 @@ namespace SourceGit.Views
                 }
                 else if (chunk.Combined)
                 {
-                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync();
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
                 }
                 else
                 {
-                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync();
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
                 }
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").Exec();
+                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
                 File.Delete(tmpFile);
             }
 
@@ -1881,17 +1860,15 @@ namespace SourceGit.Views
             repo.SetWatcherEnabled(true);
         }
 
-        private void OnUnstageChunk(object _1, RoutedEventArgs _2)
+        private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
                 return;
 
             var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
 
-            var change = diff.Option.WorkingCopyChange;
+            var change = diff?.Option.WorkingCopyChange;
             if (change == null)
                 return;
 
@@ -1900,11 +1877,8 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             repo.SetWatcherEnabled(false);
@@ -1912,13 +1886,13 @@ namespace SourceGit.Views
             if (!selection.HasLeftChanges)
             {
                 if (change.DataForAmend != null)
-                    new Commands.UnstageChangesForAmend(repo.FullPath, [change]).Exec();
+                    await new Commands.UnstageChangesForAmend(repo.FullPath, [change]).ExecAsync();
                 else
-                    new Commands.Restore(repo.FullPath, change).Exec();
+                    await new Commands.Restore(repo.FullPath, change).ExecAsync();
             }
             else
             {
-                var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync();
                 var tmpFile = Path.GetTempFileName();
                 if (change.Index == Models.ChangeState.Added)
                     diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
@@ -1927,7 +1901,7 @@ namespace SourceGit.Views
                 else
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").Exec();
+                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
                 File.Delete(tmpFile);
             }
 
@@ -1935,17 +1909,15 @@ namespace SourceGit.Views
             repo.SetWatcherEnabled(true);
         }
 
-        private void OnDiscardChunk(object _1, RoutedEventArgs _2)
+        private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
             var chunk = SelectedChunk;
             if (chunk == null)
                 return;
 
             var diff = DataContext as Models.TextDiff;
-            if (diff == null)
-                return;
 
-            var change = diff.Option.WorkingCopyChange;
+            var change = diff?.Option.WorkingCopyChange;
             if (change == null)
                 return;
 
@@ -1954,18 +1926,15 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView == null)
-                return;
 
-            var repo = repoView.DataContext as ViewModels.Repository;
-            if (repo == null)
+            if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             repo.SetWatcherEnabled(false);
 
             if (!selection.HasLeftChanges)
             {
-                Commands.Discard.Changes(repo.FullPath, [change], null);
+                await Commands.Discard.ChangesAsync(repo.FullPath, [change], null);
             }
             else
             {
@@ -1976,16 +1945,16 @@ namespace SourceGit.Views
                 }
                 else if (chunk.Combined)
                 {
-                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync();
                     diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
                 }
                 else
                 {
-                    var treeGuid = new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).Result();
+                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(diff.Repo, change.Path).GetResultAsync();
                     diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
                 }
 
-                new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").Exec();
+                await new Commands.Apply(diff.Repo, tmpFile, true, "nowarn", "--reverse").ExecAsync();
                 File.Delete(tmpFile);
             }
 

@@ -5,12 +5,17 @@ namespace SourceGit.ViewModels
 {
     public class UpdateSubmodules : Popup
     {
-        public List<string> Submodules
+        public bool HasPreSelectedSubmodule
         {
             get;
-        } = [];
+        }
 
-        public string SelectedSubmodule
+        public List<Models.Submodule> Submodules
+        {
+            get => _repo.Submodules;
+        }
+
+        public Models.Submodule SelectedSubmodule
         {
             get;
             set;
@@ -40,39 +45,51 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public UpdateSubmodules(Repository repo)
+        public UpdateSubmodules(Repository repo, Models.Submodule selected)
         {
             _repo = repo;
 
-            foreach (var submodule in _repo.Submodules)
-                Submodules.Add(submodule.Path);
-
-            SelectedSubmodule = Submodules.Count > 0 ? Submodules[0] : string.Empty;
+            if (selected != null)
+            {
+                _updateAll = false;
+                SelectedSubmodule = selected;
+                EnableInit = selected.Status == Models.SubmoduleStatus.NotInited;
+                HasPreSelectedSubmodule = true;
+            }
+            else if (repo.Submodules.Count > 0)
+            {
+                SelectedSubmodule = repo.Submodules[0];
+                HasPreSelectedSubmodule = false;
+            }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
-
-            List<string> targets;
+            var targets = new List<string>();
             if (_updateAll)
-                targets = Submodules;
-            else
-                targets = [SelectedSubmodule];
+            {
+                foreach (var submodule in Submodules)
+                    targets.Add(submodule.Path);
+            }
+            else if (SelectedSubmodule != null)
+            {
+                targets.Add(SelectedSubmodule.Path);
+            }
+
+            if (targets.Count == 0)
+                return true;
 
             var log = _repo.CreateLog("Update Submodule");
+            _repo.SetWatcherEnabled(false);
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Submodule(_repo.FullPath)
-                    .Use(log)
-                    .Update(targets, EnableInit, EnableRecursive, EnableRemote);
+            await new Commands.Submodule(_repo.FullPath)
+                .Use(log)
+                .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return true;
         }
 
         private readonly Repository _repo = null;

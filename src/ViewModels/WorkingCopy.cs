@@ -91,7 +91,9 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).Result();
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head)
+                            .GetResultAsync()
+                            .Result;
                     }
                     else
                     {
@@ -167,7 +169,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (_selectedStaged != null && _selectedStaged.Count > 0)
+                        if (_selectedStaged is { Count: > 0 })
                             SelectedStaged = [];
 
                         if (value.Count == 1)
@@ -193,7 +195,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        if (_selectedUnstaged != null && _selectedUnstaged.Count > 0)
+                        if (_selectedUnstaged is { Count: > 0 })
                             SelectedUnstaged = [];
 
                         if (value.Count == 1)
@@ -269,12 +271,12 @@ namespace SourceGit.ViewModels
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
-            if (_selectedUnstaged != null && _selectedUnstaged.Count > 0)
+            if (_selectedUnstaged is { Count: > 0 })
             {
                 foreach (var c in _selectedUnstaged)
                     lastSelectedUnstaged.Add(c.Path);
             }
-            else if (_selectedStaged != null && _selectedStaged.Count > 0)
+            else if (_selectedStaged is { Count: > 0 })
             {
                 foreach (var c in _selectedStaged)
                     lastSelectedStaged.Add(c.Path);
@@ -332,11 +334,6 @@ namespace SourceGit.ViewModels
             UseExternalMergeTool(null);
         }
 
-        public void OpenAssumeUnchanged()
-        {
-            App.ShowWindow(new AssumeUnchangedManager(_repo), true);
-        }
-
         public void StashAll(bool autoStart)
         {
             if (!_repo.CanCreatePopup())
@@ -392,9 +389,7 @@ namespace SourceGit.ViewModels
                 if (!change.IsConflicted)
                     continue;
 
-                if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
-                    change.ConflictReason == Models.ConflictReason.DeletedByThem ||
-                    change.ConflictReason == Models.ConflictReason.AddedByUs)
+                if (change.ConflictReason is Models.ConflictReason.BothDeleted or Models.ConflictReason.DeletedByThem or Models.ConflictReason.AddedByUs)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -410,7 +405,7 @@ namespace SourceGit.ViewModels
 
             if (files.Count > 0)
             {
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).Use(log).UseTheirs(files));
+                var succ = await new Commands.Checkout(_repo.FullPath).Use(log).UseTheirsAsync(files);
                 if (succ)
                     needStage.AddRange(files);
             }
@@ -419,7 +414,7 @@ namespace SourceGit.ViewModels
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, needStage);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
 
@@ -441,9 +436,7 @@ namespace SourceGit.ViewModels
                 if (!change.IsConflicted)
                     continue;
 
-                if (change.ConflictReason == Models.ConflictReason.BothDeleted ||
-                    change.ConflictReason == Models.ConflictReason.DeletedByUs ||
-                    change.ConflictReason == Models.ConflictReason.AddedByThem)
+                if (change.ConflictReason is Models.ConflictReason.BothDeleted or Models.ConflictReason.DeletedByUs or Models.ConflictReason.AddedByThem)
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
@@ -459,7 +452,7 @@ namespace SourceGit.ViewModels
 
             if (files.Count > 0)
             {
-                var succ = await Task.Run(() => new Commands.Checkout(_repo.FullPath).Use(log).UseMine(files));
+                var succ = await new Commands.Checkout(_repo.FullPath).Use(log).UseMineAsync(files);
                 if (succ)
                     needStage.AddRange(files);
             }
@@ -468,7 +461,7 @@ namespace SourceGit.ViewModels
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, needStage);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
 
@@ -482,7 +475,7 @@ namespace SourceGit.ViewModels
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
             var file = change?.Path; // NOTE: With no <file> arg, mergetool runs on every file with merge conflicts!
-            await Task.Run(() => Commands.MergeTool.OpenForMerge(_repo.FullPath, toolType, toolPath, file));
+            await Commands.MergeTool.OpenForMergeAsync(_repo.FullPath, toolType, toolPath, file);
         }
 
         public void ContinueMerge()
@@ -492,14 +485,14 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
                     if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
-                        File.WriteAllText(mergeMsgFile, _commitMessage);
+                        await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                    var succ = _inProgressContext.Continue();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var succ = await _inProgressContext.ContinueAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (succ)
                             CommitMessage = string.Empty;
@@ -523,10 +516,10 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var succ = _inProgressContext.Skip();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var succ = await _inProgressContext.SkipAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (succ)
                             CommitMessage = string.Empty;
@@ -550,10 +543,10 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null)
             {
                 _repo.SetWatcherEnabled(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var succ = _inProgressContext.Abort();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var succ = await _inProgressContext.AbortAsync();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         if (succ)
                             CommitMessage = string.Empty;
@@ -590,6 +583,7 @@ namespace SourceGit.ViewModels
             if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
                 return null;
 
+            var hasSelectedFolder = !string.IsNullOrEmpty(selectedSingleFolder);
             var menu = new ContextMenu();
             if (_selectedUnstaged.Count == 1)
             {
@@ -602,11 +596,8 @@ namespace SourceGit.ViewModels
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Click += (_, e) =>
                 {
-                    if (string.IsNullOrEmpty(selectedSingleFolder))
-                        Native.OS.OpenInFileManager(path, true);
-                    else
-                        Native.OS.OpenInFileManager(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder), true);
-
+                    var target = hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path;
+                    Native.OS.OpenInFileManager(target, true);
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
@@ -627,7 +618,6 @@ namespace SourceGit.ViewModels
                 {
                     var useTheirs = new MenuItem();
                     useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
-                    useTheirs.Header = App.Text("FileCM.UseTheirs");
                     useTheirs.Click += (_, e) =>
                     {
                         UseTheirs(_selectedUnstaged);
@@ -636,7 +626,6 @@ namespace SourceGit.ViewModels
 
                     var useMine = new MenuItem();
                     useMine.Icon = App.CreateMenuIcon("Icons.Local");
-                    useMine.Header = App.Text("FileCM.UseMine");
                     useMine.Click += (_, e) =>
                     {
                         UseMine(_selectedUnstaged);
@@ -652,25 +641,28 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
 
-                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    switch (_inProgressContext)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is RebaseInProgress rebase)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
-                    }
-                    else if (_inProgressContext is RevertInProgress revert)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is MergeInProgress merge)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        case CherryPickInProgress cherryPick:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case RebaseInProgress rebase:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
+                            break;
+                        case RevertInProgress revert:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case MergeInProgress merge:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        default:
+                            useTheirs.Header = App.Text("FileCM.UseTheirs");
+                            useMine.Header = App.Text("FileCM.UseMine");
+                            break;
                     }
 
                     menu.Items.Add(useTheirs);
@@ -727,7 +719,7 @@ namespace SourceGit.ViewModels
                         var storageFile = await storageProvider.SaveFilePickerAsync(options);
                         if (storageFile != null)
                         {
-                            var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath);
                             if (succ)
                                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                         }
@@ -739,20 +731,11 @@ namespace SourceGit.ViewModels
                     assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
                     assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
                     assumeUnchanged.IsVisible = change.WorkTree != Models.ChangeState.Untracked;
-                    assumeUnchanged.Click += (_, e) =>
+                    assumeUnchanged.Click += async (_, e) =>
                     {
                         var log = _repo.CreateLog("Assume File Unchanged");
-                        new Commands.AssumeUnchanged(_repo.FullPath, change.Path, true).Use(log).Exec();
+                        await new Commands.AssumeUnchanged(_repo.FullPath, change.Path, true).Use(log).ExecAsync();
                         log.Complete();
-                        e.Handled = true;
-                    };
-
-                    var history = new MenuItem();
-                    history.Header = App.Text("FileHistory");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
-                    history.Click += (_, e) =>
-                    {
-                        App.ShowWindow(new FileHistories(_repo, change.Path), false);
                         e.Handled = true;
                     };
 
@@ -761,8 +744,6 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(stash);
                     menu.Items.Add(patch);
                     menu.Items.Add(assumeUnchanged);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(history);
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
                     var extension = Path.GetExtension(change.Path);
@@ -773,7 +754,7 @@ namespace SourceGit.ViewModels
                         addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
                         addToIgnore.Icon = App.CreateMenuIcon("Icons.GitIgnore");
 
-                        if (!string.IsNullOrEmpty(selectedSingleFolder))
+                        if (hasSelectedFolder)
                         {
                             var ignoreFolder = new MenuItem();
                             ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
@@ -827,24 +808,21 @@ namespace SourceGit.ViewModels
                         menu.Items.Add(addToIgnore);
                         hasExtra = true;
                     }
-                    else if (!string.IsNullOrEmpty(selectedSingleFolder))
+                    else if (hasSelectedFolder)
                     {
                         var addToIgnore = new MenuItem();
                         addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
                         addToIgnore.Icon = App.CreateMenuIcon("Icons.GitIgnore");
 
-                        if (!string.IsNullOrEmpty(selectedSingleFolder))
+                        var ignoreFolder = new MenuItem();
+                        ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
+                        ignoreFolder.Click += (_, e) =>
                         {
-                            var ignoreFolder = new MenuItem();
-                            ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
-                            ignoreFolder.Click += (_, e) =>
-                            {
-                                if (_repo.CanCreatePopup())
-                                    _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
-                                e.Handled = true;
-                            };
-                            addToIgnore.Items.Add(ignoreFolder);
-                        }
+                            if (_repo.CanCreatePopup())
+                                _repo.ShowPopup(new AddToIgnore(_repo, $"{selectedSingleFolder}/"));
+                            e.Handled = true;
+                        };
+                        addToIgnore.Items.Add(ignoreFolder);
 
                         menu.Items.Add(addToIgnore);
                         hasExtra = true;
@@ -857,7 +835,7 @@ namespace SourceGit.ViewModels
                         lfs.Header = App.Text("GitLFS");
                         lfs.Icon = App.CreateMenuIcon("Icons.LFS");
 
-                        var isLFSFiltered = new Commands.IsLFSFiltered(_repo.FullPath, change.Path).Result();
+                        var isLFSFiltered = new Commands.IsLFSFiltered(_repo.FullPath, change.Path).GetResultAsync().Result;
                         if (!isLFSFiltered)
                         {
                             var filename = Path.GetFileName(change.Path);
@@ -866,7 +844,7 @@ namespace SourceGit.ViewModels
                             lfsTrackThisFile.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Track LFS");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track(filename, true, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(filename, true, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
 
@@ -882,7 +860,7 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Track LFS");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Track($"*{extension}", false, log));
+                                    var succ = await new Commands.LFS(_repo.FullPath).TrackAsync($"*{extension}", false, log);
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
 
@@ -904,7 +882,7 @@ namespace SourceGit.ViewModels
                             lfsLock.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Lock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, change.Path, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -922,7 +900,7 @@ namespace SourceGit.ViewModels
                                 lockRemote.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Lock LFS File");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path, log));
+                                    var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, change.Path, log);
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -943,7 +921,7 @@ namespace SourceGit.ViewModels
                             lfsUnlock.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Unlock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, change.Path, false, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -961,7 +939,7 @@ namespace SourceGit.ViewModels
                                 unlockRemote.Click += async (_, e) =>
                                 {
                                     var log = _repo.CreateLog("Unlock LFS File");
-                                    var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false, log));
+                                    var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, change.Path, false, log);
                                     if (succ)
                                         App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -981,32 +959,40 @@ namespace SourceGit.ViewModels
                         menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
-                var copy = new MenuItem();
-                copy.Header = App.Text("CopyPath");
-                copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                copy.Click += (_, e) =>
+                var history = new MenuItem();
+                history.Header = App.Text(hasSelectedFolder ? "DirHistories" : "FileHistory");
+                history.Icon = App.CreateMenuIcon("Icons.Histories");
+                history.Click += (_, e) =>
                 {
-                    if (string.IsNullOrEmpty(selectedSingleFolder))
-                        App.CopyText(change.Path);
+                    if (hasSelectedFolder)
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
                     else
-                        App.CopyText(selectedSingleFolder);
+                        App.ShowWindow(new FileHistories(_repo, change.Path));
 
                     e.Handled = true;
                 };
-                menu.Items.Add(copy);
+
+                var copy = new MenuItem();
+                copy.Header = App.Text("CopyPath");
+                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Click += async (_, e) =>
+                {
+                    await App.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
+                    e.Handled = true;
+                };
 
                 var copyFullPath = new MenuItem();
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyFullPath.Click += (_, e) =>
+                copyFullPath.Click += async (_, e) =>
                 {
-                    if (string.IsNullOrEmpty(selectedSingleFolder))
-                        App.CopyText(path);
-                    else
-                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
-
+                    await App.CopyTextAsync(hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path);
                     e.Handled = true;
                 };
+
+                menu.Items.Add(history);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(copy);
                 menu.Items.Add(copyFullPath);
             }
             else
@@ -1031,7 +1017,6 @@ namespace SourceGit.ViewModels
 
                     var useTheirs = new MenuItem();
                     useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
-                    useTheirs.Header = App.Text("FileCM.UseTheirs");
                     useTheirs.Click += (_, e) =>
                     {
                         UseTheirs(_selectedUnstaged);
@@ -1040,32 +1025,34 @@ namespace SourceGit.ViewModels
 
                     var useMine = new MenuItem();
                     useMine.Icon = App.CreateMenuIcon("Icons.Local");
-                    useMine.Header = App.Text("FileCM.UseMine");
                     useMine.Click += (_, e) =>
                     {
                         UseMine(_selectedUnstaged);
                         e.Handled = true;
                     };
 
-                    if (_inProgressContext is CherryPickInProgress cherryPick)
+                    switch (_inProgressContext)
                     {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is RebaseInProgress rebase)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
-                    }
-                    else if (_inProgressContext is RevertInProgress revert)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
-                    }
-                    else if (_inProgressContext is MergeInProgress merge)
-                    {
-                        useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
-                        useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                        case CherryPickInProgress cherryPick:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", cherryPick.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case RebaseInProgress rebase:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", rebase.HeadName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", rebase.BaseName);
+                            break;
+                        case RevertInProgress revert:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", $"{revert.Head.SHA.AsSpan(0, 10)} (revert)");
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        case MergeInProgress merge:
+                            useTheirs.Header = App.Text("FileCM.ResolveUsing", merge.SourceName);
+                            useMine.Header = App.Text("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
+                            break;
+                        default:
+                            useTheirs.Header = App.Text("FileCM.UseTheirs");
+                            useMine.Header = App.Text("FileCM.UseMine");
+                            break;
                     }
 
                     menu.Items.Add(useTheirs);
@@ -1073,7 +1060,7 @@ namespace SourceGit.ViewModels
                     return menu;
                 }
 
-                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                if (hasSelectedFolder)
                 {
                     var dir = Path.Combine(_repo.FullPath, selectedSingleFolder);
                     var explore = new MenuItem();
@@ -1135,7 +1122,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath));
+                        var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, true, storageFile.Path.LocalPath);
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1148,7 +1135,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
 
-                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                if (hasSelectedFolder)
                 {
                     var ignoreFolder = new MenuItem();
                     ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
@@ -1167,21 +1154,32 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(addToIgnore);
 
+                    var history = new MenuItem();
+                    history.Header = App.Text("DirHistories");
+                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Click += (_, e) =>
+                    {
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(history);
+
                     var copy = new MenuItem();
                     copy.Header = App.Text("CopyPath");
                     copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copy.Click += (_, e) =>
+                    copy.Click += async (_, e) =>
                     {
-                        App.CopyText(selectedSingleFolder);
+                        await App.CopyTextAsync(selectedSingleFolder);
                         e.Handled = true;
                     };
 
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyPath");
                     copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyFullPath.Click += (_, e) =>
+                    copyFullPath.Click += async (_, e) =>
                     {
-                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+                        await App.CopyTextAsync(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
                         e.Handled = true;
                     };
                     menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1200,7 +1198,7 @@ namespace SourceGit.ViewModels
 
             var menu = new ContextMenu();
 
-            var ai = null as MenuItem;
+            MenuItem ai = null;
             var services = _repo.GetPreferredOpenAIServices();
             if (services.Count > 0)
             {
@@ -1210,9 +1208,9 @@ namespace SourceGit.ViewModels
 
                 if (services.Count == 1)
                 {
-                    ai.Click += (_, e) =>
+                    ai.Click += async (_, e) =>
                     {
-                        App.ShowWindow(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t), true);
+                        await App.ShowDialog(new AIAssistant(_repo, services[0], _selectedStaged, t => CommitMessage = t));
                         e.Handled = true;
                     };
                 }
@@ -1224,9 +1222,9 @@ namespace SourceGit.ViewModels
 
                         var item = new MenuItem();
                         item.Header = service.Name;
-                        item.Click += (_, e) =>
+                        item.Click += async (_, e) =>
                         {
-                            App.ShowWindow(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t), true);
+                            await App.ShowDialog(new AIAssistant(_repo, dup, _selectedStaged, t => CommitMessage = t));
                             e.Handled = true;
                         };
 
@@ -1235,6 +1233,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            var hasSelectedFolder = !string.IsNullOrEmpty(selectedSingleFolder);
             if (_selectedStaged.Count == 1)
             {
                 var change = _selectedStaged[0];
@@ -1246,11 +1245,8 @@ namespace SourceGit.ViewModels
                 explore.Icon = App.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
-                    if (string.IsNullOrEmpty(selectedSingleFolder))
-                        Native.OS.OpenInFileManager(path, true);
-                    else
-                        Native.OS.OpenInFileManager(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder), true);
-
+                    var target = hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path;
+                    Native.OS.OpenInFileManager(target, true);
                     e.Handled = true;
                 };
 
@@ -1301,20 +1297,11 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath);
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
 
-                    e.Handled = true;
-                };
-
-                var history = new MenuItem();
-                history.Header = App.Text("FileHistory");
-                history.Icon = App.CreateMenuIcon("Icons.Histories");
-                history.Click += (_, e) =>
-                {
-                    App.ShowWindow(new FileHistories(_repo, change.Path), false);
                     e.Handled = true;
                 };
 
@@ -1324,8 +1311,6 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(unstage);
                 menu.Items.Add(stash);
                 menu.Items.Add(patch);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(history);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
                 var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
@@ -1344,7 +1329,7 @@ namespace SourceGit.ViewModels
                         lfsLock.Click += async (_, e) =>
                         {
                             var log = _repo.CreateLog("Lock LFS File");
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(_repo.Remotes[0].Name, change.Path, log));
+                            var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, change.Path, log);
                             if (succ)
                                 App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -1362,7 +1347,7 @@ namespace SourceGit.ViewModels
                             lockRemote.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Lock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Lock(remoteName, change.Path, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, change.Path, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
 
@@ -1383,7 +1368,7 @@ namespace SourceGit.ViewModels
                         lfsUnlock.Click += async (_, e) =>
                         {
                             var log = _repo.CreateLog("Unlock LFS File");
-                            var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(_repo.Remotes[0].Name, change.Path, false, log));
+                            var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, change.Path, false, log);
                             if (succ)
                                 App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -1401,7 +1386,7 @@ namespace SourceGit.ViewModels
                             unlockRemote.Click += async (_, e) =>
                             {
                                 var log = _repo.CreateLog("Unlock LFS File");
-                                var succ = await Task.Run(() => new Commands.LFS(_repo.FullPath).Unlock(remoteName, change.Path, false, log));
+                                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, change.Path, false, log);
                                 if (succ)
                                     App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
 
@@ -1423,38 +1408,45 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
+                var history = new MenuItem();
+                history.Header = App.Text(hasSelectedFolder ? "DirHistories" : "FileHistory");
+                history.Icon = App.CreateMenuIcon("Icons.Histories");
+                history.Click += (_, e) =>
+                {
+                    if (hasSelectedFolder)
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
+                    else
+                        App.ShowWindow(new FileHistories(_repo, change.Path));
+                    e.Handled = true;
+                };
+
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyPath.Click += (_, e) =>
+                copyPath.Click += async (_, e) =>
                 {
-                    if (string.IsNullOrEmpty(selectedSingleFolder))
-                        App.CopyText(change.Path);
-                    else
-                        App.CopyText(selectedSingleFolder);
-
+                    await App.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
                     e.Handled = true;
                 };
 
                 var copyFullPath = new MenuItem();
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                copyFullPath.Click += (_, e) =>
+                copyFullPath.Click += async (_, e) =>
                 {
-                    if (string.IsNullOrEmpty(selectedSingleFolder))
-                        App.CopyText(path);
-                    else
-                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
-
+                    var target = hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path;
+                    await App.CopyTextAsync(target);
                     e.Handled = true;
                 };
 
+                menu.Items.Add(history);
+                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copyPath);
                 menu.Items.Add(copyFullPath);
             }
             else
             {
-                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                if (hasSelectedFolder)
                 {
                     var dir = Path.Combine(_repo.FullPath, selectedSingleFolder);
                     var explore = new MenuItem();
@@ -1508,7 +1500,7 @@ namespace SourceGit.ViewModels
                     var storageFile = await storageProvider.SaveFilePickerAsync(options);
                     if (storageFile != null)
                     {
-                        var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessLocalChanges(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath));
+                        var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedStaged, false, storageFile.Path.LocalPath);
                         if (succ)
                             App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
                     }
@@ -1526,26 +1518,37 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(ai);
                 }
 
-                if (!string.IsNullOrEmpty(selectedSingleFolder))
+                if (hasSelectedFolder)
                 {
+                    var history = new MenuItem();
+                    history.Header = App.Text(hasSelectedFolder ? "DirHistories" : "FileHistory");
+                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Click += (_, e) =>
+                    {
+                        App.ShowWindow(new DirHistories(_repo, selectedSingleFolder));
+                        e.Handled = true;
+                    };
+
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
                     copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyPath.Click += (_, e) =>
+                    copyPath.Click += async (_, e) =>
                     {
-                        App.CopyText(selectedSingleFolder);
+                        await App.CopyTextAsync(selectedSingleFolder);
                         e.Handled = true;
                     };
 
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyFullPath");
                     copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyFullPath.Click += (_, e) =>
+                    copyFullPath.Click += async (_, e) =>
                     {
-                        App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
+                        await App.CopyTextAsync(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
                         e.Handled = true;
                     };
 
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(history);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
@@ -1559,7 +1562,7 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
-            var gitTemplate = new Commands.Config(_repo.FullPath).Get("commit.template");
+            var gitTemplate = new Commands.Config(_repo.FullPath).GetAsync("commit.template").Result;
             var templateCount = _repo.Settings.CommitTemplates.Count;
             if (templateCount == 0 && string.IsNullOrEmpty(gitTemplate))
             {
@@ -1662,7 +1665,7 @@ namespace SourceGit.ViewModels
 
             if (services.Count == 1)
             {
-                App.ShowWindow(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t), true);
+                _ = App.ShowDialog(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t));
                 return null;
             }
 
@@ -1672,9 +1675,9 @@ namespace SourceGit.ViewModels
                 var dup = service;
                 var item = new MenuItem();
                 item.Header = service.Name;
-                item.Click += (_, e) =>
+                item.Click += async (_, e) =>
                 {
-                    App.ShowWindow(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t), true);
+                    await App.ShowDialog(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t));
                     e.Handled = true;
                 };
 
@@ -1704,8 +1707,13 @@ namespace SourceGit.ViewModels
         {
             if (_useAmend)
             {
-                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").Result();
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^").Result();
+                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD")
+                    .GetResultAsync()
+                    .Result;
+
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^")
+                    .GetResultAsync()
+                    .Result;
             }
 
             var rs = new List<Models.Change>();
@@ -1751,7 +1759,7 @@ namespace SourceGit.ViewModels
                     if (File.Exists(rebaseMsgFile))
                         CommitMessage = File.ReadAllText(rebaseMsgFile);
                     else if (rebasing.StoppedAt != null)
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).Result();
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResultAsync().Result;
                 }
             }
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
@@ -1783,17 +1791,18 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Stage");
             if (count == _unstaged.Count)
             {
-                await Task.Run(() => new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec());
+                await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync();
             }
             else
             {
-                var paths = new List<string>();
-                foreach (var c in changes)
-                    paths.Add(c.Path);
-
                 var pathSpecFile = Path.GetTempFileName();
-                await File.WriteAllLinesAsync(pathSpecFile, paths);
-                await Task.Run(() => new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).Exec());
+                await using (var writer = new StreamWriter(pathSpecFile))
+                {
+                    foreach (var c in changes)
+                        await writer.WriteLineAsync(c.Path);
+                }
+
+                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
             log.Complete();
@@ -1819,21 +1828,22 @@ namespace SourceGit.ViewModels
             if (_useAmend)
             {
                 log.AppendLine("$ git update-index --index-info ");
-                await Task.Run(() => new Commands.UnstageChangesForAmend(_repo.FullPath, changes).Exec());
+                await new Commands.UnstageChangesForAmend(_repo.FullPath, changes).ExecAsync();
             }
             else
             {
-                var paths = new List<string>();
-                foreach (var c in changes)
+                var pathSpecFile = Path.GetTempFileName();
+                await using (var writer = new StreamWriter(pathSpecFile))
                 {
-                    paths.Add(c.Path);
-                    if (c.Index == Models.ChangeState.Renamed)
-                        paths.Add(c.OriginalPath);
+                    foreach (var c in changes)
+                    {
+                        await writer.WriteLineAsync(c.Path);
+                        if (c.Index == Models.ChangeState.Renamed)
+                            await writer.WriteLineAsync(c.OriginalPath);
+                    }
                 }
 
-                var pathSpecFile = Path.GetTempFileName();
-                await File.WriteAllLinesAsync(pathSpecFile, paths);
-                await Task.Run(() => new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).Exec());
+                await new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
             log.Complete();
@@ -1870,14 +1880,14 @@ namespace SourceGit.ViewModels
             if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < CommitCheckPassed.DetachedHead)
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
-                App.ShowWindow(new Confirm(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead)), true);
+                _ = App.AskConfirmAsync(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead));
                 return;
             }
 
             if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < CommitCheckPassed.Filter)
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                App.ShowWindow(new Confirm(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter)), true);
+                _ = App.AskConfirmAsync(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter));
                 return;
             }
 
@@ -1885,7 +1895,7 @@ namespace SourceGit.ViewModels
             {
                 if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    App.ShowWindow(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)), true);
+                    _ = App.ShowDialog(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)));
                     return;
                 }
             }
@@ -1896,18 +1906,18 @@ namespace SourceGit.ViewModels
 
             var signOff = _repo.Settings.EnableSignOffForCommit;
             var log = _repo.CreateLog("Commit");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 var succ = true;
                 if (autoStage && _unstaged.Count > 0)
-                    succ = new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).Exec();
+                    succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync().ConfigureAwait(false);
 
                 if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).Run();
+                    succ = await new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).RunAsync().ConfigureAwait(false);
 
                 log.Complete();
 
-                Dispatcher.UIThread.Post(() =>
+                Dispatcher.UIThread.Post(async () =>
                 {
                     if (succ)
                     {
@@ -1918,7 +1928,7 @@ namespace SourceGit.ViewModels
                         {
                             if (_repo.CurrentBranch == null)
                             {
-                                var currentBranchName = Commands.Branch.ShowCurrent(_repo.FullPath);
+                                var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync();
                                 var tmp = new Models.Branch() { Name = currentBranchName };
                                 _repo.ShowAndStartPopup(new Push(_repo, tmp));
                             }

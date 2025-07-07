@@ -4,6 +4,7 @@ namespace SourceGit.Views
     {
         public ConfigureCustomActionControls()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
     }

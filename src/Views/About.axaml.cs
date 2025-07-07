@@ -7,6 +7,7 @@ namespace SourceGit.Views
     {
         public About()
         {
+            CloseOnESC = true;
             InitializeComponent();
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -17,6 +18,12 @@ namespace SourceGit.Views
             var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
             if (copyright != null)
                 TxtCopyright.Text = copyright.Copyright;
+        }
+
+        private void OnVisitReleaseNotes(object _, RoutedEventArgs e)
+        {
+            Native.OS.OpenBrowser($"https://github.com/sourcegit-scm/sourcegit/releases/tag/v{TxtVersion.Text}");
+            e.Handled = true;
         }
 
         private void OnVisitWebsite(object _, RoutedEventArgs e)

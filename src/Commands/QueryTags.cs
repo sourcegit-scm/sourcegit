@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -14,10 +15,10 @@ namespace SourceGit.Commands
             Args = $"tag -l --format=\"{_boundary}%(refname)%00%(objecttype)%00%(objectname)%00%(*objectname)%00%(creatordate:unix)%00%(contents:subject)%0a%0a%(contents:body)\"";
         }
 
-        public List<Models.Tag> Result()
+        public async Task<List<Models.Tag>> GetResultAsync()
         {
             var tags = new List<Models.Tag>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return tags;
 

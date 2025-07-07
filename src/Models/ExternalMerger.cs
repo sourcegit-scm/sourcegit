@@ -44,6 +44,7 @@ namespace SourceGit.Models
                     new ExternalMerger(9, "p4merge", "P4Merge", "p4merge.exe", "-tw 4 \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"", "-tw 4 \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(10, "plastic_merge", "Plastic SCM", "mergetool.exe", "-s=\"$REMOTE\" -b=\"$BASE\" -d=\"$LOCAL\" -r=\"$MERGED\" --automatic", "-s=\"$LOCAL\" -d=\"$REMOTE\""),
                     new ExternalMerger(11, "meld", "Meld", "Meld.exe", "\"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
+                    new ExternalMerger(12, "cursor", "Cursor", "Cursor.exe", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                 };
             }
             else if (OperatingSystem.IsMacOS())
@@ -57,6 +58,7 @@ namespace SourceGit.Models
                     new ExternalMerger(5, "beyond_compare", "Beyond Compare", "/Applications/Beyond Compare.app/Contents/MacOS/bcomp", "\"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(6, "codium", "VSCodium", "/Applications/VSCodium.app/Contents/Resources/app/bin/codium", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(7, "p4merge", "P4Merge", "/Applications/p4merge.app/Contents/Resources/launchp4merge", "-tw 4 \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"", "-tw 4 \"$LOCAL\" \"$REMOTE\""),
+                    new ExternalMerger(8, "cursor", "Cursor", "/Applications/Cursor.app/Contents/Resources/app/bin/cursor", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                 };
             }
             else if (OperatingSystem.IsLinux())
@@ -70,6 +72,7 @@ namespace SourceGit.Models
                     new ExternalMerger(5, "meld", "Meld", "/usr/bin/meld", "\"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"", "\"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(6, "codium", "VSCodium", "/usr/share/codium/bin/codium", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                     new ExternalMerger(7, "p4merge", "P4Merge", "/usr/local/bin/p4merge", "-tw 4 \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"", "-tw 4 \"$LOCAL\" \"$REMOTE\""),
+                    new ExternalMerger(8, "cursor", "Cursor", "cursor", "-n --wait \"$MERGED\"", "-n --wait --diff \"$LOCAL\" \"$REMOTE\""),
                 };
             }
             else
@@ -93,19 +96,10 @@ namespace SourceGit.Models
         public string[] GetPatterns()
         {
             if (OperatingSystem.IsWindows())
-            {
                 return Exec.Split(';');
-            }
-            else
-            {
-                var patterns = new List<string>();
-                var choices = Exec.Split(';', StringSplitOptions.RemoveEmptyEntries);
-                foreach (var c in choices)
-                {
-                    patterns.Add(Path.GetFileName(c));
-                }
-                return patterns.ToArray();
-            }
+
+            var choices = Exec.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            return Array.ConvertAll(choices, Path.GetFileName);
         }
     }
 }

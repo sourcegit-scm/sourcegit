@@ -33,7 +33,7 @@ namespace SourceGit.ViewModels
             DiscardLocalChanges = false;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Checkout Commit '{Commit.SHA}' ...";
@@ -41,58 +41,67 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Checkout Commit");
             Use(log);
 
-            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(() =>
+            if (_repo.CurrentBranch is { IsDetachedHead: true })
             {
-                bool succ;
-                var needPop = false;
-
-                if (!_repo.ConfirmCheckoutBranch())
+                var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _repo.CurrentBranch.Head).GetResultAsync();
+                if (refs.Count == 0)
                 {
-                    CallUIThread(() => _repo.SetWatcherEnabled(true));
-                    return true;
-                }
-
-                if (DiscardLocalChanges)
-                {
-                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Commit(Commit.SHA, true);
-                }
-                else
-                {
-                    var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
-                    if (changes > 0)
+                    var msg = App.Text("Checkout.WarnLostCommits");
+                    var shouldContinue = await App.AskConfirmAsync(msg, null);
+                    if (!shouldContinue)
                     {
-                        succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CHECKOUT_AUTO_STASH");
-                        if (!succ)
-                        {
-                            log.Complete();
-                            CallUIThread(() => _repo.SetWatcherEnabled(true));
-                            return false;
-                        }
+                        _repo.SetWatcherEnabled(true);
+                        return true;
+                    }
+                }
+            }
 
-                        needPop = true;
+            var succ = false;
+            var needPop = false;
+
+            if (!DiscardLocalChanges)
+            {
+                var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
+                if (changes > 0)
+                {
+                    succ = await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PushAsync("CHECKOUT_AUTO_STASH");
+                    if (!succ)
+                    {
+                        log.Complete();
+                        _repo.SetWatcherEnabled(true);
+                        return false;
                     }
 
-                    succ = new Commands.Checkout(_repo.FullPath).Use(log).Commit(Commit.SHA, false);
+                    needPop = true;
                 }
+            }
 
-                if (succ)
+            succ = await new Commands.Checkout(_repo.FullPath)
+                .Use(log)
+                .CommitAsync(Commit.SHA, DiscardLocalChanges);
+
+            if (succ)
+            {
+                if (IsRecurseSubmoduleVisible && RecurseSubmodules)
                 {
-                    if (updateSubmodules)
-                    {
-                        var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
-                        if (submodules.Count > 0)
-                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
-                    }
-
-                    if (needPop)
-                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
+                    if (submodules.Count > 0)
+                        await new Commands.Submodule(_repo.FullPath)
+                            .Use(log)
+                            .UpdateAsync(submodules, true, true);
                 }
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+                if (needPop)
+                    await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PopAsync("stash@{0}");
+            }
+
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return succ;
         }
 
         private readonly Repository _repo = null;

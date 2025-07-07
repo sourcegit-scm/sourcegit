@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-
-using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
@@ -40,56 +37,43 @@ namespace SourceGit.ViewModels
             GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = $"Scan repositories under '{_selected.Path}' ...";
 
-            return Task.Run(() =>
+            var minDelay = Task.Delay(500);
+            var rootDir = new DirectoryInfo(_selected.Path);
+            var found = new List<string>();
+
+            await GetUnmanagedRepositoriesAsync(rootDir, found, new EnumerationOptions()
             {
-                var watch = new Stopwatch();
-                watch.Start();
-
-                var rootDir = new DirectoryInfo(_selected.Path);
-                var found = new List<string>();
-                GetUnmanagedRepositories(rootDir, found, new EnumerationOptions()
-                {
-                    AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
-                    IgnoreInaccessible = true,
-                });
-
-                // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
-                var remain = 500 - (int)watch.Elapsed.TotalMilliseconds;
-                watch.Stop();
-                if (remain > 0)
-                    Task.Delay(remain).Wait();
-
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
-
-                    foreach (var f in found)
-                    {
-                        var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
-                        if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
-                        {
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
-                        }
-                        else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
-                        {
-                            var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
-                            var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                            Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
-                        }
-                    }
-
-                    Preferences.Instance.AutoRemoveInvalidNode();
-                    Preferences.Instance.Save();
-
-                    Welcome.Instance.Refresh();
-                });
-
-                return true;
+                AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
+                IgnoreInaccessible = true,
             });
+
+            // Make sure this task takes at least 0.5s to avoid that the popup panel do not disappear very quickly.
+            await minDelay;
+
+            var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
+            foreach (var f in found)
+            {
+                var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
+                if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
+                {
+                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                }
+                else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
+                {
+                    var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
+                    var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
+                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                }
+            }
+
+            Preferences.Instance.AutoRemoveInvalidNode();
+            Preferences.Instance.Save();
+            Welcome.Instance.Refresh();
+            return true;
         }
 
         private void GetManagedRepositories(List<RepositoryNode> group, HashSet<string> repos)
@@ -103,7 +87,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private void GetUnmanagedRepositories(DirectoryInfo dir, List<string> outs, EnumerationOptions opts, int depth = 0)
+        private async Task GetUnmanagedRepositoriesAsync(DirectoryInfo dir, List<string> outs, EnumerationOptions opts, int depth = 0)
         {
             var subdirs = dir.GetDirectories("*", opts);
             foreach (var subdir in subdirs)
@@ -112,7 +96,7 @@ namespace SourceGit.ViewModels
                     subdir.Name.Equals("node_modules", StringComparison.Ordinal))
                     continue;
 
-                CallUIThread(() => ProgressDescription = $"Scanning {subdir.FullName}...");
+                ProgressDescription = $"Scanning {subdir.FullName}...";
 
                 var normalizedSelf = subdir.FullName.Replace('\\', '/').TrimEnd('/');
                 if (_managed.Contains(normalizedSelf))
@@ -121,7 +105,7 @@ namespace SourceGit.ViewModels
                 var gitDir = Path.Combine(subdir.FullName, ".git");
                 if (Directory.Exists(gitDir) || File.Exists(gitDir))
                 {
-                    var test = new Commands.QueryRepositoryRootPath(subdir.FullName).ReadToEnd();
+                    var test = await new Commands.QueryRepositoryRootPath(subdir.FullName).GetResultAsync().ConfigureAwait(false);
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
                         var normalized = test.StdOut.Trim().Replace('\\', '/').TrimEnd('/');
@@ -132,7 +116,7 @@ namespace SourceGit.ViewModels
                     continue;
                 }
 
-                var isBare = new Commands.IsBareRepository(subdir.FullName).Result();
+                var isBare = await new Commands.IsBareRepository(subdir.FullName).GetResultAsync().ConfigureAwait(false);
                 if (isBare)
                 {
                     outs.Add(normalizedSelf);
@@ -140,7 +124,7 @@ namespace SourceGit.ViewModels
                 }
 
                 if (depth < 5)
-                    GetUnmanagedRepositories(subdir, outs, opts, depth + 1);
+                    await GetUnmanagedRepositoriesAsync(subdir, outs, opts, depth + 1);
             }
         }
 

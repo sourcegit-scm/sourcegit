@@ -71,8 +71,7 @@ namespace SourceGit.Views
 
         private void CreateContent(Thickness margin, string iconKey)
         {
-            var geo = this.FindResource(iconKey) as StreamGeometry;
-            if (geo == null)
+            if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
             Content = new Avalonia.Controls.Shapes.Path()
@@ -164,7 +163,7 @@ namespace SourceGit.Views
         {
             if (sender is Control control && DataContext is ViewModels.Repository repo)
             {
-                if (control.DataContext is ViewModels.SubmoduleTreeNode node && node.Module != null)
+                if (control.DataContext is ViewModels.SubmoduleTreeNode { Module: not null } node)
                 {
                     var menu = repo.CreateContextMenuForSubmodule(node.Module);
                     menu?.Open(control);

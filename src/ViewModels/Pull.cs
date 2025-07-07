@@ -83,7 +83,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var autoSelectedRemote = null as Models.Remote;
+                Models.Remote autoSelectedRemote = null;
                 if (!string.IsNullOrEmpty(Current.Upstream))
                 {
                     var remoteNameEndIdx = Current.Upstream.IndexOf('/', 13);
@@ -96,7 +96,7 @@ namespace SourceGit.ViewModels
 
                 if (autoSelectedRemote == null)
                 {
-                    var remote = null as Models.Remote;
+                    Models.Remote remote = null;
                     if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
                         remote = _repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
                     _selectedRemote = remote ?? _repo.Remotes[0];
@@ -111,7 +111,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
@@ -119,60 +119,52 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(() =>
+            var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
+            var needPopStash = false;
+            if (changes > 0)
             {
-                var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
-                var needPopStash = false;
-                if (changes > 0)
+                if (DiscardLocalChanges)
                 {
-                    if (DiscardLocalChanges)
+                    await Commands.Discard.AllAsync(_repo.FullPath, false, log);
+                }
+                else
+                {
+                    var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH");
+                    if (!succ)
                     {
-                        Commands.Discard.All(_repo.FullPath, false, log);
+                        log.Complete();
+                        _repo.SetWatcherEnabled(true);
+                        return false;
                     }
-                    else
-                    {
-                        var succ = new Commands.Stash(_repo.FullPath).Use(log).Push("PULL_AUTO_STASH");
-                        if (!succ)
-                        {
-                            log.Complete();
-                            CallUIThread(() => _repo.SetWatcherEnabled(true));
-                            return false;
-                        }
 
-                        needPopStash = true;
-                    }
+                    needPopStash = true;
+                }
+            }
+
+            bool rs = await new Commands.Pull(
+                _repo.FullPath,
+                _selectedRemote.Name,
+                !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
+                UseRebase).Use(log).RunAsync();
+            if (rs)
+            {
+                if (updateSubmodules)
+                {
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
+                    if (submodules.Count > 0)
+                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
                 }
 
-                bool rs = new Commands.Pull(
-                    _repo.FullPath,
-                    _selectedRemote.Name,
-                    !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                    UseRebase).Use(log).Exec();
+                if (needPopStash)
+                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+            }
 
-                if (rs)
-                {
-                    if (updateSubmodules)
-                    {
-                        var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
-                        if (submodules.Count > 0)
-                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
-                    }
+            log.Complete();
 
-                    if (needPopStash)
-                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
-                }
-
-                log.Complete();
-
-                var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
-                CallUIThread(() =>
-                {
-                    _repo.NavigateToCommit(head, true);
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return rs;
-            });
+            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
+            _repo.NavigateToCommit(head, true);
+            _repo.SetWatcherEnabled(true);
+            return rs;
         }
 
         private void PostRemoteSelected()

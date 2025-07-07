@@ -12,7 +12,7 @@ namespace SourceGit.Views
 
         private void OnChangeDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Grid grid && grid.DataContext is Models.Change change)
+            if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
             {
                 detail.ActivePageIndex = 1;
                 detail.SelectedChanges = new() { change };
@@ -23,7 +23,7 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Grid grid && grid.DataContext is Models.Change change)
+            if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change } grid)
             {
                 var menu = detail.CreateChangeContextMenu(change);
                 menu?.Open(grid);

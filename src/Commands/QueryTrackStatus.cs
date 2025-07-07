@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,11 +12,11 @@ namespace SourceGit.Commands
             Args = $"rev-list --left-right {local}...{upstream}";
         }
 
-        public Models.BranchTrackStatus Result()
+        public async Task<Models.BranchTrackStatus> GetResultAsync()
         {
             var status = new Models.BranchTrackStatus();
 
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return status;
 

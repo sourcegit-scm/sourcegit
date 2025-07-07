@@ -34,10 +34,10 @@ namespace SourceGit.Views
             OnPopupCancel(sender, e);
         }
 
-        private void OnCopyNotification(object sender, RoutedEventArgs e)
+        private async void OnCopyNotification(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Notification notice })
-                App.CopyText(notice.Message);
+                await App.CopyTextAsync(notice.Message);
 
             e.Handled = true;
         }
@@ -56,28 +56,9 @@ namespace SourceGit.Views
             if (sender is ContentPresenter presenter)
             {
                 if (presenter.DataContext is not ViewModels.Popup)
-                {
                     presenter.Content = null;
-                    return;
-                }
-
-                var dataTypeName = presenter.DataContext.GetType().FullName;
-                if (string.IsNullOrEmpty(dataTypeName))
-                {
-                    presenter.Content = null;
-                    return;
-                }
-
-                var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
-                var viewType = Type.GetType(viewTypeName);
-                if (viewType == null)
-                {
-                    presenter.Content = null;
-                    return;
-                }
-
-                var view = Activator.CreateInstance(viewType);
-                presenter.Content = view;
+                else
+                    presenter.Content = App.CreateViewForViewModel(presenter.DataContext);
             }
         }
     }

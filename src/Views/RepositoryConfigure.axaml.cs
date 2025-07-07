@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
@@ -9,23 +8,16 @@ namespace SourceGit.Views
     {
         public RepositoryConfigure()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-
-            if (!e.Handled && e.Key == Key.Escape)
-                Close();
-        }
-
-        protected override void OnClosing(WindowClosingEventArgs e)
+        protected override async void OnClosing(WindowClosingEventArgs e)
         {
             base.OnClosing(e);
 
             if (!Design.IsDesignMode && DataContext is ViewModels.RepositoryConfigure configure)
-                configure.Save();
+                await configure.SaveAsync();
         }
 
         private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)

@@ -143,10 +143,9 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        protected override async void OnKeyDown(KeyEventArgs e)
         {
-            var vm = DataContext as ViewModels.Launcher;
-            if (vm == null)
+            if (DataContext is not ViewModels.Launcher vm)
                 return;
 
             // We should clear all unhandled key modifiers.
@@ -166,7 +165,7 @@ namespace SourceGit.Views
             // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
             {
-                App.ShowWindow(new Preferences(), true);
+                await App.ShowDialog(new Preferences());
                 e.Handled = true;
                 return;
             }
@@ -174,7 +173,7 @@ namespace SourceGit.Views
             // F1 opens preference dialog (macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
             {
-                App.ShowWindow(new Hotkeys(), true);
+                await App.ShowDialog(new Hotkeys());
                 return;
             }
 
@@ -243,39 +242,28 @@ namespace SourceGit.Views
 
                 if (vm.ActivePage.Data is ViewModels.Repository repo)
                 {
-                    if (e.Key == Key.D1 || e.Key == Key.NumPad1)
+                    switch (e.Key)
                     {
-                        repo.SelectedViewIndex = 0;
-                        e.Handled = true;
-                        return;
-                    }
-
-                    if (e.Key == Key.D2 || e.Key == Key.NumPad2)
-                    {
-                        repo.SelectedViewIndex = 1;
-                        e.Handled = true;
-                        return;
-                    }
-
-                    if (e.Key == Key.D3 || e.Key == Key.NumPad3)
-                    {
-                        repo.SelectedViewIndex = 2;
-                        e.Handled = true;
-                        return;
-                    }
-
-                    if (e.Key == Key.F)
-                    {
-                        repo.IsSearching = true;
-                        e.Handled = true;
-                        return;
-                    }
-
-                    if (e.Key == Key.H && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                    {
-                        repo.IsSearching = false;
-                        e.Handled = true;
-                        return;
+                        case Key.D1 or Key.NumPad1:
+                            repo.SelectedViewIndex = 0;
+                            e.Handled = true;
+                            return;
+                        case Key.D2 or Key.NumPad2:
+                            repo.SelectedViewIndex = 1;
+                            e.Handled = true;
+                            return;
+                        case Key.D3 or Key.NumPad3:
+                            repo.SelectedViewIndex = 2;
+                            e.Handled = true;
+                            return;
+                        case Key.F:
+                            repo.IsSearching = true;
+                            e.Handled = true;
+                            return;
+                        case Key.H when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            repo.IsSearching = false;
+                            e.Handled = true;
+                            return;
                     }
                 }
                 else

@@ -50,7 +50,7 @@ namespace SourceGit.Models
             var ret = new List<TextInlineChange>();
             var posOld = 0;
             var posNew = 0;
-            var last = null as TextInlineChange;
+            TextInlineChange last = null;
             do
             {
                 while (posOld < sizeOld && posNew < sizeNew && !chunksOld[posOld].Modified && !chunksNew[posNew].Modified)
@@ -295,16 +295,12 @@ namespace SourceGit.Models
 
         private static void AddChunk(List<Chunk> chunks, Dictionary<string, int> hashes, string data, int start)
         {
-            if (hashes.TryGetValue(data, out var hash))
-            {
-                chunks.Add(new Chunk(hash, start, data.Length));
-            }
-            else
+            if (!hashes.TryGetValue(data, out var hash))
             {
                 hash = hashes.Count;
                 hashes.Add(data, hash);
-                chunks.Add(new Chunk(hash, start, data.Length));
             }
+            chunks.Add(new Chunk(hash, start, data.Length));
         }
     }
 }

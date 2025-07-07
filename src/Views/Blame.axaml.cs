@@ -90,7 +90,7 @@ namespace SourceGit.Views
             {
                 var view = TextView;
                 var maxWidth = 0.0;
-                if (view != null && view.VisualLinesValid && _editor.BlameData != null)
+                if (view is { VisualLinesValid: true } && _editor.BlameData != null)
                 {
                     var typeface = view.CreateTypeface();
                     var calculated = new HashSet<string>();
@@ -394,9 +394,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(selected);
+                await App.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 

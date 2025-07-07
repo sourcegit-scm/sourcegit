@@ -16,7 +16,7 @@ namespace SourceGit.ViewModels
             Remote = remote;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Deleting remote ...";
@@ -24,18 +24,14 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Remote");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Remote(_repo.FullPath).Use(log).Delete(Remote.Name);
-                log.Complete();
+            var succ = await new Commands.Remote(_repo.FullPath)
+                .Use(log)
+                .DeleteAsync(Remote.Name);
 
-                CallUIThread(() =>
-                {
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return succ;
-            });
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
+            return succ;
         }
 
         private readonly Repository _repo = null;

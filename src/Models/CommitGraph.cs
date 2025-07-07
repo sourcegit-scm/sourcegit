@@ -6,6 +6,13 @@ using Avalonia.Media;
 
 namespace SourceGit.Models
 {
+    public record CommitGraphLayout(double startY, double clipWidth, double rowHeight)
+    {
+        public double StartY { get; set; } = startY;
+        public double ClipWidth { get; set; } = clipWidth;
+        public double RowHeight { get; set; } = rowHeight;
+    }
+
     public class CommitGraph
     {
         public static List<Pen> Pens { get; } = [];
@@ -75,7 +82,7 @@ namespace SourceGit.Models
 
             foreach (var commit in commits)
             {
-                var major = null as PathHelper;
+                PathHelper major = null;
                 var isMerged = commit.IsMerged;
 
                 // Update current y offset

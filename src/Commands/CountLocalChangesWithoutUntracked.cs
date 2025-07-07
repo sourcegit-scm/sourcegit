@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,9 +12,9 @@ namespace SourceGit.Commands
             Args = "--no-optional-locks status -uno --ignore-submodules=all --porcelain";
         }
 
-        public int Result()
+        public async Task<int> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
                 var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);

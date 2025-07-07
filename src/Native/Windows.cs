@@ -67,7 +67,7 @@ namespace SourceGit.Native
             window.ExtendClientAreaToDecorationsHint = true;
             window.Classes.Add("fix_maximized_padding");
 
-            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
             {
                 // Custom WM_NCHITTEST
                 if (msg == 0x0084)
@@ -184,6 +184,7 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
+            finder.Cursor(FindCursor);
             finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
             finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
             finder.SublimeText(FindSublimeText);
@@ -257,7 +258,7 @@ namespace SourceGit.Native
         {
             // Schedule the DWM frame extension to run in the next render frame
             // to ensure proper timing with the window initialization sequence
-            Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatcher.UIThread.Post(() =>
             {
                 var platformHandle = w.TryGetPlatformHandle();
                 if (platformHandle == null)
@@ -384,6 +385,20 @@ namespace SourceGit.Native
                     devenv.GetValue(string.Empty) is string localServer32)
                     return localServer32!.Trim('\"');
             }
+
+            return string.Empty;
+        }
+
+        private string FindCursor()
+        {
+            var cursorPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Programs",
+                "Cursor",
+                "Cursor.exe");
+
+            if (File.Exists(cursorPath))
+                return cursorPath;
 
             return string.Empty;
         }

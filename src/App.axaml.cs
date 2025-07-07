@@ -83,88 +83,112 @@ namespace SourceGit
             if (ex == null)
                 return;
 
-            var builder = new StringBuilder();
-            builder.Append($"Crash::: {ex.GetType().FullName}: {ex.Message}\n\n");
-            builder.Append("----------------------------\n");
-            builder.Append($"Version: {Assembly.GetExecutingAssembly().GetName().Version}\n");
-            builder.Append($"OS: {Environment.OSVersion}\n");
-            builder.Append($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}\n");
-            builder.Append($"Source: {ex.Source}\n");
-            builder.Append($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}\n");
-            builder.Append($"User: {Environment.UserName}\n");
-            builder.Append($"App Start Time: {Process.GetCurrentProcess().StartTime}\n");
-            builder.Append($"Exception Time: {DateTime.Now}\n");
-            builder.Append($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB\n");
-            builder.Append("---------------------------\n\n");
-            builder.Append(ex);
-
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
-            File.WriteAllText(file, builder.ToString());
+            using var writer = new StreamWriter(file);
+            writer.WriteLine($"Crash::: {ex.GetType().FullName}: {ex.Message}");
+            writer.WriteLine();
+            writer.WriteLine("----------------------------");
+            writer.WriteLine($"Version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            writer.WriteLine($"OS: {Environment.OSVersion}");
+            writer.WriteLine($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
+            writer.WriteLine($"Source: {ex.Source}");
+            writer.WriteLine($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}");
+            writer.WriteLine($"User: {Environment.UserName}");
+            writer.WriteLine($"App Start Time: {Process.GetCurrentProcess().StartTime}");
+            writer.WriteLine($"Exception Time: {DateTime.Now}");
+            writer.WriteLine($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB");
+            writer.WriteLine("----------------------------");
+            writer.WriteLine();
+            writer.WriteLine(ex);
+            writer.Flush();
         }
         #endregion
 
         #region Utility Functions
-        public static void ShowWindow(object data, bool showAsDialog)
+        public static object CreateViewForViewModel(object data)
         {
-            var impl = (Views.ChromelessWindow target, bool isDialog) =>
-            {
-                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
-                {
-                    if (isDialog)
-                        target.ShowDialog(owner);
-                    else
-                        target.Show(owner);
-                }
-                else
-                {
-                    target.Show();
-                }
-            };
-
-            if (data is Views.ChromelessWindow window)
-            {
-                impl(window, showAsDialog);
-                return;
-            }
-
             var dataTypeName = data.GetType().FullName;
             if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
-                return;
+                return null;
 
             var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
             var viewType = Type.GetType(viewTypeName);
-            if (viewType == null || !viewType.IsSubclassOf(typeof(Views.ChromelessWindow)))
-                return;
+            if (viewType != null)
+                return Activator.CreateInstance(viewType);
 
-            window = Activator.CreateInstance(viewType) as Views.ChromelessWindow;
+            return null;
+        }
+
+        public static Task ShowDialog(object data, Window owner = null)
+        {
+            if (owner == null)
+            {
+                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } mainWindow })
+                    owner = mainWindow;
+                else
+                    return null;
+            }
+
+            if (data is Views.ChromelessWindow window)
+                return window.ShowDialog(owner);
+
+            window = CreateViewForViewModel(data) as Views.ChromelessWindow;
             if (window != null)
             {
                 window.DataContext = data;
-                impl(window, showAsDialog);
+                return window.ShowDialog(owner);
             }
+
+            return null;
+        }
+
+        public static void ShowWindow(object data)
+        {
+            if (data is Views.ChromelessWindow window)
+            {
+                window.Show();
+                return;
+            }
+
+            window = CreateViewForViewModel(data) as Views.ChromelessWindow;
+            if (window != null)
+            {
+                window.DataContext = data;
+                window.Show();
+            }
+        }
+
+        public static async Task<bool> AskConfirmAsync(string message, Action onSure)
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var confirm = new Views.Confirm();
+                confirm.Message.Text = message;
+                confirm.OnSure = onSure;
+                return await confirm.ShowDialog<bool>(owner);
+            }
+
+            return false;
         }
 
         public static void RaiseException(string context, string message)
         {
-            if (Current is App app && app._launcher != null)
+            if (Current is App { _launcher: not null } app)
                 app._launcher.DispatchNotification(context, message, true);
         }
 
         public static void SendNotification(string context, string message)
         {
-            if (Current is App app && app._launcher != null)
+            if (Current is App { _launcher: not null } app)
                 app._launcher.DispatchNotification(context, message, false);
         }
 
         public static void SetLocale(string localeKey)
         {
-            var app = Current as App;
-            if (app == null)
-                return;
-
-            var targetLocale = app.Resources[localeKey] as ResourceDictionary;
-            if (targetLocale == null || targetLocale == app._activeLocale)
+            if (Current is not App app ||
+                app.Resources[localeKey] is not ResourceDictionary targetLocale ||
+                targetLocale == app._activeLocale)
                 return;
 
             if (app._activeLocale != null)
@@ -176,8 +200,7 @@ namespace SourceGit
 
         public static void SetTheme(string theme, string themeOverridesFile)
         {
-            var app = Current as App;
-            if (app == null)
+            if (Current is not App app)
                 return;
 
             if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
@@ -230,8 +253,7 @@ namespace SourceGit
 
         public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
         {
-            var app = Current as App;
-            if (app == null)
+            if (Current is not App app)
                 return;
 
             if (app._fontsOverrides != null)
@@ -283,24 +305,16 @@ namespace SourceGit
             }
         }
 
-        public static async void CopyText(string data)
+        public static async Task CopyTextAsync(string data)
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                if (desktop.MainWindow?.Clipboard is { } clipboard)
-                    await clipboard.SetTextAsync(data ?? "");
-            }
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
+                await clipboard.SetTextAsync(data ?? "");
         }
 
         public static async Task<string> GetClipboardTextAsync()
         {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                if (desktop.MainWindow?.Clipboard is { } clipboard)
-                {
-                    return await clipboard.GetTextAsync();
-                }
-            }
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
+                return await clipboard.GetTextAsync();
             return null;
         }
 
@@ -436,33 +450,33 @@ namespace SourceGit
                 return true;
 
             var collection = JsonSerializer.Deserialize(File.ReadAllText(jobsFile), JsonCodeGen.Default.InteractiveRebaseJobCollection);
-            var lines = new List<string>();
+            using var writer = new StreamWriter(file);
             foreach (var job in collection.Jobs)
             {
                 switch (job.Action)
                 {
                     case Models.InteractiveRebaseAction.Pick:
-                        lines.Add($"p {job.SHA}");
+                        writer.WriteLine($"p {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Edit:
-                        lines.Add($"e {job.SHA}");
+                        writer.WriteLine($"e {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Reword:
-                        lines.Add($"r {job.SHA}");
+                        writer.WriteLine($"r {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Squash:
-                        lines.Add($"s {job.SHA}");
+                        writer.WriteLine($"s {job.SHA}");
                         break;
                     case Models.InteractiveRebaseAction.Fixup:
-                        lines.Add($"f {job.SHA}");
+                        writer.WriteLine($"f {job.SHA}");
                         break;
                     default:
-                        lines.Add($"d {job.SHA}");
+                        writer.WriteLine($"d {job.SHA}");
                         break;
                 }
             }
 
-            File.WriteAllLines(file, lines);
+            writer.Flush();
 
             exitCode = 0;
             return true;
@@ -561,7 +575,7 @@ namespace SourceGit
             Models.AvatarManager.Instance.Start();
 
             string startupRepo = null;
-            if (desktop.Args != null && desktop.Args.Length == 1 && Directory.Exists(desktop.Args[0]))
+            if (desktop.Args is { Length: 1 } && Directory.Exists(desktop.Args[0]))
                 startupRepo = desktop.Args[0];
 
             var pref = ViewModels.Preferences.Instance;
@@ -581,7 +595,7 @@ namespace SourceGit
         {
             if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
-                var test = new Commands.QueryRepositoryRootPath(repo).ReadToEnd();
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResultAsync().Result;
                 if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                 {
                     Dispatcher.UIThread.Invoke(() =>
@@ -648,9 +662,9 @@ namespace SourceGit
 
         private void ShowSelfUpdateResult(object data)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Post(async () =>
             {
-                ShowWindow(new ViewModels.SelfUpdate() { Data = data }, true);
+                await ShowDialog(new ViewModels.SelfUpdate { Data = data });
             });
         }
 

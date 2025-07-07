@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
             Force = false;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Push {Revision.SHA.Substring(0, 10)} -> {RemoteBranch.FriendlyName} ...";
@@ -36,22 +36,19 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Revision");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Push(
-                    _repo.FullPath,
-                    Revision.SHA,
-                    RemoteBranch.Remote,
-                    RemoteBranch.Name,
-                    false,
-                    false,
-                    false,
-                    Force).Use(log).Exec();
+            var succ = await new Commands.Push(
+                _repo.FullPath,
+                Revision.SHA,
+                RemoteBranch.Remote,
+                RemoteBranch.Name,
+                false,
+                false,
+                false,
+                Force).Use(log).RunAsync();
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return succ;
         }
 
         private readonly Repository _repo;

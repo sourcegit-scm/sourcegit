@@ -31,24 +31,22 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is RenameBranch rename)
             {
-                var fixedName = rename.FixName(name);
+                var fixedName = Models.Branch.FixName(name);
                 foreach (var b in rename._repo.Branches)
                 {
-                    if (b.IsLocal && b != rename.Target && b.Name == fixedName)
-                    {
+                    if (b.IsLocal && b != rename.Target && b.Name.Equals(fixedName, StringComparison.Ordinal))
                         return new ValidationResult("A branch with same name already exists!!!");
-                    }
                 }
             }
 
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            var fixedName = FixName(_name);
-            if (fixedName == Target.Name)
-                return null;
+            var fixedName = Models.Branch.FixName(_name);
+            if (fixedName.Equals(Target.Name, StringComparison.Ordinal))
+                return true;
 
             _repo.SetWatcherEnabled(false);
             ProgressDescription = $"Rename '{Target.Name}'";
@@ -56,48 +54,34 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
-            return Task.Run(() =>
+            var isCurrent = Target.IsCurrent;
+            var oldName = Target.FullName;
+
+            var succ = await Commands.Branch.RenameAsync(_repo.FullPath, Target.Name, fixedName, log);
+            if (succ)
             {
-                var isCurrent = Target.IsCurrent;
-                var oldName = Target.FullName;
-                var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, fixedName, log);
-                log.Complete();
-
-                CallUIThread(() =>
+                foreach (var filter in _repo.Settings.HistoriesFilters)
                 {
-                    ProgressDescription = "Waiting for branch updated...";
-
-                    if (succ)
+                    if (filter.Type == Models.FilterType.LocalBranch &&
+                        filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                     {
-                        foreach (var filter in _repo.Settings.HistoriesFilters)
-                        {
-                            if (filter.Type == Models.FilterType.LocalBranch &&
-                                filter.Pattern.Equals(oldName, StringComparison.Ordinal))
-                            {
-                                filter.Pattern = $"refs/heads/{fixedName}";
-                                break;
-                            }
-                        }
+                        filter.Pattern = $"refs/heads/{fixedName}";
+                        break;
                     }
+                }
+            }
 
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
 
-                if (isCurrent)
-                    Task.Delay(400).Wait();
+            if (isCurrent)
+            {
+                ProgressDescription = "Waiting for branch updated...";
+                await Task.Delay(400);
+            }
 
-                return succ;
-            });
-        }
-
-        private string FixName(string name)
-        {
-            if (!name.Contains(' '))
-                return name;
-
-            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            return string.Join("-", parts);
+            return succ;
         }
 
         private readonly Repository _repo;

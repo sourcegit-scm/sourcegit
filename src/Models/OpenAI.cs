@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
@@ -173,7 +174,7 @@ namespace SourceGit.Models
                 """;
         }
 
-        public void Chat(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
+        public async Task ChatAsync(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
             var server = new Uri(_server);
             var key = new ApiKeyCredential(_apiKey);
@@ -191,9 +192,9 @@ namespace SourceGit.Models
 
                 if (_streaming)
                 {
-                    var updates = client.CompleteChatStreaming(messages, null, cancellation);
+                    var updates = client.CompleteChatStreamingAsync(messages, null, cancellation);
 
-                    foreach (var update in updates)
+                    await foreach (var update in updates)
                     {
                         if (update.ContentUpdate.Count > 0)
                             rsp.Append(update.ContentUpdate[0].Text);
@@ -201,7 +202,7 @@ namespace SourceGit.Models
                 }
                 else
                 {
-                    var completion = client.CompleteChat(messages, null, cancellation);
+                    var completion = await client.CompleteChatAsync(messages, null, cancellation);
 
                     if (completion.Value.Content.Count > 0)
                         rsp.Append(completion.Value.Content[0].Text);

@@ -7,21 +7,22 @@ namespace SourceGit.Views
     {
         public LFSLocks()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 
-        private void OnUnlockButtonClicked(object sender, RoutedEventArgs e)
+        private async void OnUnlockButtonClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.LFSLocks vm && sender is Button button)
-                vm.Unlock(button.DataContext as Models.LFSLock, false);
+                await vm.UnlockAsync(button.DataContext as Models.LFSLock, false);
 
             e.Handled = true;
         }
 
-        private void OnForceUnlockButtonClicked(object sender, RoutedEventArgs e)
+        private async void OnForceUnlockButtonClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.LFSLocks vm && sender is Button button)
-                vm.Unlock(button.DataContext as Models.LFSLock, true);
+                await vm.UnlockAsync(button.DataContext as Models.LFSLock, true);
 
             e.Handled = true;
         }

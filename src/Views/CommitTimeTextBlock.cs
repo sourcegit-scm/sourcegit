@@ -118,8 +118,7 @@ namespace SourceGit.Views
 
         private string GetDisplayText()
         {
-            var commit = DataContext as Models.Commit;
-            if (commit == null)
+            if (DataContext is not Models.Commit commit)
                 return string.Empty;
 
             if (ShowAsDateTime)

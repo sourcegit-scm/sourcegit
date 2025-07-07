@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -49,7 +48,7 @@ namespace SourceGit.Commands
             }
         }
 
-        public bool Exec()
+        public async Task<bool> ExecAsync()
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = _repo;
@@ -66,25 +65,22 @@ namespace SourceGit.Commands
             {
                 var proc = new Process() { StartInfo = starter };
                 proc.Start();
-                proc.StandardInput.Write(_patchBuilder.ToString());
+                await proc.StandardInput.WriteAsync(_patchBuilder.ToString());
                 proc.StandardInput.Close();
 
-                var err = proc.StandardError.ReadToEnd();
-                proc.WaitForExit();
+                var err = await proc.StandardError.ReadToEndAsync().ConfigureAwait(false);
+                await proc.WaitForExitAsync().ConfigureAwait(false);
                 var rs = proc.ExitCode == 0;
                 proc.Close();
 
                 if (!rs)
-                    Dispatcher.UIThread.Invoke(() => App.RaiseException(_repo, err));
+                    App.RaiseException(_repo, err);
 
                 return rs;
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(_repo, "Failed to unstage changes: " + e.Message);
-                });
+                App.RaiseException(_repo, "Failed to unstage changes: " + e.Message);
                 return false;
             }
         }

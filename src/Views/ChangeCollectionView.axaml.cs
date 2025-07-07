@@ -87,15 +87,6 @@ namespace SourceGit.Views
             set => SetValue(ChangesProperty, value);
         }
 
-        public static readonly StyledProperty<bool> AutoSelectFirstChangeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(AutoSelectFirstChange));
-
-        public bool AutoSelectFirstChange
-        {
-            get => GetValue(AutoSelectFirstChangeProperty);
-            set => SetValue(AutoSelectFirstChangeProperty, value);
-        }
-
         public static readonly StyledProperty<List<Models.Change>> SelectedChangesProperty =
             AvaloniaProperty.Register<ChangeCollectionView, List<Models.Change>>(nameof(SelectedChanges));
 
@@ -365,24 +356,9 @@ namespace SourceGit.Views
                 MakeTreeRows(rows, tree.Tree);
                 tree.Rows.AddRange(rows);
 
-                if (!onlyViewModeChange && AutoSelectFirstChange)
+                if (selected.Count > 0)
                 {
-                    foreach (var row in tree.Rows)
-                    {
-                        if (row.Change != null)
-                        {
-                            tree.SelectedRows.Add(row);
-                            SetCurrentValue(SelectedChangesProperty, [row.Change]);
-                            break;
-                        }
-                    }
-                }
-                else if (selected.Count > 0)
-                {
-                    var sets = new HashSet<Models.Change>();
-                    foreach (var c in selected)
-                        sets.Add(c);
-
+                    var sets = new HashSet<Models.Change>(selected);
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)
                     {
@@ -399,16 +375,8 @@ namespace SourceGit.Views
             {
                 var grid = new ViewModels.ChangeCollectionAsGrid();
                 grid.Changes.AddRange(changes);
-
-                if (!onlyViewModeChange && AutoSelectFirstChange)
-                {
-                    grid.SelectedChanges.Add(changes[0]);
-                    SetCurrentValue(SelectedChangesProperty, [changes[0]]);
-                }
-                else if (selected.Count > 0)
-                {
+                if (selected.Count > 0)
                     grid.SelectedChanges.AddRange(selected);
-                }
 
                 Content = grid;
             }
@@ -416,16 +384,8 @@ namespace SourceGit.Views
             {
                 var list = new ViewModels.ChangeCollectionAsList();
                 list.Changes.AddRange(changes);
-
-                if (!onlyViewModeChange && AutoSelectFirstChange)
-                {
-                    list.SelectedChanges.Add(changes[0]);
-                    SetCurrentValue(SelectedChangesProperty, [changes[0]]);
-                }
-                else if (selected.Count > 0)
-                {
+                if (selected.Count > 0)
                     list.SelectedChanges.AddRange(selected);
-                }
 
                 Content = list;
             }
@@ -447,9 +407,7 @@ namespace SourceGit.Views
 
                 if (selected.Count > 0)
                 {
-                    var sets = new HashSet<Models.Change>();
-                    foreach (var c in selected)
-                        sets.Add(c);
+                    var sets = new HashSet<Models.Change>(selected);
 
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)

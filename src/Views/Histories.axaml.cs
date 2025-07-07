@@ -4,7 +4,9 @@ using System.Text;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -129,53 +131,90 @@ namespace SourceGit.Views
 
             if (change.Property == NavigationIdProperty)
             {
-                if (DataContext is ViewModels.Histories)
-                {
-                    var list = CommitListContainer;
-                    if (list is { SelectedItems.Count: 1 })
-                        list.ScrollIntoView(list.SelectedIndex);
-                }
+                if (CommitListContainer is { SelectedItems.Count: 1, IsLoaded: true } dataGrid)
+                    dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
             }
+        }
+
+        private void OnCommitListLoaded(object sender, RoutedEventArgs e)
+        {
+            var dataGrid = CommitListContainer;
+            var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
+            if (rowsPresenter is { Children: { Count: > 0 } rows })
+                CommitGraph.Layout = new(0, dataGrid.Columns[0].ActualWidth - 4, rows[0].Bounds.Height);
+
+            if (dataGrid.SelectedItems.Count == 1)
+                dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
         }
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
-            var y = CommitListContainer.Scroll?.Offset.Y ?? 0;
-            var authorNameColumnWidth = ViewModels.Preferences.Instance.Layout.HistoriesAuthorColumnWidth.Value;
-            if (y != _lastScrollY || authorNameColumnWidth != _lastAuthorNameColumnWidth)
+            if (!IsLoaded)
+                return;
+
+            var dataGrid = CommitListContainer;
+            var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
+            if (rowsPresenter == null)
+                return;
+
+            double rowHeight = dataGrid.RowHeight;
+            double startY = 0;
+            foreach (var child in rowsPresenter.Children)
             {
-                _lastScrollY = y;
-                _lastAuthorNameColumnWidth = authorNameColumnWidth;
-                CommitGraph.InvalidateVisual();
+                if (child is DataGridRow { IsVisible: true } row)
+                {
+                    rowHeight = row.Bounds.Height;
+
+                    if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
+                    {
+                        var test = rowHeight * row.Index - row.Bounds.Top;
+                        if (startY < test)
+                            startY = test;
+                    }
+                }
+            }
+
+            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
+            if (_lastGraphStartY != startY ||
+                _lastGraphClipWidth != clipWidth ||
+                _lastGraphRowHeight != rowHeight)
+            {
+                _lastGraphStartY = startY;
+                _lastGraphClipWidth = clipWidth;
+                _lastGraphRowHeight = rowHeight;
+
+                CommitGraph.Layout = new(startY, clipWidth, rowHeight);
             }
         }
 
         private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories)
-            {
                 histories.Select(CommitListContainer.SelectedItems);
-            }
+
             e.Handled = true;
         }
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories && sender is ListBox { SelectedItems.Count: > 0 } list)
+            if (DataContext is ViewModels.Histories histories &&
+                sender is DataGrid { SelectedItems.Count: > 0 } dataGrid &&
+                e.Source is Control { DataContext: Models.Commit })
             {
-                var menu = histories.MakeContextMenu(list);
-                menu?.Open(list);
+                var menu = histories.MakeContextMenu(dataGrid);
+                menu?.Open(dataGrid);
             }
+
             e.Handled = true;
         }
 
-        private void OnCommitListKeyDown(object sender, KeyEventArgs e)
+        private async void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
             if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 return;
 
             // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
-            if (sender is ListBox { SelectedItems: { Count: > 0 } selected })
+            if (sender is DataGrid { SelectedItems: { Count: > 0 } selected })
             {
                 // CTRL/COMMAND + C -> Copy selected commit SHA and subject.
                 if (e.Key == Key.C)
@@ -187,7 +226,7 @@ namespace SourceGit.Views
                             builder.AppendLine($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
                     }
 
-                    App.CopyText(builder.ToString());
+                    await App.CopyTextAsync(builder.ToString());
                     e.Handled = true;
                     return;
                 }
@@ -196,11 +235,8 @@ namespace SourceGit.Views
                 if (e.Key == Key.B)
                 {
                     var repoView = this.FindAncestorOfType<Repository>();
-                    if (repoView == null)
-                        return;
 
-                    var repo = repoView.DataContext as ViewModels.Repository;
-                    if (repo == null || !repo.CanCreatePopup())
+                    if (repoView?.DataContext is not ViewModels.Repository repo || !repo.CanCreatePopup())
                         return;
 
                     if (selected.Count == 1 && selected[0] is Models.Commit commit)
@@ -212,13 +248,14 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnCommitListItemDoubleTapped(object sender, TappedEventArgs e)
+        private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
             e.Handled = true;
 
             if (DataContext is ViewModels.Histories histories &&
                 CommitListContainer.SelectedItems is { Count: 1 } &&
-                sender is Grid { DataContext: Models.Commit commit })
+                sender is DataGrid grid &&
+                !Equals(e.Source, grid))
             {
                 if (e.Source is CommitRefsPresenter crp)
                 {
@@ -227,11 +264,13 @@ namespace SourceGit.Views
                         return;
                 }
 
-                histories.CheckoutBranchByCommit(commit);
+                if (e.Source is Control { DataContext: Models.Commit c })
+                    histories.CheckoutBranchByCommit(c);
             }
         }
 
-        private double _lastScrollY = 0;
-        private double _lastAuthorNameColumnWidth = 0;
+        private double _lastGraphStartY = 0;
+        private double _lastGraphClipWidth = 0;
+        private double _lastGraphRowHeight = 0;
     }
 }

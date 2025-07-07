@@ -17,7 +17,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selected, value))
-                    CanDeleteSelected = value != null && !value.IsActive;
+                    CanDeleteSelected = value is { IsActive: false };
             }
         }
 

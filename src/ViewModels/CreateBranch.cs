@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -67,12 +68,10 @@ namespace SourceGit.ViewModels
         public CreateBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
-            _baseOnRevision = branch.IsDetachedHead ? branch.Head : branch.FullName;
+            _baseOnRevision = branch.Head;
 
             if (!branch.IsLocal && repo.Branches.Find(x => x.IsLocal && x.Name == branch.Name) == null)
-            {
                 Name = branch.Name;
-            }
 
             BasedOn = branch;
             DiscardLocalChanges = false;
@@ -102,123 +101,122 @@ namespace SourceGit.ViewModels
             {
                 if (!creator._allowOverwrite)
                 {
-                    var fixedName = creator.FixName(name);
+                    var fixedName = Models.Branch.FixName(name);
                     foreach (var b in creator._repo.Branches)
                     {
-                        if (b.FriendlyName == fixedName)
+                        if (b.FriendlyName.Equals(fixedName, StringComparison.Ordinal))
                             return new ValidationResult("A branch with same name already exists!");
                     }
                 }
 
                 return ValidationResult.Success;
             }
-            else
-            {
-                return new ValidationResult("Missing runtime context to create branch!");
-            }
+
+            return new ValidationResult("Missing runtime context to create branch!");
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
 
-            var fixedName = FixName(_name);
+            var fixedName = Models.Branch.FixName(_name);
             var log = _repo.CreateLog($"Create Branch '{fixedName}'");
             Use(log);
 
-            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(() =>
+            if (CheckoutAfterCreated)
             {
-                bool succ;
-
-                if (CheckoutAfterCreated && !_repo.ConfirmCheckoutBranch())
+                if (_repo.CurrentBranch is { IsDetachedHead: true } && !_repo.CurrentBranch.Head.Equals(_baseOnRevision, StringComparison.Ordinal))
                 {
-                    CallUIThread(() => _repo.SetWatcherEnabled(true));
-                    return true;
-                }
-
-                if (CheckoutAfterCreated && !_repo.IsBare)
-                {
-                    var needPopStash = false;
-                    if (DiscardLocalChanges)
+                    var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _repo.CurrentBranch.Head).GetResultAsync();
+                    if (refs.Count == 0)
                     {
-                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, true, _allowOverwrite);
-                    }
-                    else
-                    {
-                        var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
-                        if (changes > 0)
+                        var msg = App.Text("Checkout.WarnLostCommits");
+                        var shouldContinue = await App.AskConfirmAsync(msg, null);
+                        if (!shouldContinue)
                         {
-                            succ = new Commands.Stash(_repo.FullPath).Use(log).Push("CREATE_BRANCH_AUTO_STASH");
-                            if (!succ)
-                            {
-                                log.Complete();
-                                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                                return false;
-                            }
+                            _repo.SetWatcherEnabled(true);
+                            return true;
+                        }
+                    }
+                }
+            }
 
-                            needPopStash = true;
+            bool succ;
+            if (CheckoutAfterCreated && !_repo.IsBare)
+            {
+                var needPopStash = false;
+                if (!DiscardLocalChanges)
+                {
+                    var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
+                    if (changes > 0)
+                    {
+                        succ = await new Commands.Stash(_repo.FullPath)
+                            .Use(log)
+                            .PushAsync("CREATE_BRANCH_AUTO_STASH");
+                        if (!succ)
+                        {
+                            log.Complete();
+                            _repo.SetWatcherEnabled(true);
+                            return false;
                         }
 
-                        succ = new Commands.Checkout(_repo.FullPath).Use(log).Branch(fixedName, _baseOnRevision, false, _allowOverwrite);
-                    }
-
-                    if (succ)
-                    {
-                        if (updateSubmodules)
-                        {
-                            var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
-                            if (submodules.Count > 0)
-                                new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
-                        }
-
-                        if (needPopStash)
-                            new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+                        needPopStash = true;
                     }
                 }
-                else
-                {
-                    succ = Commands.Branch.Create(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
-                }
 
-                log.Complete();
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(fixedName, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);
 
-                CallUIThread(() =>
+                if (succ)
                 {
-                    if (succ && CheckoutAfterCreated)
+                    if (IsRecurseSubmoduleVisible && RecurseSubmodules)
                     {
-                        var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
-                        if (BasedOn is Models.Branch based && !based.IsLocal)
-                            fake.Upstream = based.FullName;
-
-                        var folderEndIdx = fake.FullName.LastIndexOf('/');
-                        if (folderEndIdx > 10)
-                            _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
-
-                        if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
-                            _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
-
-                        ProgressDescription = "Waiting for branch updated...";
+                        var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
+                        if (submodules.Count > 0)
+                            await new Commands.Submodule(_repo.FullPath)
+                                .Use(log)
+                                .UpdateAsync(submodules, true, true);
                     }
 
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
+                    if (needPopStash)
+                        await new Commands.Stash(_repo.FullPath)
+                            .Use(log)
+                            .PopAsync("stash@{0}");
+                }
+            }
+            else
+            {
+                succ = await Commands.Branch.CreateAsync(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
+            }
 
-                if (CheckoutAfterCreated)
-                    Task.Delay(400).Wait();
+            log.Complete();
 
-                return true;
-            });
-        }
+            if (succ && CheckoutAfterCreated)
+            {
+                var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
+                if (BasedOn is Models.Branch { IsLocal: false } based)
+                    fake.Upstream = based.FullName;
 
-        private string FixName(string name)
-        {
-            if (!name.Contains(' '))
-                return name;
+                var folderEndIdx = fake.FullName.LastIndexOf('/');
+                if (folderEndIdx > 10)
+                    _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
 
-            var parts = name.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
-            return string.Join("-", parts);
+                if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
+                    _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
+
+            }
+
+            _repo.MarkBranchesDirtyManually();
+            _repo.SetWatcherEnabled(true);
+
+            if (CheckoutAfterCreated)
+            {
+                ProgressDescription = "Waiting for branch updated...";
+                await Task.Delay(400);
+            }
+
+            return true;
         }
 
         private readonly Repository _repo = null;

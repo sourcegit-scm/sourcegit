@@ -256,6 +256,7 @@ namespace SourceGit.Models
             if (name.Equals(".gitmodules", StringComparison.Ordinal))
             {
                 _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
                 return;
             }
 

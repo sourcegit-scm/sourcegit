@@ -72,6 +72,36 @@ namespace SourceGit.ViewModels
         public string GetValue() => IsChecked ? CheckedValue : string.Empty;
     }
 
+    public class CustomActionControlComboBox : ObservableObject, ICustomActionControlParameter
+    {
+        public string Label { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public List<string> Options { get; set; } = [];
+
+        public string Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value);
+        }
+
+        public CustomActionControlComboBox(string label, string description, string options)
+        {
+            Label = label;
+            Description = description;
+
+            var parts = options.Split('|', StringSplitOptions.TrimEntries);
+            if (parts.Length > 0)
+            {
+                Options.AddRange(parts);
+                _value = parts[0];
+            }
+        }
+
+        public string GetValue() => _value;
+
+        private string _value = string.Empty;
+    }
+
     public class ExecuteCustomAction : Popup
     {
         public Models.CustomAction CustomAction
@@ -121,7 +151,7 @@ namespace SourceGit.ViewModels
             PrepareControlParameters();
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Run custom action ...";
@@ -136,19 +166,16 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog(CustomAction.Name);
             Use(log);
 
-            return Task.Run(() =>
-            {
-                log.AppendLine($"$ {CustomAction.Executable} {cmdline}\n");
+            log.AppendLine($"$ {CustomAction.Executable} {cmdline}\n");
 
-                if (CustomAction.WaitForExit)
-                    RunAndWait(cmdline, log);
-                else
-                    Run(cmdline);
+            if (CustomAction.WaitForExit)
+                await RunAsync(cmdline, log);
+            else
+                _ = Task.Run(() => Run(cmdline));
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return true;
         }
 
         private void PrepareControlParameters()
@@ -160,11 +187,14 @@ namespace SourceGit.ViewModels
                     case Models.CustomActionControlType.TextBox:
                         ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
                         break;
+                    case Models.CustomActionControlType.PathSelector:
+                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
+                        break;
                     case Models.CustomActionControlType.CheckBox:
                         ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
                         break;
-                    case Models.CustomActionControlType.PathSelector:
-                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
+                    case Models.CustomActionControlType.ComboBox:
+                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
                         break;
                 }
             }
@@ -174,14 +204,13 @@ namespace SourceGit.ViewModels
         {
             org = org.Replace("${REPO}", GetWorkdir());
 
-            if (Target is Models.Branch b)
-                return org.Replace("${BRANCH}", b.FriendlyName);
-            else if (Target is Models.Commit c)
-                return org.Replace("${SHA}", c.SHA);
-            else if (Target is Models.Tag t)
-                return org.Replace("${TAG}", t.Name);
-
-            return org;
+            return Target switch
+            {
+                Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName),
+                Models.Commit c => org.Replace("${SHA}", c.SHA),
+                Models.Tag t => org.Replace("${TAG}", t.Name),
+                _ => org
+            };
         }
 
         private string GetWorkdir()
@@ -204,11 +233,11 @@ namespace SourceGit.ViewModels
             }
             catch (Exception e)
             {
-                CallUIThread(() => App.RaiseException(_repo.FullPath, e.Message));
+                App.RaiseException(_repo.FullPath, e.Message);
             }
         }
 
-        private void RunAndWait(string args, Models.ICommandLog log)
+        private async Task RunAsync(string args, Models.ICommandLog log)
         {
             var start = new ProcessStartInfo();
             start.FileName = CustomAction.Executable;
@@ -244,19 +273,19 @@ namespace SourceGit.ViewModels
                 proc.Start();
                 proc.BeginOutputReadLine();
                 proc.BeginErrorReadLine();
-                proc.WaitForExit();
+                await proc.WaitForExitAsync().ConfigureAwait(false);
 
                 var exitCode = proc.ExitCode;
                 if (exitCode != 0)
                 {
                     var errMsg = builder.ToString().Trim();
                     if (!string.IsNullOrEmpty(errMsg))
-                        CallUIThread(() => App.RaiseException(_repo.FullPath, errMsg));
+                        App.RaiseException(_repo.FullPath, errMsg);
                 }
             }
             catch (Exception e)
             {
-                CallUIThread(() => App.RaiseException(_repo.FullPath, e.Message));
+                App.RaiseException(_repo.FullPath, e.Message);
             }
 
             proc.Close();

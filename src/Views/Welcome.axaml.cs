@@ -208,11 +208,8 @@ namespace SourceGit.Views
             if (e.Data.Contains("MovedRepositoryTreeNode") || e.Data.Contains(DataFormats.Files))
             {
                 var grid = sender as Grid;
-                if (grid == null)
-                    return;
 
-                var to = grid.DataContext as ViewModels.RepositoryNode;
-                if (to == null)
+                if (grid?.DataContext is not ViewModels.RepositoryNode)
                     return;
 
                 e.DragEffects = DragDropEffects.Move;
@@ -225,8 +222,7 @@ namespace SourceGit.Views
             if (sender is not Grid grid)
                 return;
 
-            var to = grid.DataContext as ViewModels.RepositoryNode;
-            if (to == null)
+            if (grid.DataContext is not ViewModels.RepositoryNode to)
             {
                 e.Handled = true;
                 return;

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -11,15 +12,25 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is ChangeCollectionView { SelectedChanges: { } selected } view &&
-                selected.Count == 1 &&
-                DataContext is ViewModels.CommitDetail vm)
+            e.Handled = true;
+
+            if (sender is not ChangeCollectionView view || DataContext is not ViewModels.CommitDetail vm)
+                return;
+
+            var changes = view.SelectedChanges ?? [];
+            var container = view.FindDescendantOfType<ChangeCollectionContainer>();
+            if (container is { SelectedItems.Count: 1, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
             {
-                var menu = vm.CreateChangeContextMenu(selected[0]);
-                menu?.Open(view);
+                var menu = vm.CreateChangeContextMenuByFolder(node, changes);
+                menu.Open(view);
+                return;
             }
 
-            e.Handled = true;
+            if (changes.Count == 1)
+            {
+                var menu = vm.CreateChangeContextMenu(changes[0]);
+                menu.Open(view);
+            }
         }
     }
 }

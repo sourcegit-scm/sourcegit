@@ -19,7 +19,7 @@ namespace SourceGit.Views
         private void EnterPassword(object _1, RoutedEventArgs _2)
         {
             var passphrase = TxtPassphrase.Text ?? string.Empty;
-            Console.Out.Write($"{passphrase}\n");
+            Console.Out.WriteLine(passphrase);
             App.Quit(0);
         }
     }

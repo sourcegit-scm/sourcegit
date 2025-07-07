@@ -165,7 +165,7 @@ namespace SourceGit.ViewModels
                     return;
                 }
 
-                var lastFolder = null as BranchTreeNode;
+                BranchTreeNode lastFolder = null;
                 var start = 0;
 
                 while (sepIdx != -1)
@@ -250,8 +250,7 @@ namespace SourceGit.ViewModels
                     {
                         if (r.Backend is Models.Branch)
                             return r.TimeToSort == l.TimeToSort ? Models.NumericSort.Compare(l.Name, r.Name) : r.TimeToSort.CompareTo(l.TimeToSort);
-                        else
-                            return 1;
+                        return 1;
                     }
 
                     if (r.Backend is Models.Branch)

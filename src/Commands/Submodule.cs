@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,25 +12,38 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Add(string url, string relativePath, bool recursive)
+        public async Task<bool> AddAsync(string url, string relativePath, bool recursive)
         {
             Args = $"-c protocol.file.allow=always submodule add \"{url}\" \"{relativePath}\"";
-            if (!Exec())
+
+            var succ = await ExecAsync().ConfigureAwait(false);
+            if (!succ)
                 return false;
 
             if (recursive)
-            {
                 Args = $"submodule update --init --recursive -- \"{relativePath}\"";
-                return Exec();
-            }
             else
-            {
                 Args = $"submodule update --init -- \"{relativePath}\"";
-                return true;
-            }
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Update(List<string> modules, bool init, bool recursive, bool useRemote = false)
+        public async Task<bool> SetURLAsync(string path, string url)
+        {
+            Args = $"submodule set-url -- \"{path}\" \"{url}\"";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> SetBranchAsync(string path, string branch)
+        {
+            if (string.IsNullOrEmpty(branch))
+                Args = $"submodule set-branch -d -- \"{path}\"";
+            else
+                Args = $"submodule set-branch -b \"{branch}\" -- \"{path}\"";
+
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> UpdateAsync(List<string> modules, bool init, bool recursive, bool useRemote = false)
         {
             var builder = new StringBuilder();
             builder.Append("submodule update");
@@ -48,19 +62,19 @@ namespace SourceGit.Commands
             }
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Deinit(string module, bool force)
+        public async Task<bool> DeinitAsync(string module, bool force)
         {
             Args = force ? $"submodule deinit -f -- \"{module}\"" : $"submodule deinit -- \"{module}\"";
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Delete(string module)
+        public async Task<bool> DeleteAsync(string module)
         {
             Args = $"rm -rf \"{module}\"";
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
     }
 }

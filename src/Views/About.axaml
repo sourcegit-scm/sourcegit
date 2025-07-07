@@ -45,7 +45,12 @@
       <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
         <StackPanel Height="40" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
-          <Border Margin="12,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
+          <Border Margin="12,0,0,0" Height="20"
+                  CornerRadius="10"
+                  Background="{DynamicResource Brush.Accent}"
+                  Effect="drop-shadow(0 0 6 #40000000)"
+                  Cursor="Hand"
+                  PointerPressed="OnVisitReleaseNotes">
             <TextBlock x:Name="TxtVersion" Classes="primary" Margin="8,0" FontSize="12" Foreground="White"/>
           </Border>
         </StackPanel>

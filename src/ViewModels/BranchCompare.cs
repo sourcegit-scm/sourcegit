@@ -49,7 +49,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value != null && value.Count == 1)
+                    if (value is { Count: 1 })
                         DiffContext = new DiffContext(_repo, new Models.DiffOption(_based.Head, _to.Head, value[0]), _diffContext);
                     else
                         DiffContext = null;
@@ -63,9 +63,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     RefreshVisible();
-                }
             }
         }
 
@@ -127,13 +125,13 @@ namespace SourceGit.ViewModels
             var diffWithMerger = new MenuItem();
             diffWithMerger.Header = App.Text("DiffWithMerger");
             diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
+            diffWithMerger.Click += (sender, ev) =>
             {
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_based.Head, _to.Head, change);
 
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
+                _ = Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt);
                 ev.Handled = true;
             };
             menu.Items.Add(diffWithMerger);
@@ -156,9 +154,9 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
+            copyPath.Click += async (_, ev) =>
             {
-                App.CopyText(change.Path);
+                await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
             menu.Items.Add(copyPath);
@@ -166,9 +164,9 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
+            copyFullPath.Click += async (_, e) =>
             {
-                App.CopyText(Native.OS.GetAbsPath(_repo, change.Path));
+                await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
                 e.Handled = true;
             };
             menu.Items.Add(copyFullPath);
@@ -178,20 +176,28 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 if (_baseHead == null)
                 {
-                    var baseHead = new Commands.QuerySingleCommit(_repo, _based.Head).Result();
-                    var toHead = new Commands.QuerySingleCommit(_repo, _to.Head).Result();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based.Head)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    var toHead = await new Commands.QuerySingleCommit(_repo, _to.Head)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    Dispatcher.UIThread.Post(() =>
                     {
                         BaseHead = baseHead;
                         ToHead = toHead;
                     });
                 }
 
-                _changes = new Commands.CompareRevisions(_repo, _based.Head, _to.Head).Result();
+                _changes = await new Commands.CompareRevisions(_repo, _based.Head, _to.Head)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
 
                 var visible = _changes;
                 if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -204,7 +210,15 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    VisibleChanges = visible;
+
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
             });
         }
 

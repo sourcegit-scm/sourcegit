@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -12,10 +13,10 @@ namespace SourceGit.Commands
             Args = "stash list -z --no-show-signature --format=\"%H%n%P%n%ct%n%gd%n%B\"";
         }
 
-        public List<Models.Stash> Result()
+        public async Task<List<Models.Stash>> GetResultAsync()
         {
             var outs = new List<Models.Stash>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return outs;
 

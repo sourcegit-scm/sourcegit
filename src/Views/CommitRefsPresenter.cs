@@ -174,12 +174,11 @@ namespace SourceGit.Views
         {
             _items.Clear();
 
-            var commit = DataContext as Models.Commit;
-            if (commit == null)
+            if (DataContext is not Models.Commit commit)
                 return new Size(0, 0);
 
             var refs = commit.Decorators;
-            if (refs != null && refs.Count > 0)
+            if (refs is { Count: > 0 })
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
@@ -196,8 +195,7 @@ namespace SourceGit.Views
                     if (!showTags && decorator.Type == Models.DecoratorType.Tag)
                         continue;
 
-                    var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead ||
-                        decorator.Type == Models.DecoratorType.CurrentCommitHead;
+                    var isHead = decorator.Type is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead;
 
                     var label = new FormattedText(
                         decorator.Name,

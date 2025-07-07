@@ -510,7 +510,7 @@ namespace SourceGit.ViewModels
                 var gitDirForWatcher = _gitDir;
                 if (_gitDir.Replace('\\', '/').IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
                 {
-                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).Result();
+                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).GetResultAsync().Result;
                     if (!string.IsNullOrEmpty(commonDir))
                         gitDirForWatcher = commonDir;
                 }
@@ -649,9 +649,9 @@ namespace SourceGit.ViewModels
             Task.Run(RefreshWorkingCopyChanges);
             Task.Run(RefreshStashes);
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var config = new Commands.Config(_fullpath).ListAll();
+                var config = await new Commands.Config(_fullpath).ReadAllAsync().ConfigureAwait(false);
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
 
                 if (config.TryGetValue("gitflow.branch.master", out var masterName))
@@ -823,15 +823,13 @@ namespace SourceGit.ViewModels
             if (!CanCreatePopup())
                 return;
 
-            ExecuteCustomAction popup;
-            if (scope is Models.Branch b)
-                popup = new ExecuteCustomAction(this, action, b);
-            else if (scope is Models.Commit c)
-                popup = new ExecuteCustomAction(this, action, c);
-            else if (scope is Models.Tag t)
-                popup = new ExecuteCustomAction(this, action, t);
-            else
-                popup = new ExecuteCustomAction(this, action);
+            var popup = scope switch
+            {
+                Models.Branch b => new ExecuteCustomAction(this, action, b),
+                Models.Commit c => new ExecuteCustomAction(this, action, c),
+                Models.Tag t => new ExecuteCustomAction(this, action, t),
+                _ => new ExecuteCustomAction(this, action)
+            };
 
             if (action.Controls.Count == 0)
                 ShowAndStartPopup(popup);
@@ -869,26 +867,33 @@ namespace SourceGit.ViewModels
             SelectedSearchedCommit = null;
             MatchedFilesForSearching = null;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                List<Models.Commit> visible = [];
+                var visible = new List<Models.Commit>();
                 var method = (Models.CommitSearchMethod)_searchCommitFilterType;
 
                 if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    var isCommitSHA = new Commands.IsCommitSHA(_fullpath, _searchCommitFilter).Result();
+                    var isCommitSHA = await new Commands.IsCommitSHA(_fullpath, _searchCommitFilter)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
                     if (isCommitSHA)
                     {
-                        var commit = new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter).Result();
-                        visible = [commit];
-                    }                    
+                        var commit = await new Commands.QuerySingleCommit(_fullpath, _searchCommitFilter)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
+                        visible.Add(commit);
+                    }
                 }
                 else
                 {
-                    visible = new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch).Result();
+                    visible = await new Commands.QueryCommits(_fullpath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
                 }
 
-                Dispatcher.UIThread.Invoke(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     SearchedCommits = visible;
                     IsSearchLoadingVisible = false;
@@ -1077,50 +1082,45 @@ namespace SourceGit.ViewModels
             _workingCopy?.AbortMerge();
         }
 
-        public List<Models.CustomAction> GetCustomActions(Models.CustomActionScope scope)
+        public List<(Models.CustomAction, CustomActionContextMenuLabel)> GetCustomActions(Models.CustomActionScope scope)
         {
-            var actions = new List<Models.CustomAction>();
+            var actions = new List<(Models.CustomAction, CustomActionContextMenuLabel)>();
 
             foreach (var act in Preferences.Instance.CustomActions)
             {
                 if (act.Scope == scope)
-                    actions.Add(act);
+                    actions.Add((act, new CustomActionContextMenuLabel(act.Name, true)));
             }
 
             foreach (var act in _settings.CustomActions)
             {
                 if (act.Scope == scope)
-                    actions.Add(act);
+                    actions.Add((act, new CustomActionContextMenuLabel(act.Name, false)));
             }
 
             return actions;
         }
 
-        public void Bisect(string subcmd)
+        public async Task ExecBisectCommandAsync(string subcmd)
         {
             IsBisectCommandRunning = true;
             SetWatcherEnabled(false);
 
             var log = CreateLog($"Bisect({subcmd})");
-            Task.Run(() =>
-            {
-                var succ = new Commands.Bisect(_fullpath, subcmd).Use(log).Exec();
-                log.Complete();
 
-                var head = new Commands.QueryRevisionByRefName(_fullpath, "HEAD").Result();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    if (!succ)
-                        App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
-                    else if (log.Content.Contains("is the first bad commit"))
-                        App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+            var succ = await new Commands.Bisect(_fullpath, subcmd).Use(log).ExecAsync();
+            log.Complete();
 
-                    MarkBranchesDirtyManually();
-                    NavigateToCommit(head, true);
-                    SetWatcherEnabled(true);
-                    IsBisectCommandRunning = false;
-                });
-            });
+            var head = await new Commands.QueryRevisionByRefName(_fullpath, "HEAD").GetResultAsync();
+            if (!succ)
+                App.RaiseException(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+            else if (log.Content.Contains("is the first bad commit"))
+                App.SendNotification(_fullpath, log.Content.Substring(log.Content.IndexOf('\n')).Trim());
+
+            MarkBranchesDirtyManually();
+            NavigateToCommit(head, true);
+            SetWatcherEnabled(true);
+            IsBisectCommandRunning = false;
         }
 
         public bool MayHaveSubmodules()
@@ -1132,8 +1132,8 @@ namespace SourceGit.ViewModels
 
         public void RefreshBranches()
         {
-            var branches = new Commands.QueryBranches(_fullpath).Result(out var localBranchesCount);
-            var remotes = new Commands.QueryRemotes(_fullpath).Result();
+            var branches = new Commands.QueryBranches(_fullpath).GetResultAsync().Result;
+            var remotes = new Commands.QueryRemotes(_fullpath).GetResultAsync().Result;
             var builder = BuildBranchTree(branches, remotes);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1145,6 +1145,13 @@ namespace SourceGit.ViewModels
                 CurrentBranch = branches.Find(x => x.IsCurrent);
                 LocalBranchTrees = builder.Locals;
                 RemoteBranchTrees = builder.Remotes;
+
+                var localBranchesCount = 0;
+                foreach (var b in branches)
+                {
+                    if (b.IsLocal && !b.IsDetachedHead)
+                        localBranchesCount++;
+                }
                 LocalBranchesCount = localBranchesCount;
 
                 if (_workingCopy != null)
@@ -1157,7 +1164,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshWorktrees()
         {
-            var worktrees = new Commands.Worktree(_fullpath).List();
+            var worktrees = new Commands.Worktree(_fullpath).ReadAllAsync().Result;
             var cleaned = new List<Models.Worktree>();
 
             foreach (var worktree in worktrees)
@@ -1176,7 +1183,7 @@ namespace SourceGit.ViewModels
 
         public void RefreshTags()
         {
-            var tags = new Commands.QueryTags(_fullpath).Result();
+            var tags = new Commands.QueryTags(_fullpath).GetResultAsync().Result;
             Dispatcher.UIThread.Invoke(() =>
             {
                 Tags = tags;
@@ -1207,7 +1214,7 @@ namespace SourceGit.ViewModels
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).Result();
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).GetResultAsync().Result;
             var graph = Models.CommitGraph.Parse(commits, _settings.EnableFirstParentInHistories);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1244,7 +1251,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var submodules = new Commands.QuerySubmodules(_fullpath).Result();
+            var submodules = new Commands.QuerySubmodules(_fullpath).GetResultAsync().Result;
             _watcher?.SetSubmodules(submodules);
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1265,8 +1272,9 @@ namespace SourceGit.ViewModels
                         }
 
                         hasChanged = !exist.SHA.Equals(module.SHA, StringComparison.Ordinal) ||
-                            !exist.URL.Equals(module.URL, StringComparison.Ordinal) ||
-                            exist.Status != module.Status;
+                                     !exist.Branch.Equals(module.Branch, StringComparison.Ordinal) ||
+                                     !exist.URL.Equals(module.URL, StringComparison.Ordinal) ||
+                                     exist.Status != module.Status;
 
                         if (hasChanged)
                             break;
@@ -1286,7 +1294,7 @@ namespace SourceGit.ViewModels
             if (IsBare)
                 return;
 
-            var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).Result();
+            var changes = new Commands.QueryLocalChanges(_fullpath, _settings.IncludeUntrackedInLocalChanges).GetResultAsync().Result;
             if (_workingCopy == null)
                 return;
 
@@ -1306,7 +1314,7 @@ namespace SourceGit.ViewModels
             if (IsBare)
                 return;
 
-            var stashes = new Commands.QueryStashes(_fullpath).Result();
+            var stashes = new Commands.QueryStashes(_fullpath).GetResultAsync().Result;
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (_stashesPage != null)
@@ -1326,41 +1334,6 @@ namespace SourceGit.ViewModels
 
             if (CanCreatePopup())
                 ShowPopup(new CreateBranch(this, _currentBranch));
-        }
-
-        public bool ConfirmCheckoutBranch()
-        {
-            if (Dispatcher.UIThread.CheckAccess())
-                return true;
-
-            if (_currentBranch is not { IsDetachedHead: true })
-                return true;
-
-            var refs = new Commands.QueryRefsContainsCommit(_fullpath, _currentBranch.Head).Result();
-            if (refs.Count == 0)
-            {
-                var confirmCheckout = false;
-                var resetEvent = new AutoResetEvent(false);
-
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    var msg = App.Text("Checkout.WarnLostCommits");
-                    App.ShowWindow(new Confirm(msg, () =>
-                    {
-                        confirmCheckout = true;
-                        resetEvent.Set();
-                    }, () =>
-                    {
-                        confirmCheckout = false;
-                        resetEvent.Set();
-                    }), true);
-                });
-
-                resetEvent.WaitOne();
-                return confirmCheckout;
-            }
-
-            return true;
         }
 
         public void CheckoutBranch(Models.Branch branch)
@@ -1466,7 +1439,7 @@ namespace SourceGit.ViewModels
         public void UpdateSubmodules()
         {
             if (CanCreatePopup())
-                ShowPopup(new UpdateSubmodules(this));
+                ShowPopup(new UpdateSubmodules(this, null));
         }
 
         public void OpenSubmodule(string submodule)
@@ -1587,13 +1560,9 @@ namespace SourceGit.ViewModels
                 init.Click += (_, e) =>
                 {
                     if (_currentBranch == null)
-                    {
                         App.RaiseException(_fullpath, "Git flow init failed: No branch found!!!");
-                    }
                     else if (CanCreatePopup())
-                    {
                         ShowPopup(new InitGitFlow(this));
-                    }
 
                     e.Handled = true;
                 };
@@ -1696,9 +1665,9 @@ namespace SourceGit.ViewModels
                 locks.IsEnabled = _remotes.Count > 0;
                 if (_remotes.Count == 1)
                 {
-                    locks.Click += (_, e) =>
+                    locks.Click += async (_, e) =>
                     {
-                        App.ShowWindow(new LFSLocks(this, _remotes[0].Name), true);
+                        await App.ShowDialog(new LFSLocks(this, _remotes[0].Name));
                         e.Handled = true;
                     };
                 }
@@ -1709,9 +1678,9 @@ namespace SourceGit.ViewModels
                         var remoteName = remote.Name;
                         var lockRemote = new MenuItem();
                         lockRemote.Header = remoteName;
-                        lockRemote.Click += (_, e) =>
+                        lockRemote.Click += async (_, e) =>
                         {
-                            App.ShowWindow(new LFSLocks(this, remoteName), true);
+                            await App.ShowDialog(new LFSLocks(this, remoteName));
                             e.Handled = true;
                         };
                         locks.Items.Add(lockRemote);
@@ -1726,10 +1695,10 @@ namespace SourceGit.ViewModels
                 var install = new MenuItem();
                 install.Header = App.Text("GitLFS.Install");
                 install.Icon = App.CreateMenuIcon("Icons.Init");
-                install.Click += (_, e) =>
+                install.Click += async (_, e) =>
                 {
                     var log = CreateLog("Install LFS");
-                    var succ = new Commands.LFS(_fullpath).Install(log);
+                    var succ = await new Commands.LFS(_fullpath).InstallAsync(log);
                     if (succ)
                         App.SendNotification(_fullpath, "LFS enabled successfully!");
 
@@ -1752,10 +1721,10 @@ namespace SourceGit.ViewModels
             {
                 foreach (var action in actions)
                 {
-                    var dup = action;
+                    var (dup, label) = action;
                     var item = new MenuItem();
                     item.Icon = App.CreateMenuIcon("Icons.Action");
-                    item.Header = dup.Name;
+                    item.Header = label;
                     item.Click += (_, e) =>
                     {
                         ExecCustomAction(dup, null);
@@ -2014,7 +1983,7 @@ namespace SourceGit.ViewModels
                 compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithCurrent.Click += (_, _) =>
                 {
-                    App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
+                    App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch));
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithCurrent);
@@ -2024,13 +1993,13 @@ namespace SourceGit.ViewModels
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                    compareWithWorktree.Click += (_, _) =>
+                    compareWithWorktree.Click += async (_, _) =>
                     {
                         SelectedSearchedCommit = null;
 
                         if (_histories != null)
                         {
-                            var target = new Commands.QuerySingleCommit(_fullpath, branch.Head).Result();
+                            var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync();
                             _histories.AutoSelectedCommit = null;
                             _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                         }
@@ -2147,9 +2116,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(branch.Name);
+                await App.CopyTextAsync(branch.Name);
                 e.Handled = true;
             };
             menu.Items.Add(copy);
@@ -2219,9 +2188,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("RemoteCM.CopyURL");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(remote.URL);
+                await App.CopyTextAsync(remote.URL);
                 e.Handled = true;
             };
 
@@ -2294,7 +2263,7 @@ namespace SourceGit.ViewModels
             compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
             compareWithHead.Click += (_, _) =>
             {
-                App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch), false);
+                App.ShowWindow(new BranchCompare(_fullpath, branch, _currentBranch));
             };
             menu.Items.Add(compareWithHead);
 
@@ -2303,13 +2272,13 @@ namespace SourceGit.ViewModels
                 var compareWithWorktree = new MenuItem();
                 compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
                 compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithWorktree.Click += (_, _) =>
+                compareWithWorktree.Click += async (_, _) =>
                 {
                     SelectedSearchedCommit = null;
 
                     if (_histories != null)
                     {
-                        var target = new Commands.QuerySingleCommit(_fullpath, branch.Head).Result();
+                        var target = await new Commands.QuerySingleCommit(_fullpath, branch.Head).GetResultAsync();
                         _histories.AutoSelectedCommit = null;
                         _histories.DetailContext = new RevisionCompare(_fullpath, target, null);
                     }
@@ -2361,9 +2330,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(name);
+                await App.CopyTextAsync(name);
                 e.Handled = true;
             };
 
@@ -2441,10 +2410,10 @@ namespace SourceGit.ViewModels
 
                 foreach (var action in actions)
                 {
-                    var dup = action;
+                    var (dup, label) = action;
                     var item = new MenuItem();
                     item.Icon = App.CreateMenuIcon("Icons.Action");
-                    item.Header = dup.Name;
+                    item.Header = label;
                     item.Click += (_, e) =>
                     {
                         ExecCustomAction(dup, tag);
@@ -2461,9 +2430,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(tag.Name);
+                await App.CopyTextAsync(tag.Name);
                 ev.Handled = true;
             };
 
@@ -2471,9 +2440,9 @@ namespace SourceGit.ViewModels
             copyMessage.Header = App.Text("TagCM.CopyMessage");
             copyMessage.Icon = App.CreateMenuIcon("Icons.Copy");
             copyMessage.IsEnabled = !string.IsNullOrEmpty(tag.Message);
-            copyMessage.Click += (_, ev) =>
+            copyMessage.Click += async (_, ev) =>
             {
-                App.CopyText(tag.Message);
+                await App.CopyTextAsync(tag.Message);
                 ev.Handled = true;
             };
 
@@ -2586,6 +2555,46 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
+            var update = new MenuItem();
+            update.Header = App.Text("Submodule.Update");
+            update.Icon = App.CreateMenuIcon("Icons.Loading");
+            update.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new UpdateSubmodules(this, submodule));
+                ev.Handled = true;
+            };
+
+            var move = new MenuItem();
+            move.Header = App.Text("Submodule.Move");
+            move.Icon = App.CreateMenuIcon("Icons.MoveTo");
+            move.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new MoveSubmodule(this, submodule));
+                ev.Handled = true;
+            };
+
+            var setURL = new MenuItem();
+            setURL.Header = App.Text("Submodule.SetURL");
+            setURL.Icon = App.CreateMenuIcon("Icons.Edit");
+            setURL.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new ChangeSubmoduleUrl(this, submodule));
+                ev.Handled = true;
+            };
+
+            var setBranch = new MenuItem();
+            setBranch.Header = App.Text("Submodule.SetBranch");
+            setBranch.Icon = App.CreateMenuIcon("Icons.Track");
+            setBranch.Click += (_, ev) =>
+            {
+                if (CanCreatePopup())
+                    ShowPopup(new SetSubmoduleBranch(this, submodule));
+                ev.Handled = true;
+            };
+
             var deinit = new MenuItem();
             deinit.Header = App.Text("Submodule.Deinit");
             deinit.Icon = App.CreateMenuIcon("Icons.Undo");
@@ -2607,20 +2616,70 @@ namespace SourceGit.ViewModels
                 ev.Handled = true;
             };
 
-            var copy = new MenuItem();
-            copy.Header = App.Text("Submodule.CopyPath");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            var histories = new MenuItem();
+            histories.Header = App.Text("Submodule.Histories");
+            histories.Icon = App.CreateMenuIcon("Icons.Histories");
+            histories.Click += (_, ev) =>
             {
-                App.CopyText(submodule.Path);
+                App.ShowWindow(new FileHistories(this, submodule.Path));
                 ev.Handled = true;
             };
+
+            var copySHA = new MenuItem();
+            copySHA.Header = App.Text("CommitDetail.Info.SHA");
+            copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+            copySHA.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.SHA);
+                ev.Handled = true;
+            };
+
+            var copyRelativePath = new MenuItem();
+            copyRelativePath.Header = App.Text("Submodule.CopyPath");
+            copyRelativePath.Icon = App.CreateMenuIcon("Icons.Folder");
+            copyRelativePath.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.Path);
+                ev.Handled = true;
+            };
+
+            var copyURL = new MenuItem();
+            copyURL.Header = App.Text("Submodule.URL");
+            copyURL.Icon = App.CreateMenuIcon("Icons.Link");
+            copyURL.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.URL);
+                ev.Handled = true;
+            };
+
+            var copyBranch = new MenuItem();
+            copyBranch.Header = App.Text("Submodule.Branch");
+            copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
+            copyBranch.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(submodule.Branch);
+                ev.Handled = true;
+            };
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Items.Add(copySHA);
+            copy.Items.Add(copyBranch);
+            copy.Items.Add(copyRelativePath);
+            copy.Items.Add(copyURL);
 
             var menu = new ContextMenu();
             menu.Items.Add(open);
             menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(update);
+            menu.Items.Add(setURL);
+            menu.Items.Add(setBranch);
+            menu.Items.Add(move);
             menu.Items.Add(deinit);
             menu.Items.Add(rm);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(histories);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copy);
             return menu;
@@ -2635,11 +2694,11 @@ namespace SourceGit.ViewModels
                 var unlock = new MenuItem();
                 unlock.Header = App.Text("Worktree.Unlock");
                 unlock.Icon = App.CreateMenuIcon("Icons.Unlock");
-                unlock.Click += (_, ev) =>
+                unlock.Click += async (_, ev) =>
                 {
                     SetWatcherEnabled(false);
                     var log = CreateLog("Unlock Worktree");
-                    var succ = new Commands.Worktree(_fullpath).Use(log).Unlock(worktree.FullPath);
+                    var succ = await new Commands.Worktree(_fullpath).Use(log).UnlockAsync(worktree.FullPath);
                     if (succ)
                         worktree.IsLocked = false;
                     log.Complete();
@@ -2653,11 +2712,11 @@ namespace SourceGit.ViewModels
                 var loc = new MenuItem();
                 loc.Header = App.Text("Worktree.Lock");
                 loc.Icon = App.CreateMenuIcon("Icons.Lock");
-                loc.Click += (_, ev) =>
+                loc.Click += async (_, ev) =>
                 {
                     SetWatcherEnabled(false);
                     var log = CreateLog("Lock Worktree");
-                    var succ = new Commands.Worktree(_fullpath).Use(log).Lock(worktree.FullPath);
+                    var succ = await new Commands.Worktree(_fullpath).Use(log).LockAsync(worktree.FullPath);
                     if (succ)
                         worktree.IsLocked = true;
                     log.Complete();
@@ -2681,9 +2740,9 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("Worktree.CopyPath");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, e) =>
+            copy.Click += async (_, e) =>
             {
-                App.CopyText(worktree.FullPath);
+                await App.CopyTextAsync(worktree.FullPath);
                 e.Handled = true;
             };
             menu.Items.Add(new MenuItem() { Header = "-" });
@@ -2876,10 +2935,10 @@ namespace SourceGit.ViewModels
 
             foreach (var action in actions)
             {
-                var dup = action;
+                var (dup, label) = action;
                 var item = new MenuItem();
                 item.Icon = App.CreateMenuIcon("Icons.Action");
-                item.Header = dup.Name;
+                item.Header = label;
                 item.Click += (_, e) =>
                 {
                     ExecCustomAction(dup, branch);
@@ -2914,10 +2973,13 @@ namespace SourceGit.ViewModels
 
             _requestingWorktreeFiles = true;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                _worktreeFiles = new Commands.QueryRevisionFileNames(_fullpath, "HEAD").Result();
-                Dispatcher.UIThread.Invoke(() =>
+                _worktreeFiles = await new Commands.QueryRevisionFileNames(_fullpath, "HEAD")
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
                 {
                     if (IsSearchingCommitsByFilePath() && _requestingWorktreeFiles)
                         CalcMatchedFilesForSearching();
@@ -2949,7 +3011,7 @@ namespace SourceGit.ViewModels
             MatchedFilesForSearching = matched;
         }
 
-        private void AutoFetchImpl(object sender)
+        private async void AutoFetchImpl(object sender)
         {
             try
             {
@@ -2974,7 +3036,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
                 foreach (var remote in remotes)
-                    new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.Exec();
+                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }

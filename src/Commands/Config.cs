@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -17,15 +18,13 @@ namespace SourceGit.Commands
                 Context = repository;
                 _isLocal = true;
             }
-
-            RaiseError = false;
         }
 
-        public Dictionary<string, string> ListAll()
+        public async Task<Dictionary<string, string>> ReadAllAsync()
         {
             Args = "config -l";
 
-            var output = ReadToEnd();
+            var output = await ReadToEndAsync().ConfigureAwait(false);
             var rs = new Dictionary<string, string>();
             if (output.IsSuccess)
             {
@@ -45,13 +44,15 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        public string Get(string key)
+        public async Task<string> GetAsync(string key)
         {
             Args = $"config {key}";
-            return ReadToEnd().StdOut.Trim();
+
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return rs.StdOut.Trim();
         }
 
-        public bool Set(string key, string value, bool allowEmpty = false)
+        public async Task<bool> SetAsync(string key, string value, bool allowEmpty = false)
         {
             var scope = _isLocal ? "--local" : "--global";
 
@@ -60,7 +61,7 @@ namespace SourceGit.Commands
             else
                 Args = $"config {scope} {key} \"{value}\"";
 
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
         private bool _isLocal = false;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -13,9 +14,9 @@ namespace SourceGit.Commands
             Args = $"rev-list -{max} --parents --branches --remotes --ancestry-path ^{commit}";
         }
 
-        public List<string> Result()
+        public async Task<List<string>> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var outs = new List<string>();
             if (rs.IsSuccess)
             {

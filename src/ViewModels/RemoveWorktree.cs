@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
             Target = target;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
             ProgressDescription = "Remove worktree ...";
@@ -29,13 +29,13 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Remove worktree");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Worktree(_repo.FullPath).Use(log).Remove(Target.FullPath, Force);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.Worktree(_repo.FullPath)
+                .Use(log)
+                .RemoveAsync(Target.FullPath, Force);
+
+            log.Complete();
+            _repo.SetWatcherEnabled(true);
+            return succ;
         }
 
         private readonly Repository _repo = null;
