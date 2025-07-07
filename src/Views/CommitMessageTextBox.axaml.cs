@@ -105,17 +105,11 @@ namespace SourceGit.Views
             {
                 _changingWay = TextChangeWay.FromSource;
                 var normalized = Text.ReplaceLineEndings("\n");
-                var subjectEnd = normalized.IndexOf("\n\n", StringComparison.Ordinal);
-                if (subjectEnd == -1)
-                {
-                    SetCurrentValue(SubjectProperty, normalized.ReplaceLineEndings(" "));
-                    SetCurrentValue(DescriptionProperty, string.Empty);
-                }
-                else
-                {
-                    SetCurrentValue(SubjectProperty, normalized.Substring(0, subjectEnd).ReplaceLineEndings(" "));
-                    SetCurrentValue(DescriptionProperty, normalized.Substring(subjectEnd + 2));
-                }
+                var parts = normalized.Split("\n\n", 2);
+                if (parts.Length != 2)
+                    parts = [normalized, string.Empty];
+                SetCurrentValue(SubjectProperty, parts[0].ReplaceLineEndings(" "));
+                SetCurrentValue(DescriptionProperty, parts[1]);
                 _changingWay = TextChangeWay.None;
             }
             else if ((change.Property == SubjectProperty || change.Property == DescriptionProperty) && _changingWay == TextChangeWay.None)
@@ -145,17 +139,17 @@ namespace SourceGit.Views
 
                     if (SubjectEditor.CaretIndex == Subject.Length)
                     {
-                        var idx = text.IndexOf('\n');
-                        if (idx == -1)
+                        var parts = text.Split('\n', 2);
+                        if (parts.Length != 2)
                         {
                             SubjectEditor.Paste(text);
                         }
                         else
                         {
-                            SubjectEditor.Paste(text.Substring(0, idx));
+                            SubjectEditor.Paste(parts[0]);
                             DescriptionEditor.Focus();
                             DescriptionEditor.CaretIndex = 0;
-                            DescriptionEditor.Paste(text.Substring(idx + 1).Trim());
+                            DescriptionEditor.Paste(parts[1].Trim());
                         }
                     }
                     else

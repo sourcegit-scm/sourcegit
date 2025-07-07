@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -31,7 +32,7 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Push {Revision.SHA.Substring(0, 10)} -> {RemoteBranch.FriendlyName} ...";
+            ProgressDescription = $"Push {Revision.SHA.AsSpan(0, 10)} -> {RemoteBranch.FriendlyName} ...";
 
             var log = _repo.CreateLog("Push Revision");
             Use(log);

@@ -31,13 +31,9 @@ namespace SourceGit.Commands
                 var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
-                    var idx = line.IndexOf('=', StringComparison.Ordinal);
-                    if (idx != -1)
-                    {
-                        var key = line.Substring(0, idx).Trim();
-                        var val = line.Substring(idx + 1).Trim();
-                        rs[key] = val;
-                    }
+                    var parts = line.Split('=', 2);
+                    if (parts.Length == 2)
+                        rs[parts[0]] = parts[1];
                 }
             }
 

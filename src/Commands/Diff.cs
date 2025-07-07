@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -39,19 +40,9 @@ namespace SourceGit.Commands
         public async Task<Models.DiffResult> ReadAsync()
         {
             var rs = await ReadToEndAsync().ConfigureAwait(false);
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
-            {
-                var line = rs.StdOut.Substring(start, end - start);
+            var sr = new StringReader(rs.StdOut);
+            while (sr.ReadLine() is { } line)
                 ParseLine(line);
-
-                start = end + 1;
-                end = rs.StdOut.IndexOf('\n', start);
-            }
-
-            if (start < rs.StdOut.Length)
-                ParseLine(rs.StdOut.Substring(start));
 
             if (_result.IsBinary || _result.IsLFS || _result.TextDiff.Lines.Count == 0)
             {

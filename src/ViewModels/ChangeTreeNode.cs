@@ -55,7 +55,7 @@ namespace SourceGit.ViewModels
 
             foreach (var c in changes)
             {
-                var sepIdx = c.Path.IndexOf('/', StringComparison.Ordinal);
+                var sepIdx = c.Path.IndexOf('/');
                 if (sepIdx == -1)
                 {
                     nodes.Add(new ChangeTreeNode(c, 0));

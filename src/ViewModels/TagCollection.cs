@@ -70,7 +70,7 @@ namespace SourceGit.ViewModels
 
             foreach (var tag in tags)
             {
-                var sepIdx = tag.Name.IndexOf('/', StringComparison.Ordinal);
+                var sepIdx = tag.Name.IndexOf('/');
                 if (sepIdx == -1)
                 {
                     nodes.Add(new TagTreeNode(tag, 0));
