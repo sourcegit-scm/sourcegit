@@ -590,6 +590,20 @@ namespace SourceGit.ViewModels
                 var change = _selectedUnstaged[0];
                 var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
+                var diffWithMerger = new MenuItem();
+                diffWithMerger.Header = App.Text("DiffWithMerger");
+                diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                diffWithMerger.Click += (sender, ev) =>
+                {
+                    var toolType = Preferences.Instance.ExternalMergeToolType;
+                    var toolPath = Preferences.Instance.ExternalMergeToolPath;
+                    var opt = new Models.DiffOption(change, true);
+
+                    _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(diffWithMerger);
+
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
                 explore.Icon = App.CreateMenuIcon("Icons.Explore");
@@ -1243,6 +1257,19 @@ namespace SourceGit.ViewModels
                 var change = _selectedStaged[0];
                 var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
+                var diffWithMerger = new MenuItem();
+                diffWithMerger.Header = App.Text("DiffWithMerger");
+                diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                diffWithMerger.Click += (sender, ev) =>
+                {
+                    var toolType = Preferences.Instance.ExternalMergeToolType;
+                    var toolPath = Preferences.Instance.ExternalMergeToolPath;
+                    var opt = new Models.DiffOption(change, false);
+
+                    _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
+                    ev.Handled = true;
+                };
+
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
@@ -1310,6 +1337,7 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
 
+                menu.Items.Add(diffWithMerger);
                 menu.Items.Add(explore);
                 menu.Items.Add(openWith);
                 menu.Items.Add(new MenuItem() { Header = "-" });
