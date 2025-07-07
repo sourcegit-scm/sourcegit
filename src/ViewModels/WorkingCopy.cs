@@ -464,12 +464,12 @@ namespace SourceGit.ViewModels
             _repo.SetWatcherEnabled(true);
         }
 
-        public async Task UseExternalMergeTool(Models.Change change)
+        public async Task<bool> UseExternalMergeTool(Models.Change change)
         {
             var toolType = Preferences.Instance.ExternalMergeToolType;
             var toolPath = Preferences.Instance.ExternalMergeToolPath;
             var file = change?.Path;
-            await Commands.MergeTool.OpenForMergeAsync(_repo.FullPath, toolType, toolPath, file);
+            return await new Commands.MergeTool(_repo.FullPath, toolType, toolPath, file).OpenAsync();
         }
 
         public void ContinueMerge()
@@ -598,7 +598,7 @@ namespace SourceGit.ViewModels
                         var toolType = Preferences.Instance.ExternalMergeToolType;
                         var toolPath = Preferences.Instance.ExternalMergeToolPath;
                         var opt = new Models.DiffOption(change, true);
-                        _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
+                        new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
                     }
 
                     e.Handled = true;
@@ -1250,13 +1250,12 @@ namespace SourceGit.ViewModels
                 var openWithMerger = new MenuItem();
                 openWithMerger.Header = App.Text("OpenInExternalMergeTool");
                 openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWithMerger.Click += (sender, ev) =>
+                openWithMerger.Click += (_, ev) =>
                 {
                     var toolType = Preferences.Instance.ExternalMergeToolType;
                     var toolPath = Preferences.Instance.ExternalMergeToolPath;
                     var opt = new Models.DiffOption(change, false);
-
-                    _ = Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt);
+                    new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
                     ev.Handled = true;
                 };
 

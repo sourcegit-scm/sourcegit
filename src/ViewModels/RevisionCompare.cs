@@ -144,8 +144,7 @@ namespace SourceGit.ViewModels
                 var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
-
-                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
+                new Commands.DiffTool(_repo, toolType, toolPath, opt).Open();
                 ev.Handled = true;
             };
             menu.Items.Add(openWithMerger);

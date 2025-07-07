@@ -37,11 +37,24 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
+        public void Exec()
+        {
+            try
+            {
+                var start = CreateGitStartInfo(false);
+                Process.Start(start);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(Context, ex.Message);
+            }
+        }
+
         public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
 
-            var start = CreateGitStartInfo();
+            var start = CreateGitStartInfo(true);
             var errs = new List<string>();
             var proc = new Process() { StartInfo = start };
 
@@ -118,7 +131,7 @@ namespace SourceGit.Commands
 
         protected async Task<Result> ReadToEndAsync()
         {
-            var start = CreateGitStartInfo();
+            var start = CreateGitStartInfo(true);
             var proc = new Process() { StartInfo = start };
 
             try
@@ -140,17 +153,21 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        private ProcessStartInfo CreateGitStartInfo()
+        private ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
             start.Arguments = "--no-pager -c core.quotepath=off -c credential.helper=manager ";
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
-            start.RedirectStandardOutput = true;
-            start.RedirectStandardError = true;
-            start.StandardOutputEncoding = Encoding.UTF8;
-            start.StandardErrorEncoding = Encoding.UTF8;
+
+            if (redirect)
+            {
+                start.RedirectStandardOutput = true;
+                start.RedirectStandardError = true;
+                start.StandardOutputEncoding = Encoding.UTF8;
+                start.StandardErrorEncoding = Encoding.UTF8;
+            }
 
             // Force using this app as SSH askpass program
             var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;

@@ -3,69 +3,45 @@ using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public static class MergeTool
+    public class MergeTool : Command
     {
-        public static async Task<bool> OpenForMergeAsync(string repo, int toolType, string toolPath, string file)
+        public MergeTool(string repo, int type, string exec, string file)
         {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.RaiseError = true;
+            WorkingDirectory = repo;
+            Context = exec;
 
-            // NOTE: If no <file> names are specified, 'git mergetool' will run the merge tool program on every file with merge conflicts.
-            var fileArg = string.IsNullOrEmpty(file) ? "" : $"\"{file}\"";
-
-            if (toolType == 0)
-            {
-                cmd.Args = $"mergetool {fileArg}";
-                return await cmd.ExecAsync().ConfigureAwait(false);
-            }
-
-            if (!File.Exists(toolPath))
-            {
-                App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!");
-                return false;
-            }
-
-            var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
-            if (supported == null)
-            {
-                App.RaiseException(repo, "Invalid merge tool in preference setting!");
-                return false;
-            }
-
-            cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {fileArg}";
-            return await cmd.ExecAsync().ConfigureAwait(false);
+            _merger = Models.ExternalMerger.Supported.Find(x => x.Type == type);
+            _exec = exec;
+            _file = string.IsNullOrEmpty(file) ? "" : $"\"{file}\"";
         }
 
-        public static async Task<bool> OpenForDiffAsync(string repo, int toolType, string toolPath, Models.DiffOption option)
+        public async Task<bool> OpenAsync()
         {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.RaiseError = true;
-
-            if (toolType == 0)
+            if (_merger == null)
             {
-                cmd.Args = $"difftool -g --no-prompt {option}";
-                return await cmd.ExecAsync();
-            }
-
-            if (!File.Exists(toolPath))
-            {
-                App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!");
+                App.RaiseException(Context, "Invalid merge tool in preference setting!");
                 return false;
             }
 
-            var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
-            if (supported == null)
+            if (_merger.Type == 0)
             {
-                App.RaiseException(repo, "Invalid merge tool in preference setting!");
+                Args = $"mergetool {_file}";
+            }
+            else if (File.Exists(_exec))
+            {
+                Args = $"-c mergetool.sourcegit.cmd=\"\\\"{_exec}\\\" {_merger.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {_file}";
+            }
+            else
+            {
+                App.RaiseException(Context, $"Can NOT find external merge tool in '{_exec}'!");
                 return false;
             }
 
-            cmd.Args = $"-c difftool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.DiffCmd}\" difftool --tool=sourcegit --no-prompt {option}";
-            return await cmd.ExecAsync().ConfigureAwait(false);
+            return await ExecAsync().ConfigureAwait(false);
         }
+
+        private Models.ExternalMerger _merger;
+        private string _exec;
+        private string _file;
     }
 }
