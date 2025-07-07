@@ -187,7 +187,9 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, fixedName, _baseOnRevision, _allowOverwrite, log);
+                succ = await new Commands.Branch(_repo.FullPath)
+                    .Use(log)
+                    .CreateAsync(fixedName, _baseOnRevision, _allowOverwrite);
             }
 
             log.Complete();
