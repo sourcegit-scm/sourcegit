@@ -27,7 +27,7 @@ namespace SourceGit.Models
                         trimmedUrl = url.AsSpan(0, url.Length - 4);
 
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        outs.Add(new($"Github ({trimmedUrl[19..]})", $"{url}/commit/"));
+                        outs.Add(new($"GitHub ({trimmedUrl[19..]})", $"{url}/commit/"));
                     else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
                         outs.Add(new($"GitLab ({trimmedUrl[(trimmedUrl[15..].IndexOf('/') + 16)..]})", $"{url}/-/commit/"));
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))

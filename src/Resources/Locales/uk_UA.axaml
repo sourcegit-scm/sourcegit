@@ -159,7 +159,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Додати приклад правила для Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Додати приклад правила для Gitee Issue</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Додати приклад правила для Gitee Pull Request</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Додати приклад правила для Github</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Додати приклад правила для GitHub</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Додати приклад правила для GitLab Issue</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Додати приклад правила для GitLab Merge Request</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Додати приклад правила для Jira</x:String>

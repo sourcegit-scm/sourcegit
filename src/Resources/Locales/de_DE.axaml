@@ -186,7 +186,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Beispiel für Azure DevOps Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Beispiel für Gitee Issue Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Beispiel für Gitee Pull Request Regel hinzufügen</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">Beispiel für Github Regel hinzufügen</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Beispiel für GitHub Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Beispiel für Gitlab Issue Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Beispiel für Gitlab Merge Request Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Beispiel für Jira-Regel hinzufügen</x:String>

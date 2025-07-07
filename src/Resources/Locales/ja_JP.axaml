@@ -157,7 +157,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">サンプルのAzure DevOpsルールを追加</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">サンプルのGitee Issueルールを追加</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">サンプルのGiteeプルリクエストルールを追加</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGithub" xml:space="preserve">サンプルのGithubルールを追加</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">サンプルのGitHubルールを追加</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">サンプルのGitLab Issueルールを追加</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">サンプルのGitLabマージリクエストルールを追加</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">サンプルのJiraルールを追加</x:String>
