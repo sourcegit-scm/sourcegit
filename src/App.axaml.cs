@@ -695,7 +695,7 @@ namespace SourceGit
                 }
 
                 var name = sb.ToString();
-                if (name.Contains('#', StringComparison.Ordinal))
+                if (name.Contains('#'))
                 {
                     if (!name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
                         !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))

@@ -774,7 +774,7 @@ namespace SourceGit.ViewModels
                         }
                         else
                         {
-                            var isRooted = change.Path.IndexOf('/', StringComparison.Ordinal) <= 0;
+                            var isRooted = change.Path.IndexOf('/') <= 0;
                             var singleFile = new MenuItem();
                             singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
                             singleFile.Click += (_, e) =>
@@ -1654,8 +1654,7 @@ namespace SourceGit.ViewModels
                 for (int i = 0; i < historiesCount; i++)
                 {
                     var message = _repo.Settings.CommitMessages[i].Trim().ReplaceLineEndings("\n");
-                    var subjectEndIdx = message.IndexOf('\n');
-                    var subject = subjectEndIdx > 0 ? message.Substring(0, subjectEndIdx) : message;
+                    var subject = message.Split('\n', 2)[0];
                     var item = new MenuItem();
                     item.Header = new CommitMessageRecord(subject);
                     item.Icon = App.CreateMenuIcon("Icons.Histories");

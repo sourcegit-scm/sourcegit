@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -52,11 +51,8 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _fullMessage, value))
                 {
                     var normalized = value.ReplaceLineEndings("\n");
-                    var idx = normalized.IndexOf("\n\n", StringComparison.Ordinal);
-                    if (idx > 0)
-                        Subject = normalized.Substring(0, idx).ReplaceLineEndings(" ");
-                    else
-                        Subject = value.ReplaceLineEndings(" ");
+                    var parts = normalized.Split("\n\n", 2);
+                    Subject = parts[0].ReplaceLineEndings(" ");
                 }
             }
         }

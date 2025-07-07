@@ -232,7 +232,7 @@ namespace SourceGit.ViewModels
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file);
             var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
             var fileExt = Path.GetExtension(fullPath) ?? "";
-            var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.Substring(0, 10)}{fileExt}");
+            var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_commit.SHA.AsSpan(0, 10)}{fileExt}");
 
             await Commands.SaveRevisionFile
                 .RunAsync(_repo.FullPath, _commit.SHA, file, tmpFile)

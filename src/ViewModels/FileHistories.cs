@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -60,7 +61,7 @@ namespace SourceGit.ViewModels
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, _file);
             var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
             var fileExt = Path.GetExtension(fullPath) ?? "";
-            var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_revision.SHA.Substring(0, 10)}{fileExt}");
+            var tmpFile = Path.Combine(Path.GetTempPath(), $"{fileName}~{_revision.SHA.AsSpan(0, 10)}{fileExt}");
 
             await Commands.SaveRevisionFile
                 .RunAsync(_repo.FullPath, _revision.SHA, _file, tmpFile)
