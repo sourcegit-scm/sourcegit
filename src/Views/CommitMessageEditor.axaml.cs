@@ -20,15 +20,9 @@ namespace SourceGit.Views
 
             var content = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
             var parts = content.Split('\n', 2);
-            if (parts.Length != 2)
-            {
-                Editor.SubjectEditor.Text = content;
-            }
-            else
-            {
-                Editor.SubjectEditor.Text = parts[0];
+            Editor.SubjectEditor.Text = parts[0];
+            if (parts.Length > 1)
                 Editor.DescriptionEditor.Text = parts[1];
-            }
         }
 
         public void AsBuiltin(string msg, Action<string> onSave)
@@ -37,15 +31,9 @@ namespace SourceGit.Views
             _shouldExitApp = false;
 
             var parts = msg.Split('\n', 2);
-            if (parts.Length != 2)
-            {
-                Editor.SubjectEditor.Text = msg;
-            }
-            else
-            {
-                Editor.SubjectEditor.Text = parts[0];
+            Editor.SubjectEditor.Text = parts[0];
+            if (parts.Length > 1)
                 Editor.DescriptionEditor.Text = parts[1];
-            }
         }
 
         protected override void OnClosed(EventArgs e)

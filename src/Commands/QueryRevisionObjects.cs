@@ -14,7 +14,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree -z {sha}";
+            Args = $"ls-tree {sha}";
 
             if (!string.IsNullOrEmpty(parentFolder))
                 Args += $" -- \"{parentFolder}\"";

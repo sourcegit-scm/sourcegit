@@ -1652,10 +1652,9 @@ namespace SourceGit.ViewModels
             {
                 for (int i = 0; i < historiesCount; i++)
                 {
-                    var message = _repo.Settings.CommitMessages[i].Trim().ReplaceLineEndings("\n");
-                    var subject = message.Split('\n', 2)[0];
+                    var message = _repo.Settings.CommitMessages[i].Trim().ReplaceLineEndings(" ");
                     var item = new MenuItem();
-                    item.Header = new CommitMessageRecord(subject);
+                    item.Header = new CommitMessageRecord(message);
                     item.Icon = App.CreateMenuIcon("Icons.Histories");
                     item.Click += (_, e) =>
                     {
