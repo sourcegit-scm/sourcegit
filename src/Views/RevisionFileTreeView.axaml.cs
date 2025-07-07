@@ -247,12 +247,12 @@ namespace SourceGit.Views
             if (change.Property == RevisionProperty)
             {
                 _tree.Clear();
-                Rows.Clear();
                 _searchResult.Clear();
 
                 var vm = DataContext as ViewModels.CommitDetail;
                 if (vm?.Commit == null)
                 {
+                    Rows.Clear();
                     GC.Collect();
                     return;
                 }
@@ -260,6 +260,7 @@ namespace SourceGit.Views
                 var objects = await vm.GetRevisionFilesUnderFolderAsync(null);
                 if (objects == null || objects.Count == 0)
                 {
+                    Rows.Clear();
                     GC.Collect();
                     return;
                 }
@@ -271,6 +272,8 @@ namespace SourceGit.Views
 
                 var topTree = new List<ViewModels.RevisionFileTreeNode>();
                 MakeRows(topTree, _tree, 0);
+
+                Rows.Clear();
                 Rows.AddRange(topTree);
                 GC.Collect();
             }
