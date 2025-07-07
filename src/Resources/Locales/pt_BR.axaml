@@ -341,7 +341,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commitar mudanças preparadas</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commitar e enviar mudanças preparadas</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Preparar todas as mudanças e commitar</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Cria um novo branch partindo do commit selecionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Descartar mudanças selecionadas</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Buscar, imediatamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modo de Dashboard (Padrão)</x:String>

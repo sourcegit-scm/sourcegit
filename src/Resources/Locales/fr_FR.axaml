@@ -370,7 +370,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit les changements de l'index</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit et pousser les changements de l'index</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Ajouter tous les changements et commit</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Créer une nouvelle branche basée sur le commit actuel</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Rejeter les changements sélectionnés</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, démarre directement</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Mode tableau de bord (Défaut)</x:String>

@@ -213,10 +213,8 @@ namespace SourceGit.Views
             if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 return;
 
-            // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
             if (sender is DataGrid { SelectedItems: { Count: > 0 } selected })
             {
-                // CTRL/COMMAND + C -> Copy selected commit SHA and subject.
                 if (e.Key == Key.C)
                 {
                     var builder = new StringBuilder();
@@ -231,11 +229,9 @@ namespace SourceGit.Views
                     return;
                 }
 
-                // CTRL/COMMAND + B -> shows Create Branch pop-up at selected commit.
-                if (e.Key == Key.B)
+                if (e.Key == Key.B && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
                 {
                     var repoView = this.FindAncestorOfType<Repository>();
-
                     if (repoView?.DataContext is not ViewModels.Repository repo || !repo.CanCreatePopup())
                         return;
 
@@ -244,6 +240,23 @@ namespace SourceGit.Views
                         repo.ShowPopup(new ViewModels.CreateBranch(repo, commit));
                         e.Handled = true;
                     }
+
+                    return;
+                }
+
+                if (e.Key == Key.T && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                {
+                    var repoView = this.FindAncestorOfType<Repository>();
+                    if (repoView?.DataContext is not ViewModels.Repository repo || !repo.CanCreatePopup())
+                        return;
+
+                    if (selected.Count == 1 && selected[0] is Models.Commit commit)
+                    {
+                        repo.ShowPopup(new ViewModels.CreateTag(repo, commit));
+                        e.Handled = true;
+                    }
+
+                    return;
                 }
             }
         }

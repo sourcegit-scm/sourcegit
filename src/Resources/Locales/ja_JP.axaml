@@ -369,7 +369,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">ステージ済みの変更をコミット</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">ステージ済みの変更をコミットしてプッシュ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">全ての変更をステージしてコミット</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">選択中のコミットから新たなブランチを作成</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">選択した変更を破棄</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">直接フェッチを実行</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">ダッシュボードモード (初期値)</x:String>

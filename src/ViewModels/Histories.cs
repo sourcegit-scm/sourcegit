@@ -725,7 +725,7 @@ namespace SourceGit.ViewModels
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
-            createBranch.Tag = OperatingSystem.IsMacOS() ? "⌘+B" : "Ctrl+B";
+            createBranch.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+B" : "Ctrl+Shift+B";
             createBranch.Click += (_, e) =>
             {
                 if (_repo.CanCreatePopup())
@@ -737,6 +737,7 @@ namespace SourceGit.ViewModels
             var createTag = new MenuItem();
             createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
             createTag.Header = App.Text("CreateTag");
+            createTag.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+T" : "Ctrl+Shift+T";
             createTag.Click += (_, e) =>
             {
                 if (_repo.CanCreatePopup())

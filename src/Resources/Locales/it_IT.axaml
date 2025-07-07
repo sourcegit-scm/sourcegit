@@ -389,7 +389,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Committa le modifiche in tsage</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Committa e invia le modifiche in stage</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Fai lo stage di tutte le modifiche e committa</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">Crea un nuovo branch dal commit selezionato</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Scarta le modifiche selezionate</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Recupera, avvia direttamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modalità Dashboard (Predefinita)</x:String>

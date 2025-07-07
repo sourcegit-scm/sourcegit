@@ -369,7 +369,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">நிலைபடுத்திய மாற்றங்களை உறுதிமொழி</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">நிலைபடுத்திய மாற்றங்களை உறுதிமொழி மற்றும் தள்ளு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">அனைத்து மாற்றங்களையும் நிலைபடுத்தி உறுதிமொழி</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.CreateBranchOnCommit" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட உறுதிமொழியின் அடிப்படையில் ஒரு புதிய கிளையை உருவாக்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட மாற்றங்களை நிராகரி</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">எடு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">முகப்பலகை பயன்முறை (இயல்புநிலை)</x:String>
