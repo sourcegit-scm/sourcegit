@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
@@ -72,7 +73,7 @@ namespace SourceGit.ViewModels
                 {
                     var text = await App.GetClipboardTextAsync();
                     if (Models.Remote.IsValidURL(text))
-                        Remote = text;
+                        Dispatcher.UIThread.Post(() => Remote = text);
                 }
                 catch
                 {
