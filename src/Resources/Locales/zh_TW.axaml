@@ -406,7 +406,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">小提示:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">快速鍵參考</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">全域快速鍵</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">取消彈出面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">複製 (clone) 遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">關閉目前頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切換到下一個頁面</x:String>
@@ -419,14 +418,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暫存區變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暫存區變更並推送</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">捨棄選取的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">強制重新載入存放庫</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">暫存或取消暫存選取的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">顯示本機變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">顯示歷史記錄</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">顯示擱置變更列表</x:String>

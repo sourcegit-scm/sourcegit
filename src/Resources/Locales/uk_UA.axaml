@@ -354,7 +354,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ПОРАДИ:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Гарячі клавіші</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ГЛОБАЛЬНІ</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Скасувати поточне спливаюче вікно</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Клонувати нове сховище</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Закрити поточну вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Перейти до наступної вкладки</x:String>
@@ -365,14 +364,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Закомітити проіндексовані зміни</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Закомітити та надіслати проіндексовані зміни</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Індексувати всі зміни та закомітити</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Скасувати вибрані зміни</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, запускається без діалогу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим панелі керування (за замовчуванням)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим пошуку комітів</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, запускається без діалогу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, запускається без діалогу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Примусово перезавантажити це сховище</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Індексувати/Видалити з індексу вибрані зміни</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Перейти до 'Зміни'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Перейти до 'Історія'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Перейти до 'Схованки'</x:String>

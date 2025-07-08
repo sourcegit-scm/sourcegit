@@ -350,7 +350,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">CONSEILS:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Référence des raccourcis clavier</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Annuler le popup en cours</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Cloner un nouveau dépôt</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Fermer la page en cours</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Aller à la page suivante</x:String>
@@ -361,14 +360,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit les changements de l'index</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit et pousser les changements de l'index</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Ajouter tous les changements et commit</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Rejeter les changements sélectionnés</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, démarre directement</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Mode tableau de bord (Défaut)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Recherche de commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, démarre directement</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, démarre directement</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forcer le rechargement du dépôt</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Ajouter/Retirer les changements sélectionnés de l'index</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Basculer vers 'Changements'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Basculer vers 'Historique'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Basculer vers 'Stashes'</x:String>

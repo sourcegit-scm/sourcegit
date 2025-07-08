@@ -369,7 +369,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">SUGGERIMENTI:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Riferimento Scorciatoie da Tastiera</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBALE</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Annulla il popup corrente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clona una nuova repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Chiudi la pagina corrente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Vai alla pagina successiva</x:String>
@@ -380,14 +379,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Committa le modifiche in tsage</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Committa e invia le modifiche in stage</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Fai lo stage di tutte le modifiche e committa</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Scarta le modifiche selezionate</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Recupera, avvia direttamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modalità Dashboard (Predefinita)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Modalità ricerca commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Scarica, avvia direttamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Invia, avvia direttamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forza l'aggiornamento di questo repository</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Aggiungi/Rimuovi da stage le modifiche selezionate</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Passa a 'Modifiche'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Passa a 'Storico'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Passa a 'Stashes'</x:String>

@@ -406,7 +406,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ПОДСКАЗКИ:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Ссылка на сочетания клавиш</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ОБЩЕЕ</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Закрыть окно</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Клонировать репозиторий</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Закрыть вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Перейти на следующую вкладку</x:String>
@@ -419,14 +418,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Зафиксировать сформированные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Зафиксировать и выложить сформированные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Сформировать все изменения и зафиксировать</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">Отклонить выбранные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Извлечение, запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по умолчанию)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска ревизий</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Загрузить, запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Выложить, запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Принудительно перезагрузить репозиторий</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">Сформированные/Несформированные выбранные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Переключить на «Изменения»</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Переключить на «Истории»</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Переключить на «Отложенные»</x:String>

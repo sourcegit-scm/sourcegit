@@ -349,7 +349,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPS:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">キーボードショートカットを確認</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">総合</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">現在のポップアップをキャンセル</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">新しくリポジトリをクローン</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">現在のページを閉じる</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">次のページに移動</x:String>
@@ -360,14 +359,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">ステージ済みの変更をコミット</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">ステージ済みの変更をコミットしてプッシュ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">全ての変更をステージしてコミット</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">選択した変更を破棄</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">直接フェッチを実行</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">ダッシュボードモード (初期値)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">コミット検索モード</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">直接プルを実行</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">直接プッシュを実行</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">現在のリポジトリを強制的に再読み込み</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">選択中の変更をステージ/アンステージ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'変更'に切り替える</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'履歴'に切り替える</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'スタッシュ'に切り替える</x:String>

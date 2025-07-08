@@ -349,7 +349,6 @@
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">குறிப்புகள்:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">விசைப்பலகை குறுக்குவழிகள் குறிப்பு</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">உலகளாவிய</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">தற்போதைய மேல்தோன்றலை Cancel </x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">புதிய களஞ்சியத்தை நகலி செய்</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">தற்போதைய பக்கத்தை மூடு</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">அடுத்த பக்கத்திற்குச் செல்</x:String>
@@ -360,14 +359,12 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">நிலைபடுத்திய மாற்றங்களை உறுதிமொழி</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">நிலைபடுத்திய மாற்றங்களை உறுதிமொழி மற்றும் தள்ளு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">அனைத்து மாற்றங்களையும் நிலைபடுத்தி உறுதிமொழி</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.DiscardSelected" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட மாற்றங்களை நிராகரி</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">எடு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">முகப்பலகை பயன்முறை (இயல்புநிலை)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">உறுதிமொழி தேடல் பயன்முறை</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">இழு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">தள்ளு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">இந்த களஞ்சியத்தை மீண்டும் ஏற்ற கட்டாயப்படுத்து</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.StageOrUnstageSelected" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட மாற்றங்களை நிலைபடுத்து/நிலைநீக்கு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'மாற்றங்கள்' என்பதற்கு மாறு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'வரலாறுகள்' என்பதற்கு மாறு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'பதுகிவைத்தவை' என்பதற்கு மாறு</x:String>

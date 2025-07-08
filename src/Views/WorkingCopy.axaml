@@ -346,8 +346,8 @@
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Command="{Binding CommitWithPush}"
-                HotKey="Alt+Enter"
-                ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
+                HotKey="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+Alt+Enter}"
+                ToolTip.Tip="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+⌥+Enter}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <Button.IsEnabled>
