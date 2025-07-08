@@ -108,13 +108,29 @@ namespace SourceGit.Views
 
         protected override async void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItem is ViewModels.RevisionFileTreeNode { IsFolder: true } node && e.KeyModifiers == KeyModifiers.None)
+            if (SelectedItem is ViewModels.RevisionFileTreeNode node)
             {
-                if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                if (node.IsFolder &&
+                    e.KeyModifiers == KeyModifiers.None &&
+                    (node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
                 {
                     var tree = this.FindAncestorOfType<RevisionFileTreeView>();
                     await tree?.ToggleNodeIsExpandedAsync(node);
                     e.Handled = true;
+                }
+                else if (e.Key == Key.C &&
+                    e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                {
+                    var detailView = this.FindAncestorOfType<CommitDetail>();
+                    if (detailView is { DataContext: ViewModels.CommitDetail detail })
+                    {
+                        var path = node.Backend?.Path ?? string.Empty;
+                        if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                            path = detail.GetAbsPath(path);
+
+                        await App.CopyTextAsync(path);
+                        e.Handled = true;
+                    }
                 }
             }
 

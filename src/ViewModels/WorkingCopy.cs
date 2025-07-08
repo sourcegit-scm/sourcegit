@@ -1009,6 +1009,7 @@ namespace SourceGit.ViewModels
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                 copy.Click += async (_, e) =>
                 {
                     await App.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
@@ -1018,6 +1019,7 @@ namespace SourceGit.ViewModels
                 var copyFullPath = new MenuItem();
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                 copyFullPath.Click += async (_, e) =>
                 {
                     await App.CopyTextAsync(hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path);
@@ -1197,6 +1199,7 @@ namespace SourceGit.ViewModels
                     var copy = new MenuItem();
                     copy.Header = App.Text("CopyPath");
                     copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copy.Click += async (_, e) =>
                     {
                         await App.CopyTextAsync(selectedSingleFolder);
@@ -1206,6 +1209,7 @@ namespace SourceGit.ViewModels
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyPath");
                     copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, e) =>
                     {
                         await App.CopyTextAsync(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));
@@ -1500,6 +1504,7 @@ namespace SourceGit.ViewModels
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                 copyPath.Click += async (_, e) =>
                 {
                     await App.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
@@ -1509,6 +1514,7 @@ namespace SourceGit.ViewModels
                 var copyFullPath = new MenuItem();
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                 copyFullPath.Click += async (_, e) =>
                 {
                     var target = hasSelectedFolder ? Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder) : path;
@@ -1608,6 +1614,7 @@ namespace SourceGit.ViewModels
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
                     copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copyPath.Click += async (_, e) =>
                     {
                         await App.CopyTextAsync(selectedSingleFolder);
@@ -1617,6 +1624,7 @@ namespace SourceGit.ViewModels
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyFullPath");
                     copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, e) =>
                     {
                         await App.CopyTextAsync(Native.OS.GetAbsPath(_repo.FullPath, selectedSingleFolder));

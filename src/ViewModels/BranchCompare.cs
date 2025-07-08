@@ -114,6 +114,11 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo, path);
+        }
+
         public ContextMenu CreateChangeContextMenu()
         {
             if (_selectedChanges is not { Count: 1 })
@@ -155,6 +160,7 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyPath.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(change.Path);
@@ -165,6 +171,7 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
             copyFullPath.Click += async (_, e) =>
             {
                 await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));

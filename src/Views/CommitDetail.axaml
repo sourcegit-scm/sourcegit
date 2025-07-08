@@ -33,7 +33,8 @@
           <ListBox Background="Transparent"
                    Margin="64,0,8,4"
                    SelectionMode="Single"
-                   ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}">
+                   ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}"
+                   KeyDown="OnCommitListKeyDown">
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
                 <Setter Property="Padding" Value="0"/>
