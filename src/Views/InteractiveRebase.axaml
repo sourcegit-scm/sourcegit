@@ -94,6 +94,13 @@
                 <Border Grid.Column="0" Background="Transparent"
                         Loaded="OnSetupRowHeaderDragDrop"
                         PointerPressed="OnRowHeaderPointerPressed">
+                  <ToolTip.Tip>
+                    <TextBlock>
+                      <Run Text="{DynamicResource Text.InteractiveRebase.ReorderTip}"/>
+                      <Run Text=" "/>
+                      <Run Text="{OnPlatform 'Ctrl+Up/Ctrl+Down', macOS='⌘+Up/⌘+Down'}" Foreground="{DynamicResource Brush.FG2}"/>
+                    </TextBlock>
+                  </ToolTip.Tip>
                   <Path Width="14" Height="14"
                         Data="{StaticResource Icons.Move}"
                         Fill="{DynamicResource Brush.FG2}"

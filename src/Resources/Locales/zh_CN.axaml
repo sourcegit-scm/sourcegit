@@ -457,6 +457,7 @@
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">正在回滚提交</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">交互式变基</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交 ：</x:String>
+  <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">拖拽以便对提交重新排序</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">复制链接地址</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在浏览器中访问</x:String>
