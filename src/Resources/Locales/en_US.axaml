@@ -410,13 +410,13 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CancelPopup" xml:space="preserve">Cancel current popup</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clone new repository</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous page</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new page</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current tab</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next tab</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous tab</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Open Preferences dialog</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">Switch active workspace</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Switch active page</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Switch active tab</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit staged changes</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit and push staged changes</x:String>
@@ -460,7 +460,7 @@
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
-  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Pages</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Tabs</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Customize merge message</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
@@ -481,7 +481,7 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Open in Merge Tool</x:String>
   <x:String x:Key="Text.OpenWith" xml:space="preserve">Open with...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
-  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Page</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Close Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Close Other Tabs</x:String>
