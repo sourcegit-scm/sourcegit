@@ -5,6 +5,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -71,6 +72,14 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            var list = this.FindDescendantOfType<InteractiveRebaseListBox>();
+            list?.Focus();
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)

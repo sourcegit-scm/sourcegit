@@ -129,9 +129,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).GetResultAsync().ConfigureAwait(false);
-                var list = new List<InteractiveRebaseItem>();
+                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
+                var list = new List<InteractiveRebaseItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
@@ -141,6 +143,8 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
+                    if (list.Count > 0)
+                        SelectedItem = list[0];
                     IsLoading = false;
                 });
             });
