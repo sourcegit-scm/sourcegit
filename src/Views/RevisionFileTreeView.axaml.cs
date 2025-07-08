@@ -132,6 +132,17 @@ namespace SourceGit.Views
                         e.Handled = true;
                     }
                 }
+                else if (node.Backend is { Type: Models.ObjectType.Blob } file &&
+                    e.Key == Key.S &&
+                    e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                {
+                    var detailView = this.FindAncestorOfType<CommitDetail>();
+                    if (detailView is { DataContext: ViewModels.CommitDetail detail })
+                    {
+                        await detail.SaveRevisionFile(file);
+                        e.Handled = true;
+                    }
+                }
             }
 
             if (!e.Handled)

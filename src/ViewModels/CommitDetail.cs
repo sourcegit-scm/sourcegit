@@ -254,6 +254,33 @@ namespace SourceGit.ViewModels
             new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
         }
 
+        public async Task SaveRevisionFile(Models.Object file)
+        {
+            var storageProvider = App.GetStorageProvider();
+            if (storageProvider == null)
+                return;
+
+            var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+            try
+            {
+                var selected = await storageProvider.OpenFolderPickerAsync(options);
+                if (selected.Count == 1)
+                {
+                    var folder = selected[0];
+                    var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
+                    var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
+
+                    await Commands.SaveRevisionFile
+                        .RunAsync(_repo.FullPath, _commit.SHA, file.Path, saveTo)
+                        .ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+                App.RaiseException(_repo.FullPath, $"Failed to save file: {e.Message}");
+            }
+        }
+
         public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
         {
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, node.FullPath);
@@ -540,32 +567,10 @@ namespace SourceGit.ViewModels
             saveAs.Header = App.Text("SaveAs");
             saveAs.Icon = App.CreateMenuIcon("Icons.Save");
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
+            saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+S" : "Ctrl+S";
             saveAs.Click += async (_, ev) =>
             {
-                var storageProvider = App.GetStorageProvider();
-                if (storageProvider == null)
-                    return;
-
-                var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                try
-                {
-                    var selected = await storageProvider.OpenFolderPickerAsync(options);
-                    if (selected.Count == 1)
-                    {
-                        var folder = selected[0];
-                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
-                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
-
-                        await Commands.SaveRevisionFile
-                            .RunAsync(_repo.FullPath, _commit.SHA, file.Path, saveTo)
-                            .ConfigureAwait(false);
-                    }
-                }
-                catch (Exception e)
-                {
-                    App.RaiseException(_repo.FullPath, $"Failed to save file: {e.Message}");
-                }
-
+                await SaveRevisionFile(file);
                 ev.Handled = true;
             };
 
