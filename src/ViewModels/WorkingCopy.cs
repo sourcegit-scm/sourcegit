@@ -587,6 +587,7 @@ namespace SourceGit.ViewModels
                 var openMerger = new MenuItem();
                 openMerger.Header = App.Text("OpenInExternalMergeTool");
                 openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                 openMerger.Click += async (_, e) =>
                 {
                     if (change.IsConflicted)
@@ -1275,6 +1276,7 @@ namespace SourceGit.ViewModels
                 var openWithMerger = new MenuItem();
                 openWithMerger.Header = App.Text("OpenInExternalMergeTool");
                 openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                 openWithMerger.Click += (_, ev) =>
                 {
                     var toolType = Preferences.Instance.ExternalMergeToolType;

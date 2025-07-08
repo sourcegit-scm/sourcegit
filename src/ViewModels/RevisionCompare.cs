@@ -139,6 +139,7 @@ namespace SourceGit.ViewModels
             var openWithMerger = new MenuItem();
             openWithMerger.Header = App.Text("OpenInExternalMergeTool");
             openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
             openWithMerger.Click += (_, ev) =>
             {
                 var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
