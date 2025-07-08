@@ -134,7 +134,7 @@ namespace SourceGit.Views
                 }
                 else if (node.Backend is { Type: Models.ObjectType.Blob } file &&
                     e.Key == Key.S &&
-                    e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                    e.KeyModifiers == ((OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) | KeyModifiers.Shift))
                 {
                     var detailView = this.FindAncestorOfType<CommitDetail>();
                     if (detailView is { DataContext: ViewModels.CommitDetail detail })

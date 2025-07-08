@@ -567,7 +567,7 @@ namespace SourceGit.ViewModels
             saveAs.Header = App.Text("SaveAs");
             saveAs.Icon = App.CreateMenuIcon("Icons.Save");
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
-            saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+S" : "Ctrl+S";
+            saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+S" : "Ctrl+Shift+S";
             saveAs.Click += async (_, ev) =>
             {
                 await SaveRevisionFile(file);
