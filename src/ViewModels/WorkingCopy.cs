@@ -328,6 +328,13 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public void OpenWithDefaultEditor(Models.Change c)
+        {
+            var absPath = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
+            if (File.Exists(absPath))
+                Native.OS.OpenWithDefaultEditor(absPath);
+        }
+
         public void StashAll(bool autoStart)
         {
             if (!_repo.CanCreatePopup())
@@ -609,10 +616,11 @@ namespace SourceGit.ViewModels
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
                 openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
                 openWith.IsEnabled = File.Exists(path);
                 openWith.Click += (_, e) =>
                 {
-                    Native.OS.OpenWithDefaultEditor(path);
+                    OpenWithDefaultEditor(change);
                     e.Handled = true;
                 };
                 menu.Items.Add(openWith);
@@ -1293,10 +1301,11 @@ namespace SourceGit.ViewModels
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
                 openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
                 openWith.IsEnabled = File.Exists(path);
                 openWith.Click += (_, e) =>
                 {
-                    Native.OS.OpenWithDefaultEditor(path);
+                    OpenWithDefaultEditor(change);
                     e.Handled = true;
                 };
 

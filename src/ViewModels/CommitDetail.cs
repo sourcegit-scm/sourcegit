@@ -528,6 +528,7 @@ namespace SourceGit.ViewModels
             var openWith = new MenuItem();
             openWith.Header = App.Text("OpenWith");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
             openWith.IsEnabled = file.Type == Models.ObjectType.Blob;
             openWith.Click += async (_, ev) =>
             {
