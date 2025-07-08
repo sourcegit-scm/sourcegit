@@ -65,6 +65,7 @@
                ItemsSource="{Binding VisibleStashes}"
                SelectedItem="{Binding SelectedStash, Mode=TwoWay}"
                SelectionMode="Single"
+               DoubleTapped="OnStashListDoubleTapped"
                KeyDown="OnStashListKeyDown"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">

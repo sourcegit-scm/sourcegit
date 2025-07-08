@@ -23,6 +23,15 @@ namespace SourceGit.Views
                 layout.StashesLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
         }
 
+        private void OnStashListDoubleTapped(object _, TappedEventArgs e)
+        {
+            if (DataContext is not ViewModels.StashesPage vm)
+                return;
+
+            vm.Apply(vm.SelectedStash);
+            e.Handled = true;
+        }
+
         private void OnStashListKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key is not (Key.Delete or Key.Back))
