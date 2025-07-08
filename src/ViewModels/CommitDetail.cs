@@ -246,6 +246,14 @@ namespace SourceGit.ViewModels
             return Native.OS.GetAbsPath(_repo.FullPath, path);
         }
 
+        public void OpenChangeInMergeTool(Models.Change c)
+        {
+            var toolType = Preferences.Instance.ExternalMergeToolType;
+            var toolPath = Preferences.Instance.ExternalMergeToolPath;
+            var opt = new Models.DiffOption(_commit, c);
+            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+        }
+
         public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
         {
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, node.FullPath);
@@ -335,10 +343,7 @@ namespace SourceGit.ViewModels
             openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
             openWithMerger.Click += (_, ev) =>
             {
-                var toolType = Preferences.Instance.ExternalMergeToolType;
-                var toolPath = Preferences.Instance.ExternalMergeToolPath;
-                var opt = new Models.DiffOption(_commit, change);
-                new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+                OpenChangeInMergeTool(change);
                 ev.Handled = true;
             };
 
