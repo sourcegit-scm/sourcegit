@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
@@ -12,11 +13,17 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"commit --allow-empty --file={_tmpFile.Quoted()}";
+
+            var builder = new StringBuilder("commit --allow-empty --file=").Append(_tmpFile.Quoted());
             if (signOff)
-                Args += " --signoff";
+                builder.Append(" --signoff");
             if (amend)
-                Args += resetAuthor ? " --amend --reset-author --no-edit" : " --amend --no-edit";
+            {
+                builder.Append(" --amend --no-edit");
+                if (resetAuthor)
+                    builder.Append(" --reset-author");
+            }
+            Args = builder.ToString();
         }
 
         public async Task<bool> RunAsync()

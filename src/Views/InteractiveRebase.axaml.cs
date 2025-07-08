@@ -29,32 +29,17 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (e.Key == Key.P)
+            var action = e.Key switch
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Pick);
-                e.Handled = true;
-            }
-            else if (e.Key == Key.E)
-            {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Edit);
-                e.Handled = true;
-            }
-            else if (e.Key == Key.R)
-            {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Reword);
-                e.Handled = true;
-            }
-            else if (e.Key == Key.S)
-            {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Squash);
-                e.Handled = true;
-            }
-            else if (e.Key == Key.F)
-            {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Fixup);
-                e.Handled = true;
-            }
-            else if (e.Key == Key.D)
+                Key.P => Models.InteractiveRebaseAction.Pick,
+                Key.E => Models.InteractiveRebaseAction.Edit,
+                Key.R => Models.InteractiveRebaseAction.Reword,
+                Key.S => Models.InteractiveRebaseAction.Squash,
+                Key.F => Models.InteractiveRebaseAction.Fixup,
+                Key.D => Models.InteractiveRebaseAction.Drop,
+                _ => default(Models.InteractiveRebaseAction?)
+            };
+            if (action != null)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
                 e.Handled = true;

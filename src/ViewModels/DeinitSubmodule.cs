@@ -2,13 +2,12 @@
 
 namespace SourceGit.ViewModels
 {
-    public class DeinitSubmodule : Popup
+    public class DeinitSubmodule(Repository repo, string submodule) : Popup
     {
         public string Submodule
         {
             get;
-            private set;
-        }
+        } = submodule;
 
         public bool Force
         {
@@ -16,30 +15,21 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public DeinitSubmodule(Repository repo, string submodule)
-        {
-            _repo = repo;
-            Submodule = submodule;
-            Force = false;
-        }
-
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            repo.SetWatcherEnabled(false);
             ProgressDescription = "De-initialize Submodule";
 
-            var log = _repo.CreateLog("De-initialize Submodule");
+            var log = repo.CreateLog("De-initialize Submodule");
             Use(log);
 
-            var succ = await new Commands.Submodule(_repo.FullPath)
+            var succ = await new Commands.Submodule(repo.FullPath)
                 .Use(log)
                 .DeinitAsync(Submodule, false);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
+            repo.SetWatcherEnabled(true);
             return succ;
         }
-
-        private Repository _repo;
     }
 }

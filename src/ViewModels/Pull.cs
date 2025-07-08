@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -181,7 +182,7 @@ namespace SourceGit.ViewModels
 
             var autoSelectedBranch = false;
             if (!string.IsNullOrEmpty(Current.Upstream) &&
-                Current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
+                Current.Upstream.StartsWith($"refs/remotes/{remoteName}/", StringComparison.Ordinal))
             {
                 foreach (var branch in branches)
                 {

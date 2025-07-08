@@ -1231,7 +1231,7 @@ namespace SourceGit.Views
                     if (line.Content.Length > 10000)
                     {
                         builder.Append(line.Content.AsSpan(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} character trimmed)");
+                        builder.Append("...(").Append(line.Content.Length - 1000).Append(" character trimmed)");
                     }
                     else
                     {
@@ -1472,7 +1472,7 @@ namespace SourceGit.Views
                     if (line.Content.Length > 1000)
                     {
                         builder.Append(line.Content.AsSpan(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                        builder.Append("...(").Append(line.Content.Length - 1000).Append(" characters trimmed)");
                     }
                     else
                     {

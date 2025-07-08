@@ -162,7 +162,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
+            // Ctrl+, opens preference dialog (on macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
             {
                 await App.ShowDialog(new Preferences());
@@ -170,14 +170,14 @@ namespace SourceGit.Views
                 return;
             }
 
-            // F1 opens preference dialog (macOS use hotkeys in system menu bar)
+            // F1 opens preference dialog (on macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
             {
                 await App.ShowDialog(new Hotkeys());
                 return;
             }
 
-            // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
+            // Ctrl+Q quits the application (on macOS use hotkeys in system menu bar)
             if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
             {
                 App.Quit(0);

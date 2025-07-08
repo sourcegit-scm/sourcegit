@@ -91,8 +91,8 @@ namespace SourceGit.Views
             else if (FullMessage is { Inlines: { Count: > 0 } links })
             {
                 var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
-                var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
-                var y = Math.Min(Math.Max(point.Y, 0), Math.Max(TextLayout.Height, 0));
+                var x = Math.Clamp(point.X, 0, TextLayout.WidthIncludingTrailingWhitespace);
+                var y = Math.Clamp(point.Y, 0, TextLayout.Height);
                 point = new Point(x, y);
 
                 var pos = TextLayout.HitTestPoint(point).TextPosition;
@@ -195,8 +195,8 @@ namespace SourceGit.Views
                 }
 
                 var position = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
-                var x = Math.Min(Math.Max(position.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
-                var y = Math.Min(Math.Max(position.Y, 0), Math.Max(TextLayout.Height, 0));
+                var x = Math.Clamp(position.X, 0, TextLayout.WidthIncludingTrailingWhitespace);
+                var y = Math.Clamp(position.Y, 0, TextLayout.Height);
                 position = new Point(x, y);
 
                 var textPos = TextLayout.HitTestPoint(position).TextPosition;

@@ -62,15 +62,10 @@ namespace SourceGit.Models
 
         public void SetEnabled(bool enabled)
         {
-            if (enabled)
-            {
-                if (_lockCount > 0)
-                    _lockCount--;
-            }
-            else
-            {
+            if (!enabled)
                 _lockCount++;
-            }
+            else if (_lockCount > 0)
+                _lockCount--;
         }
 
         public void SetSubmodules(List<Submodule> submodules)

@@ -59,8 +59,7 @@ namespace SourceGit.Commands
             builder.Append("stash push --staged ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m ").Append(message.Quoted());
-            Args = builder.ToString();
+            Args = builder.Append("-m ").Append(message.Quoted()).ToString();
             return await ExecAsync().ConfigureAwait(false);
         }
 

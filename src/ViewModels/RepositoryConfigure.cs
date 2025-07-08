@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -202,7 +203,7 @@ namespace SourceGit.ViewModels
             var link = "https://github.com/username/repository/issues/$1";
             foreach (var remote in _repo.Remotes)
             {
-                if (remote.URL.Contains("github.com", System.StringComparison.Ordinal) &&
+                if (remote.URL.Contains("github.com", StringComparison.Ordinal) &&
                     remote.TryGetVisitURL(out string url))
                 {
                     link = $"{url}/issues/$1";
@@ -258,7 +259,7 @@ namespace SourceGit.ViewModels
             var link = "https://gitee.com/username/repository/issues/$1";
             foreach (var remote in _repo.Remotes)
             {
-                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
+                if (remote.URL.Contains("gitee.com", StringComparison.Ordinal) &&
                     remote.TryGetVisitURL(out string url))
                 {
                     link = $"{url}/issues/$1";
@@ -274,7 +275,7 @@ namespace SourceGit.ViewModels
             var link = "https://gitee.com/username/repository/pulls/$1";
             foreach (var remote in _repo.Remotes)
             {
-                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
+                if (remote.URL.Contains("gitee.com", StringComparison.Ordinal) &&
                     remote.TryGetVisitURL(out string url))
                 {
                     link = $"{url}/pulls/$1";

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -10,18 +11,14 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = "fetch --progress --verbose ";
 
-            if (noTags)
-                Args += "--no-tags ";
-            else
-                Args += "--tags ";
+            var builder = new StringBuilder("fetch --progress --verbose ");
+            builder.Append(noTags ? "--no-tags " : "--tags ");
 
             if (force)
-                Args += "--force ";
+                builder.Append("--force ");
 
-            Args += remote;
-
+            Args = builder.Append(remote).ToString();
         }
 
         public Fetch(string repo, Models.Branch local, Models.Branch remote)

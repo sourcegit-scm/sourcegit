@@ -40,22 +40,14 @@ namespace SourceGit.Commands
                     var path = match.Groups[3].Value;
 
                     var module = new Models.Submodule() { Path = path, SHA = sha };
-                    switch (stat[0])
+                    module.Status = stat[0] switch
                     {
-                        case '-':
-                            module.Status = Models.SubmoduleStatus.NotInited;
-                            break;
-                        case '+':
-                            module.Status = Models.SubmoduleStatus.RevisionChanged;
-                            break;
-                        case 'U':
-                            module.Status = Models.SubmoduleStatus.Unmerged;
-                            break;
-                        default:
-                            module.Status = Models.SubmoduleStatus.Normal;
-                            needCheckLocalChanges = true;
-                            break;
-                    }
+                        '-' => Models.SubmoduleStatus.NotInited,
+                        '+' => Models.SubmoduleStatus.RevisionChanged,
+                        'U' => Models.SubmoduleStatus.Unmerged,
+                        _ => Models.SubmoduleStatus.Normal
+                    };
+                    needCheckLocalChanges = (module.Status == Models.SubmoduleStatus.Normal);
 
                     map.Add(path, module);
                     submodules.Add(module);

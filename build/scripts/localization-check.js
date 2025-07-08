@@ -69,7 +69,7 @@ async function calculateTranslationRate() {
             const badgeColor = progress >= 75 ? 'yellow' : 'red';
 
             lines.push(`### ![${locale}](https://img.shields.io/badge/${locale}-${progress.toFixed(2)}%25-${badgeColor})`);
-            lines.push(`<details>\n<summary>Missing keys in ${file}</summary>\n\n${missingKeys.map(key => `- ${key}`).join('\n')}\n\n</details>`)
+            lines.push(`<details>\n<summary>Missing keys in ${file}</summary>\n\n${missingKeys.map(key => `- \`${key}\``).join('\n')}\n\n</details>`)
         } else {
             lines.push(`### ![${locale}](https://img.shields.io/badge/${locale}-%E2%88%9A-brightgreen)`);
         }

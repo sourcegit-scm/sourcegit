@@ -2,11 +2,11 @@
 
 namespace SourceGit.Models
 {
-    public class ConventionalCommitType
+    public class ConventionalCommitType(string name, string type, string description)
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = name;
+        public string Type { get; set; } = type;
+        public string Description { get; set; } = description;
 
         public static readonly List<ConventionalCommitType> Supported = [
             new("Features", "feat", "Adding a new feature"),
@@ -22,12 +22,5 @@ namespace SourceGit.Models
             new("Tests", "test", "Adding or updating tests"),
             new("Chores", "chore", "Other changes that don't modify src or test files"),
         ];
-
-        public ConventionalCommitType(string name, string type, string description)
-        {
-            Name = name;
-            Type = type;
-            Description = description;
-        }
     }
 }

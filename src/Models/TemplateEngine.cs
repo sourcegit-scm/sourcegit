@@ -396,7 +396,7 @@ namespace SourceGit.Models
 
             sb.AppendJoin(", ", paths);
             if (max < context.changes.Count)
-                sb.Append($" and {context.changes.Count - max} other files");
+                sb.Append(" and ").Append(context.changes.Count - max).Append(" other files");
 
             return sb.ToString();
         }

@@ -106,7 +106,7 @@ namespace SourceGit.Views
             var drawGeo = geo!.Clone();
             var iconBounds = drawGeo.Bounds;
             var translation = Matrix.CreateTranslation(-(Vector)iconBounds.Position);
-            var scale = Math.Min(10.0 / iconBounds.Width, 10.0 / iconBounds.Height);
+            var scale = 10.0 / Math.Max(iconBounds.Width, iconBounds.Height);
             var transform = translation * Matrix.CreateScale(scale, scale);
             if (drawGeo.Transform == null || drawGeo.Transform.Value == Matrix.Identity)
                 drawGeo.Transform = new MatrixTransform(transform);

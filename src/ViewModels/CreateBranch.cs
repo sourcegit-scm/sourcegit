@@ -206,7 +206,6 @@ namespace SourceGit.ViewModels
 
                 if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
                     _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
-
             }
 
             _repo.MarkBranchesDirtyManually();

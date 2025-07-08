@@ -45,10 +45,7 @@ namespace SourceGit.Commands
                     using var proc = Process.Start(starter);
 
                     if (input != null)
-                    {
-                        var inputString = await new StreamReader(input).ReadToEndAsync().ConfigureAwait(false);
-                        await proc.StandardInput.WriteAsync(inputString).ConfigureAwait(false);
-                    }
+                        await input.CopyToAsync(proc.StandardInput.BaseStream).ConfigureAwait(false);
 
                     await proc.StandardOutput.BaseStream.CopyToAsync(sw).ConfigureAwait(false);
                     await proc.WaitForExitAsync().ConfigureAwait(false);

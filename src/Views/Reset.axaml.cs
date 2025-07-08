@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -25,7 +26,7 @@ namespace SourceGit.Views
                 var key = e.Key.ToString();
                 for (int i = 0; i < Models.ResetMode.Supported.Length; i++)
                 {
-                    if (key.Equals(Models.ResetMode.Supported[i].Key, System.StringComparison.OrdinalIgnoreCase))
+                    if (key.Equals(Models.ResetMode.Supported[i].Key, StringComparison.OrdinalIgnoreCase))
                     {
                         comboBox.SelectedIndex = i;
                         e.Handled = true;
