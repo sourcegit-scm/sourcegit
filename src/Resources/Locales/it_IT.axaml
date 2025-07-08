@@ -38,7 +38,6 @@
   <x:String x:Key="Text.Askpass" xml:space="preserve">Richiedi Password SourceGit</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FILE ASSUNTI COME INVARIATI</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NESSUN FILE ASSUNTO COME INVARIATO</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">RIMUOVI</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Aggiorna</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">FILE BINARIO NON SUPPORTATO!!!</x:String>
   <x:String x:Key="Text.Bisect" xml:space="preserve">Biseca</x:String>
@@ -133,7 +132,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Sottomodulo</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMAZIONI</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTORE</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">MODIFICATO</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">FIGLI</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">CHI HA COMMITTATO</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Controlla i riferimenti che contengono questo commit</x:String>
@@ -252,7 +250,6 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFF BINARIO</x:String>
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NUOVO</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">VECCHIO</x:String>
-  <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Copia</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modalità File Modificata</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Prima differenza</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi</x:String>
@@ -295,17 +292,14 @@
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Presumi invariato</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Scarta...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Scarta {0} file...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Scarta Modifiche nelle Righe Selezionate</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Risolvi Usando ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Salva come Patch...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage di {0} file</x:String>
-  <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">Stage delle Modifiche nelle Righe Selezionate</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Stasha...</x:String>
   <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Stasha {0} file...</x:String>
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Rimuovi da Stage</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Rimuovi da Stage {0} file</x:String>
-  <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">Rimuovi le Righe Selezionate da Stage</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Usa Il Mio (checkout --ours)</x:String>
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Usa Il Loro (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Cronologia File</x:String>
@@ -547,7 +541,6 @@
   <x:String x:Key="Text.Rebase" xml:space="preserve">Riallinea Branch Corrente</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stasha e Riapplica modifiche locali</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">Su:</x:String>
-  <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Riallinea:</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Aggiungi Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Modifica Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nome:</x:String>
@@ -601,7 +594,6 @@
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Evidenzia nel grafico solo il branch corrente</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Apri in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Apri in Strumenti Esterni</x:String>
-  <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">Aggiorna</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTI</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">AGGIUNGI REMOTO</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Cerca Commit</x:String>
@@ -680,8 +672,6 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">MODIFICHE</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASH</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">Statistiche</x:String>
-  <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">COMMIT</x:String>
-  <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">PANORAMICA</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MESE</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">SETTIMANA</x:String>
@@ -732,7 +722,6 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Apri Terminale</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Riscansiona Repository nella Cartella Clone Predefinita</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cerca Repository...</x:String>
-  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Ordina</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">MODIFICHE LOCALI</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignora tutti i file *{0}</x:String>
@@ -756,7 +745,6 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDI FILE NON TRACCIATI</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NESSUN MESSAGGIO RECENTE INSERITO</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NESSUN TEMPLATE DI COMMIT</x:String>
-  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Clicca con il tasto destro sul(i) file selezionato, quindi scegli come risolvere i conflitti.</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">SignOff</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">IN STAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">RIMUOVI DA STAGE</x:String>

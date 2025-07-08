@@ -38,7 +38,6 @@
   <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ФАЙЛИ, ЩО ВВАЖАЮТЬСЯ НЕЗМІНЕНИМИ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">НЕМАЄ ФАЙЛІВ, ЩО ВВАЖАЮТЬСЯ НЕЗМІНЕНИМИ</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">ВИДАЛИТИ</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Оновити</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">БІНАРНИЙ ФАЙЛ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Автор рядка</x:String>
@@ -122,7 +121,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Підмодуль</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">ІНФОРМАЦІЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">АВТОР</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">ЗМІНЕНО</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ДОЧІРНІ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">КОМІТЕР</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Перевірити посилання, що містять цей коміт</x:String>
@@ -239,7 +237,6 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">РІЗНИЦЯ ДЛЯ БІНАРНИХ ФАЙЛІВ</x:String>
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">НОВИЙ</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">СТАРИЙ</x:String>
-  <x:String x:Key="Text.Diff.Copy" xml:space="preserve">Копіювати</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Змінено режим файлу</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Перша відмінність</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
@@ -282,17 +279,14 @@
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Вважати незмінними</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Скасувати...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Скасувати {0} файлів...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">Скасувати зміни в вибраних рядках</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Розв'язати за допомогою ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Зберегти як патч...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Стагнути</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Стагнути {0} файлів</x:String>
-  <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">Стагнути зміни в вибраних рядках</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Схованка...</x:String>
   <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Схованка {0} файлів...</x:String>
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Скинути стаг</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Скинути {0} файлів</x:String>
-  <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">Скинути зміни в вибраних рядках</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Використовувати Mine (checkout --ours)</x:String>
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Використовувати Theirs (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Історія файлу</x:String>
@@ -530,7 +524,6 @@
   <x:String x:Key="Text.Rebase" xml:space="preserve">Перебазувати поточну гілку</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Сховати та застосувати локальні зміни</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">На:</x:String>
-  <x:String x:Key="Text.Rebase.Target" xml:space="preserve">Перебазувати:</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Додати віддалене сховище</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редагувати віддалене сховище</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Назва:</x:String>
@@ -581,7 +574,6 @@
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Виділяти лише поточну гілку в графі</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Відкрити в {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Відкрити в зовнішніх інструментах</x:String>
-  <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">Оновити</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">ВІДДАЛЕНІ СХОВИЩА</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ДОДАТИ ВІДДАЛЕНЕ СХОВИЩЕ</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Пошук коміту</x:String>
@@ -656,8 +648,6 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">ЗМІНИ</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">СХОВАНКИ</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">Статистика</x:String>
-  <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">КОМІТИ</x:String>
-  <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">КОМІТЕР</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">ОГЛЯД</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">МІСЯЦЬ</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">ТИЖДЕНЬ</x:String>
@@ -698,7 +688,6 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Відкрити термінал</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Пересканувати сховища у теці клонування за замовчуванням</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Пошук сховищ...</x:String>
-  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">Сортувати</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ЛОКАЛЬНІ ЗМІНИ</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ігнорувати всі файли *{0}</x:String>
@@ -722,7 +711,6 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТИ НЕВІДСТЕЖУВАНІ ФАЙЛИ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">НЕМАЄ ОСТАННІХ ПОВІДОМЛЕНЬ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">НЕМАЄ ШАБЛОНІВ КОМІТІВ</x:String>
-  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">Клацніть правою кнопкою миші на вибраних файлах та оберіть спосіб вирішення конфліктів.</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">Підпис</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">ПРОІНДЕКСОВАНІ</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">ВИДАЛИТИ З ІНДЕКСУ</x:String>
