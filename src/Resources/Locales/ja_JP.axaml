@@ -38,7 +38,6 @@
   <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">変更されていないとみなされるファイル</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">変更されていないとみなされるファイルはありません</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">削除</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">バイナリファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
@@ -121,7 +120,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">サブモジュール</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">コミットの情報</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">著者</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">子</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">コミッター</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">このコミットを含む参照を確認</x:String>
@@ -234,7 +232,6 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">バイナリの差分</x:String>
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
-  <x:String x:Key="Text.Diff.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">ファイルモードが変更されました</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">先頭の差分</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更を無視</x:String>
@@ -277,17 +274,14 @@
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">変更されていないとみなされる</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">破棄...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">{0}個のファイルを破棄...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">選択された行の変更を破棄</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">${0}$ を使用して解決</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">パッチとして保存...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">ステージ</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">{0}個のファイルをステージ...</x:String>
-  <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">選択された行の変更をステージ</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">スタッシュ...</x:String>
   <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">{0}個のファイルをスタッシュ...</x:String>
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">アンステージ</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">{0}個のファイルをアンステージ...</x:String>
-  <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">選択された行の変更をアンステージ</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">自分の変更を使用 (checkout --ours)</x:String>
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">相手の変更を使用 (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">ファイルの履歴</x:String>
@@ -525,7 +519,6 @@
   <x:String x:Key="Text.Rebase" xml:space="preserve">現在のブランチをリベース</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">ローカルの変更をスタッシュして再適用</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">On:</x:String>
-  <x:String x:Key="Text.Rebase.Target" xml:space="preserve">リベース:</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">リモートを追加</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">リモートを編集</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">名前:</x:String>
@@ -575,7 +568,6 @@
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">グラフで現在のブランチを強調表示</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0} で開く</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">外部ツールで開く</x:String>
-  <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">リモート</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">リモートを追加</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">コミットを検索</x:String>
@@ -650,8 +642,6 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">スタッシュ</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">統計</x:String>
-  <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">コミット</x:String>
-  <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">コミッター</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">概要</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">月間</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">週間</x:String>
@@ -692,7 +682,6 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">ターミナルを開く</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">デフォルトのクローンディレクトリ内のリポジトリを再スキャン</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">リポジトリを検索...</x:String>
-  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">ソート</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">すべての*{0}ファイルを無視</x:String>
@@ -711,7 +700,6 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">追跡されていないファイルを含める</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">最近の入力メッセージはありません</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">コミットテンプレートはありません</x:String>
-  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">選択したファイルを右クリックし、競合を解決する操作を選択してください。</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">サインオフ</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">ステージしたファイル</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">ステージを取り消し</x:String>

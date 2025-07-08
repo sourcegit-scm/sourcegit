@@ -41,7 +41,6 @@
   <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不跟踪更改的文件</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">没有不跟踪更改的文件</x:String>
-  <x:String x:Key="Text.AssumeUnchanged.Remove" xml:space="preserve">移除</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">加载本地图片</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二进制文件不支持该操作!!!</x:String>
@@ -147,7 +146,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模块</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本信息</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Changed" xml:space="preserve">变更列表</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">子提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">查看包含此提交的分支/标签</x:String>
@@ -285,7 +283,6 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">二进制文件</x:String>
   <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">当前大小</x:String>
   <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
-  <x:String x:Key="Text.Diff.Copy" xml:space="preserve">复制</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化</x:String>
@@ -332,17 +329,14 @@
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不跟踪此文件的更改</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">放弃更改...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">放弃 {0} 个文件的更改...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardSelectedLines" xml:space="preserve">放弃选中的更改</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">应用 ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">暂存(add)</x:String>
   <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">暂存(add){0} 个文件</x:String>
-  <x:String x:Key="Text.FileCM.StageSelectedLines" xml:space="preserve">暂存选中的更改</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">贮藏(stash)...</x:String>
   <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">贮藏(stash)选中的 {0} 个文件...</x:String>
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">从暂存中移除</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">从暂存中移除 {0} 个文件</x:String>
-  <x:String x:Key="Text.FileCM.UnstageSelectedLines" xml:space="preserve">从暂存中移除选中的更改</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">使用 MINE (checkout --ours)</x:String>
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用 THEIRS (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">文件历史</x:String>
@@ -596,7 +590,6 @@
   <x:String x:Key="Text.Rebase" xml:space="preserve">变基(rebase)操作</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目标提交 ：</x:String>
-  <x:String x:Key="Text.Rebase.Target" xml:space="preserve">分支 ：</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">添加远程仓库</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>
@@ -651,7 +644,6 @@
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">提交路线图中仅高亮显示当前分支</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">在 {0} 中打开</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具打开</x:String>
-  <x:String x:Key="Text.Repository.Refresh" xml:space="preserve">重新加载</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">远程列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
@@ -741,8 +733,6 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">查看变更</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">贮藏列表</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">提交统计</x:String>
-  <x:String x:Key="Text.Statistics.CommitAmount" xml:space="preserve">提交次数</x:String>
-  <x:String x:Key="Text.Statistics.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">总览</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本周</x:String>
@@ -801,7 +791,6 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">打开终端</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">重新扫描默认克隆路径下的仓库</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">快速查找仓库...</x:String>
-  <x:String x:Key="Text.Welcome.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">本地更改</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">添加至 .gitignore 忽略列表</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">忽略所有 *{0} 文件</x:String>
@@ -828,7 +817,6 @@
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">没有提交信息记录</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">没有可应用的提交信息模板</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">重置提交者</x:String>
-  <x:String x:Key="Text.WorkingCopy.ResolveTip" xml:space="preserve">请选中冲突文件，打开右键菜单，选择合适的解决方式</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">署名</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暂存</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">从暂存区移除选中</x:String>
