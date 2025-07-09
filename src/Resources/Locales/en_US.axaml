@@ -733,7 +733,7 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Add Submodule</x:String>
-  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">Branch</x:String>
+  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">BRANCH</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relative Path</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch nested submodules</x:String>
