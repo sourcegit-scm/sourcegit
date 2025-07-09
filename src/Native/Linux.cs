@@ -48,13 +48,14 @@ namespace SourceGit.Native
 
         public List<Models.ExternalTool> FindExternalTools()
         {
+            var localAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(() => FindExecutable("code"));
             finder.VSCodeInsiders(() => FindExecutable("code-insiders"));
             finder.VSCodium(() => FindExecutable("codium"));
             finder.Cursor(() => FindExecutable("cursor"));
-            finder.Fleet(FindJetBrainsFleet);
-            finder.FindJetBrainsFromToolbox(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JetBrains/Toolbox"));
+            finder.Fleet(() => FindJetBrainsFleet(localAppDataDir));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, "JetBrains/Toolbox"));
             finder.SublimeText(() => FindExecutable("subl"));
             finder.Zed(() => FindExecutable("zeditor"));
             return finder.Tools;
@@ -132,9 +133,9 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private string FindJetBrainsFleet()
+        private string FindJetBrainsFleet(string localAppDataDir)
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JetBrains/Toolbox/apps/fleet/bin/Fleet");
+            var path = Path.Combine(localAppDataDir, "JetBrains/Toolbox/apps/fleet/bin/Fleet");
             return File.Exists(path) ? path : FindExecutable("fleet");
         }
     }

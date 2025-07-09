@@ -77,19 +77,19 @@ namespace SourceGit.ViewModels
             builder.Append(": ");
 
             builder.Append(_description);
-            builder.AppendLine("\n");
+            builder.AppendLine().AppendLine();
 
             if (!string.IsNullOrEmpty(_detail))
             {
                 builder.Append(_detail);
-                builder.AppendLine("\n");
+                builder.AppendLine().AppendLine();
             }
 
             if (!string.IsNullOrEmpty(_breakingChanges))
             {
                 builder.Append("BREAKING CHANGE: ");
                 builder.Append(_breakingChanges);
-                builder.AppendLine("\n");
+                builder.AppendLine().AppendLine();
             }
 
             if (!string.IsNullOrEmpty(_closedIssue))

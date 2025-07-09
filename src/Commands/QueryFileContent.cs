@@ -24,14 +24,13 @@ namespace SourceGit.Commands
                 using var proc = Process.Start(starter);
                 await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-
-                stream.Position = 0;
             }
             catch (Exception e)
             {
                 App.RaiseException(repo, $"Failed to query file content: {e}");
             }
 
+            stream.Position = 0;
             return stream;
         }
 
@@ -56,14 +55,13 @@ namespace SourceGit.Commands
                 await proc.StandardInput.WriteLineAsync($"size {size}").ConfigureAwait(false);
                 await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-
-                stream.Position = 0;
             }
             catch (Exception e)
             {
                 App.RaiseException(repo, $"Failed to query file content: {e}");
             }
 
+            stream.Position = 0;
             return stream;
         }
     }

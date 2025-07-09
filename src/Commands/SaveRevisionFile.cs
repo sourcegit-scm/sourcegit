@@ -43,10 +43,15 @@ namespace SourceGit.Commands
                 try
                 {
                     using var proc = Process.Start(starter);
+
                     if (input != null)
-                        await proc.StandardInput.WriteAsync(await new StreamReader(input).ReadToEndAsync());
-                    await proc.StandardOutput.BaseStream.CopyToAsync(sw);
-                    await proc.WaitForExitAsync();
+                    {
+                        var inputString = await new StreamReader(input).ReadToEndAsync().ConfigureAwait(false);
+                        await proc.StandardInput.WriteAsync(inputString).ConfigureAwait(false);
+                    }
+
+                    await proc.StandardOutput.BaseStream.CopyToAsync(sw).ConfigureAwait(false);
+                    await proc.WaitForExitAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {

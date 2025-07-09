@@ -180,13 +180,14 @@ namespace SourceGit.Native
 
         public List<Models.ExternalTool> FindExternalTools()
         {
+            var localAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
             finder.Cursor(FindCursor);
-            finder.Fleet(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Fleet\Fleet.exe"));
-            finder.FindJetBrainsFromToolbox(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"JetBrains\Toolbox"));
+            finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
             finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
             return finder.Tools;

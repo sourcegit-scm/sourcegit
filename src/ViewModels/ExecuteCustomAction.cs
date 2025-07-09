@@ -250,8 +250,7 @@ namespace SourceGit.ViewModels
             start.StandardErrorEncoding = Encoding.UTF8;
             start.WorkingDirectory = _repo.FullPath;
 
-            using var proc = new Process();
-            proc.StartInfo = start;
+            using var proc = new Process() { StartInfo = start };
             var builder = new StringBuilder();
 
             proc.OutputDataReceived += (_, e) =>
