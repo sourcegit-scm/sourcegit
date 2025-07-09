@@ -462,7 +462,7 @@ namespace SourceGit
                     Models.InteractiveRebaseAction.Reword => 'r',
                     Models.InteractiveRebaseAction.Squash => 's',
                     Models.InteractiveRebaseAction.Fixup => 'f',
-                    _ => 'p'
+                    _ => 'd'
                 };
                 writer.WriteLine($"{code} {job.SHA}");
             }

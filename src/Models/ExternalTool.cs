@@ -39,7 +39,7 @@ namespace SourceGit.Models
             {
                 WorkingDirectory = repo,
                 FileName = _execFile,
-                Arguments = _execArgsGenerator?.Invoke(repo) ?? string.Empty,
+                Arguments = _execArgsGenerator.Invoke(repo),
                 UseShellExecute = false,
             });
         }

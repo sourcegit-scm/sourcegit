@@ -68,7 +68,7 @@ namespace SourceGit.Commands
                     }
 
                     responseBuilder.AppendLine();
-                    summaryBuilder.AppendLine($"(file: {change.Path})");
+                    summaryBuilder.Append("(file: ").Append(change.Path).AppendLine(")");
                 }
 
                 if (_cancelToken.IsCancellationRequested)
