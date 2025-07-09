@@ -78,8 +78,11 @@ namespace SourceGit.ViewModels
 
                             Dispatcher.UIThread.Post(() =>
                             {
-                                _untracked = untracked;
-                                Changes = changes;
+                                if (value.SHA.Equals(_selectedStash?.SHA ?? string.Empty, StringComparison.Ordinal))
+                                {
+                                    _untracked = untracked;
+                                    Changes = changes;
+                                }
                             });
                         });
                     }
@@ -139,9 +142,6 @@ namespace SourceGit.ViewModels
 
         public ContextMenu MakeContextMenu(Models.Stash stash)
         {
-            if (stash == null)
-                return null;
-
             var apply = new MenuItem();
             apply.Header = App.Text("StashCM.Apply");
             apply.Icon = App.CreateMenuIcon("Icons.CheckCircled");
@@ -154,6 +154,7 @@ namespace SourceGit.ViewModels
             var drop = new MenuItem();
             drop.Header = App.Text("StashCM.Drop");
             drop.Icon = App.CreateMenuIcon("Icons.Clear");
+            drop.Tag = "Back/Delete";
             drop.Click += (_, ev) =>
             {
                 Drop(stash);
@@ -197,6 +198,7 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("StashCM.CopyMessage");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copy.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(stash.Message);
@@ -308,13 +310,13 @@ namespace SourceGit.ViewModels
 
         public void Apply(Models.Stash stash)
         {
-            if (stash != null && _repo.CanCreatePopup())
+            if (_repo.CanCreatePopup())
                 _repo.ShowPopup(new ApplyStash(_repo, stash));
         }
 
         public void Drop(Models.Stash stash)
         {
-            if (stash != null && _repo.CanCreatePopup())
+            if (_repo.CanCreatePopup())
                 _repo.ShowPopup(new DropStash(_repo, stash));
         }
 
