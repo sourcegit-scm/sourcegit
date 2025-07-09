@@ -3,7 +3,7 @@
     public class MergeMode(string n, string d, string a)
     {
         public static readonly MergeMode Default =
-            new MergeMode("Default", "Fast-forward if possible", "");
+            new MergeMode("Default", "Use git configuration", "");
 
         public static readonly MergeMode FastForward =
             new MergeMode("Fast-forward", "Refuse to merge when fast-forward is not possible", "--ff-only");
