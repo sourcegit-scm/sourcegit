@@ -147,9 +147,7 @@ namespace SourceGit.ViewModels
             apply.Icon = App.CreateMenuIcon("Icons.CheckCircled");
             apply.Click += (_, ev) =>
             {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new ApplyStash(_repo, stash));
-
+                Apply(stash);
                 ev.Handled = true;
             };
 
@@ -158,9 +156,7 @@ namespace SourceGit.ViewModels
             drop.Icon = App.CreateMenuIcon("Icons.Clear");
             drop.Click += (_, ev) =>
             {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new DropStash(_repo, stash));
-
+                Drop(stash);
                 ev.Handled = true;
             };
 
@@ -308,6 +304,12 @@ namespace SourceGit.ViewModels
         public void ClearSearchFilter()
         {
             SearchFilter = string.Empty;
+        }
+
+        public void Apply(Models.Stash stash)
+        {
+            if (stash != null && _repo.CanCreatePopup())
+                _repo.ShowPopup(new ApplyStash(_repo, stash));
         }
 
         public void Drop(Models.Stash stash)
