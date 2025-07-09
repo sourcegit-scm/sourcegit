@@ -550,14 +550,12 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Спеціальні дії</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Немає спеціальних дій</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Скасувати всі зміни</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Увімкнути опцію '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Відкрити у файловому менеджері</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Пошук гілок/тегів/підмодулів</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Видимість у графі</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Не встановлено</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Приховати в графі комітів</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фільтрувати в графі комітів</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Увімкнути опцію '--first-parent'</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">РОЗТАШУВАННЯ</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Горизонтальне</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Вертикальне</x:String>
@@ -568,7 +566,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Перейти до HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Створити гілку</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ОЧИСТИТИ СПОВІЩЕННЯ</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Виділяти лише поточну гілку в графі</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Відкрити в {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Відкрити в зовнішніх інструментах</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">ВІДДАЛЕНІ СХОВИЩА</x:String>
@@ -591,7 +588,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">За назвою</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Сортувати</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Відкрити в терміналі</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Використовувати відносний час в історії</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РОБОЧІ ДЕРЕВА</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ДОДАТИ РОБОЧЕ ДЕРЕВО</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE (ОЧИСТИТИ)</x:String>

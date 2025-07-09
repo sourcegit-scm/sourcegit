@@ -619,14 +619,12 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Изменить действия</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Не изменять действия</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Отклонить все изменения.</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Разрешить опцию --reflog</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Открыть в файловом менеджере</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, меток и подмодулей</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Видимость на графике</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Не установлен (по умолчанию)</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Скрыть в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фильтр в графе ревизии</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Включить опцию (--first-parent)</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">РАСПОЛОЖЕНИЕ</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Горизонтально</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Вертикально</x:String>
@@ -637,7 +635,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Навигация по ГОЛОВЕ (HEAD)</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Создать ветку</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ОЧИСТКА УВЕДОМЛЕНИЙ</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Выделять только текущую ветку на графике</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Открыть в {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Открыть в расширенном инструменте</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">ВНЕШНИЕ РЕПОЗИТОРИИ</x:String>
@@ -663,7 +660,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">По имени</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Сортировать</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Открыть в терминале</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Использовать относительное время в историях</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Просмотр журналов</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Посетить '{0}' в браузере</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">РАБОЧИЕ КАТАЛОГИ</x:String>

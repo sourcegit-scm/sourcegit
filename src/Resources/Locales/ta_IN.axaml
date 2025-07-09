@@ -545,14 +545,12 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">தனிப்பயன் செயல்கள்</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">தனிப்பயன் செயல்கள் இல்லை</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">எல்லா மாற்றங்களையும் நிராகரி</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">'--குறிபதிவு' விருப்பத்தை இயக்கு</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">கோப்பு உலாவியில் திற</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">கிளைகள்/குறிச்சொற்கள்/துணைத் தொகுதிகளைத் தேடு</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">வரைபடத்தில் தெரிவுநிலை</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">அமைவை நீக்கு</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">உறுதிமொழி வரைபடத்தில் மறை</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">உறுதிமொழி வரைபடத்தில் வடிகட்டு</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">'--first-parent' விருப்பம் இயக்கு</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">தளவமைப்பு</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">கிடைமட்டம்</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">செங்குத்து</x:String>
@@ -563,7 +561,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">தலைக்கு செல்</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">கிளையை உருவாக்கு</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">அறிவிப்புகளை அழி</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">வரைபடத்தில் தற்போதைய கிளையை மட்டும் முன்னிலை படுத்து</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0} இல் திற</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">வெளிப்புற கருவிகளில் திற</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">தொலைகள்</x:String>
@@ -586,7 +583,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">பெயர் மூலம்</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">வரிசைப்படுத்து</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">முனையத்தில் திற</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">வரலாறுகளில் உறவு நேரத்தைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">பணிமரங்கள்</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">பணிமரத்தைச் சேர்</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">கத்தரித்தல்</x:String>

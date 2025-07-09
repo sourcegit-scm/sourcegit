@@ -620,14 +620,12 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">沒有自訂的動作</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">捨棄所有變更</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">啟用 [--reflog] 選項</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速搜尋分支/標籤/子模組</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">篩選以顯示或隱藏</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">取消指定</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">在提交列表中隱藏</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">以其篩選提交列表</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">啟用 [--first-parent] 選項</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">版面配置</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">橫向顯示</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">縱向顯示</x:String>

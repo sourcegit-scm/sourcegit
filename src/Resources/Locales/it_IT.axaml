@@ -570,14 +570,12 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Azioni Personalizzate</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Nessuna Azione Personalizzata</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Scarta tutte le modifiche</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Abilita opzione '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Apri nell'Esplora File</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Cerca Branch/Tag/Sottomodulo</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilità nel grafico</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Non impostato</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Nascondi nel grafico dei commit</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filtra nel grafico dei commit</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Abilita opzione '--first-parent'</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">LAYOUT</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Orizzontale</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Verticale</x:String>
@@ -588,7 +586,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Vai a HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Crea Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">CANCELLA LE NOTIFICHE</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Evidenzia nel grafico solo il branch corrente</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Apri in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Apri in Strumenti Esterni</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTI</x:String>
@@ -613,7 +610,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Per nome</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ordina</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Apri nel Terminale</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Usa tempo relativo nello storico</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Visualizza i Log</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visita '{0}' nel Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREE</x:String>

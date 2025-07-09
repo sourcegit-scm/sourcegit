@@ -618,7 +618,6 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Aufheben</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Im Verlauf ausblenden</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Im Verlauf filtern</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Aktiviere '--first-parent' Option</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">LAYOUT</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Vertikal</x:String>
@@ -629,7 +628,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BENACHRICHTIGUNGEN LÖSCHEN</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Nur aktuellen Branch im Verlauf hervorheben</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Öffne in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Öffne in externen Tools</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</x:String>
@@ -655,7 +653,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Nach Namen</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sortiere</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Öffne im Terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Verwende relative Zeitangaben in Verlauf</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Logs ansehen</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Öffne '{0}' im Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>

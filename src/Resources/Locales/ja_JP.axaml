@@ -545,13 +545,11 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">カスタムアクションがありません</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">すべての変更を破棄</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">`--reflog` オプションを有効化</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">ファイルブラウザーで開く</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">ブランチ/タグ/サブモジュールを検索</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">解除</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">コミットグラフで非表示</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">コミットグラフでフィルター</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">`--first-parent` オプションを有効化</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">レイアウト</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">水平</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">垂直</x:String>
@@ -562,7 +560,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEADに移動</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">ブランチを作成</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">通知をクリア</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">グラフで現在のブランチを強調表示</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0} で開く</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">外部ツールで開く</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">リモート</x:String>
@@ -585,7 +582,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">ソート</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">ターミナルで開く</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">履歴に相対時間を使用</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">ワークツリー</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">ワークツリーを追加</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">削除</x:String>

@@ -502,13 +502,11 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Ações customizada</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Nenhuma ação customizada</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Descartar todas as alterações</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Habilitar opção '--reflog'</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir no Navegador de Arquivos</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Pesquisar Branches/Tags/Submódulos</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Desfazer</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Esconder no gráfico de commit</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Incluir no gráfico de commit</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Habilitar opção '--first-parent'</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Data do Commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologicamente</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>
