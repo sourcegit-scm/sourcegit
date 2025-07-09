@@ -210,17 +210,17 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitHub ISSUE", "#(\\d+)", link);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitHub ISSUE", @"#(\d+)", link);
         }
 
         public void AddSampleJiraIssueTracker()
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", "PROJ-(\\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", @"PROJ-(\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
         }
 
         public void AddSampleAzureWorkItemTracker()
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", "#(\\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", @"#(\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
         }
 
         public void AddSampleGitLabIssueTracker()
@@ -235,7 +235,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab ISSUE", "#(\\d+)", link);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab ISSUE", @"#(\d+)", link);
         }
 
         public void AddSampleGitLabMergeRequestTracker()
@@ -250,7 +250,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab MR", "!(\\d+)", link);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab MR", @"!(\d+)", link);
         }
 
         public void AddSampleGiteeIssueTracker()
@@ -266,7 +266,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee ISSUE", "#([0-9A-Z]{6,10})", link);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee ISSUE", @"#([0-9A-Z]{6,10})", link);
         }
 
         public void AddSampleGiteePullRequestTracker()
@@ -281,12 +281,12 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee Pull Request", "!(\\d+)", link);
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee Pull Request", @"!(\d+)", link);
         }
 
         public void NewIssueTracker()
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("New Issue Tracker", "#(\\d+)", "https://xxx/$1");
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("New Issue Tracker", @"#(\d+)", "https://xxx/$1");
         }
 
         public void RemoveSelectedIssueTracker()

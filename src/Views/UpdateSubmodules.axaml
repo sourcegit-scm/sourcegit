@@ -27,7 +27,7 @@
             <Binding Path="HasPreSelectedSubmodule" Converter="{x:Static BoolConverters.Not}"/>
           </MultiBinding>
         </ComboBox.IsEnabled>
-        
+
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="m:Submodule">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">

@@ -54,10 +54,10 @@ namespace SourceGit.Native
             finder.VSCodium(() => FindExecutable("codium"));
             finder.Cursor(() => FindExecutable("cursor"));
             finder.Fleet(FindJetBrainsFleet);
-            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox");
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JetBrains/Toolbox"));
             finder.SublimeText(() => FindExecutable("subl"));
             finder.Zed(() => FindExecutable("zeditor"));
-            return finder.Founded;
+            return finder.Tools;
         }
 
         public void OpenBrowser(string url)
@@ -134,7 +134,7 @@ namespace SourceGit.Native
 
         private string FindJetBrainsFleet()
         {
-            var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/JetBrains/Toolbox/apps/fleet/bin/Fleet";
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JetBrains/Toolbox/apps/fleet/bin/Fleet");
             return File.Exists(path) ? path : FindExecutable("fleet");
         }
     }

@@ -232,7 +232,7 @@ namespace SourceGit.Views
                     foreach (var item in selected)
                     {
                         if (item is Models.Commit commit)
-                            builder.AppendLine($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
+                            builder.Append(commit.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(commit.Subject);
                     }
 
                     await App.CopyTextAsync(builder.ToString());

@@ -82,11 +82,9 @@ namespace SourceGit.Models
                     Bitmap img = null;
                     try
                     {
-                        var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
-                        var task = client.GetAsync(url);
-                        task.Wait();
-
-                        var rsp = task.Result;
+                        using var client = new HttpClient();
+                        client.Timeout = TimeSpan.FromSeconds(2);
+                        var rsp = client.GetAsync(url).Result;
                         if (rsp.IsSuccessStatusCode)
                         {
                             using (var stream = rsp.Content.ReadAsStream())

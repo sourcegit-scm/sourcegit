@@ -67,10 +67,8 @@ namespace SourceGit.Commands
                             });
                     }
 
-                    responseBuilder.Append("\n");
-                    summaryBuilder.Append("(file: ");
-                    summaryBuilder.Append(change.Path);
-                    summaryBuilder.Append(")\n");
+                    responseBuilder.AppendLine();
+                    summaryBuilder.Append("(file: ").Append(change.Path).AppendLine(")");
                 }
 
                 if (_cancelToken.IsCancellationRequested)

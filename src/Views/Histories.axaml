@@ -50,7 +50,7 @@
         <DataGrid.Resources>
           <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="{DynamicResource Color.Border0}" />
         </DataGrid.Resources>
-        
+
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>

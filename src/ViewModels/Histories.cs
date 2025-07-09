@@ -272,7 +272,7 @@ namespace SourceGit.ViewModels
                     _repo.CheckoutBranch(b);
                     return;
                 }
-                else if (d.Type == Models.DecoratorType.RemoteBranchHead)
+                if (d.Type == Models.DecoratorType.RemoteBranchHead)
                 {
                     var rb = _repo.Branches.Find(x => x.FriendlyName == d.Name);
                     if (rb == null)
@@ -424,7 +424,7 @@ namespace SourceGit.ViewModels
                 {
                     var builder = new StringBuilder();
                     foreach (var c in selected)
-                        builder.AppendLine($"{c.SHA.AsSpan(0, 10)} - {c.Subject}");
+                        builder.Append(c.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(c.Subject);
 
                     await App.CopyTextAsync(builder.ToString());
                     e.Handled = true;

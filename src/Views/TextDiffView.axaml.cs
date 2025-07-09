@@ -1241,7 +1241,7 @@ namespace SourceGit.Views
                     if (line.NoNewLineEndOfFile)
                         builder.Append("\u26D4");
 
-                    builder.Append('\n');
+                    builder.AppendLine();
                 }
 
                 Text = builder.ToString();
@@ -1469,7 +1469,7 @@ namespace SourceGit.Views
                 var lines = IsOld ? diff.Old : diff.New;
                 foreach (var line in lines)
                 {
-                    if (line.Content.Length > 10000)
+                    if (line.Content.Length > 1000)
                     {
                         builder.Append(line.Content.AsSpan(0, 1000));
                         builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
@@ -1482,7 +1482,7 @@ namespace SourceGit.Views
                     if (line.NoNewLineEndOfFile)
                         builder.Append("\u26D4");
 
-                    builder.Append('\n');
+                    builder.AppendLine();
                 }
 
                 Text = builder.ToString();

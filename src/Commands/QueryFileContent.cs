@@ -21,11 +21,9 @@ namespace SourceGit.Commands
             var stream = new MemoryStream();
             try
             {
-                var proc = new Process() { StartInfo = starter };
-                proc.Start();
+                using var proc = Process.Start(starter);
                 await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-                proc.Close();
 
                 stream.Position = 0;
             }
@@ -52,14 +50,12 @@ namespace SourceGit.Commands
             var stream = new MemoryStream();
             try
             {
-                var proc = new Process() { StartInfo = starter };
-                proc.Start();
+                using var proc = Process.Start(starter);
                 await proc.StandardInput.WriteLineAsync("version https://git-lfs.github.com/spec/v1").ConfigureAwait(false);
                 await proc.StandardInput.WriteLineAsync($"oid sha256:{oid}").ConfigureAwait(false);
                 await proc.StandardInput.WriteLineAsync($"size {size}").ConfigureAwait(false);
                 await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-                proc.Close();
 
                 stream.Position = 0;
             }

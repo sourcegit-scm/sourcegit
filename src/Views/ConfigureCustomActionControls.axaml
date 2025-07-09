@@ -205,7 +205,7 @@
                           Margin="8,0,0,0"
                           Height="28"
                           IsChecked="{Binding BoolValue, Mode=TwoWay}"/>
-              </Grid>              
+              </Grid>
             </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>

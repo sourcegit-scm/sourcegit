@@ -75,11 +75,11 @@ namespace SourceGit.Native
             finder.VSCodeInsiders(() => "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code");
             finder.VSCodium(() => "/Applications/VSCodium.app/Contents/Resources/app/bin/codium");
             finder.Cursor(() => "/Applications/Cursor.app/Contents/Resources/app/bin/cursor");
-            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet");
-            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Library/Application Support/JetBrains/Toolbox");
+            finder.Fleet(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Applications/Fleet.app/Contents/MacOS/Fleet"));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library/Application Support/JetBrains/Toolbox"));
             finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl");
             finder.Zed(() => File.Exists("/usr/local/bin/zed") ? "/usr/local/bin/zed" : "/Applications/Zed.app/Contents/MacOS/cli");
-            return finder.Founded;
+            return finder.Tools;
         }
 
         public void OpenBrowser(string url)

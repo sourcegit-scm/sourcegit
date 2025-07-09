@@ -42,13 +42,11 @@ namespace SourceGit.Commands
             {
                 try
                 {
-                    var proc = new Process() { StartInfo = starter };
-                    proc.Start();
+                    using var proc = Process.Start(starter);
                     if (input != null)
                         await proc.StandardInput.WriteAsync(await new StreamReader(input).ReadToEndAsync());
                     await proc.StandardOutput.BaseStream.CopyToAsync(sw);
                     await proc.WaitForExitAsync();
-                    proc.Close();
                 }
                 catch (Exception e)
                 {

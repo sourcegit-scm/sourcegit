@@ -36,7 +36,7 @@
                   <Path Width="14" Height="14" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}"/>
                   <TextBlock Margin="6,0,0,0" Text="{Binding Branch, Mode=OneWay}"/>
                 </StackPanel>
-                
+
                 <TextBlock Grid.Row="1" Grid.Column="0"
                            Classes="info_label"
                            HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -45,7 +45,7 @@
                             Orientation="Horizontal"
                             Margin="8,0,0,0">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-                  
+
                   <TextBlock Margin="8,0,0,0"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              VerticalAlignment="Center"/>
@@ -172,7 +172,7 @@
                       <Path Width="14" Height="14" Margin="2,0,0,0" Data="{StaticResource Icons.Branch}"/>
                       <TextBlock Margin="6,0,0,0" Text="{Binding Branch, Mode=OneWay}"/>
                     </StackPanel>
-                    
+
                     <TextBlock Grid.Row="1" Grid.Column="0"
                                Classes="info_label"
                                HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -181,7 +181,7 @@
                                 Orientation="Horizontal"
                                 Margin="8,0,0,0">
                       <Path Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-                      
+
                       <TextBlock Margin="8,0,0,0"
                                  Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                                  VerticalAlignment="Center"/>
@@ -218,7 +218,7 @@
                         </Grid>
                       </Border>
                     </StackPanel>
-                    
+
                     <TextBlock Grid.Row="2" Grid.Column="0"
                                Classes="info_label"
                                HorizontalAlignment="Left" VerticalAlignment="Center"

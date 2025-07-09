@@ -203,11 +203,9 @@ namespace SourceGit.Native
             start.StandardOutputEncoding = Encoding.UTF8;
             start.StandardErrorEncoding = Encoding.UTF8;
 
-            var proc = new Process() { StartInfo = start };
             try
             {
-                proc.Start();
-
+                using var proc = Process.Start(start);
                 var rs = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
                 if (proc.ExitCode == 0 && !string.IsNullOrWhiteSpace(rs))
@@ -229,8 +227,6 @@ namespace SourceGit.Native
             {
                 // Ignore errors
             }
-
-            proc.Close();
         }
 
         [GeneratedRegex(@"^git version[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]

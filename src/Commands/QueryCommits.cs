@@ -80,8 +80,8 @@ namespace SourceGit.Commands
                         break;
                     case 2:
                         _current.ParseDecorators(line);
-                        if (_current.IsMerged && !_isHeadFounded)
-                            _isHeadFounded = true;
+                        if (_current.IsMerged && !_isHeadFound)
+                            _isHeadFound = true;
                         break;
                     case 3:
                         _current.Author = Models.User.FindOrAdd(line);
@@ -110,7 +110,7 @@ namespace SourceGit.Commands
             if (start < rs.StdOut.Length)
                 _current.Subject = rs.StdOut.Substring(start);
 
-            if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
+            if (_findFirstMerged && !_isHeadFound && _commits.Count > 0)
                 await MarkFirstMergedAsync().ConfigureAwait(false);
 
             return _commits;
@@ -148,6 +148,6 @@ namespace SourceGit.Commands
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.Commit _current = null;
         private bool _findFirstMerged = false;
-        private bool _isHeadFounded = false;
+        private bool _isHeadFound = false;
     }
 }

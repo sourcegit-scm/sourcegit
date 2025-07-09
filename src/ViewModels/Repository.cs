@@ -492,7 +492,8 @@ namespace SourceGit.ViewModels
             {
                 try
                 {
-                    _settings = JsonSerializer.Deserialize(File.ReadAllText(settingsFile), JsonCodeGen.Default.RepositorySettings);
+                    using var stream = File.OpenRead(settingsFile);
+                    _settings = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.RepositorySettings);
                 }
                 catch
                 {
@@ -545,10 +546,10 @@ namespace SourceGit.ViewModels
 
             _settings.LastCommitMessage = _workingCopy.CommitMessage;
 
-            var settingsSerialized = JsonSerializer.Serialize(_settings, JsonCodeGen.Default.RepositorySettings);
             try
             {
-                File.WriteAllText(Path.Combine(_gitDir, "sourcegit.settings"), settingsSerialized);
+                using var stream = File.OpenWrite(Path.Combine(_gitDir, "sourcegit.settings"));
+                JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
             }
             catch
             {
@@ -702,7 +703,7 @@ namespace SourceGit.ViewModels
             {
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                foreach (var tool in Native.OS.ExternalTools)
+                foreach (var tool in tools)
                 {
                     var dupTool = tool;
 

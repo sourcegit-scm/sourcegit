@@ -163,12 +163,8 @@ namespace SourceGit.Views
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
 
                 var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
-                for (var i = 0; i < codeMatches.Count; i++)
+                foreach (Match match in codeMatches)
                 {
-                    var match = codeMatches[i];
-                    if (!match.Success)
-                        continue;
-
                     var start = match.Index;
                     var len = match.Length;
                     if (_elements.Intersect(start, len) != null)

@@ -54,9 +54,9 @@ namespace SourceGit.Commands
         {
             Log?.AppendLine($"$ git {Args}\n");
 
-            var start = CreateGitStartInfo(true);
             var errs = new List<string>();
-            var proc = new Process() { StartInfo = start };
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
 
             proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
             proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
@@ -67,7 +67,7 @@ namespace SourceGit.Commands
             {
                 proc.Start();
 
-                // It not safe, please only use `CancellationToken` in readonly commands.
+                // Not safe, please only use `CancellationToken` in readonly commands.
                 if (CancellationToken.CanBeCanceled)
                 {
                     dummy = proc;
@@ -110,11 +110,9 @@ namespace SourceGit.Commands
                 }
             }
 
-            int exitCode = proc.ExitCode;
-            proc.Close();
             Log?.AppendLine(string.Empty);
 
-            if (!CancellationToken.IsCancellationRequested && exitCode != 0)
+            if (!CancellationToken.IsCancellationRequested && proc.ExitCode != 0)
             {
                 if (RaiseError)
                 {
@@ -131,8 +129,8 @@ namespace SourceGit.Commands
 
         protected async Task<Result> ReadToEndAsync()
         {
-            var start = CreateGitStartInfo(true);
-            var proc = new Process() { StartInfo = start };
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
 
             try
             {
@@ -149,7 +147,6 @@ namespace SourceGit.Commands
             await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
 
             rs.IsSuccess = proc.ExitCode == 0;
-            proc.Close();
             return rs;
         }
 
@@ -191,8 +188,8 @@ namespace SourceGit.Commands
             // Force using this app as git editor.
             start.Arguments += Editor switch
             {
-                EditorType.CoreEditor => $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ",
-                EditorType.RebaseEditor => $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ",
+                EditorType.CoreEditor => $"""-c core.editor="\"{selfExecFile}\" --core-editor" """,
+                EditorType.RebaseEditor => $"""-c core.editor="\"{selfExecFile}\" --rebase-message-editor" -c sequence.editor="\"{selfExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """,
                 _ => "-c core.editor=true ",
             };
 
