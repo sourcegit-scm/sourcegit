@@ -616,14 +616,12 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Custom Actions</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No Custom Actions</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Discard all changes</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Enable '--reflog' Option</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open in File Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibility in Graph</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Unset</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Hide in commit graph</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filter in commit graph</x:String>
-  <x:String x:Key="Text.Repository.FirstParentFilterToggle" xml:space="preserve">Enable '--first-parent' Option</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">LAYOUT</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Vertical</x:String>
@@ -634,7 +632,7 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigate to HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Create Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">CLEAR NOTIFICATIONS</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInHistories" xml:space="preserve">Only highlight current branch in graph</x:String>
+  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Only highlight current branch</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Open in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Open in External Tools</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</x:String>
@@ -647,6 +645,8 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Path</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
+  <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Show first-parent only</x:String>
+  <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Show lost commits</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Show Submodules as Tree</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">SKIP</x:String>
@@ -660,7 +660,7 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">By Name</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInHistories" xml:space="preserve">Use relative time in history</x:String>
+  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Use relative time</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">View Logs</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visit '{0}' in Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
@@ -762,9 +762,9 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursively</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Traverse submodules recursively</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Use --remote option</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Update to submodule's remote tracking branch</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Logs</x:String>
   <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">CLEAR ALL</x:String>

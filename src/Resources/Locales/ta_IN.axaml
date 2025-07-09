@@ -663,7 +663,6 @@
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">அனைத்து துணைத்தொகுதிகள்</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">தேவைக்கேற்றப துவக்கு</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">சுழற்சி முறையில்</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">--தொலை விருப்பத்தைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">முகவரி:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">முன்னறிவிப்பு</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">வரவேற்பு பக்கம்</x:String>

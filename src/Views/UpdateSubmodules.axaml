@@ -46,15 +46,18 @@
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.UpdateSubmodules.Init}"
-                IsChecked="{Binding EnableInit, Mode=TwoWay}"/>
+                IsChecked="{Binding EnableInit, Mode=TwoWay}"
+                ToolTip.Tip="--init"/>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.UpdateSubmodules.Recursive}"
-                IsChecked="{Binding EnableRecursive, Mode=TwoWay}"/>
+                IsChecked="{Binding EnableRecursive, Mode=TwoWay}"
+                ToolTip.Tip="--recursive"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Content="{DynamicResource Text.UpdateSubmodules.UseRemote}"
-                IsChecked="{Binding EnableRemote, Mode=TwoWay}"/>
+                Content="{DynamicResource Text.UpdateSubmodules.UpdateToRemoteTrackingBranch}"
+                IsChecked="{Binding EnableRemote, Mode=TwoWay}"
+                ToolTip.Tip="--remote"/>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -310,6 +310,12 @@
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
   </Style>
+  <Style Selector="TextBlock.tab_header">
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Opacity" Value=".56"/>
+  </Style>
 
   <Style Selector="Run.issue_link">
     <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
@@ -412,12 +418,6 @@
   </Style>
   <Style Selector="TextBox.no_border:focus /template/ Border#PART_BorderElement">
     <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
-  <Style Selector="TextBlock.tab_header">
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
-    <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-    <Setter Property="Opacity" Value=".56"/>
   </Style>
 
   <Style Selector="DataValidationErrors">

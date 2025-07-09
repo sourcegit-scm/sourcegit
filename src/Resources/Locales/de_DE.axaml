@@ -612,7 +612,6 @@
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Benutzerdefinierte Aktionen</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Keine benutzerdefinierten Aktionen</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
-  <x:String x:Key="Text.Repository.EnableReflog" xml:space="preserve">Aktiviere '--reflog' Option</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches/Tags/Submodule</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Sichtbarkeit im Verlauf</x:String>
@@ -749,7 +748,6 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialisiere wenn nötig</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Rekursiv</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodul:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Verwende `--remote` Option</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Logs</x:String>
   <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">ALLES LÖSCHEN</x:String>

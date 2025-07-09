@@ -767,7 +767,6 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Создавать по необходимости</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Рекурсивно</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Подмодуль:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Использовать опцию (--remote)</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Журналы</x:String>
   <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">ОЧИСТИТЬ ВСЁ</x:String>

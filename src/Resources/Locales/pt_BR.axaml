@@ -603,7 +603,6 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inicializar conforme necessário</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursivamente</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submódulo:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Usar opção --remote</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Aviso</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">Página de Boas-vindas</x:String>

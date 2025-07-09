@@ -13,7 +13,7 @@
           <TextBlock>
             <Run Text="{DynamicResource Text.Welcome.Clone}"/>
             <Run Text=" "/>
-            <Run Text="{OnPlatform Ctrl+N, macOS=⌘+N}" Foreground="{DynamicResource Brush.FG2}" FontSize="11"/>
+            <Run Text="{OnPlatform Ctrl+N, macOS=⌘+N}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
           </TextBlock>
         </ToolTip.Tip>
         <Path Width="16" Height="16" Data="{StaticResource Icons.Clone}" Margin="0,4,0,0"/>

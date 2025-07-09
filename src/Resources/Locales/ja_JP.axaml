@@ -663,7 +663,6 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">必要に応じて初期化</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">再帰的に更新</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">サブモジュール:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">--remoteオプションを使用</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">ようこそ</x:String>

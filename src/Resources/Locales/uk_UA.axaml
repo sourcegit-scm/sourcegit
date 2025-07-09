@@ -669,7 +669,6 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Ініціалізувати за потреби</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Рекурсивно</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Підмодуль:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Використовувати опцію --remote</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Попередження</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">Вітальна сторінка</x:String>

@@ -746,7 +746,6 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inicializar según sea necesario</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursivamente</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submódulo:</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.UseRemote" xml:space="preserve">Usar opción --remote</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Logs</x:String>
   <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">LIMPIAR TODO</x:String>
