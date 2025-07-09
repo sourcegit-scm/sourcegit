@@ -86,6 +86,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C54D
 		build\scripts\package.windows.sh = build\scripts\package.windows.sh
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGit.Tests", "tests\SourceGit.Tests.csproj", "{6BE6CF5B-2F49-4AA3-99D6-54701196B2DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +100,10 @@ Global
 		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2091C34D-4A17-4375-BEF3-4D60BE8113E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE6CF5B-2F49-4AA3-99D6-54701196B2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE6CF5B-2F49-4AA3-99D6-54701196B2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE6CF5B-2F49-4AA3-99D6-54701196B2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE6CF5B-2F49-4AA3-99D6-54701196B2DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +124,7 @@ Global
 		{7802CD7A-591B-4EDD-96F8-9BF3F61692E4} = {9BA0B044-0CC9-46F8-B551-204F149BF45D}
 		{5D125DD9-B48A-491F-B2FB-D7830D74C4DC} = {FD384607-ED99-47B7-AF31-FB245841BC92}
 		{C54D4001-9940-477C-A0B6-E795ED0A3209} = {773082AC-D9C8-4186-8521-4B6A7BEE6158}
+		{6BE6CF5B-2F49-4AA3-99D6-54701196B2DC} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FF1B9C6-B5BF-4A50-949F-4B407A0E31C9}
