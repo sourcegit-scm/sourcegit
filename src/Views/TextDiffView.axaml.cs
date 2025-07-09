@@ -520,6 +520,7 @@ namespace SourceGit.Views
             Options.IndentationSize = TabWidth;
             Options.EnableHyperlinks = false;
             Options.EnableEmailHyperlinks = false;
+            Options.ShowEndOfLine = false;
 
             _lineStyleTransformer = new LineStyleTransformer(this);
 
@@ -726,7 +727,6 @@ namespace SourceGit.Views
                 var val = ShowHiddenSymbols;
                 Options.ShowTabs = val;
                 Options.ShowSpaces = val;
-                Options.ShowEndOfLine = val;
             }
             else if (change.Property == TabWidthProperty)
             {
