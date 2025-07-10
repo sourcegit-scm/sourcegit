@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -193,6 +194,17 @@ namespace SourceGit
 
             if (app._activeLocale != null)
                 app.Resources.MergedDictionaries.Remove(app._activeLocale);
+
+            try
+            {
+                var culture = CultureInfo.GetCultureInfo(localeKey.Replace("_", "-"));
+                Thread.CurrentThread.CurrentUICulture = culture;
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
+            catch
+            {
+                // Just ignore
+            }
 
             app.Resources.MergedDictionaries.Add(targetLocale);
             app._activeLocale = targetLocale;

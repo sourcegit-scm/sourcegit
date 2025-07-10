@@ -7,15 +7,15 @@ namespace SourceGit.Converters
         public static readonly FuncValueConverter<long, string> ToFileSize = new(bytes =>
         {
             if (bytes < KB)
-                return $"{bytes} B";
+                return $"{bytes:N0} B";
 
             if (bytes < MB)
-                return $"{(bytes / KB):F3} KB ({bytes} B)";
+                return $"{(bytes / KB):N3} KB ({bytes:N0})";
 
             if (bytes < GB)
-                return $"{(bytes / MB):F3} MB ({bytes} B)";
+                return $"{(bytes / MB):N3} MB ({bytes:N0})";
 
-            return $"{(bytes / GB):F3} GB ({bytes} B)";
+            return $"{(bytes / GB):N3} GB ({bytes:N0})";
         });
 
         private const double KB = 1024;
