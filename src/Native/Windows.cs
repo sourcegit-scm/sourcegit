@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
-
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
@@ -14,8 +15,10 @@ using Avalonia.Threading;
 namespace SourceGit.Native
 {
     [SupportedOSPlatform("windows")]
-    internal class Windows : OS.IBackend
+    internal partial class Windows : OS.IBackend
     {
+        private const string VSWHERE_PATH = @"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe";
+
         internal struct RECT
         {
             public int left;
@@ -189,7 +192,13 @@ namespace SourceGit.Native
             finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
-            finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
+
+            foreach (var instance in FindVisualStudioInstances().OrderBy(q => q.IsPreview))
+            {
+                var name = instance.IsPreview ? "Visual Studio - Preview" : "Visual Studio";
+                finder.TryAdd(name, "vs", () => instance.Path, GenerateCommandlineArgsForVisualStudio);
+            }
+
             return finder.Tools;
         }
 
@@ -371,24 +380,59 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private string FindVisualStudio()
+        private static (string Path, bool IsPreview)[] FindVisualStudioInstances()
         {
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
-                    Microsoft.Win32.RegistryView.Registry64);
-
-            // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
-            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is { } launcher)
+            static string ExecuteAndGetOutput(string programPath, string arguments)
             {
-                // Get actual path to the executable
-                if (launcher.GetValue(string.Empty) is string CLSID &&
-                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is { } devenv &&
-                    devenv.GetValue(string.Empty) is string localServer32)
-                    return localServer32!.Trim('\"');
+                using var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = programPath,
+                        Arguments = arguments,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                    }
+                };
+
+                process.Start();
+                var stdOut = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                if (process.ExitCode > 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return stdOut;
+                }
             }
 
-            return string.Empty;
+            static Dictionary<string, string> InterpretVsWhereChunk(string chunk)
+            {
+                var lines = chunk.Split(Environment.NewLine);
+
+                return lines.Select(l => VsWhereLine().Match(l))
+                    .Where(regexResult => regexResult.Success)
+                    .ToDictionary(regexResult => regexResult.Groups[1].Value, regexResult => regexResult.Groups[2].Value);
+            }
+
+            var vswherePath = Environment.ExpandEnvironmentVariables(VSWHERE_PATH);
+            if (!File.Exists(vswherePath))
+            {
+                return [];
+            }
+
+            var outputChunks = ExecuteAndGetOutput(vswherePath, "-nologo -nocolor -prerelease").Split(Environment.NewLine + Environment.NewLine);
+
+            return outputChunks.Select(InterpretVsWhereChunk)
+                .Select(q => (q["productPath"], q["isPrerelease"] == "1"))
+                .ToArray();
         }
+
+        [GeneratedRegex(@"^(\w+):\s(.*)$")]
+        private static partial Regex VsWhereLine();
 
         private string FindCursor()
         {
