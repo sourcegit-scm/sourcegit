@@ -107,6 +107,12 @@
         </ListBox.ItemTemplate>
       </ListBox>
 
+      <!-- Loading Status Icon -->
+      <v:LoadingIcon Grid.Column="0"
+                     Width="48" Height="48"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     IsVisible="{Binding IsLoading}"/>
+
       <GridSplitter Grid.Column="1"
                     MinWidth="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -115,7 +121,7 @@
                     BorderBrush="{DynamicResource Brush.Border0}"/>
 
       <!-- Commit Detail -->
-      <Border Grid.Column="2" Padding="0,4,4,8">
+      <Border Grid.Column="2" Padding="0,4,4,8" IsVisible="{Binding !IsLoading}">
         <ContentControl Content="{Binding Detail, Mode=OneWay}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:CommitDetail">

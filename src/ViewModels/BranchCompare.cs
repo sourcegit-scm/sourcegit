@@ -12,6 +12,12 @@ namespace SourceGit.ViewModels
 {
     public class BranchCompare : ObservableObject
     {
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public Models.Branch Base
         {
             get => _based;
@@ -101,6 +107,8 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (Base, To) = (_to, _based);
+
+            VisibleChanges = [];
             SelectedChanges = [];
 
             if (_baseHead != null)
@@ -166,6 +174,7 @@ namespace SourceGit.ViewModels
                 await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copyPath);
 
             var copyFullPath = new MenuItem();
@@ -184,6 +193,8 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
+            IsLoading = true;
+
             Task.Run(async () =>
             {
                 if (_baseHead == null)
@@ -221,6 +232,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     VisibleChanges = visible;
+                    IsLoading = false;
 
                     if (VisibleChanges.Count > 0)
                         SelectedChanges = [VisibleChanges[0]];
@@ -253,6 +265,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private bool _isLoading = true;
         private Models.Branch _based = null;
         private Models.Branch _to = null;
         private Models.Commit _baseHead = null;

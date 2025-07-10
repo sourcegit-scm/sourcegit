@@ -96,7 +96,7 @@ namespace SourceGit.Views
 
         public void OnAvatarResourceChanged(string email, Bitmap image)
         {
-            if (User.Email.Equals(email, StringComparison.Ordinal))
+            if (email.Equals(User?.Email, StringComparison.Ordinal))
             {
                 _img = image;
                 InvalidateVisual();

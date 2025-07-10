@@ -12,6 +12,12 @@ namespace SourceGit.ViewModels
 {
     public class RevisionCompare : ObservableObject, IDisposable
     {
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public object StartPoint
         {
             get => _startPoint;
@@ -109,7 +115,9 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
+            VisibleChanges = [];
             SelectedChanges = [];
+            IsLoading = true;
             Task.Run(Refresh);
         }
 
@@ -230,6 +238,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Post(() =>
             {
                 VisibleChanges = visible;
+                IsLoading = false;
 
                 if (VisibleChanges.Count > 0)
                     SelectedChanges = [VisibleChanges[0]];
@@ -244,6 +253,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private bool _isLoading = true;
         private object _startPoint = null;
         private object _endPoint = null;
         private List<Models.Change> _changes = null;

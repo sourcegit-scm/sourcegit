@@ -38,7 +38,7 @@
 
     <!-- Compare Targets -->
     <Border Grid.Row="1">
-      <Grid Margin="48,8,48,8" ColumnDefinitions="*,48,*">
+      <Grid Margin="8" ColumnDefinitions="*,48,*">
         <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
           <Grid RowDefinitions="Auto,*">
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
@@ -129,6 +129,12 @@
                                     SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                     ContextRequested="OnChangeContextRequested"/>
           </Border>
+
+          <!-- Loading Status Icon -->
+          <v:LoadingIcon Grid.Row="1"
+                         Width="48" Height="48"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                         IsVisible="{Binding IsLoading}"/>
         </Grid>
 
         <GridSplitter Grid.Column="1"

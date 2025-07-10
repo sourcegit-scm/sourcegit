@@ -250,6 +250,14 @@
           <Setter Property="RotateTransform.Angle" Value="360.0"/>
         </KeyFrame>
       </Animation>
+      <Animation Duration="0:0:0.5" IterationCount="1">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="0.2"/>
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="1"/>
+        </KeyFrame>
+      </Animation>
     </Style.Animations>
   </Style>
   <Style Selector="Path[IsVisible=True].waiting">

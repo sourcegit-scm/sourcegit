@@ -101,6 +101,12 @@
                                   SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                   ContextRequested="OnChangeContextRequested"/>
         </Border>
+
+        <!-- Loading Status Icon -->
+        <v:LoadingIcon Grid.Row="1"
+                       Width="48" Height="48"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       IsVisible="{Binding IsLoading}"/>
       </Grid>
 
       <GridSplitter Grid.Column="1"
