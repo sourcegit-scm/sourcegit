@@ -352,10 +352,10 @@ namespace SourceGit.Views
 
             if (change.Property == BlameDataProperty)
             {
-                if (BlameData != null)
+                if (BlameData is { IsBinary: false } blame)
                 {
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, BlameData.File);
-                    Text = BlameData.Content;
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, blame.File);
+                    Text = blame.Content;
                 }
                 else
                 {
