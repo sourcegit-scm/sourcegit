@@ -92,7 +92,8 @@
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                          TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
-                         BlameData="{Binding Data}">
+                         BlameData="{Binding Data}"
+                         IsVisible="{Binding IsBinary, Converter={x:Static BoolConverters.Not}}">
         <ToolTip.IsOpen>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="$self.IsPointerOver"/>
