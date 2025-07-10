@@ -10,12 +10,12 @@ namespace SourceGit.Converters
                 return $"{bytes:N0} B";
 
             if (bytes < MB)
-                return $"{(bytes / KB):N3} KB ({bytes:N0})";
+                return $"{(bytes / KB):G3} KB ({bytes:N0})";
 
             if (bytes < GB)
-                return $"{(bytes / MB):N3} MB ({bytes:N0})";
+                return $"{(bytes / MB):G3} MB ({bytes:N0})";
 
-            return $"{(bytes / GB):N3} GB ({bytes:N0})";
+            return $"{(bytes / GB):G3} GB ({bytes:N0})";
         });
 
         private const double KB = 1024;
