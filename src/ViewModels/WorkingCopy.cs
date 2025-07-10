@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -1870,7 +1871,11 @@ namespace SourceGit.ViewModels
 
         private async void StageChanges(List<Models.Change> changes, Models.Change next)
         {
-            var count = changes.Count;
+            var nonConflictChanges = HasUnsolvedConflicts
+                ? changes.Where(c => !c.IsConflicted).ToList()
+                : changes;
+
+            var count = nonConflictChanges.Count;
             if (count == 0)
                 return;
 
@@ -1890,7 +1895,7 @@ namespace SourceGit.ViewModels
                 var pathSpecFile = Path.GetTempFileName();
                 await using (var writer = new StreamWriter(pathSpecFile))
                 {
-                    foreach (var c in changes)
+                    foreach (var c in nonConflictChanges)
                         await writer.WriteLineAsync(c.Path);
                 }
 
