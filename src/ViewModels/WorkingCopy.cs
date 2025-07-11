@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -1796,6 +1795,21 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
+        private List<Models.Change> GetCanStagedChanges(List<Models.Change> changes)
+        {
+            if (!HasUnsolvedConflicts)
+                return changes;
+
+            var outs = new List<Models.Change>();
+            foreach (var c in changes)
+            {
+                if (!c.IsConflicted)
+                    outs.Add(c);
+            }
+
+            return outs;
+        }
+
         private List<Models.Change> GetStagedChanges()
         {
             if (_useAmend)
@@ -1871,18 +1885,13 @@ namespace SourceGit.ViewModels
 
         private async void StageChanges(List<Models.Change> changes, Models.Change next)
         {
-            var nonConflictChanges = HasUnsolvedConflicts
-                ? changes.Where(c => !c.IsConflicted).ToList()
-                : changes;
-
-            var count = nonConflictChanges.Count;
+            var canStaged = GetCanStagedChanges(changes);
+            var count = canStaged.Count;
             if (count == 0)
                 return;
 
-            // Use `_selectedUnstaged` instead of `SelectedUnstaged` to avoid UI refresh.
-            _selectedUnstaged = next != null ? [next] : [];
-
             IsStaging = true;
+            _selectedUnstaged = next != null ? [next] : [];
             _repo.SetWatcherEnabled(false);
 
             var log = _repo.CreateLog("Stage");
@@ -1895,7 +1904,7 @@ namespace SourceGit.ViewModels
                 var pathSpecFile = Path.GetTempFileName();
                 await using (var writer = new StreamWriter(pathSpecFile))
                 {
-                    foreach (var c in nonConflictChanges)
+                    foreach (var c in canStaged)
                         await writer.WriteLineAsync(c.Path);
                 }
 
@@ -1915,10 +1924,8 @@ namespace SourceGit.ViewModels
             if (count == 0)
                 return;
 
-            // Use `_selectedStaged` instead of `SelectedStaged` to avoid UI refresh.
-            _selectedStaged = next != null ? [next] : [];
-
             IsUnstaging = true;
+            _selectedStaged = next != null ? [next] : [];
             _repo.SetWatcherEnabled(false);
 
             var log = _repo.CreateLog("Unstage");
@@ -1971,6 +1978,12 @@ namespace SourceGit.ViewModels
             if (!_repo.CanCreatePopup())
             {
                 App.RaiseException(_repo.FullPath, "Repository has an unfinished job! Please wait!");
+                return;
+            }
+
+            if (autoStage && HasUnsolvedConflicts)
+            {
+                App.RaiseException(_repo.FullPath, "Repository has unsolved conflict(s). Auto-stage and commit is disabled!");
                 return;
             }
 
