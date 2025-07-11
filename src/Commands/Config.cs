@@ -55,7 +55,7 @@ namespace SourceGit.Commands
             if (!allowEmpty && string.IsNullOrWhiteSpace(value))
                 Args = $"config {scope} --unset {key}";
             else
-                Args = $"config {scope} {key} \"{value}\"";
+                Args = $"config {scope} {key} {value.Quoted()}";
 
             return await ExecAsync().ConfigureAwait(false);
         }

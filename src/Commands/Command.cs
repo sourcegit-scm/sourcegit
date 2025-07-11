@@ -187,8 +187,8 @@ namespace SourceGit.Commands
             // Force using this app as git editor.
             start.Arguments += Editor switch
             {
-                EditorType.CoreEditor => $"""-c core.editor="\"{selfExecFile}\" --core-editor" """,
-                EditorType.RebaseEditor => $"""-c core.editor="\"{selfExecFile}\" --rebase-message-editor" -c sequence.editor="\"{selfExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """,
+                EditorType.CoreEditor => $"""-c core.editor="{selfExecFile.Quoted()} --core-editor" """,
+                EditorType.RebaseEditor => $"""-c core.editor="{selfExecFile.Quoted()} --rebase-message-editor" -c sequence.editor="{selfExecFile.Quoted()} --rebase-todo-editor" -c rebase.abbreviateCommands=true """,
                 _ => "-c core.editor=true ",
             };
 

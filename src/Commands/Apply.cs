@@ -13,7 +13,7 @@
                 Args += $"--whitespace={whitespaceMode} ";
             if (!string.IsNullOrEmpty(extra))
                 Args += $"{extra} ";
-            Args += $"\"{file}\"";
+            Args += $"{file.Quoted()}";
         }
     }
 }

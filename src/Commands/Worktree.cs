@@ -72,7 +72,7 @@ namespace SourceGit.Commands
                     Args += $"-B {name} ";
             }
 
-            Args += $"\"{fullpath}\" ";
+            Args += $"{fullpath.Quoted()} ";
 
             if (!string.IsNullOrEmpty(tracking))
                 Args += tracking;
@@ -90,22 +90,22 @@ namespace SourceGit.Commands
 
         public async Task<bool> LockAsync(string fullpath)
         {
-            Args = $"worktree lock \"{fullpath}\"";
+            Args = $"worktree lock {fullpath.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string fullpath)
         {
-            Args = $"worktree unlock \"{fullpath}\"";
+            Args = $"worktree unlock {fullpath.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> RemoveAsync(string fullpath, bool force)
         {
             if (force)
-                Args = $"worktree remove -f \"{fullpath}\"";
+                Args = $"worktree remove -f {fullpath.Quoted()}";
             else
-                Args = $"worktree remove \"{fullpath}\"";
+                Args = $"worktree remove {fullpath.Quoted()}";
 
             return await ExecAsync().ConfigureAwait(false);
         }

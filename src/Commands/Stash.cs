@@ -20,9 +20,7 @@ namespace SourceGit.Commands
                 builder.Append("--include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m \"");
-            builder.Append(message);
-            builder.Append("\"");
+            builder.Append("-m ").Append(message.Quoted());
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -34,12 +32,10 @@ namespace SourceGit.Commands
             builder.Append("stash push --include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m \"");
-            builder.Append(message);
-            builder.Append("\" -- ");
+            builder.Append("-m ").Append(message).Append(" -- ");
 
             foreach (var c in changes)
-                builder.Append($"\"{c.Path}\" ");
+                builder.Append(c.Path.Quoted()).Append(' ');
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -48,14 +44,10 @@ namespace SourceGit.Commands
         public async Task<bool> PushAsync(string message, string pathspecFromFile, bool keepIndex)
         {
             var builder = new StringBuilder();
-            builder.Append("stash push --include-untracked --pathspec-from-file=\"");
-            builder.Append(pathspecFromFile);
-            builder.Append("\" ");
+            builder.Append("stash push --include-untracked --pathspec-from-file=").Append(pathspecFromFile.Quoted()).Append(" ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m \"");
-            builder.Append(message);
-            builder.Append("\"");
+            builder.Append("-m ").Append(message.Quoted());
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -67,9 +59,7 @@ namespace SourceGit.Commands
             builder.Append("stash push --staged ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m \"");
-            builder.Append(message);
-            builder.Append("\"");
+            builder.Append("-m ").Append(message.Quoted());
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
         }
@@ -77,19 +67,19 @@ namespace SourceGit.Commands
         public async Task<bool> ApplyAsync(string name, bool restoreIndex)
         {
             var opts = restoreIndex ? "--index" : string.Empty;
-            Args = $"stash apply -q {opts} \"{name}\"";
+            Args = $"stash apply -q {opts} {name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> PopAsync(string name)
         {
-            Args = $"stash pop -q --index \"{name}\"";
+            Args = $"stash pop -q --index {name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> DropAsync(string name)
         {
-            Args = $"stash drop -q \"{name}\"";
+            Args = $"stash drop -q {name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 

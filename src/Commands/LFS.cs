@@ -50,7 +50,7 @@ namespace SourceGit.Commands
         public async Task<bool> TrackAsync(string pattern, bool isFilenameMode, Models.ICommandLog log)
         {
             var opt = isFilenameMode ? "--filename" : "";
-            return await new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", log).ExecAsync().ConfigureAwait(false);
+            return await new SubCmd(_repo, $"lfs track {opt} {pattern.Quoted()}", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task FetchAsync(string remote, Models.ICommandLog log)
@@ -101,13 +101,13 @@ namespace SourceGit.Commands
 
         public async Task<bool> LockAsync(string remote, string file, Models.ICommandLog log)
         {
-            return await new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", log).ExecAsync().ConfigureAwait(false);
+            return await new SubCmd(_repo, $"lfs lock --remote={remote} {file.Quoted()}", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string remote, string file, bool force, Models.ICommandLog log)
         {
             var opt = force ? "-f" : "";
-            return await new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", log).ExecAsync().ConfigureAwait(false);
+            return await new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} {file.Quoted()}", log).ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string remote, long id, bool force, Models.ICommandLog log)

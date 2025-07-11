@@ -29,7 +29,7 @@ namespace SourceGit.Commands
             var builder = new StringBuilder();
             builder.Append("merge --progress ");
             if (!string.IsNullOrEmpty(strategy))
-                builder.Append($"--strategy={strategy} ");
+                builder.Append("--strategy=").Append(strategy).Append(' ');
             if (!autoCommit)
                 builder.Append("--no-commit ");
 

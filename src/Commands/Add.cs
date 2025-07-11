@@ -13,14 +13,14 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"add -- \"{change.Path}\"";
+            Args = $"add -- {change.Path.Quoted()}";
         }
 
         public Add(string repo, string pathspecFromFile)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"add --pathspec-from-file=\"{pathspecFromFile}\"";
+            Args = $"add --pathspec-from-file={pathspecFromFile.Quoted()}";
         }
     }
 }
