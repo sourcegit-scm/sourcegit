@@ -186,7 +186,10 @@ namespace SourceGit.Views
 
             var set = new HashSet<string>();
             foreach (var c in selected)
-                set.Add(c.Path);
+            {
+                if (!c.IsConflicted)
+                    set.Add(c.Path);
+            }
 
             if (Content is ViewModels.ChangeCollectionAsTree tree)
             {
