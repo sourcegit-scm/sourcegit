@@ -21,11 +21,11 @@ namespace SourceGit.Commands
 
             if (method == Models.CommitSearchMethod.ByAuthor)
             {
-                search += $"-i --author=\"{filter}\"";
+                search += $"-i --author={filter.Quoted()}";
             }
             else if (method == Models.CommitSearchMethod.ByCommitter)
             {
-                search += $"-i --committer=\"{filter}\"";
+                search += $"-i --committer={filter.Quoted()}";
             }
             else if (method == Models.CommitSearchMethod.ByMessage)
             {
@@ -34,21 +34,18 @@ namespace SourceGit.Commands
 
                 var words = filter.Split([' ', '\t', '\r'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
-                {
-                    var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
-                    argsBuilder.Append($"--grep=\"{escaped}\" ");
-                }
+                    argsBuilder.Append("--grep=").Append(word.Trim().Quoted()).Append(' ');
                 argsBuilder.Append("--all-match -i");
 
                 search = argsBuilder.ToString();
             }
             else if (method == Models.CommitSearchMethod.ByPath)
             {
-                search += $"-- \"{filter}\"";
+                search += $"-- {filter.Quoted()}";
             }
             else
             {
-                search = $"-G\"{filter}\"";
+                search = $"-G{filter.Quoted()}";
             }
 
             WorkingDirectory = repo;
@@ -126,7 +123,7 @@ namespace SourceGit.Commands
 
         private async Task MarkFirstMergedAsync()
         {
-            Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
+            Args = $"log --since={_commits[^1].CommitterTimeStr.Quoted()} --format=\"%H\"";
 
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);

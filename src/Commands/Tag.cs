@@ -28,7 +28,7 @@ namespace SourceGit.Commands
             {
                 string tmp = Path.GetTempFileName();
                 await File.WriteAllTextAsync(tmp, message);
-                cmd.Args += $"-F \"{tmp}\"";
+                cmd.Args += $"-F {tmp.Quoted()}";
 
                 var succ = await cmd.ExecAsync().ConfigureAwait(false);
                 File.Delete(tmp);

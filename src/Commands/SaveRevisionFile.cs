@@ -21,7 +21,7 @@ namespace SourceGit.Commands
             }
             else
             {
-                await ExecCmdAsync(repo, $"show {revision}:\"{file}\"", saveTo).ConfigureAwait(false);
+                await ExecCmdAsync(repo, $"show {revision}:{file.Quoted()}", saveTo).ConfigureAwait(false);
             }
         }
 

@@ -12,7 +12,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"commit --allow-empty --file=\"{_tmpFile}\"";
+            Args = $"commit --allow-empty --file={_tmpFile.Quoted()}";
             if (signOff)
                 Args += " --signoff";
             if (amend)

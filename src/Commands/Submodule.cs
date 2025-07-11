@@ -14,31 +14,31 @@ namespace SourceGit.Commands
 
         public async Task<bool> AddAsync(string url, string relativePath, bool recursive)
         {
-            Args = $"-c protocol.file.allow=always submodule add \"{url}\" \"{relativePath}\"";
+            Args = $"-c protocol.file.allow=always submodule add {url.Quoted()} {relativePath.Quoted()}";
 
             var succ = await ExecAsync().ConfigureAwait(false);
             if (!succ)
                 return false;
 
             if (recursive)
-                Args = $"submodule update --init --recursive -- \"{relativePath}\"";
+                Args = $"submodule update --init --recursive -- {relativePath.Quoted()}";
             else
-                Args = $"submodule update --init -- \"{relativePath}\"";
+                Args = $"submodule update --init -- {relativePath.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> SetURLAsync(string path, string url)
         {
-            Args = $"submodule set-url -- \"{path}\" \"{url}\"";
+            Args = $"submodule set-url -- {path.Quoted()} {url.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> SetBranchAsync(string path, string branch)
         {
             if (string.IsNullOrEmpty(branch))
-                Args = $"submodule set-branch -d -- \"{path}\"";
+                Args = $"submodule set-branch -d -- {path.Quoted()}";
             else
-                Args = $"submodule set-branch -b \"{branch}\" -- \"{path}\"";
+                Args = $"submodule set-branch -b {branch.Quoted()} -- {path.Quoted()}";
 
             return await ExecAsync().ConfigureAwait(false);
         }
@@ -58,7 +58,7 @@ namespace SourceGit.Commands
             {
                 builder.Append(" --");
                 foreach (var module in modules)
-                    builder.Append($" \"{module}\"");
+                    builder.Append(' ').Append(module.Quoted());
             }
 
             Args = builder.ToString();
@@ -67,13 +67,13 @@ namespace SourceGit.Commands
 
         public async Task<bool> DeinitAsync(string module, bool force)
         {
-            Args = force ? $"submodule deinit -f -- \"{module}\"" : $"submodule deinit -- \"{module}\"";
+            Args = force ? $"submodule deinit -f -- {module.Quoted()}" : $"submodule deinit -- {module.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> DeleteAsync(string module)
         {
-            Args = $"rm -rf \"{module}\"";
+            Args = $"rm -rf {module.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
     }

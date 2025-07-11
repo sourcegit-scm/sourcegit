@@ -12,7 +12,7 @@ namespace SourceGit.Commands
 
             _merger = Models.ExternalMerger.Supported.Find(x => x.Type == type);
             _exec = exec;
-            _file = string.IsNullOrEmpty(file) ? "" : $"\"{file}\"";
+            _file = string.IsNullOrEmpty(file) ? "" : $"{file.Quoted()}";
         }
 
         public async Task<bool> OpenAsync()
@@ -29,7 +29,8 @@ namespace SourceGit.Commands
             }
             else if (File.Exists(_exec))
             {
-                Args = $"-c mergetool.sourcegit.cmd=\"\\\"{_exec}\\\" {_merger.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {_file}";
+                var cmd = $"{_exec.Quoted()} {_merger.Cmd}";
+                Args = $"-c mergetool.sourcegit.cmd={cmd.Quoted()} -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {_file}";
             }
             else
             {

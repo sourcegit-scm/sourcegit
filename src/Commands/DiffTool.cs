@@ -28,7 +28,8 @@ namespace SourceGit.Commands
             }
             else if (File.Exists(_exec))
             {
-                Args = $"-c difftool.sourcegit.cmd=\"\\\"{_exec}\\\" {_merger.DiffCmd}\" difftool --tool=sourcegit --no-prompt {_option}";
+                var cmd = $"{_exec.Quoted()} {_merger.DiffCmd}";
+                Args = $"-c difftool.sourcegit.cmd={cmd.Quoted()} difftool --tool=sourcegit --no-prompt {_option}";
             }
             else
             {

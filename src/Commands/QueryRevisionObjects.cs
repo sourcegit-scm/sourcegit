@@ -17,7 +17,7 @@ namespace SourceGit.Commands
             Args = $"ls-tree {sha}";
 
             if (!string.IsNullOrEmpty(parentFolder))
-                Args += $" -- \"{parentFolder}\"";
+                Args += $" -- {parentFolder.Quoted()}";
         }
 
         public async Task<List<Models.Object>> GetResultAsync()

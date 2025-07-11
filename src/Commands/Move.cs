@@ -13,11 +13,9 @@ namespace SourceGit.Commands
             builder.Append("mv -v ");
             if (force)
                 builder.Append("-f ");
-            builder.Append('"');
-            builder.Append(oldPath);
-            builder.Append("\" \"");
-            builder.Append(newPath);
-            builder.Append('"');
+            builder.Append(oldPath.Quoted());
+            builder.Append(' ');
+            builder.Append(newPath.Quoted());
 
             Args = builder.ToString();
         }
