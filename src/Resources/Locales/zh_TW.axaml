@@ -39,6 +39,7 @@
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">指定的提交:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">封存</x:String>
   <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">輸入您的密碼:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">沒有不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">載入本機圖片...</x:String>
@@ -151,16 +152,19 @@
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">檢視包含此提交的分支或標籤</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">本提交包含於以下分支或標籤</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">僅顯示前 100 項變更。請前往 [變更對比] 頁面以瀏覽所有變更。</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">簽名鑰匙:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交訊息</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">前次提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">相關參照</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">詳細描述</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填寫提交訊息標題</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">您可以使用 ${files_num}、${branch_name}、${files} 或 ${files:N} 其中 N 是要輸出的檔案路徑的最大數目。</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">範本內容:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>
@@ -222,6 +226,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自動暫存並提交</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty) 或者自動暫存全部變更並提交?</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">系統提示</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">您需要重新啟動此應用程式才能套用變更！</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">產生約定式提交訊息</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">破壞性變更:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">關閉的 Issue:</x:String>
@@ -286,10 +292,15 @@
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">檔案權限已變更</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>
+  <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">混合對比</x:String>
+  <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">並排對比</x:String>
+  <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">填充對比</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後一個差異</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS 物件變更</x:String>
+  <x:String x:Key="Text.Diff.New" xml:space="preserve">變更後</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">沒有變更或僅有換行字元差異</x:String>
+  <x:String x:Key="Text.Diff.Old" xml:space="preserve">變更前</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一個差異</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">顯示隱藏符號</x:String>
@@ -572,6 +583,7 @@
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">確保已推送子模組</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">啟用強制推送</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">本機分支:</x:String>
+  <x:String x:Key="Text.Push.New" xml:space="preserve">新增</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">修訂:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送修訂到遠端存放庫</x:String>
