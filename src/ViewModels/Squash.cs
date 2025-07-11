@@ -32,24 +32,31 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Squash");
             Use(log);
 
+            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
             var signOff = _repo.Settings.EnableSignOffForCommit;
-            var autoStashed = false;
-            bool succ;
+            var needAutoStash = false;
+            var succ = false;
 
-            if (_repo.LocalChangesCount > 0)
+            foreach (var c in changes)
+            {
+                if (c.Index != Models.ChangeState.None)
+                {
+                    needAutoStash = true;
+                    break;
+                }
+            }
+
+            if (needAutoStash)
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
                     .PushAsync("SQUASH_AUTO_STASH");
-
                 if (!succ)
                 {
                     log.Complete();
                     _repo.SetWatcherEnabled(true);
                     return false;
                 }
-
-                autoStashed = true;
             }
 
             succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft")
@@ -61,7 +68,7 @@ namespace SourceGit.ViewModels
                     .Use(log)
                     .RunAsync();
 
-            if (succ && autoStashed)
+            if (succ && needAutoStash)
                 await new Commands.Stash(_repo.FullPath)
                     .Use(log)
                     .PopAsync("stash@{0}");

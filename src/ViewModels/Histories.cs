@@ -518,12 +518,6 @@ namespace SourceGit.ViewModels
                     reword.Icon = App.CreateMenuIcon("Icons.Edit");
                     reword.Click += (_, e) =>
                     {
-                        if (_repo.LocalChangesCount > 0)
-                        {
-                            App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                            return;
-                        }
-
                         if (_repo.CanCreatePopup())
                             _repo.ShowPopup(new Reword(_repo, commit));
                         e.Handled = true;

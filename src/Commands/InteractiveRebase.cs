@@ -1,12 +1,13 @@
 ﻿namespace SourceGit.Commands
 {
-    public class Rebase : Command
+    public class InteractiveRebase : Command
     {
-        public Rebase(string repo, string basedOn, bool autoStash)
+        public InteractiveRebase(string repo, string basedOn, bool autoStash)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "rebase ";
+            Editor = EditorType.RebaseEditor;
+            Args = "rebase -i --autosquash ";
             if (autoStash)
                 Args += "--autostash ";
             Args += basedOn;
