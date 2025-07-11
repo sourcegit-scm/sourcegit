@@ -187,7 +187,7 @@ namespace SourceGit.Views
                 if (storageFile != null)
                 {
                     var saveTo = storageFile.Path.LocalPath;
-                    await using (var writer = File.OpenWrite(saveTo))
+                    await using (var writer = File.Create(saveTo))
                     {
                         if (_img != null)
                         {

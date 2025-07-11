@@ -89,7 +89,7 @@ namespace SourceGit.Models
                         {
                             using (var stream = rsp.Content.ReadAsStream())
                             {
-                                using (var writer = File.OpenWrite(localFile))
+                                using (var writer = File.Create(localFile))
                                 {
                                     stream.CopyTo(writer);
                                 }

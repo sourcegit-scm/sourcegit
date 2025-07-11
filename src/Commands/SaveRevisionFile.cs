@@ -38,7 +38,7 @@ namespace SourceGit.Commands
             starter.RedirectStandardOutput = true;
             starter.RedirectStandardError = true;
 
-            await using (var sw = File.OpenWrite(outputFile))
+            await using (var sw = File.Create(outputFile))
             {
                 try
                 {

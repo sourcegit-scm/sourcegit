@@ -548,7 +548,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                using var stream = File.OpenWrite(Path.Combine(_gitDir, "sourcegit.settings"));
+                using var stream = File.Create(Path.Combine(_gitDir, "sourcegit.settings"));
                 JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
             }
             catch
