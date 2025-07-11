@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -189,7 +190,7 @@ namespace SourceGit.Native
             finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
-            finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
+            FindVisualStudio(finder);
             return finder.Tools;
         }
 
@@ -371,23 +372,41 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private string FindVisualStudio()
+        private void FindVisualStudio(Models.ExternalToolsFinder finder)
         {
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
-                    Microsoft.Win32.RegistryView.Registry64);
+            var vswhere = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe");
+            if (!File.Exists(vswhere))
+                return;
 
-            // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
-            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is { } launcher)
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = vswhere;
+            startInfo.Arguments = "-format json -prerelease -utf8";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+
+            try
             {
-                // Get actual path to the executable
-                if (launcher.GetValue(string.Empty) is string CLSID &&
-                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is { } devenv &&
-                    devenv.GetValue(string.Empty) is string localServer32)
-                    return localServer32!.Trim('\"');
-            }
+                using var proc = Process.Start(startInfo);
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
 
-            return string.Empty;
+                if (proc.ExitCode == 0)
+                {
+                    var instances = JsonSerializer.Deserialize(output, JsonCodeGen.Default.ListVisualStudioInstance);
+                    foreach (var instance in instances)
+                    {
+                        var exec = instance.ProductPath;
+                        finder.TryAdd(instance.DisplayName, "vs", () => exec, GenerateCommandlineArgsForVisualStudio);
+                    }
+                }
+            }
+            catch
+            {
+                // Just ignore.
+            }
         }
 
         private string FindCursor()

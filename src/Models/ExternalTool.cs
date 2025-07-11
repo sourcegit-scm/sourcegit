@@ -48,6 +48,15 @@ namespace SourceGit.Models
         private Func<string, string> _execArgsGenerator = null;
     }
 
+    public class VisualStudioInstance
+    {
+        [JsonPropertyName("displayName")]
+        public string DisplayName { get; set; } = string.Empty;
+
+        [JsonPropertyName("productPath")]
+        public string ProductPath { get; set; } = string.Empty;
+    }
+
     public class JetBrainsState
     {
         [JsonPropertyName("version")]
