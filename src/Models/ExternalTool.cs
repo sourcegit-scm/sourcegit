@@ -55,6 +55,9 @@ namespace SourceGit.Models
 
         [JsonPropertyName("productPath")]
         public string ProductPath { get; set; } = string.Empty;
+
+        [JsonPropertyName("isPrerelease")]
+        public bool IsPrerelease { get; set; } = false;
     }
 
     public class JetBrainsState

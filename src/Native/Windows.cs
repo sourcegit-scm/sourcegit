@@ -399,7 +399,8 @@ namespace SourceGit.Native
                     foreach (var instance in instances)
                     {
                         var exec = instance.ProductPath;
-                        finder.TryAdd(instance.DisplayName, "vs", () => exec, GenerateCommandlineArgsForVisualStudio);
+                        var icon = instance.IsPrerelease ? "vs-preview" : "vs";
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
                     }
                 }
             }
