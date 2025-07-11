@@ -353,6 +353,7 @@
   <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase em andamento.</x:String>
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert em andamento.</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interativo</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Guardar &amp; reaplicar alterações locais</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Em:</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ramo Alvo:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copiar link</x:String>

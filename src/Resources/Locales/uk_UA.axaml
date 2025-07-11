@@ -390,6 +390,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Скасування в процесі.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Скасування коміту</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Інтерактивне перебазування</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Сховати та застосувати локальні зміни</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">На:</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Цільова гілка:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Копіювати посилання</x:String>

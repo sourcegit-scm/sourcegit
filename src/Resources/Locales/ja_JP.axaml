@@ -385,6 +385,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">元に戻す処理が進行中です。'中止'を押すと元のHEADが復元されます。</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">コミットを元に戻しています</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">インタラクティブ リベース</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">ローカルの変更をスタッシュして再適用</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">対象のブランチ:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">リンクをコピー</x:String>

@@ -386,6 +386,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Annulation en cours.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Annulation du commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase interactif</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Stash &amp; réappliquer changements locaux</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Sur :</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Branche cible :</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copier le lien</x:String>

@@ -441,6 +441,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert wird durchgeführt.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Reverte Commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interaktiver Rebase</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Lokale Änderungen stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Auf:</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ziel Branch:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Link kopieren</x:String>

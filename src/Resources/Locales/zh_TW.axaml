@@ -456,6 +456,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">復原提交操作進行中。</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">正在復原提交</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">互動式重定基底</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">自動擱置變更並復原本機變更</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">起始提交:</x:String>
   <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">拖曳以重新排序提交</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目標分支:</x:String>

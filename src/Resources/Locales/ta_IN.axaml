@@ -385,6 +385,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">திரும்ப்பெறும் செயல்பாட்டில் உள்ளது.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">திரும்பபெறும் உறுதிமொழி</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">ஊடாடும் மறுதளம்</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">உள்ளக மாற்றங்களை பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">மேல்:</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">இலக்கு கிளை:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">இணைப்பை நகலெடு</x:String>

@@ -406,6 +406,7 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Ripristino in corso.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Ripristinando il commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Riallinea Interattivamente</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Stasha e Riapplica modifiche locali</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Su:</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Branch di destinazione:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copia il Link</x:String>
