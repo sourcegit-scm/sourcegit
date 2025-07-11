@@ -591,27 +591,30 @@ namespace SourceGit.ViewModels
                 var change = _selectedUnstaged[0];
                 var path = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
 
-                var openMerger = new MenuItem();
-                openMerger.Header = App.Text("OpenInExternalMergeTool");
-                openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                openMerger.Click += async (_, e) =>
+                if (!change.IsConflicted || change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
                 {
-                    if (change.IsConflicted)
+                    var openMerger = new MenuItem();
+                    openMerger.Header = App.Text("OpenInExternalMergeTool");
+                    openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                    openMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                    openMerger.Click += async (_, e) =>
                     {
-                        await UseExternalMergeTool(change);
-                    }
-                    else
-                    {
-                        var toolType = Preferences.Instance.ExternalMergeToolType;
-                        var toolPath = Preferences.Instance.ExternalMergeToolPath;
-                        var opt = new Models.DiffOption(change, true);
-                        new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
-                    }
+                        if (change.IsConflicted)
+                        {
+                            await UseExternalMergeTool(change);
+                        }
+                        else
+                        {
+                            var toolType = Preferences.Instance.ExternalMergeToolType;
+                            var toolPath = Preferences.Instance.ExternalMergeToolPath;
+                            var opt = new Models.DiffOption(change, true);
+                            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+                        }
 
-                    e.Handled = true;
-                };
-                menu.Items.Add(openMerger);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(openMerger);
+                }
 
                 var openWith = new MenuItem();
                 openWith.Header = App.Text("OpenWith");
