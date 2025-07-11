@@ -28,9 +28,9 @@ namespace SourceGit.ViewModels
             if (_isLocal)
             {
                 foreach (var target in Targets)
-                    await new Commands.Branch(_repo.FullPath)
+                    await new Commands.Branch(_repo.FullPath, target.Name)
                         .Use(log)
-                        .DeleteLocalAsync(target.Name);
+                        .DeleteLocalAsync();
             }
             else
             {
@@ -42,9 +42,9 @@ namespace SourceGit.ViewModels
                             .Use(log)
                             .RunAsync();
                     else
-                        await new Commands.Branch(_repo.FullPath)
+                        await new Commands.Branch(_repo.FullPath, target.Name)
                             .Use(log)
-                            .DeleteRemoteAsync(target.Remote, target.Name);
+                            .DeleteRemoteAsync(target.Remote);
                 }
             }
 

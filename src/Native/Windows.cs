@@ -196,7 +196,7 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            var info = new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"");
+            var info = new ProcessStartInfo("cmd", $"""/c start "" {url.Quoted()}""");
             info.CreateNoWindow = true;
             Process.Start(info);
         }
@@ -215,7 +215,7 @@ namespace SourceGit.Native
 
             // Directly launching `Windows Terminal` need to specify the `-d` parameter
             if (OS.ShellOrTerminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"-d \"{workdir}\"";
+                startInfo.Arguments = $"-d {workdir.Quoted()}";
 
             Process.Start(startInfo);
         }
@@ -251,7 +251,7 @@ namespace SourceGit.Native
         public void OpenWithDefaultEditor(string file)
         {
             var info = new FileInfo(file);
-            var start = new ProcessStartInfo("cmd", $"/c start \"\" \"{info.FullName}\"");
+            var start = new ProcessStartInfo("cmd", $"""/c start "" {info.FullName.Quoted()}""");
             start.CreateNoWindow = true;
             Process.Start(start);
         }
@@ -442,7 +442,7 @@ namespace SourceGit.Native
         private string GenerateCommandlineArgsForVisualStudio(string repo)
         {
             var sln = FindVSSolutionFile(new DirectoryInfo(repo), 4);
-            return string.IsNullOrEmpty(sln) ? $"\"{repo}\"" : $"\"{sln}\"";
+            return string.IsNullOrEmpty(sln) ? repo.Quoted() : sln.Quoted();
         }
 
         private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)

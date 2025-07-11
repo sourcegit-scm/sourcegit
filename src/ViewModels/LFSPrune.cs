@@ -17,7 +17,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Prune");
             Use(log);
 
-            await new Commands.LFS(_repo.FullPath).PruneAsync(log);
+            await new Commands.LFS(_repo.FullPath)
+                .Use(log)
+                .PruneAsync();
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

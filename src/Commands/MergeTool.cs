@@ -12,7 +12,7 @@ namespace SourceGit.Commands
 
             _merger = Models.ExternalMerger.Supported.Find(x => x.Type == type);
             _exec = exec;
-            _file = string.IsNullOrEmpty(file) ? "" : $"{file.Quoted()}";
+            _file = string.IsNullOrEmpty(file) ? string.Empty : file.Quoted();
         }
 
         public async Task<bool> OpenAsync()

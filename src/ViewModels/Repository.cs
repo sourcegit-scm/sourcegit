@@ -633,6 +633,58 @@ namespace SourceGit.ViewModels
             return Models.GitFlowBranchType.None;
         }
 
+        public bool IsLFSEnabled()
+        {
+            var path = Path.Combine(_fullpath, ".git", "hooks", "pre-push");
+            if (!File.Exists(path))
+                return false;
+
+            var content = File.ReadAllText(path);
+            return content.Contains("git lfs pre-push");
+        }
+
+        public async Task<bool> TrackLFSFileAsync(string pattern, bool isFilenameMode)
+        {
+            var log = CreateLog("Track LFS");
+            var succ = await new Commands.LFS(_fullpath)
+                .Use(log)
+                .TrackAsync(pattern, isFilenameMode);
+
+            if (succ)
+                App.SendNotification(_fullpath, $"Tracking successfully! Pattern: {pattern}");
+
+            log.Complete();
+            return succ;
+        }
+
+        public async Task<bool> LockLFSFileAsync(string remote, string path)
+        {
+            var log = CreateLog("Lock LFS File");
+            var succ = await new Commands.LFS(_fullpath)
+                .Use(log)
+                .LockAsync(remote, path);
+
+            if (succ)
+                App.SendNotification(_fullpath, $"Lock file successfully! File: {path}");
+
+            log.Complete();
+            return succ;
+        }
+
+        public async Task<bool> UnlockLFSFileAsync(string remote, string path, bool force, bool notify)
+        {
+            var log = CreateLog("Unlock LFS File");
+            var succ = await new Commands.LFS(_fullpath)
+                .Use(log)
+                .UnlockAsync(remote, path, force);
+
+            if (succ && notify)
+                App.SendNotification(_fullpath, $"Unlock file successfully! File: {path}");
+
+            log.Complete();
+            return succ;
+        }
+
         public CommandLog CreateLog(string name)
         {
             var log = new CommandLog(name);
@@ -1577,8 +1629,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
 
-            var lfs = new Commands.LFS(_fullpath);
-            if (lfs.IsEnabled())
+            if (IsLFSEnabled())
             {
                 var addPattern = new MenuItem();
                 addPattern.Header = App.Text("GitLFS.AddTrackPattern");
@@ -1699,7 +1750,7 @@ namespace SourceGit.ViewModels
                 install.Click += async (_, e) =>
                 {
                     var log = CreateLog("Install LFS");
-                    var succ = await new Commands.LFS(_fullpath).InstallAsync(log);
+                    var succ = await new Commands.LFS(_fullpath).Use(log).InstallAsync();
                     if (succ)
                         App.SendNotification(_fullpath, "LFS enabled successfully!");
 

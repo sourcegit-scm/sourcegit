@@ -63,20 +63,20 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            Process.Start("xdg-open", $"\"{url}\"");
+            Process.Start("xdg-open", url.Quoted());
         }
 
         public void OpenInFileManager(string path, bool select)
         {
             if (Directory.Exists(path))
             {
-                Process.Start("xdg-open", $"\"{path}\"");
+                Process.Start("xdg-open", path.Quoted());
             }
             else
             {
                 var dir = Path.GetDirectoryName(path);
                 if (Directory.Exists(dir))
-                    Process.Start("xdg-open", $"\"{dir}\"");
+                    Process.Start("xdg-open", dir.Quoted());
             }
         }
 
@@ -91,9 +91,9 @@ namespace SourceGit.Native
             startInfo.FileName = terminal;
 
             if (terminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"start --cwd \"{cwd}\"";
+                startInfo.Arguments = $"start --cwd {cwd.Quoted()}";
             else if (terminal.EndsWith("ptyxis", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"--new-window --working-directory=\"{cwd}\"";
+                startInfo.Arguments = $"--new-window --working-directory={cwd.Quoted()}";
 
             try
             {
@@ -107,13 +107,13 @@ namespace SourceGit.Native
 
         public void OpenWithDefaultEditor(string file)
         {
-            var proc = Process.Start("xdg-open", $"\"{file}\"");
+            var proc = Process.Start("xdg-open", file.Quoted());
             if (proc != null)
             {
                 proc.WaitForExit();
 
                 if (proc.ExitCode != 0)
-                    App.RaiseException("", $"Failed to open \"{file}\"");
+                    App.RaiseException("", $"Failed to open: {file}");
 
                 proc.Close();
             }

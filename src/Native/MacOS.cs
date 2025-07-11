@@ -47,11 +47,16 @@ namespace SourceGit.Native
         public string FindGitExecutable()
         {
             var gitPathVariants = new List<string>() {
-                 "/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git", "/opt/homebrew/opt/git/bin/git"
+                "/usr/bin/git",
+                "/usr/local/bin/git",
+                "/opt/homebrew/bin/git",
+                "/opt/homebrew/opt/git/bin/git"
             };
+
             foreach (var path in gitPathVariants)
                 if (File.Exists(path))
                     return path;
+
             return string.Empty;
         }
 
@@ -91,21 +96,21 @@ namespace SourceGit.Native
         public void OpenInFileManager(string path, bool select)
         {
             if (Directory.Exists(path))
-                Process.Start("open", $"\"{path}\"");
+                Process.Start("open", path.Quoted());
             else if (File.Exists(path))
-                Process.Start("open", $"\"{path}\" -R");
+                Process.Start("open", $"{path.Quoted()} -R");
         }
 
         public void OpenTerminal(string workdir)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var dir = string.IsNullOrEmpty(workdir) ? home : workdir;
-            Process.Start("open", $"-a {OS.ShellOrTerminal} \"{dir}\"");
+            Process.Start("open", $"-a {OS.ShellOrTerminal} {dir.Quoted()}");
         }
 
         public void OpenWithDefaultEditor(string file)
         {
-            Process.Start("open", $"\"{file}\"");
+            Process.Start("open", file.Quoted());
         }
     }
 }

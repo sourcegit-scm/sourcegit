@@ -38,9 +38,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Reset '{Target.Name}' to '{_revision}'");
             Use(log);
 
-            var succ = await new Commands.Branch(_repo.FullPath)
+            var succ = await new Commands.Branch(_repo.FullPath, Target.Name)
                 .Use(log)
-                .CreateAsync(Target.Name, _revision, true);
+                .CreateAsync(_revision, true);
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();

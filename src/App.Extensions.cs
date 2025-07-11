@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace SourceGit.Commands
+namespace SourceGit
 {
     public static class StringExtensions
     {
@@ -12,6 +12,15 @@ namespace SourceGit.Commands
         public static string Escaped(this string value)
         {
             return value.Replace("\"", "\\\"", StringComparison.Ordinal);
+        }
+    }
+
+    public static class CommandExtensions
+    {
+        public static T Use<T>(this T cmd, Models.ICommandLog log) where T : Commands.Command
+        {
+            cmd.Log = log;
+            return cmd;
         }
     }
 }

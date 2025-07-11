@@ -49,9 +49,9 @@ namespace SourceGit.ViewModels
 
             if (Target.IsLocal)
             {
-                await new Commands.Branch(_repo.FullPath)
+                await new Commands.Branch(_repo.FullPath, Target.Name)
                     .Use(log)
-                    .DeleteLocalAsync(Target.Name);
+                    .DeleteLocalAsync();
 
                 if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
                     await DeleteRemoteBranchAsync(TrackingRemoteBranch, log);
@@ -79,9 +79,9 @@ namespace SourceGit.ViewModels
                     .RunAsync()
                     .ConfigureAwait(false);
             else
-                await new Commands.Branch(_repo.FullPath)
+                await new Commands.Branch(_repo.FullPath, branch.Name)
                     .Use(log)
-                    .DeleteRemoteAsync(branch.Remote, branch.Name)
+                    .DeleteRemoteAsync(branch.Remote)
                     .ConfigureAwait(false);
         }
 

@@ -5,19 +5,20 @@ namespace SourceGit.Commands
 {
     public class Branch : Command
     {
-        public Branch(string repo)
+        public Branch(string repo, string name)
         {
             WorkingDirectory = repo;
             Context = repo;
+            _name = name;
         }
 
-        public async Task<bool> CreateAsync(string name, string basedOn, bool force)
+        public async Task<bool> CreateAsync(string basedOn, bool force)
         {
             var builder = new StringBuilder();
             builder.Append("branch ");
             if (force)
                 builder.Append("-f ");
-            builder.Append(name);
+            builder.Append(_name);
             builder.Append(" ");
             builder.Append(basedOn);
 
@@ -25,32 +26,34 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> RenameAsync(string name, string to)
+        public async Task<bool> RenameAsync(string to)
         {
-            Args = $"branch -M {name} {to}";
+            Args = $"branch -M {_name} {to}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> SetUpstreamAsync(string name, string upstream)
+        public async Task<bool> SetUpstreamAsync(string upstream)
         {
             if (string.IsNullOrEmpty(upstream))
-                Args = $"branch {name} --unset-upstream";
+                Args = $"branch {_name} --unset-upstream";
             else
-                Args = $"branch {name} -u {upstream}";
+                Args = $"branch {_name} -u {upstream}";
 
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteLocalAsync(string name)
+        public async Task<bool> DeleteLocalAsync()
         {
-            Args = $"branch -D {name}";
+            Args = $"branch -D {_name}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteRemoteAsync(string remote, string name)
+        public async Task<bool> DeleteRemoteAsync(string remote)
         {
-            Args = $"branch -D -r {remote}/{name}";
+            Args = $"branch -D -r {remote}/{_name}";
             return await ExecAsync().ConfigureAwait(false);
         }
+
+        private readonly string _name;
     }
 }

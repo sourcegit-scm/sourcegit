@@ -106,8 +106,8 @@ namespace SourceGit.Models
 
             builder.Append("-- ");
             if (!string.IsNullOrEmpty(_orgPath))
-                builder.Append($"\"{_orgPath}\" ");
-            builder.Append($"\"{_path}\"");
+                builder.Append($"{_orgPath.Quoted()} ");
+            builder.Append(_path.Quoted());
 
             return builder.ToString();
         }

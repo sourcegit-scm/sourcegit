@@ -61,9 +61,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Set Upstream");
             Use(log);
 
-            var succ = await new Commands.Branch(_repo.FullPath)
+            var succ = await new Commands.Branch(_repo.FullPath, Local.Name)
                 .Use(log)
-                .SetUpstreamAsync(Local.Name, upstream.Replace("refs/remotes/", ""));
+                .SetUpstreamAsync(upstream.Replace("refs/remotes/", ""));
 
             log.Complete();
             if (succ)

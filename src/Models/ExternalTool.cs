@@ -19,7 +19,7 @@ namespace SourceGit.Models
         {
             Name = name;
             _execFile = execFile;
-            _execArgsGenerator = execArgsGenerator ?? (repo => $"\"{repo}\"");
+            _execArgsGenerator = execArgsGenerator ?? (repo => repo.Quoted());
 
             try
             {

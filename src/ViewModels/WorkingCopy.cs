@@ -846,8 +846,7 @@ namespace SourceGit.ViewModels
                         hasExtra = true;
                     }
 
-                    var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
-                    if (lfsEnabled)
+                    if (_repo.IsLFSEnabled())
                     {
                         var lfs = new MenuItem();
                         lfs.Header = App.Text("GitLFS");
@@ -861,12 +860,7 @@ namespace SourceGit.ViewModels
                             lfsTrackThisFile.Header = App.Text("GitLFS.Track", filename);
                             lfsTrackThisFile.Click += async (_, e) =>
                             {
-                                var log = _repo.CreateLog("Track LFS");
-                                var succ = await new Commands.LFS(_repo.FullPath).TrackAsync(filename, true, log);
-                                if (succ)
-                                    App.SendNotification(_repo.FullPath, $"Tracking file named {filename} successfully!");
-
-                                log.Complete();
+                                await _repo.TrackLFSFileAsync(filename, true);
                                 e.Handled = true;
                             };
                             lfs.Items.Add(lfsTrackThisFile);
@@ -877,12 +871,7 @@ namespace SourceGit.ViewModels
                                 lfsTrackByExtension.Header = App.Text("GitLFS.TrackByExtension", extension);
                                 lfsTrackByExtension.Click += async (_, e) =>
                                 {
-                                    var log = _repo.CreateLog("Track LFS");
-                                    var succ = await new Commands.LFS(_repo.FullPath).TrackAsync($"*{extension}", false, log);
-                                    if (succ)
-                                        App.SendNotification(_repo.FullPath, $"Tracking all *{extension} files successfully!");
-
-                                    log.Complete();
+                                    await _repo.TrackLFSFileAsync($"*{extension}", false);
                                     e.Handled = true;
                                 };
                                 lfs.Items.Add(lfsTrackByExtension);
@@ -899,12 +888,7 @@ namespace SourceGit.ViewModels
                         {
                             lfsLock.Click += async (_, e) =>
                             {
-                                var log = _repo.CreateLog("Lock LFS File");
-                                var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, change.Path, log);
-                                if (succ)
-                                    App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
-
-                                log.Complete();
+                                await _repo.LockLFSFileAsync(_repo.Remotes[0].Name, change.Path);
                                 e.Handled = true;
                             };
                         }
@@ -917,12 +901,7 @@ namespace SourceGit.ViewModels
                                 lockRemote.Header = remoteName;
                                 lockRemote.Click += async (_, e) =>
                                 {
-                                    var log = _repo.CreateLog("Lock LFS File");
-                                    var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, change.Path, log);
-                                    if (succ)
-                                        App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
-
-                                    log.Complete();
+                                    await _repo.LockLFSFileAsync(remoteName, change.Path);
                                     e.Handled = true;
                                 };
                                 lfsLock.Items.Add(lockRemote);
@@ -938,12 +917,7 @@ namespace SourceGit.ViewModels
                         {
                             lfsUnlock.Click += async (_, e) =>
                             {
-                                var log = _repo.CreateLog("Unlock LFS File");
-                                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, change.Path, false, log);
-                                if (succ)
-                                    App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
-
-                                log.Complete();
+                                await _repo.UnlockLFSFileAsync(_repo.Remotes[0].Name, change.Path, false, true);
                                 e.Handled = true;
                             };
                         }
@@ -956,12 +930,7 @@ namespace SourceGit.ViewModels
                                 unlockRemote.Header = remoteName;
                                 unlockRemote.Click += async (_, e) =>
                                 {
-                                    var log = _repo.CreateLog("Unlock LFS File");
-                                    var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, change.Path, false, log);
-                                    if (succ)
-                                        App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
-
-                                    log.Complete();
+                                    await _repo.UnlockLFSFileAsync(remoteName, change.Path, false, true);
                                     e.Handled = true;
                                 };
                                 lfsUnlock.Items.Add(unlockRemote);
@@ -1378,8 +1347,7 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(patch);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                var lfsEnabled = new Commands.LFS(_repo.FullPath).IsEnabled();
-                if (lfsEnabled)
+                if (_repo.IsLFSEnabled())
                 {
                     var lfs = new MenuItem();
                     lfs.Header = App.Text("GitLFS");
@@ -1393,12 +1361,7 @@ namespace SourceGit.ViewModels
                     {
                         lfsLock.Click += async (_, e) =>
                         {
-                            var log = _repo.CreateLog("Lock LFS File");
-                            var succ = await new Commands.LFS(_repo.FullPath).LockAsync(_repo.Remotes[0].Name, change.Path, log);
-                            if (succ)
-                                App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
-
-                            log.Complete();
+                            await _repo.LockLFSFileAsync(_repo.Remotes[0].Name, change.Path);
                             e.Handled = true;
                         };
                     }
@@ -1411,12 +1374,7 @@ namespace SourceGit.ViewModels
                             lockRemote.Header = remoteName;
                             lockRemote.Click += async (_, e) =>
                             {
-                                var log = _repo.CreateLog("Lock LFS File");
-                                var succ = await new Commands.LFS(_repo.FullPath).LockAsync(remoteName, change.Path, log);
-                                if (succ)
-                                    App.SendNotification(_repo.FullPath, $"Lock file \"{change.Path}\" successfully!");
-
-                                log.Complete();
+                                await _repo.LockLFSFileAsync(remoteName, change.Path);
                                 e.Handled = true;
                             };
                             lfsLock.Items.Add(lockRemote);
@@ -1432,12 +1390,7 @@ namespace SourceGit.ViewModels
                     {
                         lfsUnlock.Click += async (_, e) =>
                         {
-                            var log = _repo.CreateLog("Unlock LFS File");
-                            var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_repo.Remotes[0].Name, change.Path, false, log);
-                            if (succ)
-                                App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
-
-                            log.Complete();
+                            await _repo.UnlockLFSFileAsync(_repo.Remotes[0].Name, change.Path, false, true);
                             e.Handled = true;
                         };
                     }
@@ -1450,12 +1403,7 @@ namespace SourceGit.ViewModels
                             unlockRemote.Header = remoteName;
                             unlockRemote.Click += async (_, e) =>
                             {
-                                var log = _repo.CreateLog("Unlock LFS File");
-                                var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(remoteName, change.Path, false, log);
-                                if (succ)
-                                    App.SendNotification(_repo.FullPath, $"Unlock file \"{change.Path}\" successfully!");
-
-                                log.Complete();
+                                await _repo.UnlockLFSFileAsync(remoteName, change.Path, false, true);
                                 e.Handled = true;
                             };
                             lfsUnlock.Items.Add(unlockRemote);

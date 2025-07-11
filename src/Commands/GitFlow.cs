@@ -21,8 +21,7 @@ namespace SourceGit.Commands
             init.WorkingDirectory = repo;
             init.Context = repo;
             init.Args = "flow init -d";
-            init.Log = log;
-            return await init.ExecAsync().ConfigureAwait(false);
+            return await init.Use(log).ExecAsync().ConfigureAwait(false);
         }
 
         public static async Task<bool> StartAsync(string repo, Models.GitFlowBranchType type, string name, Models.ICommandLog log)
@@ -47,8 +46,7 @@ namespace SourceGit.Commands
                     return false;
             }
 
-            start.Log = log;
-            return await start.ExecAsync().ConfigureAwait(false);
+            return await start.Use(log).ExecAsync().ConfigureAwait(false);
         }
 
         public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
@@ -85,8 +83,7 @@ namespace SourceGit.Commands
             finish.WorkingDirectory = repo;
             finish.Context = repo;
             finish.Args = builder.ToString();
-            finish.Log = log;
-            return await finish.ExecAsync().ConfigureAwait(false);
+            return await finish.Use(log).ExecAsync().ConfigureAwait(false);
         }
     }
 }

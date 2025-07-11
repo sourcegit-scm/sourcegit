@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -280,7 +281,14 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var commits = await new Commands.QueryCommits(_repo.FullPath, $"--date-order -n 10000 {commit ?? string.Empty} -- \"{file}\"", false)
+                var argsBuilder = new StringBuilder();
+                argsBuilder
+                    .Append("--date-order -n 10000 ")
+                    .Append(commit ?? string.Empty)
+                    .Append(" -- ")
+                    .Append(file.Quoted());
+
+                var commits = await new Commands.QueryCommits(_repo.FullPath, argsBuilder.ToString(), false)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
