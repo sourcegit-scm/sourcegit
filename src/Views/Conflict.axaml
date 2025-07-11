@@ -125,7 +125,11 @@
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat" Margin="8,0,0,0" Command="{Binding OpenExternalMergeTool}" IsVisible="{Binding CanUseExternalMergeTool}">
+          <Button Classes="flat"
+                  Margin="8,0,0,0"
+                  Command="{Binding OpenExternalMergeTool}"
+                  IsVisible="{Binding CanUseExternalMergeTool}"
+                  HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" VerticalAlignment="Center"/>
