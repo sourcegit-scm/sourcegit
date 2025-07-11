@@ -230,8 +230,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">タグ:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">リモートリポジトリから削除</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">バイナリの差分</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEW</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">OLD</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">ファイルモードが変更されました</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">先頭の差分</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白の変更を無視</x:String>

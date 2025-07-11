@@ -231,8 +231,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Tag :</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Supprimer des dépôts distants</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFF BINAIRE</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NOUVEAU</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">ANCIEN</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Mode de fichier changé</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Première différence</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorer les changements d'espaces</x:String>

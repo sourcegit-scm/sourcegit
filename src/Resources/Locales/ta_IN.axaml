@@ -230,8 +230,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">குறிசொல்:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">தொலை களஞ்சியங்களிலிருந்து நீக்கு</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">இருமம்  வேறுபாடு</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">புதிய</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">பழைய</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">கோப்பு முறை மாற்றப்பட்டது</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">முதல் வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">வெள்ளைவெளி மாற்றத்தை புறக்கணி</x:String>

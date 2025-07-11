@@ -287,8 +287,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">標籤名稱:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">同時刪除遠端存放庫中的此標籤</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">二進位檔案</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">目前大小</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">原始大小</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">檔案權限已變更</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>

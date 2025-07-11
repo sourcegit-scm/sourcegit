@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-95.26%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-95.70%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -18,19 +18,15 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.CopyCommitMessage
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
+- Text.Diff.New
+- Text.Diff.Old
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
@@ -54,7 +50,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-94.90%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-95.34%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -66,22 +62,18 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.CopyCommitMessage
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
+- Text.Diff.New
+- Text.Diff.Old
 - Text.DirHistories
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
@@ -105,7 +97,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-83.63%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-83.99%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -139,7 +131,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
@@ -166,9 +158,11 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
 - Text.ExecuteCustomAction.Target
@@ -178,13 +172,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
@@ -251,7 +239,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-88.97%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-89.37%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -273,7 +261,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
@@ -295,22 +283,18 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
@@ -352,7 +336,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-83.63%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-83.99%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -387,7 +371,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
@@ -414,9 +398,11 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
 - Text.ExecuteCustomAction.Target
@@ -426,13 +412,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
@@ -498,7 +478,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-76.51%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-76.82%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -546,7 +526,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
@@ -583,10 +563,12 @@ This document shows the translation status of each locale file in the repository
 - Text.DeleteRepositoryNode.TipForGroup
 - Text.DeleteRepositoryNode.TipForRepository
 - Text.Diff.First
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
 - Text.Diff.Last
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.Diff.UseBlockNavigation
 - Text.DirHistories
@@ -604,13 +586,7 @@ This document shows the translation status of each locale file in the repository
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
 - Text.InProgress.Revert.Head
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
@@ -704,7 +680,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.10%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.57%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -712,23 +688,19 @@ This document shows the translation status of each locale file in the repository
 - Text.Askpass.Passphrase
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Push.New
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-83.75%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-84.11%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -763,7 +735,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
@@ -790,9 +762,11 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
 - Text.ExecuteCustomAction.Target
@@ -802,13 +776,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
@@ -873,7 +841,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-84.93%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-85.30%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -907,7 +875,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Configure.CommitMessageTemplate.Explanation
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
@@ -930,9 +898,11 @@ This document shows the translation status of each locale file in the repository
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
+- Text.Diff.Image.Blend
 - Text.Diff.Image.SideBySide
 - Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
+- Text.Diff.New
+- Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
 - Text.ExecuteCustomAction.Target
@@ -942,13 +912,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
 - Text.InteractiveRebase.ReorderTip
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
 - Text.Launcher.Workspaces
 - Text.Launcher.Pages
 - Text.Merge.Edit
@@ -1008,50 +972,6 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-98.10%25-yellow)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing keys in zh_CN.axaml</summary>
-
-- Text.Askpass.Passphrase
-- Text.CommitDetail.Info.Key
-- Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.Explanation
-- Text.ConfirmRestart.Title
-- Text.ConfirmRestart.Message
-- Text.Diff.Image.SideBySide
-- Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
-- Text.Push.New
-
-</details>
-
-### ![zh__TW](https://img.shields.io/badge/zh__TW-98.10%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.Askpass.Passphrase
-- Text.CommitDetail.Info.Key
-- Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.Explanation
-- Text.ConfirmRestart.Title
-- Text.ConfirmRestart.Message
-- Text.Diff.Image.SideBySide
-- Text.Diff.Image.Swipe
-- Text.Diff.Image.Blend
-- Text.InteractiveRebase.Drop.Message
-- Text.InteractiveRebase.Edit.Message
-- Text.InteractiveRebase.Fixup.Message
-- Text.InteractiveRebase.Pick.Message
-- Text.InteractiveRebase.Reword.Message
-- Text.InteractiveRebase.Squash.Message
-- Text.Push.New
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)

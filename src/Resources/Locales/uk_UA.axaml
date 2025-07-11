@@ -235,8 +235,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Тег:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Видалити з віддалених сховищ</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">РІЗНИЦЯ ДЛЯ БІНАРНИХ ФАЙЛІВ</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">НОВИЙ</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">СТАРИЙ</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Змінено режим файлу</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Перша відмінність</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ігнорувати зміни пробілів</x:String>

@@ -277,8 +277,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Tag:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Von Remote Repositories löschen</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">BINÄRER VERGLEICH</x:String>
-  <x:String x:Key="Text.Diff.Binary.New" xml:space="preserve">NEU</x:String>
-  <x:String x:Key="Text.Diff.Binary.Old" xml:space="preserve">ALT</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Dateimodus geändert</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Erste Differenz</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignoriere Leerzeichenänderungen</x:String>
