@@ -640,12 +640,6 @@ namespace SourceGit.ViewModels
                     interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                     interactiveRebase.Click += async (_, e) =>
                     {
-                        if (_repo.LocalChangesCount > 0)
-                        {
-                            App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                            return;
-                        }
-
                         await App.ShowDialog(new InteractiveRebase(_repo, current, commit));
                         e.Handled = true;
                     };

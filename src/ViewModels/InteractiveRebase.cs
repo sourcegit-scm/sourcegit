@@ -84,6 +84,12 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public bool AutoStash
+        {
+            get;
+            set;
+        } = true;
+
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
             get => _repo.Settings.IssueTrackerRules;
@@ -212,7 +218,7 @@ namespace SourceGit.ViewModels
             }
 
             var log = _repo.CreateLog("Interactive Rebase");
-            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA)
+            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA, AutoStash)
                 .Use(log)
                 .ExecAsync();
 
