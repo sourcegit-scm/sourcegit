@@ -35,6 +35,7 @@
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">Archive</x:String>
   <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Enter passphrase:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FILES ASSUME UNCHANGED</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NO FILES ASSUMED AS UNCHANGED</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Load Image...</x:String>
@@ -147,10 +148,12 @@
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Check refs that contains this commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT IS CONTAINED BY</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Shows only the first 100 changes. See all changes on the CHANGES tab.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Key:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">MESSAGE</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARENTS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signer:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Description</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJECT</x:String>
@@ -158,6 +161,7 @@
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Content:</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Explanation" xml:space="preserve">You can use ${files_num}, ${branch_name}, ${files} and ${files:N} where N is the max number of file paths to output.</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
@@ -218,6 +222,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">STAGE ALL &amp; COMMIT</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Empty commit detected! Do you want to continue (--allow-empty) or stage all then commit?</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Restart Required</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">You need to restart this app to apply changes.</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Conventional Commit Helper</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Closed Issue:</x:String>
@@ -282,6 +288,9 @@
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">First Difference</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore All Whitespace Changes</x:String>
+  <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">SIDE-BY-SIDE</x:String>
+  <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">SWIPE</x:String>
+  <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">BLEND</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Last Difference</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">LFS OBJECT CHANGE</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
@@ -443,8 +452,14 @@
   <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert in progress.</x:String>
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Reverting commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Drop.Message" xml:space="preserve">Remove commit</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Edit.Message" xml:space="preserve">Stop for amending</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Fixup.Message" xml:space="preserve">Like 'Squash' but discard message</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">On:</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Pick.Message" xml:space="preserve">Use this commit</x:String>
   <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">Drag-drop to reorder commits</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Reword.Message" xml:space="preserve">Edit the commit message</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Squash.Message" xml:space="preserve">Squash into previous commit</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Target Branch:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copy Link</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Open in Browser</x:String>
@@ -568,6 +583,7 @@
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Make sure submodules have been pushed</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Local Branch:</x:String>
+  <x:String x:Key="Text.Push.New" xml:space="preserve">NEW</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revision To Remote</x:String>
