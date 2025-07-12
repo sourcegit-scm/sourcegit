@@ -136,6 +136,7 @@
                                             LinkForeground="{DynamicResource Brush.Link}"
                                             Subject="{Binding Subject}"
                                             IssueTrackerRules="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).IssueTrackerRules}"
+                                            SharedIssueTrackerRules="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).SharedIssueTrackerRules}"
                                             FontWeight="Normal"/>
                 </Grid>
 

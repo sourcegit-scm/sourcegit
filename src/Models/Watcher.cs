@@ -260,6 +260,12 @@ namespace SourceGit.Models
                 return;
             }
 
+            if (name == ".issuetracker")
+            {
+                _repo.LoadSharedIssueTrackerRules();
+                return;
+            }
+
             lock (_lockSubmodule)
             {
                 foreach (var submodule in _submodules)

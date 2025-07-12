@@ -1,0 +1,7 @@
+# Integration with Issue Tracker
+#
+# (note that '\' need to be escaped).
+
+[issuetracker "GitHub"]
+	regex = "#(\\d+)"
+	url = https://github.com/sourcegit-scm/sourcegit/issues/$1

@@ -844,6 +844,7 @@
             <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}"
                          Bisect="{Binding Bisect}"
                          IssueTrackerRules="{Binding $parent[v:Repository].((vm:Repository)DataContext).Settings.IssueTrackerRules}"
+                         SharedIssueTrackerRules="{Binding $parent[v:Repository].((vm:Repository)DataContext).SharedIssueTrackerRules}"
                          OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistories}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>

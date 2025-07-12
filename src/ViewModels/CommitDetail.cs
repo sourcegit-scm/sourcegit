@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -145,10 +146,12 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _rememberActivePageIndex = rememberActivePageIndex;
             WebLinks = Models.CommitLink.Get(repo.Remotes);
+            _repo.PropertyChanged += OnRepoPropertyChanged;
         }
 
         public void Dispose()
         {
+            _repo.PropertyChanged -= OnRepoPropertyChanged;
             _repo = null;
             _commit = null;
             _changes = null;
@@ -666,6 +669,12 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private void OnRepoPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Repository.SharedIssueTrackerRules))
+                Refresh();
+        }
+
         private void Refresh()
         {
             _changes = null;
@@ -767,6 +776,12 @@ namespace SourceGit.ViewModels
             if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
+                    rule.Matches(inlines, message);
+            }
+
+            if (_repo.SharedIssueTrackerRules is { Count: > 0 } sharedRules)
+            {
+                foreach (var rule in sharedRules)
                     rule.Matches(inlines, message);
             }
 

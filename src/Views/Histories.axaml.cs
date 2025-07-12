@@ -103,6 +103,15 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> SharedIssueTrackerRulesProperty =
+            AvaloniaProperty.Register<Histories, AvaloniaList<Models.IssueTrackerRule>>(nameof(SharedIssueTrackerRules));
+
+        public AvaloniaList<Models.IssueTrackerRule> SharedIssueTrackerRules
+        {
+            get => GetValue(SharedIssueTrackerRulesProperty);
+            set => SetValue(SharedIssueTrackerRulesProperty, value);
+        }
+
         public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
             AvaloniaProperty.Register<Histories, bool>(nameof(OnlyHighlightCurrentBranch), true);
 

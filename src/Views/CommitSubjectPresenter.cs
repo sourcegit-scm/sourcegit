@@ -93,6 +93,15 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackerRulesProperty, value);
         }
 
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> SharedIssueTrackerRulesProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(SharedIssueTrackerRules));
+
+        public AvaloniaList<Models.IssueTrackerRule> SharedIssueTrackerRules
+        {
+            get => GetValue(SharedIssueTrackerRulesProperty);
+            set => SetValue(SharedIssueTrackerRulesProperty, value);
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_needRebuildInlines)
@@ -138,7 +147,9 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
+            if (change.Property == SubjectProperty ||
+                change.Property == IssueTrackerRulesProperty ||
+                change.Property == SharedIssueTrackerRulesProperty)
             {
                 _elements.Clear();
                 ClearHoveredIssueLink();
@@ -153,6 +164,10 @@ namespace SourceGit.Views
 
                 var rules = IssueTrackerRules ?? [];
                 foreach (var rule in rules)
+                    rule.Matches(_elements, subject);
+
+                var sharedRules = SharedIssueTrackerRules ?? [];
+                foreach (var rule in sharedRules)
                     rule.Matches(_elements, subject);
 
                 var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);

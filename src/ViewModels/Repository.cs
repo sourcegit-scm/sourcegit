@@ -51,6 +51,12 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public AvaloniaList<Models.IssueTrackerRule> SharedIssueTrackerRules
+        {
+            get => _sharedIssueTrackerRules;
+            set => SetProperty(ref _sharedIssueTrackerRules, value);
+        }
+
         public Models.GitFlow GitFlow
         {
             get;
@@ -505,6 +511,8 @@ namespace SourceGit.ViewModels
                 _settings = new Models.RepositorySettings();
             }
 
+            LoadSharedIssueTrackerRules();
+
             try
             {
                 // For worktrees, we need to watch the $GIT_COMMON_DIR instead of the $GIT_DIR.
@@ -588,6 +596,51 @@ namespace SourceGit.ViewModels
             _requestingWorktreeFiles = false;
             _worktreeFiles = null;
             _matchedFilesForSearching = null;
+        }
+
+        public void LoadSharedIssueTrackerRules()
+        {
+            var issueTrackerFile = Path.Combine(_fullpath, ".issuetracker");
+            if (File.Exists(issueTrackerFile))
+            {
+                Task.Run(async () =>
+                {
+                    AvaloniaList<Models.IssueTrackerRule> rules;
+
+                    try
+                    {
+                        var config = new Commands.Config(_fullpath);
+                        var trackers = await config.ReadAllAsync(".issuetracker").ConfigureAwait(false);
+
+                        var map = new Dictionary<string, Models.IssueTrackerRule>();
+                        var lookup = map.GetAlternateLookup<ReadOnlySpan<char>>();
+
+                        foreach (var entry in trackers)
+                        {
+                            var key = entry.Key.AsSpan();
+                            if (!key.StartsWith("issuetracker."))
+                                continue;
+
+                            if (key.EndsWith(".regex"))
+                                GetOrCreateIssueTrackerRule(lookup, key[13..^6]).RegexString = entry.Value;
+                            else if (key.EndsWith(".url"))
+                                GetOrCreateIssueTrackerRule(lookup, key[13..^4]).URLTemplate = entry.Value;
+                        }
+
+                        rules = new AvaloniaList<Models.IssueTrackerRule>(map.Values);
+                    }
+                    catch
+                    {
+                        rules = [];
+                    }
+
+                    Dispatcher.UIThread.Post(() => SharedIssueTrackerRules = rules);
+                });
+            }
+            else
+            {
+                SharedIssueTrackerRules = [];
+            }
         }
 
         public bool CanCreatePopup()
@@ -2803,6 +2856,17 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
+        private static Models.IssueTrackerRule GetOrCreateIssueTrackerRule(
+            Dictionary<string, Models.IssueTrackerRule>.AlternateLookup<ReadOnlySpan<char>> lookup,
+            ReadOnlySpan<char> name)
+        {
+            if (lookup.TryGetValue(name, out var existingRule))
+                return existingRule;
+
+            var newRule = new Models.IssueTrackerRule { Name = name.ToString() };
+            return lookup[name] = newRule;
+        }
+
         private LauncherPage GetOwnerPage()
         {
             var launcher = App.GetLauncher();
@@ -3101,6 +3165,7 @@ namespace SourceGit.ViewModels
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
         private Models.RepositorySettings _settings = null;
+        private AvaloniaList<Models.IssueTrackerRule> _sharedIssueTrackerRules = null;
         private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
 
