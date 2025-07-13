@@ -483,10 +483,12 @@ namespace SourceGit.ViewModels
 
             if (!_repo.IsBare)
             {
+                var target = GetFriendlyNameOfCommit(commit);
+
                 if (current.Head != commit.SHA)
                 {
                     var reset = new MenuItem();
-                    reset.Header = App.Text("CommitCM.Reset", current.Name);
+                    reset.Header = App.Text("CommitCM.Reset", current.Name, target);
                     reset.Icon = App.CreateMenuIcon("Icons.Reset");
                     reset.Click += (_, e) =>
                     {
@@ -499,7 +501,7 @@ namespace SourceGit.ViewModels
                     if (commit.IsMerged)
                     {
                         var squash = new MenuItem();
-                        squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
+                        squash.Header = App.Text("CommitCM.SquashCommitsSinceThis", target);
                         squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                         squash.Click += (_, e) =>
                         {
@@ -545,7 +547,7 @@ namespace SourceGit.ViewModels
                 if (!commit.IsMerged)
                 {
                     var rebase = new MenuItem();
-                    rebase.Header = App.Text("CommitCM.Rebase", current.Name);
+                    rebase.Header = App.Text("CommitCM.Rebase", current.Name, target);
                     rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
                     rebase.Click += (_, e) =>
                     {
@@ -630,7 +632,7 @@ namespace SourceGit.ViewModels
                     };
 
                     var interactiveRebase = new MenuItem();
-                    interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase", current.Name);
+                    interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase", current.Name, target);
                     interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                     interactiveRebase.Click += async (_, e) =>
                     {
@@ -869,6 +871,19 @@ namespace SourceGit.ViewModels
             menu.Items.Add(copy);
 
             return menu;
+        }
+
+        private static string GetFriendlyNameOfCommit(Models.Commit commit)
+        {
+            var branchDecorator = commit.Decorators.Find(x => x.Type is Models.DecoratorType.LocalBranchHead or Models.DecoratorType.RemoteBranchHead);
+            if (branchDecorator != null)
+                return branchDecorator.Name;
+
+            var tagDecorator = commit.Decorators.Find(x => x.Type is Models.DecoratorType.Tag);
+            if (tagDecorator != null)
+                return tagDecorator.Name;
+
+            return commit.SHA[..10];
         }
 
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current)
