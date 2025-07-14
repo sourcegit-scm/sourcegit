@@ -83,7 +83,8 @@
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Sure}"
                             Click="OnPopupSure"
-                            HotKey="Enter"/>
+                            HotKey="Enter"
+                            ToolTip.Tip="Enter"/>
                     <Button Classes="flat"
                             Width="100" Height="28"
                             Margin="8,0,0,0"
@@ -91,7 +92,8 @@
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Cancel}"
-                            Click="OnPopupCancel"/>
+                            Click="OnPopupCancel"
+                            ToolTip.Tip="ESC"/>
                   </StackPanel>
 
                   <!-- Running -->
