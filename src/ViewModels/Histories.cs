@@ -617,6 +617,17 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     menu.Items.Add(revert);
+
+                    var drop = new MenuItem();
+                    drop.Header = App.Text("CommitCM.Drop");
+                    drop.Icon = App.CreateMenuIcon("Icons.Clear");
+                    drop.Click += async (_, e) =>
+                    {
+                        var parent = await new Commands.QuerySingleCommit(_repo.FullPath, commit.Parents[0]).GetResultAsync();
+                        await App.ShowDialog(new InteractiveRebase(_repo, current, parent, Models.InteractiveRebaseAction.Drop));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(drop);
                 }
 
                 if (current.Head != commit.SHA)

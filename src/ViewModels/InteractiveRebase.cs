@@ -123,9 +123,8 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public InteractiveRebase(Repository repo, Models.Branch current, Models.Commit on)
+        public InteractiveRebase(Repository repo, Models.Branch current, Models.Commit on, Models.InteractiveRebaseAction lastAction = Models.InteractiveRebaseAction.Pick)
         {
-            var repoPath = repo.FullPath;
             _repo = repo;
 
             Current = current;
@@ -135,7 +134,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA)
+                var commits = await new Commands.QueryCommitsForInteractiveRebase(repo.FullPath, on.SHA)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
@@ -143,14 +142,17 @@ namespace SourceGit.ViewModels
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
-                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
+                    var item = new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1);
+                    if (i == commits.Count - 1)
+                        item.Action = lastAction;
+                    list.Add(item);
                 }
 
                 Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
                     if (list.Count > 0)
-                        SelectedItem = list[0];
+                        SelectedItem = lastAction == Models.InteractiveRebaseAction.Pick ? list[0] : list[^1];
                     IsLoading = false;
                 });
             });
