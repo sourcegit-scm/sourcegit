@@ -481,6 +481,31 @@ namespace SourceGit.ViewModels
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            var createBranch = new MenuItem();
+            createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
+            createBranch.Header = App.Text("CreateBranch");
+            createBranch.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+B" : "Ctrl+Shift+B";
+            createBranch.Click += (_, e) =>
+            {
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new CreateBranch(_repo, commit));
+                e.Handled = true;
+            };
+            menu.Items.Add(createBranch);
+
+            var createTag = new MenuItem();
+            createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
+            createTag.Header = App.Text("CreateTag");
+            createTag.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+T" : "Ctrl+Shift+T";
+            createTag.Click += (_, e) =>
+            {
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new CreateTag(_repo, commit));
+                e.Handled = true;
+            };
+            menu.Items.Add(createTag);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
             if (!_repo.IsBare)
             {
                 var target = commit.GetFriendlyName();
@@ -774,31 +799,6 @@ namespace SourceGit.ViewModels
 
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
-
-            var createBranch = new MenuItem();
-            createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
-            createBranch.Header = App.Text("CreateBranch");
-            createBranch.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+B" : "Ctrl+Shift+B";
-            createBranch.Click += (_, e) =>
-            {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new CreateBranch(_repo, commit));
-                e.Handled = true;
-            };
-            menu.Items.Add(createBranch);
-
-            var createTag = new MenuItem();
-            createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
-            createTag.Header = App.Text("CreateTag");
-            createTag.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+T" : "Ctrl+Shift+T";
-            createTag.Click += (_, e) =>
-            {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new CreateTag(_repo, commit));
-                e.Handled = true;
-            };
-            menu.Items.Add(createTag);
-            menu.Items.Add(new MenuItem() { Header = "-" });
 
             var saveToPatch = new MenuItem();
             saveToPatch.Icon = App.CreateMenuIcon("Icons.Diff");
