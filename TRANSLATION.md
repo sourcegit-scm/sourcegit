@@ -6,11 +6,15 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.37%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.91%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -36,12 +40,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-94.87%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-94.42%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Askpass.Passphrase
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -87,7 +95,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-83.53%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-83.14%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -105,6 +113,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -233,7 +245,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-88.90%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-88.48%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -244,6 +256,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Askpass.Passphrase
 - Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -334,7 +350,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-83.53%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-83.14%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -353,6 +369,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -480,7 +500,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-76.37%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-76.01%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -506,6 +526,10 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.BranchUpstreamInvalid
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
@@ -686,11 +710,15 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.52%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.05%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.CommitCM.InteractiveRebase
 - Text.CommitCM.Rebase
 - Text.CommitCM.Reset
@@ -698,7 +726,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-83.65%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-83.25%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -717,6 +745,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -843,7 +875,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-84.84%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-84.44%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -861,6 +893,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchTree.Local
+- Text.BranchTree.Remote
+- Text.BranchTree.Tracking
+- Text.BranchTree.URL
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
