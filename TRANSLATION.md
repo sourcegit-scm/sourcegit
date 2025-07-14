@@ -6,35 +6,17 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-95.70%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.85%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
-- Text.Askpass.Passphrase
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
-- Text.CommitCM.CopyCommitMessage
-- Text.CommitDetail.Info.Key
-- Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.BuiltinVars
-- Text.ConfirmRestart.Title
-- Text.ConfirmRestart.Message
-- Text.Diff.Image.Blend
-- Text.Diff.Image.SideBySide
-- Text.Diff.Image.Swipe
-- Text.Diff.New
-- Text.Diff.Old
-- Text.InteractiveRebase.ReorderTip
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
-- Text.Push.New
-- Text.Repository.OnlyHighlightCurrentBranchInGraph
-- Text.Repository.ShowFirstParentOnly
-- Text.Repository.ShowLostCommits
-- Text.Repository.UseRelativeTimeInGraph
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
