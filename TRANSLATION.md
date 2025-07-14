@@ -662,25 +662,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.57%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Askpass.Passphrase
-- Text.CommitDetail.Info.Key
-- Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.BuiltinVars
-- Text.ConfirmRestart.Title
-- Text.ConfirmRestart.Message
-- Text.Diff.Image.Blend
-- Text.Diff.Image.SideBySide
-- Text.Diff.Image.Swipe
-- Text.Diff.New
-- Text.Diff.Old
-- Text.Push.New
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-84.13%25-yellow)
 
