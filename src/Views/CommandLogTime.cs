@@ -72,10 +72,14 @@ namespace SourceGit.Views
         {
             var endTime = log.IsComplete ? log.EndTime : DateTime.Now;
             var duration = endTime - log.StartTime;
-            var durationStr = duration.TotalSeconds >= 1
-                ? $"{duration.TotalSeconds:G3} s"
-                : $"{duration.TotalMilliseconds:G3} ms";
-            return $"{log.StartTime:T} ({durationStr})";
+
+            if (duration.TotalMinutes >= 1)
+                return $"{log.StartTime:T} ({duration.TotalMinutes:G3} minutes)";
+
+            if (duration.TotalSeconds >= 1)
+                return $"{log.StartTime:T} ({duration.TotalSeconds:G3} s)";
+
+            return $"{log.StartTime:T} ({duration.TotalMilliseconds:G3} ms)";
         }
 
         private Timer _refreshTimer = null;
