@@ -73,25 +73,23 @@ namespace SourceGit.Models
                     }
 
                     var md5 = GetEmailHash(email);
-                    var matchGithubUser = REG_GITHUB_USER_EMAIL().Match(email);
-                    var url = matchGithubUser.Success ?
-                        $"https://avatars.githubusercontent.com/{matchGithubUser.Groups[2].Value}" :
+                    var matchGitHubUser = REG_GITHUB_USER_EMAIL().Match(email);
+                    var url = matchGitHubUser.Success ?
+                        $"https://avatars.githubusercontent.com/{matchGitHubUser.Groups[2].Value}" :
                         $"https://www.gravatar.com/avatar/{md5}?d=404";
 
                     var localFile = Path.Combine(_storePath, md5);
                     Bitmap img = null;
                     try
                     {
-                        var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
-                        var task = client.GetAsync(url);
-                        task.Wait();
-
-                        var rsp = task.Result;
+                        using var client = new HttpClient();
+                        client.Timeout = TimeSpan.FromSeconds(2);
+                        var rsp = client.GetAsync(url).Result;
                         if (rsp.IsSuccessStatusCode)
                         {
                             using (var stream = rsp.Content.ReadAsStream())
                             {
-                                using (var writer = File.OpenWrite(localFile))
+                                using (var writer = File.Create(localFile))
                                 {
                                     stream.CopyTo(writer);
                                 }

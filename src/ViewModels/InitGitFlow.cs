@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
     public partial class InitGitFlow : Popup
     {
         [GeneratedRegex(@"^[\w\-/\.]+$")]
-        private static partial Regex TAG_PREFIX();
+        private static partial Regex REG_TAG_PREFIX();
 
         [Required(ErrorMessage = "Master branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
@@ -94,7 +94,7 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateTagPrefix(string tagPrefix, ValidationContext ctx)
         {
-            if (!string.IsNullOrWhiteSpace(tagPrefix) && !TAG_PREFIX().IsMatch(tagPrefix))
+            if (!string.IsNullOrWhiteSpace(tagPrefix) && !REG_TAG_PREFIX().IsMatch(tagPrefix))
                 return new ValidationResult("Bad tag prefix format!");
 
             return ValidationResult.Success;
@@ -114,7 +114,9 @@ namespace SourceGit.ViewModels
             var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
             if (masterBranch == null)
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _master, current.Head, true, log);
+                succ = await new Commands.Branch(_repo.FullPath, _master)
+                    .Use(log)
+                    .CreateAsync(current.Head, true);
                 if (!succ)
                 {
                     log.Complete();
@@ -126,7 +128,9 @@ namespace SourceGit.ViewModels
             var developBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_develop, StringComparison.Ordinal));
             if (developBranch == null)
             {
-                succ = await Commands.Branch.CreateAsync(_repo.FullPath, _develop, current.Head, true, log);
+                succ = await new Commands.Branch(_repo.FullPath, _develop)
+                    .Use(log)
+                    .CreateAsync(current.Head, true);
                 if (!succ)
                 {
                     log.Complete();

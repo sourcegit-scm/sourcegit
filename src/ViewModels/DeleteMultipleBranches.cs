@@ -28,12 +28,24 @@ namespace SourceGit.ViewModels
             if (_isLocal)
             {
                 foreach (var target in Targets)
-                    await Commands.Branch.DeleteLocalAsync(_repo.FullPath, target.Name, log);
+                    await new Commands.Branch(_repo.FullPath, target.Name)
+                        .Use(log)
+                        .DeleteLocalAsync();
             }
             else
             {
                 foreach (var target in Targets)
-                    await Commands.Branch.DeleteRemoteAsync(_repo.FullPath, target.Remote, target.Name, log);
+                {
+                    var exists = await new Commands.Remote(_repo.FullPath).HasBranchAsync(target.Remote, target.Name);
+                    if (exists)
+                        await new Commands.Push(_repo.FullPath, target.Remote, $"refs/heads/{target.Name}", true)
+                            .Use(log)
+                            .RunAsync();
+                    else
+                        await new Commands.Branch(_repo.FullPath, target.Name)
+                            .Use(log)
+                            .DeleteRemoteAsync(target.Remote);
+                }
             }
 
             log.Complete();

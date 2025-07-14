@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -52,11 +51,8 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _fullMessage, value))
                 {
                     var normalized = value.ReplaceLineEndings("\n");
-                    var idx = normalized.IndexOf("\n\n", StringComparison.Ordinal);
-                    if (idx > 0)
-                        Subject = normalized.Substring(0, idx).ReplaceLineEndings(" ");
-                    else
-                        Subject = value.ReplaceLineEndings(" ");
+                    var parts = normalized.Split("\n\n", 2);
+                    Subject = parts[0].ReplaceLineEndings(" ");
                 }
             }
         }
@@ -87,6 +83,12 @@ namespace SourceGit.ViewModels
             get;
             private set;
         }
+
+        public bool AutoStash
+        {
+            get;
+            set;
+        } = true;
 
         public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
         {
@@ -133,9 +135,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).GetResultAsync().ConfigureAwait(false);
-                var list = new List<InteractiveRebaseItem>();
+                var commits = await new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
+                var list = new List<InteractiveRebaseItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
@@ -145,6 +149,8 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
+                    if (list.Count > 0)
+                        SelectedItem = list[0];
                     IsLoading = false;
                 });
             });
@@ -212,7 +218,7 @@ namespace SourceGit.ViewModels
             }
 
             var log = _repo.CreateLog("Interactive Rebase");
-            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA)
+            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA, AutoStash)
                 .Use(log)
                 .ExecAsync();
 

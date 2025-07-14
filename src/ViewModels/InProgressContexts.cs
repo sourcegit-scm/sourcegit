@@ -42,19 +42,6 @@ namespace SourceGit.ViewModels
             }.ExecAsync();
         }
 
-        protected string GetFriendlyNameOfCommit(Models.Commit commit)
-        {
-            var branchDecorator = commit.Decorators.Find(x => x.Type == Models.DecoratorType.LocalBranchHead || x.Type == Models.DecoratorType.RemoteBranchHead);
-            if (branchDecorator != null)
-                return branchDecorator.Name;
-
-            var tagDecorator = commit.Decorators.Find(x => x.Type == Models.DecoratorType.Tag);
-            if (tagDecorator != null)
-                return tagDecorator.Name;
-
-            return commit.SHA.Substring(0, 10);
-        }
-
         protected string _repo = string.Empty;
         protected string _cmd = string.Empty;
     }
@@ -64,18 +51,18 @@ namespace SourceGit.ViewModels
         public Models.Commit Head
         {
             get;
-            private set;
         }
 
         public string HeadName
         {
-            get => GetFriendlyNameOfCommit(Head);
+            get;
         }
 
         public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick")
         {
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
             Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = headSHA };
+            HeadName = Head.GetFriendlyName();
         }
     }
 
@@ -84,24 +71,21 @@ namespace SourceGit.ViewModels
         public string HeadName
         {
             get;
-            private set;
         }
 
         public string BaseName
         {
-            get => GetFriendlyNameOfCommit(Onto);
+            get;
         }
 
         public Models.Commit StoppedAt
         {
             get;
-            private set;
         }
 
         public Models.Commit Onto
         {
             get;
-            private set;
         }
 
         public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
@@ -122,6 +106,7 @@ namespace SourceGit.ViewModels
 
             var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
             Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = ontoSHA };
+            BaseName = Onto.GetFriendlyName();
         }
 
         public override Task<bool> ContinueAsync()
@@ -141,7 +126,6 @@ namespace SourceGit.ViewModels
         public Models.Commit Head
         {
             get;
-            private set;
         }
 
         public RevertInProgress(Repository repo) : base(repo.FullPath, "revert")
@@ -156,18 +140,16 @@ namespace SourceGit.ViewModels
         public string Current
         {
             get;
-            private set;
         }
 
         public Models.Commit Source
         {
             get;
-            private set;
         }
 
         public string SourceName
         {
-            get => GetFriendlyNameOfCommit(Source);
+            get;
         }
 
         public MergeInProgress(Repository repo) : base(repo.FullPath, "merge")
@@ -176,6 +158,7 @@ namespace SourceGit.ViewModels
 
             var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
             Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = sourceSHA };
+            SourceName = Source.GetFriendlyName();
         }
 
         public override Task<bool> SkipAsync()

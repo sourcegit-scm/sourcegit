@@ -78,8 +78,11 @@ namespace SourceGit.ViewModels
 
                             Dispatcher.UIThread.Post(() =>
                             {
-                                _untracked = untracked;
-                                Changes = changes;
+                                if (value.SHA.Equals(_selectedStash?.SHA ?? string.Empty, StringComparison.Ordinal))
+                                {
+                                    _untracked = untracked;
+                                    Changes = changes;
+                                }
                             });
                         });
                     }
@@ -139,28 +142,22 @@ namespace SourceGit.ViewModels
 
         public ContextMenu MakeContextMenu(Models.Stash stash)
         {
-            if (stash == null)
-                return null;
-
             var apply = new MenuItem();
             apply.Header = App.Text("StashCM.Apply");
             apply.Icon = App.CreateMenuIcon("Icons.CheckCircled");
             apply.Click += (_, ev) =>
             {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new ApplyStash(_repo, stash));
-
+                Apply(stash);
                 ev.Handled = true;
             };
 
             var drop = new MenuItem();
             drop.Header = App.Text("StashCM.Drop");
             drop.Icon = App.CreateMenuIcon("Icons.Clear");
+            drop.Tag = "Back/Delete";
             drop.Click += (_, ev) =>
             {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new DropStash(_repo, stash));
-
+                Drop(stash);
                 ev.Handled = true;
             };
 
@@ -201,6 +198,7 @@ namespace SourceGit.ViewModels
             var copy = new MenuItem();
             copy.Header = App.Text("StashCM.CopyMessage");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copy.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(stash.Message);
@@ -223,16 +221,16 @@ namespace SourceGit.ViewModels
                 return null;
 
             var change = _selectedChanges[0];
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
+            var openWithMerger = new MenuItem();
+            openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+            openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+            openWithMerger.Click += (_, ev) =>
             {
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, change);
-
-                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo.FullPath, toolType, toolPath, opt));
+                new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
                 ev.Handled = true;
             };
 
@@ -276,6 +274,7 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyPath.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(change.Path);
@@ -285,6 +284,7 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
             copyFullPath.Click += async (_, e) =>
             {
                 await App.CopyTextAsync(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
@@ -292,7 +292,7 @@ namespace SourceGit.ViewModels
             };
 
             var menu = new ContextMenu();
-            menu.Items.Add(diffWithMerger);
+            menu.Items.Add(openWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(resetToThisRevision);
@@ -308,9 +308,15 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
+        public void Apply(Models.Stash stash)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new ApplyStash(_repo, stash));
+        }
+
         public void Drop(Models.Stash stash)
         {
-            if (stash != null && _repo.CanCreatePopup())
+            if (_repo.CanCreatePopup())
                 _repo.ShowPopup(new DropStash(_repo, stash));
         }
 

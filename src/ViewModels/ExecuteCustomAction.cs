@@ -250,7 +250,7 @@ namespace SourceGit.ViewModels
             start.StandardErrorEncoding = Encoding.UTF8;
             start.WorkingDirectory = _repo.FullPath;
 
-            var proc = new Process() { StartInfo = start };
+            using var proc = new Process() { StartInfo = start };
             var builder = new StringBuilder();
 
             proc.OutputDataReceived += (_, e) =>
@@ -287,8 +287,6 @@ namespace SourceGit.ViewModels
             {
                 App.RaiseException(_repo.FullPath, e.Message);
             }
-
-            proc.Close();
         }
 
         private readonly Repository _repo = null;

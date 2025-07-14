@@ -8,8 +8,7 @@
              x:DataType="vm:FilterModeInGraph">
   <Grid RowDefinitions="22,26">
     <TextBlock Grid.Row="0"
-               Text="{DynamicResource Text.Repository.FilterCommits}"
-               Foreground="{DynamicResource Brush.FG2}"/>
+               Text="{DynamicResource Text.Repository.FilterCommits}"/>
 
     <StackPanel Grid.Row="1" Orientation="Horizontal">
       <ToggleButton Classes="line_path"

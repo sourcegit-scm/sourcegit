@@ -75,7 +75,7 @@
       <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenWorkspaceMenu">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{DynamicResource Text.Workspace}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Text="{DynamicResource Text.Workspace}" FontWeight="Bold" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             <TextBlock Text="{Binding ActiveWorkspace.Name}"/>
           </StackPanel>
         </ToolTip.Tip>

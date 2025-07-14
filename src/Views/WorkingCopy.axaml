@@ -87,7 +87,7 @@
                     Padding="0"
                     IsVisible="{Binding HasUnsolvedConflicts}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts}"
-                    Command="{Binding OpenExternalMergeToolAllConflicts}">
+                    Click="OnOpenExternalMergeToolAllConflicts">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
             </Button>
             <Button Grid.Column="7"
@@ -98,7 +98,11 @@
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                   <TextBlock Text="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" VerticalAlignment="Center"/>
-                  <TextBlock Margin="16,0,0,0" Text="{OnPlatform Space/Enter, macOS=␣/Enter}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                  <TextBlock Margin="16,0,0,0"
+                             Text="{OnPlatform Space/Enter, macOS=␣/Enter}"
+                             Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                             FontSize="11"
+                             VerticalAlignment="Center"/>
                 </StackPanel>
               </ToolTip.Tip>
               <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
@@ -153,7 +157,11 @@
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                   <TextBlock Text="{DynamicResource Text.WorkingCopy.Staged.Unstage}" VerticalAlignment="Center"/>
-                  <TextBlock Margin="16,0,0,0" Text="{OnPlatform Space/Enter, macOS=␣/Enter}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                  <TextBlock Margin="16,0,0,0"
+                             Text="{OnPlatform Space/Enter, macOS=␣/Enter}"
+                             FontSize="11"
+                             VerticalAlignment="Center"
+                             Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </StackPanel>
               </ToolTip.Tip>
               <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
@@ -346,8 +354,8 @@
                 Margin="8,0,0,0"
                 Padding="8,0"
                 Command="{Binding CommitWithPush}"
-                HotKey="Alt+Enter"
-                ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
+                HotKey="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+Alt+Enter}"
+                ToolTip.Tip="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+⌥+Enter}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <Button.IsEnabled>

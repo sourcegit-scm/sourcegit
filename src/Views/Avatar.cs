@@ -96,7 +96,7 @@ namespace SourceGit.Views
 
         public void OnAvatarResourceChanged(string email, Bitmap image)
         {
-            if (User.Email.Equals(email, StringComparison.Ordinal))
+            if (email.Equals(User?.Email, StringComparison.Ordinal))
             {
                 _img = image;
                 InvalidateVisual();
@@ -187,7 +187,7 @@ namespace SourceGit.Views
                 if (storageFile != null)
                 {
                     var saveTo = storageFile.Path.LocalPath;
-                    await using (var writer = File.OpenWrite(saveTo))
+                    await using (var writer = File.Create(saveTo))
                     {
                         if (_img != null)
                         {

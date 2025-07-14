@@ -125,11 +125,7 @@ namespace SourceGit.Commands
                 foreach (var kv in map)
                 {
                     if (kv.Value.Status == Models.SubmoduleStatus.Normal)
-                    {
-                        builder.Append('"');
-                        builder.Append(kv.Key);
-                        builder.Append("\" ");
-                    }
+                        builder.Append(kv.Key.Quoted()).Append(' ');
                 }
 
                 Args = $"--no-optional-locks status --porcelain -- {builder}";
@@ -157,7 +153,7 @@ namespace SourceGit.Commands
         {
             public string Path { get; set; } = string.Empty;
             public string URL { get; set; } = string.Empty;
-            public string Branch { get; set; } = string.Empty;
+            public string Branch { get; set; } = "HEAD";
         }
     }
 }

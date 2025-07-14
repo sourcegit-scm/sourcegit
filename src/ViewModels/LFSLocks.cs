@@ -62,10 +62,7 @@ namespace SourceGit.ViewModels
 
             IsLoading = true;
 
-            var log = _repo.CreateLog("Unlock LFS File");
-            var succ = await new Commands.LFS(_repo.FullPath).UnlockAsync(_remote, lfsLock.ID, force, log);
-            log.Complete();
-
+            var succ = await _repo.UnlockLFSFileAsync(_remote, lfsLock.File, force, false);
             if (succ)
             {
                 _cachedLocks.Remove(lfsLock);

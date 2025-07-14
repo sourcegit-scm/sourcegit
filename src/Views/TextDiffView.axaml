@@ -107,7 +107,10 @@
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Stage}"/>
           <Run Text=" "/>
-          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+S, macOS=⌘+S}"/>
+          <Run Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+               FontWeight="Normal"
+               FontSize="11"
+               Text="{OnPlatform Ctrl+S, macOS=⌘+S}"/>
         </TextBlock>
       </Button>
 
@@ -115,7 +118,10 @@
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Unstage}"/>
           <Run Text=" "/>
-          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+U, macOS=⌘+U}"/>
+          <Run Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+               FontWeight="Normal"
+               FontSize="11"
+               Text="{OnPlatform Ctrl+U, macOS=⌘+U}"/>
         </TextBlock>
       </Button>
 
@@ -123,7 +129,10 @@
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Discard}"/>
           <Run Text=" "/>
-          <Run Foreground="{DynamicResource Brush.FG2}" FontWeight="Normal" Text="{OnPlatform Ctrl+D, macOS=⌘+D}"/>
+          <Run Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+               FontWeight="Normal"
+               FontSize="11"
+               Text="{OnPlatform Ctrl+D, macOS=⌘+D}"/>
         </TextBlock>
       </Button>
     </StackPanel>

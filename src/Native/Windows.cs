@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -180,21 +181,22 @@ namespace SourceGit.Native
 
         public List<Models.ExternalTool> FindExternalTools()
         {
+            var localAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
             finder.Cursor(FindCursor);
-            finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
-            finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
+            finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
-            finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
-            return finder.Founded;
+            FindVisualStudio(finder);
+            return finder.Tools;
         }
 
         public void OpenBrowser(string url)
         {
-            var info = new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"");
+            var info = new ProcessStartInfo("cmd", $"""/c start "" {url.Quoted()}""");
             info.CreateNoWindow = true;
             Process.Start(info);
         }
@@ -213,7 +215,7 @@ namespace SourceGit.Native
 
             // Directly launching `Windows Terminal` need to specify the `-d` parameter
             if (OS.ShellOrTerminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"-d \"{workdir}\"";
+                startInfo.Arguments = $"-d {workdir.Quoted()}";
 
             Process.Start(startInfo);
         }
@@ -249,7 +251,7 @@ namespace SourceGit.Native
         public void OpenWithDefaultEditor(string file)
         {
             var info = new FileInfo(file);
-            var start = new ProcessStartInfo("cmd", $"/c start \"\" \"{info.FullName}\"");
+            var start = new ProcessStartInfo("cmd", $"""/c start "" {info.FullName.Quoted()}""");
             start.CreateNoWindow = true;
             Process.Start(start);
         }
@@ -370,23 +372,42 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private string FindVisualStudio()
+        private void FindVisualStudio(Models.ExternalToolsFinder finder)
         {
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
-                    Microsoft.Win32.RegistryView.Registry64);
+            var vswhere = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe");
+            if (!File.Exists(vswhere))
+                return;
 
-            // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
-            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is { } launcher)
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = vswhere;
+            startInfo.Arguments = "-format json -prerelease -utf8";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+
+            try
             {
-                // Get actual path to the executable
-                if (launcher.GetValue(string.Empty) is string CLSID &&
-                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is { } devenv &&
-                    devenv.GetValue(string.Empty) is string localServer32)
-                    return localServer32!.Trim('\"');
-            }
+                using var proc = Process.Start(startInfo);
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
 
-            return string.Empty;
+                if (proc.ExitCode == 0)
+                {
+                    var instances = JsonSerializer.Deserialize(output, JsonCodeGen.Default.ListVisualStudioInstance);
+                    foreach (var instance in instances)
+                    {
+                        var exec = instance.ProductPath;
+                        var icon = instance.IsPrerelease ? "vs-preview" : "vs";
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
+                    }
+                }
+            }
+            catch
+            {
+                // Just ignore.
+            }
         }
 
         private string FindCursor()
@@ -421,7 +442,7 @@ namespace SourceGit.Native
         private string GenerateCommandlineArgsForVisualStudio(string repo)
         {
             var sln = FindVSSolutionFile(new DirectoryInfo(repo), 4);
-            return string.IsNullOrEmpty(sln) ? $"\"{repo}\"" : $"\"{sln}\"";
+            return string.IsNullOrEmpty(sln) ? repo.Quoted() : sln.Quoted();
         }
 
         private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)

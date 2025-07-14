@@ -1,7 +1,7 @@
 name: Localization Check
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
     paths:
       - 'src/Resources/Locales/**'
   workflow_dispatch:

@@ -1,8 +1,11 @@
 using System;
-
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -56,10 +59,22 @@ namespace SourceGit.Views
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
                 e.Handled = true;
             }
-            else
+            else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                base.OnKeyDown(e);
+                if (e.Key == Key.Up)
+                {
+                    vm.MoveItemUp(item);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Down)
+                {
+                    vm.MoveItemDown(item);
+                    e.Handled = true;
+                }
             }
+
+            if (!e.Handled)
+                base.OnKeyDown(e);
         }
     }
 
@@ -69,6 +84,14 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            var list = this.FindDescendantOfType<InteractiveRebaseListBox>();
+            list?.Focus();
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
@@ -126,16 +149,31 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnChangeRebaseAction(object sender, RoutedEventArgs e)
+        private void OnButtonActionClicked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.InteractiveRebase vm &&
-                sender is Control
-                {
-                    DataContext: ViewModels.InteractiveRebaseItem item,
-                    Tag: Models.InteractiveRebaseAction action
-                })
-                vm.ChangeAction(item, action);
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
 
+            if (sender is not Button { DataContext: ViewModels.InteractiveRebaseItem item } button)
+                return;
+
+            var flyout = new MenuFlyout();
+            flyout.Placement = PlacementMode.BottomEdgeAlignedLeft;
+            flyout.VerticalOffset = -4;
+
+            CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Pick, Brushes.Green, "Use this commit", "P");
+            CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Edit, Brushes.Orange, "Stop for amending", "E");
+            CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Reword, Brushes.Orange, "Edit the commit message", "R");
+
+            if (item.CanSquashOrFixup)
+            {
+                CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Squash, Brushes.LightGray, "Meld into previous commit", "S");
+                CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Fixup, Brushes.LightGray, "Like 'Squash' but discard message", "F");
+            }
+
+            CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Drop, Brushes.Red, "Remove commit", "D");
+
+            flyout.ShowAt(button);
             e.Handled = true;
         }
 
@@ -162,6 +200,47 @@ namespace SourceGit.Views
             Running.IsIndeterminate = false;
             Running.IsVisible = false;
             Close();
+        }
+
+        private void CreateActionMenuItem(MenuFlyout flyout, ViewModels.InteractiveRebaseItem item, Models.InteractiveRebaseAction action, IBrush iconBrush, string desc, string hotkey)
+        {
+            var header = new Grid()
+            {
+                ColumnDefinitions =
+                [
+                    new ColumnDefinition(64, GridUnitType.Pixel),
+                    new ColumnDefinition(240, GridUnitType.Pixel),
+                ],
+                Children =
+                {
+                    new TextBlock()
+                    {
+                        [Grid.ColumnProperty] = 0,
+                        Margin = new Thickness(4, 0),
+                        Text = action.ToString()
+                    },
+                    new TextBlock()
+                    {
+                        [Grid.ColumnProperty] = 1,
+                        Text = desc,
+                        Foreground = this.FindResource("Brush.FG2") as SolidColorBrush,
+                    }
+                }
+            };
+
+            var menuItem = new MenuItem();
+            menuItem.Icon = new Ellipse() { Width = 14, Height = 14, Fill = iconBrush };
+            menuItem.Header = header;
+            menuItem.Tag = hotkey;
+            menuItem.Click += (_, e) =>
+            {
+                if (DataContext is ViewModels.InteractiveRebase vm)
+                    vm.ChangeAction(item, action);
+
+                e.Handled = true;
+            };
+
+            flyout.Items.Add(menuItem);
         }
     }
 }

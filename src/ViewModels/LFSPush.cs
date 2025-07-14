@@ -27,7 +27,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("LFS Push");
             Use(log);
 
-            await new Commands.LFS(_repo.FullPath).PushAsync(SelectedRemote.Name, log);
+            await new Commands.LFS(_repo.FullPath)
+                .Use(log)
+                .PushAsync(SelectedRemote.Name);
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

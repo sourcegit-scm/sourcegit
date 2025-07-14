@@ -12,6 +12,12 @@ namespace SourceGit.ViewModels
 {
     public class RevisionCompare : ObservableObject, IDisposable
     {
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public object StartPoint
         {
             get => _startPoint;
@@ -109,7 +115,9 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
+            VisibleChanges = [];
             SelectedChanges = [];
+            IsLoading = true;
             Task.Run(Refresh);
         }
 
@@ -136,19 +144,19 @@ namespace SourceGit.ViewModels
             var change = _selectedChanges[0];
             var menu = new ContextMenu();
 
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
+            var openWithMerger = new MenuItem();
+            openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+            openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+            openWithMerger.Click += (_, ev) =>
             {
                 var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
-
-                Task.Run(() => Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt));
+                new Commands.DiffTool(_repo, toolType, toolPath, opt).Open();
                 ev.Handled = true;
             };
-            menu.Items.Add(diffWithMerger);
+            menu.Items.Add(openWithMerger);
 
             if (change.Index != Models.ChangeState.Deleted)
             {
@@ -168,6 +176,7 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyPath.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(change.Path);
@@ -178,6 +187,7 @@ namespace SourceGit.ViewModels
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
             copyFullPath.Click += async (_, e) =>
             {
                 await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
@@ -228,6 +238,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Post(() =>
             {
                 VisibleChanges = visible;
+                IsLoading = false;
 
                 if (VisibleChanges.Count > 0)
                     SelectedChanges = [VisibleChanges[0]];
@@ -242,6 +253,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private bool _isLoading = true;
         private object _startPoint = null;
         private object _endPoint = null;
         private List<Models.Change> _changes = null;

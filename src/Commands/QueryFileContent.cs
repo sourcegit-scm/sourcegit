@@ -12,7 +12,7 @@ namespace SourceGit.Commands
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
             starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = $"show {revision}:\"{file}\"";
+            starter.Arguments = $"show {revision}:{file.Quoted()}";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;
@@ -21,19 +21,16 @@ namespace SourceGit.Commands
             var stream = new MemoryStream();
             try
             {
-                var proc = new Process() { StartInfo = starter };
-                proc.Start();
+                using var proc = Process.Start(starter);
                 await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-                proc.Close();
-
-                stream.Position = 0;
             }
             catch (Exception e)
             {
                 App.RaiseException(repo, $"Failed to query file content: {e}");
             }
 
+            stream.Position = 0;
             return stream;
         }
 
@@ -52,22 +49,19 @@ namespace SourceGit.Commands
             var stream = new MemoryStream();
             try
             {
-                var proc = new Process() { StartInfo = starter };
-                proc.Start();
+                using var proc = Process.Start(starter);
                 await proc.StandardInput.WriteLineAsync("version https://git-lfs.github.com/spec/v1").ConfigureAwait(false);
                 await proc.StandardInput.WriteLineAsync($"oid sha256:{oid}").ConfigureAwait(false);
                 await proc.StandardInput.WriteLineAsync($"size {size}").ConfigureAwait(false);
                 await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-                proc.Close();
-
-                stream.Position = 0;
             }
             catch (Exception e)
             {
                 App.RaiseException(repo, $"Failed to query file content: {e}");
             }
 
+            stream.Position = 0;
             return stream;
         }
     }

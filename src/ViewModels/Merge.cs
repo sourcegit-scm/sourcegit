@@ -79,44 +79,24 @@ namespace SourceGit.ViewModels
 
         private Models.MergeMode AutoSelectMergeMode()
         {
-            return
-                GetGitConfigBranchMergeOptions() // Branch
-                ?? GetSettingsPreferredMergeMode() // Repository
-                ?? GetGitConfigMergeFF(); // Global
-        }
-
-        private Models.MergeMode GetGitConfigBranchMergeOptions()
-        {
             var config = new Commands.Config(_repo.FullPath).GetAsync($"branch.{Into}.mergeoptions").Result;
-            return config switch
+            var mode = config switch
             {
-                null or "" => null,
                 "--ff-only" => Models.MergeMode.FastForward,
                 "--no-ff" => Models.MergeMode.NoFastForward,
                 "--squash" => Models.MergeMode.Squash,
                 "--no-commit" or "--no-ff --no-commit" => Models.MergeMode.DontCommit,
-                _ => null
+                _ => null,
             };
-        }
 
-        private Models.MergeMode GetSettingsPreferredMergeMode()
-        {
+            if (mode != null)
+                return mode;
+
             var preferredMergeModeIdx = _repo.Settings.PreferredMergeMode;
             if (preferredMergeModeIdx < 0 || preferredMergeModeIdx > Models.MergeMode.Supported.Length)
-                return null;
+                return Models.MergeMode.Default;
 
             return Models.MergeMode.Supported[preferredMergeModeIdx];
-        }
-
-        private Models.MergeMode GetGitConfigMergeFF()
-        {
-            var config = new Commands.Config(_repo.FullPath).GetAsync("merge.ff").Result;
-            return config switch
-            {
-                "false" => Models.MergeMode.NoFastForward,
-                "only" => Models.MergeMode.FastForward,
-                _ => Models.MergeMode.Default
-            };
         }
 
         private readonly Repository _repo = null;

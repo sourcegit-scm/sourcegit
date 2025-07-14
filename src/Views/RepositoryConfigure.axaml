@@ -260,7 +260,7 @@
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
                   <v:CommitMessageTextBox Margin="0,4,0,0" Height="150" Text="{Binding Content, Mode=TwoWay}"/>
                   <TextBlock Margin="0,2,0,0"
-                             Text="You can use ${files_num}, ${branch_name}, ${files} and ${files:N} where N is the max number of file paths to output."
+                             Text="{DynamicResource Text.Configure.CommitMessageTemplate.BuiltinVars}"
                              Foreground="{DynamicResource Brush.FG2}"
                              TextWrapping="Wrap"/>
                 </StackPanel>
@@ -317,7 +317,7 @@
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.NewRule}" Command="{Binding NewIssueTracker}"/>
                       <MenuItem Header="-"/>
-                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGithub}" Command="{Binding AddSampleGithubIssueTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitHub}" Command="{Binding AddSampleGitHubIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleJira}" Command="{Binding AddSampleJiraIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleAzure}" Command="{Binding AddSampleAzureWorkItemTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabIssue}" Command="{Binding AddSampleGitLabIssueTracker}"/>

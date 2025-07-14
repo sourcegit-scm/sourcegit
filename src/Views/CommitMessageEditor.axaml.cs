@@ -19,16 +19,10 @@ namespace SourceGit.Views
             _shouldExitApp = true;
 
             var content = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
-            var firstLineEnd = content.IndexOf('\n', StringComparison.Ordinal);
-            if (firstLineEnd == -1)
-            {
-                Editor.SubjectEditor.Text = content;
-            }
-            else
-            {
-                Editor.SubjectEditor.Text = content.Substring(0, firstLineEnd);
-                Editor.DescriptionEditor.Text = content.Substring(firstLineEnd + 1).Trim();
-            }
+            var parts = content.Split('\n', 2);
+            Editor.SubjectEditor.Text = parts[0];
+            if (parts.Length > 1)
+                Editor.DescriptionEditor.Text = parts[1];
         }
 
         public void AsBuiltin(string msg, Action<string> onSave)
@@ -36,16 +30,10 @@ namespace SourceGit.Views
             _onSave = onSave;
             _shouldExitApp = false;
 
-            var firstLineEnd = msg.IndexOf('\n', StringComparison.Ordinal);
-            if (firstLineEnd == -1)
-            {
-                Editor.SubjectEditor.Text = msg;
-            }
-            else
-            {
-                Editor.SubjectEditor.Text = msg.Substring(0, firstLineEnd);
-                Editor.DescriptionEditor.Text = msg.Substring(firstLineEnd + 1).Trim();
-            }
+            var parts = msg.Split('\n', 2);
+            Editor.SubjectEditor.Text = parts[0];
+            if (parts.Length > 1)
+                Editor.DescriptionEditor.Text = parts[1];
         }
 
         protected override void OnClosed(EventArgs e)

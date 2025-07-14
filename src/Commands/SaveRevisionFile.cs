@@ -21,7 +21,7 @@ namespace SourceGit.Commands
             }
             else
             {
-                await ExecCmdAsync(repo, $"show {revision}:\"{file}\"", saveTo).ConfigureAwait(false);
+                await ExecCmdAsync(repo, $"show {revision}:{file.Quoted()}", saveTo).ConfigureAwait(false);
             }
         }
 
@@ -38,17 +38,20 @@ namespace SourceGit.Commands
             starter.RedirectStandardOutput = true;
             starter.RedirectStandardError = true;
 
-            await using (var sw = File.OpenWrite(outputFile))
+            await using (var sw = File.Create(outputFile))
             {
                 try
                 {
-                    var proc = new Process() { StartInfo = starter };
-                    proc.Start();
+                    using var proc = Process.Start(starter);
+
                     if (input != null)
-                        await proc.StandardInput.WriteAsync(await new StreamReader(input).ReadToEndAsync());
-                    await proc.StandardOutput.BaseStream.CopyToAsync(sw);
-                    await proc.WaitForExitAsync();
-                    proc.Close();
+                    {
+                        var inputString = await new StreamReader(input).ReadToEndAsync().ConfigureAwait(false);
+                        await proc.StandardInput.WriteAsync(inputString).ConfigureAwait(false);
+                    }
+
+                    await proc.StandardOutput.BaseStream.CopyToAsync(sw).ConfigureAwait(false);
+                    await proc.WaitForExitAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {

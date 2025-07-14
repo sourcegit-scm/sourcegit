@@ -51,11 +51,7 @@ namespace SourceGit.Commands
             var builder = new StringBuilder();
             builder.Append("checkout --theirs --");
             foreach (var f in files)
-            {
-                builder.Append(" \"");
-                builder.Append(f);
-                builder.Append("\"");
-            }
+                builder.Append(' ').Append(f.Quoted());
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
         }
@@ -65,11 +61,7 @@ namespace SourceGit.Commands
             var builder = new StringBuilder();
             builder.Append("checkout --ours --");
             foreach (var f in files)
-            {
-                builder.Append(" \"");
-                builder.Append(f);
-                builder.Append("\"");
-            }
+                builder.Append(' ').Append(f.Quoted());
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -77,7 +69,7 @@ namespace SourceGit.Commands
 
         public async Task<bool> FileWithRevisionAsync(string file, string revision)
         {
-            Args = $"checkout --no-overlay {revision} -- \"{file}\"";
+            Args = $"checkout --no-overlay {revision} -- {file.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
     }

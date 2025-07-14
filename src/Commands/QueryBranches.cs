@@ -80,12 +80,12 @@ namespace SourceGit.Commands
             else if (refName.StartsWith(PREFIX_REMOTE, StringComparison.Ordinal))
             {
                 var name = refName.Substring(PREFIX_REMOTE.Length);
-                var shortNameIdx = name.IndexOf('/', StringComparison.Ordinal);
-                if (shortNameIdx < 0)
+                var nameParts = name.Split('/', 2);
+                if (nameParts.Length != 2)
                     return null;
 
-                branch.Remote = name.Substring(0, shortNameIdx);
-                branch.Name = name.Substring(branch.Remote.Length + 1);
+                branch.Remote = nameParts[0];
+                branch.Name = nameParts[1];
                 branch.IsLocal = false;
             }
             else

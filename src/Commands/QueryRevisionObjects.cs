@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -13,10 +14,10 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree -z {sha}";
+            Args = $"ls-tree {sha}";
 
             if (!string.IsNullOrEmpty(parentFolder))
-                Args += $" -- \"{parentFolder}\"";
+                Args += $" -- {parentFolder.Quoted()}";
         }
 
         public async Task<List<Models.Object>> GetResultAsync()
@@ -25,18 +26,9 @@ namespace SourceGit.Commands
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
-                var start = 0;
-                var end = rs.StdOut.IndexOf('\0', start);
-                while (end > 0)
-                {
-                    var line = rs.StdOut.Substring(start, end - start);
+                var sr = new StringReader(rs.StdOut);
+                while (sr.ReadLine() is { } line)
                     Parse(outs, line);
-                    start = end + 1;
-                    end = rs.StdOut.IndexOf('\0', start);
-                }
-
-                if (start < rs.StdOut.Length)
-                    Parse(outs, rs.StdOut.Substring(start));
             }
 
             return outs;

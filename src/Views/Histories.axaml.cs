@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using Avalonia;
@@ -198,11 +199,21 @@ namespace SourceGit.Views
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories &&
-                sender is DataGrid { SelectedItems.Count: > 0 } dataGrid &&
+                sender is DataGrid { SelectedItems: { } selected } dataGrid &&
                 e.Source is Control { DataContext: Models.Commit })
             {
-                var menu = histories.MakeContextMenu(dataGrid);
-                menu?.Open(dataGrid);
+                var commits = new List<Models.Commit>();
+                for (var i = selected.Count - 1; i >= 0; i--)
+                {
+                    if (selected[i] is Models.Commit c)
+                        commits.Add(c);
+                }
+
+                if (selected.Count > 0)
+                {
+                    var menu = histories.CreateContextMenuForSelectedCommits(commits, c => dataGrid.SelectedItems.Add(c));
+                    menu?.Open(dataGrid);
+                }
             }
 
             e.Handled = true;
@@ -213,17 +224,15 @@ namespace SourceGit.Views
             if (!e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 return;
 
-            // These shortcuts are not mentioned in the Shortcut Reference window. Is this expected?
             if (sender is DataGrid { SelectedItems: { Count: > 0 } selected })
             {
-                // CTRL/COMMAND + C -> Copy selected commit SHA and subject.
                 if (e.Key == Key.C)
                 {
                     var builder = new StringBuilder();
                     foreach (var item in selected)
                     {
                         if (item is Models.Commit commit)
-                            builder.AppendLine($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
+                            builder.Append(commit.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(commit.Subject);
                     }
 
                     await App.CopyTextAsync(builder.ToString());
@@ -231,11 +240,9 @@ namespace SourceGit.Views
                     return;
                 }
 
-                // CTRL/COMMAND + B -> shows Create Branch pop-up at selected commit.
-                if (e.Key == Key.B)
+                if (e.Key == Key.B && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
                 {
                     var repoView = this.FindAncestorOfType<Repository>();
-
                     if (repoView?.DataContext is not ViewModels.Repository repo || !repo.CanCreatePopup())
                         return;
 
@@ -244,6 +251,23 @@ namespace SourceGit.Views
                         repo.ShowPopup(new ViewModels.CreateBranch(repo, commit));
                         e.Handled = true;
                     }
+
+                    return;
+                }
+
+                if (e.Key == Key.T && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                {
+                    var repoView = this.FindAncestorOfType<Repository>();
+                    if (repoView?.DataContext is not ViewModels.Repository repo || !repo.CanCreatePopup())
+                        return;
+
+                    if (selected.Count == 1 && selected[0] is Models.Commit commit)
+                    {
+                        repo.ShowPopup(new ViewModels.CreateTag(repo, commit));
+                        e.Handled = true;
+                    }
+
+                    return;
                 }
             }
         }

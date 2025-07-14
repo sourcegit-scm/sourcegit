@@ -250,6 +250,14 @@
           <Setter Property="RotateTransform.Angle" Value="360.0"/>
         </KeyFrame>
       </Animation>
+      <Animation Duration="0:0:0.5" IterationCount="1">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="0.2"/>
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="1"/>
+        </KeyFrame>
+      </Animation>
     </Style.Animations>
   </Style>
   <Style Selector="Path[IsVisible=True].waiting">
@@ -309,6 +317,12 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
+  </Style>
+  <Style Selector="TextBlock.tab_header">
+    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Opacity" Value=".56"/>
   </Style>
 
   <Style Selector="Run.issue_link">
@@ -412,12 +426,6 @@
   </Style>
   <Style Selector="TextBox.no_border:focus /template/ Border#PART_BorderElement">
     <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
-  <Style Selector="TextBlock.tab_header">
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"/>
-    <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-    <Setter Property="Opacity" Value=".56"/>
   </Style>
 
   <Style Selector="DataValidationErrors">
@@ -855,27 +863,24 @@
                 </ContentPresenter.DataTemplates>
               </ContentPresenter>
 
-              <TextBlock x:Name="PART_InputGestureText"
-                         Grid.Column="2"
+              <TextBlock Grid.Column="2"
                          Classes="CaptionTextBlockStyle"
                          Margin="{DynamicResource MenuInputGestureTextMargin}"
                          Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                          HorizontalAlignment="Right"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                         FontSize="11"
-                         IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+                         FontSize="11"/>
 
-              <TextBlock x:Name="PART_CommandTip"
-                         Grid.Column="2"
+              <TextBlock Grid.Column="2"
                          Classes="CaptionTextBlockStyle"
                          Margin="{DynamicResource MenuInputGestureTextMargin}"
-                         Text="{TemplateBinding (v:MenuItemExtension.Command)}"
+                         Text="{TemplateBinding Tag}"
                          HorizontalAlignment="Right"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
                          FontSize="11"
-                         IsVisible="{TemplateBinding (v:MenuItemExtension.Command), Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                         IsVisible="{TemplateBinding InputGesture, Converter={x:Static ObjectConverters.IsNull}}"/>
 
               <Path Name="PART_ChevronPath"
                     Width="6"
@@ -930,9 +935,6 @@
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
         <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
-      </Style>
-      <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
-        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
       </Style>
       <Style Selector="^ /template/ Path#PART_ChevronPath">
         <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />

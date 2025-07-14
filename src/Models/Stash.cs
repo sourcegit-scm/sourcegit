@@ -15,8 +15,7 @@ namespace SourceGit.Models
         {
             get
             {
-                var idx = Message.IndexOf('\n', StringComparison.Ordinal);
-                return idx > 0 ? Message.Substring(0, idx).Trim() : Message;
+                return Message.Split('\n', 2)[0].Trim();
             }
         }
 

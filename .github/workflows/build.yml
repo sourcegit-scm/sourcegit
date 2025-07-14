@@ -6,23 +6,23 @@ jobs:
     strategy:
       matrix:
         include:
-          - name : Windows x64
+          - name: Windows x64
             os: windows-2022
             runtime: win-x64
-          - name : Windows ARM64
+          - name: Windows ARM64
             os: windows-2022
             runtime: win-arm64
-          - name : macOS (Intel)
+          - name: macOS (Intel)
             os: macos-13
             runtime: osx-x64
-          - name : macOS (Apple Silicon)
+          - name: macOS (Apple Silicon)
             os: macos-latest
             runtime: osx-arm64
-          - name : Linux
+          - name: Linux
             os: ubuntu-latest
             runtime: linux-x64
             container: ubuntu:20.04
-          - name : Linux (arm64)
+          - name: Linux (arm64)
             os: ubuntu-latest
             runtime: linux-arm64
             container: ubuntu:20.04

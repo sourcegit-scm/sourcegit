@@ -199,7 +199,7 @@ namespace SourceGit.Models
 
         public void AddCommit(string author, double timestamp)
         {
-            var emailIdx = author.IndexOf('±', StringComparison.Ordinal);
+            var emailIdx = author.IndexOf('±');
             var email = author.Substring(emailIdx + 1).ToLower(CultureInfo.CurrentCulture);
             if (!_users.TryGetValue(email, out var user))
             {

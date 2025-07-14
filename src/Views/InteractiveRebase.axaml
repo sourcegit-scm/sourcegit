@@ -14,7 +14,7 @@
                     Title="{DynamicResource Text.InteractiveRebase}"
                     Width="1080" Height="720"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,Auto,*,Auto">
+  <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
@@ -57,7 +57,7 @@
                                     Background="{DynamicResource Brush.Contents}"
                                     ItemsSource="{Binding Items}"
                                     SelectionMode="Single"
-                                    SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+                                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     Grid.IsSharedSizeScope="True">
@@ -94,6 +94,13 @@
                 <Border Grid.Column="0" Background="Transparent"
                         Loaded="OnSetupRowHeaderDragDrop"
                         PointerPressed="OnRowHeaderPointerPressed">
+                  <ToolTip.Tip>
+                    <TextBlock>
+                      <Run Text="{DynamicResource Text.InteractiveRebase.ReorderTip}"/>
+                      <Run Text=" "/>
+                      <Run Text="{OnPlatform 'Ctrl+Up/Ctrl+Down', macOS='⌘+Up/⌘+Down'}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                    </TextBlock>
+                  </ToolTip.Tip>
                   <Path Width="14" Height="14"
                         Data="{StaticResource Icons.Move}"
                         Fill="{DynamicResource Brush.FG2}"
@@ -102,83 +109,7 @@
                 </Border>
 
                 <!-- Action -->
-                <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent">
-                  <Button.Flyout>
-                    <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-4">
-                      <MenuItem InputGesture="P" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Pick}">
-                        <MenuItem.Icon>
-                          <Ellipse Width="14" Height="14" Fill="Green"/>
-                        </MenuItem.Icon>
-                        <MenuItem.Header>
-                          <Grid ColumnDefinitions="64,240">
-                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Pick"/>
-                            <TextBlock Grid.Column="1" Text="Use this commit" Foreground="{DynamicResource Brush.FG2}"/>
-                          </Grid>
-                        </MenuItem.Header>
-                      </MenuItem>
-
-                      <MenuItem InputGesture="E" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Edit}">
-                        <MenuItem.Icon>
-                          <Ellipse Width="14" Height="14" Fill="Orange"/>
-                        </MenuItem.Icon>
-                        <MenuItem.Header>
-                          <Grid ColumnDefinitions="64,240">
-                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Edit"/>
-                            <TextBlock Grid.Column="1" Text="Stop for amending" Foreground="{DynamicResource Brush.FG2}"/>
-                          </Grid>
-                        </MenuItem.Header>
-                      </MenuItem>
-
-                      <MenuItem InputGesture="R" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Reword}">
-                        <MenuItem.Icon>
-                          <Ellipse Width="14" Height="14" Fill="Orange"/>
-                        </MenuItem.Icon>
-                        <MenuItem.Header>
-                          <Grid ColumnDefinitions="64,240">
-                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Reword"/>
-                            <TextBlock Grid.Column="1" Text="Edit the commit message" Foreground="{DynamicResource Brush.FG2}"/>
-                          </Grid>
-                        </MenuItem.Header>
-                      </MenuItem>
-
-                      <MenuItem InputGesture="S" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Squash}" IsVisible="{Binding CanSquashOrFixup}">
-                        <MenuItem.Icon>
-                          <Ellipse Width="14" Height="14" Fill="LightGray"/>
-                        </MenuItem.Icon>
-                        <MenuItem.Header>
-                          <Grid ColumnDefinitions="64,240">
-                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Squash"/>
-                            <TextBlock Grid.Column="1" Text="Meld into previous commit" Foreground="{DynamicResource Brush.FG2}"/>
-                          </Grid>
-                        </MenuItem.Header>
-                      </MenuItem>
-
-                      <MenuItem InputGesture="F" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Fixup}" IsVisible="{Binding CanSquashOrFixup}">
-                        <MenuItem.Icon>
-                          <Ellipse Width="14" Height="14" Fill="LightGray"/>
-                        </MenuItem.Icon>
-                        <MenuItem.Header>
-                          <Grid ColumnDefinitions="64,240">
-                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Fixup"/>
-                            <TextBlock Grid.Column="1" Text="Like 'Squash' but discard message" Foreground="{DynamicResource Brush.FG2}"/>
-                          </Grid>
-                        </MenuItem.Header>
-                      </MenuItem>
-
-                      <MenuItem InputGesture="D" Click="OnChangeRebaseAction" Tag="{x:Static m:InteractiveRebaseAction.Drop}">
-                        <MenuItem.Icon>
-                          <Ellipse Width="14" Height="14" Fill="Red"/>
-                        </MenuItem.Icon>
-                        <MenuItem.Header>
-                          <Grid ColumnDefinitions="64,240">
-                            <TextBlock Grid.Column="0" Classes="primary" Margin="4,0" Text="Drop"/>
-                            <TextBlock Grid.Column="1" Text="Remove commit" Foreground="{DynamicResource Brush.FG2}"/>
-                          </Grid>
-                        </MenuItem.Header>
-                      </MenuItem>
-                    </MenuFlyout>
-                  </Button.Flyout>
-
+                <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnButtonActionClicked">
                   <StackPanel Orientation="Horizontal">
                     <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
                     <TextBlock Classes="primary" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
@@ -265,16 +196,22 @@
 
     <!-- Options -->
     <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" Margin="8,0,8,8">
-      <ProgressBar x:Name="Running"
-                   Grid.Column="0"
-                   Margin="0,0,32,0"
-                   Background="{DynamicResource Brush.FG2}"
-                   Foreground="{DynamicResource Brush.Accent}"
-                   Minimum="0"
-                   Maximum="100"
-                   IsVisible="False"/>
+      <CheckBox Grid.Column="0"
+                Content="{DynamicResource Text.InteractiveRebase.AutoStash}"
+                VerticalAlignment="Center"
+                IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
       <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="OnStartJobs"/>
       <Button Grid.Column="2" Classes="flat" Margin="8,0,0,0" MinWidth="80" Content="{DynamicResource Text.Cancel}" Click="CloseWindow"/>
     </Grid>
+
+    <!-- Progress -->
+    <ProgressBar x:Name="Running"
+                 Grid.Row="4"
+                 Margin="8,0,8,12"
+                 Background="{DynamicResource Brush.FG2}"
+                 Foreground="{DynamicResource Brush.Accent}"
+                 Minimum="0"
+                 Maximum="100"
+                 IsVisible="False"/>
   </Grid>
 </v:ChromelessWindow>

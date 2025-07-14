@@ -32,15 +32,46 @@ namespace SourceGit.ViewModels
                 return true;
 
             _repo.SetWatcherEnabled(false);
-            ProgressDescription = "Editing head commit message ...";
+            ProgressDescription = "Editing HEAD message ...";
 
             var log = _repo.CreateLog("Reword HEAD");
             Use(log);
 
+            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
             var signOff = _repo.Settings.EnableSignOffForCommit;
-            var succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false)
+            var needAutoStash = false;
+            var succ = false;
+
+            foreach (var c in changes)
+            {
+                if (c.Index != Models.ChangeState.None)
+                {
+                    needAutoStash = true;
+                    break;
+                }
+            }
+
+            if (needAutoStash)
+            {
+                succ = await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PushAsync("REWORD_AUTO_STASH");
+                if (!succ)
+                {
+                    log.Complete();
+                    _repo.SetWatcherEnabled(true);
+                    return false;
+                }
+            }
+
+            succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false)
                 .Use(log)
                 .RunAsync();
+
+            if (succ && needAutoStash)
+                await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PopAsync("stash@{0}");
 
             log.Complete();
             _repo.SetWatcherEnabled(true);

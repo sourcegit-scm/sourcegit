@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 
@@ -23,25 +24,41 @@ namespace SourceGit.Views
                 layout.StashesLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
         }
 
-        private void OnStashListKeyDown(object sender, KeyEventArgs e)
+        private async void OnStashListKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key is not (Key.Delete or Key.Back))
-                return;
-
-            if (DataContext is not ViewModels.StashesPage vm)
-                return;
-
-            vm.Drop(vm.SelectedStash);
-            e.Handled = true;
+            if (DataContext is ViewModels.StashesPage { SelectedStash: { } stash } vm)
+            {
+                if (e.Key is Key.Delete or Key.Back)
+                {
+                    vm.Drop(stash);
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.C && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                {
+                    await App.CopyTextAsync(stash.Message);
+                    e.Handled = true;
+                }
+            }
         }
 
         private void OnStashContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.StashesPage vm && sender is Border border)
+            if (DataContext is ViewModels.StashesPage vm &&
+                sender is Border { DataContext: Models.Stash stash } border)
             {
-                var menu = vm.MakeContextMenu(border.DataContext as Models.Stash);
-                menu?.Open(border);
+                var menu = vm.MakeContextMenu(stash);
+                menu.Open(border);
             }
+
+            e.Handled = true;
+        }
+
+        private void OnStashDoubleTapped(object sender, TappedEventArgs e)
+        {
+            if (DataContext is ViewModels.StashesPage vm &&
+                sender is Border { DataContext: Models.Stash stash })
+                vm.Apply(stash);
+
             e.Handled = true;
         }
 
@@ -52,6 +69,7 @@ namespace SourceGit.Views
                 var menu = vm.MakeContextMenuForChange();
                 menu?.Open(view);
             }
+
             e.Handled = true;
         }
     }

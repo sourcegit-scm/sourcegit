@@ -106,7 +106,11 @@
                     <ToolTip.Tip>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="{DynamicResource Text.PageTabBar.Tab.Close}" VerticalAlignment="Center"/>
-                        <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+W, macOS=⌘+W}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                        <TextBlock Margin="16,0,0,0"
+                                   Text="{OnPlatform Ctrl+W, macOS=⌘+W}"
+                                   FontSize="11"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                       </StackPanel>
                     </ToolTip.Tip>
                     <Path Width="9" Height="9" Data="{StaticResource Icons.Close}"/>
@@ -125,7 +129,11 @@
           <ToolTip.Tip>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
               <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
-              <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+T, macOS=⌘+T}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+              <TextBlock Margin="16,0,0,0"
+                         Text="{OnPlatform Ctrl+T, macOS=⌘+T}"
+                         FontSize="11"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </StackPanel>
           </ToolTip.Tip>
 
@@ -250,7 +258,11 @@
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
-            <TextBlock Margin="16,0,0,0" Text="{OnPlatform Ctrl+T, macOS=⌘+T}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+            <TextBlock Margin="16,0,0,0"
+                       Text="{OnPlatform Ctrl+T, macOS=⌘+T}"
+                       FontSize="11"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
           </StackPanel>
         </ToolTip.Tip>
 

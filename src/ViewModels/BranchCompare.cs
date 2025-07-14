@@ -12,6 +12,12 @@ namespace SourceGit.ViewModels
 {
     public class BranchCompare : ObservableObject
     {
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public Models.Branch Base
         {
             get => _based;
@@ -101,6 +107,8 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (Base, To) = (_to, _based);
+
+            VisibleChanges = [];
             SelectedChanges = [];
 
             if (_baseHead != null)
@@ -114,6 +122,11 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo, path);
+        }
+
         public ContextMenu CreateChangeContextMenu()
         {
             if (_selectedChanges is not { Count: 1 })
@@ -122,19 +135,20 @@ namespace SourceGit.ViewModels
             var change = _selectedChanges[0];
             var menu = new ContextMenu();
 
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (sender, ev) =>
+            var openWithMerger = new MenuItem();
+            openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+            openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+            openWithMerger.Click += (_, ev) =>
             {
                 var toolType = Preferences.Instance.ExternalMergeToolType;
                 var toolPath = Preferences.Instance.ExternalMergeToolPath;
                 var opt = new Models.DiffOption(_based.Head, _to.Head, change);
 
-                _ = Commands.MergeTool.OpenForDiffAsync(_repo, toolType, toolPath, opt);
+                new Commands.DiffTool(_repo, toolType, toolPath, opt).Open();
                 ev.Handled = true;
             };
-            menu.Items.Add(diffWithMerger);
+            menu.Items.Add(openWithMerger);
 
             if (change.Index != Models.ChangeState.Deleted)
             {
@@ -154,16 +168,19 @@ namespace SourceGit.ViewModels
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyPath.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(change.Path);
                 ev.Handled = true;
             };
+            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(copyPath);
 
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
             copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
             copyFullPath.Click += async (_, e) =>
             {
                 await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
@@ -176,6 +193,8 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
+            IsLoading = true;
+
             Task.Run(async () =>
             {
                 if (_baseHead == null)
@@ -213,6 +232,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     VisibleChanges = visible;
+                    IsLoading = false;
 
                     if (VisibleChanges.Count > 0)
                         SelectedChanges = [VisibleChanges[0]];
@@ -245,6 +265,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private bool _isLoading = true;
         private Models.Branch _based = null;
         private Models.Branch _to = null;
         private Models.Commit _baseHead = null;

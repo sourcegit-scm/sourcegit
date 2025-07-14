@@ -3,7 +3,6 @@ using System.IO;
 
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -468,7 +467,7 @@ namespace SourceGit.ViewModels
             var menu = new ContextMenu();
             var close = new MenuItem();
             close.Header = App.Text("PageTabBar.Tab.Close");
-            close.InputGesture = KeyGesture.Parse(OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W");
+            close.Tag = OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W";
             close.Click += (_, e) =>
             {
                 CloseTab(page);

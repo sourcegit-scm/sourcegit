@@ -19,19 +19,14 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.Submodule}"/>
         <TextBlock Margin="6,0,0,0" Text="{Binding Submodule.Path}"/>
       </StackPanel>
-      
+
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.SetSubmoduleBranch.Current}"/>
       <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Margin="6,0,0,0"
-                   Text="{Binding Submodule.Branch, Mode=OneWay}"
-                   IsVisible="{Binding Submodule.Branch, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-        <TextBlock Margin="6,0,0,0"
-                   Text="--"
-                   IsVisible="{Binding Submodule.Branch, Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+        <TextBlock Margin="6,0,0,0" Text="{Binding Submodule.Branch, Mode=OneWay}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="2" Grid.Column="0"

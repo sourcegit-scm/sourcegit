@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -96,12 +97,17 @@ namespace SourceGit.Views
                     vm.StageSelected(next);
                     UnstagedChangesView.TakeFocus();
                     e.Handled = true;
-                    return;
                 }
-
-                if (e.Key is Key.Delete or Key.Back && vm.SelectedUnstaged is { Count: > 0 } selected)
+                else if (e.Key is Key.Delete or Key.Back && vm.SelectedUnstaged is { Count: > 0 })
                 {
-                    vm.Discard(selected);
+                    vm.Discard(vm.SelectedUnstaged);
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.O &&
+                    e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                    vm.SelectedUnstaged is { Count: 1 })
+                {
+                    vm.OpenWithDefaultEditor(vm.SelectedUnstaged[0]);
                     e.Handled = true;
                 }
             }
@@ -109,12 +115,22 @@ namespace SourceGit.Views
 
         private void OnStagedKeyDown(object _, KeyEventArgs e)
         {
-            if (DataContext is ViewModels.WorkingCopy vm && e.Key is Key.Space or Key.Enter)
+            if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var next = StagedChangesView.GetNextChangeWithoutSelection();
-                vm.UnstageSelected(next);
-                StagedChangesView.TakeFocus();
-                e.Handled = true;
+                if (e.Key is Key.Space or Key.Enter)
+                {
+                    var next = StagedChangesView.GetNextChangeWithoutSelection();
+                    vm.UnstageSelected(next);
+                    StagedChangesView.TakeFocus();
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.O &&
+                    e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                    vm.SelectedStaged is { Count: 1 })
+                {
+                    vm.OpenWithDefaultEditor(vm.SelectedStaged[0]);
+                    e.Handled = true;
+                }
             }
         }
 
@@ -139,6 +155,13 @@ namespace SourceGit.Views
                 StagedChangesView.TakeFocus();
             }
 
+            e.Handled = true;
+        }
+
+        private async void OnOpenExternalMergeToolAllConflicts(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.UseExternalMergeTool(null);
             e.Handled = true;
         }
     }

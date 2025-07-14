@@ -88,6 +88,7 @@
                     BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
                     Padding="4"
                     ContextRequested="OnStashContextRequested"
+                    DoubleTapped="OnStashDoubleTapped"
                     ToolTip.Tip="{Binding Message}">
               <Grid RowDefinitions="Auto,*" >
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto">

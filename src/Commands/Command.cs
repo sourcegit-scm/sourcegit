@@ -37,14 +37,27 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
+        public void Exec()
+        {
+            try
+            {
+                var start = CreateGitStartInfo(false);
+                Process.Start(start);
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(Context, ex.Message);
+            }
+        }
+
         public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
 
-            var start = CreateGitStartInfo();
             var errs = new List<string>();
-            var proc = new Process() { StartInfo = start };
 
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
             proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
             proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
 
@@ -54,7 +67,7 @@ namespace SourceGit.Commands
             {
                 proc.Start();
 
-                // It not safe, please only use `CancellationToken` in readonly commands.
+                // Not safe, please only use `CancellationToken` in readonly commands.
                 if (CancellationToken.CanBeCanceled)
                 {
                     dummy = proc;
@@ -97,11 +110,9 @@ namespace SourceGit.Commands
                 }
             }
 
-            int exitCode = proc.ExitCode;
-            proc.Close();
             Log?.AppendLine(string.Empty);
 
-            if (!CancellationToken.IsCancellationRequested && exitCode != 0)
+            if (!CancellationToken.IsCancellationRequested && proc.ExitCode != 0)
             {
                 if (RaiseError)
                 {
@@ -118,8 +129,7 @@ namespace SourceGit.Commands
 
         protected async Task<Result> ReadToEndAsync()
         {
-            var start = CreateGitStartInfo();
-            var proc = new Process() { StartInfo = start };
+            using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
 
             try
             {
@@ -136,21 +146,24 @@ namespace SourceGit.Commands
             await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
 
             rs.IsSuccess = proc.ExitCode == 0;
-            proc.Close();
             return rs;
         }
 
-        private ProcessStartInfo CreateGitStartInfo()
+        private ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
             start.Arguments = "--no-pager -c core.quotepath=off -c credential.helper=manager ";
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
-            start.RedirectStandardOutput = true;
-            start.RedirectStandardError = true;
-            start.StandardOutputEncoding = Encoding.UTF8;
-            start.StandardErrorEncoding = Encoding.UTF8;
+
+            if (redirect)
+            {
+                start.RedirectStandardOutput = true;
+                start.RedirectStandardError = true;
+                start.StandardOutputEncoding = Encoding.UTF8;
+                start.StandardErrorEncoding = Encoding.UTF8;
+            }
 
             // Force using this app as SSH askpass program
             var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
@@ -174,8 +187,8 @@ namespace SourceGit.Commands
             // Force using this app as git editor.
             start.Arguments += Editor switch
             {
-                EditorType.CoreEditor => $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ",
-                EditorType.RebaseEditor => $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ",
+                EditorType.CoreEditor => $"""-c core.editor="{selfExecFile.Quoted()} --core-editor" """,
+                EditorType.RebaseEditor => $"""-c core.editor="{selfExecFile.Quoted()} --rebase-message-editor" -c sequence.editor="{selfExecFile.Quoted()} --rebase-todo-editor" -c rebase.abbreviateCommands=true """,
                 _ => "-c core.editor=true ",
             };
 
@@ -191,7 +204,9 @@ namespace SourceGit.Commands
 
         private void HandleOutput(string line, List<string> errs)
         {
-            line ??= string.Empty;
+            if (line == null)
+                return;
+
             Log?.AppendLine(line);
 
             // Lines to hide in error message.

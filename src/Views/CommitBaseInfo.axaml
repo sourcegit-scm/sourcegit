@@ -80,9 +80,9 @@
                       <StackPanel Orientation="Vertical">
                         <TextBlock Margin="0,0,0,12" Text="{Binding ToolTip}"/>
                         <Grid ColumnDefinitions="Auto,8,Auto" RowDefinitions="Auto,Auto">
-                          <TextBlock Grid.Row="0" Grid.Column="0" Text="Signer:" IsVisible="{Binding HasSigner}" VerticalAlignment="Center"/>
+                          <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Text.CommitDetail.Info.Signer}" IsVisible="{Binding HasSigner}" VerticalAlignment="Center"/>
                           <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Signer}" IsVisible="{Binding HasSigner}" VerticalAlignment="Center"/>
-                          <TextBlock Grid.Row="1" Grid.Column="0" Text="Key:" VerticalAlignment="Center"/>
+                          <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Text.CommitDetail.Info.Key}" VerticalAlignment="Center"/>
                           <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Key}" VerticalAlignment="Center"/>
                         </Grid>
                       </StackPanel>

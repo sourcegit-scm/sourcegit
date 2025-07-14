@@ -42,7 +42,7 @@
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.First}"/>
                   <Run Text=" "/>
-                  <Run Text="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <Run Text="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
               <Button.IsVisible>
@@ -63,7 +63,7 @@
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.Prev}"/>
                   <Run Text=" "/>
-                  <Run Text="{OnPlatform Ctrl+Alt+Up, macOS=⌘+⌥+Up}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <Run Text="{OnPlatform Ctrl+Alt+Up, macOS=⌘+⌥+Up}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
@@ -89,7 +89,7 @@
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.Next}"/>
                   <Run Text=" "/>
-                  <Run Text="{OnPlatform Ctrl+Alt+Down, macOS=⌘+⌥+Down}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <Run Text="{OnPlatform Ctrl+Alt+Down, macOS=⌘+⌥+Down}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
@@ -103,7 +103,7 @@
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.Last}"/>
                   <Run Text=" "/>
-                  <Run Text="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <Run Text="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
               <Button.IsVisible>
@@ -211,7 +211,7 @@
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.UseMerger}"/>
                   <Run Text=" "/>
-                  <Run Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <Run Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
               <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
@@ -232,20 +232,18 @@
                          Foreground="{DynamicResource Brush.FG2}"
                          HorizontalAlignment="Center"/>
               <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
-              <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
+              <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding OldSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding OldSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
 
                 <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                 </Border>
 
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding NewSize}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
               </Grid>
             </StackPanel>
           </DataTemplate>
@@ -259,20 +257,18 @@
                          Foreground="{DynamicResource Brush.FG2}"
                          HorizontalAlignment="Center"/>
               <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
-              <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto,Auto">
+              <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding Old.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding Old.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
 
                 <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Binary.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                 </Border>
 
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Classes="primary" Text="{DynamicResource Text.Bytes}" Foreground="{DynamicResource Brush.FG2}" FontSize="16"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
               </Grid>
             </StackPanel>
           </DataTemplate>

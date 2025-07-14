@@ -96,7 +96,6 @@ namespace SourceGit.Models
         /// <summary>
         ///     Converts to diff command arguments.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -107,8 +106,8 @@ namespace SourceGit.Models
 
             builder.Append("-- ");
             if (!string.IsNullOrEmpty(_orgPath))
-                builder.Append($"\"{_orgPath}\" ");
-            builder.Append($"\"{_path}\"");
+                builder.Append($"{_orgPath.Quoted()} ");
+            builder.Append(_path.Quoted());
 
             return builder.ToString();
         }

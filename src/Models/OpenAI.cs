@@ -32,17 +32,17 @@ namespace SourceGit.Models
 
             buffer = REG_COT().Replace(buffer, "");
 
-            var startIdx = buffer.IndexOf('<', StringComparison.Ordinal);
+            var startIdx = buffer.IndexOf('<');
             if (startIdx >= 0)
             {
                 if (startIdx > 0)
                     OnReceive(buffer.Substring(0, startIdx));
 
-                var endIdx = buffer.IndexOf(">", startIdx + 1, StringComparison.Ordinal);
+                var endIdx = buffer.IndexOf('>', startIdx + 1);
                 if (endIdx <= startIdx)
                 {
                     if (buffer.Length - startIdx <= 15)
-                        _thinkTail.Append(buffer.Substring(startIdx));
+                        _thinkTail.Append(buffer.AsSpan(startIdx));
                     else
                         OnReceive(buffer.Substring(startIdx));
                 }
@@ -50,7 +50,7 @@ namespace SourceGit.Models
                 {
                     var tag = buffer.Substring(startIdx + 1, endIdx - startIdx - 1);
                     if (_thinkTags.Contains(tag))
-                        _thinkTail.Append(buffer.Substring(startIdx));
+                        _thinkTail.Append(buffer.AsSpan(startIdx));
                     else
                         OnReceive(buffer.Substring(startIdx));
                 }
@@ -85,7 +85,7 @@ namespace SourceGit.Models
                 _hasTrimmedStart = true;
             }
 
-            _onUpdate.Invoke(text);
+            _onUpdate?.Invoke(text);
         }
 
         [GeneratedRegex(@"<(think|thought|thinking|thought_chain)>.*?</\1>", RegexOptions.Singleline)]

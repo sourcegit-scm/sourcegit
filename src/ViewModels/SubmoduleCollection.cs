@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Avalonia.Collections;
 
@@ -59,7 +58,7 @@ namespace SourceGit.ViewModels
 
             foreach (var module in submodules)
             {
-                var sepIdx = module.Path.IndexOf('/', StringComparison.Ordinal);
+                var sepIdx = module.Path.IndexOf('/');
                 if (sepIdx == -1)
                 {
                     nodes.Add(new SubmoduleTreeNode(module, 0));

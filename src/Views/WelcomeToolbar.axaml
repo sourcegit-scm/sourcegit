@@ -8,7 +8,14 @@
              x:DataType="vm:Welcome">
   <Grid ColumnDefinitions="Auto,*,Auto" Margin="4,0">
     <StackPanel Grid.Column="0" Orientation="Horizontal">
-      <Button Classes="icon_button" Width="32" Command="{Binding Clone}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
+      <Button Classes="icon_button" Width="32" Command="{Binding Clone}">
+        <ToolTip.Tip>
+          <TextBlock>
+            <Run Text="{DynamicResource Text.Welcome.Clone}"/>
+            <Run Text=" "/>
+            <Run Text="{OnPlatform Ctrl+N, macOS=⌘+N}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+          </TextBlock>
+        </ToolTip.Tip>
         <Path Width="16" Height="16" Data="{StaticResource Icons.Clone}" Margin="0,4,0,0"/>
       </Button>
 

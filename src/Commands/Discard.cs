@@ -38,10 +38,10 @@ namespace SourceGit.Commands
                 App.RaiseException(repo, $"Failed to discard changes. Reason: {e.Message}");
             }
 
-            await new Reset(repo, "HEAD", "--hard") { Log = log }.ExecAsync().ConfigureAwait(false);
+            await new Reset(repo, "HEAD", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
 
             if (includeIgnored)
-                await new Clean(repo) { Log = log }.ExecAsync().ConfigureAwait(false);
+                await new Clean(repo).Use(log).ExecAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace SourceGit.Commands
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, restores).ConfigureAwait(false);
-                await new Restore(repo, pathSpecFile, false) { Log = log }.ExecAsync().ConfigureAwait(false);
+                await new Restore(repo, pathSpecFile, false).Use(log).ExecAsync().ConfigureAwait(false);
                 File.Delete(pathSpecFile);
             }
         }

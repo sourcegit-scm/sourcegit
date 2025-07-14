@@ -21,11 +21,11 @@ namespace SourceGit.Commands
 
             if (method == Models.CommitSearchMethod.ByAuthor)
             {
-                search += $"-i --author=\"{filter}\"";
+                search += $"-i --author={filter.Quoted()}";
             }
             else if (method == Models.CommitSearchMethod.ByCommitter)
             {
-                search += $"-i --committer=\"{filter}\"";
+                search += $"-i --committer={filter.Quoted()}";
             }
             else if (method == Models.CommitSearchMethod.ByMessage)
             {
@@ -34,21 +34,18 @@ namespace SourceGit.Commands
 
                 var words = filter.Split([' ', '\t', '\r'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
-                {
-                    var escaped = word.Trim().Replace("\"", "\\\"", StringComparison.Ordinal);
-                    argsBuilder.Append($"--grep=\"{escaped}\" ");
-                }
+                    argsBuilder.Append("--grep=").Append(word.Trim().Quoted()).Append(' ');
                 argsBuilder.Append("--all-match -i");
 
                 search = argsBuilder.ToString();
             }
             else if (method == Models.CommitSearchMethod.ByPath)
             {
-                search += $"-- \"{filter}\"";
+                search += $"-- {filter.Quoted()}";
             }
             else
             {
-                search = $"-G\"{filter}\"";
+                search = $"-G{filter.Quoted()}";
             }
 
             WorkingDirectory = repo;
@@ -80,8 +77,8 @@ namespace SourceGit.Commands
                         break;
                     case 2:
                         _current.ParseDecorators(line);
-                        if (_current.IsMerged && !_isHeadFounded)
-                            _isHeadFounded = true;
+                        if (_current.IsMerged && !_isHeadFound)
+                            _isHeadFound = true;
                         break;
                     case 3:
                         _current.Author = Models.User.FindOrAdd(line);
@@ -110,7 +107,7 @@ namespace SourceGit.Commands
             if (start < rs.StdOut.Length)
                 _current.Subject = rs.StdOut.Substring(start);
 
-            if (_findFirstMerged && !_isHeadFounded && _commits.Count > 0)
+            if (_findFirstMerged && !_isHeadFound && _commits.Count > 0)
                 await MarkFirstMergedAsync().ConfigureAwait(false);
 
             return _commits;
@@ -126,7 +123,7 @@ namespace SourceGit.Commands
 
         private async Task MarkFirstMergedAsync()
         {
-            Args = $"log --since=\"{_commits[^1].CommitterTimeStr}\" --format=\"%H\"";
+            Args = $"log --since={_commits[^1].CommitterTimeStr.Quoted()} --format=\"%H\"";
 
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
@@ -148,6 +145,6 @@ namespace SourceGit.Commands
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.Commit _current = null;
         private bool _findFirstMerged = false;
-        private bool _isHeadFounded = false;
+        private bool _isHeadFound = false;
     }
 }

@@ -31,7 +31,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Delete Tag");
             Use(log);
 
-            var succ = await Commands.Tag.DeleteAsync(_repo.FullPath, Target.Name, log);
+            var succ = await new Commands.Tag(_repo.FullPath, Target.Name)
+                .Use(log)
+                .DeleteAsync();
+
             if (succ)
             {
                 foreach (var r in remotes)

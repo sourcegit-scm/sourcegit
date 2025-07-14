@@ -151,7 +151,7 @@ namespace SourceGit.ViewModels
             {
                 var time = branch.CommitterDate;
                 var fullpath = $"{prefix}/{branch.Name}";
-                var sepIdx = branch.Name.IndexOf('/', StringComparison.Ordinal);
+                var sepIdx = branch.Name.IndexOf('/');
                 if (sepIdx == -1 || branch.IsDetachedHead)
                 {
                     roots.Add(new BranchTreeNode()

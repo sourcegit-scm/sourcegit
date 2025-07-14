@@ -264,7 +264,7 @@
                      IsVisible="{Binding IsLoading}"/>
     </Grid>
 
-    <Border Grid.Row="1" x:Name="NotifyDonePanel" Background="Transparent" IsVisible="False" PointerPressed="OnCloseNotifyPanel">
+    <Border Grid.Row="3" x:Name="NotifyDonePanel" Background="Transparent" IsVisible="False" PointerPressed="OnCloseNotifyPanel">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #80000000)">
         <Border CornerRadius="8" Background="{DynamicResource Brush.Popup}" Padding="32">
           <Path Width="52" Height="52" Data="{StaticResource Icons.Check}" Fill="Green"/>

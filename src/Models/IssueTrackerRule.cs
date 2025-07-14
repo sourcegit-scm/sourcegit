@@ -51,12 +51,8 @@ namespace SourceGit.Models
                 return;
 
             var matches = _regex.Matches(message);
-            for (var i = 0; i < matches.Count; i++)
+            foreach (Match match in matches)
             {
-                var match = matches[i];
-                if (!match.Success)
-                    continue;
-
                 var start = match.Index;
                 var len = match.Length;
                 if (outs.Intersect(start, len) != null)

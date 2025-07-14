@@ -541,7 +541,8 @@ namespace SourceGit.ViewModels
 
             try
             {
-                return JsonSerializer.Deserialize(File.ReadAllText(path), JsonCodeGen.Default.Preferences);
+                using var stream = File.OpenRead(path);
+                return JsonSerializer.Deserialize(stream, JsonCodeGen.Default.Preferences);
             }
             catch
             {
