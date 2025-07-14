@@ -40,58 +40,19 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-94.42%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.05%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.Askpass.Passphrase
 - Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
-- Text.ChangeSubmoduleUrl
-- Text.ChangeSubmoduleUrl.Submodule
-- Text.ChangeSubmoduleUrl.URL
-- Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.InteractiveRebase
 - Text.CommitCM.Rebase
 - Text.CommitCM.Reset
 - Text.CommitCM.SquashCommitsSinceThis
-- Text.CommitDetail.Info.Key
-- Text.CommitDetail.Info.Signer
-- Text.Configure.CommitMessageTemplate.BuiltinVars
-- Text.ConfigureCustomActionControls.Options
-- Text.ConfigureCustomActionControls.Options.Tip
-- Text.ConfirmRestart.Title
-- Text.ConfirmRestart.Message
-- Text.Diff.Image.Blend
-- Text.Diff.Image.SideBySide
-- Text.Diff.Image.Swipe
-- Text.Diff.New
-- Text.Diff.Old
-- Text.DirHistories
-- Text.InteractiveRebase.ReorderTip
-- Text.MoveSubmodule
-- Text.MoveSubmodule.MoveTo
-- Text.MoveSubmodule.Submodule
-- Text.Push.New
-- Text.Repository.OnlyHighlightCurrentBranchInGraph
-- Text.Repository.ShowFirstParentOnly
-- Text.Repository.ShowLostCommits
-- Text.Repository.UseRelativeTimeInGraph
-- Text.SetSubmoduleBranch
-- Text.SetSubmoduleBranch.Submodule
-- Text.SetSubmoduleBranch.Current
-- Text.SetSubmoduleBranch.New
-- Text.SetSubmoduleBranch.New.Tip
-- Text.Submodule.Branch
-- Text.Submodule.Histories
-- Text.Submodule.Move
-- Text.Submodule.SetBranch
-- Text.Submodule.SetURL
-- Text.Submodule.Update
-- Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 
 </details>
 
