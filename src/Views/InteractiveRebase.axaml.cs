@@ -1,4 +1,5 @@
 using System;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -97,6 +98,23 @@ namespace SourceGit.Views
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Close();
+        }
+
+        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_firstSelectionChangedHandled &&
+                sender is InteractiveRebaseListBox list &&
+                list.SelectedItem is ViewModels.InteractiveRebaseItem item)
+            {
+                _firstSelectionChangedHandled = true;
+
+                if (item.Action == Models.InteractiveRebaseAction.Reword)
+                {
+                    var dialog = new CommitMessageEditor();
+                    dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
+                    dialog.ShowDialog(this);
+                }
+            }
         }
 
         private void OnSetupRowHeaderDragDrop(object sender, RoutedEventArgs e)
@@ -242,5 +260,7 @@ namespace SourceGit.Views
 
             flyout.Items.Add(menuItem);
         }
+
+        private bool _firstSelectionChangedHandled = false;
     }
 }

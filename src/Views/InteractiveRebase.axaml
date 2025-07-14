@@ -58,6 +58,7 @@
                                     ItemsSource="{Binding Items}"
                                     SelectionMode="Single"
                                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                                    SelectionChanged="OnRowsSelectionChanged"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     Grid.IsSharedSizeScope="True">

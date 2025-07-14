@@ -17,23 +17,14 @@ namespace SourceGit.Views
         {
             _onSave = msg => File.WriteAllText(file, msg);
             _shouldExitApp = true;
-
-            var content = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
-            var parts = content.Split('\n', 2);
-            Editor.SubjectEditor.Text = parts[0];
-            if (parts.Length > 1)
-                Editor.DescriptionEditor.Text = parts[1];
+            Editor.Text = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
         }
 
         public void AsBuiltin(string msg, Action<string> onSave)
         {
             _onSave = onSave;
             _shouldExitApp = false;
-
-            var parts = msg.Split('\n', 2);
-            Editor.SubjectEditor.Text = parts[0];
-            if (parts.Length > 1)
-                Editor.DescriptionEditor.Text = parts[1];
+            Editor.Text = msg.Trim();
         }
 
         protected override void OnClosed(EventArgs e)
