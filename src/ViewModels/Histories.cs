@@ -497,21 +497,6 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     menu.Items.Add(reset);
-
-                    if (commit.IsMerged)
-                    {
-                        var squash = new MenuItem();
-                        squash.Header = App.Text("CommitCM.SquashCommitsSinceThis", commit.SHA.Substring(0, 10));
-                        squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                        squash.Click += (_, e) =>
-                        {
-                            if (_repo.CanCreatePopup())
-                                _repo.ShowPopup(new Squash(_repo, commit, commit.SHA));
-
-                            e.Handled = true;
-                        };
-                        menu.Items.Add(squash);
-                    }
                 }
                 else
                 {
