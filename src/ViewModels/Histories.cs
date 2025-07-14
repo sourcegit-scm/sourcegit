@@ -630,19 +630,105 @@ namespace SourceGit.ViewModels
                             _repo.ShowPopup(new CheckoutCommit(_repo, commit));
                         e.Handled = true;
                     };
-
-                    var interactiveRebase = new MenuItem();
-                    interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase", current.Name, target);
-                    interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
-                    interactiveRebase.Click += async (_, e) =>
-                    {
-                        await App.ShowDialog(new InteractiveRebase(_repo, current, commit));
-                        e.Handled = true;
-                    };
-
                     menu.Items.Add(checkoutCommit);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(interactiveRebase);
+
+                    if (commit.IsMerged && commit.Parents.Count > 0)
+                    {
+                        var interactiveRebase = new MenuItem();
+                        interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase");
+                        interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+
+                        var manually = new MenuItem();
+                        manually.Header = App.Text("CommitCM.InteractiveRebase.Manually", current.Name, target);
+                        manually.Click += async (_, e) =>
+                        {
+                            await App.ShowDialog(new InteractiveRebase(_repo, commit));
+                            e.Handled = true;
+                        };
+
+                        var reword = new MenuItem();
+                        reword.Header = App.Text("CommitCM.InteractiveRebase.Reword");
+                        reword.Click += async (_, e) =>
+                        {
+                            var prefill = new InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Reword);
+                            var on = await new Commands.QuerySingleCommit(_repo.FullPath, $"{commit.SHA}~").GetResultAsync();
+                            await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
+                            e.Handled = true;
+                        };
+
+                        var edit = new MenuItem();
+                        edit.Header = App.Text("CommitCM.InteractiveRebase.Edit");
+                        edit.Click += async (_, e) =>
+                        {
+                            var prefill = new InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Edit);
+                            var on = await new Commands.QuerySingleCommit(_repo.FullPath, $"{commit.SHA}~").GetResultAsync();
+                            await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
+                            e.Handled = true;
+                        };
+
+                        var squash = new MenuItem();
+                        squash.Header = App.Text("CommitCM.InteractiveRebase.Squash");
+                        squash.Click += async (_, e) =>
+                        {
+                            var prefill = new InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Squash);
+                            var on = await new Commands.QuerySingleCommit(_repo.FullPath, $"{commit.SHA}~~").GetResultAsync();
+                            if (on != null)
+                                await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
+                            else
+                                App.RaiseException(_repo.FullPath, $"Can not squash current commit into parent!");
+
+                            e.Handled = true;
+                        };
+
+                        var fixup = new MenuItem();
+                        fixup.Header = App.Text("CommitCM.InteractiveRebase.Fixup");
+                        fixup.Click += async (_, e) =>
+                        {
+                            var prefill = new InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Fixup);
+                            var on = await new Commands.QuerySingleCommit(_repo.FullPath, $"{commit.SHA}~~").GetResultAsync();
+                            if (on != null)
+                                await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
+                            else
+                                App.RaiseException(_repo.FullPath, $"Can not fixup current commit into parent!");
+
+                            e.Handled = true;
+                        };
+
+                        var drop = new MenuItem();
+                        drop.Header = App.Text("CommitCM.InteractiveRebase.Drop");
+                        drop.Click += async (_, e) =>
+                        {
+                            var prefill = new InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Drop);
+                            var on = await new Commands.QuerySingleCommit(_repo.FullPath, $"{commit.SHA}~").GetResultAsync();
+                            await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
+                            e.Handled = true;
+                        };
+
+                        interactiveRebase.Items.Add(manually);
+                        interactiveRebase.Items.Add(new MenuItem() { Header = "-" });
+                        interactiveRebase.Items.Add(reword);
+                        interactiveRebase.Items.Add(edit);
+                        interactiveRebase.Items.Add(squash);
+                        interactiveRebase.Items.Add(fixup);
+                        interactiveRebase.Items.Add(drop);
+
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                        menu.Items.Add(interactiveRebase);
+                    }
+                    else
+                    {
+                        var interactiveRebase = new MenuItem();
+                        interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase.Manually", current.Name, target);
+                        interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                        interactiveRebase.Click += async (_, e) =>
+                        {
+                            await App.ShowDialog(new InteractiveRebase(_repo, commit));
+                            e.Handled = true;
+                        };
+
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                        menu.Items.Add(interactiveRebase);
+                    }
                 }
 
                 menu.Items.Add(new MenuItem() { Header = "-" });
