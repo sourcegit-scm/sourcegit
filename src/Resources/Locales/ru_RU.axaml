@@ -39,6 +39,7 @@
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">Архив</x:String>
   <x:String x:Key="Text.Askpass" xml:space="preserve">Спросить разрешения SourceGit</x:String>
+  <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Введите парольную фразу:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">СПИСОК ПУСТ</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Загрузить картинку...</x:String>
@@ -151,16 +152,19 @@
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Найти все ветки с этой ревизией</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ВЕТКИ С ЭТОЙ РЕВИЗИЕЙ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Отображаются только первые 100 изменений. Смотрите все изменения на вкладке ИЗМЕНЕНИЯ.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Ключ:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">СООБЩЕНИЕ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">РОДИТЕЛИ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">ССЫЛКИ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Подписант:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Открыть в браузере</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Описание</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">СУБЪЕКТ</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Введите тему ревизии</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Вы можете использовать ${files_num}, ${branch_name}, ${files} и ${files:N}, где N — максимальное количество путей к файлам для вывода.</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Cодержание:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Название:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ПОЛЬЗОВАТЕЛЬСКОЕ ДЕЙСТВИЕ</x:String>
@@ -222,6 +226,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">Сформировать всё и зафиксировать ревизию</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty) или отложить всё, затем зафиксировать ревизию?</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Требуется перезапуск</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">Вы должны перезапустить приложение после применения изменений.</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Общепринятый помощник по ревизии</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Кардинальные изменения:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Закрытая тема:</x:String>
@@ -284,10 +290,15 @@
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое сравнение</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменения пробелов</x:String>
+  <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">СМЕСЬ</x:String>
+  <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">РЯДОМ</x:String>
+  <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">СМАХИВАНИЕ</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Последнее сравнение</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ИЗМЕНЕНИЕ ОБЪЕКТА LFS</x:String>
+  <x:String x:Key="Text.Diff.New" xml:space="preserve">НОВЫЙ</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее сравнение</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">НИКАКИХ ИЗМЕНЕНИЙ ИЛИ МЕНЯЕТСЯ ТОЛЬКО EOL</x:String>
+  <x:String x:Key="Text.Diff.Old" xml:space="preserve">СТАРЫЙ</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Предыдущее сравнение</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Сохранить как заплатку</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показывать скрытые символы</x:String>
@@ -571,6 +582,7 @@
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Убедитесь, что подмодули были вставлены</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Принудительно выложить</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Локальная ветка:</x:String>
+  <x:String x:Key="Text.Push.New" xml:space="preserve">НОВЫЙ</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Выложить ревизию на удалёную</x:String>
