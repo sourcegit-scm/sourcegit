@@ -74,6 +74,10 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
+  <x:String x:Key="Text.BranchTree.Local" xml:space="preserve">本地</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">远程</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">上游分支</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">远程地址</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">跟踪的上游分支不存在或已删除！</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重置文件到上一版本</x:String>

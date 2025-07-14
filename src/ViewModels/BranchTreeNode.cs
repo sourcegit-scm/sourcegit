@@ -54,20 +54,6 @@ namespace SourceGit.ViewModels
             get => Counter > 0 ? $"({Counter})" : string.Empty;
         }
 
-        public string Tooltip
-        {
-            get
-            {
-                if (Backend is Models.Branch b)
-                    return b.FriendlyName;
-
-                if (Backend is Models.Remote r)
-                    return r.URL;
-
-                return null;
-            }
-        }
-
         private Models.FilterMode _filterMode = Models.FilterMode.None;
         private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(4);
