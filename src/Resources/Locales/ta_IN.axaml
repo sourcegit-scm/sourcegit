@@ -102,16 +102,12 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">பாகொவ-வை</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">இங்கே ${0}$ ஐ ஊடாடும் வகையில் மறுதளம்</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ இதற்கு ஒன்றிணை</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">ஒன்றிணை ...</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">இங்கே ${0}$ ஐ மறுதளம்</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$ ஐ இங்கே மீட்டமை</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">உறுதிமொழி திரும்பபெறு</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">வேறுமொழி</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">ஒட்டாக சேமி...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">பெற்றோர்களில் நொறுக்கு</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">நொறுக்கு குழந்தைகள் இங்கே சேர்</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">மாற்றங்கள்</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">மாற்றங்களைத் தேடு...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">கோப்புகள்</x:String>

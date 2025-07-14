@@ -102,16 +102,12 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">${0}$ ブランチをここにインタラクティブリベース</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ にマージ</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">マージ...</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${0}$ をここにリベース</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$ ブランチをここにリセット</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">コミットを戻す</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">書き直す</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">パッチとして保存...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">親にスカッシュ</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">子コミットをここにスカッシュ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">変更を検索...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ファイル</x:String>

@@ -114,16 +114,12 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Oggetto</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Azione Personalizzata</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Riallinea Interattivamente ${0}$ fino a Qui</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Unisci a ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Unisci ...</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Riallinea ${0}$ fino a Qui</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Ripristina ${0}$ fino a Qui</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Annulla Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Modifica</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Salva come Patch...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Compatta nel Genitore</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Compatta Commit Figli fino a Qui</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">MODIFICHE</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Cerca Modifiche...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FILE</x:String>

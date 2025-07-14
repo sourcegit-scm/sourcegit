@@ -127,17 +127,13 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Субъект</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение (rebase -i) ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Влить ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Выложить ${0}$ в ${1}$</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ сюда</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ сюда</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Отменить ревизию</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Изменить комментарий</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатки...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Объединить с предыдущей ревизией</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Объединить все следующие ревизии с этим</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">изменённый(х) файл(ов)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Найти изменения....</x:String>

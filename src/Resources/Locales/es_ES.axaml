@@ -122,17 +122,13 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Asunto</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interactivo ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge a ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ a ${1}$</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ hasta Aquí</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ hasta Aquí</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revertir Commit</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reescribir</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash en Parent</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">Squash Commits Hijos hasta Aquí</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CAMBIOS</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">archivo(s) modificado(s)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Cambios...</x:String>

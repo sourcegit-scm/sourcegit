@@ -483,7 +483,7 @@ namespace SourceGit.ViewModels
 
             if (!_repo.IsBare)
             {
-                var target = GetFriendlyNameOfCommit(commit);
+                var target = commit.GetFriendlyName();
 
                 if (current.Head != commit.SHA)
                 {
@@ -871,19 +871,6 @@ namespace SourceGit.ViewModels
             menu.Items.Add(copy);
 
             return menu;
-        }
-
-        private static string GetFriendlyNameOfCommit(Models.Commit commit)
-        {
-            var branchDecorator = commit.Decorators.Find(x => x.Type is Models.DecoratorType.LocalBranchHead or Models.DecoratorType.RemoteBranchHead);
-            if (branchDecorator != null)
-                return branchDecorator.Name;
-
-            var tagDecorator = commit.Decorators.Find(x => x.Type is Models.DecoratorType.Tag);
-            if (tagDecorator != null)
-                return tagDecorator.Name;
-
-            return commit.SHA[..10];
         }
 
         private void FillCurrentBranchMenu(ContextMenu menu, Models.Branch current)

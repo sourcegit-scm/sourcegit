@@ -52,6 +52,19 @@ namespace SourceGit.Models
         public Thickness Margin { get; set; } = new(0);
         public IBrush Brush => CommitGraph.Pens[Color].Brush;
 
+        public string GetFriendlyName()
+        {
+            var branchDecorator = Decorators.Find(x => x.Type is DecoratorType.LocalBranchHead or DecoratorType.RemoteBranchHead);
+            if (branchDecorator != null)
+                return branchDecorator.Name;
+
+            var tagDecorator = Decorators.Find(x => x.Type is DecoratorType.Tag);
+            if (tagDecorator != null)
+                return tagDecorator.Name;
+
+            return SHA[..10];
+        }
+
         public void ParseDecorators(string data)
         {
             if (data.Length < 3)
