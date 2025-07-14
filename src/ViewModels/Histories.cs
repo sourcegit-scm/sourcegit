@@ -501,7 +501,7 @@ namespace SourceGit.ViewModels
                     if (commit.IsMerged)
                     {
                         var squash = new MenuItem();
-                        squash.Header = App.Text("CommitCM.SquashCommitsSinceThis", target);
+                        squash.Header = App.Text("CommitCM.SquashCommitsSinceThis", commit.SHA.Substring(0, 10));
                         squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                         squash.Click += (_, e) =>
                         {
