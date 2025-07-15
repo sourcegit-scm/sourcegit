@@ -6,44 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-96.34%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.BranchTree.Local
-- Text.BranchTree.Remote
-- Text.BranchTree.Tracking
-- Text.BranchTree.URL
-- Text.ChangeSubmoduleUrl
-- Text.ChangeSubmoduleUrl.Submodule
-- Text.ChangeSubmoduleUrl.URL
-- Text.CommitCM.InteractiveRebase
-- Text.CommitCM.InteractiveRebase.Drop
-- Text.CommitCM.InteractiveRebase.Edit
-- Text.CommitCM.InteractiveRebase.Fixup
-- Text.CommitCM.InteractiveRebase.Manually
-- Text.CommitCM.InteractiveRebase.Reword
-- Text.CommitCM.InteractiveRebase.Squash
-- Text.CommitCM.Rebase
-- Text.CommitCM.Reset
-- Text.MoveSubmodule
-- Text.MoveSubmodule.MoveTo
-- Text.MoveSubmodule.Submodule
-- Text.SetSubmoduleBranch
-- Text.SetSubmoduleBranch.Submodule
-- Text.SetSubmoduleBranch.Current
-- Text.SetSubmoduleBranch.New
-- Text.SetSubmoduleBranch.New.Tip
-- Text.Submodule.Branch
-- Text.Submodule.Histories
-- Text.Submodule.Move
-- Text.Submodule.SetBranch
-- Text.Submodule.SetURL
-- Text.Submodule.Update
-- Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-98.47%25-yellow)
 
