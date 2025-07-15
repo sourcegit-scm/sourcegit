@@ -32,7 +32,7 @@ namespace SourceGit.Commands
             builder.Append("stash push --include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m ").Append(message).Append(" -- ");
+            builder.Append("-m ").Append(message.Quoted()).Append(" -- ");
 
             foreach (var c in changes)
                 builder.Append(c.Path.Quoted()).Append(' ');
