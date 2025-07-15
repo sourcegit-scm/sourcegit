@@ -167,10 +167,8 @@ namespace SourceGit.Commands
 
             // Force using this app as SSH askpass program
             var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
-            if (!OperatingSystem.IsLinux())
-                start.Environment.Add("DISPLAY", "required");
             start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
-            start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
+            start.Environment.Add("SSH_ASKPASS_REQUIRE", "force");
             start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
 
             // If an SSH private key was provided, sets the environment.
