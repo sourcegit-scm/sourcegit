@@ -118,9 +118,9 @@ namespace SourceGit.ViewModels
             {
                 var name = Path.GetFileName(_remote)!;
                 if (name.EndsWith(".git", StringComparison.Ordinal))
-                    name = name.Substring(0, name.Length - 4);
+                    name = name[..^4];
                 else if (name.EndsWith(".bundle", StringComparison.Ordinal))
-                    name = name.Substring(0, name.Length - 7);
+                    name = name[..^7];
 
                 path = Path.GetFullPath(Path.Combine(path, name));
             }

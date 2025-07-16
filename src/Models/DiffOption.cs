@@ -100,13 +100,13 @@ namespace SourceGit.Models
         {
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(_extra))
-                builder.Append($"{_extra} ");
+                builder.Append(_extra).Append(' ');
             foreach (var r in _revisions)
-                builder.Append($"{r} ");
+                builder.Append(r).Append(' ');
 
             builder.Append("-- ");
             if (!string.IsNullOrEmpty(_orgPath))
-                builder.Append($"{_orgPath.Quoted()} ");
+                builder.Append(_orgPath.Quoted()).Append(' ');
             builder.Append(_path.Quoted());
 
             return builder.ToString();

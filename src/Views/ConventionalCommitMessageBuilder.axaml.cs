@@ -12,11 +12,8 @@ namespace SourceGit.Views
 
         private void OnApplyClicked(object _, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ConventionalCommitMessageBuilder builder)
-            {
-                if (builder.Apply())
-                    Close();
-            }
+            if (DataContext is ViewModels.ConventionalCommitMessageBuilder builder && builder.Apply())
+                Close();
 
             e.Handled = true;
         }

@@ -64,24 +64,18 @@ namespace SourceGit.Commands
             var change = new Models.Change() { Path = match.Groups[2].Value };
             var status = match.Groups[1].Value;
 
-            switch (status[0])
+            var state = status[0] switch
             {
-                case 'M':
-                    change.Set(Models.ChangeState.Modified);
-                    outs.Add(change);
-                    break;
-                case 'A':
-                    change.Set(Models.ChangeState.Added);
-                    outs.Add(change);
-                    break;
-                case 'D':
-                    change.Set(Models.ChangeState.Deleted);
-                    outs.Add(change);
-                    break;
-                case 'C':
-                    change.Set(Models.ChangeState.Copied);
-                    outs.Add(change);
-                    break;
+                'M' => Models.ChangeState.Modified,
+                'A' => Models.ChangeState.Added,
+                'D' => Models.ChangeState.Deleted,
+                'C' => Models.ChangeState.Copied,
+                _ => Models.ChangeState.None
+            };
+            if (state != Models.ChangeState.None)
+            {
+                change.Set(state);
+                outs.Add(change);
             }
         }
     }

@@ -20,7 +20,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        }
+        } = true;
 
         public Rebase(Repository repo, Models.Branch current, Models.Branch on)
         {
@@ -28,7 +28,6 @@ namespace SourceGit.ViewModels
             _revision = on.Head;
             Current = current;
             On = on;
-            AutoStash = true;
         }
 
         public Rebase(Repository repo, Models.Branch current, Models.Commit on)
@@ -37,7 +36,6 @@ namespace SourceGit.ViewModels
             _revision = on.SHA;
             Current = current;
             On = on;
-            AutoStash = true;
         }
 
         public override async Task<bool> Sure()

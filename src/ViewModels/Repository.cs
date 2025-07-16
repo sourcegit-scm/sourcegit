@@ -1044,15 +1044,10 @@ namespace SourceGit.ViewModels
             if (_settings == null || !string.IsNullOrWhiteSpace(_filter))
                 return;
 
-            if (node.IsExpanded)
-            {
-                if (!_settings.ExpandedBranchNodesInSideBar.Contains(node.Path))
-                    _settings.ExpandedBranchNodesInSideBar.Add(node.Path);
-            }
-            else
-            {
+            if (!node.IsExpanded)
                 _settings.ExpandedBranchNodesInSideBar.Remove(node.Path);
-            }
+            else if (!_settings.ExpandedBranchNodesInSideBar.Contains(node.Path))
+                _settings.ExpandedBranchNodesInSideBar.Add(node.Path);
         }
 
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
@@ -1249,7 +1244,7 @@ namespace SourceGit.ViewModels
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var builder = new StringBuilder();
-            builder.Append($"-{Preferences.Instance.MaxHistoryCommits} ");
+            builder.Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ');
 
             if (_settings.EnableTopoOrderInHistories)
                 builder.Append("--topo-order ");

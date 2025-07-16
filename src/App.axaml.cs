@@ -411,7 +411,7 @@ namespace SourceGit
                     if (!string.IsNullOrEmpty(arg))
                     {
                         if (arg.StartsWith('"') && arg.EndsWith('"'))
-                            arg = arg.Substring(1, arg.Length - 2).Trim();
+                            arg = arg[1..^1].Trim();
 
                         if (arg.Length > 0 && !Path.IsPathFullyQualified(arg))
                             arg = Path.GetFullPath(arg);
@@ -687,12 +687,10 @@ namespace SourceGit
                 }
 
                 var name = sb.ToString();
-                if (name.Contains('#'))
-                {
-                    if (!name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
-                        !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))
-                        continue;
-                }
+                if (name.Contains('#') &&
+                    !name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
+                    !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))
+                    continue;
 
                 trimmed.Add(name);
             }

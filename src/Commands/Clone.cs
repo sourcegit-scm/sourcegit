@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Text;
+
+namespace SourceGit.Commands
 {
     public class Clone : Command
     {
@@ -7,15 +9,14 @@
             Context = ctx;
             WorkingDirectory = path;
             SSHKey = sshKey;
-            Args = "clone --progress --verbose ";
 
+            var builder = new StringBuilder("clone --progress --verbose ");
             if (!string.IsNullOrEmpty(extraArgs))
-                Args += $"{extraArgs} ";
-
-            Args += $"{url} ";
-
+                builder.Append(extraArgs).Append(' ');
+            builder.Append(url);
             if (!string.IsNullOrEmpty(localName))
-                Args += localName;
+                builder.Append(' ').Append(localName);
+            Args = builder.ToString();
         }
     }
 }

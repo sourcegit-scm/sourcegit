@@ -73,10 +73,10 @@
             }
 
             if (Path[0] == '"')
-                Path = Path.Substring(1, Path.Length - 2);
+                Path = Path[1..^1];
 
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
-                OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
+                OriginalPath = OriginalPath[1..^1];
         }
 
         private static readonly string[] TYPE_DESCS =
