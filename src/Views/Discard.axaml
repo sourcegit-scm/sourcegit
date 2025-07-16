@@ -24,7 +24,7 @@
     <ContentControl Margin="0,16,0,8" Content="{Binding Mode}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="vm:DiscardAllMode">
-          <Grid RowDefinitions="32,32" ColumnDefinitions="120,*">
+          <Grid RowDefinitions="32,32,32" ColumnDefinitions="120,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Margin="0,0,8,0"
                        HorizontalAlignment="Right"
@@ -35,6 +35,10 @@
             <CheckBox Grid.Row="1" Grid.Column="1"
                       Content="{DynamicResource Text.Discard.IncludeIgnored}"
                       IsChecked="{Binding IncludeIgnored, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="2" Grid.Column="1"
+                      Content="{DynamicResource Text.Discard.IncludeUntracked}"
+                      IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
           </Grid>
         </DataTemplate>
 

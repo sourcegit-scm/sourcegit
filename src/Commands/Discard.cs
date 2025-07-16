@@ -12,15 +12,16 @@ namespace SourceGit.Commands
         /// </summary>
         /// <param name="repo"></param>
         /// <param name="includeIgnored"></param>
+        /// <param name="includeUntracked"></param>
         /// <param name="log"></param>
-        public static async Task AllAsync(string repo, bool includeIgnored, Models.ICommandLog log)
+        public static async Task AllAsync(string repo, bool includeIgnored, bool includeUntracked, Models.ICommandLog log)
         {
             var changes = await new QueryLocalChanges(repo).GetResultAsync().ConfigureAwait(false);
             try
             {
                 foreach (var c in changes)
                 {
-                    if (c.WorkTree == Models.ChangeState.Untracked ||
+                    if ((c.WorkTree == Models.ChangeState.Untracked && includeUntracked) ||
                         c.WorkTree == Models.ChangeState.Added ||
                         c.Index == Models.ChangeState.Added ||
                         c.Index == Models.ChangeState.Renamed)
