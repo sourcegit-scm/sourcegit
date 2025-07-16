@@ -5,11 +5,13 @@ namespace SourceGit.Models
 {
     public class UserActivityTracker
     {
+        private const int DefaultMinIdleSecondsBeforeAutoFetch = 15;
+
         private static readonly Lazy<UserActivityTracker> s_instance = new(() => new UserActivityTracker());
         private bool _isWindowActive = false;
         private DateTime _lastActivity = DateTime.MinValue;
         private readonly Lock _lockObject = new();
-        private readonly int _minIdleSecondsBeforeAutoFetch = 15;
+        private readonly int _minIdleSecondsBeforeAutoFetch = DefaultMinIdleSecondsBeforeAutoFetch;
 
         private void OnUserActivity(object sender, EventArgs e) => UpdateLastActivity();
 
@@ -36,16 +38,18 @@ namespace SourceGit.Models
                 _isWindowActive = true;
             }
 
-            if (App.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
-                if (desktop.MainWindow != null)
-                {
-                    desktop.MainWindow.Activated += OnWindowActivated;
-                    desktop.MainWindow.Deactivated += OnWindowDeactivated;
-                    desktop.MainWindow.KeyDown += OnUserActivity;
-                    desktop.MainWindow.PointerPressed += OnUserActivity;
-                    desktop.MainWindow.PointerMoved += OnUserActivity;
-                    desktop.MainWindow.PointerWheelChanged += OnUserActivity;
-                }
+            if (App.Current?.ApplicationLifetime is not Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
+                return;
+
+            if (desktop.MainWindow == null)
+                return;
+
+            desktop.MainWindow.Activated += OnWindowActivated;
+            desktop.MainWindow.Deactivated += OnWindowDeactivated;
+            desktop.MainWindow.KeyDown += OnUserActivity;
+            desktop.MainWindow.PointerPressed += OnUserActivity;
+            desktop.MainWindow.PointerMoved += OnUserActivity;
+            desktop.MainWindow.PointerWheelChanged += OnUserActivity;
         }
 
         public bool ShouldPerformAutoFetch(DateTime lastFetchTime, int intervalMinutes)
@@ -64,9 +68,9 @@ namespace SourceGit.Models
 
                 if (timeSinceLastActivity.TotalSeconds >= _minIdleSecondsBeforeAutoFetch)
                     return true;
-
-                return false;
             }
+
+            return false;
         }
 
         public void UpdateLastActivity()
