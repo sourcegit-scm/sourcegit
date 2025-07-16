@@ -5,7 +5,7 @@ namespace SourceGit.Models
 {
     public class UserActivityTracker
     {
-        private static readonly Lazy<UserActivityTracker> _instance = new(() => new UserActivityTracker());
+        private static readonly Lazy<UserActivityTracker> s_instance = new(() => new UserActivityTracker());
         private bool _isWindowActive = false;
         private DateTime _lastActivity = DateTime.MinValue;
         private readonly Lock _lockObject = new();
@@ -75,6 +75,6 @@ namespace SourceGit.Models
                 _lastActivity = DateTime.Now;
         }
 
-        public static UserActivityTracker Instance => _instance.Value;
+        public static UserActivityTracker Instance => s_instance.Value;
     }
 }
