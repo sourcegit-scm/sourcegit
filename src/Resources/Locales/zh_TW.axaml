@@ -559,6 +559,7 @@
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">本軟體要求 Git 最低版本為 2.25.1</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">啟用 HTTP SSL 驗證</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">使用 git-credential-libsecret 取代 git-credential-manager</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">預設 Git 使用者名稱</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git 版本</x:String>
