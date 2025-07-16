@@ -6,11 +6,25 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.88%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-82.64%25-yellow)
+- Text.Discard.IncludeUntracked
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-99.88%25-yellow)
+
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Discard.IncludeUntracked
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-82.55%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -91,6 +105,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -165,7 +180,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-87.96%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-87.85%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -229,6 +244,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.Hotkeys.Global.SwitchWorkspace
@@ -275,7 +291,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-82.64%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-82.55%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -357,6 +373,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -430,7 +447,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-75.56%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-75.47%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -537,6 +554,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Submodule.Deleted
 - Text.Diff.UseBlockNavigation
 - Text.DirHistories
+- Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.Fetch.Force
@@ -645,7 +663,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.47%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.35%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -663,10 +681,11 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.InteractiveRebase.Squash
 - Text.CommitCM.Rebase
 - Text.CommitCM.Reset
+- Text.Discard.IncludeUntracked
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-82.76%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-82.67%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -748,6 +767,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
@@ -820,7 +840,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-83.94%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-83.84%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -897,6 +917,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
