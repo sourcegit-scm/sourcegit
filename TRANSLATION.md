@@ -8,26 +8,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.47%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.BranchTree.Local
-- Text.BranchTree.Remote
-- Text.BranchTree.Tracking
-- Text.BranchTree.URL
-- Text.CommitCM.InteractiveRebase
-- Text.CommitCM.InteractiveRebase.Drop
-- Text.CommitCM.InteractiveRebase.Edit
-- Text.CommitCM.InteractiveRebase.Fixup
-- Text.CommitCM.InteractiveRebase.Manually
-- Text.CommitCM.InteractiveRebase.Reword
-- Text.CommitCM.InteractiveRebase.Squash
-- Text.CommitCM.Rebase
-- Text.CommitCM.Reset
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-82.64%25-yellow)
 
