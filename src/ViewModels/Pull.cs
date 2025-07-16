@@ -125,7 +125,7 @@ namespace SourceGit.ViewModels
             {
                 if (DiscardLocalChanges)
                 {
-                    await Commands.Discard.AllAsync(_repo.FullPath, false, log);
+                    await Commands.Discard.AllAsync(_repo.FullPath, false, false, log);
                 }
                 else
                 {

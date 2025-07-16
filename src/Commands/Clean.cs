@@ -2,11 +2,17 @@
 {
     public class Clean : Command
     {
-        public Clean(string repo)
+        public Clean(string repo, Models.CleanMode mode)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "clean -qfdx";
+
+            Args = mode switch
+            {
+                Models.CleanMode.OnlyUntrackedFiles => "clean -qfd",
+                Models.CleanMode.OnlyIgnoredFiles => "clean -qfdX",
+                _ => "clean -qfdx",
+            };
         }
     }
 }

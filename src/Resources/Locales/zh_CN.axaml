@@ -329,6 +329,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本仓库未提交的修改。</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">变更 ：</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">包括所有已忽略的文件</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包括未跟踪的文件</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">总计{0}项选中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支持回退，请确认后继续！！！</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
