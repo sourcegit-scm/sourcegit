@@ -93,16 +93,6 @@ namespace SourceGit.Views
                 Activate();
         }
 
-        public bool HasKeyModifier(KeyModifiers modifier)
-        {
-            return _unhandledModifiers.HasFlag(modifier);
-        }
-
-        public void ClearKeyModifier()
-        {
-            _unhandledModifiers = KeyModifiers.None;
-        }
-
         protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
@@ -147,9 +137,6 @@ namespace SourceGit.Views
         {
             if (DataContext is not ViewModels.Launcher vm)
                 return;
-
-            // We should clear all unhandled key modifiers.
-            _unhandledModifiers = KeyModifiers.None;
 
             // Check for AltGr (which is detected as Ctrl+Alt)
             bool isAltGr = e.KeyModifiers.HasFlag(KeyModifiers.Control) &&
@@ -301,27 +288,6 @@ namespace SourceGit.Views
             }
 
             base.OnKeyDown(e);
-
-            // Record unhandled key modifiers.
-            if (!e.Handled)
-            {
-                _unhandledModifiers = e.KeyModifiers;
-
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Alt) && e.Key is Key.LeftAlt or Key.RightAlt)
-                    _unhandledModifiers |= KeyModifiers.Alt;
-
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Control) && e.Key is Key.LeftCtrl or Key.RightCtrl)
-                    _unhandledModifiers |= KeyModifiers.Control;
-
-                if (!_unhandledModifiers.HasFlag(KeyModifiers.Shift) && e.Key is Key.LeftShift or Key.RightShift)
-                    _unhandledModifiers |= KeyModifiers.Shift;
-            }
-        }
-
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            base.OnKeyUp(e);
-            _unhandledModifiers = KeyModifiers.None;
         }
 
         protected override void OnClosing(WindowClosingEventArgs e)
@@ -363,7 +329,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private KeyModifiers _unhandledModifiers = KeyModifiers.None;
         private WindowState _lastWindowState = WindowState.Normal;
     }
 }

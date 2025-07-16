@@ -40,56 +40,65 @@ namespace SourceGit.Views
             }
         }
 
-        private void Fetch(object _, RoutedEventArgs e)
+        private void Fetch(object sender, TappedEventArgs e)
         {
-            var launcher = this.FindAncestorOfType<Launcher>();
-            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            if (DataContext is ViewModels.Repository repo)
             {
-                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                launcher.ClearKeyModifier();
-                repo.Fetch(startDirectly);
+                repo.Fetch(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }
 
-        private void Pull(object _, RoutedEventArgs e)
+        private void FetchDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
-            var launcher = this.FindAncestorOfType<Launcher>();
-            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            if (DataContext is ViewModels.Repository repo)
             {
-                if (repo.IsBare)
-                {
-                    App.RaiseException(repo.FullPath, "Can't run `git pull` in bare repository!");
-                    return;
-                }
-
-                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                launcher.ClearKeyModifier();
-                repo.Pull(startDirectly);
+                repo.Fetch(true);
                 e.Handled = true;
             }
         }
 
-        private void Push(object _, RoutedEventArgs e)
+        private void Pull(object sender, TappedEventArgs e)
         {
-            var launcher = this.FindAncestorOfType<Launcher>();
-            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            if (DataContext is ViewModels.Repository repo)
             {
-                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                launcher.ClearKeyModifier();
-                repo.Push(startDirectly);
+                repo.Pull(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }
 
-        private void StashAll(object _, RoutedEventArgs e)
+        private void PullDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
-            var launcher = this.FindAncestorOfType<Launcher>();
-            if (launcher is not null && DataContext is ViewModels.Repository repo)
+            if (DataContext is ViewModels.Repository repo)
             {
-                var startDirectly = launcher.HasKeyModifier(KeyModifiers.Control);
-                launcher.ClearKeyModifier();
-                repo.StashAll(startDirectly);
+                repo.Pull(true);
+                e.Handled = true;
+            }
+        }
+
+        private void Push(object sender, TappedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                repo.Push(e.KeyModifiers is KeyModifiers.Control);
+                e.Handled = true;
+            }
+        }
+
+        private void PushDirectlyByHotKey(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                repo.Push(true);
+                e.Handled = true;
+            }
+        }
+
+        private void StashAll(object _, TappedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                repo.StashAll(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }

@@ -27,7 +27,7 @@
     </StackPanel>
 
     <StackPanel Grid.Column="1" Orientation="Horizontal">
-      <Button Classes="icon_button" Width="32" Click="Fetch" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}">
+      <Button Classes="icon_button" Width="32" Tapped="Fetch">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Fetch}"/>
@@ -37,8 +37,9 @@
 
         <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
       </Button>
+      <Button Width="0" Height="0" Click="FetchDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}">
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Pull}"/>
@@ -48,8 +49,9 @@
 
         <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
       </Button>
+      <Button Width="0" Height="0" Click="PullDirectlyByHotKey" IsVisible="False" IsEnabled="{Binding !IsBare}" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}">
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Push">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Push}"/>
@@ -59,8 +61,9 @@
 
         <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
       </Button>
+      <Button Width="0" Height="0" Click="PushDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="StashAll" IsVisible="{Binding !IsBare}">
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="StashAll" IsVisible="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Stash}"/>

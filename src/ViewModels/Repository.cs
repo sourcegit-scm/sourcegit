@@ -820,7 +820,7 @@ namespace SourceGit.ViewModels
 
         public void Pull(bool autoStart)
         {
-            if (!CanCreatePopup())
+            if (IsBare || !CanCreatePopup())
                 return;
 
             if (_remotes.Count == 0)
