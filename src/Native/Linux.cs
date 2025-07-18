@@ -138,5 +138,10 @@ namespace SourceGit.Native
             var path = Path.Combine(localAppDataDir, "JetBrains/Toolbox/apps/fleet/bin/Fleet");
             return File.Exists(path) ? path : FindExecutable("fleet");
         }
+
+        public bool MoveFileToTrash(string file)
+        {
+            return true;
+        }
     }
 }
