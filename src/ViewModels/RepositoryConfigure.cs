@@ -213,6 +213,11 @@ namespace SourceGit.ViewModels
             SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitHub ISSUE", @"#(\d+)", link);
         }
 
+        public void AddSampleGerritChangeIdCommitTracker()
+        {
+            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gerrit Change-Id", @"(I[A-Za-z0-9]{40})", "https://gerrit.yourcompany.com/q/$1");
+        }
+
         public void AddSampleJiraIssueTracker()
         {
             SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", @"PROJ-(\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
