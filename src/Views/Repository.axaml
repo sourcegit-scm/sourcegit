@@ -83,59 +83,14 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
-
-                  <ToggleButton Grid.Column="2"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding EnableReflog, Mode=TwoWay}">
-                    <ToolTip.Tip>
-                      <TextBlock>
-                        <Run Text="{DynamicResource Text.Repository.ShowLostCommits}"/>
-                        <Run Text=" "/>
-                        <Run Text="--reflog" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-                      </TextBlock>
-                    </ToolTip.Tip>
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Reference}"/>
-                  </ToggleButton>
-                  <ToggleButton Grid.Column="3"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding EnableFirstParentInHistories, Mode=TwoWay}">
-                    <ToolTip.Tip>
-                      <TextBlock>
-                        <Run Text="{DynamicResource Text.Repository.ShowFirstParentOnly}"/>
-                        <Run Text=" "/>
-                        <Run Text="--first-parent" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-                      </TextBlock>
-                    </ToolTip.Tip>
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.FirstParentFilter}"/>
-                  </ToggleButton>
-                  <ToggleButton Grid.Column="4"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding OnlyHighlightCurrentBranchInHistories, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
-                  </ToggleButton>
-                  <ToggleButton Grid.Column="5"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
-                  </ToggleButton>
-                  <ToggleButton Grid.Column="6"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding SimplifyByDecoration, Mode=TwoWay}">
+                  <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <ToggleButton Classes="line_path"
+                                  Width="26" Height="26"
+                                  Background="Transparent"
+                                  IsChecked="{Binding SimplifyByDecoration, Mode=TwoWay}">
                       <ToolTip.Tip>
                         <TextBlock>
                           <Run Text="{DynamicResource Text.Repository.SimplifyByDecoration}"/>
@@ -145,7 +100,48 @@
                       </ToolTip.Tip>
                       <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
                     </ToggleButton>
-                  <Button Grid.Column="7"
+                    <ToggleButton Classes="line_path"
+                                  Width="26" Height="26"
+                                  Background="Transparent"
+                                  IsChecked="{Binding EnableReflog, Mode=TwoWay}">
+                      <ToolTip.Tip>
+                        <TextBlock>
+                          <Run Text="{DynamicResource Text.Repository.ShowLostCommits}"/>
+                          <Run Text=" "/>
+                          <Run Text="--reflog" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                        </TextBlock>
+                      </ToolTip.Tip>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.Reference}"/>
+                    </ToggleButton>
+                    <ToggleButton Classes="line_path"
+                                  Width="26" Height="26"
+                                  Background="Transparent"
+                                  IsChecked="{Binding EnableFirstParentInHistories, Mode=TwoWay}">
+                      <ToolTip.Tip>
+                        <TextBlock>
+                          <Run Text="{DynamicResource Text.Repository.ShowFirstParentOnly}"/>
+                          <Run Text=" "/>
+                          <Run Text="--first-parent" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                        </TextBlock>
+                      </ToolTip.Tip>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.FirstParentFilter}"/>
+                    </ToggleButton>
+                    <ToggleButton Classes="line_path"
+                                  Width="26" Height="26"
+                                  Background="Transparent"
+                                  IsChecked="{Binding OnlyHighlightCurrentBranchInHistories, Mode=TwoWay}"
+                                  ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
+                    </ToggleButton>
+                    <ToggleButton Classes="line_path"
+                                  Width="26" Height="26"
+                                  Background="Transparent"
+                                  IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
+                                  ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInGraph}">
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
+                    </ToggleButton>
+                  </StackPanel>
+                  <Button Grid.Column="3"
                           Classes="icon_button"
                           Width="26" Height="26"
                           Click="OnOpenAdvancedHistoriesOption">
