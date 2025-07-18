@@ -208,30 +208,19 @@ namespace SourceGit.Views
                     var item = new RenderItem()
                     {
                         Label = label,
-                        Brush = normalBG,
+                        Brush = decorator.Type == Models.DecoratorType.Tag ? Brushes.Gray : normalBG,
                         IsHead = isHead,
                         Decorator = decorator,
                     };
 
-                    StreamGeometry geo;
-                    switch (decorator.Type)
+                    var key = decorator.Type switch
                     {
-                        case Models.DecoratorType.CurrentBranchHead:
-                        case Models.DecoratorType.CurrentCommitHead:
-                            geo = this.FindResource("Icons.Head") as StreamGeometry;
-                            break;
-                        case Models.DecoratorType.RemoteBranchHead:
-                            geo = this.FindResource("Icons.Remote") as StreamGeometry;
-                            break;
-                        case Models.DecoratorType.Tag:
-                            item.Brush = Brushes.Gray;
-                            geo = this.FindResource("Icons.Tag") as StreamGeometry;
-                            break;
-                        default:
-                            geo = this.FindResource("Icons.Branch") as StreamGeometry;
-                            break;
-                    }
-
+                        Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead => "Icons.Head",
+                        Models.DecoratorType.RemoteBranchHead => "Icons.Remote",
+                        Models.DecoratorType.Tag => "Icons.Tag",
+                        _ => "Icons.Branch"
+                    };
+                    var geo = this.FindResource(key) as StreamGeometry;
                     var drawGeo = geo!.Clone();
                     var iconBounds = drawGeo.Bounds;
                     var translation = Matrix.CreateTranslation(-(Vector)iconBounds.Position);
