@@ -23,7 +23,7 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = 0;
+        }
 
         public static DateTimeFormat Active
         {

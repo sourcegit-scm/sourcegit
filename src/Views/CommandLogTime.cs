@@ -82,6 +82,6 @@ namespace SourceGit.Views
             return $"{log.StartTime:T} ({duration.TotalMilliseconds:G3} ms)";
         }
 
-        private Timer _refreshTimer = null;
+        private Timer _refreshTimer;
     }
 }

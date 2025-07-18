@@ -28,7 +28,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = false;
+        }
 
         public string Content
         {

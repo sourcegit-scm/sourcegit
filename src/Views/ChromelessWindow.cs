@@ -17,7 +17,7 @@ namespace SourceGit.Views
         {
             get;
             set;
-        } = false;
+        }
 
         protected override Type StyleKeyOverride => typeof(Window);
 

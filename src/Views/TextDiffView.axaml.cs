@@ -25,12 +25,12 @@ namespace SourceGit.Views
 {
     public class TextDiffViewChunk
     {
-        public double Y { get; set; } = 0.0;
-        public double Height { get; set; } = 0.0;
-        public int StartIdx { get; set; } = 0;
-        public int EndIdx { get; set; } = 0;
+        public double Y { get; set; }
+        public double Height { get; set; }
+        public int StartIdx { get; set; }
+        public int EndIdx { get; set; }
         public bool Combined { get; set; } = true;
-        public bool IsOldSide { get; set; } = false;
+        public bool IsOldSide { get; set; }
 
         public bool ShouldReplace(TextDiffViewChunk old)
         {
@@ -48,8 +48,8 @@ namespace SourceGit.Views
 
     public record TextDiffViewRange
     {
-        public int StartIdx { get; set; } = 0;
-        public int EndIdx { get; set; } = 0;
+        public int StartIdx { get; set; }
+        public int EndIdx { get; set; }
 
         public TextDiffViewRange(int startIdx, int endIdx)
         {
@@ -155,8 +155,8 @@ namespace SourceGit.Views
                 InvalidateMeasure();
             }
 
-            private bool _usePresenter = false;
-            private bool _isOld = false;
+            private readonly bool _usePresenter;
+            private readonly bool _isOld;
         }
 
         public class LineModifyTypeMargin : AbstractMargin
@@ -341,7 +341,7 @@ namespace SourceGit.Views
                 };
             }
 
-            private ThemedTextDiffPresenter _presenter = null;
+            private readonly ThemedTextDiffPresenter _presenter;
         }
 
         public class LineStyleTransformer(ThemedTextDiffPresenter presenter) : DocumentColorizingTransformer
@@ -1053,10 +1053,10 @@ namespace SourceGit.Views
             await App.CopyTextAsync(builder.ToString());
         }
 
-        private TextMate.Installation _textMate = null;
+        private TextMate.Installation _textMate;
         private TextLocation _lastSelectStart = TextLocation.Empty;
         private TextLocation _lastSelectEnd = TextLocation.Empty;
-        private LineStyleTransformer _lineStyleTransformer = null;
+        private readonly LineStyleTransformer _lineStyleTransformer;
     }
 
     public class CombinedTextDiffPresenter : ThemedTextDiffPresenter
@@ -1260,7 +1260,7 @@ namespace SourceGit.Views
                 TrySetChunk(null);
         }
 
-        private ScrollViewer _scrollViewer = null;
+        private ScrollViewer _scrollViewer;
     }
 
     public class SingleSideTextDiffPresenter : ThemedTextDiffPresenter
@@ -1510,7 +1510,7 @@ namespace SourceGit.Views
                 diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
         }
 
-        private ScrollViewer _scrollViewer = null;
+        private ScrollViewer _scrollViewer;
     }
 
     public class TextDiffViewMinimap : Control

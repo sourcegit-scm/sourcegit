@@ -7,8 +7,8 @@ namespace SourceGit.ViewModels
     public class ChangeTreeNode : ObservableObject
     {
         public string FullPath { get; set; }
-        public int Depth { get; private set; } = 0;
-        public Models.Change Change { get; set; } = null;
+        public int Depth { get; private set; }
+        public Models.Change Change { get; set; }
         public List<ChangeTreeNode> Children { get; set; } = new List<ChangeTreeNode>();
 
         public bool IsFolder

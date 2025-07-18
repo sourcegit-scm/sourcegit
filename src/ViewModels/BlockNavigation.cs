@@ -8,8 +8,8 @@ namespace SourceGit.ViewModels
     {
         public class Block
         {
-            public int Start { get; set; } = 0;
-            public int End { get; set; } = 0;
+            public int Start { get; set; }
+            public int End { get; set; }
 
             public Block(int start, int end)
             {

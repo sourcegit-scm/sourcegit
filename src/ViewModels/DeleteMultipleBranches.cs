@@ -54,7 +54,7 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private Repository _repo = null;
-        private bool _isLocal = false;
+        private readonly Repository _repo;
+        private readonly bool _isLocal;
     }
 }

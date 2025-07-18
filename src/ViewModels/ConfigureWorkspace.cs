@@ -79,7 +79,7 @@ namespace SourceGit.ViewModels
             Preferences.Instance.Workspaces.Insert(idx + 1, _selected);
         }
 
-        private Workspace _selected = null;
-        private bool _canDeleteSelected = false;
+        private Workspace _selected;
+        private bool _canDeleteSelected;
     }
 }

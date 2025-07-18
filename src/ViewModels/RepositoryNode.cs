@@ -60,7 +60,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = 0;
+        }
 
         public List<RepositoryNode> SubNodes
         {
@@ -105,9 +105,9 @@ namespace SourceGit.ViewModels
 
         private string _id = string.Empty;
         private string _name = string.Empty;
-        private bool _isRepository = false;
-        private int _bookmark = 0;
-        private bool _isExpanded = false;
+        private bool _isRepository;
+        private int _bookmark;
+        private bool _isExpanded;
         private bool _isVisible = true;
     }
 }

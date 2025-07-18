@@ -92,11 +92,11 @@ namespace SourceGit.ViewModels
             return msg;
         }
 
-        private Repository _repo = null;
+        private readonly Repository _repo;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];
-        private Models.Commit _selectedCommit = null;
-        private CommitDetail _detail = null;
-        private Dictionary<string, string> _cachedCommitFullMessage = new();
+        private Models.Commit _selectedCommit;
+        private CommitDetail _detail;
+        private readonly Dictionary<string, string> _cachedCommitFullMessage = new();
     }
 }

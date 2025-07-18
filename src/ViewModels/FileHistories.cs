@@ -42,7 +42,6 @@ namespace SourceGit.ViewModels
             _file = file;
             _revision = revision;
             _isDiffMode = prevIsDiffMode;
-            _viewContent = null;
 
             RefreshViewContent();
         }
@@ -165,11 +164,11 @@ namespace SourceGit.ViewModels
             ViewContent = new DiffContext(_repo.FullPath, option, _viewContent as DiffContext);
         }
 
-        private Repository _repo = null;
-        private string _file = null;
-        private Models.Commit _revision = null;
-        private bool _isDiffMode = false;
-        private object _viewContent = null;
+        private readonly Repository _repo;
+        private readonly string _file;
+        private readonly Models.Commit _revision;
+        private bool _isDiffMode;
+        private object _viewContent;
     }
 
     public class FileHistoriesCompareRevisions : ObservableObject
@@ -231,12 +230,12 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private Repository _repo = null;
-        private string _file = null;
-        private Models.Commit _startPoint = null;
-        private Models.Commit _endPoint = null;
+        private readonly Repository _repo;
+        private readonly string _file;
+        private Models.Commit _startPoint;
+        private Models.Commit _endPoint;
         private List<Models.Change> _changes = [];
-        private DiffContext _viewContent = null;
+        private DiffContext _viewContent;
     }
 
     public class FileHistories : ObservableObject
@@ -331,11 +330,11 @@ namespace SourceGit.ViewModels
             return msg;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private bool _isLoading = true;
         private bool _prevIsDiffMode = true;
-        private List<Models.Commit> _commits = null;
-        private Dictionary<string, string> _fullCommitMessages = new();
-        private object _viewContent = null;
+        private List<Models.Commit> _commits;
+        private readonly Dictionary<string, string> _fullCommitMessages = new();
+        private object _viewContent;
     }
 }

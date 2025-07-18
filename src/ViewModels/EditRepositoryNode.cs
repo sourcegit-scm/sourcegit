@@ -54,10 +54,10 @@ namespace SourceGit.ViewModels
             return Task.FromResult(true);
         }
 
-        private RepositoryNode _node = null;
-        private string _id = null;
-        private string _name = null;
-        private bool _isRepository = false;
-        private int _bookmark = 0;
+        private readonly RepositoryNode _node;
+        private string _id;
+        private string _name;
+        private bool _isRepository;
+        private int _bookmark;
     }
 }

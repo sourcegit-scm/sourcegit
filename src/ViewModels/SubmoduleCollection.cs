@@ -9,10 +9,10 @@ namespace SourceGit.ViewModels
     public class SubmoduleTreeNode : ObservableObject
     {
         public string FullPath { get; private set; } = string.Empty;
-        public int Depth { get; private set; } = 0;
-        public Models.Submodule Module { get; private set; } = null;
+        public int Depth { get; private set; }
+        public Models.Submodule Module { get; private set; }
         public List<SubmoduleTreeNode> Children { get; private set; } = [];
-        public int Counter = 0;
+        public int Counter;
 
         public bool IsFolder
         {
@@ -116,7 +116,7 @@ namespace SourceGit.ViewModels
             collection.Add(subFolder);
         }
 
-        private bool _isExpanded = false;
+        private bool _isExpanded;
     }
 
     public class SubmoduleCollectionAsTree

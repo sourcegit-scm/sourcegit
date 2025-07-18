@@ -161,7 +161,7 @@ namespace SourceGit.ViewModels
             return added;
         }
 
-        private HashSet<string> _managed = new();
-        private Models.ScanDir _selected = null;
+        private readonly HashSet<string> _managed = new();
+        private Models.ScanDir _selected;
     }
 }

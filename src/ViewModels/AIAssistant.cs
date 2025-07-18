@@ -69,12 +69,12 @@ namespace SourceGit.ViewModels
             }, _cancel.Token);
         }
 
-        private readonly Repository _repo = null;
-        private Models.OpenAIService _service = null;
-        private List<Models.Change> _changes = null;
-        private Action<string> _onApply = null;
-        private CancellationTokenSource _cancel = null;
-        private bool _isGenerating = false;
+        private readonly Repository _repo;
+        private readonly Models.OpenAIService _service;
+        private readonly List<Models.Change> _changes;
+        private readonly Action<string> _onApply;
+        private CancellationTokenSource _cancel;
+        private bool _isGenerating;
         private string _text = string.Empty;
     }
 }

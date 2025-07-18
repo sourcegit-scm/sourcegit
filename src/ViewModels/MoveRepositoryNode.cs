@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
         public RepositoryNode Target
         {
             get;
-        } = null;
+        }
 
         public List<RepositoryNode> Rows
         {
@@ -64,6 +64,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private RepositoryNode _selected = null;
+        private RepositoryNode _selected;
     }
 }

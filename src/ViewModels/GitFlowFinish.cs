@@ -19,19 +19,19 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public bool AutoPush
         {
             get;
             set;
-        } = false;
+        }
 
         public bool KeepBranch
         {
             get;
             set;
-        } = false;
+        }
 
         public GitFlowFinish(Repository repo, Models.Branch branch, Models.GitFlowBranchType type)
         {

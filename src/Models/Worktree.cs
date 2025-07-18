@@ -9,8 +9,8 @@ namespace SourceGit.Models
         public string FullPath { get; set; } = string.Empty;
         public string RelativePath { get; set; } = string.Empty;
         public string Head { get; set; } = string.Empty;
-        public bool IsBare { get; set; } = false;
-        public bool IsDetached { get; set; } = false;
+        public bool IsBare { get; set; }
+        public bool IsDetached { get; set; }
 
         public bool IsLocked
         {
@@ -35,6 +35,6 @@ namespace SourceGit.Models
             }
         }
 
-        private bool _isLocked = false;
+        private bool _isLocked;
     }
 }

@@ -75,9 +75,9 @@ namespace SourceGit.ViewModels
             SelectedPage = visible.Count > 0 ? visible[0] : null;
         }
 
-        private Launcher _launcher = null;
+        private readonly Launcher _launcher;
         private List<LauncherPage> _visiblePages = [];
         private string _searchFilter = string.Empty;
-        private LauncherPage _selectedPage = null;
+        private LauncherPage _selectedPage;
     }
 }

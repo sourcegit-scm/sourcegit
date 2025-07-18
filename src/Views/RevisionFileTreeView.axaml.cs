@@ -387,8 +387,8 @@ namespace SourceGit.Views
             });
         }
 
-        private List<ViewModels.RevisionFileTreeNode> _tree = [];
-        private bool _disableSelectionChangingEvent = false;
-        private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
+        private readonly List<ViewModels.RevisionFileTreeNode> _tree = [];
+        private readonly List<ViewModels.RevisionFileTreeNode> _searchResult = [];
+        private bool _disableSelectionChangingEvent;
     }
 }

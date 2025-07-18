@@ -112,8 +112,8 @@ namespace SourceGit.Models
             return builder.ToString();
         }
 
-        private readonly Change _workingCopyChange = null;
-        private readonly bool _isUnstaged = false;
+        private readonly Change _workingCopyChange;
+        private readonly bool _isUnstaged;
         private readonly string _path;
         private readonly string _orgPath = string.Empty;
         private readonly string _extra = string.Empty;

@@ -86,6 +86,6 @@ namespace SourceGit.ViewModels
             return ret;
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
     }
 }

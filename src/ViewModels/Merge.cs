@@ -24,7 +24,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = false;
+        }
 
         public Merge(Repository repo, Models.Branch source, string into, bool forceFastForward)
         {
@@ -99,7 +99,7 @@ namespace SourceGit.ViewModels
             return Models.MergeMode.Supported[preferredMergeModeIdx];
         }
 
-        private readonly Repository _repo = null;
+        private readonly Repository _repo;
         private readonly string _sourceName;
     }
 }

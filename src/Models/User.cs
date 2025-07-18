@@ -45,7 +45,7 @@ namespace SourceGit.Models
             return $"{Name} <{Email}>";
         }
 
-        private static ConcurrentDictionary<string, User> _caches = new ConcurrentDictionary<string, User>();
+        private static readonly ConcurrentDictionary<string, User> _caches = new ConcurrentDictionary<string, User>();
         private readonly int _hash;
     }
 }

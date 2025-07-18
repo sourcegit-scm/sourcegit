@@ -6,7 +6,7 @@ namespace SourceGit.Models
 {
     public class RevisionBinaryFile
     {
-        public long Size { get; set; } = 0;
+        public long Size { get; set; }
     }
 
     public class RevisionImageFile
@@ -37,7 +37,7 @@ namespace SourceGit.Models
 
     public class RevisionSubmodule
     {
-        public Commit Commit { get; set; } = null;
-        public CommitFullMessage FullMessage { get; set; } = null;
+        public Commit Commit { get; set; }
+        public CommitFullMessage FullMessage { get; set; }
     }
 }

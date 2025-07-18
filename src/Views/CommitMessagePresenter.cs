@@ -299,7 +299,7 @@ namespace SourceGit.Views
             }
         }
 
-        private Models.InlineElement _lastHover = null;
-        private Dictionary<string, Models.Commit> _inlineCommits = new();
+        private Models.InlineElement _lastHover;
+        private readonly Dictionary<string, Models.Commit> _inlineCommits = new();
     }
 }

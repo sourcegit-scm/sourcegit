@@ -497,6 +497,6 @@ namespace SourceGit.Views
             ToolTip.SetTip(control, tip);
         }
 
-        private bool _disableSelectionChangingEvent = false;
+        private bool _disableSelectionChangingEvent;
     }
 }

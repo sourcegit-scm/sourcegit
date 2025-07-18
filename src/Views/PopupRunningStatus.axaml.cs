@@ -63,6 +63,6 @@ namespace SourceGit.Views
             ProgressBar.IsIndeterminate = false;
         }
 
-        private bool _isUnloading = false;
+        private bool _isUnloading;
     }
 }

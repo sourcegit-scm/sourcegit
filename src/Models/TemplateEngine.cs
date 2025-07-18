@@ -9,31 +9,31 @@ namespace SourceGit.Models
     {
         private class Context(Branch branch, IReadOnlyList<Change> changes)
         {
-            public Branch branch = branch;
-            public IReadOnlyList<Change> changes = changes;
+            public readonly Branch branch = branch;
+            public readonly IReadOnlyList<Change> changes = changes;
         }
 
         private class Text(string text)
         {
-            public string text = text;
+            public readonly string text = text;
         }
 
         private class Variable(string name)
         {
-            public string name = name;
+            public readonly string name = name;
         }
 
         private class SlicedVariable(string name, int count)
         {
-            public string name = name;
-            public int count = count;
+            public readonly string name = name;
+            public readonly int count = count;
         }
 
         private class RegexVariable(string name, Regex regex, string replacement)
         {
-            public string name = name;
-            public Regex regex = regex;
-            public string replacement = replacement;
+            public readonly string name = name;
+            public readonly Regex regex = regex;
+            public readonly string replacement = replacement;
         }
 
         private const char ESCAPE = '\\';
@@ -342,7 +342,7 @@ namespace SourceGit.Models
             return variable.regex.Replace(str, variable.replacement);
         }
 
-        private int _pos = 0;
+        private int _pos;
         private char[] _chars = [];
         private readonly List<object> _tokens = [];
 

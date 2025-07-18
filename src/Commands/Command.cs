@@ -12,7 +12,7 @@ namespace SourceGit.Commands
     {
         public class Result
         {
-            public bool IsSuccess { get; set; } = false;
+            public bool IsSuccess { get; set; }
             public string StdOut { get; set; } = string.Empty;
             public string StdErr { get; set; } = string.Empty;
 
@@ -27,7 +27,7 @@ namespace SourceGit.Commands
         }
 
         public string Context { get; set; } = string.Empty;
-        public string WorkingDirectory { get; set; } = null;
+        public string WorkingDirectory { get; set; }
         public EditorType Editor { get; set; } = EditorType.CoreEditor;
         public string SSHKey { get; set; } = string.Empty;
         public string Args { get; set; } = string.Empty;
@@ -35,7 +35,7 @@ namespace SourceGit.Commands
         // Only used in `ExecAsync` mode.
         public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public bool RaiseError { get; set; } = true;
-        public Models.ICommandLog Log { get; set; } = null;
+        public Models.ICommandLog Log { get; set; }
 
         public void Exec()
         {
