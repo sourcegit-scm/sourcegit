@@ -39,5 +39,21 @@ namespace SourceGit.Converters
                 else
                     return Models.Bookmarks.Brushes[bookmark];
             });
+
+        public static readonly FuncValueConverter<int, IBrush> ToBadgeBackground =
+            new FuncValueConverter<int, IBrush>(count =>
+            {
+                if (count > 0)
+                    return Application.Current?.FindResource("Brush.Badge.Active") as IBrush;
+                return Application.Current?.FindResource("Brush.Badge") as IBrush;
+            });
+
+        public static readonly FuncValueConverter<int, IBrush> ToBadgeForeground =
+            new FuncValueConverter<int, IBrush>(count =>
+            {
+                if (count > 0)
+                    return Application.Current?.FindResource("Brush.BadgeFG.Active") as IBrush;
+                return Application.Current?.FindResource("Brush.BadgeFG") as IBrush;
+            });
     }
 }
