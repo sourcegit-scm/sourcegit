@@ -1635,6 +1635,9 @@ namespace SourceGit.ViewModels
 
                 if (!string.IsNullOrEmpty(gitTemplate))
                 {
+                    if (!Path.IsPathRooted(gitTemplate))
+                        gitTemplate = Native.OS.GetAbsPath(_repo.FullPath, gitTemplate);
+
                     var friendlyName = gitTemplate;
                     if (!OperatingSystem.IsWindows())
                     {
