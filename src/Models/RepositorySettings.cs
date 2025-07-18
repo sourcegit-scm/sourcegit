@@ -14,23 +14,11 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
-        public bool SimplifyByDecoration
+        public HistoryShowFlags HistoryShowFlags
         {
             get;
             set;
-        } = false;
-
-        public bool EnableReflog
-        {
-            get;
-            set;
-        } = false;
-
-        public bool EnableFirstParentInHistories
-        {
-            get;
-            set;
-        } = false;
+        } = HistoryShowFlags.None;
 
         public bool EnableTopoOrderInHistories
         {

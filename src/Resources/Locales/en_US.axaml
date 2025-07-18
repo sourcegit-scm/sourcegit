@@ -668,9 +668,10 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Path</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
-  <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Show first-parent only</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Decorated commits only</x:String>
+  <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">First-parent only</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">SHOW FLAGS</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Show lost commits</x:String>
-  <x:String x:Key="Text.Repository.SimplifyByDecoration" xml:space="preserve">Show Decorate Commits Only</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Show Submodules as Tree</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">SKIP</x:String>

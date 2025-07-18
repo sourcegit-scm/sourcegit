@@ -672,7 +672,9 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">路径</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">仅在当前分支中查找</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">仅显示分支、标签所引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">仅显示合并提交中的第一个提交</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">显示内容</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">显示丢失引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>
