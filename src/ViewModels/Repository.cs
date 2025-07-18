@@ -91,6 +91,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
+        public bool SimplifyByDecoration
+        {
+            get => _settings.SimplifyByDecoration;
+            set
+            {
+                if (value != _settings.SimplifyByDecoration)
+                {
+                    _settings.SimplifyByDecoration = value;
+                    OnPropertyChanged();
+                    Task.Run(RefreshCommits);
+                }
+            }
+        }
+
         public bool EnableReflog
         {
             get => _settings.EnableReflog;
@@ -1271,6 +1285,9 @@ namespace SourceGit.ViewModels
                 builder.Append("--reflog ");
             if (_settings.EnableFirstParentInHistories)
                 builder.Append("--first-parent ");
+            // only show commits with decorators
+            if (_settings.SimplifyByDecoration)
+                builder.Append("--simplify-by-decoration ");
 
             var filters = _settings.BuildHistoriesFilter();
             if (string.IsNullOrEmpty(filters))
