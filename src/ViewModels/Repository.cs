@@ -546,6 +546,13 @@ namespace SourceGit.ViewModels
 
             _settings.LastCommitMessage = _workingCopy.CommitMessage;
 
+            var sharedIssueTrackers = new List<Models.IssueTrackerRule>();
+            foreach (var rule in _settings.IssueTrackerRules)
+                if (rule.IsShared)
+                    sharedIssueTrackers.Add(rule);
+
+            _settings.IssueTrackerRules.RemoveAll(sharedIssueTrackers);
+
             try
             {
                 using var stream = File.Create(Path.Combine(_gitDir, "sourcegit.settings"));
@@ -704,6 +711,10 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
+                var sharedIssueTrackers = await new Commands.SharedIssueTracker(_fullpath).ReadAllAsync().ConfigureAwait(false);
+                if (sharedIssueTrackers.Count > 0)
+                    Dispatcher.UIThread.Post(() => _settings.IssueTrackerRules.InsertRange(0, sharedIssueTrackers));
+
                 var config = await new Commands.Config(_fullpath).ReadAllAsync().ConfigureAwait(false);
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
 
