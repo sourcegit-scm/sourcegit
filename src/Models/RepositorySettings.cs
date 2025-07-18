@@ -14,6 +14,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool SimplifyByDecoration
+        {
+            get;
+            set;
+        } = false;
+
         public bool EnableReflog
         {
             get;
