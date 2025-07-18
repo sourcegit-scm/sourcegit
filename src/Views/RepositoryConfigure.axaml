@@ -324,6 +324,7 @@
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGitLabMergeRequest}" Command="{Binding AddSampleGitLabMergeRequestTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGiteeIssue}" Command="{Binding AddSampleGiteeIssueTracker}"/>
                       <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGiteePullRequest}" Command="{Binding AddSampleGiteePullRequestTracker}"/>
+                      <MenuItem Header="{DynamicResource Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit}" Command="{Binding AddSampleGerritChangeIdCommitTracker}"/>
                     </MenuFlyout>
                   </Button.Flyout>
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
