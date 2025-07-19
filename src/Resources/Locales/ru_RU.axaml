@@ -74,6 +74,10 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Сбросить ${0}$ к ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Отслеживать ветку...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Сравнение веток</x:String>
+  <x:String x:Key="Text.BranchTree.Local" xml:space="preserve">ЛОКАЛЬНЫЙ</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">УДАЛЁННЫЙ</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">ОТСЛЕЖИВАНИЕ</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL-АДРЕС</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Недопустимая основная ветка!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ОТМЕНА</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Сбросить родительскую ревизию</x:String>
@@ -127,9 +131,18 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Субъект</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Бросить...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Редактировать...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Исправить в родительском...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Интерактивное перемещение ${0}$ в ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Имзенить комментарий...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Втиуснуть в родительский...</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Влить ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Выложить ${0}$ в ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Переместить ${0}$ в ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Сбросить ${0}$ к ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Отменить ревизию</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Изменить комментарий</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатки...</x:String>
@@ -195,6 +208,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Новое правило</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Проблема с регулярным выражением:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Имя правила:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Опубликовать это правило в файле .issuetracker</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Адрес результата:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Пожалуйста, используйте $1, $2 для доступа к значениям групп регулярных выражений.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
@@ -316,6 +330,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Все локальные изменения в рабочей копии.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Изменения:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Включить игнорируемые файлы</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Включить неотслеживаемые файлы</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} изменений будут отменены</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Вы не можете отменить это действие!!!</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Закладка:</x:String>
@@ -545,6 +560,7 @@
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Для работы программы требуется версия Git (&gt;= 2.25.1)</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Путь установки</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Разрешить верификацию HTTP SSL</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Использовать git-credential-libsecret вместо git-credential-manager</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Имя пользователя</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Общее имя пользователя git</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Версия Git</x:String>
@@ -656,7 +672,9 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Путь</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Текущая ветка</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Только оформленные ревизии</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Показывать только первый родительский</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">ПОКАЗЫВАТЬ ФЛАГИ</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Показывать потерянные ревизии</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Показывать подмодули как дерево</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показывать метки как катлог</x:String>
