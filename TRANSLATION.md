@@ -532,9 +532,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.CustomAction.WaitForExit
 - Text.Configure.Git.PreferredMergeMode
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
-- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -1002,20 +1002,6 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-99.88%25-yellow)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing keys in zh_CN.axaml</summary>
-
-- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
-
-</details>
-
-### ![zh__TW](https://img.shields.io/badge/zh__TW-99.88%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
