@@ -76,6 +76,9 @@
                               Orientation="Horizontal"
                               HorizontalAlignment="Right"
                               IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                    <Button Width="0" Height="0"
+                            Click="OnPopupSureByHotKey"
+                            HotKey="Enter"/>
                     <Button Classes="flat primary"
                             Width="100" Height="28"
                             Padding="0"
@@ -83,7 +86,6 @@
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Sure}"
                             Click="OnPopupSure"
-                            HotKey="Enter"
                             ToolTip.Tip="Enter"/>
                     <Button Classes="flat"
                             Width="100" Height="28"

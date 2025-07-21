@@ -1,8 +1,10 @@
 using System;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 
 namespace SourceGit.Views
 {
@@ -11,6 +13,32 @@ namespace SourceGit.Views
         public LauncherPage()
         {
             InitializeComponent();
+        }
+
+        private void OnPopupSureByHotKey(object sender, RoutedEventArgs e)
+        {
+            var children = this.GetLogicalDescendants();
+            foreach (var child in children)
+            {
+                if (child is TextBox { IsFocused: true } textBox)
+                {
+                    var fake = new KeyEventArgs()
+                    {
+                        RoutedEvent = KeyDownEvent,
+                        Route = RoutingStrategies.Direct,
+                        Source = textBox,
+                        Key = Key.Enter,
+                        KeyModifiers = KeyModifiers.None,
+                        PhysicalKey = PhysicalKey.Enter,
+                    };
+
+                    textBox.RaiseEvent(fake);
+                    e.Handled = false;
+                    return;
+                }
+            }
+
+            OnPopupSure(sender, e);
         }
 
         private void OnPopupSure(object _, RoutedEventArgs e)

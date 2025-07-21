@@ -19,10 +19,5 @@
     </StackPanel>
 
     <v:CommitMessageTextBox Height="120" Margin="8,5,8,0" Text="{Binding Message, Mode=TwoWay}"/>
-
-    <TextBlock Margin="8"
-               Text="{DynamicResource Text.PopupEnterKeyTip}"
-               TextWrapping="Wrap"
-               Foreground="{DynamicResource Brush.FG2}"/>
   </StackPanel>
 </UserControl>
