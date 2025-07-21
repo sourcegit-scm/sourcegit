@@ -199,6 +199,7 @@
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">默认合并方式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增匹配Azure DevOps规则</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">新增匹配Gerrit Change-Id规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增匹配Gitee议题规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增匹配Gitee合并请求规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">新增匹配GitHub Issue规则</x:String>
