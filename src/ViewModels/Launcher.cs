@@ -289,7 +289,7 @@ namespace SourceGit.ViewModels
 
                         return;
                     }
-                    
+
                     App.Quit(0);
                 }
 
