@@ -411,6 +411,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Fermer les autres onglets</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Fermer les onglets à droite</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copier le chemin vers le dépôt</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToNewWindow" xml:space="preserve">Déplacer vers une nouvelle fenêtre</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyToNewWindow" xml:space="preserve">Copier vers une nouvelle fenêtre</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Dépôts</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Coller</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">il y a {0} jours</x:String>

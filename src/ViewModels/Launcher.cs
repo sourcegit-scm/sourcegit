@@ -495,6 +495,24 @@ namespace SourceGit.ViewModels
 
             if (page.Node.IsRepository)
             {
+                var moveToNewWindow = new MenuItem();
+                moveToNewWindow.Header = App.Text("PageTabBar.Tab.MoveToNewWindow");
+                moveToNewWindow.Click += (_, e) =>
+                {
+                    MoveToNewWindow(page);
+                    e.Handled = true;
+                };
+                menu.Items.Add(moveToNewWindow);
+
+                var copyToNewWindow = new MenuItem();
+                copyToNewWindow.Header = App.Text("PageTabBar.Tab.CopyToNewWindow");
+                copyToNewWindow.Click += (_, e) =>
+                {
+                    CopyToNewWindow(page);
+                    e.Handled = true;
+                };
+                menu.Items.Add(copyToNewWindow);
+
                 var bookmark = new MenuItem();
                 bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                 bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
@@ -532,6 +550,20 @@ namespace SourceGit.ViewModels
             }
 
             return menu;
+        }
+
+        public void MoveToNewWindow(LauncherPage page)
+        {
+            CloseTab(page);
+
+            var newWindow = new Views.Launcher() { DataContext = new Launcher(page.Node.Id) };
+            newWindow.Show();
+        }
+
+        public void CopyToNewWindow(LauncherPage page)
+        {
+            var newWindow = new Views.Launcher() { DataContext = new Launcher(page.Node.Id) };
+            newWindow.Show();
         }
 
         private string GetRepositoryGitDir(string repo)

@@ -503,6 +503,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Закрыть другие вкладки</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Закрыть вкладки справа</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Копировать путь репозитория</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToNewWindow" xml:space="preserve">Переместить в новое окно</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyToNewWindow" xml:space="preserve">Копировать в новое окно</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Репозитории</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Вставить</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} дней назад</x:String>

@@ -373,6 +373,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Fechar Outras Abas</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Fechar Abas à Direita</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copiar Caminho do Repositório</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToNewWindow" xml:space="preserve">Mover para Nova Janela</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyToNewWindow" xml:space="preserve">Copiar para Nova Janela</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositórios</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Colar</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} dias atrás</x:String>

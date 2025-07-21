@@ -410,6 +410,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">பிற தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">வலதுபுறத்தில் உள்ள தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">களஞ்சிய பாதை நகலெடு</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToNewWindow" xml:space="preserve">புதிய சாளரத்திற்கு நகர்த்து</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyToNewWindow" xml:space="preserve">புதிய சாளரத்திற்கு நகலெடு</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">களஞ்சியங்கள்</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">ஒட்டு</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} நாட்களுக்கு முன்பு</x:String>
