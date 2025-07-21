@@ -318,9 +318,8 @@ namespace SourceGit.ViewModels
                     return;
                 
                 var filePath = Path.Combine(_repo.FullPath, ".issuetracker");
-                var content = await File.ReadAllTextAsync(filePath);
 
-                if (!string.IsNullOrEmpty(content))
+                if (!string.IsNullOrEmpty(await File.ReadAllTextAsync(filePath)))
                     return;
                 
                 if (File.Exists(filePath))
