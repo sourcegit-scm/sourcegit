@@ -3138,7 +3138,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
                 foreach (var remote in remotes)
-                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                    await new Commands.Fetch(_fullpath, remote, false, false, _settings.EnableFetchDepth ? _settings.FetchDepthValue : 0) { RaiseError = false }.RunAsync();
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }

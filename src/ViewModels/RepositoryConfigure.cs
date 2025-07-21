@@ -101,6 +101,58 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool EnableFetchDepth
+        {
+            get => _repo.Settings.EnableFetchDepth;
+            set
+            {
+                if (_repo.Settings.EnableFetchDepth != value)
+                {
+                    _repo.Settings.EnableFetchDepth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int FetchDepthValue
+        {
+            get => _repo.Settings.FetchDepthValue;
+            set
+            {
+                if (_repo.Settings.FetchDepthValue != value)
+                {
+                    _repo.Settings.FetchDepthValue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool EnablePullDepth
+        {
+            get => _repo.Settings.EnablePullDepth;
+            set
+            {
+                if (_repo.Settings.EnablePullDepth != value)
+                {
+                    _repo.Settings.EnablePullDepth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int PullDepthValue
+        {
+            get => _repo.Settings.PullDepthValue;
+            set
+            {
+                if (_repo.Settings.PullDepthValue != value)
+                {
+                    _repo.Settings.PullDepthValue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public AvaloniaList<Models.CommitTemplate> CommitTemplates
         {
             get => _repo.Settings.CommitTemplates;

@@ -60,19 +60,20 @@ namespace SourceGit.ViewModels
 
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
+            var depth = _repo.Settings.EnableFetchDepth ? _repo.Settings.FetchDepthValue : 0;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
             if (FetchAllRemotes)
             {
                 foreach (var remote in _repo.Remotes)
-                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
+                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, depth)
                         .Use(log)
                         .RunAsync();
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, depth)
                     .Use(log)
                     .RunAsync();
             }

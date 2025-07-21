@@ -230,6 +230,30 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool EnableFetchDepth
+        {
+            get;
+            set;
+        } = false;
+
+        public int FetchDepthValue
+        {
+            get;
+            set;
+        } = 1;
+
+        public bool EnablePullDepth
+        {
+            get;
+            set;
+        } = false;
+
+        public int PullDepthValue
+        {
+            get;
+            set;
+        } = 1;
+
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
             var map = new Dictionary<string, FilterMode>();

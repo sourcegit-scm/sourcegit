@@ -193,6 +193,8 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Preferred Merge Mode</x:String>
+  <x:String x:Key="Text.Configure.Git.FetchDepth" xml:space="preserve">Fetch depth</x:String>
+  <x:String x:Key="Text.Configure.Git.PullDepth" xml:space="preserve">Pull depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Add Azure DevOps Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Add Gerrit Change-Id Commit Rule</x:String>
