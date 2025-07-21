@@ -314,16 +314,15 @@ namespace SourceGit.ViewModels
             {
                 await sharedTracker.RemoveAsync(rule);
 
-                if ((await sharedTracker.ReadAllAsync()).Count != 0)
+                if (await sharedTracker.HasAnyAsync())
                     return;
-                
+
                 var filePath = Path.Combine(_repo.FullPath, ".issuetracker");
 
-                if (!string.IsNullOrEmpty(await File.ReadAllTextAsync(filePath)))
+                if (!File.Exists(filePath) || !string.IsNullOrEmpty(await File.ReadAllTextAsync(filePath)))
                     return;
-                
-                if (File.Exists(filePath))
-                    File.Delete(filePath);
+
+                File.Delete(filePath);
             }
         }
 
