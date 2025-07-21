@@ -208,6 +208,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Nueva Regla</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Expresión Regex para Incidencias:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Nombre de la Regla:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Compartir esta regla en el archivo .issuetracker</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Resultante:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Por favor, use $1, $2 para acceder a los valores de los grupos regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
@@ -329,6 +330,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Todos los cambios locales en la copia de trabajo.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Cambios:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Incluir archivos ignorados</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} cambios serán descartados</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">¡No puedes deshacer esta acción!</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Marcador:</x:String>
@@ -558,6 +560,7 @@
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Se requiere Git (&gt;= 2.25.1) para esta aplicación</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Ruta de instalación</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Habilitar verificación HTTP SSL</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Usar git-credential-libsecret en lugar de git-credential-manager</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nombre de usuario</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nombre global del usuario git</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Versión de Git</x:String>
@@ -669,7 +672,9 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Ruta</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Rama Actual</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Sólo los commits decorados</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Mostrar sólo el primer padre</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">MOSTRAR FLAGS</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Mostrar commits perdidos</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Mostrar Submódulos como Árbol</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Mostrar Etiquetas como Árbol</x:String>
