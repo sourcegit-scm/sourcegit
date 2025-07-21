@@ -415,6 +415,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Закрити інші вкладки</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Закрити вкладки праворуч</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Копіювати шлях до сховища</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToNewWindow" xml:space="preserve">Перемістити в нове вікно</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyToNewWindow" xml:space="preserve">Копіювати в нове вікно</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Сховища</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Вставити</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} днів тому</x:String>

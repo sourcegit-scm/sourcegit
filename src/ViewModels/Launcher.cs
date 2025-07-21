@@ -50,7 +50,15 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _switcher, value);
         }
 
-        public Launcher(string startupRepo)
+        public bool IsSecondaryWindow
+        {
+            get => _isSecondaryWindow;
+            set => SetProperty(ref _isSecondaryWindow, value);
+        }
+
+        public event Action OnRequestClose;
+
+        public Launcher(string startupRepo, bool isSecondaryWindow = false)
         {
             _ignoreIndexChange = true;
 
@@ -116,6 +124,8 @@ namespace SourceGit.ViewModels
 
             if (string.IsNullOrEmpty(_title))
                 UpdateTitle();
+
+            IsSecondaryWindow = isSecondaryWindow;
         }
 
         public void Quit()
@@ -273,6 +283,13 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
+                    if (IsSecondaryWindow)
+                    {
+                        OnRequestClose?.Invoke();
+
+                        return;
+                    }
+
                     App.Quit(0);
                 }
 
@@ -495,6 +512,24 @@ namespace SourceGit.ViewModels
 
             if (page.Node.IsRepository)
             {
+                var moveToNewWindow = new MenuItem();
+                moveToNewWindow.Header = App.Text("PageTabBar.Tab.MoveToNewWindow");
+                moveToNewWindow.Click += (_, e) =>
+                {
+                    MoveToNewWindow(page);
+                    e.Handled = true;
+                };
+                menu.Items.Add(moveToNewWindow);
+
+                var copyToNewWindow = new MenuItem();
+                copyToNewWindow.Header = App.Text("PageTabBar.Tab.CopyToNewWindow");
+                copyToNewWindow.Click += (_, e) =>
+                {
+                    CopyToNewWindow(page);
+                    e.Handled = true;
+                };
+                menu.Items.Add(copyToNewWindow);
+
                 var bookmark = new MenuItem();
                 bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                 bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
@@ -532,6 +567,21 @@ namespace SourceGit.ViewModels
             }
 
             return menu;
+        }
+
+        public void MoveToNewWindow(LauncherPage page)
+        {
+            NewWindow(page);
+            CloseTab(page);
+        }
+
+        public void CopyToNewWindow(LauncherPage page) => NewWindow(page);
+
+        private void NewWindow(LauncherPage page)
+        {
+            var newWindow = new Views.Launcher() { DataContext = new Launcher(page.Node.Id, true) };
+            newWindow.RegisterOnRequestClose();
+            newWindow.Show();
         }
 
         private string GetRepositoryGitDir(string repo)
@@ -611,5 +661,6 @@ namespace SourceGit.ViewModels
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
         private IDisposable _switcher = null;
+        private bool _isSecondaryWindow = false;
     }
 }
