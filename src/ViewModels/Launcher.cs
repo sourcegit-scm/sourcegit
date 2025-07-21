@@ -284,9 +284,13 @@ namespace SourceGit.ViewModels
                 else
                 {
                     if (IsSecondaryWindow)
+                    {
                         OnRequestClose?.Invoke();
-                    else
-                        App.Quit(0);
+
+                        return;
+                    }
+                    
+                    App.Quit(0);
                 }
 
                 return;
