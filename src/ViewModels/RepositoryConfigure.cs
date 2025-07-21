@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -305,10 +306,24 @@ namespace SourceGit.ViewModels
             if (_selectedIssueTrackerRule is not { } rule)
                 return;
 
+            var sharedTracker = new Commands.SharedIssueTracker(_repo.FullPath);
+
             if (rule.IsShared)
-                await new Commands.SharedIssueTracker(_repo.FullPath).AddAsync(rule);
+                await sharedTracker.AddAsync(rule);
             else
-                await new Commands.SharedIssueTracker(_repo.FullPath).RemoveAsync(rule);
+            {
+                await sharedTracker.RemoveAsync(rule);
+
+                if (await sharedTracker.HasAnyAsync())
+                    return;
+
+                var filePath = Path.Combine(_repo.FullPath, ".issuetracker");
+
+                if (!File.Exists(filePath) || !string.IsNullOrEmpty(await File.ReadAllTextAsync(filePath)))
+                    return;
+
+                File.Delete(filePath);
+            }
         }
 
         public void AddNewCustomAction()

@@ -58,6 +58,30 @@ namespace SourceGit.Commands
             return rs;
         }
 
+        public async Task<bool> HasAnyAsync()
+        {
+            if (!File.Exists(_file))
+                return false;
+
+            Args = $"config -f {_file.Quoted()} -l";
+
+            var output = await ReadToEndAsync().ConfigureAwait(false);
+
+            if (output.IsSuccess)
+                foreach (var line in output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var parts = line.Split('=', 2);
+
+                    if (parts.Length < 2)
+                        continue;
+
+                    if (parts[0].StartsWith("issuetracker.", StringComparison.Ordinal))
+                        return true;
+                }
+
+            return false;
+        }
+
         public async Task<bool> AddAsync(Models.IssueTrackerRule rule)
         {
             Args = $"config -f {_file.Quoted()} issuetracker.{rule.Name.Quoted()}.regex {rule.RegexString.Quoted()}";
