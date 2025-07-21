@@ -674,31 +674,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.89%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.BranchTree.Local
-- Text.BranchTree.Remote
-- Text.BranchTree.Tracking
-- Text.BranchTree.URL
-- Text.CommitCM.InteractiveRebase
-- Text.CommitCM.InteractiveRebase.Drop
-- Text.CommitCM.InteractiveRebase.Edit
-- Text.CommitCM.InteractiveRebase.Fixup
-- Text.CommitCM.InteractiveRebase.Manually
-- Text.CommitCM.InteractiveRebase.Reword
-- Text.CommitCM.InteractiveRebase.Squash
-- Text.CommitCM.Rebase
-- Text.CommitCM.Reset
-- Text.Configure.IssueTracker.Share
-- Text.Discard.IncludeUntracked
-- Text.Preferences.Git.UseLibsecret
-- Text.Repository.ShowDecoratedCommitsOnly
-- Text.Repository.ShowFlags
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-82.28%25-yellow)
 
