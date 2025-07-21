@@ -153,7 +153,6 @@ namespace SourceGit.Commands
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off -c credential.helper=manager ";
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
 
@@ -167,10 +166,8 @@ namespace SourceGit.Commands
 
             // Force using this app as SSH askpass program
             var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
-            if (!OperatingSystem.IsLinux())
-                start.Environment.Add("DISPLAY", "required");
             start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
-            start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
+            start.Environment.Add("SSH_ASKPASS_REQUIRE", "force");
             start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
 
             // If an SSH private key was provided, sets the environment.
@@ -184,16 +181,27 @@ namespace SourceGit.Commands
                 start.Environment.Add("LC_ALL", "C");
             }
 
-            // Force using this app as git editor.
-            start.Arguments += Editor switch
-            {
-                EditorType.CoreEditor => $"""-c core.editor="{selfExecFile.Quoted()} --core-editor" """,
-                EditorType.RebaseEditor => $"""-c core.editor="{selfExecFile.Quoted()} --rebase-message-editor" -c sequence.editor="{selfExecFile.Quoted()} --rebase-todo-editor" -c rebase.abbreviateCommands=true """,
-                _ => "-c core.editor=true ",
-            };
+            var builder = new StringBuilder();
+            builder
+                .Append("--no-pager -c core.quotepath=off -c credential.helper=")
+                .Append(Native.OS.CredentialHelper)
+                .Append(' ');
 
-            // Append command args
-            start.Arguments += Args;
+            switch (Editor)
+            {
+                case EditorType.CoreEditor:
+                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --core-editor" """);
+                    break;
+                case EditorType.RebaseEditor:
+                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --rebase-message-editor" -c sequence.editor="\"{selfExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """);
+                    break;
+                default:
+                    builder.Append("-c core.editor=true ");
+                    break;
+            }
+
+            builder.Append(Args);
+            start.Arguments = builder.ToString();
 
             // Working directory
             if (!string.IsNullOrEmpty(WorkingDirectory))

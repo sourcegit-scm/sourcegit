@@ -48,5 +48,14 @@ namespace SourceGit.Views
             await dialog.ShowDialog(this);
             e.Handled = true;
         }
+
+        private async void OnIssueTrackerIsSharedChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.RepositoryConfigure configure)
+            {
+                await configure.ChangeIssueTrackerShareModeAsync();
+                e.Handled = true;
+            }
+        }
     }
 }

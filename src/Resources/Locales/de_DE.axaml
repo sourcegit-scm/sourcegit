@@ -74,6 +74,10 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Setze ${0}$ zurück auf ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Setze verfolgten Branch...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Vergleich</x:String>
+  <x:String x:Key="Text.BranchTree.Local" xml:space="preserve">LOKAL</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTE</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">VERFOLGT</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Ungültiger Upstream!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ABBRECHEN</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Auf Vorgänger-Revision zurücksetzen</x:String>
@@ -83,6 +87,9 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Zeige als Datei- und Ordnerliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Zeige als Pfadliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Zeige als Dateisystembaum</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Ändere URL des Submoduls</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Branch auschecken</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Commit auschecken</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
@@ -124,9 +131,18 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Betreff</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interakives Rebase</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Entfernen...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Bearbeiten...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Fixup in den Vorgänger...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Interaktives Rebase von ${0}$ auf ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Umformulieren...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash in den Vorgänger...</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge in ${0}$ hinein</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ zu ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ auf ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Setze ${0}$ auf ${1}$ zurück</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Umformulieren</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Als Patch speichern...</x:String>
@@ -192,6 +208,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Neue Regel</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Ticketnummer Regex-Ausdruck:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Name:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Regel per Datei .issuetracker teilen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Ergebnis-URL:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Verwende bitte $1, $2 um auf Regex-Gruppenwerte zuzugreifen.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
@@ -312,7 +329,8 @@
   <x:String x:Key="Text.Discard" xml:space="preserve">Änderungen verwerfen</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Alle Änderungen in der Arbeitskopie.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Änderungen:</x:String>
-  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Ignorierte Dateien inkludieren</x:String>
+  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Ignorierte Dateien einbeziehen</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Nicht-verfolgte Dateien einbeziehen</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Insgesamt {0} Änderungen werden verworfen</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Du kannst das nicht rückgängig machen!!!</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Lesezeichen:</x:String>
@@ -468,6 +486,9 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Alle Änderungen committen</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategie:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Ziele:</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Submodul verschieben</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Verschieben zu:</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submodul:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Verschiebe Repository Knoten</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Wähle Vorgänger-Knoten für:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
@@ -539,6 +560,7 @@
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Diese App setzt Git (&gt;= 2.25.1) voraus</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Installationspfad</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Aktiviere HTTP SSL Verifizierung</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">git-credential-libsecret statt git-credential-manager verwenden</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Benutzername</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Globaler Git Benutzername</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git Version</x:String>
@@ -650,7 +672,9 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Pfad</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Aktueller Branch</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Nur dekorierte Commits</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Nur ersten Vorgänger anzeigen</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">ANZEIGE-FLAGS</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Verlorene Commits anzeigen</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Submodule als Baum anzeigen</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Zeige Tags als Baum</x:String>
@@ -697,6 +721,11 @@
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Diese Version überspringen</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Es sind momentan keine Updates verfügbar.</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Branch des Submoduls setzen</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Submodul:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Aktueller:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New" xml:space="preserve">Ändern zu:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New.Tip" xml:space="preserve">Optional. Leerlassen für Standard</x:String>
   <x:String x:Key="Text.SetUpstream" xml:space="preserve">Setze verfolgten Branch</x:String>
   <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">Upstream Verfolgung aufheben</x:String>
@@ -709,7 +738,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inklusive nicht-verfolgter Dateien</x:String>
+  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Nicht-verfolgte Dateien einbeziehen</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Informationen zu diesem Stash</x:String>
   <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Modus:</x:String>
@@ -733,18 +762,24 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Submodul hinzufügen</x:String>
+  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">BRANCH</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relativen Pfad</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialisiere Submodul</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Untergeordnete Submodule fetchen</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">Verlauf</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Verschieben zu</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Öffne Submodul Repository</x:String>
   <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Relativer Pfad:</x:String>
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Relativer Pfad um dieses Submodul zu speichern.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Submodul löschen</x:String>
+  <x:String x:Key="Text.Submodule.SetBranch" xml:space="preserve">Branch setzen</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">URL ändern</x:String>
   <x:String x:Key="Text.Submodule.Status" xml:space="preserve">STATUS</x:String>
   <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">geändert</x:String>
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">nicht initialisiert</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">Revision geändert</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">nicht gemerged</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Update</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Tag-Namen kopieren</x:String>
@@ -758,6 +793,7 @@
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialisiere wenn nötig</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Rekursiv</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodul:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Auf verfolgten Remote-Branch des Submoduls aktualisieren</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Logs</x:String>
   <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">ALLES LÖSCHEN</x:String>
@@ -799,7 +835,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">DATEI KONFLIKTE GELÖST</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">MEINE VERSION VERWENDEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">IHRE VERSION VERWENDEN</x:String>
-  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN INKLUDIEREN</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN EINBEZIEHEN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">KEINE BISHERIGEN COMMIT-NACHRICHTEN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">KEINE COMMIT TEMPLATES</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Autor zurücksetzen</x:String>

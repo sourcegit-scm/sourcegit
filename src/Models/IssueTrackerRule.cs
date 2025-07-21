@@ -6,6 +6,12 @@ namespace SourceGit.Models
 {
     public class IssueTrackerRule : ObservableObject
     {
+        public bool IsShared
+        {
+            get => _isShared;
+            set => SetProperty(ref _isShared, value);
+        }
+
         public string Name
         {
             get => _name;
@@ -70,6 +76,7 @@ namespace SourceGit.Models
             }
         }
 
+        private bool _isShared;
         private string _name;
         private string _regexString;
         private string _urlTemplate;

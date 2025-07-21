@@ -27,6 +27,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _updateAll, value);
         }
 
+        public bool IsEnableInitVisible
+        {
+            get;
+            set;
+        } = true;
+
         public bool EnableInit
         {
             get;
@@ -53,12 +59,14 @@ namespace SourceGit.ViewModels
             {
                 _updateAll = false;
                 SelectedSubmodule = selected;
+                IsEnableInitVisible = selected.Status == Models.SubmoduleStatus.NotInited;
                 EnableInit = selected.Status == Models.SubmoduleStatus.NotInited;
                 HasPreSelectedSubmodule = true;
             }
             else if (repo.Submodules.Count > 0)
             {
                 SelectedSubmodule = repo.Submodules[0];
+                IsEnableInitVisible = true;
                 HasPreSelectedSubmodule = false;
             }
         }

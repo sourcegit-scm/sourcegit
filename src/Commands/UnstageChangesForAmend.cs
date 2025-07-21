@@ -44,7 +44,7 @@ namespace SourceGit.Commands
                     _patchBuilder.Append(c.Path);
                 }
 
-                _patchBuilder.AppendLine();
+                _patchBuilder.Append('\n');
             }
         }
 

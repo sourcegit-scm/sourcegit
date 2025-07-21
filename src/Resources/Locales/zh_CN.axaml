@@ -74,6 +74,10 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
+  <x:String x:Key="Text.BranchTree.Local" xml:space="preserve">本地</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">远程</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">上游分支</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">远程地址</x:String>
   <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">跟踪的上游分支不存在或已删除！</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重置文件到上一版本</x:String>
@@ -127,7 +131,13 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i) ${0}$ 到 ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i)</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">丢弃...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">编辑...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">修复至父提交...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">交互式变基 ${0}$ 到 ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">修改提交信息...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">合并至父提交...</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合并(merge)此提交至 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合并(merge)...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送(push) ${0}$ 到 ${1}$</x:String>
@@ -137,7 +147,6 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">编辑提交信息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合并此提交到上一个提交</x:String>
-  <x:String x:Key="Text.CommitCM.SquashCommitsSinceThis" xml:space="preserve">合并之后的提交到 ${0}$</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">变更对比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">个文件发生变更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
@@ -199,6 +208,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">新增自定义规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">匹配ISSUE的正则表达式 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">规则名 ：</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">写入 .issuetracker 文件共享此规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">为ISSUE生成的URL链接 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在URL中使用$1，$2等变量填入正则表达式匹配的内容</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
@@ -317,9 +327,10 @@
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">请选择需要对比的文件</x:String>
   <x:String x:Key="Text.DirHistories" xml:space="preserve">目录内容变更历史</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">放弃更改确认</x:String>
-  <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本地址未提交的修改。</x:String>
+  <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本仓库未提交的修改。</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">变更 ：</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">包括所有已忽略的文件</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包括未跟踪的文件</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">总计{0}项选中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支持回退，请确认后继续！！！</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
@@ -549,6 +560,7 @@
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">本软件要求GIT最低版本为2.25.1</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">启用HTTP SSL验证</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">使用 git-credential-libsecret 替代 git-credential-manager</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">默认GIT用户名</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git 版本</x:String>
@@ -660,7 +672,9 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">路径</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">仅在当前分支中查找</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">仅显示分支、标签所引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">仅显示合并提交中的第一个提交</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">显示内容</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">显示丢失引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>

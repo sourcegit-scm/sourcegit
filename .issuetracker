@@ -1,0 +1,3 @@
+[issuetracker "Github ISSUE"]
+	regex = "#(\\d+)"
+	url = https://github.com/sourcegit-scm/sourcegit/issues/$1

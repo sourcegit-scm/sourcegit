@@ -5,6 +5,12 @@ namespace SourceGit.ViewModels
 {
     public class DiscardAllMode
     {
+        public bool IncludeUntracked
+        {
+            get;
+            set;
+        } = false;
+
         public bool IncludeIgnored
         {
             get;
@@ -65,7 +71,7 @@ namespace SourceGit.ViewModels
             Use(log);
 
             if (Mode is DiscardAllMode all)
-                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeIgnored, log);
+                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeUntracked, all.IncludeIgnored, log);
             else
                 await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
 

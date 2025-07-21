@@ -295,6 +295,17 @@ namespace SourceGit.ViewModels
             SelectedIssueTrackerRule = null;
         }
 
+        public async Task ChangeIssueTrackerShareModeAsync()
+        {
+            if (_selectedIssueTrackerRule is not { } rule)
+                return;
+
+            if (rule.IsShared)
+                await new Commands.SharedIssueTracker(_repo.FullPath).AddAsync(rule);
+            else
+                await new Commands.SharedIssueTracker(_repo.FullPath).RemoveAsync(rule);
+        }
+
         public void AddNewCustomAction()
         {
             SelectedCustomAction = _repo.Settings.AddNewCustomAction();

@@ -355,7 +355,7 @@
 
             <ContentControl.DataTemplates>
               <DataTemplate DataType="m:IssueTrackerRule">
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,32">
                   <TextBlock Grid.Row="0" Text="{DynamicResource Text.Configure.IssueTracker.RuleName}"/>
                   <TextBox Grid.Row="1" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
@@ -369,6 +369,12 @@
                   <TextBlock Grid.Row="4" Margin="0,12,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate}"/>
                   <TextBox Grid.Row="5" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding URLTemplate, Mode=TwoWay}"/>
                   <TextBlock Grid.Row="6" Margin="0,2,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+
+                  <CheckBox Grid.Row="7" Grid.Column="1"
+                            Margin="0,4,0,0"
+                            Content="{DynamicResource Text.Configure.IssueTracker.Share}"
+                            IsChecked="{Binding IsShared, Mode=TwoWay}"
+                            Click="OnIssueTrackerIsSharedChanged"/>
                 </Grid>
               </DataTemplate>
             </ContentControl.DataTemplates>

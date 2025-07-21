@@ -68,11 +68,18 @@ namespace SourceGit.Views
             }
         }
 
-        private string GetDisplayText(ViewModels.CommandLog log)
+        private static string GetDisplayText(ViewModels.CommandLog log)
         {
             var endTime = log.IsComplete ? log.EndTime : DateTime.Now;
-            var duration = (endTime - log.StartTime).ToString(@"hh\:mm\:ss\.fff");
-            return $"{log.StartTime:T} ({duration})";
+            var duration = endTime - log.StartTime;
+
+            if (duration.TotalMinutes >= 1)
+                return $"{log.StartTime:T} ({duration.TotalMinutes:G3} minutes)";
+
+            if (duration.TotalSeconds >= 1)
+                return $"{log.StartTime:T} ({duration.TotalSeconds:G3} s)";
+
+            return $"{log.StartTime:T} ({duration.TotalMilliseconds:G3} ms)";
         }
 
         private Timer _refreshTimer = null;

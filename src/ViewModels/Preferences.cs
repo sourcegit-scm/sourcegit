@@ -310,6 +310,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _gitDefaultCloneDir, value);
         }
 
+        public bool UseLibsecretInsteadOfGCM
+        {
+            get => Native.OS.CredentialHelper.Equals("libsecret", StringComparison.Ordinal);
+            set
+            {
+                var helper = value ? "libsecret" : "manager";
+                if (OperatingSystem.IsLinux() && !Native.OS.CredentialHelper.Equals(helper, StringComparison.Ordinal))
+                {
+                    Native.OS.CredentialHelper = helper;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public int ShellOrTerminal
         {
             get => _shellOrTerminal;

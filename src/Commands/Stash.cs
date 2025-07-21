@@ -20,7 +20,8 @@ namespace SourceGit.Commands
                 builder.Append("--include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m ").Append(message.Quoted());
+            if (!string.IsNullOrEmpty(message))
+                builder.Append("-m ").Append(message.Quoted());
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -32,8 +33,10 @@ namespace SourceGit.Commands
             builder.Append("stash push --include-untracked ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m ").Append(message).Append(" -- ");
+            if (!string.IsNullOrEmpty(message))
+                builder.Append("-m ").Append(message.Quoted()).Append(' ');
 
+            builder.Append("-- ");
             foreach (var c in changes)
                 builder.Append(c.Path.Quoted()).Append(' ');
 
@@ -47,7 +50,8 @@ namespace SourceGit.Commands
             builder.Append("stash push --include-untracked --pathspec-from-file=").Append(pathspecFromFile.Quoted()).Append(" ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m ").Append(message.Quoted());
+            if (!string.IsNullOrEmpty(message))
+                builder.Append("-m ").Append(message.Quoted());
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -59,7 +63,8 @@ namespace SourceGit.Commands
             builder.Append("stash push --staged ");
             if (keepIndex)
                 builder.Append("--keep-index ");
-            builder.Append("-m ").Append(message.Quoted());
+            if (!string.IsNullOrEmpty(message))
+                builder.Append("-m ").Append(message.Quoted());
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
         }

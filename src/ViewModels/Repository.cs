@@ -91,29 +91,14 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
-        public bool EnableReflog
+        public Models.HistoryShowFlags HistoryShowFlags
         {
-            get => _settings.EnableReflog;
+            get => _settings.HistoryShowFlags;
             set
             {
-                if (value != _settings.EnableReflog)
+                if (value != _settings.HistoryShowFlags)
                 {
-                    _settings.EnableReflog = value;
-                    OnPropertyChanged();
-                    Task.Run(RefreshCommits);
-                }
-            }
-        }
-
-        public bool EnableFirstParentInHistories
-        {
-            get => _settings.EnableFirstParentInHistories;
-            set
-            {
-                if (value != _settings.EnableFirstParentInHistories)
-                {
-                    _settings.EnableFirstParentInHistories = value;
-                    OnPropertyChanged();
+                    _settings.HistoryShowFlags = value;
                     Task.Run(RefreshCommits);
                 }
             }
@@ -546,6 +531,13 @@ namespace SourceGit.ViewModels
 
             _settings.LastCommitMessage = _workingCopy.CommitMessage;
 
+            var sharedIssueTrackers = new List<Models.IssueTrackerRule>();
+            foreach (var rule in _settings.IssueTrackerRules)
+                if (rule.IsShared)
+                    sharedIssueTrackers.Add(rule);
+
+            _settings.IssueTrackerRules.RemoveAll(sharedIssueTrackers);
+
             try
             {
                 using var stream = File.Create(Path.Combine(_gitDir, "sourcegit.settings"));
@@ -704,6 +696,10 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
+                var sharedIssueTrackers = await new Commands.SharedIssueTracker(_fullpath).ReadAllAsync().ConfigureAwait(false);
+                if (sharedIssueTrackers.Count > 0)
+                    Dispatcher.UIThread.Post(() => _settings.IssueTrackerRules.InsertRange(0, sharedIssueTrackers));
+
                 var config = await new Commands.Config(_fullpath).ReadAllAsync().ConfigureAwait(false);
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
 
@@ -820,7 +816,7 @@ namespace SourceGit.ViewModels
 
         public void Pull(bool autoStart)
         {
-            if (!CanCreatePopup())
+            if (IsBare || !CanCreatePopup())
                 return;
 
             if (_remotes.Count == 0)
@@ -1256,10 +1252,14 @@ namespace SourceGit.ViewModels
             else
                 builder.Append("--date-order ");
 
-            if (_settings.EnableReflog)
+            if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
                 builder.Append("--reflog ");
-            if (_settings.EnableFirstParentInHistories)
+
+            if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
                 builder.Append("--first-parent ");
+
+            if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
+                builder.Append("--simplify-by-decoration ");
 
             var filters = _settings.BuildHistoriesFilter();
             if (string.IsNullOrEmpty(filters))
@@ -1268,7 +1268,7 @@ namespace SourceGit.ViewModels
                 builder.Append(filters);
 
             var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).GetResultAsync().Result;
-            var graph = Models.CommitGraph.Parse(commits, _settings.EnableFirstParentInHistories);
+            var graph = Models.CommitGraph.Parse(commits, _settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
 
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1794,7 +1794,7 @@ namespace SourceGit.ViewModels
             return menu;
         }
 
-        public ContextMenu CreateContextMenuForHistoriesPage()
+        public ContextMenu CreateContextMenuForHistoryAdvancedOption()
         {
             var layout = new MenuItem();
             layout.Header = App.Text("Repository.HistoriesLayout");
@@ -1819,6 +1819,43 @@ namespace SourceGit.ViewModels
             {
                 Preferences.Instance.UseTwoColumnsLayoutInHistories = false;
                 ev.Handled = true;
+            };
+
+            var showFlags = new MenuItem();
+            showFlags.Header = App.Text("Repository.ShowFlags");
+            showFlags.IsEnabled = false;
+
+            var reflog = new MenuItem();
+            reflog.Header = App.Text("Repository.ShowLostCommits");
+            reflog.Tag = "--reflog";
+            if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
+                reflog.Icon = App.CreateMenuIcon("Icons.Check");
+            reflog.Click += (_, e) =>
+            {
+                ToggleHistoryShowFlag(Models.HistoryShowFlags.Reflog);
+                e.Handled = true;
+            };
+
+            var firstParentOnly = new MenuItem();
+            firstParentOnly.Header = App.Text("Repository.ShowFirstParentOnly");
+            firstParentOnly.Tag = "--first-parent";
+            if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
+                firstParentOnly.Icon = App.CreateMenuIcon("Icons.Check");
+            firstParentOnly.Click += (_, e) =>
+            {
+                ToggleHistoryShowFlag(Models.HistoryShowFlags.FirstParentOnly);
+                e.Handled = true;
+            };
+
+            var simplifyByDecoration = new MenuItem();
+            simplifyByDecoration.Header = App.Text("Repository.ShowDecoratedCommitsOnly");
+            simplifyByDecoration.Tag = "--simplify-by-decoration";
+            if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
+                simplifyByDecoration.Icon = App.CreateMenuIcon("Icons.Check");
+            simplifyByDecoration.Click += (_, e) =>
+            {
+                ToggleHistoryShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
+                e.Handled = true;
             };
 
             var order = new MenuItem();
@@ -1861,6 +1898,11 @@ namespace SourceGit.ViewModels
             menu.Items.Add(layout);
             menu.Items.Add(horizontal);
             menu.Items.Add(vertical);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(showFlags);
+            menu.Items.Add(reflog);
+            menu.Items.Add(firstParentOnly);
+            menu.Items.Add(simplifyByDecoration);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(order);
             menu.Items.Add(dateOrder);
@@ -3061,6 +3103,14 @@ namespace SourceGit.ViewModels
             }
 
             MatchedFilesForSearching = matched;
+        }
+
+        private void ToggleHistoryShowFlag(Models.HistoryShowFlags flag)
+        {
+            if (_settings.HistoryShowFlags.HasFlag(flag))
+                HistoryShowFlags -= flag;
+            else
+                HistoryShowFlags |= flag;
         }
 
         private async void AutoFetchImpl(object sender)

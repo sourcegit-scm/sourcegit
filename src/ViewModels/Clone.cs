@@ -106,7 +106,7 @@ namespace SourceGit.ViewModels
             var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs)
                 .Use(log)
                 .ExecAsync();
-            if (succ)
+            if (!succ)
                 return false;
 
             var path = _parentFolder;

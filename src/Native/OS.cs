@@ -58,6 +58,12 @@ namespace SourceGit.Native
             private set;
         } = new Version(0, 0, 0);
 
+        public static string CredentialHelper
+        {
+            get;
+            set;
+        } = "manager";
+
         public static string ShellOrTerminal
         {
             get;
