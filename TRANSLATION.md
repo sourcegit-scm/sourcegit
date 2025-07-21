@@ -6,11 +6,25 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.88%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-82.16%25-yellow)
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-99.88%25-yellow)
+
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-82.06%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -64,6 +78,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.Git.PreferredMergeMode
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -170,7 +185,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-87.44%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-87.34%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -211,6 +226,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.InputControls.Edit
 - Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Tag
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -285,7 +301,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-82.16%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-82.06%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -340,6 +356,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.Git.PreferredMergeMode
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -445,7 +462,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-75.12%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-75.03%25-yellow)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -517,6 +534,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGiteeIssue
 - Text.Configure.IssueTracker.AddSampleGiteePullRequest
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -665,9 +683,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.88%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-82.28%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-82.18%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -722,6 +747,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.Git.PreferredMergeMode
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -826,7 +852,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-83.45%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-83.35%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -879,6 +905,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.InputControls.Edit
 - Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Tag
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
 - Text.ConfigureCustomActionControls
 - Text.ConfigureCustomActionControls.CheckedValue
@@ -975,6 +1002,20 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.88%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.88%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
+
+</details>
