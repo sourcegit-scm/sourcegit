@@ -1,0 +1,69 @@
+<Solution>
+	<Folder Name="/.github/workflows/">
+		<File Path=".github/workflows/build.yml"/>
+		<File Path=".github/workflows/ci.yml"/>
+		<File Path=".github/workflows/format-check.yml"/>
+		<File Path=".github/workflows/localization-check.yml"/>
+		<File Path=".github/workflows/package.yml"/>
+		<File Path=".github/workflows/release.yml"/>
+	</Folder>
+
+	<Folder Name="/build/resources/_common/applications/">
+		<File Path="build/resources/_common/applications/sourcegit.desktop"/>
+	</Folder>
+
+	<Folder Name="/build/resources/_common/icons/">
+		<File Path="build/resources/_common/icons/sourcegit.png"/>
+	</Folder>
+
+	<Folder Name="/build/resources/_common/">
+		<File Path="build/resources/_common/sourcegit"/>
+	</Folder>
+
+	<Folder Name="/build/resources/app/">
+		<File Path="build/resources/app/App.icns"/>
+		<File Path="build/resources/app/App.plist"/>
+	</Folder>
+
+	<Folder Name="/build/resources/appimage/">
+		<File Path="build/resources/appimage/sourcegit"/>
+		<File Path="build/resources/appimage/sourcegit.appdata.xml"/>
+	</Folder>
+
+	<Folder Name="/build/resources/deb/DEBIAN/">
+		<File Path="build/resources/deb/DEBIAN/control"/>
+		<File Path="build/resources/deb/DEBIAN/preinst"/>
+		<File Path="build/resources/deb/DEBIAN/prerm"/>
+	</Folder>
+
+	<Folder Name="/build/resources/rpm/SPECS/">
+		<File Path="build/resources/rpm/SPECS/build.spec"/>
+	</Folder>
+
+	<Folder Name="/build/scripts/">
+		<File Path="build/scripts/localization-check.js"/>
+		<File Path="build/scripts/package.linux.sh"/>
+		<File Path="build/scripts/package.osx-app.sh"/>
+		<File Path="build/scripts/package.windows.sh"/>
+	</Folder>
+
+	<Folder Name="/build/">
+		<File Path="build/README.md"/>
+	</Folder>
+
+	<Folder Name="/src/">
+		<Project Path="src/SourceGit.csproj" />
+	</Folder>
+
+	<Folder Name="/files/">
+		<File Path=".editconfig"/>
+		<File Path=".gitattributes"/>
+		<File Path=".gitignore"/>
+		<File Path=".issuetracker"/>
+		<File Path="global.json"/>
+		<File Path="LICENSE"/>
+		<File Path="README.md"/>
+		<File Path="THIRD-PARTY-LICENSES.md"/>
+		<File Path="TRANSLATION.md"/>
+	</Folder>
+</Solution>
