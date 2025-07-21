@@ -1,0 +1,4 @@
+#!/bin/bash
+
+eval `ssh-agent -s`
+/opt/sourcegit/sourcegit $@
