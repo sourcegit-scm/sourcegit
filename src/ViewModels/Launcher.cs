@@ -50,7 +50,15 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _switcher, value);
         }
 
-        public Launcher(string startupRepo)
+        public bool IsSecondaryWindow
+        {
+            get => _isSecondaryWindow;
+            set => SetProperty(ref _isSecondaryWindow, value);
+        }
+
+        public event Action OnRequestClose;
+
+        public Launcher(string startupRepo, bool isSecondaryWindow = false)
         {
             _ignoreIndexChange = true;
 
@@ -116,6 +124,8 @@ namespace SourceGit.ViewModels
 
             if (string.IsNullOrEmpty(_title))
                 UpdateTitle();
+
+            IsSecondaryWindow = isSecondaryWindow;
         }
 
         public void Quit()
@@ -273,7 +283,10 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    App.Quit(0);
+                    if (IsSecondaryWindow)
+                        OnRequestClose?.Invoke();
+                    else
+                        App.Quit(0);
                 }
 
                 return;
@@ -554,15 +567,16 @@ namespace SourceGit.ViewModels
 
         public void MoveToNewWindow(LauncherPage page)
         {
+            NewWindow(page);
             CloseTab(page);
-
-            var newWindow = new Views.Launcher() { DataContext = new Launcher(page.Node.Id) };
-            newWindow.Show();
         }
 
-        public void CopyToNewWindow(LauncherPage page)
+        public void CopyToNewWindow(LauncherPage page) => NewWindow(page);
+
+        private void NewWindow(LauncherPage page)
         {
-            var newWindow = new Views.Launcher() { DataContext = new Launcher(page.Node.Id) };
+            var newWindow = new Views.Launcher() { DataContext = new Launcher(page.Node.Id, true) };
+            newWindow.RegisterOnRequestClose();
             newWindow.Show();
         }
 
@@ -643,5 +657,6 @@ namespace SourceGit.ViewModels
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
         private IDisposable _switcher = null;
+        private bool _isSecondaryWindow = false;
     }
 }

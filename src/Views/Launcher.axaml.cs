@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -83,6 +84,12 @@ namespace SourceGit.Views
             }
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        }
+
+        public void RegisterOnRequestClose()
+        {
+            if (DataContext is ViewModels.Launcher vm)
+                vm.OnRequestClose += () => Dispatcher.UIThread.Post(Close);
         }
 
         public void BringToTop()
