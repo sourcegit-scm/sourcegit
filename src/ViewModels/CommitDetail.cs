@@ -764,7 +764,7 @@ namespace SourceGit.ViewModels
         private async Task<Models.InlineElementCollector> ParseInlinesInMessageAsync(string message)
         {
             var inlines = new Models.InlineElementCollector();
-            if (_repo.Settings.IssueTrackerRules is { Count: > 0 } rules)
+            if (_repo.IssueTrackers is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
                     rule.Matches(inlines, message);

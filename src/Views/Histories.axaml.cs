@@ -94,13 +94,13 @@ namespace SourceGit.Views
             set => SetValue(BisectProperty, value);
         }
 
-        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
-            AvaloniaProperty.Register<Histories, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTracker>> IssueTrackersProperty =
+            AvaloniaProperty.Register<Histories, AvaloniaList<Models.IssueTracker>>(nameof(IssueTrackers));
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
-            get => GetValue(IssueTrackerRulesProperty);
-            set => SetValue(IssueTrackerRulesProperty, value);
+            get => GetValue(IssueTrackersProperty);
+            set => SetValue(IssueTrackersProperty, value);
         }
 
         public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =

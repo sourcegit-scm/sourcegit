@@ -1,10 +1,9 @@
 ﻿using System.Text.RegularExpressions;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
-    public class IssueTrackerRule : ObservableObject
+    public class IssueTracker : ObservableObject
     {
         public bool IsShared
         {

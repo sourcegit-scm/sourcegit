@@ -457,6 +457,12 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
+        {
+            get;
+            private set;
+        } = new AvaloniaList<Models.IssueTracker>();
+
         public AvaloniaList<CommandLog> Logs
         {
             get;
@@ -529,17 +535,9 @@ namespace SourceGit.ViewModels
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
             Logs.Clear();
 
-            _settings.LastCommitMessage = _workingCopy.CommitMessage;
-
-            var sharedIssueTrackers = new List<Models.IssueTrackerRule>();
-            foreach (var rule in _settings.IssueTrackerRules)
-                if (rule.IsShared)
-                    sharedIssueTrackers.Add(rule);
-
-            _settings.IssueTrackerRules.RemoveAll(sharedIssueTrackers);
-
             try
             {
+                _settings.LastCommitMessage = _workingCopy.CommitMessage;
                 using var stream = File.Create(Path.Combine(_gitDir, "sourcegit.settings"));
                 JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
             }
@@ -547,6 +545,7 @@ namespace SourceGit.ViewModels
             {
                 // Ignore
             }
+
             _autoFetchTimer.Dispose();
             _autoFetchTimer = null;
 
@@ -684,6 +683,51 @@ namespace SourceGit.ViewModels
             return log;
         }
 
+        public async Task<Models.IssueTracker> AddIssueTrackerAsync(string name, string regex, string url)
+        {
+            var rule = new Models.IssueTracker()
+            {
+                IsShared = false,
+                Name = name,
+                RegexString = regex,
+                URLTemplate = url,
+            };
+
+            var succ = await new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker").AddAsync(rule);
+            if (succ)
+            {
+                IssueTrackers.Add(rule);
+                return rule;
+            }
+
+            return null;
+        }
+
+        public async Task RemoveIssueTrackerAsync(Models.IssueTracker rule)
+        {
+            var storage = rule.IsShared ? $"{_fullpath}/.issuetracker" : $"{_gitDir}/sourcegit.issuetracker";
+            var succ = await new Commands.IssueTracker(_fullpath, storage).RemoveAsync(rule);
+            if (succ)
+                IssueTrackers.Remove(rule);
+        }
+
+        public async Task ChangeIssueTrackerShareModeAsync(Models.IssueTracker rule)
+        {
+            var shared = new Commands.IssueTracker(_fullpath, $"{_fullpath}/.issuetracker");
+            var local = new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker");
+
+            if (rule.IsShared)
+            {
+                await local.RemoveAsync(rule);
+                await shared.AddAsync(rule);
+            }
+            else
+            {
+                await local.AddAsync(rule);
+                await shared.RemoveAsync(rule);
+            }
+        }
+
         public void RefreshAll()
         {
             Task.Run(RefreshCommits);
@@ -696,9 +740,13 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var sharedIssueTrackers = await new Commands.SharedIssueTracker(_fullpath).ReadAllAsync().ConfigureAwait(false);
-                if (sharedIssueTrackers.Count > 0)
-                    Dispatcher.UIThread.Post(() => _settings.IssueTrackerRules.InsertRange(0, sharedIssueTrackers));
+                var sharedIssueTrackers = await new Commands.IssueTracker(_fullpath, $"{_fullpath}/.issuetracker").ReadAllAsync(true).ConfigureAwait(false);
+                var localIssueTrackers = await new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker").ReadAllAsync(false).ConfigureAwait(false);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    IssueTrackers.AddRange(sharedIssueTrackers);
+                    IssueTrackers.AddRange(localIssueTrackers);
+                });
 
                 var config = await new Commands.Config(_fullpath).ReadAllAsync().ConfigureAwait(false);
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);

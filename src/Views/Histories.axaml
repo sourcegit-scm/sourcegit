@@ -141,7 +141,7 @@
                                               Foreground="{DynamicResource Brush.FG1}"
                                               LinkForeground="{DynamicResource Brush.Link}"
                                               Subject="{Binding Subject}"
-                                              IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
+                                              IssueTrackers="{Binding $parent[v:Histories].IssueTrackers}"
                                               FontWeight="{Binding FontWeight}"
                                               Opacity="{Binding Opacity}"/>
                   </Grid>

@@ -97,9 +97,9 @@ namespace SourceGit.ViewModels
             set;
         } = true;
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
-            get => _repo.Settings.IssueTrackerRules;
+            get => _repo.IssueTrackers;
         }
 
         public bool IsLoading
@@ -213,7 +213,7 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
 
-            var saveFile = Path.Combine(_repo.GitDir, "sourcegit_rebase_jobs.json");
+            var saveFile = Path.Combine(_repo.GitDir, "sourcegit.interactive_rebase");
             var collection = new Models.InteractiveRebaseJobCollection();
             collection.OrigHead = _repo.CurrentBranch.Head;
             collection.Onto = On.SHA;

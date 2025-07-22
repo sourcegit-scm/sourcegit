@@ -112,15 +112,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedCommitTemplate, value);
         }
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
-            get => _repo.Settings.IssueTrackerRules;
+            get => _repo.IssueTrackers;
         }
 
-        public Models.IssueTrackerRule SelectedIssueTrackerRule
+        public Models.IssueTracker SelectedIssueTracker
         {
-            get => _selectedIssueTrackerRule;
-            set => SetProperty(ref _selectedIssueTrackerRule, value);
+            get => _selectedIssueTracker;
+            set => SetProperty(ref _selectedIssueTracker, value);
         }
 
         public List<string> AvailableOpenAIServices
@@ -197,118 +197,34 @@ namespace SourceGit.ViewModels
             SelectedCommitTemplate = null;
         }
 
-        public void AddSampleGitHubIssueTracker()
+        public List<string> GetRemoteVisitUrls()
         {
-            var link = "https://github.com/username/repository/issues/$1";
+            var outs = new List<string>();
             foreach (var remote in _repo.Remotes)
             {
-                if (remote.URL.Contains("github.com", System.StringComparison.Ordinal) &&
-                    remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/issues/$1";
-                    break;
-                }
+                if (remote.TryGetVisitURL(out var url))
+                    outs.Add(url);
             }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitHub ISSUE", @"#(\d+)", link);
+            return outs;
         }
 
-        public void AddSampleGerritChangeIdCommitTracker()
+        public async Task AddIssueTrackerAsync(string name, string regex, string url)
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gerrit Change-Id", @"(I[A-Za-z0-9]{40})", "https://gerrit.yourcompany.com/q/$1");
+            SelectedIssueTracker = await _repo.AddIssueTrackerAsync(name, regex, url);
         }
 
-        public void AddSampleJiraIssueTracker()
+        public async Task RemoveIssueTrackerAsync()
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", @"PROJ-(\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
-        }
+            if (_selectedIssueTracker is { } rule)
+                await _repo.RemoveIssueTrackerAsync(rule);
 
-        public void AddSampleAzureWorkItemTracker()
-        {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", @"#(\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
-        }
-
-        public void AddSampleGitLabIssueTracker()
-        {
-            var link = "https://gitlab.com/username/repository/-/issues/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/-/issues/$1";
-                    break;
-                }
-            }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab ISSUE", @"#(\d+)", link);
-        }
-
-        public void AddSampleGitLabMergeRequestTracker()
-        {
-            var link = "https://gitlab.com/username/repository/-/merge_requests/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/-/merge_requests/$1";
-                    break;
-                }
-            }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab MR", @"!(\d+)", link);
-        }
-
-        public void AddSampleGiteeIssueTracker()
-        {
-            var link = "https://gitee.com/username/repository/issues/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
-                    remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/issues/$1";
-                    break;
-                }
-            }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee ISSUE", @"#([0-9A-Z]{6,10})", link);
-        }
-
-        public void AddSampleGiteePullRequestTracker()
-        {
-            var link = "https://gitee.com/username/repository/pulls/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
-                    remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/pulls/$1";
-                }
-            }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee Pull Request", @"!(\d+)", link);
-        }
-
-        public void NewIssueTracker()
-        {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("New Issue Tracker", @"#(\d+)", "https://xxx/$1");
-        }
-
-        public void RemoveSelectedIssueTracker()
-        {
-            _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
-            SelectedIssueTrackerRule = null;
+            SelectedIssueTracker = null;
         }
 
         public async Task ChangeIssueTrackerShareModeAsync()
         {
-            if (_selectedIssueTrackerRule is not { } rule)
-                return;
-
-            if (rule.IsShared)
-                await new Commands.SharedIssueTracker(_repo.FullPath).AddAsync(rule);
-            else
-                await new Commands.SharedIssueTracker(_repo.FullPath).RemoveAsync(rule);
+            if (_selectedIssueTracker is { } rule)
+                await _repo.ChangeIssueTrackerShareModeAsync(rule);
         }
 
         public void AddNewCustomAction()
@@ -355,7 +271,7 @@ namespace SourceGit.ViewModels
         private readonly Dictionary<string, string> _cached = null;
         private string _httpProxy;
         private Models.CommitTemplate _selectedCommitTemplate = null;
-        private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
+        private Models.IssueTracker _selectedIssueTracker = null;
         private Models.CustomAction _selectedCustomAction = null;
     }
 }

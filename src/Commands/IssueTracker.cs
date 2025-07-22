@@ -5,24 +5,24 @@ using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public class SharedIssueTracker : Command
+    public class IssueTracker : Command
     {
-        public SharedIssueTracker(string repo)
+        public IssueTracker(string repo, string storage)
         {
             WorkingDirectory = repo;
             Context = repo;
-            _file = $"{repo}/.issuetracker";
+            _storage = storage;
         }
 
-        public async Task<List<Models.IssueTrackerRule>> ReadAllAsync()
+        public async Task<List<Models.IssueTracker>> ReadAllAsync(bool isShared)
         {
-            if (!File.Exists(_file))
+            if (!File.Exists(_storage))
                 return [];
 
-            Args = $"config -f {_file.Quoted()} -l";
+            Args = $"config -f {_storage.Quoted()} -l";
 
             var output = await ReadToEndAsync().ConfigureAwait(false);
-            var rs = new List<Models.IssueTrackerRule>();
+            var rs = new List<Models.IssueTracker>();
             if (output.IsSuccess)
             {
                 var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
@@ -43,14 +43,14 @@ namespace SourceGit.Commands
                         var prefixLen = "issuetracker.".Length;
                         var suffixLen = ".regex".Length;
                         var ruleName = key.Substring(prefixLen, key.Length - prefixLen - suffixLen);
-                        FindOrAdd(rs, ruleName).RegexString = value;
+                        FindOrAdd(rs, ruleName, isShared).RegexString = value;
                     }
                     else if (key.EndsWith(".url", StringComparison.Ordinal))
                     {
                         var prefixLen = "issuetracker.".Length;
                         var suffixLen = ".url".Length;
                         var ruleName = key.Substring(prefixLen, key.Length - prefixLen - suffixLen);
-                        FindOrAdd(rs, ruleName).URLTemplate = value;
+                        FindOrAdd(rs, ruleName, isShared).URLTemplate = value;
                     }
                 }
             }
@@ -58,37 +58,37 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        public async Task<bool> AddAsync(Models.IssueTrackerRule rule)
+        public async Task<bool> AddAsync(Models.IssueTracker rule)
         {
-            Args = $"config -f {_file.Quoted()} issuetracker.{rule.Name.Quoted()}.regex {rule.RegexString.Quoted()}";
+            Args = $"config -f {_storage.Quoted()} issuetracker.{rule.Name.Quoted()}.regex {rule.RegexString.Quoted()}";
 
             var succ = await ExecAsync().ConfigureAwait(false);
             if (succ)
             {
-                Args = $"config -f {_file.Quoted()} issuetracker.{rule.Name.Quoted()}.url {rule.URLTemplate.Quoted()}";
+                Args = $"config -f {_storage.Quoted()} issuetracker.{rule.Name.Quoted()}.url {rule.URLTemplate.Quoted()}";
                 return await ExecAsync().ConfigureAwait(false);
             }
 
             return false;
         }
 
-        public async Task<bool> RemoveAsync(Models.IssueTrackerRule rule)
+        public async Task<bool> RemoveAsync(Models.IssueTracker rule)
         {
-            Args = $"config -f {_file.Quoted()} --remove-section issuetracker.{rule.Name.Quoted()}";
+            Args = $"config -f {_storage.Quoted()} --remove-section issuetracker.{rule.Name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        private Models.IssueTrackerRule FindOrAdd(List<Models.IssueTrackerRule> rules, string ruleName)
+        private Models.IssueTracker FindOrAdd(List<Models.IssueTracker> rules, string ruleName, bool isShared)
         {
             var rule = rules.Find(x => x.Name.Equals(ruleName, StringComparison.Ordinal));
             if (rule != null)
                 return rule;
 
-            rule = new Models.IssueTrackerRule() { IsShared = true, Name = ruleName };
+            rule = new Models.IssueTracker() { IsShared = isShared, Name = ruleName };
             rules.Add(rule);
             return rule;
         }
 
-        private readonly string _file;
+        private readonly string _storage;
     }
 }
