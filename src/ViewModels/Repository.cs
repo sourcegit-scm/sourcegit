@@ -744,6 +744,7 @@ namespace SourceGit.ViewModels
                 var localIssueTrackers = await new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker").ReadAllAsync(false).ConfigureAwait(false);
                 Dispatcher.UIThread.Post(() =>
                 {
+                    IssueTrackers.Clear();
                     IssueTrackers.AddRange(sharedIssueTrackers);
                     IssueTrackers.AddRange(localIssueTrackers);
                 });
