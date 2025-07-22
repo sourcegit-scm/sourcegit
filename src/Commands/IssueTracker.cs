@@ -14,18 +14,17 @@ namespace SourceGit.Commands
             _storage = storage;
         }
 
-        public async Task<List<Models.IssueTracker>> ReadAllAsync(bool isShared)
+        public async Task ReadAllAsync(List<Models.IssueTracker> outs, bool isShared)
         {
             if (!File.Exists(_storage))
-                return [];
+                return;
 
             Args = $"config -f {_storage.Quoted()} -l";
 
-            var output = await ReadToEndAsync().ConfigureAwait(false);
-            var rs = new List<Models.IssueTracker>();
-            if (output.IsSuccess)
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            if (rs.IsSuccess)
             {
-                var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
                     var parts = line.Split('=', 2);
@@ -43,19 +42,17 @@ namespace SourceGit.Commands
                         var prefixLen = "issuetracker.".Length;
                         var suffixLen = ".regex".Length;
                         var ruleName = key.Substring(prefixLen, key.Length - prefixLen - suffixLen);
-                        FindOrAdd(rs, ruleName, isShared).RegexString = value;
+                        FindOrAdd(outs, ruleName, isShared).RegexString = value;
                     }
                     else if (key.EndsWith(".url", StringComparison.Ordinal))
                     {
                         var prefixLen = "issuetracker.".Length;
                         var suffixLen = ".url".Length;
                         var ruleName = key.Substring(prefixLen, key.Length - prefixLen - suffixLen);
-                        FindOrAdd(rs, ruleName, isShared).URLTemplate = value;
+                        FindOrAdd(outs, ruleName, isShared).URLTemplate = value;
                     }
                 }
             }
-
-            return rs;
         }
 
         public async Task<bool> AddAsync(Models.IssueTracker rule)
@@ -74,6 +71,9 @@ namespace SourceGit.Commands
 
         public async Task<bool> RemoveAsync(Models.IssueTracker rule)
         {
+            if (!File.Exists(_storage))
+                return true;
+
             Args = $"config -f {_storage.Quoted()} --remove-section issuetracker.{rule.Name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }

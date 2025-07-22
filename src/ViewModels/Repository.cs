@@ -693,7 +693,7 @@ namespace SourceGit.ViewModels
                 URLTemplate = url,
             };
 
-            var succ = await new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker").AddAsync(rule);
+            var succ = await CreateIssueTrackerCommand(false).AddAsync(rule);
             if (succ)
             {
                 IssueTrackers.Add(rule);
@@ -705,27 +705,15 @@ namespace SourceGit.ViewModels
 
         public async Task RemoveIssueTrackerAsync(Models.IssueTracker rule)
         {
-            var storage = rule.IsShared ? $"{_fullpath}/.issuetracker" : $"{_gitDir}/sourcegit.issuetracker";
-            var succ = await new Commands.IssueTracker(_fullpath, storage).RemoveAsync(rule);
+            var succ = await CreateIssueTrackerCommand(rule.IsShared).RemoveAsync(rule);
             if (succ)
                 IssueTrackers.Remove(rule);
         }
 
         public async Task ChangeIssueTrackerShareModeAsync(Models.IssueTracker rule)
         {
-            var shared = new Commands.IssueTracker(_fullpath, $"{_fullpath}/.issuetracker");
-            var local = new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker");
-
-            if (rule.IsShared)
-            {
-                await local.RemoveAsync(rule);
-                await shared.AddAsync(rule);
-            }
-            else
-            {
-                await local.AddAsync(rule);
-                await shared.RemoveAsync(rule);
-            }
+            await CreateIssueTrackerCommand(!rule.IsShared).RemoveAsync(rule);
+            await CreateIssueTrackerCommand(rule.IsShared).AddAsync(rule);
         }
 
         public void RefreshAll()
@@ -740,13 +728,13 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var sharedIssueTrackers = await new Commands.IssueTracker(_fullpath, $"{_fullpath}/.issuetracker").ReadAllAsync(true).ConfigureAwait(false);
-                var localIssueTrackers = await new Commands.IssueTracker(_fullpath, $"{_gitDir}/sourcegit.issuetracker").ReadAllAsync(false).ConfigureAwait(false);
+                var issuetrackers = new List<Models.IssueTracker>();
+                await CreateIssueTrackerCommand(true).ReadAllAsync(issuetrackers, true).ConfigureAwait(false);
+                await CreateIssueTrackerCommand(false).ReadAllAsync(issuetrackers, false).ConfigureAwait(false);
                 Dispatcher.UIThread.Post(() =>
                 {
                     IssueTrackers.Clear();
-                    IssueTrackers.AddRange(sharedIssueTrackers);
-                    IssueTrackers.AddRange(localIssueTrackers);
+                    IssueTrackers.AddRange(issuetrackers);
                 });
 
                 var config = await new Commands.Config(_fullpath).ReadAllAsync().ConfigureAwait(false);
@@ -2907,6 +2895,12 @@ namespace SourceGit.ViewModels
             }
 
             return null;
+        }
+
+        private Commands.IssueTracker CreateIssueTrackerCommand(bool shared)
+        {
+            var storage = shared ? $"{_fullpath}/.issuetracker" : $"{_gitDir}/sourcegit.issuetracker";
+            return new Commands.IssueTracker(_fullpath, storage);
         }
 
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
