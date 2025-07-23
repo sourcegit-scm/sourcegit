@@ -11,13 +11,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public record CommitMessageRecord(string subject)
-    {
-        public string Subject { get; set; } = subject;
-    }
-
     public class WorkingCopy : ObservableObject, IDisposable
     {
+        public Repository Repository
+        {
+            get => _repo;
+        }
+
         public bool IncludeUntracked
         {
             get => _repo.IncludeUntracked;
@@ -562,6 +562,11 @@ namespace SourceGit.ViewModels
                 _repo.MarkWorkingCopyDirtyManually();
                 IsCommitting = false;
             }
+        }
+
+        public void ApplyCommitMessageTemplate(Models.CommitTemplate tmpl)
+        {
+            CommitMessage = tmpl.Apply(_repo.CurrentBranch, _staged);
         }
 
         public void Commit()
@@ -1597,137 +1602,6 @@ namespace SourceGit.ViewModels
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
                 }
-            }
-
-            return menu;
-        }
-
-        public ContextMenu CreateContextMenuForCommitMessages()
-        {
-            var menu = new ContextMenu();
-
-            var gitTemplate = new Commands.Config(_repo.FullPath).GetAsync("commit.template").Result;
-            var templateCount = _repo.Settings.CommitTemplates.Count;
-            if (templateCount == 0 && string.IsNullOrEmpty(gitTemplate))
-            {
-                menu.Items.Add(new MenuItem()
-                {
-                    Header = App.Text("WorkingCopy.NoCommitTemplates"),
-                    Icon = App.CreateMenuIcon("Icons.Code"),
-                    IsEnabled = false
-                });
-            }
-            else
-            {
-                for (int i = 0; i < templateCount; i++)
-                {
-                    var template = _repo.Settings.CommitTemplates[i];
-                    var item = new MenuItem();
-                    item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
-                    item.Icon = App.CreateMenuIcon("Icons.Code");
-                    item.Click += (_, e) =>
-                    {
-                        CommitMessage = template.Apply(_repo.CurrentBranch, _staged);
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(item);
-                }
-
-                if (!string.IsNullOrEmpty(gitTemplate))
-                {
-                    if (!Path.IsPathRooted(gitTemplate))
-                        gitTemplate = Native.OS.GetAbsPath(_repo.FullPath, gitTemplate);
-
-                    var friendlyName = gitTemplate;
-                    if (!OperatingSystem.IsWindows())
-                    {
-                        var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
-                        if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
-                            friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
-                    }
-
-                    var gitTemplateItem = new MenuItem();
-                    gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
-                    gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
-                    gitTemplateItem.Click += (_, e) =>
-                    {
-                        if (File.Exists(gitTemplate))
-                            CommitMessage = File.ReadAllText(gitTemplate);
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(gitTemplateItem);
-                }
-            }
-
-            menu.Items.Add(new MenuItem() { Header = "-" });
-
-            var historiesCount = _repo.Settings.CommitMessages.Count;
-            if (historiesCount == 0)
-            {
-                menu.Items.Add(new MenuItem()
-                {
-                    Header = App.Text("WorkingCopy.NoCommitHistories"),
-                    Icon = App.CreateMenuIcon("Icons.Histories"),
-                    IsEnabled = false
-                });
-            }
-            else
-            {
-                for (int i = 0; i < historiesCount; i++)
-                {
-                    var dup = _repo.Settings.CommitMessages[i].Trim();
-                    var message = dup.ReplaceLineEndings(" ");
-                    var item = new MenuItem();
-                    item.Header = new CommitMessageRecord(message);
-                    item.Icon = App.CreateMenuIcon("Icons.Histories");
-                    item.Click += (_, e) =>
-                    {
-                        CommitMessage = dup;
-                        e.Handled = true;
-                    };
-
-                    menu.Items.Add(item);
-                }
-            }
-
-            return menu;
-        }
-
-        public ContextMenu CreateContextForOpenAI()
-        {
-            if (_staged == null || _staged.Count == 0)
-            {
-                App.RaiseException(_repo.FullPath, "No files added to commit!");
-                return null;
-            }
-
-            var services = _repo.GetPreferredOpenAIServices();
-            if (services.Count == 0)
-            {
-                App.RaiseException(_repo.FullPath, "Bad configuration for OpenAI");
-                return null;
-            }
-
-            if (services.Count == 1)
-            {
-                _ = App.ShowDialog(new AIAssistant(_repo, services[0], _staged, t => CommitMessage = t));
-                return null;
-            }
-
-            var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
-            foreach (var service in services)
-            {
-                var dup = service;
-                var item = new MenuItem();
-                item.Header = service.Name;
-                item.Click += async (_, e) =>
-                {
-                    await App.ShowDialog(new AIAssistant(_repo, dup, _staged, t => CommitMessage = t));
-                    e.Handled = true;
-                };
-
-                menu.Items.Add(item);
             }
 
             return menu;

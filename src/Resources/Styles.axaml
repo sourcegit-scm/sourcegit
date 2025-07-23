@@ -844,10 +844,6 @@
                     <v:NameHighlightedTextBlock Text="{Binding}" VerticalAlignment="Center"/>
                   </DataTemplate>
 
-                  <DataTemplate DataType="vm:CommitMessageRecord">
-                    <TextBlock Text="{Binding Subject}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                  </DataTemplate>
-
                   <DataTemplate DataType="vm:FilterModeInGraph">
                     <v:FilterModeInGraph/>
                   </DataTemplate>
