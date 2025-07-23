@@ -1,3 +1,6 @@
+﻿using System;
+using System.IO;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -14,9 +17,60 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.RevisionCompare vm && sender is ChangeCollectionView view)
+            if (DataContext is ViewModels.RevisionCompare { SelectedChanges: { Count: 1 } selected } vm &&
+                sender is ChangeCollectionView view)
             {
-                var menu = vm.CreateChangeContextMenu();
+                var repo = vm.RepositoryPath;
+                var change = selected[0];
+                var changeFullPath = Native.OS.GetAbsPath(repo, change.Path);
+                var menu = new ContextMenu();
+
+                var openWithMerger = new MenuItem();
+                openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                openWithMerger.Click += (_, ev) =>
+                {
+                    vm.OpenChangeWithExternalDiffTool(change);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(openWithMerger);
+
+                if (change.Index != Models.ChangeState.Deleted)
+                {
+                    var explore = new MenuItem();
+                    explore.Header = App.Text("RevealFile");
+                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.IsEnabled = File.Exists(changeFullPath);
+                    explore.Click += (_, ev) =>
+                    {
+                        Native.OS.OpenInFileManager(changeFullPath, true);
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(explore);
+                }
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+                copyPath.Click += async (_, ev) =>
+                {
+                    await App.CopyTextAsync(change.Path);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(copyPath);
+
+                var copyFullPath = new MenuItem();
+                copyFullPath.Header = App.Text("CopyFullPath");
+                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+                copyFullPath.Click += async (_, e) =>
+                {
+                    await App.CopyTextAsync(changeFullPath);
+                    e.Handled = true;
+                };
+                menu.Items.Add(copyFullPath);
                 menu?.Open(view);
             }
 
