@@ -1623,6 +1623,14 @@ namespace SourceGit.ViewModels
                 ShowPopup(new ClearStashes(this));
         }
 
+        public async Task<bool> SaveCommitAsPatchAsync(Models.Commit commit, string saveTo)
+        {
+            var log = CreateLog("Save Commit as Patch");
+            var succ = await new Commands.FormatPatch(_fullpath, commit.SHA, saveTo).Use(log).ExecAsync();
+            log.Complete();
+            return succ;
+        }
+
         private LauncherPage GetOwnerPage()
         {
             var launcher = App.GetLauncher();
