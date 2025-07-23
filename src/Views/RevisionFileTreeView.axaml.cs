@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
@@ -8,6 +9,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -139,7 +141,27 @@ namespace SourceGit.Views
                     var detailView = this.FindAncestorOfType<CommitDetail>();
                     if (detailView is { DataContext: ViewModels.CommitDetail detail })
                     {
-                        await detail.SaveRevisionFile(file);
+                        var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                        if (storageProvider == null)
+                            return;
+
+                        var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+                        try
+                        {
+                            var selected = await storageProvider.OpenFolderPickerAsync(options);
+                            if (selected.Count == 1)
+                            {
+                                var folder = selected[0];
+                                var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
+                                var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
+                                await detail.SaveRevisionFileAsync(file, saveTo);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            App.RaiseException(detail.Repository.FullPath, $"Failed to save file: {ex.Message}");
+                        }
+
                         e.Handled = true;
                     }
                 }
@@ -308,10 +330,14 @@ namespace SourceGit.Views
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm &&
+            if (DataContext is ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm &&
                 sender is Grid { DataContext: ViewModels.RevisionFileTreeNode { Backend: { } obj } } grid)
             {
-                var menu = vm.CreateRevisionFileContextMenu(obj);
+                var menu = obj.Type switch
+                {
+                    Models.ObjectType.Tree => CreateRevisionFileContextMenuByFolder(repo, vm, commit, obj.Path),
+                    _ => CreateRevisionFileContextMenu(repo, vm, commit, obj),
+                };
                 menu.Open(grid);
             }
 
@@ -385,6 +411,261 @@ namespace SourceGit.Views
                     return Models.NumericSort.Compare(l.Name, r.Name);
                 return l.IsFolder ? -1 : 1;
             });
+        }
+
+        public ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, string path)
+        {
+            var fullPath = Native.OS.GetAbsPath(repo.FullPath, path);
+            var explore = new MenuItem();
+            explore.Header = App.Text("RevealFile");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = Directory.Exists(fullPath);
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(fullPath, true);
+                ev.Handled = true;
+            };
+
+            var history = new MenuItem();
+            history.Header = App.Text("DirHistories");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                App.ShowWindow(new ViewModels.DirHistories(repo, path, commit.SHA));
+                ev.Handled = true;
+            };
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyPath.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(path);
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+            copyFullPath.Click += async (_, e) =>
+            {
+                await App.CopyTextAsync(fullPath);
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(explore);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(history);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
+            return menu;
+        }
+
+        public ContextMenu CreateRevisionFileContextMenu(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, Models.Object file)
+        {
+            var fullPath = Native.OS.GetAbsPath(repo.FullPath, file.Path);
+            var menu = new ContextMenu();
+
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("OpenWith");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
+            openWith.IsEnabled = file.Type == Models.ObjectType.Blob;
+            openWith.Click += async (_, ev) =>
+            {
+                await vm.OpenRevisionFileWithDefaultEditorAsync(file.Path);
+                ev.Handled = true;
+            };
+
+            var saveAs = new MenuItem();
+            saveAs.Header = App.Text("SaveAs");
+            saveAs.Icon = App.CreateMenuIcon("Icons.Save");
+            saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
+            saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+S" : "Ctrl+Shift+S";
+            saveAs.Click += async (_, ev) =>
+            {
+                var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                if (storageProvider == null)
+                    return;
+
+                var options = new FolderPickerOpenOptions() { AllowMultiple = false };
+                try
+                {
+                    var selected = await storageProvider.OpenFolderPickerAsync(options);
+                    if (selected.Count == 1)
+                    {
+                        var folder = selected[0];
+                        var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
+                        var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
+                        await vm.SaveRevisionFileAsync(file, saveTo);
+                    }
+                }
+                catch (Exception e)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save file: {e.Message}");
+                }
+
+                ev.Handled = true;
+            };
+
+            var explore = new MenuItem();
+            explore.Header = App.Text("RevealFile");
+            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.IsEnabled = File.Exists(fullPath);
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(fullPath, file.Type == Models.ObjectType.Blob);
+                ev.Handled = true;
+            };
+
+            menu.Items.Add(openWith);
+            menu.Items.Add(saveAs);
+            menu.Items.Add(explore);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var history = new MenuItem();
+            history.Header = App.Text("FileHistory");
+            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Click += (_, ev) =>
+            {
+                App.ShowWindow(new ViewModels.FileHistories(repo, file.Path, commit.SHA));
+                ev.Handled = true;
+            };
+
+            var blame = new MenuItem();
+            blame.Header = App.Text("Blame");
+            blame.Icon = App.CreateMenuIcon("Icons.Blame");
+            blame.IsEnabled = file.Type == Models.ObjectType.Blob;
+            blame.Click += (_, ev) =>
+            {
+                App.ShowWindow(new ViewModels.Blame(repo.FullPath, file.Path, commit));
+                ev.Handled = true;
+            };
+
+            menu.Items.Add(history);
+            menu.Items.Add(blame);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (!repo.IsBare)
+            {
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += async (_, ev) =>
+                {
+                    await vm.ResetToThisRevisionAsync(file.Path);
+                    ev.Handled = true;
+                };
+
+                var change = vm.Changes.Find(x => x.Path == file.Path) ?? new Models.Change() { Index = Models.ChangeState.None, Path = file.Path };
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = commit.Parents.Count > 0;
+                resetToFirstParent.Click += async (_, ev) =>
+                {
+                    await vm.ResetToParentRevisionAsync(change);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                if (repo.Remotes.Count > 0 && File.Exists(fullPath) && repo.IsLFSEnabled())
+                {
+                    var lfs = new MenuItem();
+                    lfs.Header = App.Text("GitLFS");
+                    lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+
+                    var lfsLock = new MenuItem();
+                    lfsLock.Header = App.Text("GitLFS.Locks.Lock");
+                    lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+                    if (repo.Remotes.Count == 1)
+                    {
+                        lfsLock.Click += async (_, e) =>
+                        {
+                            await repo.LockLFSFileAsync(repo.Remotes[0].Name, change.Path);
+                            e.Handled = true;
+                        };
+                    }
+                    else
+                    {
+                        foreach (var remote in repo.Remotes)
+                        {
+                            var remoteName = remote.Name;
+                            var lockRemote = new MenuItem();
+                            lockRemote.Header = remoteName;
+                            lockRemote.Click += async (_, e) =>
+                            {
+                                await repo.LockLFSFileAsync(remoteName, change.Path);
+                                e.Handled = true;
+                            };
+                            lfsLock.Items.Add(lockRemote);
+                        }
+                    }
+                    lfs.Items.Add(lfsLock);
+
+                    var lfsUnlock = new MenuItem();
+                    lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
+                    lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                    if (repo.Remotes.Count == 1)
+                    {
+                        lfsUnlock.Click += async (_, e) =>
+                        {
+                            await repo.UnlockLFSFileAsync(repo.Remotes[0].Name, change.Path, false, true);
+                            e.Handled = true;
+                        };
+                    }
+                    else
+                    {
+                        foreach (var remote in repo.Remotes)
+                        {
+                            var remoteName = remote.Name;
+                            var unlockRemote = new MenuItem();
+                            unlockRemote.Header = remoteName;
+                            unlockRemote.Click += async (_, e) =>
+                            {
+                                await repo.UnlockLFSFileAsync(remoteName, change.Path, false, true);
+                                e.Handled = true;
+                            };
+                            lfsUnlock.Items.Add(unlockRemote);
+                        }
+                    }
+                    lfs.Items.Add(lfsUnlock);
+
+                    menu.Items.Add(lfs);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+            }
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyPath.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(file.Path);
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+            copyFullPath.Click += async (_, e) =>
+            {
+                await App.CopyTextAsync(fullPath);
+                e.Handled = true;
+            };
+
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
+            return menu;
         }
 
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
