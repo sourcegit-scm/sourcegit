@@ -188,8 +188,55 @@ namespace SourceGit.Views
         {
             if (sender is ListBox { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForWorktree(worktree);
-                menu?.Open(grid);
+                var menu = new ContextMenu();
+
+                if (worktree.IsLocked)
+                {
+                    var unlock = new MenuItem();
+                    unlock.Header = App.Text("Worktree.Unlock");
+                    unlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                    unlock.Click += async (_, ev) =>
+                    {
+                        await repo.UnlockWorktreeAsync(worktree);
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(unlock);
+                }
+                else
+                {
+                    var loc = new MenuItem();
+                    loc.Header = App.Text("Worktree.Lock");
+                    loc.Icon = App.CreateMenuIcon("Icons.Lock");
+                    loc.Click += async (_, ev) =>
+                    {
+                        await repo.LockWorktreeAsync(worktree);
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(loc);
+                }
+
+                var remove = new MenuItem();
+                remove.Header = App.Text("Worktree.Remove");
+                remove.Icon = App.CreateMenuIcon("Icons.Clear");
+                remove.Click += (_, ev) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.RemoveWorktree(repo, worktree));
+                    ev.Handled = true;
+                };
+                menu.Items.Add(remove);
+
+                var copy = new MenuItem();
+                copy.Header = App.Text("Worktree.CopyPath");
+                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Click += async (_, e) =>
+                {
+                    await App.CopyTextAsync(worktree.FullPath);
+                    e.Handled = true;
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(copy);
+                menu.Open(grid);
             }
 
             e.Handled = true;
@@ -376,8 +423,110 @@ namespace SourceGit.Views
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForHistoryAdvancedOption();
-                menu?.Open(button);
+                var pref = ViewModels.Preferences.Instance;
+
+                var layout = new MenuItem();
+                layout.Header = App.Text("Repository.HistoriesLayout");
+                layout.IsEnabled = false;
+
+                var isHorizontal = pref.UseTwoColumnsLayoutInHistories;
+                var horizontal = new MenuItem();
+                horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
+                if (isHorizontal)
+                    horizontal.Icon = App.CreateMenuIcon("Icons.Check");
+                horizontal.Click += (_, ev) =>
+                {
+                    pref.UseTwoColumnsLayoutInHistories = true;
+                    ev.Handled = true;
+                };
+
+                var vertical = new MenuItem();
+                vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
+                if (!isHorizontal)
+                    vertical.Icon = App.CreateMenuIcon("Icons.Check");
+                vertical.Click += (_, ev) =>
+                {
+                    pref.UseTwoColumnsLayoutInHistories = false;
+                    ev.Handled = true;
+                };
+
+                var showFlags = new MenuItem();
+                showFlags.Header = App.Text("Repository.ShowFlags");
+                showFlags.IsEnabled = false;
+
+                var reflog = new MenuItem();
+                reflog.Header = App.Text("Repository.ShowLostCommits");
+                reflog.Tag = "--reflog";
+                if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
+                    reflog.Icon = App.CreateMenuIcon("Icons.Check");
+                reflog.Click += (_, e) =>
+                {
+                    repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.Reflog);
+                    e.Handled = true;
+                };
+
+                var firstParentOnly = new MenuItem();
+                firstParentOnly.Header = App.Text("Repository.ShowFirstParentOnly");
+                firstParentOnly.Tag = "--first-parent";
+                if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
+                    firstParentOnly.Icon = App.CreateMenuIcon("Icons.Check");
+                firstParentOnly.Click += (_, e) =>
+                {
+                    repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.FirstParentOnly);
+                    e.Handled = true;
+                };
+
+                var simplifyByDecoration = new MenuItem();
+                simplifyByDecoration.Header = App.Text("Repository.ShowDecoratedCommitsOnly");
+                simplifyByDecoration.Tag = "--simplify-by-decoration";
+                if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
+                    simplifyByDecoration.Icon = App.CreateMenuIcon("Icons.Check");
+                simplifyByDecoration.Click += (_, e) =>
+                {
+                    repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
+                    e.Handled = true;
+                };
+
+                var order = new MenuItem();
+                order.Header = App.Text("Repository.HistoriesOrder");
+                order.IsEnabled = false;
+
+                var dateOrder = new MenuItem();
+                dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
+                dateOrder.Tag = "--date-order";
+                if (!repo.EnableTopoOrderInHistories)
+                    dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
+                dateOrder.Click += (_, ev) =>
+                {
+                    repo.EnableTopoOrderInHistories = false;
+                    ev.Handled = true;
+                };
+
+                var topoOrder = new MenuItem();
+                topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
+                topoOrder.Tag = "--topo-order";
+                if (repo.EnableTopoOrderInHistories)
+                    topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
+                topoOrder.Click += (_, ev) =>
+                {
+                    repo.EnableTopoOrderInHistories = true;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(layout);
+                menu.Items.Add(horizontal);
+                menu.Items.Add(vertical);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(showFlags);
+                menu.Items.Add(reflog);
+                menu.Items.Add(firstParentOnly);
+                menu.Items.Add(simplifyByDecoration);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(order);
+                menu.Items.Add(dateOrder);
+                menu.Items.Add(topoOrder);
+                menu.Open(button);
             }
 
             e.Handled = true;
@@ -387,8 +536,34 @@ namespace SourceGit.Views
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForBranchSortMode(true);
-                menu?.Open(button);
+                var isSortByName = repo.IsSortingLocalBranchByName;
+                var byNameAsc = new MenuItem();
+                byNameAsc.Header = App.Text("Repository.BranchSort.ByName");
+                if (isSortByName)
+                    byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
+                byNameAsc.Click += (_, ev) =>
+                {
+                    if (!isSortByName)
+                        repo.IsSortingLocalBranchByName = true;
+                    ev.Handled = true;
+                };
+
+                var byCommitterDate = new MenuItem();
+                byCommitterDate.Header = App.Text("Repository.BranchSort.ByCommitterDate");
+                if (!isSortByName)
+                    byCommitterDate.Icon = App.CreateMenuIcon("Icons.Check");
+                byCommitterDate.Click += (_, ev) =>
+                {
+                    if (isSortByName)
+                        repo.IsSortingLocalBranchByName = false;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+                menu.Items.Add(byNameAsc);
+                menu.Items.Add(byCommitterDate);
+                menu.Open(button);
             }
 
             e.Handled = true;
@@ -398,8 +573,34 @@ namespace SourceGit.Views
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForBranchSortMode(false);
-                menu?.Open(button);
+                var isSortByName = repo.IsSortingRemoteBranchByName;
+                var byNameAsc = new MenuItem();
+                byNameAsc.Header = App.Text("Repository.BranchSort.ByName");
+                if (isSortByName)
+                    byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
+                byNameAsc.Click += (_, ev) =>
+                {
+                    if (!isSortByName)
+                        repo.IsSortingRemoteBranchByName = true;
+                    ev.Handled = true;
+                };
+
+                var byCommitterDate = new MenuItem();
+                byCommitterDate.Header = App.Text("Repository.BranchSort.ByCommitterDate");
+                if (!isSortByName)
+                    byCommitterDate.Icon = App.CreateMenuIcon("Icons.Check");
+                byCommitterDate.Click += (_, ev) =>
+                {
+                    if (isSortByName)
+                        repo.IsSortingRemoteBranchByName = false;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+                menu.Items.Add(byNameAsc);
+                menu.Items.Add(byCommitterDate);
+                menu.Open(button);
             }
 
             e.Handled = true;
@@ -409,8 +610,34 @@ namespace SourceGit.Views
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForTagSortMode();
-                menu?.Open(button);
+                var isSortByName = repo.IsSortingTagsByName;
+                var byCreatorDate = new MenuItem();
+                byCreatorDate.Header = App.Text("Repository.Tags.OrderByCreatorDate");
+                if (!isSortByName)
+                    byCreatorDate.Icon = App.CreateMenuIcon("Icons.Check");
+                byCreatorDate.Click += (_, ev) =>
+                {
+                    if (isSortByName)
+                        repo.IsSortingTagsByName = false;
+                    ev.Handled = true;
+                };
+
+                var byName = new MenuItem();
+                byName.Header = App.Text("Repository.Tags.OrderByName");
+                if (isSortByName)
+                    byName.Icon = App.CreateMenuIcon("Icons.Check");
+                byName.Click += (_, ev) =>
+                {
+                    if (!isSortByName)
+                        repo.IsSortingTagsByName = true;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+                menu.Items.Add(byCreatorDate);
+                menu.Items.Add(byName);
+                menu.Open(button);
             }
 
             e.Handled = true;
