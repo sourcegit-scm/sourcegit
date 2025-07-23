@@ -4,7 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -16,9 +15,7 @@ namespace SourceGit.Views
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
                 DataContext is ViewModels.RepositoryNode { IsRepository: false } node)
-            {
                 ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-            }
 
             e.Handled = true;
         }
@@ -41,10 +38,7 @@ namespace SourceGit.Views
                 {
                     if (e.Key == Key.Enter)
                     {
-                        var parent = this.FindAncestorOfType<Launcher>();
-                        if (parent is { DataContext: ViewModels.Launcher launcher })
-                            launcher.OpenRepositoryInTab(node, null);
-
+                        node.Open();
                         e.Handled = true;
                     }
                 }
@@ -376,15 +370,9 @@ namespace SourceGit.Views
             if (sender is Grid { DataContext: ViewModels.RepositoryNode node })
             {
                 if (node.IsRepository)
-                {
-                    var parent = this.FindAncestorOfType<Launcher>();
-                    if (parent is { DataContext: ViewModels.Launcher launcher })
-                        launcher.OpenRepositoryInTab(node, null);
-                }
+                    node.Open();
                 else
-                {
                     ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-                }
 
                 e.Handled = true;
             }
