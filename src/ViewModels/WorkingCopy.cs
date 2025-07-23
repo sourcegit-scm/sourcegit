@@ -545,88 +545,67 @@ namespace SourceGit.ViewModels
             new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
         }
 
-        public void ContinueMerge()
+        public async Task ContinueMergeAsync()
         {
-            IsCommitting = true;
-
             if (_inProgressContext != null)
             {
+                IsCommitting = true;
                 _repo.SetWatcherEnabled(false);
-                Task.Run(async () =>
-                {
-                    var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
-                    if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
-                        await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                    var succ = await _inProgressContext.ContinueAsync();
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        if (succ)
-                            CommitMessage = string.Empty;
+                var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
+                if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
+                    await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                        _repo.SetWatcherEnabled(true);
-                        IsCommitting = false;
-                    });
-                });
+                var succ = await _inProgressContext.ContinueAsync();
+                if (succ)
+                    CommitMessage = string.Empty;
+
+                _repo.SetWatcherEnabled(true);
+                IsCommitting = false;
             }
             else
             {
                 _repo.MarkWorkingCopyDirtyManually();
-                IsCommitting = false;
             }
         }
 
-        public void SkipMerge()
+        public async Task SkipMergeAsync()
         {
-            IsCommitting = true;
-
             if (_inProgressContext != null)
             {
+                IsCommitting = true;
                 _repo.SetWatcherEnabled(false);
-                Task.Run(async () =>
-                {
-                    var succ = await _inProgressContext.SkipAsync();
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        if (succ)
-                            CommitMessage = string.Empty;
 
-                        _repo.SetWatcherEnabled(true);
-                        IsCommitting = false;
-                    });
-                });
+                var succ = await _inProgressContext.SkipAsync();
+                if (succ)
+                    CommitMessage = string.Empty;
+
+                _repo.SetWatcherEnabled(true);
+                IsCommitting = false;
             }
             else
             {
                 _repo.MarkWorkingCopyDirtyManually();
-                IsCommitting = false;
             }
         }
 
-        public void AbortMerge()
+        public async Task AbortMergeAsync()
         {
-            IsCommitting = true;
-
             if (_inProgressContext != null)
             {
+                IsCommitting = true;
                 _repo.SetWatcherEnabled(false);
-                Task.Run(async () =>
-                {
-                    var succ = await _inProgressContext.AbortAsync();
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        if (succ)
-                            CommitMessage = string.Empty;
 
-                        _repo.SetWatcherEnabled(true);
-                        IsCommitting = false;
-                    });
-                });
+                var succ = await _inProgressContext.AbortAsync();
+                if (succ)
+                    CommitMessage = string.Empty;
+
+                _repo.SetWatcherEnabled(true);
+                IsCommitting = false;
             }
             else
             {
                 _repo.MarkWorkingCopyDirtyManually();
-                IsCommitting = false;
             }
         }
 

@@ -284,7 +284,7 @@
                      Height="28"
                      Margin="8,0,0,0"
                      Padding="8,0"
-                     Command="{Binding ContinueMerge}"
+                     Click="OnContinue"
                      IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
           <SplitButton.IsEnabled>
             <MultiBinding Converter="{x:Static BoolConverters.And}">

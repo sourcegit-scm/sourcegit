@@ -685,7 +685,7 @@
                 BorderThickness="0"
                 Content="{DynamicResource Text.Repository.Abort}"
                 Padding="8,2" Margin="0,0,8,0"
-                Command="{Binding AbortMerge}"/>
+                Click="OnAbortInProgress"/>
       </Grid>
 
       <Grid Grid.Row="1"

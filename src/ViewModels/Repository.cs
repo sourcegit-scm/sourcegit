@@ -1126,14 +1126,14 @@ namespace SourceGit.ViewModels
             _workingCopy?.StashAll(autoStart);
         }
 
-        public void SkipMerge()
+        public async Task SkipMergeAsync()
         {
-            _workingCopy?.SkipMerge();
+            await _workingCopy?.SkipMergeAsync();
         }
 
-        public void AbortMerge()
+        public async Task AbortMergeAsync()
         {
-            _workingCopy?.AbortMerge();
+            await _workingCopy?.AbortMergeAsync();
         }
 
         public List<(Models.CustomAction, CustomActionContextMenuLabel)> GetCustomActions(Models.CustomActionScope scope)

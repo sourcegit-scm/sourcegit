@@ -181,6 +181,15 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.UseExternalMergeToolAsync(null);
+
+            e.Handled = true;
+        }
+
+        private async void OnContinue(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.ContinueMergeAsync();
+
             e.Handled = true;
         }
 

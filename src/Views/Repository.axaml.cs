@@ -643,10 +643,18 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnSkipInProgress(object sender, RoutedEventArgs e)
+        private async void OnSkipInProgress(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
-                repo.SkipMerge();
+                await repo.SkipMergeAsync();
+
+            e.Handled = true;
+        }
+
+        private async void OnAbortInProgress(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                await repo.AbortMergeAsync();
 
             e.Handled = true;
         }
