@@ -70,6 +70,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Afficher comme liste de dossiers/fichiers</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Afficher comme liste de chemins</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Afficher comme arborescence</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">Trier par chemin</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">Trier par statut</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Récupérer la branche</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Récupérer ce commit</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit :</x:String>
