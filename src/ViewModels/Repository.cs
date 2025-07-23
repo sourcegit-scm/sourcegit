@@ -1564,7 +1564,7 @@ namespace SourceGit.ViewModels
                     IsRepository = true,
                 };
 
-            App.GetLauncher()?.OpenRepositoryInTab(node, null);
+            App.GetLauncher().OpenRepositoryInTab(node, null);
         }
 
         public async Task LockWorktreeAsync(Models.Worktree worktree)

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 
 using Avalonia.Collections;
-using Avalonia.Controls;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -198,111 +196,6 @@ namespace SourceGit.ViewModels
             Refresh();
         }
 
-        public ContextMenu CreateContextMenu(RepositoryNode node)
-        {
-            var menu = new ContextMenu();
-
-            if (!node.IsRepository && node.SubNodes.Count > 0)
-            {
-                var openAll = new MenuItem();
-                openAll.Header = App.Text("Welcome.OpenAllInNode");
-                openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
-                openAll.Click += (_, e) =>
-                {
-                    OpenAllInNode(App.GetLauncher(), node);
-                    e.Handled = true;
-                };
-
-                menu.Items.Add(openAll);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-            }
-
-            if (node.IsRepository)
-            {
-                var open = new MenuItem();
-                open.Header = App.Text("Welcome.OpenOrInit");
-                open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
-                open.Click += (_, e) =>
-                {
-                    App.GetLauncher()?.OpenRepositoryInTab(node, null);
-                    e.Handled = true;
-                };
-
-                var explore = new MenuItem();
-                explore.Header = App.Text("Repository.Explore");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
-                explore.Click += (_, e) =>
-                {
-                    node.OpenInFileManager();
-                    e.Handled = true;
-                };
-
-                var terminal = new MenuItem();
-                terminal.Header = App.Text("Repository.Terminal");
-                terminal.Icon = App.CreateMenuIcon("Icons.Terminal");
-                terminal.Click += (_, e) =>
-                {
-                    node.OpenTerminal();
-                    e.Handled = true;
-                };
-
-                menu.Items.Add(open);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(explore);
-                menu.Items.Add(terminal);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-            }
-            else
-            {
-                var addSubFolder = new MenuItem();
-                addSubFolder.Header = App.Text("Welcome.AddSubFolder");
-                addSubFolder.Icon = App.CreateMenuIcon("Icons.Folder.Add");
-                addSubFolder.Click += (_, e) =>
-                {
-                    node.AddSubFolder();
-                    e.Handled = true;
-                };
-                menu.Items.Add(addSubFolder);
-            }
-
-            var edit = new MenuItem();
-            edit.Header = App.Text("Welcome.Edit");
-            edit.Icon = App.CreateMenuIcon("Icons.Edit");
-            edit.Click += (_, e) =>
-            {
-                node.Edit();
-                e.Handled = true;
-            };
-
-            var move = new MenuItem();
-            move.Header = App.Text("Welcome.Move");
-            move.Icon = App.CreateMenuIcon("Icons.MoveTo");
-            move.Click += (_, e) =>
-            {
-                var activePage = App.GetLauncher().ActivePage;
-                if (activePage != null && activePage.CanCreatePopup())
-                    activePage.Popup = new MoveRepositoryNode(node);
-
-                e.Handled = true;
-            };
-
-            var delete = new MenuItem();
-            delete.Header = App.Text("Welcome.Delete");
-            delete.Icon = App.CreateMenuIcon("Icons.Clear");
-            delete.Click += (_, e) =>
-            {
-                node.Delete();
-                e.Handled = true;
-            };
-
-            menu.Items.Add(edit);
-            menu.Items.Add(move);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(delete);
-
-            return menu;
-        }
-
         private void ResetVisibility(RepositoryNode node)
         {
             node.IsVisible = true;
@@ -352,17 +245,6 @@ namespace SourceGit.ViewModels
                     continue;
 
                 MakeTreeRows(rows, node.SubNodes, depth + 1);
-            }
-        }
-
-        private void OpenAllInNode(Launcher launcher, RepositoryNode node)
-        {
-            foreach (var subNode in node.SubNodes)
-            {
-                if (subNode.IsRepository)
-                    launcher.OpenRepositoryInTab(subNode, null);
-                else if (subNode.SubNodes.Count > 0)
-                    OpenAllInNode(launcher, subNode);
             }
         }
 
