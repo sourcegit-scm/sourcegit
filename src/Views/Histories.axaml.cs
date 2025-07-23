@@ -362,7 +362,7 @@ namespace SourceGit.Views
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) =>
             {
-                var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                 if (storageProvider == null)
                     return;
 
@@ -802,7 +802,7 @@ namespace SourceGit.Views
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) =>
             {
-                var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                 if (storageProvider == null)
                     return;
 

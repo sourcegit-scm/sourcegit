@@ -17,7 +17,6 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
-using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
@@ -342,14 +341,6 @@ namespace SourceGit
                 icon.Data = geo;
 
             return icon;
-        }
-
-        public static IStorageProvider GetStorageProvider()
-        {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                return desktop.MainWindow?.StorageProvider;
-
-            return null;
         }
 
         public static ViewModels.Launcher GetLauncher()

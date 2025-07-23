@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -101,19 +102,19 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void UseTheirs()
+        public async Task UseTheirsAsync()
         {
-            _wc.UseTheirs([_change]);
+            await _wc.UseTheirsAsync([_change]);
         }
 
-        public void UseMine()
+        public async Task UseMineAsync()
         {
-            _wc.UseMine([_change]);
+            await _wc.UseMineAsync([_change]);
         }
 
-        public async void OpenExternalMergeTool()
+        public async Task OpenExternalMergeToolAsync()
         {
-            await _wc.UseExternalMergeTool(_change);
+            await _wc.UseExternalMergeToolAsync(_change);
         }
 
         private WorkingCopy _wc = null;

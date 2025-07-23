@@ -45,7 +45,7 @@ namespace SourceGit.Views
             patch.Icon = App.CreateMenuIcon("Icons.Diff");
             patch.Click += async (_, e) =>
             {
-                var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                 if (storageProvider == null)
                     return;
 
@@ -146,7 +146,7 @@ namespace SourceGit.Views
             patch.Icon = App.CreateMenuIcon("Icons.Diff");
             patch.Click += async (_, e) =>
             {
-                var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                 if (storageProvider == null)
                     return;
 

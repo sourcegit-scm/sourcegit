@@ -141,7 +141,7 @@ namespace SourceGit.Views
                     var detailView = this.FindAncestorOfType<CommitDetail>();
                     if (detailView is { DataContext: ViewModels.CommitDetail detail })
                     {
-                        var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                        var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                         if (storageProvider == null)
                             return;
 
@@ -488,7 +488,7 @@ namespace SourceGit.Views
             saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+S" : "Ctrl+Shift+S";
             saveAs.Click += async (_, ev) =>
             {
-                var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                 if (storageProvider == null)
                     return;
 

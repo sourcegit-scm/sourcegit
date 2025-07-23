@@ -113,13 +113,13 @@
         </Border>
 
         <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-          <Button Classes="flat" Margin="0,0,0,0" Command="{Binding UseTheirs}">
+          <Button Classes="flat" Margin="0,0,0,0" Click="OnUseTheirs">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Incoming}"/>
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseTheirs}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat" Margin="8,0,0,0" Command="{Binding UseMine}">
+          <Button Classes="flat" Margin="8,0,0,0" Click="OnUseMine">
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Local}"/>
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
@@ -127,7 +127,7 @@
           </Button>
           <Button Classes="flat"
                   Margin="8,0,0,0"
-                  Command="{Binding OpenExternalMergeTool}"
+                  Click="OnOpenExternalMergeTool"
                   IsVisible="{Binding CanUseExternalMergeTool}"
                   HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
             <StackPanel Orientation="Horizontal">
