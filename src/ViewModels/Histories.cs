@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 using Avalonia.Controls;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -133,34 +135,20 @@ namespace SourceGit.ViewModels
         public void NavigateTo(string commitSHA)
         {
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
-            if (commit == null)
-            {
-                AutoSelectedCommit = null;
-                commit = new Commands.QuerySingleCommit(_repo.FullPath, commitSHA).GetResultAsync().Result;
-            }
-            else
-            {
-                AutoSelectedCommit = commit;
-                NavigationId = _navigationId + 1;
-            }
-
             if (commit != null)
             {
-                if (_detailContext is CommitDetail detail)
-                {
-                    detail.Commit = commit;
-                }
-                else
-                {
-                    var commitDetail = new CommitDetail(_repo, true);
-                    commitDetail.Commit = commit;
-                    DetailContext = commitDetail;
-                }
+                NavigateTo(commit);
+                return;
             }
-            else
+
+            Task.Run(async () =>
             {
-                DetailContext = null;
-            }
+                var c = await new Commands.QuerySingleCommit(_repo.FullPath, commitSHA)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() => NavigateTo(c));
+            });
         }
 
         public void Select(IList commits)
@@ -294,6 +282,31 @@ namespace SourceGit.ViewModels
                     _repo.ShowPopup(new CreateBranch(_repo, firstRemoteBranch));
                 else if (!_repo.IsBare)
                     _repo.ShowPopup(new CheckoutCommit(_repo, commit));
+            }
+        }
+
+        private void NavigateTo(Models.Commit commit)
+        {
+            AutoSelectedCommit = commit;
+
+            if (commit == null)
+            {
+                DetailContext = null;
+            }
+            else
+            {
+                NavigationId = _navigationId + 1;
+
+                if (_detailContext is CommitDetail detail)
+                {
+                    detail.Commit = commit;
+                }
+                else
+                {
+                    var commitDetail = new CommitDetail(_repo, true);
+                    commitDetail.Commit = commit;
+                    DetailContext = commitDetail;
+                }
             }
         }
 

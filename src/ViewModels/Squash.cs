@@ -17,10 +17,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _message, value, true);
         }
 
-        public Squash(Repository repo, Models.Commit target, string shaToGetPreferMessage)
+        public Squash(Repository repo, Models.Commit target, string message)
         {
             _repo = repo;
-            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).GetResultAsync().Result;
+            _message = message;
             Target = target;
         }
 

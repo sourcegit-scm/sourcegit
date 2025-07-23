@@ -526,10 +526,14 @@ namespace SourceGit.Views
                     var reword = new MenuItem();
                     reword.Header = App.Text("CommitCM.Reword");
                     reword.Icon = App.CreateMenuIcon("Icons.Edit");
-                    reword.Click += (_, e) =>
+                    reword.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                            repo.ShowPopup(new ViewModels.Reword(repo, commit));
+                        {
+                            var message = await new Commands.QueryCommitFullMessage(repo.FullPath, commit.SHA).GetResultAsync();
+                            repo.ShowPopup(new ViewModels.Reword(repo, commit, message));
+                        }
+
                         e.Handled = true;
                     };
                     menu.Items.Add(reword);
@@ -538,13 +542,14 @@ namespace SourceGit.Views
                     squash.Header = App.Text("CommitCM.Squash");
                     squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                     squash.IsEnabled = commit.Parents.Count == 1;
-                    squash.Click += (_, e) =>
+                    squash.Click += async (_, e) =>
                     {
                         if (commit.Parents.Count == 1)
                         {
+                            var message = await new Commands.QueryCommitFullMessage(repo.FullPath, commit.SHA).GetResultAsync();
                             var parent = vm.Commits.Find(x => x.SHA.Equals(commit.Parents[0]));
                             if (parent != null && repo.CanCreatePopup())
-                                repo.ShowPopup(new ViewModels.Squash(repo, parent, commit.SHA));
+                                repo.ShowPopup(new ViewModels.Squash(repo, parent, message));
                         }
 
                         e.Handled = true;
