@@ -395,7 +395,7 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, SortMode);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, SortMode, IsUnstagedChange);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);
@@ -518,34 +518,49 @@ namespace SourceGit.Views
             {
                 sortedChanges.Sort((l, r) =>
                 {
-                    var leftPriority = GetStatusSortPriority(l);
-                    var rightPriority = GetStatusSortPriority(r);
+                    var leftPriority = GetStatusSortPriority(l, IsUnstagedChange);
+                    var rightPriority = GetStatusSortPriority(r, IsUnstagedChange);
                     
-                    if (leftPriority != rightPriority)
-                        return leftPriority.CompareTo(rightPriority);
+                    // First sort by status priority
+                    var statusComparison = leftPriority.CompareTo(rightPriority);
+                    if (statusComparison != 0)
+                        return statusComparison;
 
-                    // Same status, sort by path
+                    // If status priorities are equal, sort by path as secondary sort
+                    // Use the same sorting logic as the path-only sort for consistency
                     return Models.NumericSort.Compare(l.Path, r.Path);
                 });
             }
             else
             {
+                // Path sort mode - use NumericSort for consistency
                 sortedChanges.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
             }
 
             return sortedChanges;
         }
 
-        private int GetStatusSortPriority(Models.Change change)
+        private int GetStatusSortPriority(Models.Change change, bool isUnstagedContext)
         {
-            // Prioritize Index (staged) changes first, then WorkTree (unstaged) changes
-            var indexState = change.Index;
-            var workTreeState = change.WorkTree;
-
-            // For staged changes (Index state)
-            if (indexState != Models.ChangeState.None)
+            if (isUnstagedContext)
             {
-                return indexState switch
+                // For unstaged context, only consider WorkTree state
+                return change.WorkTree switch
+                {
+                    Models.ChangeState.Conflicted => 1,   // Conflicts first - most urgent
+                    Models.ChangeState.Modified => 2,
+                    Models.ChangeState.TypeChanged => 3,
+                    Models.ChangeState.Deleted => 4,      // Missing files
+                    Models.ChangeState.Renamed => 5,
+                    Models.ChangeState.Copied => 6,
+                    Models.ChangeState.Untracked => 7,    // New files last
+                    _ => 10
+                };
+            }
+            else
+            {
+                // For staged context, only consider Index state
+                return change.Index switch
                 {
                     Models.ChangeState.Modified => 1,
                     Models.ChangeState.TypeChanged => 2,
@@ -553,22 +568,9 @@ namespace SourceGit.Views
                     Models.ChangeState.Copied => 4,
                     Models.ChangeState.Added => 5,
                     Models.ChangeState.Deleted => 6,
-                    _ => 9
+                    _ => 10
                 };
             }
-
-            // For unstaged changes (WorkTree state)
-            return workTreeState switch
-            {
-                Models.ChangeState.Conflicted => 10,  // Conflicts first - most urgent
-                Models.ChangeState.Modified => 11,
-                Models.ChangeState.TypeChanged => 12,
-                Models.ChangeState.Deleted => 13,     // Missing files
-                Models.ChangeState.Renamed => 14,
-                Models.ChangeState.Copied => 15,
-                Models.ChangeState.Untracked => 16,   // New files last
-                _ => 20
-            };
         }
 
         private bool _disableSelectionChangingEvent = false;

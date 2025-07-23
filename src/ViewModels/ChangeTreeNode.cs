@@ -47,7 +47,7 @@ namespace SourceGit.ViewModels
             IsExpanded = isExpanded;
         }
 
-        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, Models.ChangeSortMode sortMode = Models.ChangeSortMode.Path)
+        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, Models.ChangeSortMode sortMode = Models.ChangeSortMode.Path, bool isUnstagedContext = false)
         {
             var nodes = new List<ChangeTreeNode>();
             var folders = new Dictionary<string, ChangeTreeNode>();
@@ -93,7 +93,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            Sort(nodes, sortMode);
+            Sort(nodes, sortMode, isUnstagedContext);
 
             folders.Clear();
             return nodes;
@@ -113,12 +113,12 @@ namespace SourceGit.ViewModels
             collection.Add(subFolder);
         }
 
-        private static void Sort(List<ChangeTreeNode> nodes, Models.ChangeSortMode sortMode)
+        private static void Sort(List<ChangeTreeNode> nodes, Models.ChangeSortMode sortMode, bool isUnstagedContext)
         {
             foreach (var node in nodes)
             {
                 if (node.IsFolder)
-                    Sort(node.Children, sortMode);
+                    Sort(node.Children, sortMode, isUnstagedContext);
             }
 
             if (sortMode == Models.ChangeSortMode.Status)
@@ -134,13 +134,16 @@ namespace SourceGit.ViewModels
                         return Models.NumericSort.Compare(l.FullPath, r.FullPath);
 
                     // For files, sort by status first
-                    var leftPriority = GetStatusSortPriority(l.Change);
-                    var rightPriority = GetStatusSortPriority(r.Change);
+                    var leftPriority = GetStatusSortPriority(l.Change, isUnstagedContext);
+                    var rightPriority = GetStatusSortPriority(r.Change, isUnstagedContext);
                     
-                    if (leftPriority != rightPriority)
-                        return leftPriority.CompareTo(rightPriority);
+                    // First sort by status priority
+                    var statusComparison = leftPriority.CompareTo(rightPriority);
+                    if (statusComparison != 0)
+                        return statusComparison;
 
-                    // Same status, sort by path
+                    // If status priorities are equal, sort by path as secondary sort
+                    // Use the same sorting logic as the path-only sort for consistency
                     return Models.NumericSort.Compare(l.FullPath, r.FullPath);
                 });
             }
@@ -155,35 +158,39 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private static int GetStatusSortPriority(Models.Change change)
+        private static int GetStatusSortPriority(Models.Change change, bool isUnstagedContext)
         {
             if (change == null) return int.MaxValue;
 
-            // Prioritize Index (staged) changes first, then WorkTree (unstaged) changes
-            var indexState = change.Index;
-            var workTreeState = change.WorkTree;
-
-            // For staged changes (Index state)
-            if (indexState != Models.ChangeState.None)
+            if (isUnstagedContext)
             {
-                return indexState switch
+                // For unstaged context, only consider WorkTree state
+                return change.WorkTree switch
                 {
-                    Models.ChangeState.Modified => 1,
-                    Models.ChangeState.Renamed => 2,
-                    Models.ChangeState.Added => 3,
-                    Models.ChangeState.Deleted => 4,
-                    _ => 5
+                    Models.ChangeState.Conflicted => 1,   // Conflicts first - most urgent
+                    Models.ChangeState.Modified => 2,
+                    Models.ChangeState.TypeChanged => 3,
+                    Models.ChangeState.Deleted => 4,      // Missing files
+                    Models.ChangeState.Renamed => 5,
+                    Models.ChangeState.Copied => 6,
+                    Models.ChangeState.Untracked => 7,    // New files last
+                    _ => 10
                 };
             }
-
-            // For unstaged changes (WorkTree state)
-            return workTreeState switch
+            else
             {
-                Models.ChangeState.Modified => 10,
-                Models.ChangeState.Deleted => 11,  // Missing files
-                Models.ChangeState.Untracked => 12, // Untracked files
-                _ => 20
-            };
+                // For staged context, only consider Index state
+                return change.Index switch
+                {
+                    Models.ChangeState.Modified => 1,
+                    Models.ChangeState.TypeChanged => 2,
+                    Models.ChangeState.Renamed => 3,
+                    Models.ChangeState.Copied => 4,
+                    Models.ChangeState.Added => 5,
+                    Models.ChangeState.Deleted => 6,
+                    _ => 10
+                };
+            }
         }
 
         private bool _isExpanded = true;
