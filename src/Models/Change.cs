@@ -7,6 +7,12 @@
         Tree,
     }
 
+    public enum ChangeSortMode
+    {
+        Path,
+        Status,
+    }
+
     public enum ChangeState
     {
         None,

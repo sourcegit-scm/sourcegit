@@ -109,6 +109,15 @@ namespace SourceGit.Views
             set => SetValue(ViewModeProperty, value);
         }
 
+        public static readonly StyledProperty<Models.ChangeSortMode> SortModeProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, Models.ChangeSortMode>(nameof(SortMode), Models.ChangeSortMode.Path);
+
+        public Models.ChangeSortMode SortMode
+        {
+            get => GetValue(SortModeProperty);
+            set => SetValue(SortModeProperty, value);
+        }
+
         public static readonly StyledProperty<List<Models.Change>> ChangesProperty =
             AvaloniaProperty.Register<ChangeCollectionView, List<Models.Change>>(nameof(Changes));
 
@@ -250,6 +259,8 @@ namespace SourceGit.Views
 
             if (change.Property == ViewModeProperty)
                 UpdateDataSource(true);
+            else if (change.Property == SortModeProperty)
+                UpdateDataSource(true);
             else if (change.Property == ChangesProperty)
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
@@ -384,7 +395,7 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, SortMode);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);
@@ -408,7 +419,8 @@ namespace SourceGit.Views
             else if (ViewMode == Models.ChangeViewMode.Grid)
             {
                 var grid = new ViewModels.ChangeCollectionAsGrid();
-                grid.Changes.AddRange(changes);
+                var sortedChanges = SortChanges(changes, SortMode);
+                grid.Changes.AddRange(sortedChanges);
                 if (selected.Count > 0)
                     grid.SelectedChanges.AddRange(selected);
 
@@ -417,7 +429,8 @@ namespace SourceGit.Views
             else
             {
                 var list = new ViewModels.ChangeCollectionAsList();
-                list.Changes.AddRange(changes);
+                var sortedChanges = SortChanges(changes, SortMode);
+                list.Changes.AddRange(sortedChanges);
                 if (selected.Count > 0)
                     list.SelectedChanges.AddRange(selected);
 
@@ -495,6 +508,67 @@ namespace SourceGit.Views
             }
 
             ToolTip.SetTip(control, tip);
+        }
+
+        private List<Models.Change> SortChanges(List<Models.Change> changes, Models.ChangeSortMode sortMode)
+        {
+            var sortedChanges = new List<Models.Change>(changes);
+
+            if (sortMode == Models.ChangeSortMode.Status)
+            {
+                sortedChanges.Sort((l, r) =>
+                {
+                    var leftPriority = GetStatusSortPriority(l);
+                    var rightPriority = GetStatusSortPriority(r);
+                    
+                    if (leftPriority != rightPriority)
+                        return leftPriority.CompareTo(rightPriority);
+
+                    // Same status, sort by path
+                    return Models.NumericSort.Compare(l.Path, r.Path);
+                });
+            }
+            else
+            {
+                sortedChanges.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
+            }
+
+            return sortedChanges;
+        }
+
+        private int GetStatusSortPriority(Models.Change change)
+        {
+            // Prioritize Index (staged) changes first, then WorkTree (unstaged) changes
+            var indexState = change.Index;
+            var workTreeState = change.WorkTree;
+
+            // For staged changes (Index state)
+            if (indexState != Models.ChangeState.None)
+            {
+                return indexState switch
+                {
+                    Models.ChangeState.Modified => 1,
+                    Models.ChangeState.TypeChanged => 2,
+                    Models.ChangeState.Renamed => 3,
+                    Models.ChangeState.Copied => 4,
+                    Models.ChangeState.Added => 5,
+                    Models.ChangeState.Deleted => 6,
+                    _ => 9
+                };
+            }
+
+            // For unstaged changes (WorkTree state)
+            return workTreeState switch
+            {
+                Models.ChangeState.Conflicted => 10,  // Conflicts first - most urgent
+                Models.ChangeState.Modified => 11,
+                Models.ChangeState.TypeChanged => 12,
+                Models.ChangeState.Deleted => 13,     // Missing files
+                Models.ChangeState.Renamed => 14,
+                Models.ChangeState.Copied => 15,
+                Models.ChangeState.Untracked => 16,   // New files last
+                _ => 20
+            };
         }
 
         private bool _disableSelectionChangingEvent = false;
