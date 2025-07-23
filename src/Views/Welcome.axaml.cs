@@ -1,5 +1,4 @@
 using System;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -121,7 +120,7 @@ namespace SourceGit.Views
                     openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                     openAll.Click += (_, e) =>
                     {
-                        node.OpenOrInit();
+                        node.Open();
                         e.Handled = true;
                     };
 
@@ -136,7 +135,7 @@ namespace SourceGit.Views
                     open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
                     open.Click += (_, e) =>
                     {
-                        node.OpenOrInit();
+                        node.Open();
                         e.Handled = true;
                     };
 
@@ -273,7 +272,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void DropOnTreeView(object sender, DragEventArgs e)
+        private async void DropOnTreeView(object sender, DragEventArgs e)
         {
             if (e.Data.Contains("MovedRepositoryTreeNode") && e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
@@ -287,11 +286,20 @@ namespace SourceGit.Views
                 var items = e.Data.GetFiles();
                 if (items != null)
                 {
+                    var refresh = false;
+
                     foreach (var item in items)
                     {
-                        ViewModels.Welcome.Instance.OpenOrInitRepository(item.Path.LocalPath, null, true);
-                        break;
+                        var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            ViewModels.Welcome.Instance.AddRepository(path, null, true, false);
+                            refresh = true;
+                        }
                     }
+
+                    if (refresh)
+                        ViewModels.Welcome.Instance.Refresh();
                 }
             }
 
@@ -313,7 +321,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void DropOnTreeNode(object sender, DragEventArgs e)
+        private async void DropOnTreeNode(object sender, DragEventArgs e)
         {
             if (sender is not Grid grid)
                 return;
@@ -342,11 +350,20 @@ namespace SourceGit.Views
                 var items = e.Data.GetFiles();
                 if (items != null)
                 {
+                    var refresh = false;
+
                     foreach (var item in items)
                     {
-                        ViewModels.Welcome.Instance.OpenOrInitRepository(item.Path.LocalPath, to, true);
-                        break;
+                        var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            ViewModels.Welcome.Instance.AddRepository(path, to, true, false);
+                            refresh = true;
+                        }
                     }
+
+                    if (refresh)
+                        ViewModels.Welcome.Instance.Refresh();
                 }
             }
 

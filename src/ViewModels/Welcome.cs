@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -81,35 +82,32 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void OpenOrInitRepository(string path, RepositoryNode parent, bool bMoveExistedNode)
+        public async Task<string> GetRepositoryRootAsync(string path)
         {
-            if (!Directory.Exists(path))
+            if (!Preferences.Instance.IsGitConfigured())
             {
-                if (File.Exists(path))
-                    path = Path.GetDirectoryName(path);
+                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                return null;
+            }
+
+            var root = path;
+            if (!Directory.Exists(root))
+            {
+                if (File.Exists(root))
+                    root = Path.GetDirectoryName(root);
                 else
-                    return;
+                    return null;
             }
 
-            var isBare = new Commands.IsBareRepository(path).GetResultAsync().Result;
-            var repoRoot = path;
-            if (!isBare)
-            {
-                var test = new Commands.QueryRepositoryRootPath(path).GetResultAsync().Result;
-                if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
-                {
-                    InitRepository(path, parent, test.StdErr);
-                    return;
-                }
+            var isBare = await new Commands.IsBareRepository(root).GetResultAsync();
+            if (isBare)
+                return root;
 
-                repoRoot = test.StdOut.Trim();
-            }
+            var rs = await new Commands.QueryRepositoryRootPath(root).GetResultAsync();
+            if (!rs.IsSuccess || string.IsNullOrWhiteSpace(rs.StdOut))
+                return null;
 
-            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repoRoot, parent, bMoveExistedNode);
-            Refresh();
-
-            var launcher = App.GetLauncher();
-            launcher?.OpenRepositoryInTab(node, launcher.ActivePage);
+            return rs.StdOut.Trim();
         }
 
         public void InitRepository(string path, RepositoryNode parent, string reason)
@@ -123,6 +121,13 @@ namespace SourceGit.ViewModels
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
+        }
+
+        public void AddRepository(string path, RepositoryNode parent, bool moveNode, bool open)
+        {
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, moveNode);
+            if (open)
+                node.Open();
         }
 
         public void Clone()

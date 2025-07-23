@@ -44,7 +44,17 @@ namespace SourceGit.Views
                 {
                     var folder = selected[0];
                     var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder?.Path.ToString();
-                    ViewModels.Welcome.Instance.OpenOrInitRepository(folderPath, null, false);
+                    var repoPath = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(folderPath);
+                    if (!string.IsNullOrEmpty(repoPath))
+                    {
+                        ViewModels.Welcome.Instance.AddRepository(repoPath, null, false, true);
+                        ViewModels.Welcome.Instance.Refresh();
+                    }
+                    else if (Directory.Exists(folderPath))
+                    {
+                        var test = await new Commands.QueryRepositoryRootPath(folderPath).GetResultAsync();
+                        ViewModels.Welcome.Instance.InitRepository(folderPath, null, test.StdErr);
+                    }
                 }
             }
             catch (Exception exception)

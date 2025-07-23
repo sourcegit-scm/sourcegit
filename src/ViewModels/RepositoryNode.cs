@@ -68,7 +68,7 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
-        public void OpenOrInit()
+        public void Open()
         {
             if (IsRepository)
             {
@@ -77,7 +77,7 @@ namespace SourceGit.ViewModels
             }
 
             foreach (var subNode in SubNodes)
-                subNode.OpenOrInit();
+                subNode.Open();
         }
 
         public void Edit()
