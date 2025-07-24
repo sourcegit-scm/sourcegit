@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 using Avalonia;
@@ -394,8 +393,7 @@ namespace SourceGit.Views
                         var succ = false;
                         for (var i = 0; i < selected.Count; i++)
                         {
-                            var saveTo = GetPatchFileName(folderPath, selected[i], i);
-                            succ = await repo.SaveCommitAsPatchAsync(selected[i], saveTo);
+                            succ = await repo.SaveCommitAsPatchAsync(selected[i], folderPath, i);
                             if (!succ)
                                 break;
                         }
@@ -459,6 +457,7 @@ namespace SourceGit.Views
 
             var menu = new ContextMenu();
             var tags = new List<Models.Tag>();
+            var isHead = commit.IsCurrentHead;
 
             if (commit.HasDecorators)
             {
@@ -525,7 +524,30 @@ namespace SourceGit.Views
             {
                 var target = commit.GetFriendlyName();
 
-                if (current.Head != commit.SHA)
+                if (isHead)
+                {
+                    var reword = new MenuItem();
+                    reword.Header = App.Text("CommitCM.Reword");
+                    reword.Icon = App.CreateMenuIcon("Icons.Edit");
+                    reword.Click += async (_, e) =>
+                    {
+                        await vm.RewordHeadAsync(commit);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(reword);
+
+                    var squash = new MenuItem();
+                    squash.Header = App.Text("CommitCM.Squash");
+                    squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                    squash.IsEnabled = commit.Parents.Count == 1;
+                    squash.Click += async (_, e) =>
+                    {
+                        await vm.SquashHeadAsync(commit);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(squash);
+                }
+                else
                 {
                     var reset = new MenuItem();
                     reset.Header = App.Text("CommitCM.Reset", current.Name, target);
@@ -537,41 +559,6 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
                     menu.Items.Add(reset);
-                }
-                else
-                {
-                    var reword = new MenuItem();
-                    reword.Header = App.Text("CommitCM.Reword");
-                    reword.Icon = App.CreateMenuIcon("Icons.Edit");
-                    reword.Click += async (_, e) =>
-                    {
-                        if (repo.CanCreatePopup())
-                        {
-                            var message = await new Commands.QueryCommitFullMessage(repo.FullPath, commit.SHA).GetResultAsync();
-                            repo.ShowPopup(new ViewModels.Reword(repo, commit, message));
-                        }
-
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(reword);
-
-                    var squash = new MenuItem();
-                    squash.Header = App.Text("CommitCM.Squash");
-                    squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                    squash.IsEnabled = commit.Parents.Count == 1;
-                    squash.Click += async (_, e) =>
-                    {
-                        if (commit.Parents.Count == 1)
-                        {
-                            var message = await new Commands.QueryCommitFullMessage(repo.FullPath, commit.SHA).GetResultAsync();
-                            var parent = vm.Commits.Find(x => x.SHA.Equals(commit.Parents[0]));
-                            if (parent != null && repo.CanCreatePopup())
-                                repo.ShowPopup(new ViewModels.Squash(repo, parent, message));
-                        }
-
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(squash);
                 }
 
                 if (!commit.IsMerged)
@@ -607,29 +594,7 @@ namespace SourceGit.Views
                     cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
                     cherryPick.Click += async (_, e) =>
                     {
-                        if (repo.CanCreatePopup())
-                        {
-                            if (commit.Parents.Count <= 1)
-                            {
-                                repo.ShowPopup(new ViewModels.CherryPick(repo, [commit]));
-                            }
-                            else
-                            {
-                                var parents = new List<Models.Commit>();
-                                foreach (var sha in commit.Parents)
-                                {
-                                    var parent = vm.Commits.Find(x => x.SHA == sha);
-                                    if (parent == null)
-                                        parent = await new Commands.QuerySingleCommit(repo.FullPath, sha).GetResultAsync();
-
-                                    if (parent != null)
-                                        parents.Add(parent);
-                                }
-
-                                repo.ShowPopup(new ViewModels.CherryPick(repo, commit, parents));
-                            }
-                        }
-
+                        await vm.CherryPickAsync(commit);
                         e.Handled = true;
                     };
                     menu.Items.Add(cherryPick);
@@ -648,7 +613,7 @@ namespace SourceGit.Views
                     menu.Items.Add(revert);
                 }
 
-                if (current.Head != commit.SHA)
+                if (!isHead)
                 {
                     var checkoutCommit = new MenuItem();
                     checkoutCommit.Header = App.Text("CommitCM.Checkout");
@@ -679,9 +644,7 @@ namespace SourceGit.Views
                         reword.Header = App.Text("CommitCM.InteractiveRebase.Reword");
                         reword.Click += async (_, e) =>
                         {
-                            var prefill = new ViewModels.InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Reword);
-                            var on = await new Commands.QuerySingleCommit(repo.FullPath, $"{commit.SHA}~").GetResultAsync();
-                            await App.ShowDialog(new ViewModels.InteractiveRebase(repo, on, prefill));
+                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Reword);
                             e.Handled = true;
                         };
 
@@ -689,9 +652,7 @@ namespace SourceGit.Views
                         edit.Header = App.Text("CommitCM.InteractiveRebase.Edit");
                         edit.Click += async (_, e) =>
                         {
-                            var prefill = new ViewModels.InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Edit);
-                            var on = await new Commands.QuerySingleCommit(repo.FullPath, $"{commit.SHA}~").GetResultAsync();
-                            await App.ShowDialog(new ViewModels.InteractiveRebase(repo, on, prefill));
+                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Edit);
                             e.Handled = true;
                         };
 
@@ -699,13 +660,7 @@ namespace SourceGit.Views
                         squash.Header = App.Text("CommitCM.InteractiveRebase.Squash");
                         squash.Click += async (_, e) =>
                         {
-                            var prefill = new ViewModels.InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Squash);
-                            var on = await new Commands.QuerySingleCommit(repo.FullPath, $"{commit.SHA}~~").GetResultAsync();
-                            if (on != null)
-                                await App.ShowDialog(new ViewModels.InteractiveRebase(repo, on, prefill));
-                            else
-                                App.RaiseException(repo.FullPath, $"Can not squash current commit into parent!");
-
+                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Squash);
                             e.Handled = true;
                         };
 
@@ -713,13 +668,7 @@ namespace SourceGit.Views
                         fixup.Header = App.Text("CommitCM.InteractiveRebase.Fixup");
                         fixup.Click += async (_, e) =>
                         {
-                            var prefill = new ViewModels.InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Fixup);
-                            var on = await new Commands.QuerySingleCommit(repo.FullPath, $"{commit.SHA}~~").GetResultAsync();
-                            if (on != null)
-                                await App.ShowDialog(new ViewModels.InteractiveRebase(repo, on, prefill));
-                            else
-                                App.RaiseException(repo.FullPath, $"Can not fixup current commit into parent!");
-
+                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Fixup);
                             e.Handled = true;
                         };
 
@@ -727,9 +676,7 @@ namespace SourceGit.Views
                         drop.Header = App.Text("CommitCM.InteractiveRebase.Drop");
                         drop.Click += async (_, e) =>
                         {
-                            var prefill = new ViewModels.InteractiveRebasePrefill(commit.SHA, Models.InteractiveRebaseAction.Drop);
-                            var on = await new Commands.QuerySingleCommit(repo.FullPath, $"{commit.SHA}~").GetResultAsync();
-                            await App.ShowDialog(new ViewModels.InteractiveRebase(repo, on, prefill));
+                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Drop);
                             e.Handled = true;
                         };
 
@@ -763,7 +710,7 @@ namespace SourceGit.Views
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
-            if (current.Head != commit.SHA)
+            if (!isHead)
             {
                 if (current.TrackStatus.Ahead.Contains(commit.SHA))
                 {
@@ -786,18 +733,9 @@ namespace SourceGit.Views
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += async (_, e) =>
                 {
-                    var head = vm.Commits.Find(x => x.SHA == current.Head);
-                    if (head == null)
-                    {
-                        repo.SelectedSearchedCommit = null;
-                        head = await new Commands.QuerySingleCommit(repo.FullPath, current.Head).GetResultAsync();
-                        if (head != null)
-                            vm.DetailContext = new ViewModels.RevisionCompare(repo.FullPath, commit, head);
-                    }
-                    else
-                    {
+                    var head = await vm.CompareWithHeadAsync(commit);
+                    if (head != null)
                         CommitListContainer.SelectedItems.Add(head);
-                    }
 
                     e.Handled = true;
                 };
@@ -810,7 +748,7 @@ namespace SourceGit.Views
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                     compareWithWorktree.Click += (_, e) =>
                     {
-                        vm.DetailContext = new ViewModels.RevisionCompare(repo.FullPath, commit, null);
+                        vm.CompareWithWorktree(commit);
                         e.Handled = true;
                     };
                     menu.Items.Add(compareWithWorktree);
@@ -836,8 +774,7 @@ namespace SourceGit.Views
                     {
                         var folder = selected[0];
                         var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
-                        var saveTo = GetPatchFileName(folderPath, commit);
-                        await repo.SaveCommitAsPatchAsync(commit, saveTo);
+                        await repo.SaveCommitAsPatchAsync(commit, folderPath, 0);
                     }
                 }
                 catch (Exception exception)
@@ -920,8 +857,7 @@ namespace SourceGit.Views
             copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
             copyMessage.Click += async (_, e) =>
             {
-                var message = await new Commands.QueryCommitFullMessage(repo.FullPath, commit.SHA).GetResultAsync();
-                await App.CopyTextAsync(message);
+                await vm.CopyCommitFullMessageAsync(commit);
                 e.Handled = true;
             };
 
@@ -1274,35 +1210,6 @@ namespace SourceGit.Views
             submenu.Items.Add(copy);
 
             menu.Items.Add(submenu);
-        }
-
-        private string GetPatchFileName(string dir, Models.Commit commit, int index = 0)
-        {
-            var ignore_chars = new HashSet<char> { '/', '\\', ':', ',', '*', '?', '\"', '<', '>', '|', '`', '$', '^', '%', '[', ']', '+', '-' };
-            var builder = new StringBuilder();
-            builder.Append(index.ToString("D4"));
-            builder.Append('-');
-
-            var chars = commit.Subject.ToCharArray();
-            var len = 0;
-            foreach (var c in chars)
-            {
-                if (!ignore_chars.Contains(c))
-                {
-                    if (c == ' ' || c == '\t')
-                        builder.Append('-');
-                    else
-                        builder.Append(c);
-
-                    len++;
-
-                    if (len >= 48)
-                        break;
-                }
-            }
-            builder.Append(".patch");
-
-            return Path.Combine(dir, builder.ToString());
         }
 
         private double _lastGraphStartY = 0;

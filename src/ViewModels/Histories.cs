@@ -285,6 +285,95 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public async Task CherryPickAsync(Models.Commit commit)
+        {
+            if (_repo.CanCreatePopup())
+            {
+                if (commit.Parents.Count <= 1)
+                {
+                    _repo.ShowPopup(new CherryPick(_repo, [commit]));
+                }
+                else
+                {
+                    var parents = new List<Models.Commit>();
+                    foreach (var sha in commit.Parents)
+                    {
+                        var parent = _commits.Find(x => x.SHA == sha);
+                        if (parent == null)
+                            parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
+
+                        if (parent != null)
+                            parents.Add(parent);
+                    }
+
+                    _repo.ShowPopup(new CherryPick(_repo, commit, parents));
+                }
+            }
+        }
+
+        public async Task RewordHeadAsync(Models.Commit head)
+        {
+            if (_repo.CanCreatePopup())
+            {
+                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                _repo.ShowPopup(new Reword(_repo, head, message));
+            }
+        }
+
+        public async Task SquashHeadAsync(Models.Commit head)
+        {
+            if (head.Parents.Count == 1)
+            {
+                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
+                if (parent != null && _repo.CanCreatePopup())
+                    _repo.ShowPopup(new Squash(_repo, parent, message));
+            }
+        }
+
+        public async Task InteractiveRebaseAsync(Models.Commit commit, Models.InteractiveRebaseAction act)
+        {
+            var prefill = new InteractiveRebasePrefill(commit.SHA, act);
+            var start = act switch
+            {
+                Models.InteractiveRebaseAction.Squash or Models.InteractiveRebaseAction.Fixup => $"{commit.SHA}~~",
+                _ => $"{commit.SHA}~",
+            };
+
+            var on = await new Commands.QuerySingleCommit(_repo.FullPath, start).GetResultAsync();
+            if (on == null)
+                App.RaiseException(_repo.FullPath, $"Can not squash current commit into parent!");
+            else
+                await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
+        }
+
+        public async Task CopyCommitFullMessageAsync(Models.Commit commit)
+        {
+            var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA).GetResultAsync();
+            await App.CopyTextAsync(message);
+        }
+
+        public async Task<Models.Commit> CompareWithHeadAsync(Models.Commit commit)
+        {
+            var head = _commits.Find(x => x.IsCurrentHead);
+            if (head == null)
+            {
+                _repo.SelectedSearchedCommit = null;
+                head = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
+                if (head != null)
+                    DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
+
+                return null;
+            }
+
+            return head;
+        }
+
+        public void CompareWithWorktree(Models.Commit commit)
+        {
+            DetailContext = new RevisionCompare(_repo.FullPath, commit, null);
+        }
+
         private void NavigateTo(Models.Commit commit)
         {
             AutoSelectedCommit = commit;
