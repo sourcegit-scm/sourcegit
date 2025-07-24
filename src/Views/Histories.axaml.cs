@@ -123,6 +123,15 @@ namespace SourceGit.Views
             set => SetValue(NavigationIdProperty, value);
         }
 
+        public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
+            AvaloniaProperty.Register<Histories, bool>(nameof(IsScrollToTopVisible));
+
+        public bool IsScrollToTopVisible
+        {
+            get => GetValue(IsScrollToTopVisibleProperty);
+            set => SetValue(IsScrollToTopVisibleProperty, value);
+        }
+
         public Histories()
         {
             InitializeComponent();
@@ -177,6 +186,8 @@ namespace SourceGit.Views
                 }
             }
 
+            SetCurrentValue(IsScrollToTopVisibleProperty, startY >= rowHeight);
+
             var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
             if (_lastGraphStartY != startY ||
                 _lastGraphClipWidth != clipWidth ||
@@ -188,6 +199,12 @@ namespace SourceGit.Views
 
                 CommitGraph.Layout = new(startY, clipWidth, rowHeight);
             }
+        }
+
+        private void OnScrollToTopPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories histories)
+                CommitListContainer.ScrollIntoView(histories.Commits[0], null);
         }
 
         private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)

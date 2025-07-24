@@ -315,10 +315,9 @@ namespace SourceGit.ViewModels
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;
         private Models.Commit _autoSelectedCommit = null;
+        private Models.Bisect _bisect = null;
         private long _navigationId = 0;
         private IDisposable _detailContext = null;
-
-        private Models.Bisect _bisect = null;
 
         private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
         private GridLength _rightArea = new GridLength(1, GridUnitType.Star);
