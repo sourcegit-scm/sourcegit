@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -53,17 +54,24 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             ProgressDescription = "Setting upstream...";
+            Models.Branch upstream = _unset ? null : SelectedRemoteBranch;
 
-            var upstream = (_unset || SelectedRemoteBranch == null) ? string.Empty : SelectedRemoteBranch.FullName;
-            if (upstream == Local.Upstream)
+            if (upstream == null)
+            {
+                if (string.IsNullOrEmpty(Local.Upstream))
+                    return true;
+            }
+            else if (upstream.FullName.Equals(Local.Upstream, StringComparison.Ordinal))
+            {
                 return true;
+            }
 
             var log = _repo.CreateLog("Set Upstream");
             Use(log);
 
             var succ = await new Commands.Branch(_repo.FullPath, Local.Name)
                 .Use(log)
-                .SetUpstreamAsync(upstream.Replace("refs/remotes/", ""));
+                .SetUpstreamAsync(upstream);
 
             log.Complete();
             if (succ)
