@@ -586,6 +586,7 @@ namespace SourceGit.Views
         {
             var current = repo.CurrentBranch;
             var menu = new ContextMenu();
+            var upstream = repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal));
 
             var push = new MenuItem();
             push.Header = App.Text("BranchCM.Push", branch.Name);
@@ -602,27 +603,21 @@ namespace SourceGit.Views
             {
                 if (!repo.IsBare)
                 {
-                    if (!string.IsNullOrEmpty(branch.Upstream))
+                    if (upstream != null)
                     {
-                        var upstream = branch.Upstream.Substring(13);
                         var fastForward = new MenuItem();
-                        fastForward.Header = App.Text("BranchCM.FastForward", upstream);
+                        fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                         fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                        fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                        fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
                         fastForward.Click += (_, e) =>
                         {
-                            var b = repo.Branches.Find(x => x.FriendlyName == upstream);
-                            if (b == null)
-                                return;
-
                             if (repo.CanCreatePopup())
-                                repo.ShowAndStartPopup(new ViewModels.Merge(repo, b, branch.Name, true));
-
+                                repo.ShowAndStartPopup(new ViewModels.Merge(repo, upstream, branch.Name, true));
                             e.Handled = true;
                         };
 
                         var pull = new MenuItem();
-                        pull.Header = App.Text("BranchCM.Pull", upstream);
+                        pull.Header = App.Text("BranchCM.Pull", upstream.FriendlyName);
                         pull.Icon = App.CreateMenuIcon("Icons.Pull");
                         pull.Click += (_, e) =>
                         {
@@ -656,13 +651,12 @@ namespace SourceGit.Views
                 }
 
                 var worktree = repo.Worktrees.Find(x => x.Branch == branch.FullName);
-                var upstream = repo.Branches.Find(x => x.FullName == branch.Upstream);
                 if (upstream != null && worktree == null)
                 {
                     var fastForward = new MenuItem();
                     fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
                     fastForward.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())

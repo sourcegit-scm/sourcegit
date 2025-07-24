@@ -912,7 +912,7 @@ namespace SourceGit.Views
                 var fastForward = new MenuItem();
                 fastForward.Header = App.Text("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                fastForward.IsEnabled = current.TrackStatus.Ahead.Count == 0;
+                fastForward.IsEnabled = current.TrackStatus.Ahead.Count == 0 && current.TrackStatus.Behind.Count > 0;
                 fastForward.Click += (_, e) =>
                 {
                     var b = repo.Branches.Find(x => x.FriendlyName == upstream);
