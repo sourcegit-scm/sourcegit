@@ -86,6 +86,6 @@ namespace SourceGit.Converters
             new FuncValueConverter<string, bool>(v => v != null && v.Trim().Length > 0);
 
         public static readonly FuncValueConverter<string, string> ToFriendlyUpstream =
-            new FuncValueConverter<string, string>(v => v != null ? v.Substring(13) : string.Empty);
+            new FuncValueConverter<string, string>(v => v is { Length: > 13 } ? v.Substring(13) : string.Empty);
     }
 }
