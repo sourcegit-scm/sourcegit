@@ -74,7 +74,8 @@
                CornerRadius="2"
                Watermark="{DynamicResource Text.CreateTag.Message.Placeholder}"
                Text="{Binding Message, Mode=TwoWay}"
-               IsVisible="{Binding Annotated}"/>
+               IsVisible="{Binding Annotated}"
+               Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Height="32" Margin="0,4,0,0"

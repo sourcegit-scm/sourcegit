@@ -20,7 +20,8 @@ namespace SourceGit.Views
             var children = this.GetLogicalDescendants();
             foreach (var child in children)
             {
-                if (child is TextBox { IsFocused: true } textBox)
+                if (child is TextBox { IsFocused: true, Tag: StealHotKey steal } textBox &&
+                    steal is { Key: Key.Enter, KeyModifiers: KeyModifiers.None })
                 {
                     var fake = new KeyEventArgs()
                     {

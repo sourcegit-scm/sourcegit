@@ -47,7 +47,8 @@
                AcceptsTab="True"
                VerticalContentAlignment="Top"
                Padding="4"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               v:AutoFocusBehaviour.IsEnabled="True"
+               Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Height="32"
