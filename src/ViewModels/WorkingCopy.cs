@@ -345,7 +345,7 @@ namespace SourceGit.ViewModels
 
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
         {
-            var canStaged = GetCanStagedChanges(changes);
+            var canStaged = await GetCanStageChangesAsync(changes);
             var count = canStaged.Count;
             if (count == 0)
                 return;
@@ -645,7 +645,7 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
-        private List<Models.Change> GetCanStagedChanges(List<Models.Change> changes)
+        private async Task<List<Models.Change>> GetCanStageChangesAsync(List<Models.Change> changes)
         {
             if (!HasUnsolvedConflicts)
                 return changes;
@@ -653,8 +653,20 @@ namespace SourceGit.ViewModels
             var outs = new List<Models.Change>();
             foreach (var c in changes)
             {
-                if (!c.IsConflicted)
-                    outs.Add(c);
+                if (c.IsConflicted)
+                {
+                    var isResolved = c.ConflictReason switch
+                    {
+                        Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified =>
+                            await new Commands.IsConflictResolved(_repo.FullPath, c).GetResultAsync(),
+                        _ => false,
+                    };
+
+                    if (!isResolved)
+                        continue;
+                }
+
+                outs.Add(c);
             }
 
             return outs;
