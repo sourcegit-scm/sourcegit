@@ -134,8 +134,8 @@ namespace SourceGit.ViewModels
                         return Models.NumericSort.Compare(l.FullPath, r.FullPath);
 
                     // For files, sort by status first
-                    var leftPriority = GetStatusSortPriority(l.Change, isUnstagedContext);
-                    var rightPriority = GetStatusSortPriority(r.Change, isUnstagedContext);
+                    var leftPriority = Models.Change.GetStatusSortPriority(l.Change, isUnstagedContext);
+                    var rightPriority = Models.Change.GetStatusSortPriority(r.Change, isUnstagedContext);
                     
                     // First sort by status priority
                     var statusComparison = leftPriority.CompareTo(rightPriority);
@@ -155,41 +155,6 @@ namespace SourceGit.ViewModels
                         return Models.NumericSort.Compare(l.FullPath, r.FullPath);
                     return l.IsFolder ? -1 : 1;
                 });
-            }
-        }
-
-        private static int GetStatusSortPriority(Models.Change change, bool isUnstagedContext)
-        {
-            if (change == null) return int.MaxValue;
-
-            if (isUnstagedContext)
-            {
-                // For unstaged context, only consider WorkTree state
-                return change.WorkTree switch
-                {
-                    Models.ChangeState.Conflicted => 1,   // Conflicts first - most urgent
-                    Models.ChangeState.Modified => 2,
-                    Models.ChangeState.TypeChanged => 3,
-                    Models.ChangeState.Deleted => 4,      // Missing files
-                    Models.ChangeState.Renamed => 5,
-                    Models.ChangeState.Copied => 6,
-                    Models.ChangeState.Untracked => 7,    // New files last
-                    _ => 10
-                };
-            }
-            else
-            {
-                // For staged context, only consider Index state
-                return change.Index switch
-                {
-                    Models.ChangeState.Modified => 1,
-                    Models.ChangeState.TypeChanged => 2,
-                    Models.ChangeState.Renamed => 3,
-                    Models.ChangeState.Copied => 4,
-                    Models.ChangeState.Added => 5,
-                    Models.ChangeState.Deleted => 6,
-                    _ => 10
-                };
             }
         }
 
