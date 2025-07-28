@@ -1,11 +1,9 @@
 using System;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -17,9 +15,7 @@ namespace SourceGit.Views
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
                 DataContext is ViewModels.RepositoryNode { IsRepository: false } node)
-            {
                 ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-            }
 
             e.Handled = true;
         }
@@ -42,10 +38,7 @@ namespace SourceGit.Views
                 {
                     if (e.Key == Key.Enter)
                     {
-                        var parent = this.FindAncestorOfType<Launcher>();
-                        if (parent is { DataContext: ViewModels.Launcher launcher })
-                            launcher.OpenRepositoryInTab(node, null);
-
+                        node.Open();
                         e.Handled = true;
                     }
                 }
@@ -112,10 +105,106 @@ namespace SourceGit.Views
         {
             if (sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
-                var menu = ViewModels.Welcome.Instance.CreateContextMenu(node);
-                menu?.Open(grid);
-                e.Handled = true;
+                var menu = new ContextMenu();
+
+                if (!node.IsRepository && node.SubNodes.Count > 0)
+                {
+                    var openAll = new MenuItem();
+                    openAll.Header = App.Text("Welcome.OpenAllInNode");
+                    openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                    openAll.Click += (_, e) =>
+                    {
+                        node.Open();
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(openAll);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                if (node.IsRepository)
+                {
+                    var open = new MenuItem();
+                    open.Header = App.Text("Welcome.OpenOrInit");
+                    open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                    open.Click += (_, e) =>
+                    {
+                        node.Open();
+                        e.Handled = true;
+                    };
+
+                    var explore = new MenuItem();
+                    explore.Header = App.Text("Repository.Explore");
+                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.Click += (_, e) =>
+                    {
+                        node.OpenInFileManager();
+                        e.Handled = true;
+                    };
+
+                    var terminal = new MenuItem();
+                    terminal.Header = App.Text("Repository.Terminal");
+                    terminal.Icon = App.CreateMenuIcon("Icons.Terminal");
+                    terminal.Click += (_, e) =>
+                    {
+                        node.OpenTerminal();
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(open);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(explore);
+                    menu.Items.Add(terminal);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+                else
+                {
+                    var addSubFolder = new MenuItem();
+                    addSubFolder.Header = App.Text("Welcome.AddSubFolder");
+                    addSubFolder.Icon = App.CreateMenuIcon("Icons.Folder.Add");
+                    addSubFolder.Click += (_, e) =>
+                    {
+                        node.AddSubFolder();
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(addSubFolder);
+                }
+
+                var edit = new MenuItem();
+                edit.Header = App.Text("Welcome.Edit");
+                edit.Icon = App.CreateMenuIcon("Icons.Edit");
+                edit.Click += (_, e) =>
+                {
+                    node.Edit();
+                    e.Handled = true;
+                };
+
+                var move = new MenuItem();
+                move.Header = App.Text("Welcome.Move");
+                move.Icon = App.CreateMenuIcon("Icons.MoveTo");
+                move.Click += (_, e) =>
+                {
+                    node.Move();
+                    e.Handled = true;
+                };
+
+                var delete = new MenuItem();
+                delete.Header = App.Text("Welcome.Delete");
+                delete.Icon = App.CreateMenuIcon("Icons.Clear");
+                delete.Click += (_, e) =>
+                {
+                    node.Delete();
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(edit);
+                menu.Items.Add(move);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(delete);
+                menu.Open(grid);
             }
+
+            e.Handled = true;
         }
 
         private void OnPointerPressedTreeNode(object sender, PointerPressedEventArgs e)
@@ -177,7 +266,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void DropOnTreeView(object sender, DragEventArgs e)
+        private async void DropOnTreeView(object sender, DragEventArgs e)
         {
             if (e.Data.Contains("MovedRepositoryTreeNode") && e.Data.Get("MovedRepositoryTreeNode") is ViewModels.RepositoryNode moved)
             {
@@ -191,11 +280,20 @@ namespace SourceGit.Views
                 var items = e.Data.GetFiles();
                 if (items != null)
                 {
+                    var refresh = false;
+
                     foreach (var item in items)
                     {
-                        ViewModels.Welcome.Instance.OpenOrInitRepository(item.Path.LocalPath, null, true);
-                        break;
+                        var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            ViewModels.Welcome.Instance.AddRepository(path, null, true, false);
+                            refresh = true;
+                        }
                     }
+
+                    if (refresh)
+                        ViewModels.Welcome.Instance.Refresh();
                 }
             }
 
@@ -217,7 +315,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void DropOnTreeNode(object sender, DragEventArgs e)
+        private async void DropOnTreeNode(object sender, DragEventArgs e)
         {
             if (sender is not Grid grid)
                 return;
@@ -246,11 +344,20 @@ namespace SourceGit.Views
                 var items = e.Data.GetFiles();
                 if (items != null)
                 {
+                    var refresh = false;
+
                     foreach (var item in items)
                     {
-                        ViewModels.Welcome.Instance.OpenOrInitRepository(item.Path.LocalPath, to, true);
-                        break;
+                        var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            ViewModels.Welcome.Instance.AddRepository(path, to, true, false);
+                            refresh = true;
+                        }
                     }
+
+                    if (refresh)
+                        ViewModels.Welcome.Instance.Refresh();
                 }
             }
 
@@ -263,15 +370,9 @@ namespace SourceGit.Views
             if (sender is Grid { DataContext: ViewModels.RepositoryNode node })
             {
                 if (node.IsRepository)
-                {
-                    var parent = this.FindAncestorOfType<Launcher>();
-                    if (parent is { DataContext: ViewModels.Launcher launcher })
-                        launcher.OpenRepositoryInTab(node, null);
-                }
+                    node.Open();
                 else
-                {
                     ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-                }
 
                 e.Handled = true;
             }

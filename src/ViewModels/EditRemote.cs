@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
@@ -53,7 +54,16 @@ namespace SourceGit.ViewModels
             _useSSH = Models.Remote.IsSSH(remote.URL);
 
             if (_useSSH)
-                SSHKey = new Commands.Config(repo.FullPath).GetAsync($"remote.{remote.Name}.sshkey").Result;
+            {
+                Task.Run(async () =>
+                {
+                    var sshKey = await new Commands.Config(repo.FullPath)
+                        .GetAsync($"remote.{remote.Name}.sshkey")
+                        .ConfigureAwait(false);
+
+                    Dispatcher.UIThread.Post(() => SSHKey = sshKey);
+                });
+            }
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)

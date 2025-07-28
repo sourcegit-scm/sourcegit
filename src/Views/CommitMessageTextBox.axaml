@@ -27,7 +27,8 @@
                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                          Text="{Binding #ThisControl.Subject, Mode=TwoWay}"
                          Watermark="{DynamicResource Text.CommitMessageTextBox.SubjectPlaceholder}"
-                         PreviewKeyDown="OnSubjectTextBoxPreviewKeyDown"/>
+                         PreviewKeyDown="OnSubjectTextBoxPreviewKeyDown"
+                         Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
       <Rectangle Grid.Row="1"
                  Height="1"
@@ -51,7 +52,8 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          Text="{Binding #ThisControl.Description, Mode=TwoWay}"
                          Watermark="{DynamicResource Text.CommitMessageTextBox.MessagePlaceholder}"
-                         PreviewKeyDown="OnDescriptionTextBoxPreviewKeyDown"/>
+                         PreviewKeyDown="OnDescriptionTextBoxPreviewKeyDown"
+                         Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
       <Rectangle Grid.Row="3"
                  Height="1"

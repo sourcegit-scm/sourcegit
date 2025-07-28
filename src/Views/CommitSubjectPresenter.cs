@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -84,13 +85,13 @@ namespace SourceGit.Views
             set => SetValue(SubjectProperty, value);
         }
 
-        public static readonly StyledProperty<AvaloniaList<Models.IssueTrackerRule>> IssueTrackerRulesProperty =
-            AvaloniaProperty.Register<CommitSubjectPresenter, AvaloniaList<Models.IssueTrackerRule>>(nameof(IssueTrackerRules));
+        public static readonly StyledProperty<AvaloniaList<Models.IssueTracker>> IssueTrackersProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, AvaloniaList<Models.IssueTracker>>(nameof(IssueTrackers));
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
-            get => GetValue(IssueTrackerRulesProperty);
-            set => SetValue(IssueTrackerRulesProperty, value);
+            get => GetValue(IssueTrackersProperty);
+            set => SetValue(IssueTrackersProperty, value);
         }
 
         public override void Render(DrawingContext context)
@@ -138,44 +139,20 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == SubjectProperty || change.Property == IssueTrackerRulesProperty)
+            if (change.Property == SubjectProperty)
             {
-                _elements.Clear();
-                ClearHoveredIssueLink();
-
-                var subject = Subject;
-                if (string.IsNullOrEmpty(subject))
-                {
-                    _needRebuildInlines = true;
-                    InvalidateVisual();
-                    return;
-                }
-
-                var rules = IssueTrackerRules ?? [];
-                foreach (var rule in rules)
-                    rule.Matches(_elements, subject);
-
-                var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
-                if (!keywordMatch.Success)
-                    keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
-
-                if (keywordMatch.Success && _elements.Intersect(0, keywordMatch.Length) == null)
-                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
-
-                var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
-                foreach (Match match in codeMatches)
-                {
-                    var start = match.Index;
-                    var len = match.Length;
-                    if (_elements.Intersect(start, len) != null)
-                        continue;
-
-                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
-                }
-
-                _elements.Sort();
                 _needRebuildInlines = true;
+                GenerateInlineElements();
                 InvalidateVisual();
+            }
+            else if (change.Property == IssueTrackersProperty)
+            {
+                if (change.OldValue is AvaloniaList<Models.IssueTracker> oldValue)
+                    oldValue.CollectionChanged -= OnIssueTrackersChanged;
+                if (change.NewValue is AvaloniaList<Models.IssueTracker> newValue)
+                    newValue.CollectionChanged += OnIssueTrackersChanged;
+
+                OnIssueTrackersChanged(null, null);
             }
             else if (change.Property == FontFamilyProperty ||
                 change.Property == CodeFontFamilyProperty ||
@@ -228,6 +205,51 @@ namespace SourceGit.Views
         {
             base.OnPointerExited(e);
             ClearHoveredIssueLink();
+        }
+
+        private void OnIssueTrackersChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            _needRebuildInlines = true;
+            GenerateInlineElements();
+            InvalidateVisual();
+        }
+
+        private void GenerateInlineElements()
+        {
+            _elements.Clear();
+            ClearHoveredIssueLink();
+
+            var subject = Subject;
+            if (string.IsNullOrEmpty(subject))
+            {
+                _needRebuildInlines = true;
+                InvalidateVisual();
+                return;
+            }
+
+            var rules = IssueTrackers ?? [];
+            foreach (var rule in rules)
+                rule.Matches(_elements, subject);
+
+            var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
+            if (!keywordMatch.Success)
+                keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
+
+            if (keywordMatch.Success && _elements.Intersect(0, keywordMatch.Length) == null)
+                _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+
+            var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
+            foreach (Match match in codeMatches)
+            {
+                var start = match.Index;
+                var len = match.Length;
+                if (_elements.Intersect(start, len) != null)
+                    continue;
+
+                _elements.Add(new Models.InlineElement(Models.InlineElementType.Code, start, len, string.Empty));
+            }
+
+            _elements.Sort();
         }
 
         private void GenerateFormattedTextElements()

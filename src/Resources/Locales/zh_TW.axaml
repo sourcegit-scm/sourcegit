@@ -199,6 +199,7 @@
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">預設合併模式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增符合 Azure DevOps 規則</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">新增符合 Gerrit Change-Id 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">新增符合 Gitee 議題規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">新增符合 Gitee 合併請求規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">新增符合 GitHub Issue 規則</x:String>
@@ -515,7 +516,6 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} 個月前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} 年前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">請使用 Shift + Enter 換行。Enter 鍵已被 [確定] 按鈕佔用。</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">偏好設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">分析變更差異提示詞</x:String>

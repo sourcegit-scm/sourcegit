@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -315,8 +315,41 @@ namespace SourceGit.Views
         {
             if (sender is Button btn && DataContext is ViewModels.Launcher launcher)
             {
-                var menu = launcher.CreateContextForWorkspace();
-                menu?.Open(btn);
+                var pref = ViewModels.Preferences.Instance;
+                var menu = new ContextMenu();
+
+                for (var i = 0; i < pref.Workspaces.Count; i++)
+                {
+                    var workspace = pref.Workspaces[i];
+
+                    var icon = App.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
+                    icon.Fill = workspace.Brush;
+
+                    var item = new MenuItem();
+                    item.Header = workspace.Name;
+                    item.Icon = icon;
+                    item.Click += (_, e) =>
+                    {
+                        if (!workspace.IsActive)
+                            launcher.SwitchWorkspace(workspace);
+
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var configure = new MenuItem();
+                configure.Header = App.Text("Workspace.Configure");
+                configure.Click += async (_, e) =>
+                {
+                    await App.ShowDialog(new ViewModels.ConfigureWorkspace());
+                    e.Handled = true;
+                };
+                menu.Items.Add(configure);
+                menu.Open(btn);
             }
 
             e.Handled = true;

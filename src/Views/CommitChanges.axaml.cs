@@ -17,18 +17,22 @@ namespace SourceGit.Views
             if (sender is not ChangeCollectionView view || DataContext is not ViewModels.CommitDetail vm)
                 return;
 
+            var detailView = this.FindAncestorOfType<CommitDetail>();
+            if (detailView == null)
+                return;
+
             var changes = view.SelectedChanges ?? [];
             var container = view.FindDescendantOfType<ChangeCollectionContainer>();
             if (container is { SelectedItems.Count: 1, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
             {
-                var menu = vm.CreateChangeContextMenuByFolder(node, changes);
+                var menu = detailView.CreateChangeContextMenuByFolder(node, changes);
                 menu.Open(view);
                 return;
             }
 
             if (changes.Count == 1)
             {
-                var menu = vm.CreateChangeContextMenu(changes[0]);
+                var menu = detailView.CreateChangeContextMenu(changes[0]);
                 menu.Open(view);
             }
         }

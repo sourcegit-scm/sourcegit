@@ -685,7 +685,7 @@
                 BorderThickness="0"
                 Content="{DynamicResource Text.Repository.Abort}"
                 Padding="8,2" Margin="0,0,8,0"
-                Command="{Binding AbortMerge}"/>
+                Click="OnAbortInProgress"/>
       </Grid>
 
       <Grid Grid.Row="1"
@@ -815,7 +815,7 @@
           <DataTemplate DataType="vm:Histories">
             <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}"
                          Bisect="{Binding Bisect}"
-                         IssueTrackerRules="{Binding $parent[v:Repository].((vm:Repository)DataContext).Settings.IssueTrackerRules}"
+                         IssueTrackers="{Binding $parent[v:Repository].((vm:Repository)DataContext).IssueTrackers}"
                          OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistories}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>

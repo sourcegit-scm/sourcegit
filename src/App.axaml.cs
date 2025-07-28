@@ -17,7 +17,6 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
-using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
@@ -344,14 +343,6 @@ namespace SourceGit
             return icon;
         }
 
-        public static IStorageProvider GetStorageProvider()
-        {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                return desktop.MainWindow?.StorageProvider;
-
-            return null;
-        }
-
         public static ViewModels.Launcher GetLauncher()
         {
             return Current is App app ? app._launcher : null;
@@ -446,7 +437,7 @@ namespace SourceGit
             if (!dirInfo.Exists || !dirInfo.Name.Equals("rebase-merge", StringComparison.Ordinal))
                 return true;
 
-            var jobsFile = Path.Combine(dirInfo.Parent!.FullName, "sourcegit_rebase_jobs.json");
+            var jobsFile = Path.Combine(dirInfo.Parent!.FullName, "sourcegit.interactive_rebase");
             if (!File.Exists(jobsFile))
                 return true;
 
@@ -491,7 +482,7 @@ namespace SourceGit
             var origHeadFile = Path.Combine(gitDir, "rebase-merge", "orig-head");
             var ontoFile = Path.Combine(gitDir, "rebase-merge", "onto");
             var doneFile = Path.Combine(gitDir, "rebase-merge", "done");
-            var jobsFile = Path.Combine(gitDir, "sourcegit_rebase_jobs.json");
+            var jobsFile = Path.Combine(gitDir, "sourcegit.interactive_rebase");
             if (!File.Exists(ontoFile) || !File.Exists(origHeadFile) || !File.Exists(doneFile) || !File.Exists(jobsFile))
                 return true;
 

@@ -193,8 +193,104 @@ namespace SourceGit.Views
 
             if (selected != null && DataContext is ViewModels.Repository repo)
             {
-                var menu = repo.CreateContextMenuForTag(selected);
-                menu?.Open(control);
+                var createBranch = new MenuItem();
+                createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
+                createBranch.Header = App.Text("CreateBranch");
+                createBranch.Click += (_, ev) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.CreateBranch(repo, selected));
+                    ev.Handled = true;
+                };
+
+                var pushTag = new MenuItem();
+                pushTag.Header = App.Text("TagCM.Push", selected.Name);
+                pushTag.Icon = App.CreateMenuIcon("Icons.Push");
+                pushTag.IsEnabled = repo.Remotes.Count > 0;
+                pushTag.Click += (_, ev) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.PushTag(repo, selected));
+                    ev.Handled = true;
+                };
+
+                var deleteTag = new MenuItem();
+                deleteTag.Header = App.Text("TagCM.Delete", selected.Name);
+                deleteTag.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteTag.Click += (_, ev) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.DeleteTag(repo, selected));
+                    ev.Handled = true;
+                };
+
+                var archive = new MenuItem();
+                archive.Icon = App.CreateMenuIcon("Icons.Archive");
+                archive.Header = App.Text("Archive");
+                archive.Click += (_, ev) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Archive(repo, selected));
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(createBranch);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(pushTag);
+                menu.Items.Add(deleteTag);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(archive);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var actions = repo.GetCustomActions(Models.CustomActionScope.Tag);
+                if (actions.Count > 0)
+                {
+                    var custom = new MenuItem();
+                    custom.Header = App.Text("TagCM.CustomAction");
+                    custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                    foreach (var action in actions)
+                    {
+                        var (dup, label) = action;
+                        var item = new MenuItem();
+                        item.Icon = App.CreateMenuIcon("Icons.Action");
+                        item.Header = label;
+                        item.Click += (_, e) =>
+                        {
+                            repo.ExecCustomAction(dup, selected);
+                            e.Handled = true;
+                        };
+
+                        custom.Items.Add(item);
+                    }
+
+                    menu.Items.Add(custom);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                var copy = new MenuItem();
+                copy.Header = App.Text("TagCM.Copy");
+                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Click += async (_, ev) =>
+                {
+                    await App.CopyTextAsync(selected.Name);
+                    ev.Handled = true;
+                };
+
+                var copyMessage = new MenuItem();
+                copyMessage.Header = App.Text("TagCM.CopyMessage");
+                copyMessage.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMessage.IsEnabled = !string.IsNullOrEmpty(selected.Message);
+                copyMessage.Click += async (_, ev) =>
+                {
+                    await App.CopyTextAsync(selected.Message);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(copy);
+                menu.Items.Add(copyMessage);
+                menu.Open(control);
             }
 
             e.Handled = true;

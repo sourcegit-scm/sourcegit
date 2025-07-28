@@ -1,9 +1,12 @@
 using System;
+using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace SourceGit.Views
 {
@@ -170,11 +173,104 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
+        private async void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
+            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm && ShowAdvancedOptions)
             {
-                var menu = vm.CreateContextMenuForCommitMessages();
+                var repo = vm.Repository;
+                var menu = new ContextMenu();
+
+                var gitTemplate = await new Commands.Config(repo.FullPath).GetAsync("commit.template");
+                var templateCount = repo.Settings.CommitTemplates.Count;
+                if (templateCount == 0 && string.IsNullOrEmpty(gitTemplate))
+                {
+                    menu.Items.Add(new MenuItem()
+                    {
+                        Header = App.Text("WorkingCopy.NoCommitTemplates"),
+                        Icon = App.CreateMenuIcon("Icons.Code"),
+                        IsEnabled = false
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < templateCount; i++)
+                    {
+                        var template = repo.Settings.CommitTemplates[i];
+                        var item = new MenuItem();
+                        item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
+                        item.Icon = App.CreateMenuIcon("Icons.Code");
+                        item.Click += (_, e) =>
+                        {
+                            vm.ApplyCommitMessageTemplate(template);
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(item);
+                    }
+
+                    if (!string.IsNullOrEmpty(gitTemplate))
+                    {
+                        if (!Path.IsPathRooted(gitTemplate))
+                            gitTemplate = Native.OS.GetAbsPath(repo.FullPath, gitTemplate);
+
+                        var friendlyName = gitTemplate;
+                        if (!OperatingSystem.IsWindows())
+                        {
+                            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                            var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+                            if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
+                                friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
+                        }
+
+                        var gitTemplateItem = new MenuItem();
+                        gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
+                        gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
+                        gitTemplateItem.Click += (_, e) =>
+                        {
+                            if (File.Exists(gitTemplate))
+                                vm.CommitMessage = File.ReadAllText(gitTemplate);
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(gitTemplateItem);
+                    }
+                }
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var historiesCount = repo.Settings.CommitMessages.Count;
+                if (historiesCount == 0)
+                {
+                    menu.Items.Add(new MenuItem()
+                    {
+                        Header = App.Text("WorkingCopy.NoCommitHistories"),
+                        Icon = App.CreateMenuIcon("Icons.Histories"),
+                        IsEnabled = false
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < historiesCount; i++)
+                    {
+                        var dup = repo.Settings.CommitMessages[i].Trim();
+                        var header = new TextBlock()
+                        {
+                            Text = dup.ReplaceLineEndings(" "),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            TextTrimming = TextTrimming.CharacterEllipsis
+                        };
+
+                        var item = new MenuItem();
+                        item.Header = header;
+                        item.Icon = App.CreateMenuIcon("Icons.Histories");
+                        item.Click += (_, e) =>
+                        {
+                            vm.CommitMessage = dup;
+                            e.Handled = true;
+                        };
+
+                        menu.Items.Add(item);
+                    }
+                }
+
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
                 menu.Open(button);
             }
@@ -182,25 +278,59 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        private async void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
+            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control && ShowAdvancedOptions)
             {
-                var menu = vm.CreateContextForOpenAI();
-                menu?.Open(control);
+                var repo = vm.Repository;
+
+                if (vm.Staged == null || vm.Staged.Count == 0)
+                {
+                    App.RaiseException(repo.FullPath, "No files added to commit!");
+                    return;
+                }
+
+                var services = repo.GetPreferredOpenAIServices();
+                if (services.Count == 0)
+                {
+                    App.RaiseException(repo.FullPath, "Bad configuration for OpenAI");
+                    return;
+                }
+
+                if (services.Count == 1)
+                {
+                    await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], vm.Staged, t => vm.CommitMessage = t));
+                    return;
+                }
+
+                var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
+                foreach (var service in services)
+                {
+                    var dup = service;
+                    var item = new MenuItem();
+                    item.Header = service.Name;
+                    item.Click += async (_, e) =>
+                    {
+                        await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, vm.Staged, t => vm.CommitMessage = t));
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+                menu.Open(control);
             }
 
             e.Handled = true;
         }
 
-        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
+        private async void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
             var toplevel = TopLevel.GetTopLevel(this);
             if (toplevel is Window owner)
             {
                 var vm = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text);
                 var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
-                builder.ShowDialog(owner);
+                await builder.ShowDialog(owner);
             }
 
             e.Handled = true;

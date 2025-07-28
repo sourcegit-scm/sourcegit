@@ -54,16 +54,14 @@
         <DataGrid.Styles>
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
-            <Setter Property="Background" Value="{DynamicResource Brush.Window}" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
             <Setter Property="Template">
               <ControlTemplate>
                 <Border x:Name="HeaderBorder"
                         Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                  <Grid ColumnDefinitions="*,Auto">
+                        BorderThickness="0"
+                        CornerRadius="0">
+                  <Grid ColumnDefinitions="*,4">
                     <ContentPresenter x:Name="PART_ContentPresenter"
                                       Grid.Column="0"
                                       Content="{TemplateBinding Content}"
@@ -71,8 +69,8 @@
 
                     <Rectangle Name="VerticalSeparator"
                                Grid.Column="1"
-                               Width="1.1"
-                               VerticalAlignment="Stretch"
+                               Width="1"
+                               HorizontalAlignment="Center" VerticalAlignment="Stretch"
                                Fill="{DynamicResource Brush.Border0}"
                                IsVisible="{TemplateBinding AreSeparatorsVisible}" />
                   </Grid>
@@ -141,7 +139,7 @@
                                               Foreground="{DynamicResource Brush.FG1}"
                                               LinkForeground="{DynamicResource Brush.Link}"
                                               Subject="{Binding Subject}"
-                                              IssueTrackerRules="{Binding $parent[v:Histories].IssueTrackerRules}"
+                                              IssueTrackers="{Binding $parent[v:Histories].IssueTrackers}"
                                               FontWeight="{Binding FontWeight}"
                                               Opacity="{Binding Opacity}"/>
                   </Grid>
@@ -239,6 +237,17 @@
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>
+
+      <Border Width="32" Height="32"
+              Margin="0,0,16,8"
+              CornerRadius="16"
+              Background="{DynamicResource Brush.Accent}"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Effect="drop-shadow(0 0 8 #80000000)"
+              PointerPressed="OnScrollToTopPointerPressed"
+              IsVisible="{Binding $parent[v:Histories].IsScrollToTopVisible}">
+        <Path Width="16" Height="16" Data="{StaticResource Icons.ScrollToTop}" Fill="White"/>
+      </Border>
 
       <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
     </Grid>

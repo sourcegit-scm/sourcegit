@@ -68,6 +68,18 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public void Open()
+        {
+            if (IsRepository)
+            {
+                App.GetLauncher().OpenRepositoryInTab(this, null);
+                return;
+            }
+
+            foreach (var subNode in SubNodes)
+                subNode.Open();
+        }
+
         public void Edit()
         {
             var activePage = App.GetLauncher().ActivePage;
@@ -80,6 +92,13 @@ namespace SourceGit.ViewModels
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new CreateGroup(this);
+        }
+
+        public void Move()
+        {
+            var activePage = App.GetLauncher().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new MoveRepositoryNode(this);
         }
 
         public void OpenInFileManager()

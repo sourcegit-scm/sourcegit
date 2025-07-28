@@ -199,6 +199,7 @@
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Bevorzugter Merge Modus</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TICKETSYSTEM</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Beispiel für Azure DevOps Regel hinzufügen</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Beispiel für Gerrit Change-Id hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Beispiel für Gitee Issue Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Beispiel für Gitee Pull Request Regel hinzufügen</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Beispiel für GitHub Regel hinzufügen</x:String>
@@ -515,7 +516,6 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Vor {0} Monaten</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Vor {0} Jahren</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Gestern</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Verwende 'Shift+Enter' um eine neue Zeile einzufügen. 'Enter' ist das Kürzel für den OK Button</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Einstellungen</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">System-Prompt für Diff Analyse</x:String>

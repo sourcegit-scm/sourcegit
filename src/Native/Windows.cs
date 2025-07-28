@@ -450,7 +450,8 @@ namespace SourceGit.Native
             var files = dir.GetFiles();
             foreach (var f in files)
             {
-                if (f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                if (f.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase) ||
+                    f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
                     return f.FullName;
             }
 

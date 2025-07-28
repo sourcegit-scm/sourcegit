@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-
-using Avalonia.Controls;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
     public class BranchCompare : ObservableObject
     {
+        public string RepositoryPath
+        {
+            get => _repo;
+        }
+
         public bool IsLoading
         {
             get => _isLoading;
@@ -125,70 +126,6 @@ namespace SourceGit.ViewModels
         public string GetAbsPath(string path)
         {
             return Native.OS.GetAbsPath(_repo, path);
-        }
-
-        public ContextMenu CreateChangeContextMenu()
-        {
-            if (_selectedChanges is not { Count: 1 })
-                return null;
-
-            var change = _selectedChanges[0];
-            var menu = new ContextMenu();
-
-            var openWithMerger = new MenuItem();
-            openWithMerger.Header = App.Text("OpenInExternalMergeTool");
-            openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-            openWithMerger.Click += (_, ev) =>
-            {
-                var toolType = Preferences.Instance.ExternalMergeToolType;
-                var toolPath = Preferences.Instance.ExternalMergeToolPath;
-                var opt = new Models.DiffOption(_based.Head, _to.Head, change);
-
-                new Commands.DiffTool(_repo, toolType, toolPath, opt).Open();
-                ev.Handled = true;
-            };
-            menu.Items.Add(openWithMerger);
-
-            if (change.Index != Models.ChangeState.Deleted)
-            {
-                var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
-                var explore = new MenuItem();
-                explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
-                explore.IsEnabled = File.Exists(full);
-                explore.Click += (_, ev) =>
-                {
-                    Native.OS.OpenInFileManager(full, true);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(explore);
-            }
-
-            var copyPath = new MenuItem();
-            copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
-            copyPath.Click += async (_, ev) =>
-            {
-                await App.CopyTextAsync(change.Path);
-                ev.Handled = true;
-            };
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(copyPath);
-
-            var copyFullPath = new MenuItem();
-            copyFullPath.Header = App.Text("CopyFullPath");
-            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
-            copyFullPath.Click += async (_, e) =>
-            {
-                await App.CopyTextAsync(Native.OS.GetAbsPath(_repo, change.Path));
-                e.Handled = true;
-            };
-            menu.Items.Add(copyFullPath);
-
-            return menu;
         }
 
         private void Refresh()

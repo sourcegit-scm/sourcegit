@@ -194,13 +194,14 @@
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Preferred Merge Mode</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Add Sample Azure DevOps Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Add Sample Gitee Issue Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Add Sample Gitee Pull Request Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Add Sample GitHub Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Add Sample GitLab Issue Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Add Sample GitLab Merge Request Rule</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Add Sample Jira Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Add Azure DevOps Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Add Gerrit Change-Id Commit Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Add Gitee Issue Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Add Gitee Pull Request Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Add GitHub Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Add GitLab Issue Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Add GitLab Merge Request Rule</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Add Jira Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">New Rule</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Issue Regex Expression:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Rule Name:</x:String>
@@ -511,7 +512,6 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Use 'Shift+Enter' to input a new line. 'Enter' is the hotkey of OK button</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>

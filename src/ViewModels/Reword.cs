@@ -18,10 +18,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _message, value, true);
         }
 
-        public Reword(Repository repo, Models.Commit head)
+        public Reword(Repository repo, Models.Commit head, string oldMessage)
         {
             _repo = repo;
-            _oldMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync().Result;
+            _oldMessage = oldMessage;
             _message = _oldMessage;
             Head = head;
         }

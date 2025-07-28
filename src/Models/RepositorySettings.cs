@@ -128,12 +128,6 @@ namespace SourceGit.Models
             set;
         } = [];
 
-        public AvaloniaList<IssueTrackerRule> IssueTrackerRules
-        {
-            get;
-            set;
-        } = [];
-
         public AvaloniaList<CustomAction> CustomActions
         {
             get;
@@ -407,25 +401,6 @@ namespace SourceGit.Models
                 CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
 
             CommitMessages.Insert(0, message);
-        }
-
-        public IssueTrackerRule AddIssueTracker(string name, string regex, string url)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = name,
-                RegexString = regex,
-                URLTemplate = url,
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public void RemoveIssueTracker(IssueTrackerRule rule)
-        {
-            if (rule != null)
-                IssueTrackerRules.Remove(rule);
         }
 
         public CustomAction AddNewCustomAction()

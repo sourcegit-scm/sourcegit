@@ -12,7 +12,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Stash.Title}"/>
-    <Grid Margin="8,20,0,0" RowDefinitions="32,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="100,356">
+    <Grid Margin="8,20,0,0" RowDefinitions="32,Auto,Auto,Auto,Auto" ColumnDefinitions="100,356">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"
                  Margin="8,0"
@@ -47,23 +47,17 @@
                AcceptsTab="True"
                VerticalContentAlignment="Top"
                Padding="4"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               v:AutoFocusBehaviour.IsEnabled="True"
+               Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
-      <TextBlock Grid.Row="2" Grid.Column="1"
-                 Classes="small"
-                 Margin="0,2,4,4"
-                 Text="{DynamicResource Text.PopupEnterKeyTip}"
-                 TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"/>
-
-      <CheckBox Grid.Row="3" Grid.Column="1"
+      <CheckBox Grid.Row="2" Grid.Column="1"
                 Height="32"
                 Content="{DynamicResource Text.Stash.OnlyStagedChanges}"
                 IsChecked="{Binding OnlyStaged, Mode=TwoWay}"
                 IsVisible="{Binding !HasSelectedFiles}"
                 ToolTip.Tip="--staged"/>
 
-      <CheckBox Grid.Row="4" Grid.Column="1"
+      <CheckBox Grid.Row="3" Grid.Column="1"
                 Height="32"
                 Content="{DynamicResource Text.Stash.IncludeUntracked}"
                 IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"
@@ -76,7 +70,7 @@
         </CheckBox.IsVisible>
       </CheckBox>
 
-      <TextBlock Grid.Row="5" Grid.Column="1"
+      <TextBlock Grid.Row="4" Grid.Column="1"
                  Classes="small"
                  Margin="0,4,0,0"
                  Text="{DynamicResource Text.Stash.TipForSelectedFiles}"

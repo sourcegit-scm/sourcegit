@@ -423,7 +423,6 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">il y a {0} mois</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">il y a {0} ans</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Hier</x:String>
-  <x:String x:Key="Text.PopupEnterKeyTip" xml:space="preserve">Utiliser 'Maj+Entrée' pour insérer une nouvelle ligne. 'Entrée' est la touche pour valider</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
   <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyser Diff Prompt</x:String>

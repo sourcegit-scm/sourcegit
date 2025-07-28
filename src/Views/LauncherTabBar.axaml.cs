@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -254,10 +254,76 @@ namespace SourceGit.Views
 
         private void OnTabContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is Border border && DataContext is ViewModels.Launcher vm)
+            if (sender is Border { DataContext: ViewModels.LauncherPage page } border &&
+                DataContext is ViewModels.Launcher vm)
             {
-                var menu = vm.CreateContextForPageTab(border.DataContext as ViewModels.LauncherPage);
-                menu?.Open(border);
+                var menu = new ContextMenu();
+                var close = new MenuItem();
+                close.Header = App.Text("PageTabBar.Tab.Close");
+                close.Tag = OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W";
+                close.Click += (_, e) =>
+                {
+                    vm.CloseTab(page);
+                    e.Handled = true;
+                };
+                menu.Items.Add(close);
+
+                var closeOthers = new MenuItem();
+                closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
+                closeOthers.Click += (_, e) =>
+                {
+                    vm.CloseOtherTabs();
+                    e.Handled = true;
+                };
+                menu.Items.Add(closeOthers);
+
+                var closeRight = new MenuItem();
+                closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
+                closeRight.Click += (_, e) =>
+                {
+                    vm.CloseRightTabs();
+                    e.Handled = true;
+                };
+                menu.Items.Add(closeRight);
+
+                if (page.Node.IsRepository)
+                {
+                    var bookmark = new MenuItem();
+                    bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
+                    bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
+
+                    for (int i = 0; i < Models.Bookmarks.Supported.Count; i++)
+                    {
+                        var icon = App.CreateMenuIcon("Icons.Bookmark");
+
+                        if (i != 0)
+                            icon.Fill = Models.Bookmarks.Brushes[i];
+
+                        var dupIdx = i;
+                        var setter = new MenuItem();
+                        setter.Header = icon;
+                        setter.Click += (_, e) =>
+                        {
+                            page.Node.Bookmark = dupIdx;
+                            e.Handled = true;
+                        };
+                        bookmark.Items.Add(setter);
+                    }
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(bookmark);
+
+                    var copyPath = new MenuItem();
+                    copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
+                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Click += async (_, e) =>
+                    {
+                        await page.CopyPathAsync();
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copyPath);
+                }
+                menu.Open(border);
             }
 
             e.Handled = true;
