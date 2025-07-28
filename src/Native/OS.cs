@@ -76,6 +76,18 @@ namespace SourceGit.Native
             set;
         } = [];
 
+        public static int ExternalMergerType
+        {
+            get;
+            set;
+        } = 0;
+
+        public static string ExternalMergerExecFile
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public static bool UseSystemWindowFrame
         {
             get => OperatingSystem.IsLinux() && _enableSystemWindowFrame;
@@ -156,6 +168,33 @@ namespace SourceGit.Native
                 ShellOrTerminal = string.Empty;
             else
                 ShellOrTerminal = _backend.FindTerminal(shell);
+        }
+
+        public static Models.DiffMergeTool GetDiffMergeTool(bool onlyDiff)
+        {
+            if (ExternalMergerType < 0 || ExternalMergerType >= Models.ExternalMerger.Supported.Count)
+                return null;
+
+            if (ExternalMergerType != 0 && (string.IsNullOrEmpty(ExternalMergerExecFile) || !File.Exists(ExternalMergerExecFile)))
+                return null;
+
+            var tool = Models.ExternalMerger.Supported[ExternalMergerType];
+            return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? tool.DiffCmd : tool.MergeCmd);
+        }
+
+        public static void AutoSelectExternalMergeToolExecFile()
+        {
+            if (ExternalMergerType >= 0 && ExternalMergerType < Models.ExternalMerger.Supported.Count)
+            {
+                var merger = Models.ExternalMerger.Supported[ExternalMergerType];
+                var externalTool = ExternalTools.Find(x => x.Name.Equals(merger.Name, StringComparison.Ordinal));
+                if (externalTool != null)
+                    ExternalMergerExecFile = externalTool.ExecFile;
+                else if (!OperatingSystem.IsWindows() && File.Exists(merger.Finder))
+                    ExternalMergerExecFile = merger.Finder;
+                else
+                    ExternalMergerExecFile = string.Empty;
+            }
         }
 
         public static void OpenInFileManager(string path, bool select = false)

@@ -12,13 +12,14 @@ namespace SourceGit.Models
 {
     public class ExternalTool
     {
-        public string Name { get; private set; }
-        public Bitmap IconImage { get; private set; } = null;
+        public string Name { get; }
+        public string ExecFile { get; }
+        public Bitmap IconImage { get; }
 
         public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null)
         {
             Name = name;
-            _execFile = execFile;
+            ExecFile = execFile;
             _execArgsGenerator = execArgsGenerator ?? (repo => repo.Quoted());
 
             try
@@ -38,13 +39,12 @@ namespace SourceGit.Models
             Process.Start(new ProcessStartInfo()
             {
                 WorkingDirectory = repo,
-                FileName = _execFile,
+                FileName = ExecFile,
                 Arguments = _execArgsGenerator.Invoke(repo),
                 UseShellExecute = false,
             });
         }
 
-        private string _execFile = string.Empty;
         private Func<string, string> _execArgsGenerator = null;
     }
 

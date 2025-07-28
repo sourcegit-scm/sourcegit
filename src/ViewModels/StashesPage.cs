@@ -193,9 +193,7 @@ namespace SourceGit.ViewModels
             else
                 opt = new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, change);
 
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, opt).Open();
         }
 
         public async Task CheckoutSingleFileAsync(Models.Change change)

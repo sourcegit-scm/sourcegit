@@ -207,10 +207,7 @@ namespace SourceGit.ViewModels
 
         public void OpenChangeInMergeTool(Models.Change c)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var opt = new Models.DiffOption(_commit, c);
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, new Models.DiffOption(_commit, c)).Open();
         }
 
         public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)

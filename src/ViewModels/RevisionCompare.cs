@@ -100,9 +100,7 @@ namespace SourceGit.ViewModels
         public void OpenChangeWithExternalDiffTool(Models.Change change)
         {
             var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            new Commands.DiffTool(_repo, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo, opt).Open();
         }
 
         public void NavigateTo(string commitSHA)
