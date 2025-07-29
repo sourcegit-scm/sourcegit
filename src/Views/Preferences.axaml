@@ -687,13 +687,15 @@
                   <Button Grid.Column="1"
                           Classes="icon_button"
                           Width="28" Height="28"
-                          Click="OnRemoveSelectedCustomAction">
+                          Click="OnRemoveSelectedCustomAction"
+                          IsEnabled="{Binding #ThisControl.SelectedCustomAction, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                   </Button>
                   <Button Grid.Column="2"
                           Classes="icon_button"
                           Width="28" Height="28"
-                          Click="OnDuplicateSelectedCustomAction">
+                          Click="OnDuplicateSelectedCustomAction"
+                          IsEnabled="{Binding #ThisControl.SelectedCustomAction, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <Path Width="14" Height="14" Data="{StaticResource Icons.Copy}"/>
                   </Button>
                   <Button Grid.Column="4"

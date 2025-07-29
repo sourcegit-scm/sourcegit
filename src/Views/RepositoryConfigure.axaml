@@ -443,13 +443,15 @@
                 <Button Grid.Column="1"
                         Classes="icon_button"
                         Width="28" Height="28"
-                        Command="{Binding RemoveSelectedCustomAction}">
+                        Command="{Binding RemoveSelectedCustomAction}"
+                        IsEnabled="{Binding SelectedCustomAction, Converter={x:Static ObjectConverters.IsNotNull}}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
                 <Button Grid.Column="2"
                         Classes="icon_button"
                         Width="28" Height="28"
-                        Command="{Binding DuplicateSelectedCustomAction}">
+                        Command="{Binding DuplicateSelectedCustomAction}"
+                        IsEnabled="{Binding SelectedCustomAction, Converter={x:Static ObjectConverters.IsNotNull}}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Copy}"/>
                 </Button>
                 <Button Grid.Column="4"
