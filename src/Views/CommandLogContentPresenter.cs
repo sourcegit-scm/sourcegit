@@ -50,7 +50,9 @@ namespace SourceGit.Views
                         {
                             ChangeLinePart(line.Offset + idx, line.Offset + err.Length + 1, v =>
                             {
+                                var old = v.TextRunProperties.Typeface;
                                 v.TextRunProperties.SetForegroundBrush(Brushes.Red);
+                                v.TextRunProperties.SetTypeface(new Typeface(old.FontFamily, old.Style, FontWeight.Bold));
                             });
                         }
                     }
