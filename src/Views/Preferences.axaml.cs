@@ -455,6 +455,22 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnDuplicateSelectedCustomAction(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCustomAction == null)
+                return;
+
+            var action = new Models.CustomAction(SelectedCustomAction)
+            {
+                Name = SelectedCustomAction.Name + " - (Copy)"
+            };
+
+            ViewModels.Preferences.Instance.CustomActions.Add(action);
+            SelectedCustomAction = action;
+
+            e.Handled = true;
+        }
+
         private void OnMoveSelectedCustomActionUp(object sender, RoutedEventArgs e)
         {
             if (SelectedCustomAction == null)
