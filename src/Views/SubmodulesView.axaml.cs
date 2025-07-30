@@ -254,7 +254,7 @@ namespace SourceGit.Views
 
                     var copySHA = new MenuItem();
                     copySHA.Header = App.Text("CommitDetail.Info.SHA");
-                    copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+                    copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
                     copySHA.Click += async (_, ev) =>
                     {
                         await App.CopyTextAsync(submodule.SHA);

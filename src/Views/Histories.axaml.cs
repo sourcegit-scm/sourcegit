@@ -414,7 +414,7 @@ namespace SourceGit.Views
 
             var copyShas = new MenuItem();
             copyShas.Header = App.Text("CommitCM.CopySHA");
-            copyShas.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+            copyShas.Icon = App.CreateMenuIcon("Icons.Hash");
             copyShas.Click += async (_, e) =>
             {
                 var builder = new StringBuilder();
@@ -427,7 +427,7 @@ namespace SourceGit.Views
 
             var copyInfos = new MenuItem();
             copyInfos.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
-            copyInfos.Icon = App.CreateMenuIcon("Icons.Info");
+            copyInfos.Icon = App.CreateMenuIcon("Icons.ShaAndSubject");
             copyInfos.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyInfos.Click += async (_, e) =>
             {
@@ -826,7 +826,7 @@ namespace SourceGit.Views
 
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
-            copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+            copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
             copySHA.Click += async (_, e) =>
             {
                 await App.CopyTextAsync(commit.SHA);
@@ -844,7 +844,7 @@ namespace SourceGit.Views
 
             var copyInfo = new MenuItem();
             copyInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
-            copyInfo.Icon = App.CreateMenuIcon("Icons.Info");
+            copyInfo.Icon = App.CreateMenuIcon("Icons.ShaAndSubject");
             copyInfo.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyInfo.Click += async (_, e) =>
             {
