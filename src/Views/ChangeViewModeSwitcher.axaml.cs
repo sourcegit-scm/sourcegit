@@ -15,6 +15,15 @@ namespace SourceGit.Views
             set => SetValue(ViewModeProperty, value);
         }
 
+        public static readonly StyledProperty<Models.ChangeSortMode> SortModeProperty =
+            AvaloniaProperty.Register<ChangeViewModeSwitcher, Models.ChangeSortMode>(nameof(SortMode));
+
+        public Models.ChangeSortMode SortMode
+        {
+            get => GetValue(SortModeProperty);
+            set => SetValue(SortModeProperty, value);
+        }
+
         public ChangeViewModeSwitcher()
         {
             InitializeComponent();
@@ -35,6 +44,18 @@ namespace SourceGit.Views
         private void SwitchToTree(object sender, RoutedEventArgs e)
         {
             ViewMode = Models.ChangeViewMode.Tree;
+            e.Handled = true;
+        }
+
+        private void SortByPath(object sender, RoutedEventArgs e)
+        {
+            SortMode = Models.ChangeSortMode.Path;
+            e.Handled = true;
+        }
+
+        private void SortByStatus(object sender, RoutedEventArgs e)
+        {
+            SortMode = Models.ChangeSortMode.Status;
             e.Handled = true;
         }
     }
