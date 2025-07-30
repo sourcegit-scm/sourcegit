@@ -41,7 +41,7 @@ namespace SourceGit.Models
                         outs.Add(new($"Codeberg ({route})", $"{link}/commit/"));
                     else if (host.Equals("gitea.org", StringComparison.Ordinal))
                         outs.Add(new($"Gitea ({route})", $"{link}/commit/"));
-                    else if (host.Equals("github.com", StringComparison.Ordinal))
+                    else if (host.Equals("git.sr.ht", StringComparison.Ordinal))
                         outs.Add(new($"sourcehut ({route})", $"{link}/commit/"));
                 }
             }
