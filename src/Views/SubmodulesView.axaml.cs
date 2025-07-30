@@ -261,6 +261,15 @@ namespace SourceGit.Views
                         ev.Handled = true;
                     };
 
+                    var copyBranch = new MenuItem();
+                    copyBranch.Header = App.Text("Submodule.CopyBranch");
+                    copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
+                    copyBranch.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(submodule.Branch);
+                        ev.Handled = true;
+                    };
+
                     var copyRelativePath = new MenuItem();
                     copyRelativePath.Header = App.Text("Submodule.CopyPath");
                     copyRelativePath.Icon = App.CreateMenuIcon("Icons.Folder");
@@ -276,15 +285,6 @@ namespace SourceGit.Views
                     copyURL.Click += async (_, ev) =>
                     {
                         await App.CopyTextAsync(submodule.URL);
-                        ev.Handled = true;
-                    };
-
-                    var copyBranch = new MenuItem();
-                    copyBranch.Header = App.Text("Submodule.Branch");
-                    copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
-                    copyBranch.Click += async (_, ev) =>
-                    {
-                        await App.CopyTextAsync(submodule.Branch);
                         ev.Handled = true;
                     };
 
