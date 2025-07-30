@@ -6,18 +6,26 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.88%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.88%25-yellow)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
+
+- Text.Submodule.CopyBranch
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-99.77%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
+- Text.Submodule.CopyBranch
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-82.04%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-81.95%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -147,6 +155,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
+- Text.Submodule.CopyBranch
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
@@ -178,7 +187,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-87.32%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-87.22%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -280,6 +289,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
+- Text.Submodule.CopyBranch
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
@@ -294,7 +304,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-82.04%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-81.95%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -426,6 +436,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
+- Text.Submodule.CopyBranch
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
@@ -455,7 +466,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-75.00%25-yellow)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-74.91%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -645,6 +656,7 @@ This document shows the translation status of each locale file in the repository
 - Text.StashCM.CopyMessage
 - Text.StashCM.SaveAsPatch
 - Text.Submodule.Branch
+- Text.Submodule.CopyBranch
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
@@ -676,9 +688,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.88%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-82.16%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Submodule.CopyBranch
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-82.06%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -809,6 +828,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
+- Text.Submodule.CopyBranch
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
@@ -838,7 +858,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-83.33%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-83.24%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -964,6 +984,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Stash.Mode
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
+- Text.Submodule.CopyBranch
 - Text.Submodule.Deinit
 - Text.Submodule.Histories
 - Text.Submodule.Move
