@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
 {
-    public partial class CommitLink
+    public class CommitLink
     {
         public string Name { get; set; } = null;
         public string URLPrefix { get; set; } = null;
@@ -15,35 +14,35 @@ namespace SourceGit.Models
             URLPrefix = prefix;
         }
 
-        [GeneratedRegex(@"^(http|https)://[^/]*gitlab[^/]*(:[0-9]+)?.*$")]
-        private static partial Regex REG_GITLAB();
-
         public static List<CommitLink> Get(List<Remote> remotes)
         {
             var outs = new List<CommitLink>();
 
             foreach (var remote in remotes)
             {
-                if (remote.TryGetVisitURL(out var url))
+                if (remote.TryGetVisitURL(out var link))
                 {
-                    var trimmedUrl = url.AsSpan();
-                    if (url.EndsWith(".git"))
-                        trimmedUrl = url.AsSpan(0, url.Length - 4);
+                    if (link.EndsWith(".git"))
+                        link = link.Substring(0, link.Length - 4);
 
-                    if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
-                        outs.Add(new($"GitHub ({trimmedUrl[19..]})", $"{url}/commit/"));
-                    else if (REG_GITLAB().IsMatch(url))
-                        outs.Add(new($"GitLab ({trimmedUrl[(trimmedUrl[15..].IndexOf('/') + 16)..]})", $"{url}/-/commit/"));
-                    else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
-                        outs.Add(new($"Gitee ({trimmedUrl[18..]})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://bitbucket.org/", StringComparison.Ordinal))
-                        outs.Add(new($"BitBucket ({trimmedUrl[22..]})", $"{url}/commits/"));
-                    else if (url.StartsWith("https://codeberg.org/", StringComparison.Ordinal))
-                        outs.Add(new($"Codeberg ({trimmedUrl[21..]})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://gitea.org/", StringComparison.Ordinal))
-                        outs.Add(new($"Gitea ({trimmedUrl[18..]})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://git.sr.ht/", StringComparison.Ordinal))
-                        outs.Add(new($"sourcehut ({trimmedUrl[18..]})", $"{url}/commit/"));
+                    var uri = new Uri(link, UriKind.Absolute);
+                    var host = uri.Host;
+                    var route = uri.AbsolutePath.TrimStart('/');
+
+                    if (host.Equals("github.com", StringComparison.Ordinal))
+                        outs.Add(new($"GitHub ({route})", $"{link}/commit/"));
+                    else if (host.Contains("gitlab", StringComparison.Ordinal))
+                        outs.Add(new($"GitLab ({route})", $"{link}/-/commit/"));
+                    else if (host.Equals("gitee.com", StringComparison.Ordinal))
+                        outs.Add(new($"Gitee ({route})", $"{link}/commit/"));
+                    else if (host.Equals("bitbucket.org", StringComparison.Ordinal))
+                        outs.Add(new($"BitBucket ({route})", $"{link}/commits/"));
+                    else if (host.Equals("codeberg.org", StringComparison.Ordinal))
+                        outs.Add(new($"Codeberg ({route})", $"{link}/commit/"));
+                    else if (host.Equals("gitea.org", StringComparison.Ordinal))
+                        outs.Add(new($"Gitea ({route})", $"{link}/commit/"));
+                    else if (host.Equals("github.com", StringComparison.Ordinal))
+                        outs.Add(new($"sourcehut ({route})", $"{link}/commit/"));
                 }
             }
 
