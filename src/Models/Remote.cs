@@ -8,10 +8,13 @@ namespace SourceGit.Models
     {
         [GeneratedRegex(@"^https?://[^/]+/.+[^/\.]$")]
         private static partial Regex REG_HTTPS();
+
         [GeneratedRegex(@"^git://[^/]+/.+[^/\.]$")]
         private static partial Regex REG_GIT();
+
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH1();
+
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH2();
 

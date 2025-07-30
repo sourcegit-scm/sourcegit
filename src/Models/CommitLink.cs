@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
 {
-    public class CommitLink
+    public partial class CommitLink
     {
         public string Name { get; set; } = null;
         public string URLPrefix { get; set; } = null;
@@ -13,6 +14,9 @@ namespace SourceGit.Models
             Name = name;
             URLPrefix = prefix;
         }
+
+        [GeneratedRegex(@"^(http|https)://[^/]*gitlab[^/]*(:[0-9]+)?.*$")]
+        private static partial Regex REG_GITLAB();
 
         public static List<CommitLink> Get(List<Remote> remotes)
         {
@@ -28,7 +32,7 @@ namespace SourceGit.Models
 
                     if (url.StartsWith("https://github.com/", StringComparison.Ordinal))
                         outs.Add(new($"GitHub ({trimmedUrl[19..]})", $"{url}/commit/"));
-                    else if (url.StartsWith("https://gitlab.", StringComparison.Ordinal))
+                    else if (REG_GITLAB().IsMatch(url))
                         outs.Add(new($"GitLab ({trimmedUrl[(trimmedUrl[15..].IndexOf('/') + 16)..]})", $"{url}/-/commit/"));
                     else if (url.StartsWith("https://gitee.com/", StringComparison.Ordinal))
                         outs.Add(new($"Gitee ({trimmedUrl[18..]})", $"{url}/commit/"));
