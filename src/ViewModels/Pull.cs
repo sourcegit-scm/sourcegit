@@ -145,7 +145,8 @@ namespace SourceGit.ViewModels
                 _repo.FullPath,
                 _selectedRemote.Name,
                 !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                UseRebase).Use(log).RunAsync();
+                UseRebase,
+                _repo.Settings.EnablePullDepth ? _repo.Settings.PullDepthValue : 0).Use(log).RunAsync();
             if (rs)
             {
                 if (updateSubmodules)

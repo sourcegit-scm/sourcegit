@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool noTags, bool force)
+        public Fetch(string repo, string remote, bool noTags, bool force, int depth)
         {
             _remoteKey = $"remote.{remote}.sshkey";
 
@@ -19,6 +19,9 @@ namespace SourceGit.Commands
 
             if (force)
                 Args += "--force ";
+
+            if (depth > 0)
+                Args += $"--depth={depth} ";
 
             Args += remote;
 
