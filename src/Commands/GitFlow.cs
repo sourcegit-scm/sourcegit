@@ -30,21 +30,13 @@ namespace SourceGit.Commands
             start.WorkingDirectory = repo;
             start.Context = repo;
 
-            switch (type)
+            var typeStr = BranchTypeToString(type);
+            if (typeStr == null)
             {
-                case Models.GitFlowBranchType.Feature:
-                    start.Args = $"flow feature start {name}";
-                    break;
-                case Models.GitFlowBranchType.Release:
-                    start.Args = $"flow release start {name}";
-                    break;
-                case Models.GitFlowBranchType.Hotfix:
-                    start.Args = $"flow hotfix start {name}";
-                    break;
-                default:
-                    App.RaiseException(repo, "Bad git-flow branch type!!!");
-                    return false;
+                App.RaiseException(repo, "Bad git-flow branch type!!!");
+                return false;
             }
+            start.Args = $"flow {typeStr} start {name}";
 
             return await start.Use(log).ExecAsync().ConfigureAwait(false);
         }
@@ -54,21 +46,13 @@ namespace SourceGit.Commands
             var builder = new StringBuilder();
             builder.Append("flow ");
 
-            switch (type)
+            var typeStr = BranchTypeToString(type);
+            if (typeStr == null)
             {
-                case Models.GitFlowBranchType.Feature:
-                    builder.Append("feature");
-                    break;
-                case Models.GitFlowBranchType.Release:
-                    builder.Append("release");
-                    break;
-                case Models.GitFlowBranchType.Hotfix:
-                    builder.Append("hotfix");
-                    break;
-                default:
-                    App.RaiseException(repo, "Bad git-flow branch type!!!");
-                    return false;
+                App.RaiseException(repo, "Bad git-flow branch type!!!");
+                return false;
             }
+            builder.Append(typeStr);
 
             builder.Append(" finish ");
             if (squash)
@@ -85,5 +69,14 @@ namespace SourceGit.Commands
             finish.Args = builder.ToString();
             return await finish.Use(log).ExecAsync().ConfigureAwait(false);
         }
+
+        private static string BranchTypeToString(Models.GitFlowBranchType type) =>
+            type switch
+            {
+                Models.GitFlowBranchType.Feature => "feature",
+                Models.GitFlowBranchType.Release => "release",
+                Models.GitFlowBranchType.Hotfix => "hotfix",
+                _ => null
+            };
     }
 }
