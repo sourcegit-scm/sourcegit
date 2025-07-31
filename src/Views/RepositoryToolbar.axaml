@@ -99,7 +99,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.Bisect}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenCustomActionMenu" ToolTip.Tip="{DynamicResource Text.Repository.CustomActions}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="OpenCustomActionMenu"  HotKey="{OnPlatform F8}" ToolTip.Tip="{DynamicResource Text.Repository.CustomActions}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Action}"/>
       </Button>
 
