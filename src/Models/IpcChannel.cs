@@ -8,6 +8,14 @@ namespace SourceGit.Models
 {
     public class IpcChannel : IDisposable
     {
+
+#if DEBUG
+        private readonly string PROC_LOCK = "process.debug.lock";
+        private readonly string IPC_NAME = "SourceGitIPCChannel.Debug";
+#else
+        private readonly string PROC_LOCK = "process.lock";
+        private readonly string IPC_NAME = "SourceGitIPCChannel";
+#endif
         public bool IsFirstInstance { get; }
 
         public event Action<string> MessageReceived;
@@ -16,10 +24,11 @@ namespace SourceGit.Models
         {
             try
             {
-                _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, PROC_LOCK),
+                                            FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 IsFirstInstance = true;
                 _server = new NamedPipeServerStream(
-                    "SourceGitIPCChannel" + Environment.UserName,
+                    IPC_NAME + Environment.UserName,
                     PipeDirection.In,
                     -1,
                     PipeTransmissionMode.Byte,
@@ -37,7 +46,7 @@ namespace SourceGit.Models
         {
             try
             {
-                using (var client = new NamedPipeClientStream(".", "SourceGitIPCChannel" + Environment.UserName, PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly))
+                using (var client = new NamedPipeClientStream(".", IPC_NAME + Environment.UserName, PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly))
                 {
                     client.Connect(1000);
                     if (!client.IsConnected)
@@ -93,8 +102,8 @@ namespace SourceGit.Models
             }
         }
 
-        private FileStream _singletonLock = null;
-        private NamedPipeServerStream _server = null;
-        private CancellationTokenSource _cancellationTokenSource = null;
+        private readonly FileStream _singletonLock = null;
+        private readonly NamedPipeServerStream _server = null;
+        private readonly CancellationTokenSource _cancellationTokenSource = null;
     }
 }
