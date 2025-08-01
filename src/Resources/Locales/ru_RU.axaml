@@ -136,8 +136,8 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Редактировать...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Исправить в родительском...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Интерактивное перемещение ${0}$ в ${1}$</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Имзенить комментарий...</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Втиуснуть в родительский...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Изменить комментарий...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Втиснуть в родительский...</x:String>
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Влить в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Влить ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Выложить ${0}$ в ${1}$</x:String>
@@ -762,7 +762,8 @@
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">РЕВИЗИИ: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">ПОДМОДУЛИ</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Добавить подмодули</x:String>
-  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">Ветка</x:String>
+  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">ВЕТКА</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">Ветка</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Каталог</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Извлечение вложенных подмодулей</x:String>
