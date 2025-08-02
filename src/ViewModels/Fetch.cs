@@ -38,15 +38,17 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableForceOnFetch = value;
         }
 
+        private bool _fetchPreferedRemote = false;
+
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
-            // _fetchAllRemotes = preferredRemote == null;
             _fetchAllRemotes = _repo.Settings.FetchAllRemotes;
 
             if (preferredRemote != null)
             {
                 SelectedRemote = preferredRemote;
+                _fetchPreferedRemote = true;
             }
             else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
             {
@@ -69,7 +71,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
-            if (all)
+            if (all && !_fetchPreferedRemote)
             {
                 foreach (var remote in _repo.Remotes)
                     await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
@@ -94,6 +96,7 @@ namespace SourceGit.ViewModels
 
             _repo.MarkFetched();
             _repo.SetWatcherEnabled(true);
+            _fetchPreferedRemote = false;
             return true;
         }
 
