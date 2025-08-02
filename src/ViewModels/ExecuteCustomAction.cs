@@ -210,7 +210,7 @@ namespace SourceGit.ViewModels
                 Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName),
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
                 Models.Tag t => org.Replace("${TAG}", t.Name),
-                _ => org,
+                _ => org.Replace("${BRANCH}", _repo.CurrentBranch.FriendlyName),
             };
         }
 
