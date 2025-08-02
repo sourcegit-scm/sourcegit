@@ -204,6 +204,7 @@ namespace SourceGit.ViewModels
         {
             org = org.Replace("${REPO}", GetWorkdir());
             org = org.Replace("${DIRNAME}", GetWorkdirname());
+            org = org.Replace("${CURRENT_BRANCH}", GetCurrentBranch());
 
             return Target switch
             {
@@ -222,6 +223,11 @@ namespace SourceGit.ViewModels
         private string GetWorkdirname()
         {
             return _repo.FullPath.Replace("\\", "/").Split('/')[^1];
+        }
+
+        private string GetCurrentBranch()
+        {
+            return _repo.CurrentBranch?.FriendlyName ?? string.Empty;
         }
 
         private void Run(string args)
