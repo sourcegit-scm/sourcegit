@@ -763,6 +763,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Submodul hinzufügen</x:String>
   <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">BRANCH</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Relativen Pfad</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialisiere Submodul</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Untergeordnete Submodule fetchen</x:String>
