@@ -120,7 +120,8 @@
                   <Button Grid.Column="4"
                           Classes="icon_button"
                           Width="26" Height="26"
-                          Click="OnOpenAdvancedHistoriesOption">
+                          Click="OnOpenAdvancedHistoriesOption"
+                          ToolTip.Tip="{DynamicResource Text.Repository.MoreOptions}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
                   </Button>
                 </Grid>
