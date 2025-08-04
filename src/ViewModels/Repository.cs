@@ -1448,6 +1448,13 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public async Task CheckoutTagAsync(Models.Tag tag)
+        {
+            var c = await new Commands.QuerySingleCommit(_fullpath, tag.SHA).GetResultAsync();
+            if (c != null)
+                _histories?.CheckoutBranchByCommit(c);
+        }
+
         public async Task CompareBranchWithWorktree(Models.Branch branch)
         {
             if (_histories != null)

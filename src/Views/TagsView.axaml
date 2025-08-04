@@ -96,6 +96,7 @@
             <Border Height="24"
                     Background="Transparent"
                     PointerPressed="OnItemPointerPressed"
+                    DoubleTapped="OnItemDoubleTapped"
                     ContextRequested="OnItemContextRequested"
                     ToolTip.Placement="Right">
               <ToolTip.Tip>

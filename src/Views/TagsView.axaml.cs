@@ -155,10 +155,20 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnItemDoubleTapped(object sender, TappedEventArgs e)
+        private async void OnItemDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (sender is Control { DataContext: ViewModels.TagTreeNode { IsFolder: true } node })
-                ToggleNodeIsExpanded(node);
+            if (sender is Control { DataContext: ViewModels.TagTreeNode node })
+            {
+                if (node.IsFolder)
+                    ToggleNodeIsExpanded(node);
+                else if (DataContext is ViewModels.Repository repo)
+                    await repo.CheckoutTagAsync(node.Tag);
+            }
+            else if (sender is Control { DataContext: Models.Tag tag })
+            {
+                if (DataContext is ViewModels.Repository repo)
+                    await repo.CheckoutTagAsync(tag);
+            }
 
             e.Handled = true;
         }
