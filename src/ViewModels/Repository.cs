@@ -1219,11 +1219,16 @@ namespace SourceGit.ViewModels
         public void RefreshWorktrees()
         {
             var worktrees = new Commands.Worktree(_fullpath).ReadAllAsync().Result;
+            string commonDir = null;
+            if (worktrees.Count > 0)
+                commonDir = new Commands.QueryGitCommonDir(_fullpath).GetResultAsync().Result;
             var cleaned = new List<Models.Worktree>();
 
             foreach (var worktree in worktrees)
             {
                 if (worktree.IsBare || worktree.FullPath.Equals(_fullpath))
+                    continue;
+                if (!string.IsNullOrEmpty(commonDir) && worktree.FullPath.Equals(commonDir))
                     continue;
 
                 cleaned.Add(worktree);
