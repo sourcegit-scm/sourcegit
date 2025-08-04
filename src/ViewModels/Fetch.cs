@@ -10,11 +10,17 @@ namespace SourceGit.ViewModels
             get => _repo.Remotes;
         }
 
+        public bool IsFetchAllRemoteVisible
+        {
+            get;
+            private set;
+        } = true;
+
         public bool FetchAllRemotes
         {
-            get => _fetchAllRemotes;
-            set => SetProperty(ref _fetchAllRemotes, value);
-        }
+            get;
+            set;
+        } = false;
 
         public Models.Remote SelectedRemote
         {
@@ -37,7 +43,7 @@ namespace SourceGit.ViewModels
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
-            _fetchAllRemotes = preferredRemote == null;
+            IsFetchAllRemoteVisible = repo.Remotes.Count > 1 && preferredRemote == null;
 
             if (preferredRemote != null)
             {
@@ -92,6 +98,5 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private bool _fetchAllRemotes;
     }
 }

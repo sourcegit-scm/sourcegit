@@ -894,7 +894,7 @@ namespace SourceGit.Views
             fetch.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
-                    repo.ShowAndStartPopup(new ViewModels.Fetch(repo, remote));
+                    repo.ShowPopup(new ViewModels.Fetch(repo, remote));
                 e.Handled = true;
             };
 
