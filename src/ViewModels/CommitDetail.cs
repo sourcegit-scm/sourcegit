@@ -207,10 +207,7 @@ namespace SourceGit.ViewModels
 
         public void OpenChangeInMergeTool(Models.Change c)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var opt = new Models.DiffOption(_commit, c);
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, new Models.DiffOption(_commit, c)).Open();
         }
 
         public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
@@ -357,7 +354,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var parent = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : _commit.Parents[0];
+                var parent = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{_commit.SHA}^";
                 var cmd = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { CancellationToken = token };
                 var changes = await cmd.ReadAsync().ConfigureAwait(false);
                 var visible = changes;

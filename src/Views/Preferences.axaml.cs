@@ -349,7 +349,7 @@ namespace SourceGit.Views
             var tool = Models.ExternalMerger.Supported[type];
             var options = new FilePickerOpenOptions()
             {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
+                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatternsToFindExecFile() }],
                 AllowMultiple = false,
             };
 

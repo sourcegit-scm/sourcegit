@@ -28,12 +28,7 @@ namespace SourceGit.Views
                 openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                 openWithMerger.Click += (_, ev) =>
                 {
-                    var pref = ViewModels.Preferences.Instance;
-                    var toolType = pref.ExternalMergeToolType;
-                    var toolPath = pref.ExternalMergeToolPath;
-                    var opt = new Models.DiffOption(vm.Base.Head, vm.To.Head, change);
-
-                    new Commands.DiffTool(repo, toolType, toolPath, opt).Open();
+                    new Commands.DiffTool(repo, new Models.DiffOption(vm.Base.Head, vm.To.Head, change)).Open();
                     ev.Handled = true;
                 };
                 menu.Items.Add(openWithMerger);

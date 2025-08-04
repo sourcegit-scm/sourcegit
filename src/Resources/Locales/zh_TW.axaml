@@ -763,6 +763,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">新增子模組</x:String>
   <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">追蹤分支</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">追蹤分支</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相對路徑</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">取消初始化</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">提取子模組</x:String>

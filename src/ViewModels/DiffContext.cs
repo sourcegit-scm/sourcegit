@@ -95,9 +95,7 @@ namespace SourceGit.ViewModels
 
         public void OpenExternalMergeTool()
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            new Commands.DiffTool(_repo, toolType, toolPath, _option).Open();
+            new Commands.DiffTool(_repo, _option).Open();
         }
 
         private void LoadDiffContent()

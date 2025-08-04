@@ -531,18 +531,12 @@ namespace SourceGit.ViewModels
 
         public async Task<bool> UseExternalMergeToolAsync(Models.Change change)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var file = change?.Path;
-            return await new Commands.MergeTool(_repo.FullPath, toolType, toolPath, file).OpenAsync();
+            return await new Commands.MergeTool(_repo.FullPath, change?.Path).OpenAsync();
         }
 
         public void UseExternalDiffTool(Models.Change change, bool isUnstaged)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var opt = new Models.DiffOption(change, isUnstaged);
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, new Models.DiffOption(change, isUnstaged)).Open();
         }
 
         public async Task ContinueMergeAsync()

@@ -356,25 +356,34 @@ namespace SourceGit.ViewModels
 
         public int ExternalMergeToolType
         {
-            get => _externalMergeToolType;
+            get => Native.OS.ExternalMergerType;
             set
             {
-                var changed = SetProperty(ref _externalMergeToolType, value);
-                if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMerger.Supported.Count)
+                if (Native.OS.ExternalMergerType != value)
                 {
-                    var tool = Models.ExternalMerger.Supported[value];
-                    if (File.Exists(tool.Exec))
-                        ExternalMergeToolPath = tool.Exec;
-                    else
-                        ExternalMergeToolPath = string.Empty;
+                    Native.OS.ExternalMergerType = value;
+                    OnPropertyChanged();
+
+                    if (!_isLoading)
+                    {
+                        Native.OS.AutoSelectExternalMergeToolExecFile();
+                        OnPropertyChanged(nameof(ExternalMergeToolPath));
+                    }
                 }
             }
         }
 
         public string ExternalMergeToolPath
         {
-            get => _externalMergeToolPath;
-            set => SetProperty(ref _externalMergeToolPath, value);
+            get => Native.OS.ExternalMergerExecFile;
+            set
+            {
+                if (!Native.OS.ExternalMergerExecFile.Equals(value, StringComparison.Ordinal))
+                {
+                    Native.OS.ExternalMergerExecFile = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public uint StatisticsSampleColor
@@ -716,11 +725,7 @@ namespace SourceGit.ViewModels
         private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
-
         private int _shellOrTerminal = -1;
-        private int _externalMergeToolType = 0;
-        private string _externalMergeToolPath = string.Empty;
-
         private uint _statisticsSampleColor = 0xFF00FF00;
     }
 }

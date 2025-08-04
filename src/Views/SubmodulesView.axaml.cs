@@ -254,10 +254,19 @@ namespace SourceGit.Views
 
                     var copySHA = new MenuItem();
                     copySHA.Header = App.Text("CommitDetail.Info.SHA");
-                    copySHA.Icon = App.CreateMenuIcon("Icons.Fingerprint");
+                    copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
                     copySHA.Click += async (_, ev) =>
                     {
                         await App.CopyTextAsync(submodule.SHA);
+                        ev.Handled = true;
+                    };
+
+                    var copyBranch = new MenuItem();
+                    copyBranch.Header = App.Text("Submodule.CopyBranch");
+                    copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
+                    copyBranch.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(submodule.Branch);
                         ev.Handled = true;
                     };
 
@@ -276,15 +285,6 @@ namespace SourceGit.Views
                     copyURL.Click += async (_, ev) =>
                     {
                         await App.CopyTextAsync(submodule.URL);
-                        ev.Handled = true;
-                    };
-
-                    var copyBranch = new MenuItem();
-                    copyBranch.Header = App.Text("Submodule.Branch");
-                    copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
-                    copyBranch.Click += async (_, ev) =>
-                    {
-                        await App.CopyTextAsync(submodule.Branch);
                         ev.Handled = true;
                     };
 
