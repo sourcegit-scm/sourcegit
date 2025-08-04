@@ -18,9 +18,13 @@ namespace SourceGit.ViewModels
 
         public bool FetchAllRemotes
         {
-            get;
-            set;
-        } = false;
+            get => _fetchAllRemotes;
+            set
+            {
+                _repo.Settings.FetchAllRemotes = value;
+                SetProperty(ref _fetchAllRemotes, value);
+            }
+        }
 
         public Models.Remote SelectedRemote
         {
@@ -44,6 +48,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             IsFetchAllRemoteVisible = repo.Remotes.Count > 1 && preferredRemote == null;
+            _fetchAllRemotes = _repo.Settings.FetchAllRemotes;
 
             if (preferredRemote != null)
             {
@@ -66,10 +71,11 @@ namespace SourceGit.ViewModels
 
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
+            var all = _repo.Settings.FetchAllRemotes;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
-            if (FetchAllRemotes)
+            if (all)
             {
                 foreach (var remote in _repo.Remotes)
                     await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
@@ -98,5 +104,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
+        private bool _fetchAllRemotes;
     }
 }
