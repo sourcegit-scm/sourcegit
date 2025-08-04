@@ -642,6 +642,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">自定义操作未设置</x:String>
+  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">主页</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支/标签/子模块</x:String>

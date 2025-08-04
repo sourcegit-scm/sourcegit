@@ -1217,6 +1217,9 @@
   <Style Selector="ToggleButton.line_path:checked /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
+  <Style Selector="ToggleButton.line_path:pointerover Path">
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+  </Style>
   <Style Selector="ToggleButton.line_path:checked Path">
     <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
   </Style>
@@ -1268,13 +1271,14 @@
                 Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Opacity="0.65"/>
+                Opacity="0.8"/>
         </Border>
       </ControlTemplate>
     </Setter>
 
     <Style Selector="^:checked /template/ Path#ChevronPath">
       <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value="1"/>
     </Style>
 
     <Style Selector="^:pointerover /template/ Path#ChevronPath">
