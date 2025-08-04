@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -12,6 +13,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
+
 using SourceGit.ViewModels;
 
 namespace SourceGit.Views
@@ -134,7 +136,7 @@ namespace SourceGit.Views
 
                         await App.CopyTextAsync(path);
                         e.Handled = true;
-            }
+                    }
                 }
                 else if (node.Backend is { Type: Models.ObjectType.Blob } file &&
                     e.Key == Key.S &&
@@ -300,7 +302,7 @@ namespace SourceGit.Views
                 var selectedNode = _revisionFileRowsListBox?.SelectedItem as RevisionFileTreeNode;
 
                 var expandedObjects = new List<Models.Object>();
-                foreach (var node in _rows)
+                foreach (var node in Rows)
                 {
                     if (node.IsExpanded)
                     {
@@ -349,24 +351,24 @@ namespace SourceGit.Views
             }
         }
 
-        private void RestoreTreeState(List<Models.Object> expandedObjects, RevisionFileTreeNode selectedNode)
+        private async void RestoreTreeState(List<Models.Object> expandedObjects, RevisionFileTreeNode selectedNode)
         {
-            for (int i = 0; i < _rows.Count; i++)
+            for (int i = 0; i < Rows.Count; i++)
             {
-                var revisionFileTreeNode = _rows[i];
+                var revisionFileTreeNode = Rows[i];
 
                 if (!revisionFileTreeNode.IsFolder)
                     continue;
 
                 if (expandedObjects.FirstOrDefault(o => o.SHA == revisionFileTreeNode.Backend.SHA || o.Path == revisionFileTreeNode.Backend.Path) != null)
                 {
-                    ToggleNodeIsExpanded(revisionFileTreeNode);
+                    await ToggleNodeIsExpandedAsync(revisionFileTreeNode);
                 }
             }
 
             if (selectedNode != null)
             {
-                foreach (var node in _rows)
+                foreach (var node in Rows)
                 {
                     if (node.Backend.SHA != selectedNode.Backend.SHA && node.Backend.Path != selectedNode.Backend.Path)
                         continue;
@@ -393,7 +395,7 @@ namespace SourceGit.Views
                     _ => CreateRevisionFileContextMenu(repo, vm, commit, obj),
                 };
                 menu.Open(grid);
-                }
+            }
 
             e.Handled = true;
         }
@@ -417,9 +419,9 @@ namespace SourceGit.Views
 
             if (sender is ListBox { SelectedItem: ViewModels.RevisionFileTreeNode { IsFolder: false } node })
                 await vm.ViewRevisionFileAsync(node.Backend);
-                else
+            else
                 await vm.ViewRevisionFileAsync(null);
-            }
+        }
 
         private async Task<List<ViewModels.RevisionFileTreeNode>> GetChildrenOfTreeNodeAsync(ViewModels.RevisionFileTreeNode node)
         {
