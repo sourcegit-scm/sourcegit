@@ -784,8 +784,11 @@
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">複製標籤名稱</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">複製標籤訊息</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">創建者</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">創建時間</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">標籤訊息</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">標籤名稱</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">創建者</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合併 ${0}$ 到 ${1}$...</x:String>

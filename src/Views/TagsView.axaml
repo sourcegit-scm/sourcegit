@@ -37,6 +37,34 @@
                 </Border>
               </StackPanel>
 
+              <Grid RowDefinitions="20,20" ColumnDefinitions="Auto,*" Margin="0,6" IsVisible="{Binding IsAnnotated}">
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Classes="info_label"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{DynamicResource Text.Tag.Tagger}"/>
+                <ContentControl Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" Content="{Binding Creator}">
+                  <ContentControl.DataTemplates>
+                    <DataTemplate DataType="m:User">
+                      <StackPanel Orientation="Horizontal">
+                        <v:Avatar Width="16" Height="16" User="{Binding}"/>
+                        <TextBlock Margin="8,0,0,0">
+                          <Run Text="{Binding Name, Mode=OneWay}"/>
+                          <Run Text="{Binding Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                        </TextBlock>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ContentControl.DataTemplates>
+                </ContentControl>
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Classes="info_label"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{DynamicResource Text.Tag.Time}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Margin="8,0,0,0"
+                           Text="{Binding CreatorDateStr, Mode=OneWay}"/>
+              </Grid>
+
               <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
             </StackPanel>
           </DataTemplate>
@@ -108,6 +136,34 @@
                       <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Classes="primary" Margin="4,0" Foreground="White"/>
                     </Border>
                   </StackPanel>
+
+                  <Grid RowDefinitions="20,20" ColumnDefinitions="Auto,*" Margin="0,6" IsVisible="{Binding IsAnnotated}">
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Classes="info_label"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Text="{DynamicResource Text.Tag.Tagger}"/>
+                    <ContentControl Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" Content="{Binding Creator}">
+                      <ContentControl.DataTemplates>
+                        <DataTemplate DataType="m:User">
+                          <StackPanel Orientation="Horizontal">
+                            <v:Avatar Width="16" Height="16" User="{Binding}"/>
+                            <TextBlock Margin="8,0,0,0">
+                              <Run Text="{Binding Name, Mode=OneWay}"/>
+                              <Run Text="{Binding Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                            </TextBlock>
+                          </StackPanel>
+                        </DataTemplate>
+                      </ContentControl.DataTemplates>
+                    </ContentControl>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Classes="info_label"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Text="{DynamicResource Text.Tag.Time}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Margin="8,0,0,0"
+                               Text="{Binding CreatorDateStr, Mode=OneWay}"/>
+                  </Grid>
 
                   <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                 </StackPanel>

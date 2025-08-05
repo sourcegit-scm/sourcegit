@@ -280,17 +280,21 @@ namespace SourceGit.Views
                 }
 
                 var copy = new MenuItem();
-                copy.Header = App.Text("TagCM.Copy");
+                copy.Header = App.Text("Copy");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                copy.Click += async (_, ev) =>
+
+                var copyName = new MenuItem();
+                copyName.Header = App.Text("TagCM.Copy.Name");
+                copyName.Icon = App.CreateMenuIcon("Icons.Tag");
+                copyName.Click += async (_, ev) =>
                 {
                     await App.CopyTextAsync(selected.Name);
                     ev.Handled = true;
                 };
 
                 var copyMessage = new MenuItem();
-                copyMessage.Header = App.Text("TagCM.CopyMessage");
-                copyMessage.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyMessage.Header = App.Text("TagCM.Copy.Message");
+                copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
                 copyMessage.IsEnabled = !string.IsNullOrEmpty(selected.Message);
                 copyMessage.Click += async (_, ev) =>
                 {
@@ -298,8 +302,23 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
+                copy.Items.Add(copyName);
+                copy.Items.Add(copyMessage);
+
+                if (selected.Creator is { Email: { Length: > 0 } })
+                {
+                    var copyCreator = new MenuItem();
+                    copyCreator.Header = App.Text("TagCM.Copy.Tagger");
+                    copyCreator.Icon = App.CreateMenuIcon("Icons.User");
+                    copyCreator.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(selected.Creator.ToString());
+                        ev.Handled = true;
+                    };
+                    copy.Items.Add(copyCreator);
+                }
+
                 menu.Items.Add(copy);
-                menu.Items.Add(copyMessage);
                 menu.Open(control);
             }
 
