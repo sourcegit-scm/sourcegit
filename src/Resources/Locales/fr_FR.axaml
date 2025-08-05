@@ -643,8 +643,6 @@
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Ouvrir le dépôt de sous-module</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Supprimer le sous-module</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copier le nom du Tag</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copier le message du tag</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Supprimer ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Fusionner ${0}$ dans ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Pousser ${0}$...</x:String>

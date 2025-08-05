@@ -585,8 +585,6 @@
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Pasta relativa para armazenar este módulo.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Excluir Submódulo</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copiar Nome da Tag</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copiar mensage da Tag</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Excluir ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Mesclar ${0}$ em ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Enviar ${0}$...</x:String>

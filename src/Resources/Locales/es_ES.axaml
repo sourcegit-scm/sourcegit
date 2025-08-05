@@ -780,8 +780,6 @@
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Actualizar</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copiar Nombre de la Etiqueta</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copiar Mensaje de la Etiqueta</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ en ${1}$...</x:String>

@@ -782,8 +782,6 @@
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL-адрес</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копировать имя метки</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копировать сообщение метки</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>

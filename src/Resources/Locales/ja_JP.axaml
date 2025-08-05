@@ -643,8 +643,6 @@
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">このモジュールを保存するフォルダの相対パス</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">サブモジュールを削除</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">タグ名をコピー</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">タグメッセージをコピー</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">${0}$ を削除...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$ を ${1}$ にマージ...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">${0}$ をプッシュ...</x:String>

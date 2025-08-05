@@ -679,8 +679,6 @@
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">non unito</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Copia Nome Tag</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Copia Messaggio Tag</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Elimina ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Unisci ${0}$ in ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Invia ${0}$...</x:String>
