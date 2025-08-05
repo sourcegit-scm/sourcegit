@@ -1936,8 +1936,21 @@ namespace SourceGit.ViewModels
                 }
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
-                foreach (var remote in remotes)
+
+                if (_settings.FetchAllRemotes)
+                {
+                    foreach (var remote in remotes)
+                        await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                }
+                else if (remotes.Count > 0)
+                {
+                    var remote = string.IsNullOrEmpty(_settings.DefaultRemote) ?
+                        remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
+                        remotes[0];
+
                     await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                }
+
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }

@@ -62,6 +62,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool FetchAllRemotes
+        {
+            get;
+            set;
+        } = false;
+
         public bool FetchWithoutTags
         {
             get;
