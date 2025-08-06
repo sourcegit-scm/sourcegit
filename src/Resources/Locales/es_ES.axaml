@@ -22,7 +22,7 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Asistente OpenAI</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERAR</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR CÓMO MENSAJE DE COMMIT</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR COMO MENSAJE DE COMMIT</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Parche</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo del Parche:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
@@ -51,13 +51,13 @@
   <x:String x:Key="Text.Bisect.Detecting">Bisecting. ¿Es el HEAD actual bueno o malo?</x:String>
   <x:String x:Key="Text.Bisect.Good">Bueno</x:String>
   <x:String x:Key="Text.Bisect.Skip">Saltar</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Marcar el commit actual cómo bueno o malo y revisar otro.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Marcar el commit actual como bueno o malo y revisar otro.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">¡BLAME EN ESTE ARCHIVO NO SOPORTADO!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Comparar con ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Comparar con Worktree</x:String>
-  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copiar Nombre de Rama</x:String>
+  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copiar Nombre de la Rama</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Eliminar {0} ramas seleccionadas</x:String>
@@ -198,6 +198,7 @@
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Modo preferido de Merge</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SEGUIMIENTO DE INCIDENCIAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Añadir Regla de Ejemplo para Azure DevOps</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Añadir Regla de "Gerrit Change-Id Commit"</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Añadir Regla de Ejemplo para Incidencias de Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Añadir Regla de Ejemplo para Pull Requests de Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Añadir Regla de Ejemplo para GitHub</x:String>
@@ -215,8 +216,8 @@
   <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizado por este repositorio</x:String>
-  <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre de Usuario</x:String>
-  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nombre de usuario para este repositorio</x:String>
+  <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre del Usuario</x:String>
+  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nombre del usuario para este repositorio</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Editar Controles de Acción Personalizados</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Valor Comprobado:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Cuando sea comprobado, este valor será usado en argumentos de la línea de comandos</x:String>
@@ -345,7 +346,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch sin etiquetas</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Cambios Remotos</x:String>
-  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Asumir sin cambios</x:String>
+  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Asumir como sin cambios</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Descartar...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Descartar {0} archivos...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Resolver usando ${0}$</x:String>
@@ -551,7 +552,7 @@
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Directorio de clonado por defecto</x:String>
-  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email de usuario</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email del usuario</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email global del usuario git</x:String>
   <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Habilitar --prune para fetch</x:String>
   <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Habilitar --ignore-cr-at-eol en diff</x:String>
@@ -559,7 +560,7 @@
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Ruta de instalación</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Habilitar verificación HTTP SSL</x:String>
   <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Usar git-credential-libsecret en lugar de git-credential-manager</x:String>
-  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nombre de usuario</x:String>
+  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nombre del usuario</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nombre global del usuario git</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Versión de Git</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">FIRMA GPG</x:String>
@@ -640,6 +641,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUAR</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Acciones Personalizadas</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No hay ninguna Acción Personalizada</x:String>
+  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Descartar todos los cambios</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir en el Explorador</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Buscar Ramas/Etiquetas/Submódulos</x:String>
@@ -654,6 +656,7 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Fecha de Commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topológicamente</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">RAMAS LOCALES</x:String>
+  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Más opciones...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar a HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Crear Rama</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">LIMPIAR NOTIFICACIONES</x:String>
@@ -761,6 +764,7 @@
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>
   <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Añadir Submódulo</x:String>
   <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">RAMA</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">Rama</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Ruta Relativa</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">Desinicializar Submódulo</x:String>
   <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch submódulos anidados</x:String>
@@ -780,6 +784,11 @@
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Actualizar</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">ETIQUETADOR</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">HORA</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Mensaje</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Nombre</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Etiquetador</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ en ${1}$...</x:String>
@@ -842,7 +851,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE TODO</x:String>
-  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VER ASSUME UNCHANGED</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">VER ASUMIR COMO SIN CAMBIOS</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Plantilla: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">ESPACIO DE TRABAJO: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configura Espacios de Trabajo...</x:String>
