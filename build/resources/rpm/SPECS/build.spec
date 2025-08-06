@@ -21,12 +21,11 @@ mkdir -p %{buildroot}/%{_bindir}
 mkdir -p %{buildroot}/usr/share/applications
 mkdir -p %{buildroot}/usr/share/icons
 cp -f ../../../SourceGit/* %{buildroot}/opt/sourcegit/
-cp -f ../../_common/sourcegit %{buildroot}/%{_bindir}
+ln -rsf %{buildroot}/opt/sourcegit/sourcegit %{buildroot}/%{_bindir}
 cp -r ../../_common/applications %{buildroot}/%{_datadir}
 cp -r ../../_common/icons %{buildroot}/%{_datadir}
 chmod 755 -R %{buildroot}/opt/sourcegit
 chmod 755 %{buildroot}/%{_datadir}/applications/sourcegit.desktop
-chmod 755 %{buildroot}/%{_bindir}/sourcegit
 
 %files
 %dir /opt/sourcegit/
