@@ -7,14 +7,14 @@ The project uses the following third-party libraries or assets
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.2.8
+- **Version**: 11.3.3
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
 ### AvaloniaEdit
 
 - **Source**: https://github.com/AvaloniaUI/AvaloniaEdit
-- **Version**: 11.2.0
+- **Version**: 11.3.0
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/AvaloniaEdit/blob/master/LICENSE
 
@@ -28,21 +28,21 @@ The project uses the following third-party libraries or assets
 ### TextMateSharp
 
 - **Source**: https://github.com/danipen/TextMateSharp
-- **Version**: 1.0.66
+- **Version**: 1.0.70
 - **License**: MIT License
 - **License Link**: https://github.com/danipen/TextMateSharp/blob/master/LICENSE.md
 
 ### OpenAI .NET SDK
 
 - **Source**: https://github.com/openai/openai-dotnet
-- **Version**: 2.2.0-beta.4
+- **Version**: 2.3.0
 - **License**: MIT License
 - **License Link**: https://github.com/openai/openai-dotnet/blob/main/LICENSE
 
 ### Azure.AI.OpenAI
 
 - **Source**: https://github.com/Azure/azure-sdk-for-net
-- **Version**: 2.2.0-beta.4
+- **Version**: 2.2.0-beta.5
 - **License**: MIT License
 - **License Link**: https://github.com/Azure/azure-sdk-for-net/blob/main/LICENSE.txt
 
