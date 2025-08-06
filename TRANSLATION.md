@@ -21,22 +21,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.95%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
-- Text.Repository.Dashboard
-- Text.Repository.MoreOptions
-- Text.Submodule.CopyBranch
-- Text.Tag.Tagger
-- Text.Tag.Time
-- Text.TagCM.Copy.Message
-- Text.TagCM.Copy.Name
-- Text.TagCM.Copy.Tagger
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-81.33%25-yellow)
 
