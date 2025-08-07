@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -1062,14 +1063,27 @@ namespace SourceGit.ViewModels
             if (changed)
                 RefreshHistoriesFilters(true);
         }
+
         public void SetSoloCommitFilterMode(Models.Commit commit, Models.FilterMode mode)
-        {
-            SetSoloCommitFilterMode(commit.SHA[..10], mode);
-        }
+                    => SetSoloCommitFilterMode(commit.SHA[..10], mode);
+
+
+        public void SetSoloCommitFilterMode(IEnumerable<Models.Commit> commits, Models.FilterMode mode)
+                    => SetSoloCommitFilterMode(commits.Select(x => x.SHA[..10]).ToList(), mode);
 
         public void SetSoloCommitFilterMode(string sha, Models.FilterMode mode)
         {
             var changed = _settings.UpdateHistoriesFilter(sha, Models.FilterType.SoloCommits, mode);
+            if (changed)
+                RefreshHistoriesFilters(true);
+        }
+
+        public void SetSoloCommitFilterMode(IEnumerable<string> shas, Models.FilterMode mode)
+        {
+            bool changed = false;
+            foreach (var sha in shas)
+                changed |= _settings.UpdateHistoriesFilter(sha, Models.FilterType.SoloCommits, mode);
+
             if (changed)
                 RefreshHistoriesFilters(true);
         }

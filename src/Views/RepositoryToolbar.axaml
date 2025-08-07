@@ -132,6 +132,9 @@
       <Button Classes="icon_button" Width="32" Click="NavigateToHead" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
         <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
       </Button>
+      <Button Classes="icon_button" Width="32" Click="SoloModeOnCurrentHead" ToolTip.Tip="{DynamicResource Text.Repository.SoloModeOnCurrentHead}">
+        <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.LightOn}" Fill="{DynamicResource Brush.FG1}"/>
+      </Button>
     </StackPanel>
   </Grid>
 </UserControl>
