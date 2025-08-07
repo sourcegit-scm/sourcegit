@@ -1062,6 +1062,17 @@ namespace SourceGit.ViewModels
             if (changed)
                 RefreshHistoriesFilters(true);
         }
+        public void SetSoloCommitFilterMode(Models.Commit commit, Models.FilterMode mode)
+        {
+            SetSoloCommitFilterMode(commit.SHA[..10], mode);
+        }
+
+        public void SetSoloCommitFilterMode(string sha, Models.FilterMode mode)
+        {
+            var changed = _settings.UpdateHistoriesFilter(sha, Models.FilterType.SoloCommits, mode);
+            if (changed)
+                RefreshHistoriesFilters(true);
+        }
 
         public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode, bool clearExists, bool refresh)
         {
@@ -1257,6 +1268,13 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public List<Models.Decorator> GetRefsContainsThisCommit(string hash = null)
+        {
+            var a = new Commands.QueryRefsContainsCommit(FullPath, hash ?? "HEAD")
+                .GetResultAsync();
+            return a.Result;
+        }
+
         public void RefreshCommits()
         {
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
@@ -1278,7 +1296,7 @@ namespace SourceGit.ViewModels
             if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
                 builder.Append("--simplify-by-decoration ");
 
-            var filters = _settings.BuildHistoriesFilter();
+            var filters = _settings.BuildHistoriesFilter(this);
             if (string.IsNullOrEmpty(filters))
                 builder.Append("--branches --remotes --tags HEAD");
             else

@@ -824,6 +824,17 @@ namespace SourceGit.Views
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            var SoloCommits = new MenuItem();
+            SoloCommits.Header = App.Text("CommitCM.SoloCommits");
+            SoloCommits.Icon = App.CreateMenuIcon("Icons.LightOn");
+            SoloCommits.Click += (_, e) =>
+            {
+                repo.SetSoloCommitFilterMode(commit, Models.FilterMode.Included);
+                e.Handled = true;
+            };
+
+            menu.Items.Add(SoloCommits);
+
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
