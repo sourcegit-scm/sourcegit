@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -102,7 +103,8 @@ namespace SourceGit.ViewModels
             log.Complete();
 
             var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
-            if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included)
+            if (b != null && _repo.HistoriesFilterMode == Models.FilterMode.Included
+                && !_repo.Settings.HistoriesFilters.Any(f => f.Pattern == "HEAD"))
                 _repo.SetBranchFilterMode(b, Models.FilterMode.Included, true, false);
 
             _repo.MarkBranchesDirtyManually();

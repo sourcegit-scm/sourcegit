@@ -1124,8 +1124,10 @@ namespace SourceGit.ViewModels
 
             if (clearExists)
             {
-                _settings.HistoriesFilters.Clear();
-                HistoriesFilterMode = Models.FilterMode.None;
+                _settings.HistoriesFilters.RemoveAll(_settings.HistoriesFilters
+                                                     .Where(f => f.Type != Models.FilterType.SoloCommits).ToArray());
+                if (_settings.HistoriesFilters.Count <= 0)
+                    HistoriesFilterMode = Models.FilterMode.None;
             }
 
             if (node.Backend is Models.Branch branch)
