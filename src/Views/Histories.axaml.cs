@@ -1200,7 +1200,7 @@ namespace SourceGit.Views
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
             var copy = new MenuItem();
-            copy.Header = App.Text("TagCM.Copy");
+            copy.Header = App.Text("TagCM.CopyName");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, e) =>
             {
