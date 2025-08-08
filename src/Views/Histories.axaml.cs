@@ -122,6 +122,15 @@ namespace SourceGit.Views
             set => SetValue(NavigationIdProperty, value);
         }
 
+        public static readonly StyledProperty<List<Models.Commit>> LastSelectedCommitsProperty =
+            AvaloniaProperty.Register<Histories, List<Models.Commit>>(nameof(LastSelectedCommits));
+
+        public List<Models.Commit> LastSelectedCommits
+        {
+            get => GetValue(LastSelectedCommitsProperty);
+            set => SetValue(LastSelectedCommitsProperty, value);
+        }
+
         public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
             AvaloniaProperty.Register<Histories, bool>(nameof(IsScrollToTopVisible));
 
@@ -145,6 +154,18 @@ namespace SourceGit.Views
                 if (CommitListContainer is { SelectedItems.Count: 1, IsLoaded: true } dataGrid)
                     dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
             }
+            if (change.Property == LastSelectedCommitsProperty)
+            {
+                if (LastSelectedCommits?.Count > 1 &&
+                    (CommitListContainer is DataGrid { IsLoaded: true } dataGrid))
+                {
+                    foreach (var c in LastSelectedCommits)
+                    {
+                        dataGrid.SelectedItems.Add(c);
+                    }
+                }
+            }
+
         }
 
         private void OnCommitListLoaded(object sender, RoutedEventArgs e)

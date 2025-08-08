@@ -838,6 +838,7 @@
                          Bisect="{Binding Bisect}"
                          IssueTrackers="{Binding $parent[v:Repository].((vm:Repository)DataContext).IssueTrackers}"
                          OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistories}"
+                         LastSelectedCommits="{Binding LastSelectedCommits}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 
