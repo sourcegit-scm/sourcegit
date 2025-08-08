@@ -18,7 +18,7 @@ namespace SourceGit.Models
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH2();
 
-        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\-/~%]+/[\w\-\.%]+)\.git$")]
+        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\.\-/~%]+/[\w\-\.%]+)\.git$")]
         private static partial Regex REG_TO_VISIT_URL_CAPTURE();
 
         private static readonly Regex[] URL_FORMATS = [
