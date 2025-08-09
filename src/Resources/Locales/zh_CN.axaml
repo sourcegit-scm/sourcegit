@@ -789,6 +789,7 @@
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">标签信息</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">标签名</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">创建者</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">复制标签名</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
