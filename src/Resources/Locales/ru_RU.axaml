@@ -789,6 +789,7 @@
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Сообщение</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Имя</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Разметчик</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Копировать имя метки</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
