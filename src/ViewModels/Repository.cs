@@ -1342,7 +1342,9 @@ namespace SourceGit.ViewModels
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).GetResultAsync().Result;
+            var patterns = _settings.HistoriesFilters.Where(f => f.Type == Models.FilterType.SoloCommits).Select(f => f.Pattern).ToList();
+
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString(), true, patterns).GetResultAsync().Result;
             var graph = Models.CommitGraph.Parse(commits, _settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
 
             Dispatcher.UIThread.Invoke(() =>

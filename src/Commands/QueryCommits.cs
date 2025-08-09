@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -7,12 +8,13 @@ namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        public QueryCommits(string repo, string limits, bool needFindHead = true)
+        public QueryCommits(string repo, string limits, bool needFindHead = true, List<string> patterns = null)
         {
             WorkingDirectory = repo;
             Context = repo;
             Args = $"log --no-show-signature --decorate=full --format=%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s {limits}";
             _findFirstMerged = needFindHead;
+            _patterns = patterns ?? new List<string>();
         }
 
         public QueryCommits(string repo, string filter, Models.CommitSearchMethod method, bool onlyCurrentBranch)
@@ -70,6 +72,7 @@ namespace SourceGit.Commands
                 {
                     case 0:
                         _current = new Models.Commit() { SHA = line };
+                        _current.IsCommitFilterHead = _patterns.Count > 0 && _patterns.Any(f => line.StartsWith(f));
                         _commits.Add(_current);
                         break;
                     case 1:
@@ -143,6 +146,7 @@ namespace SourceGit.Commands
         }
 
         private List<Models.Commit> _commits = new List<Models.Commit>();
+        private List<string> _patterns = new List<string>();
         private Models.Commit _current = null;
         private bool _findFirstMerged = false;
         private bool _isHeadFound = false;
