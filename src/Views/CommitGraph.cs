@@ -230,6 +230,12 @@ namespace SourceGit.Views
                         context.DrawLine(dotFillPen, new Point(center.X, center.Y - 3), new Point(center.X, center.Y + 3));
                         context.DrawLine(dotFillPen, new Point(center.X - 3, center.Y), new Point(center.X + 3, center.Y));
                         break;
+                    case Models.CommitGraph.DotType.Filter:
+                        context.DrawEllipse(pen.Brush, null, center, 7, 7);
+                        context.DrawLine(dotFillPen, new Point(center.X, center.Y - 5), new Point(center.X, center.Y + 5));
+                        context.DrawLine(dotFillPen, new Point(center.X - 4, center.Y - 3), new Point(center.X + 4, center.Y + 3));
+                        context.DrawLine(dotFillPen, new Point(center.X + 4, center.Y - 3), new Point(center.X - 4, center.Y + 3));
+                        break;
                     default:
                         context.DrawEllipse(dotFill, pen, center, 3, 3);
                         break;

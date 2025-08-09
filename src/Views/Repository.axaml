@@ -800,7 +800,7 @@
 
             <ItemsControl.ItemTemplate>
               <DataTemplate DataType="m:Filter">
-                <Border Height="20"
+                <Border Height="24"
                         Margin="0,0,6,0"
                         CornerRadius="12"
                         BorderThickness="1"
@@ -808,8 +808,14 @@
                   <StackPanel Orientation="Horizontal" Margin="8,0">
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
-                    <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
-
+                    <Button Margin="4,0,8,0"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Classes="icon_button"
+                            Click="OnNavigateToFilter"
+                            Content="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}"
+                            />
                     <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoriesFilter">
                       <Path Width="8" Height="8" Data="{StaticResource Icons.Close}"/>
                     </Button>
@@ -832,6 +838,7 @@
                          Bisect="{Binding Bisect}"
                          IssueTrackers="{Binding $parent[v:Repository].((vm:Repository)DataContext).IssueTrackers}"
                          OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistories}"
+                         LastSelectedCommits="{Binding LastSelectedCommits}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -346,6 +347,12 @@ namespace SourceGit.ViewModels
         {
             get => _searchedCommits;
             set => SetProperty(ref _searchedCommits, value);
+        }
+
+        public List<Models.Commit> SelectedCommits
+        {
+            get => _selectCommits;
+            set => SetProperty(ref _selectCommits, value);
         }
 
         public Models.Commit SelectedSearchedCommit
@@ -1005,8 +1012,24 @@ namespace SourceGit.ViewModels
             else if (_histories != null)
             {
                 SelectedViewIndex = 0;
+                if (sha == "HEAD")
+                    sha = _currentBranch.Head;
                 _histories.NavigateTo(sha);
             }
+        }
+
+        public void NavigateToBranch(string branch, bool isDelayMode = false)
+        {
+            var b = _branches.Find(b => b.FullName.Equals(branch, StringComparison.Ordinal));
+            if (b != null)
+                NavigateToCommit(b.Head);
+        }
+
+        public void NavigateToTag(string tag, bool isDelayMode = false)
+        {
+            var t = _tags.Find(t => t.Name.Equals(tag, StringComparison.Ordinal));
+            if (t != null)
+                NavigateToCommit(t.SHA);
         }
 
         public void ClearCommitMessage()
@@ -1063,6 +1086,30 @@ namespace SourceGit.ViewModels
                 RefreshHistoriesFilters(true);
         }
 
+        public void SetSoloCommitFilterMode(Models.Commit commit, Models.FilterMode mode)
+                    => SetSoloCommitFilterMode(commit.SHA[..10], mode);
+
+
+        public void SetSoloCommitFilterMode(IEnumerable<Models.Commit> commits, Models.FilterMode mode)
+                    => SetSoloCommitFilterMode(commits.Select(x => x.SHA[..10]).ToList(), mode);
+
+        public void SetSoloCommitFilterMode(string sha, Models.FilterMode mode)
+        {
+            var changed = _settings.UpdateHistoriesFilter(sha, Models.FilterType.SoloCommits, mode);
+            if (changed)
+                RefreshHistoriesFilters(true);
+        }
+
+        public void SetSoloCommitFilterMode(IEnumerable<string> shas, Models.FilterMode mode)
+        {
+            bool changed = false;
+            foreach (var sha in shas)
+                changed |= _settings.UpdateHistoriesFilter(sha, Models.FilterType.SoloCommits, mode);
+
+            if (changed)
+                RefreshHistoriesFilters(true);
+        }
+
         public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode, bool clearExists, bool refresh)
         {
             var node = FindBranchNode(branch.IsLocal ? _localBranchTrees : _remoteBranchTrees, branch.FullName);
@@ -1077,8 +1124,10 @@ namespace SourceGit.ViewModels
 
             if (clearExists)
             {
-                _settings.HistoriesFilters.Clear();
-                HistoriesFilterMode = Models.FilterMode.None;
+                _settings.HistoriesFilters.RemoveAll(_settings.HistoriesFilters
+                                                     .Where(f => f.Type != Models.FilterType.SoloCommits).ToArray());
+                if (_settings.HistoriesFilters.Count <= 0)
+                    HistoriesFilterMode = Models.FilterMode.None;
             }
 
             if (node.Backend is Models.Branch branch)
@@ -1257,8 +1306,17 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public List<Models.Decorator> GetRefsContainsThisCommit(string hash = null)
+        {
+            var a = new Commands.QueryRefsContainsCommit(FullPath, hash ?? "HEAD")
+                .GetResultAsync();
+            return a.Result;
+        }
+
         public void RefreshCommits()
         {
+            var oldSelectedCommits = _selectCommits.ToList();
+
             Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
 
             var builder = new StringBuilder();
@@ -1278,13 +1336,15 @@ namespace SourceGit.ViewModels
             if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
                 builder.Append("--simplify-by-decoration ");
 
-            var filters = _settings.BuildHistoriesFilter();
+            var filters = _settings.BuildHistoriesFilter(this);
             if (string.IsNullOrEmpty(filters))
                 builder.Append("--branches --remotes --tags HEAD");
             else
                 builder.Append(filters);
 
-            var commits = new Commands.QueryCommits(_fullpath, builder.ToString()).GetResultAsync().Result;
+            var patterns = _settings.HistoriesFilters.Where(f => f.Type == Models.FilterType.SoloCommits).Select(f => f.Pattern).ToList();
+
+            var commits = new Commands.QueryCommits(_fullpath, builder.ToString(), true, patterns).GetResultAsync().Result;
             var graph = Models.CommitGraph.Parse(commits, _settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
 
             Dispatcher.UIThread.Invoke(() =>
@@ -1296,6 +1356,8 @@ namespace SourceGit.ViewModels
                     _histories.Graph = graph;
 
                     BisectState = _histories.UpdateBisectInfo();
+
+                    _histories.MarkCommitsAsSelected(oldSelectedCommits);
 
                     if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
                         NavigateToCommit(_navigateToCommitDelayed);
@@ -1983,6 +2045,7 @@ namespace SourceGit.ViewModels
         private bool _onlySearchCommitsInCurrentBranch = false;
         private string _searchCommitFilter = string.Empty;
         private List<Models.Commit> _searchedCommits = new List<Models.Commit>();
+        private List<Models.Commit> _selectCommits = new List<Models.Commit>();
         private Models.Commit _selectedSearchedCommit = null;
         private bool _requestingWorktreeFiles = false;
         private List<string> _worktreeFiles = null;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -42,6 +43,12 @@ namespace SourceGit.ViewModels
         {
             get => _autoSelectedCommit;
             set => SetProperty(ref _autoSelectedCommit, value);
+        }
+
+        public List<Models.Commit> LastSelectedCommits
+        {
+            get => _lastSelectedCommits;
+            private set => SetProperty(ref _lastSelectedCommits, value);
         }
 
         public long NavigationId
@@ -191,6 +198,13 @@ namespace SourceGit.ViewModels
                 _repo.SelectedSearchedCommit = null;
                 DetailContext = new Models.Count(commits.Count);
             }
+
+            _repo.SelectedCommits = commits.Cast<Models.Commit>().ToList();
+        }
+
+        public void MarkCommitsAsSelected(IList<Models.Commit> commits)
+        {
+            LastSelectedCommits = _commits.Where(x => commits.Any(y => y.SHA == x.SHA)).ToList();
         }
 
         public bool CheckoutBranchByDecorator(Models.Decorator decorator)
@@ -402,6 +416,7 @@ namespace SourceGit.ViewModels
         private Repository _repo = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
+        private List<Models.Commit> _lastSelectedCommits = [];
         private Models.CommitGraph _graph = null;
         private Models.Commit _autoSelectedCommit = null;
         private Models.Bisect _bisect = null;
