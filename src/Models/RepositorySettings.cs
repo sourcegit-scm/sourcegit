@@ -416,6 +416,16 @@ namespace SourceGit.Models
             return act;
         }
 
+        public CustomAction DuplicateCustomAction(CustomAction baseAct)
+        {
+            var act = new CustomAction(baseAct)
+            {
+                Name = baseAct.Name + "(Duplicated)"
+            };
+            CustomActions.Add(act);
+            return act;
+        }
+
         public void RemoveCustomAction(CustomAction act)
         {
             if (act != null)
