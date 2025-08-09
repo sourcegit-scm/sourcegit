@@ -112,5 +112,10 @@ namespace SourceGit.Native
         {
             Process.Start("open", file.Quoted());
         }
+
+        public bool MoveFileToTrash(string file)
+        {
+            return true;
+        }
     }
 }
