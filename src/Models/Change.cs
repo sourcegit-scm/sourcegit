@@ -113,5 +113,18 @@
             "Both added",
             "Both modified"
         ];
+
+        public static ChangeState ChangeStateFromCode(char code) =>
+            code switch
+            {
+                'M' => ChangeState.Modified,
+                'T' => ChangeState.TypeChanged,
+                'A' => ChangeState.Added,
+                'D' => ChangeState.Deleted,
+                'R' => ChangeState.Renamed,
+                'C' => ChangeState.Copied,
+                'U' => ChangeState.Untracked,
+                _ => ChangeState.None,
+            };
     }
 }
