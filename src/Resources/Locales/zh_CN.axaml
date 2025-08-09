@@ -177,7 +177,7 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">模板名 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">内置变量：${REPO} 仓库路径、${BRANCH} 选中的分支、${SHA} 选中的提交哈希，${TAG} 选中的标签</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">内置变量：${REPO} 仓库路径、${DIRNAME} 仓库文件夹名、${BRANCH} 选中的分支、${CURRENT_BRANCH} 当前的分支、${SHA} 选中的提交哈希，${TAG} 选中的标签</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可执行文件路径 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">输入控件 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">编辑</x:String>

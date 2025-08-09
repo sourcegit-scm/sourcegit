@@ -173,7 +173,7 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">CUSTOM ACTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Built-in parameters: ${REPO} - repository's path; ${BRANCH} - selected branch; ${SHA} - selected commit's hash; ${TAG} - selected tag</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Built-in parameters: ${REPO} - repository's path; ${DIRNAME} - repository's directory name; ${BRANCH} - selected branch; {CURRENT_BRANCH} - current branch; ${SHA} - selected commit's hash; ${TAG} - selected tag</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Executable File:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Input Controls:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Edit</x:String>
