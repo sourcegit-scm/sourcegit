@@ -34,7 +34,7 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <Grid Grid.Row="1" Height="200" ColumnDefinitions="Auto,Auto">
+    <Grid Grid.Row="1" Height="200" ColumnDefinitions="Auto,*">
       <Image Grid.Column="0"
              Width="200" Height="200"
              Margin="8,0"
@@ -42,8 +42,8 @@
              HorizontalAlignment="Center"
              VerticalAlignment="Center"/>
 
-      <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-        <StackPanel Height="40" Orientation="Horizontal">
+      <Grid Grid.Column="1" Margin="0,0,8,0" RowDefinitions="Auto,Auto,Auto,Auto" VerticalAlignment="Center">
+        <StackPanel Grid.Row="0" Height="40" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
           <Border Margin="12,0,0,0" Height="20"
                   CornerRadius="10"
@@ -55,9 +55,11 @@
           </Border>
         </StackPanel>
 
-        <TextBlock Margin="2,4,0,0" Text="{DynamicResource Text.About.SubTitle}" FontSize="16"/>
+        <Border Grid.Row="1" Margin="2,4,0,0">
+          <TextBlock Text="{DynamicResource Text.About.SubTitle}" FontSize="16" TextWrapping="Wrap"/>
+        </Border>
 
-        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
           <Button Width="18" Height="18" Classes="icon_button" Click="OnVisitWebsite" ToolTip.Tip="https://sourcegit-scm.github.io/">
             <Path Width="16" Height="16" Data="{StaticResource Icons.Remotes}"/>
           </Button>
@@ -67,13 +69,8 @@
           </Button>
         </StackPanel>
 
-        <TextBlock x:Name="TxtCopyright" Margin="0,40,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-      </StackPanel>
+        <TextBlock Grid.Row="3" x:Name="TxtCopyright" Margin="0,40,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+      </Grid>
     </Grid>
   </Grid>
-
-  <Window.KeyBindings>
-    <KeyBinding Gesture="Escape" Command="{Binding #ThisControl.Close}"/>
-  </Window.KeyBindings>
-
 </v:ChromelessWindow>
