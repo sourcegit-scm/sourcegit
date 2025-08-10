@@ -789,6 +789,7 @@
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Mensaje</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Nombre</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Etiquetador</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Copiar Nombre de la Etiqueta</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ en ${1}$...</x:String>
