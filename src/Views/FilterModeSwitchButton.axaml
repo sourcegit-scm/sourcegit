@@ -11,7 +11,8 @@
           Padding="0"
           Background="Transparent"
           VerticalContentAlignment="Center"
-          Click="OnChangeFilterModeButtonClicked">
+          Click="OnChangeFilterModeButtonClicked"
+          ToolTip.Tip="{DynamicResource Text.Repository.FilterCommits}">
     <Grid>
       <Path Width="12" Height="12"
             Data="{StaticResource Icons.Eye}"
