@@ -60,7 +60,6 @@
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">மறுபெயரிடு ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">கண்காணிப்பு கிளையை அமை...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">கிளை ஒப்பிடு</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">தவறான மேல்ஓடை!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">விடு</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">பெற்றோர் திருத்தத்திற்கு மீட்டமை</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">இந்த திருத்தத்திற்கு மீட்டமை</x:String>

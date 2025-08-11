@@ -61,7 +61,6 @@
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Renommer ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Définir la branche de suivi...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Comparer les branches</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Branche en amont invalide!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ANNULER</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Réinitialiser à la révision parente</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Réinitialiser à cette révision</x:String>
