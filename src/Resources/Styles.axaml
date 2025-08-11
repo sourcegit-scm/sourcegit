@@ -1096,16 +1096,22 @@
     </Style>
 
     <Style Selector="^ Path">
-      <Setter Property="Fill" Value="White"/>
+      <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
       <Setter Property="Opacity" Value="0.8"/>
     </Style>
     <Style Selector="^:pointerover Path, ^:checked Path">
       <Setter Property="Opacity" Value="1"/>
     </Style>
+    <Style Selector="^:checked Path">
+      <Setter Property="Fill" Value="White"/>
+    </Style>
     <Style Selector="^ TextBlock">
       <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     </Style>
-    <Style Selector="^:pointerover TextBlock, ^:checked TextBlock">
+    <Style Selector="^:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    </Style>
+    <Style Selector="^:checked TextBlock">
       <Setter Property="Foreground" Value="White"/>
     </Style>
   </Style>
