@@ -659,6 +659,35 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnNavigateToFilter(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter })
+            {
+                if (filter.Mode == Models.FilterMode.Excluded)
+                    return;
+
+                switch (filter.Type)
+                {
+                    default:
+                    case Models.FilterType.LocalBranchFolder:
+                    case Models.FilterType.RemoteBranchFolder:
+                        break;
+                    case Models.FilterType.LocalBranch:
+                    case Models.FilterType.RemoteBranch:
+                        repo.NavigateToBranch(filter.Pattern);
+                        break;
+                    case Models.FilterType.Tag:
+                        repo.NavigateToTag(filter.Pattern);
+                        break;
+                    case Models.FilterType.SoloCommits:
+                        repo.NavigateToCommit(filter.Pattern);
+                        break;
+                }
+                e.Handled = true;
+            }
+        }
+
+
         private void OnRemoveSelectedHistoriesFilter(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter })

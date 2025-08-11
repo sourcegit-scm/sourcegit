@@ -306,7 +306,7 @@ namespace SourceGit.Models
                 HistoriesFilters.Remove(filter);
         }
 
-        public string BuildHistoriesFilter()
+        public string BuildHistoriesFilter(SourceGit.ViewModels.Repository repo)
         {
             var includedRefs = new List<string>();
             var excludedBranches = new List<string>();
@@ -348,6 +348,34 @@ namespace SourceGit.Models
                         includedRefs.Add($"refs/tags/{filter.Pattern}");
                     else if (filter.Mode == FilterMode.Excluded)
                         excludedTags.Add($"--exclude=\"{filter.Pattern}\" --decorate-refs-exclude=\"refs/tags/{filter.Pattern}\"");
+                }
+                else if (filter.Type == FilterType.SoloCommits)
+                {
+                    var allRefs = repo.GetRefsContainsThisCommit(filter.Pattern);
+                    if (filter.Mode == FilterMode.Included)
+                    {
+                        foreach (var refItem in allRefs)
+                        {
+                            if (refItem.Type == Models.DecoratorType.LocalBranchHead)
+                                includedRefs.Add($"{refItem.Name}");
+                            else if (refItem.Type == Models.DecoratorType.RemoteBranchHead)
+                                includedRefs.Add($"{refItem.Name}");
+                            else if (refItem.Type == Models.DecoratorType.Tag)
+                                includedRefs.Add($"refs/tags/{refItem.Name}");
+                        }
+                    }
+                    else if (filter.Mode == FilterMode.Excluded)
+                    {
+                        foreach (var refItem in allRefs)
+                        {
+                            if (refItem.Type == Models.DecoratorType.LocalBranchHead)
+                                excludedBranches.Add($"--exclude=\"{refItem.Name}\" --decorate-refs-exclude=\"refs/heads/{refItem.Name}\"");
+                            else if (refItem.Type == Models.DecoratorType.RemoteBranchHead)
+                                excludedRemotes.Add($"--exclude=\"{refItem.Name}\" --decorate-refs-exclude=\"refs/remotes/{refItem.Name}\"");
+                            else if (refItem.Type == Models.DecoratorType.Tag)
+                                excludedTags.Add($"--exclude=\"refs/tags/{refItem.Name}\" --decorate-refs-exclude=\"refs/tags/{refItem.Name}\"");
+                        }
+                    }
                 }
             }
 
