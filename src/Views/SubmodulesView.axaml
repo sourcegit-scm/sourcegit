@@ -27,9 +27,9 @@
 
               <Grid RowDefinitions="24,24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
                 <TextBlock Grid.Row="0" Grid.Column="0"
-                               Classes="info_label"
-                               HorizontalAlignment="Left" VerticalAlignment="Center"
-                               Text="{DynamicResource Text.Submodule.Branch}"/>
+                           Classes="info_label"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{DynamicResource Text.Submodule.Branch}"/>
                 <StackPanel Grid.Row="0" Grid.Column="1"
                             Orientation="Horizontal"
                             Margin="8,0,0,0">

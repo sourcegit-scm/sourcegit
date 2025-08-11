@@ -30,26 +30,32 @@ namespace SourceGit.Commands
                         last = new Models.Worktree() { FullPath = line.Substring(9).Trim() };
                         last.RelativePath = Path.GetRelativePath(WorkingDirectory, last.FullPath);
                         worktrees.Add(last);
+                        continue;
                     }
-                    else if (line.StartsWith("bare", StringComparison.Ordinal))
+
+                    if (last == null)
+                        continue;
+
+                    if (line.StartsWith("bare", StringComparison.Ordinal))
                     {
-                        last!.IsBare = true;
+                        worktrees.Remove(last);
+                        last = null;
                     }
                     else if (line.StartsWith("HEAD ", StringComparison.Ordinal))
                     {
-                        last!.Head = line.Substring(5).Trim();
+                        last.Head = line.Substring(5).Trim();
                     }
                     else if (line.StartsWith("branch ", StringComparison.Ordinal))
                     {
-                        last!.Branch = line.Substring(7).Trim();
+                        last.Branch = line.Substring(7).Trim();
                     }
                     else if (line.StartsWith("detached", StringComparison.Ordinal))
                     {
-                        last!.IsDetached = true;
+                        last.IsDetached = true;
                     }
                     else if (line.StartsWith("locked", StringComparison.Ordinal))
                     {
-                        last!.IsLocked = true;
+                        last.IsLocked = true;
                     }
                 }
             }

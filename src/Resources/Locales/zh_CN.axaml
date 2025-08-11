@@ -74,7 +74,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
-  <x:String x:Key="Text.BranchTree.Local" xml:space="preserve">本地</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">远程</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">上游分支</x:String>
   <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">远程地址</x:String>
@@ -642,6 +641,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">自定义操作未设置</x:String>
+  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">主页</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在文件浏览器中打开</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速查找分支/标签/子模块</x:String>
@@ -656,6 +656,7 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">按提交时间</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">按拓扑排序</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">本地分支</x:String>
+  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">更多选项...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">定位HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新建分支</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">清空通知列表</x:String>
@@ -783,8 +784,12 @@
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">仓库</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">复制标签名</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">复制标签信息</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">创建者</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">创建时间</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">标签信息</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">标签名</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">创建者</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">复制标签名</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>

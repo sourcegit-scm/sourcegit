@@ -1219,20 +1219,32 @@ namespace SourceGit.ViewModels
         public void RefreshWorktrees()
         {
             var worktrees = new Commands.Worktree(_fullpath).ReadAllAsync().Result;
-            var cleaned = new List<Models.Worktree>();
-
-            foreach (var worktree in worktrees)
+            if (worktrees.Count > 0)
             {
-                if (worktree.IsBare || worktree.FullPath.Equals(_fullpath))
-                    continue;
+                var cleaned = new List<Models.Worktree>();
+                var normalizedGitDir = _gitDir.Replace('\\', '/');
 
-                cleaned.Add(worktree);
+                foreach (var worktree in worktrees)
+                {
+                    if (worktree.FullPath.Equals(_fullpath, StringComparison.Ordinal) ||
+                        worktree.FullPath.Equals(normalizedGitDir, StringComparison.Ordinal))
+                        continue;
+
+                    cleaned.Add(worktree);
+                }
+
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    Worktrees = cleaned;
+                });
             }
-
-            Dispatcher.UIThread.Invoke(() =>
+            else
             {
-                Worktrees = cleaned;
-            });
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    Worktrees = worktrees;
+                });
+            }
         }
 
         public void RefreshTags()
@@ -1446,6 +1458,13 @@ namespace SourceGit.ViewModels
 
                 ShowPopup(new CreateBranch(this, branch));
             }
+        }
+
+        public async Task CheckoutTagAsync(Models.Tag tag)
+        {
+            var c = await new Commands.QuerySingleCommit(_fullpath, tag.SHA).GetResultAsync();
+            if (c != null)
+                _histories?.CheckoutBranchByCommit(c);
         }
 
         public async Task CompareBranchWithWorktree(Models.Branch branch)
@@ -1917,8 +1936,21 @@ namespace SourceGit.ViewModels
                 }
 
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
-                foreach (var remote in remotes)
+
+                if (_settings.FetchAllRemotes)
+                {
+                    foreach (var remote in remotes)
+                        await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                }
+                else if (remotes.Count > 0)
+                {
+                    var remote = string.IsNullOrEmpty(_settings.DefaultRemote) ?
+                        remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
+                        remotes[0];
+
                     await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                }
+
                 _lastFetchTime = DateTime.Now;
                 Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
             }

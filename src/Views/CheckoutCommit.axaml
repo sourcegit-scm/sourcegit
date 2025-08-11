@@ -12,7 +12,14 @@
                Classes="bold"
                Text="{DynamicResource Text.Checkout.Commit}" />
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+    <Grid Margin="0,16,0,0" ColumnDefinitions="Auto,*">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto" MinHeight="32"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -27,14 +34,14 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.LocalChanges}"/>
-      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal">
+      <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
         <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
         <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"
                      GroupName="LocalChanges"/>
-      </StackPanel>
+      </WrapPanel>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Height="32"

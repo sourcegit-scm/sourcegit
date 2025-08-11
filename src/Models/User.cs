@@ -21,7 +21,7 @@ namespace SourceGit.Models
                 parts = [string.Empty, data];
 
             Name = parts[0];
-            Email = parts[1];
+            Email = parts[1].TrimStart('<').TrimEnd('>');
             _hash = data.GetHashCode();
         }
 

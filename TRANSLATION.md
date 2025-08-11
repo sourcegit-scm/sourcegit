@@ -6,19 +6,25 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
-
-### ![es__ES](https://img.shields.io/badge/es__ES-99.77%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.07%25-yellow)
 
 <details>
-<summary>Missing keys in es_ES.axaml</summary>
+<summary>Missing keys in de_DE.axaml</summary>
 
-- Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
-- Text.Submodule.CopyBranch
+- Text.Repository.Dashboard
+- Text.Repository.MoreOptions
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-81.95%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-81.24%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -36,7 +42,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
-- Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
@@ -126,6 +131,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
 - Text.Repository.ClearStashes
+- Text.Repository.Dashboard
+- Text.Repository.MoreOptions
 - Text.Repository.OnlyHighlightCurrentBranchInGraph
 - Text.Repository.Search.ByContent
 - Text.Repository.Search.ByPath
@@ -163,6 +170,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs
@@ -180,7 +193,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-87.22%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-86.48%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -191,7 +204,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Askpass.Passphrase
 - Text.Avatar.Load
 - Text.BranchCM.ResetToSelectedCommit
-- Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
@@ -264,6 +276,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Push.Revision
 - Text.Push.Revision.Title
 - Text.Repository.ClearStashes
+- Text.Repository.Dashboard
+- Text.Repository.MoreOptions
 - Text.Repository.OnlyHighlightCurrentBranchInGraph
 - Text.Repository.Search.ByPath
 - Text.Repository.ShowDecoratedCommitsOnly
@@ -289,6 +303,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.SetBranch
 - Text.Submodule.SetURL
 - Text.Submodule.Update
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.WorkingCopy.AddToGitIgnore.InFolder
@@ -297,7 +317,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-81.95%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-81.24%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -316,7 +336,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
-- Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
@@ -406,7 +425,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
 - Text.Repository.ClearStashes
+- Text.Repository.Dashboard
 - Text.Repository.FilterCommits
+- Text.Repository.MoreOptions
 - Text.Repository.OnlyHighlightCurrentBranchInGraph
 - Text.Repository.Search.ByContent
 - Text.Repository.Search.ByPath
@@ -442,6 +463,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs
@@ -459,7 +486,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-74.91%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-74.24%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -485,7 +512,6 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
 - Text.BranchCM.ResetToSelectedCommit
-- Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
@@ -611,11 +637,13 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
 - Text.Repository.ClearStashes
+- Text.Repository.Dashboard
 - Text.Repository.FilterCommits
 - Text.Repository.HistoriesLayout
 - Text.Repository.HistoriesLayout.Horizontal
 - Text.Repository.HistoriesLayout.Vertical
 - Text.Repository.HistoriesOrder
+- Text.Repository.MoreOptions
 - Text.Repository.Notifications.Clear
 - Text.Repository.OnlyHighlightCurrentBranchInGraph
 - Text.Repository.Search.ByContent
@@ -662,6 +690,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs
@@ -683,7 +717,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-82.06%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-81.35%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -702,7 +736,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
-- Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
@@ -792,6 +825,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
 - Text.Repository.ClearStashes
+- Text.Repository.Dashboard
+- Text.Repository.MoreOptions
 - Text.Repository.OnlyHighlightCurrentBranchInGraph
 - Text.Repository.Search.ByContent
 - Text.Repository.Search.ByPath
@@ -827,6 +862,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.Target
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
@@ -844,7 +885,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-83.24%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-82.52%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -862,7 +903,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
-- Text.BranchTree.Local
 - Text.BranchTree.Remote
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
@@ -948,6 +988,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
 - Text.Repository.ClearStashes
+- Text.Repository.Dashboard
+- Text.Repository.MoreOptions
 - Text.Repository.OnlyHighlightCurrentBranchInGraph
 - Text.Repository.Search.ByContent
 - Text.Repository.Search.ByPath
@@ -983,6 +1025,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.Tag.Tagger
+- Text.Tag.Time
+- Text.TagCM.Copy.Message
+- Text.TagCM.Copy.Name
+- Text.TagCM.Copy.Tagger
+- Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs

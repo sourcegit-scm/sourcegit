@@ -9,7 +9,7 @@
              x:DataType="vm:Repository">
   <Grid ColumnDefinitions="*,Auto,*">
     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
-      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
       </Button>
 
@@ -95,7 +95,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="StartBisect" ToolTip.Tip="{DynamicResource Text.Bisect}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="StartBisect" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Bisect}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Bisect}"/>
       </Button>
 
