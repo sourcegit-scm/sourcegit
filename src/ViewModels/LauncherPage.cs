@@ -110,7 +110,10 @@ namespace SourceGit.ViewModels
                 {
                     var finished = await dump.Sure();
                     if (finished)
+                    {
+                        dump.Cleanup();
                         Popup = null;
+                    }
                 }
                 catch (Exception e)
                 {
