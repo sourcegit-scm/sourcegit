@@ -6,6 +6,8 @@ namespace SourceGit.Models
     {
         public static int Compare(string s1, string s2)
         {
+            var comparer = StringComparer.InvariantCultureIgnoreCase;
+
             int len1 = s1.Length;
             int len2 = s2.Length;
 
@@ -20,7 +22,7 @@ namespace SourceGit.Models
                 bool isDigit1 = char.IsDigit(c1);
                 bool isDigit2 = char.IsDigit(c2);
                 if (isDigit1 != isDigit2)
-                    return c1.CompareTo(c2);
+                    return comparer.Compare(c1.ToString(), c2.ToString());
 
                 int subLen1 = 1;
                 while (marker1 + subLen1 < len1 && char.IsDigit(s1[marker1 + subLen1]) == isDigit1)
@@ -40,7 +42,7 @@ namespace SourceGit.Models
                 if (isDigit1)
                     result = (subLen1 == subLen2) ? string.CompareOrdinal(sub1, sub2) : (subLen1 - subLen2);
                 else
-                    result = string.Compare(sub1, sub2, StringComparison.OrdinalIgnoreCase);
+                    result = comparer.Compare(sub1, sub2);
 
                 if (result != 0)
                     return result;
