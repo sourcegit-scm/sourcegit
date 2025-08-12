@@ -578,7 +578,7 @@ namespace SourceGit
         {
             if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
-                var test = new Commands.QueryRepositoryRootPath(repo).GetResultAsync().Result;
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResult();
                 if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                 {
                     Dispatcher.UIThread.Invoke(() =>

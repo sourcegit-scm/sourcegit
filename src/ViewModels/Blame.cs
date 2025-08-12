@@ -63,10 +63,7 @@ namespace SourceGit.ViewModels
             if (_commitMessages.TryGetValue(sha, out var msg))
                 return msg;
 
-            msg = new Commands.QueryCommitFullMessage(_repo, sha)
-                .GetResultAsync()
-                .Result;
-
+            msg = new Commands.QueryCommitFullMessage(_repo, sha).GetResult();
             _commitMessages[sha] = msg;
             return msg;
         }

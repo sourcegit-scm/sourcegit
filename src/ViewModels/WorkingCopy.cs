@@ -88,9 +88,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head)
-                            .GetResultAsync()
-                            .Result;
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).GetResult();
                     }
                     else
                     {
@@ -670,13 +668,8 @@ namespace SourceGit.ViewModels
         {
             if (_useAmend)
             {
-                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD")
-                    .GetResultAsync()
-                    .Result;
-
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^")
-                    .GetResultAsync()
-                    .Result;
+                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResult();
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^").GetResult();
             }
 
             var rs = new List<Models.Change>();
@@ -722,7 +715,7 @@ namespace SourceGit.ViewModels
                     if (File.Exists(rebaseMsgFile))
                         CommitMessage = File.ReadAllText(rebaseMsgFile);
                     else if (rebasing.StoppedAt != null)
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResultAsync().Result;
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
                 }
             }
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
@@ -809,26 +802,14 @@ namespace SourceGit.ViewModels
 
                 log.Complete();
 
-                Dispatcher.UIThread.Post(async () =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     if (succ)
                     {
                         CommitMessage = string.Empty;
                         UseAmend = false;
-
                         if (autoPush && _repo.Remotes.Count > 0)
-                        {
-                            if (_repo.CurrentBranch == null)
-                            {
-                                var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync();
-                                var tmp = new Models.Branch() { Name = currentBranchName };
-                                _repo.ShowAndStartPopup(new Push(_repo, tmp));
-                            }
-                            else
-                            {
-                                _repo.ShowAndStartPopup(new Push(_repo, null));
-                            }
-                        }
+                            PushAfterCommit();
                     }
 
                     _repo.MarkBranchesDirtyManually();
@@ -836,6 +817,28 @@ namespace SourceGit.ViewModels
                     IsCommitting = false;
                 });
             });
+        }
+
+        private void PushAfterCommit()
+        {
+            if (_repo.CurrentBranch == null)
+            {
+                Task.Run(async () =>
+                {
+                    var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync();
+                    var tmp = new Models.Branch() { Name = currentBranchName };
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowAndStartPopup(new Push(_repo, tmp));
+                    });
+                });
+            }
+            else if (_repo.CanCreatePopup())
+            {
+                _repo.ShowAndStartPopup(new Push(_repo, null));
+            }
         }
 
         private bool IsChanged(List<Models.Change> old, List<Models.Change> cur)

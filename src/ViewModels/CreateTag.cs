@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
             _basedOn = branch.Head;
 
             BasedOn = branch;
-            SignTag = new Commands.Config(repo.FullPath).GetAsync("tag.gpgsign").Result.Equals("true", StringComparison.OrdinalIgnoreCase);
+            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public CreateTag(Repository repo, Models.Commit commit)
@@ -60,7 +60,7 @@ namespace SourceGit.ViewModels
             _basedOn = commit.SHA;
 
             BasedOn = commit;
-            SignTag = new Commands.Config(repo.FullPath).GetAsync("tag.gpgsign").Result.Equals("true", StringComparison.OrdinalIgnoreCase);
+            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public static ValidationResult ValidateTagName(string name, ValidationContext ctx)

@@ -10,6 +10,11 @@ namespace SourceGit.Commands
             Args = "rev-parse --show-toplevel";
         }
 
+        public Result GetResult()
+        {
+            return ReadToEnd();
+        }
+
         public async Task<Result> GetResultAsync()
         {
             return await ReadToEndAsync().ConfigureAwait(false);

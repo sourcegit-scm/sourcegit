@@ -81,8 +81,7 @@ namespace SourceGit.ViewModels
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
             CanSaveAsPatch = startPoint != null && endPoint != null;
-
-            Task.Run(Refresh);
+            Refresh();
         }
 
         public void Dispose()
@@ -125,7 +124,7 @@ namespace SourceGit.ViewModels
             VisibleChanges = [];
             SelectedChanges = [];
             IsLoading = true;
-            Task.Run(Refresh);
+            Refresh();
         }
 
         public void SaveAsPatch(string saveTo)
@@ -167,28 +166,33 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).ReadAsync().Result;
-
-            var visible = _changes;
-            if (!string.IsNullOrWhiteSpace(_searchFilter))
+            Task.Run(async () =>
             {
-                visible = [];
-                foreach (var c in _changes)
+                _changes = await new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint))
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
+                var visible = _changes;
+                if (!string.IsNullOrWhiteSpace(_searchFilter))
                 {
-                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                        visible.Add(c);
+                    visible = [];
+                    foreach (var c in _changes)
+                    {
+                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                            visible.Add(c);
+                    }
                 }
-            }
 
-            Dispatcher.UIThread.Post(() =>
-            {
-                VisibleChanges = visible;
-                IsLoading = false;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    VisibleChanges = visible;
+                    IsLoading = false;
 
-                if (VisibleChanges.Count > 0)
-                    SelectedChanges = [VisibleChanges[0]];
-                else
-                    SelectedChanges = [];
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
             });
         }
 

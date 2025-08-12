@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,9 +10,9 @@ namespace SourceGit.Commands
             Args = "rev-parse --git-common-dir";
         }
 
-        public async Task<string> GetResultAsync()
+        public string GetResult()
         {
-            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            var rs = ReadToEnd();
             if (!rs.IsSuccess)
                 return null;
 

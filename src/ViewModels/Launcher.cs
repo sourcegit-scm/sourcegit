@@ -94,7 +94,7 @@ namespace SourceGit.ViewModels
                 foreach (var w in pref.Workspaces)
                     w.IsActive = false;
 
-                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResultAsync().Result;
+                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResult();
                 if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
                 {
                     Pages[0].Notifications.Add(new Models.Notification
@@ -344,7 +344,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var isBare = new Commands.IsBareRepository(node.Id).GetResultAsync().Result;
+            var isBare = new Commands.IsBareRepository(node.Id).GetResult();
             var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
             if (string.IsNullOrEmpty(gitDir))
             {
@@ -446,7 +446,7 @@ namespace SourceGit.ViewModels
                 return null;
             }
 
-            return new Commands.QueryGitDir(repo).GetResultAsync().Result;
+            return new Commands.QueryGitDir(repo).GetResult();
         }
 
         private void CloseRepositoryInTab(LauncherPage page, bool removeFromWorkspace = true)

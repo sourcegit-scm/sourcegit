@@ -161,7 +161,7 @@ namespace SourceGit.ViewModels
             if (!AvailableOpenAIServices.Contains(PreferredOpenAIService))
                 PreferredOpenAIService = "---";
 
-            _cached = new Commands.Config(repo.FullPath).ReadAllAsync().Result;
+            _cached = new Commands.Config(repo.FullPath).ReadAll();
             if (_cached.TryGetValue("user.name", out var name))
                 UserName = name;
             if (_cached.TryGetValue("user.email", out var email))

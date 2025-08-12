@@ -457,7 +457,7 @@ namespace SourceGit.Views
                         lfs.Header = App.Text("GitLFS");
                         lfs.Icon = App.CreateMenuIcon("Icons.LFS");
 
-                        var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResultAsync().Result;
+                        var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResult();
                         if (!isLFSFiltered)
                         {
                             var filename = Path.GetFileName(change.Path);
