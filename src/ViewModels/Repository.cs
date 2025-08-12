@@ -1755,9 +1755,19 @@ namespace SourceGit.ViewModels
             UpdateTagFilterMode(historiesFilters);
 
             if (Preferences.Instance.ShowTagsAsTree)
-                return TagCollectionAsTree.Build(visible, _visibleTags as TagCollectionAsTree);
+            {
+                var tree = TagCollectionAsTree.Build(visible, _visibleTags as TagCollectionAsTree);
+                foreach (var node in tree.Tree)
+                    node.UpdateFilterMode(historiesFilters);
+                return tree;
+            }
             else
-                return new TagCollectionAsList() { Tags = visible };
+            {
+                var list = new TagCollectionAsList(visible);
+                foreach (var item in list.TagItems)
+                    item.FilterMode = historiesFilters.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
+                return list;
+            }
         }
 
         private object BuildVisibleSubmodules()
@@ -1813,9 +1823,15 @@ namespace SourceGit.ViewModels
 
         private void UpdateTagFilterMode(Dictionary<string, Models.FilterMode> filters)
         {
-            foreach (var tag in _tags)
+            if (VisibleTags is TagCollectionAsTree tree)
             {
-                tag.FilterMode = filters.GetValueOrDefault(tag.Name, Models.FilterMode.None);
+                foreach (var node in tree.Tree)
+                    node.UpdateFilterMode(filters);
+            }
+            else if (VisibleTags is TagCollectionAsList list)
+            {
+                foreach (var item in list.TagItems)
+                    item.FilterMode = filters.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
             }
         }
 
@@ -1831,8 +1847,17 @@ namespace SourceGit.ViewModels
 
         private void ResetTagFilterMode()
         {
-            foreach (var tag in _tags)
-                tag.FilterMode = Models.FilterMode.None;
+            if (VisibleTags is TagCollectionAsTree tree)
+            {
+                var filters = new Dictionary<string, Models.FilterMode>();
+                foreach (var node in tree.Tree)
+                    node.UpdateFilterMode(filters);
+            }
+            else if (VisibleTags is TagCollectionAsList list)
+            {
+                foreach (var item in list.TagItems)
+                    item.FilterMode = Models.FilterMode.None;
+            }
         }
 
         private BranchTreeNode FindBranchNode(List<BranchTreeNode> nodes, string path)

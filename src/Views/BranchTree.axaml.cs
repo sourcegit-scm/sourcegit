@@ -352,6 +352,10 @@ namespace SourceGit.Views
 
         private void OnNodePointerPressed(object sender, PointerPressedEventArgs e)
         {
+            var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                return;
+
             var p = e.GetCurrentPoint(this);
             if (!p.Properties.IsLeftButtonPressed)
                 return;
@@ -364,13 +368,6 @@ namespace SourceGit.Views
 
             if (node.Backend is not Models.Branch branch)
                 return;
-
-            if (BranchesPresenter.SelectedItems is { Count: > 0 })
-            {
-                var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-                if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                    return;
-            }
 
             repo.NavigateToCommit(branch.Head);
         }
