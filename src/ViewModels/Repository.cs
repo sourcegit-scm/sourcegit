@@ -1983,18 +1983,22 @@ namespace SourceGit.ViewModels
 
                 IsAutoFetching = true;
 
+                var remotes = new List<string>();
+                foreach (var r in _remotes)
+                    remotes.Add(r.Name);
+
                 if (_settings.FetchAllRemotes)
                 {
-                    foreach (var remote in _remotes)
-                        await new Commands.Fetch(_fullpath, remote.Name, false, false) { RaiseError = false }.RunAsync();
+                    foreach (var remote in remotes)
+                        await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
                 }
-                else if (_remotes.Count > 0)
+                else if (remotes.Count > 0)
                 {
                     var remote = string.IsNullOrEmpty(_settings.DefaultRemote) ?
-                        _remotes.Find(x => x.Name.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
-                        _remotes[0];
+                        remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
+                        remotes[0];
 
-                    await new Commands.Fetch(_fullpath, remote.Name, false, false) { RaiseError = false }.RunAsync();
+                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
                 }
 
                 _lastFetchTime = DateTime.Now;
