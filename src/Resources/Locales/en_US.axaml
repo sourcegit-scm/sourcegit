@@ -612,6 +612,8 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Edit Remote</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Remote name</x:String>
+  <x:String x:Key="Text.Remote.PruneTagsOnFetch" xml:space="preserve">Prune tags do not exists in this remote</x:String>
+  <x:String x:Key="Text.Remote.PruneTagsOnFetch.Tip" xml:space="preserve">Only works while fetching with `--prune` enabled</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Remote git repository URL</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copy URL</x:String>

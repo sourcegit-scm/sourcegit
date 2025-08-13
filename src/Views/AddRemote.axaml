@@ -12,7 +12,7 @@
                Classes="bold"
                Text="{DynamicResource Text.Remote.AddTitle}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -54,6 +54,11 @@
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>
+
+      <CheckBox Grid.Row="3" Grid.Column="1"
+                Content="{DynamicResource Text.Remote.PruneTagsOnFetch}"
+                IsChecked="{Binding PruneTagsOnFetch, Mode=TwoWay}"
+                ToolTip.Tip="{DynamicResource Text.Remote.PruneTagsOnFetch.Tip}"/>
     </Grid>
   </StackPanel>
 </UserControl>

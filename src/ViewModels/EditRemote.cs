@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
@@ -45,6 +45,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _sshkey, value, true);
         }
 
+        public bool PruneTagsOnFetch
+        {
+            get;
+            set;
+        }
+
         public EditRemote(Repository repo, Models.Remote remote)
         {
             _repo = repo;
@@ -53,17 +59,11 @@ namespace SourceGit.ViewModels
             _url = remote.URL;
             _useSSH = Models.Remote.IsSSH(remote.URL);
 
+            var config = new Commands.Config(repo.FullPath);
             if (_useSSH)
-            {
-                Task.Run(async () =>
-                {
-                    var sshKey = await new Commands.Config(repo.FullPath)
-                        .GetAsync($"remote.{remote.Name}.sshkey")
-                        .ConfigureAwait(false);
+                _sshkey = config.Get($"remote.{remote.Name}.sshkey");
 
-                    Dispatcher.UIThread.Post(() => SSHKey = sshKey);
-                });
-            }
+            PruneTagsOnFetch = config.Get($"remote.{remote.Name}.pruneTags").Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)
@@ -131,7 +131,9 @@ namespace SourceGit.ViewModels
             if (pushURL != _url)
                 await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
 
-            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+            var config = new Commands.Config(_repo.FullPath);
+            await config.SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+            await config.SetAsync($"remote.{_name}.pruneTags", PruneTagsOnFetch ? "true" : null);
 
             _repo.SetWatcherEnabled(true);
             return true;

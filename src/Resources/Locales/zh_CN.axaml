@@ -616,6 +616,8 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">唯一远程名</x:String>
+  <x:String x:Key="Text.Remote.PruneTagsOnFetch" xml:space="preserve">自动清理该远程中不存在的标签</x:String>
+  <x:String x:Key="Text.Remote.PruneTagsOnFetch.Tip" xml:space="preserve">仅当启用修剪（--prune）后，拉取更新时作用</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">仓库地址 ：</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">远程仓库的地址</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">复制远程地址</x:String>

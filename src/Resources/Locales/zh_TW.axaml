@@ -616,6 +616,8 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">編輯遠端存放庫</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">遠端名稱:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">唯一遠端名稱</x:String>
+  <x:String x:Key="Text.Remote.PruneTagsOnFetch" xml:space="preserve">自動清除此遠端中不存在的標籤</x:String>
+  <x:String x:Key="Text.Remote.PruneTagsOnFetch.Tip" xml:space="preserve">僅在啟用自动清理 (--prune) 后，提取遠端變更時有效</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">存放庫網址:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">遠端存放庫的網址</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">複製遠端網址</x:String>
