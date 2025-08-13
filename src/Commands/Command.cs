@@ -50,28 +50,6 @@ namespace SourceGit.Commands
             }
         }
 
-        protected Result ReadToEnd()
-        {
-            using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
-
-            try
-            {
-                proc.Start();
-            }
-            catch (Exception e)
-            {
-                return Result.Failed(e.Message);
-            }
-
-            var rs = new Result() { IsSuccess = true };
-            rs.StdOut = proc.StandardOutput.ReadToEnd();
-            rs.StdErr = proc.StandardError.ReadToEnd();
-            proc.WaitForExit();
-
-            rs.IsSuccess = proc.ExitCode == 0;
-            return rs;
-        }
-
         public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
@@ -147,6 +125,28 @@ namespace SourceGit.Commands
             }
 
             return true;
+        }
+
+        protected Result ReadToEnd()
+        {
+            using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
+
+            try
+            {
+                proc.Start();
+            }
+            catch (Exception e)
+            {
+                return Result.Failed(e.Message);
+            }
+
+            var rs = new Result() { IsSuccess = true };
+            rs.StdOut = proc.StandardOutput.ReadToEnd();
+            rs.StdErr = proc.StandardError.ReadToEnd();
+            proc.WaitForExit();
+
+            rs.IsSuccess = proc.ExitCode == 0;
+            return rs;
         }
 
         protected async Task<Result> ReadToEndAsync()
