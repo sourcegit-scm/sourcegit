@@ -1,4 +1,7 @@
-﻿namespace SourceGit.Commands
+﻿using System;
+using System.Diagnostics;
+
+namespace SourceGit.Commands
 {
     public class DiffTool : Command
     {
@@ -28,7 +31,14 @@
                 Args = $"-c difftool.sourcegit.cmd={cmd.Quoted()} difftool --tool=sourcegit --no-prompt {_option}";
             }
 
-            Exec();
+            try
+            {
+                Process.Start(CreateGitStartInfo(false));
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(Context, ex.Message);
+            }
         }
 
         private Models.DiffOption _option;

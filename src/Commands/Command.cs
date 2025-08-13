@@ -37,19 +37,6 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
-        public void Exec()
-        {
-            try
-            {
-                var start = CreateGitStartInfo(false);
-                Process.Start(start);
-            }
-            catch (Exception ex)
-            {
-                App.RaiseException(Context, ex.Message);
-            }
-        }
-
         public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
@@ -171,7 +158,7 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        private ProcessStartInfo CreateGitStartInfo(bool redirect)
+        protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
