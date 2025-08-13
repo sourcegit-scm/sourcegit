@@ -265,6 +265,7 @@ namespace SourceGit.ViewModels
                     Welcome.Instance.ClearSearchFilter();
                     last.Node = new RepositoryNode() { Id = Guid.NewGuid().ToString() };
                     last.Data = Welcome.Instance;
+                    last.Popup?.Cleanup();
                     last.Popup = null;
                     UpdateTitle();
 
@@ -459,6 +460,8 @@ namespace SourceGit.ViewModels
                 repo.Close();
             }
 
+            page.Popup?.Cleanup();
+            page.Popup = null;
             page.Data = null;
         }
 
