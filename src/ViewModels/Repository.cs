@@ -560,7 +560,8 @@ namespace SourceGit.ViewModels
             _selectedViewIndex = 0;
 
             _workingCopy.CommitMessage = _settings.LastCommitMessage;
-            _autoFetchTimer = new Timer(AutoFetchImpl, null, 5000, 5000);
+            _lastFetchTime = DateTime.Now;
+            _autoFetchTimer = new Timer(AutoFetchInBackground, null, 5000, 5000);
             RefreshAll();
         }
 
@@ -1194,9 +1195,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    lock (_lockRemotes)
-                        Remotes = remotes;
-
+                    Remotes = remotes;
                     Branches = branches;
                     CurrentBranch = branches.Find(x => x.IsCurrent);
                     LocalBranchTrees = builder.Locals;
@@ -1960,12 +1959,18 @@ namespace SourceGit.ViewModels
             MatchedFilesForSearching = matched;
         }
 
-        private async void AutoFetchImpl(object sender)
+        private void AutoFetchInBackground(object sender)
         {
-            try
+            Dispatcher.UIThread.Post(async () =>
             {
-                if (!_settings.EnableAutoFetch || _isAutoFetching)
+                if (_settings == null || !_settings.EnableAutoFetch)
                     return;
+
+                if (!CanCreatePopup())
+                {
+                    _lastFetchTime = DateTime.Now;
+                    return;
+                }
 
                 var lockFile = Path.Combine(_gitDir, "index.lock");
                 if (File.Exists(lockFile))
@@ -1976,36 +1981,25 @@ namespace SourceGit.ViewModels
                 if (desire > now)
                     return;
 
-                var remotes = new List<string>();
-                lock (_lockRemotes)
-                {
-                    foreach (var remote in _remotes)
-                        remotes.Add(remote.Name);
-                }
-
-                Dispatcher.UIThread.Invoke(() => IsAutoFetching = true);
+                IsAutoFetching = true;
 
                 if (_settings.FetchAllRemotes)
                 {
-                    foreach (var remote in remotes)
-                        await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                    foreach (var remote in _remotes)
+                        await new Commands.Fetch(_fullpath, remote.Name, false, false) { RaiseError = false }.RunAsync();
                 }
-                else if (remotes.Count > 0)
+                else if (_remotes.Count > 0)
                 {
                     var remote = string.IsNullOrEmpty(_settings.DefaultRemote) ?
-                        remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
-                        remotes[0];
+                        _remotes.Find(x => x.Name.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
+                        _remotes[0];
 
-                    await new Commands.Fetch(_fullpath, remote, false, false) { RaiseError = false }.RunAsync();
+                    await new Commands.Fetch(_fullpath, remote.Name, false, false) { RaiseError = false }.RunAsync();
                 }
 
                 _lastFetchTime = DateTime.Now;
-                Dispatcher.UIThread.Invoke(() => IsAutoFetching = false);
-            }
-            catch
-            {
-                // DO nothing, but prevent `System.AggregateException`
-            }
+                IsAutoFetching = false;
+            });
         }
 
         private string _fullpath = string.Empty;
@@ -2037,7 +2031,6 @@ namespace SourceGit.ViewModels
         private List<string> _matchedFilesForSearching = null;
 
         private string _filter = string.Empty;
-        private readonly Lock _lockRemotes = new();
         private List<Models.Remote> _remotes = new List<Models.Remote>();
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private Models.Branch _currentBranch = null;
