@@ -1267,10 +1267,10 @@ namespace SourceGit.ViewModels
 
         public void RefreshCommits()
         {
-            Dispatcher.UIThread.Invoke(() => _histories.IsLoading = true);
-
             Task.Run(async () =>
             {
+                await Dispatcher.UIThread.InvokeAsync(() => _histories.IsLoading = true);
+
                 var builder = new StringBuilder();
                 builder.Append($"-{Preferences.Instance.MaxHistoryCommits} ");
 
