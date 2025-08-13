@@ -177,7 +177,7 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">指令參數:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">內建參數: ${REPO} 存放庫路徑、${BRANCH} 所選的分支、${SHA} 所選的提交編號、${TAG} 所選的標籤</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">內建參數: ${REPO} 存放庫路徑、${DIRNAME} 存放庫資料夾名、${BRANCH} 所選的分支、${CURRENT_BRANCH} 當前分支、${SHA} 所選的提交編號、${TAG} 所選的標籤</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控制項:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">編輯</x:String>

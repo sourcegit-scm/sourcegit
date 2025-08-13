@@ -203,19 +203,31 @@ namespace SourceGit.ViewModels
         private string PrepareStringByTarget(string org)
         {
             org = org.Replace("${REPO}", GetWorkdir());
+            org = org.Replace("${DIRNAME}", GetWorkdirname());
+            org = org.Replace("${CURRENT_BRANCH}", GetCurrentBranch());
 
             return Target switch
             {
                 Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName),
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
                 Models.Tag t => org.Replace("${TAG}", t.Name),
-                _ => org
+                _ => org,
             };
         }
 
         private string GetWorkdir()
         {
             return OperatingSystem.IsWindows() ? _repo.FullPath.Replace("/", "\\") : _repo.FullPath;
+        }
+
+        private string GetWorkdirname()
+        {
+            return _repo.FullPath.Replace("\\", "/").Split('/')[^1];
+        }
+
+        private string GetCurrentBranch()
+        {
+            return _repo.CurrentBranch?.FriendlyName ?? string.Empty;
         }
 
         private void Run(string args)
