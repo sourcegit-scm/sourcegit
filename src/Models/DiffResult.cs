@@ -148,7 +148,7 @@ namespace SourceGit.Models
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
             var fileGuid = isTracked ? fileBlobGuid : "00000000";
 
-            using var writer = new StreamWriter(output);
+            using var writer = new StreamWriter(output) { NewLine = "\n" };
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
             if (!revert && !isTracked)
                 writer.WriteLine("new file mode 100644");
@@ -192,7 +192,7 @@ namespace SourceGit.Models
         {
             var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
 
-            using var writer = new StreamWriter(output);
+            using var writer = new StreamWriter(output) { NewLine = "\n" };
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
             writer.WriteLine($"--- a/{orgFile}");
@@ -305,7 +305,7 @@ namespace SourceGit.Models
         {
             var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
 
-            using var writer = new StreamWriter(output);
+            using var writer = new StreamWriter(output) { NewLine = "\n" };
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
             writer.WriteLine($"--- a/{orgFile}");
