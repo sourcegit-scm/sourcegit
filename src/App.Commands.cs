@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Input;
 using Avalonia.Controls;
+using SourceGit.Native;
 
 namespace SourceGit
 {
@@ -29,11 +30,7 @@ namespace SourceGit
         {
             get
             {
-#if DISABLE_UPDATE_DETECTION
-                return false;
-#else
-                return true;
-#endif
+                return OS.ShouldCheckForUpdates();
             }
         }
 

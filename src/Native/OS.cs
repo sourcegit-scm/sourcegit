@@ -119,6 +119,11 @@ namespace SourceGit.Native
             _backend.SetupApp(builder);
         }
 
+        public static bool ShouldCheckForUpdates()
+        {
+            return Environment.GetEnvironmentVariable("SOURCEGIT_DISABLE_UPDATE_DETECTION") == null;
+        }
+
         public static void SetupDataDir()
         {
             if (OperatingSystem.IsWindows())

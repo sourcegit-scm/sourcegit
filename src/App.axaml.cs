@@ -568,10 +568,8 @@ namespace SourceGit
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-#if !DISABLE_UPDATE_DETECTION
-            if (pref.ShouldCheck4UpdateOnStartup())
+            if (Native.OS.ShouldCheckForUpdates() && pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
-#endif
         }
 
         private void TryOpenRepository(string repo)

@@ -24,10 +24,6 @@
     <TrimMode>link</TrimMode>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(DisableUpdateDetection)' == 'true'">
-    <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
