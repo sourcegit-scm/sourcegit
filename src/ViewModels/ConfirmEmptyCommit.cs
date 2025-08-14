@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -16,23 +16,25 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public ConfirmEmptyCommit(bool hasLocalChanges, Action<bool> onSure)
+        public ConfirmEmptyCommit(WorkingCopy wc, bool autoPush, int unstagedCount)
         {
-            HasLocalChanges = hasLocalChanges;
-            Message = App.Text(hasLocalChanges ? "ConfirmEmptyCommit.WithLocalChanges" : "ConfirmEmptyCommit.NoLocalChanges");
-            _onSure = onSure;
+            _wc = wc;
+            _autoPush = autoPush;
+            HasLocalChanges = unstagedCount > 0;
+            Message = App.Text(HasLocalChanges ? "ConfirmEmptyCommit.WithLocalChanges" : "ConfirmEmptyCommit.NoLocalChanges");
         }
 
-        public void StageAllThenCommit()
+        public async Task StageAllThenCommitAsync()
         {
-            _onSure?.Invoke(true);
+            await _wc.CommitAsync(true, _autoPush, Models.CommitCheckPassed.FileCount);
         }
 
-        public void Continue()
+        public async Task ContinueAsync()
         {
-            _onSure?.Invoke(false);
+            await _wc.CommitAsync(false, _autoPush, Models.CommitCheckPassed.FileCount);
         }
 
-        private Action<bool> _onSure;
+        private readonly WorkingCopy _wc;
+        private readonly bool _autoPush;
     }
 }

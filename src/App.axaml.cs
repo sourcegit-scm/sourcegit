@@ -158,13 +158,12 @@ namespace SourceGit
             }
         }
 
-        public static async Task<bool> AskConfirmAsync(string message, Action onSure)
+        public static async Task<bool> AskConfirmAsync(string message)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
             {
                 var confirm = new Views.Confirm();
                 confirm.Message.Text = message;
-                confirm.OnSure = onSure;
                 return await confirm.ShowDialog<bool>(owner);
             }
 

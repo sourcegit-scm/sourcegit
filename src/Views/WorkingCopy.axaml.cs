@@ -193,6 +193,30 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnCommit(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, false);
+
+            e.Handled = true;
+        }
+
+        private async void OnCommitWithAutoStage(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(true, false);
+
+            e.Handled = true;
+        }
+
+        private async void OnCommitWithPush(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, true);
+
+            e.Handled = true;
+        }
+
         private ContextMenu CreateContextMenuForUnstagedChanges(ViewModels.WorkingCopy vm, string selectedSingleFolder)
         {
             var repo = vm.Repository;
