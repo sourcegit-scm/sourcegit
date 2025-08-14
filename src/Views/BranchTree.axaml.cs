@@ -940,6 +940,7 @@ namespace SourceGit.Views
             menu.Items.Add(edit);
             menu.Items.Add(delete);
             menu.Items.Add(new MenuItem() { Header = "-" });
+            TryToAddCustomActionsToRemoteContextMenu(repo, menu, remote);
             menu.Items.Add(copy);
             return menu;
         }
@@ -1102,6 +1103,35 @@ namespace SourceGit.Views
                 item.Click += async (_, e) =>
                 {
                     await repo.ExecCustomActionAsync(dup, branch);
+                    e.Handled = true;
+                };
+
+                custom.Items.Add(item);
+            }
+
+            menu.Items.Add(custom);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        private void TryToAddCustomActionsToRemoteContextMenu(ViewModels.Repository repo, ContextMenu menu, Models.Remote remote)
+        {
+            var actions = repo.GetCustomActions(Models.CustomActionScope.Remote);
+            if (actions.Count == 0)
+                return;
+
+            var custom = new MenuItem();
+            custom.Header = App.Text("RemoteCM.CustomAction");
+            custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+            foreach (var action in actions)
+            {
+                var (dup, label) = action;
+                var item = new MenuItem();
+                item.Icon = App.CreateMenuIcon("Icons.Action");
+                item.Header = label;
+                item.Click += async (_, e) =>
+                {
+                    await repo.ExecCustomActionAsync(dup, remote);
                     e.Handled = true;
                 };
 

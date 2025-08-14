@@ -177,7 +177,7 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">指令參數:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">內建參數: ${REPO} 存放庫路徑、${BRANCH} 所選的分支、${SHA} 所選的提交編號、${TAG} 所選的標籤</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">內建參數: ${REPO} 存放庫路徑、${REMOTE} 所選的遠端存放庫或所選分支的遠端、${BRANCH} 所選的分支、${SHA} 所選的提交編號、${TAG} 所選的標籤</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控制項:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">編輯</x:String>
@@ -186,6 +186,7 @@
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">執行範圍:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">選取的分支</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">選取的提交</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">遠端存放庫</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">選取的標籤</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">等待自訂動作執行結束</x:String>
@@ -620,6 +621,7 @@
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">存放庫網址:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">遠端存放庫的網址</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">複製遠端網址</x:String>
+  <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">刪除...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">編輯...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">提取 (fetch) 更新</x:String>

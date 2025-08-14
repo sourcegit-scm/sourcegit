@@ -876,19 +876,12 @@ namespace SourceGit.ViewModels
                 ShowPopup(new Apply(this));
         }
 
-        public async Task ExecCustomActionAsync(Models.CustomAction action, object scope)
+        public async Task ExecCustomActionAsync(Models.CustomAction action, object scopeTarget)
         {
             if (!CanCreatePopup())
                 return;
 
-            var popup = scope switch
-            {
-                Models.Branch b => new ExecuteCustomAction(this, action, b),
-                Models.Commit c => new ExecuteCustomAction(this, action, c),
-                Models.Tag t => new ExecuteCustomAction(this, action, t),
-                _ => new ExecuteCustomAction(this, action)
-            };
-
+            var popup = new ExecuteCustomAction(this, action, scopeTarget);
             if (action.Controls.Count == 0)
                 await ShowAndStartPopupAsync(popup);
             else
