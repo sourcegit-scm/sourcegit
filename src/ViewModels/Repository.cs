@@ -508,11 +508,28 @@ namespace SourceGit.ViewModels
             IsBare = isBare;
             FullPath = path;
             GitDir = gitDir;
+
+            var commonDirFile = Path.Combine(_gitDir, "commondir");
+            _isWorktree = _gitDir.Replace('\\', '/').IndexOf("/worktrees/", StringComparison.Ordinal) > 0 &&
+                File.Exists(commonDirFile);
+
+            if (_isWorktree)
+            {
+                var commonDir = File.ReadAllText(commonDirFile).Trim();
+                if (!Path.IsPathRooted(commonDir))
+                    commonDir = new DirectoryInfo(Path.Combine(_gitDir, commonDir)).FullName;
+
+                _gitCommonDir = commonDir;
+            }
+            else
+            {
+                _gitCommonDir = _gitDir;
+            }
         }
 
         public void Open()
         {
-            var settingsFile = Path.Combine(_gitDir, "sourcegit.settings");
+            var settingsFile = Path.Combine(_gitCommonDir, "sourcegit.settings");
             if (File.Exists(settingsFile))
             {
                 try
@@ -532,16 +549,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                // For worktrees, we need to watch the $GIT_COMMON_DIR instead of the $GIT_DIR.
-                var gitDirForWatcher = _gitDir;
-                if (_gitDir.Replace('\\', '/').IndexOf("/worktrees/", StringComparison.Ordinal) > 0)
-                {
-                    var commonDir = new Commands.QueryGitCommonDir(_fullpath).GetResult();
-                    if (!string.IsNullOrEmpty(commonDir))
-                        gitDirForWatcher = commonDir;
-                }
-
-                _watcher = new Models.Watcher(this, _fullpath, gitDirForWatcher);
+                _watcher = new Models.Watcher(this, _fullpath, _gitCommonDir);
             }
             catch (Exception ex)
             {
@@ -570,15 +578,11 @@ namespace SourceGit.ViewModels
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
             Logs.Clear();
 
-            try
+            if (!_isWorktree)
             {
                 _settings.LastCommitMessage = _workingCopy.CommitMessage;
-                using var stream = File.Create(Path.Combine(_gitDir, "sourcegit.settings"));
+                using var stream = File.Create(Path.Combine(_gitCommonDir, "sourcegit.settings"));
                 JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
-            }
-            catch
-            {
-                // Ignore
             }
 
             _autoFetchTimer.Dispose();
@@ -2007,6 +2011,8 @@ namespace SourceGit.ViewModels
 
         private string _fullpath = string.Empty;
         private string _gitDir = string.Empty;
+        private string _gitCommonDir = string.Empty;
+        private bool _isWorktree = false;
         private Models.RepositorySettings _settings = null;
         private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
