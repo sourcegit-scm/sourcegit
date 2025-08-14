@@ -378,7 +378,7 @@ namespace SourceGit.Views
                     install.Icon = App.CreateMenuIcon("Icons.Init");
                     install.Click += async (_, e) =>
                     {
-                        await repo.InstallLFS();
+                        await repo.InstallLFSAsync();
                         e.Handled = true;
                     };
                     menu.Items.Add(install);

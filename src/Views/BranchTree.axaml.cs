@@ -741,7 +741,7 @@ namespace SourceGit.Views
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                     compareWithWorktree.Click += async (_, e) =>
                     {
-                        await repo.CompareBranchWithWorktree(branch);
+                        await repo.CompareBranchWithWorktreeAsync(branch);
                         e.Handled = true;
                     };
                     menu.Items.Add(compareWithWorktree);
@@ -1014,7 +1014,7 @@ namespace SourceGit.Views
                 compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithWorktree.Click += async (_, e) =>
                 {
-                    await repo.CompareBranchWithWorktree(branch);
+                    await repo.CompareBranchWithWorktreeAsync(branch);
                     e.Handled = true;
                 };
                 menu.Items.Add(compareWithWorktree);

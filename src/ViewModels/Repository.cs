@@ -677,7 +677,7 @@ namespace SourceGit.ViewModels
             return content.Contains("git lfs pre-push");
         }
 
-        public async Task InstallLFS()
+        public async Task InstallLFSAsync()
         {
             var log = CreateLog("Install LFS");
             var succ = await new Commands.LFS(_fullpath).Use(log).InstallAsync();
@@ -1498,7 +1498,7 @@ namespace SourceGit.ViewModels
                 await _histories?.CheckoutBranchByCommitAsync(c);
         }
 
-        public async Task CompareBranchWithWorktree(Models.Branch branch)
+        public async Task CompareBranchWithWorktreeAsync(Models.Branch branch)
         {
             if (_histories != null)
             {
