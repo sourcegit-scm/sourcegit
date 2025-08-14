@@ -89,15 +89,7 @@ namespace SourceGit.ViewModels
             return _popup is not { InProgress: true };
         }
 
-        public void StartPopup(Popup popup)
-        {
-            Popup = popup;
-
-            if (popup.CanStartDirectly())
-                ProcessPopup();
-        }
-
-        public async void ProcessPopup()
+        public async Task ProcessPopupAsync()
         {
             if (_popup is { InProgress: false } dump)
             {

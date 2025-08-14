@@ -15,7 +15,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnPopupSureByHotKey(object sender, RoutedEventArgs e)
+        private async void OnPopupSureByHotKey(object sender, RoutedEventArgs e)
         {
             var children = this.GetLogicalDescendants();
             foreach (var child in children)
@@ -39,13 +39,16 @@ namespace SourceGit.Views
                 }
             }
 
-            OnPopupSure(sender, e);
+            if (DataContext is ViewModels.LauncherPage page)
+                await page.ProcessPopupAsync();
+
+            e.Handled = true;
         }
 
-        private void OnPopupSure(object _, RoutedEventArgs e)
+        private async void OnPopupSure(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.LauncherPage page)
-                page.ProcessPopup();
+                await page.ProcessPopupAsync();
 
             e.Handled = true;
         }

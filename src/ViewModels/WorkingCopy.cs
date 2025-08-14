@@ -330,13 +330,13 @@ namespace SourceGit.ViewModels
                 Native.OS.OpenWithDefaultEditor(absPath);
         }
 
-        public void StashAll(bool autoStart)
+        public async Task StashAllAsync(bool autoStart)
         {
             if (!_repo.CanCreatePopup())
                 return;
 
             if (autoStart)
-                _repo.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
+                await _repo.ShowAndStartPopupAsync(new StashChanges(_repo, _cached, false));
             else
                 _repo.ShowPopup(new StashChanges(_repo, _cached, false));
         }
@@ -679,7 +679,7 @@ namespace SourceGit.ViewModels
                     }
 
                     if (_repo.CanCreatePopup())
-                        _repo.ShowAndStartPopup(new Push(_repo, pushBranch));
+                        await _repo.ShowAndStartPopupAsync(new Push(_repo, pushBranch));
                 }
             }
 

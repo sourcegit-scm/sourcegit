@@ -636,9 +636,13 @@ namespace SourceGit.ViewModels
                 page.Popup = popup;
         }
 
-        public void ShowAndStartPopup(Popup popup)
+        public async Task ShowAndStartPopupAsync(Popup popup)
         {
-            GetOwnerPage()?.StartPopup(popup);
+            var page = GetOwnerPage();
+            page.Popup = popup;
+
+            if (popup.CanStartDirectly())
+                await page.ProcessPopupAsync();
         }
 
         public bool IsGitFlowEnabled()
@@ -802,7 +806,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Fetch(bool autoStart)
+        public async Task FetchAsync(bool autoStart)
         {
             if (!CanCreatePopup())
                 return;
@@ -814,12 +818,12 @@ namespace SourceGit.ViewModels
             }
 
             if (autoStart)
-                ShowAndStartPopup(new Fetch(this));
+                await ShowAndStartPopupAsync(new Fetch(this));
             else
                 ShowPopup(new Fetch(this));
         }
 
-        public void Pull(bool autoStart)
+        public async Task PullAsync(bool autoStart)
         {
             if (IsBare || !CanCreatePopup())
                 return;
@@ -838,12 +842,12 @@ namespace SourceGit.ViewModels
 
             var pull = new Pull(this, null);
             if (autoStart && pull.SelectedBranch != null)
-                ShowAndStartPopup(pull);
+                await ShowAndStartPopupAsync(pull);
             else
                 ShowPopup(pull);
         }
 
-        public void Push(bool autoStart)
+        public async Task PushAsync(bool autoStart)
         {
             if (!CanCreatePopup())
                 return;
@@ -861,7 +865,7 @@ namespace SourceGit.ViewModels
             }
 
             if (autoStart)
-                ShowAndStartPopup(new Push(this, null));
+                await ShowAndStartPopupAsync(new Push(this, null));
             else
                 ShowPopup(new Push(this, null));
         }
@@ -872,7 +876,7 @@ namespace SourceGit.ViewModels
                 ShowPopup(new Apply(this));
         }
 
-        public void ExecCustomAction(Models.CustomAction action, object scope)
+        public async Task ExecCustomActionAsync(Models.CustomAction action, object scope)
         {
             if (!CanCreatePopup())
                 return;
@@ -886,15 +890,15 @@ namespace SourceGit.ViewModels
             };
 
             if (action.Controls.Count == 0)
-                ShowAndStartPopup(popup);
+                await ShowAndStartPopupAsync(popup);
             else
                 ShowPopup(popup);
         }
 
-        public void Cleanup()
+        public async Task CleanupAsync()
         {
             if (CanCreatePopup())
-                ShowAndStartPopup(new Cleanup(this));
+                await ShowAndStartPopupAsync(new Cleanup(this));
         }
 
         public void ClearFilter()
@@ -1126,9 +1130,9 @@ namespace SourceGit.ViewModels
             RefreshHistoriesFilters(refresh);
         }
 
-        public void StashAll(bool autoStart)
+        public async Task StashAllAsync(bool autoStart)
         {
-            _workingCopy?.StashAll(autoStart);
+            await _workingCopy?.StashAllAsync(autoStart);
         }
 
         public async Task SkipMergeAsync()
@@ -1441,7 +1445,7 @@ namespace SourceGit.ViewModels
                 ShowPopup(new CreateBranch(this, _currentBranch));
         }
 
-        public void CheckoutBranch(Models.Branch branch)
+        public async Task CheckoutBranchAsync(Models.Branch branch)
         {
             if (branch.IsLocal)
             {
@@ -1464,7 +1468,7 @@ namespace SourceGit.ViewModels
                 if (_localChangesCount > 0 || _submodules.Count > 0)
                     ShowPopup(new Checkout(this, branch.Name));
                 else
-                    ShowAndStartPopup(new Checkout(this, branch.Name));
+                    await ShowAndStartPopupAsync(new Checkout(this, branch.Name));
             }
             else
             {
@@ -1477,7 +1481,7 @@ namespace SourceGit.ViewModels
                         if (b.TrackStatus.Behind.Count > 0)
                             ShowPopup(new CheckoutAndFastForward(this, b, branch));
                         else if (!b.IsCurrent)
-                            CheckoutBranch(b);
+                            await CheckoutBranchAsync(b);
 
                         return;
                     }
@@ -1491,7 +1495,7 @@ namespace SourceGit.ViewModels
         {
             var c = await new Commands.QuerySingleCommit(_fullpath, tag.SHA).GetResultAsync();
             if (c != null)
-                _histories?.CheckoutBranchByCommit(c);
+                await _histories?.CheckoutBranchByCommitAsync(c);
         }
 
         public async Task CompareBranchWithWorktree(Models.Branch branch)
@@ -1593,10 +1597,10 @@ namespace SourceGit.ViewModels
                 ShowPopup(new AddWorktree(this));
         }
 
-        public void PruneWorktrees()
+        public async Task PruneWorktreesAsync()
         {
             if (CanCreatePopup())
-                ShowAndStartPopup(new PruneWorktrees(this));
+                await ShowAndStartPopupAsync(new PruneWorktrees(this));
         }
 
         public void OpenWorktree(Models.Worktree worktree)

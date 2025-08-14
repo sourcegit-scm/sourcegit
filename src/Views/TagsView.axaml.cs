@@ -280,9 +280,9 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Icon = App.CreateMenuIcon("Icons.Action");
                         item.Header = label;
-                        item.Click += (_, e) =>
+                        item.Click += async (_, e) =>
                         {
-                            repo.ExecCustomAction(dup, tag);
+                            await repo.ExecCustomActionAsync(dup, tag);
                             e.Handled = true;
                         };
 

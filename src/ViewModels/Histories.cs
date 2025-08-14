@@ -193,7 +193,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool CheckoutBranchByDecorator(Models.Decorator decorator)
+        public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)
         {
             if (decorator == null)
                 return false;
@@ -208,7 +208,7 @@ namespace SourceGit.ViewModels
                 if (b == null)
                     return false;
 
-                _repo.CheckoutBranch(b);
+                await _repo.CheckoutBranchAsync(b);
                 return true;
             }
 
@@ -231,7 +231,7 @@ namespace SourceGit.ViewModels
                 }
                 else if (!lb.IsCurrent)
                 {
-                    _repo.CheckoutBranch(lb);
+                    await _repo.CheckoutBranchAsync(lb);
                 }
 
                 return true;
@@ -240,7 +240,7 @@ namespace SourceGit.ViewModels
             return false;
         }
 
-        public void CheckoutBranchByCommit(Models.Commit commit)
+        public async Task CheckoutBranchByCommitAsync(Models.Commit commit)
         {
             if (commit.IsCurrentHead)
                 return;
@@ -254,7 +254,7 @@ namespace SourceGit.ViewModels
                     if (b == null)
                         continue;
 
-                    _repo.CheckoutBranch(b);
+                    await _repo.CheckoutBranchAsync(b);
                     return;
                 }
 
