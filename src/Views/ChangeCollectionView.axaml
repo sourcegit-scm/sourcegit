@@ -65,8 +65,8 @@
                                   IsVisible="{Binding !IsFolder}"/>
 
               <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,0,0,0">
-                <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
-                <TextBlock Classes="primary" Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}}"/>
+                <TextBlock Classes="primary" Text="{Binding ConflictMarker, Mode=OneWay}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
+                <TextBlock Classes="primary" Text="{Binding DisplayName, Mode=OneWay}"/>
               </StackPanel>
             </Grid>
           </DataTemplate>

@@ -530,6 +530,7 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">编辑器制表符宽度</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EnableCompactFolders" xml:space="preserve">在变更列表树中启用紧凑文件夹模式</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">字体大小</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">默认</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">代码编辑器</x:String>

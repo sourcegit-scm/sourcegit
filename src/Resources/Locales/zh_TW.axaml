@@ -530,6 +530,7 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外觀設定</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">預設字型</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">編輯器 Tab 寬度</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EnableCompactFolders" xml:space="preserve">在變更樹中啟用精簡文件夾顯示模式</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">字型大小</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">預設</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">程式碼</x:String>
