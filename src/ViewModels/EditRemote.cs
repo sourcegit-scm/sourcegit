@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -45,12 +44,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _sshkey, value, true);
         }
 
-        public bool PruneTagsOnFetch
-        {
-            get;
-            set;
-        }
-
         public EditRemote(Repository repo, Models.Remote remote)
         {
             _repo = repo;
@@ -59,11 +52,8 @@ namespace SourceGit.ViewModels
             _url = remote.URL;
             _useSSH = Models.Remote.IsSSH(remote.URL);
 
-            var config = new Commands.Config(repo.FullPath);
             if (_useSSH)
-                _sshkey = config.Get($"remote.{remote.Name}.sshkey");
-
-            PruneTagsOnFetch = config.Get($"remote.{remote.Name}.pruneTags").Equals("true", StringComparison.OrdinalIgnoreCase);
+                _sshkey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)
@@ -131,9 +121,7 @@ namespace SourceGit.ViewModels
             if (pushURL != _url)
                 await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
 
-            var config = new Commands.Config(_repo.FullPath);
-            await config.SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-            await config.SetAsync($"remote.{_name}.pruneTags", PruneTagsOnFetch ? "true" : null);
+            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
             _repo.SetWatcherEnabled(true);
             return true;

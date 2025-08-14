@@ -44,12 +44,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _sshkey, value, true);
         }
 
-        public bool PruneTagsOnFetch
-        {
-            get;
-            set;
-        } = false;
-
         public AddRemote(Repository repo)
         {
             _repo = repo;
@@ -110,11 +104,6 @@ namespace SourceGit.ViewModels
                 await new Commands.Config(_repo.FullPath)
                     .Use(log)
                     .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-
-                if (PruneTagsOnFetch)
-                    await new Commands.Config(_repo.FullPath)
-                        .Use(log)
-                        .SetAsync($"remote.{_name}.pruneTags", "true");
 
                 await new Commands.Fetch(_repo.FullPath, _name, false, false)
                     .Use(log)
