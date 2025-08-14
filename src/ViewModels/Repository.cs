@@ -1715,8 +1715,7 @@ namespace SourceGit.ViewModels
 
         private Commands.IssueTracker CreateIssueTrackerCommand(bool shared)
         {
-            var storage = shared ? $"{_fullpath}/.issuetracker" : $"{_gitDir}/sourcegit.issuetracker";
-            return new Commands.IssueTracker(_fullpath, storage);
+            return new Commands.IssueTracker(_fullpath, shared ? $"{_fullpath}/.issuetracker" : null);
         }
 
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
