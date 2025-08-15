@@ -39,7 +39,7 @@ namespace SourceGit.Commands
         {
             try
             {
-                _onResponse?.Invoke("Waiting for pre-file analyzing to completed...\n\n");
+                _onResponse?.Invoke("Waiting for pre-file analysis to complete...\n\n");
 
                 var responseBuilder = new StringBuilder();
                 var summaryBuilder = new StringBuilder();
@@ -63,7 +63,7 @@ namespace SourceGit.Commands
                                 responseBuilder.Append(update);
                                 summaryBuilder.Append(update);
 
-                                _onResponse?.Invoke($"Waiting for pre-file analyzing to completed...\n\n{responseBuilder}");
+                                _onResponse?.Invoke($"Waiting for pre-file analysis to complete...\n\n{responseBuilder}");
                             });
                     }
 
@@ -78,7 +78,7 @@ namespace SourceGit.Commands
                 var subjectBuilder = new StringBuilder();
                 await _service.ChatAsync(
                     _service.GenerateSubjectPrompt,
-                    $"Here are the summaries changes:\n{summaryBuilder}",
+                    $"Here are the summarized changes:\n{summaryBuilder}",
                     _cancelToken,
                     update =>
                     {
