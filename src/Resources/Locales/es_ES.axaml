@@ -177,11 +177,9 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nombre de la Plantilla:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ACCIÓN PERSONALIZADA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumentos:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Parámetros incorporados: ${REPO} - ruta del repositorio; ${BRANCH} - rama seleccionada; ${SHA} - hash del commit seleccionado; ${TAG} - etiqueta seleccionada</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Archivo Ejecutable:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Controles de entrada:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Editar</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">Puedes usar $1, $2 ... en argumentos, para valores de los controles de entrada</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nombre:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Alcance:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Rama</x:String>

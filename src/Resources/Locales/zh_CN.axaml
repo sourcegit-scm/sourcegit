@@ -177,11 +177,18 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">模板名 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">内置变量：${REPO} 仓库路径、${REMOTE} 选中的远程仓库或选中分支所属的远程仓库、${BRANCH} 选中的分支、${SHA} 选中的提交哈希，${TAG} 选中的标签</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">内置变量：
+  
+  ${REPO} 仓库路径
+  ${REMOTE} 选中的远程仓库或选中分支所属的远程仓库
+  ${BRANCH} 选中的分支，对于远程分支不包含远程名
+  ${BRANCH_FRIENDLY_NAME} 选中的分支，对于远程分支包含远程名
+  ${SHA} 选中的提交哈希
+  ${TAG} 选中的标签
+  $1, $2 ... 输入控件中填写的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可执行文件路径 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">输入控件 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">编辑</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.InputControls.Tip" xml:space="preserve">请在命令行参数中使用 $1, $2 等占位符表示输入控件的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">作用目标 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">选中的分支</x:String>

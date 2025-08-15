@@ -182,7 +182,7 @@ namespace SourceGit.ViewModels
 
             return Target switch
             {
-                Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName).Replace("${REMOTE}", b.Remote),
+                Models.Branch b => org.Replace("${BRANCH_FRIENDLY_NAME}", b.FriendlyName).Replace("${BRANCH}", b.Name).Replace("${REMOTE}", b.Remote),
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
                 Models.Tag t => org.Replace("${TAG}", t.Name),
                 Models.Remote r => org.Replace("${REMOTE}", r.Name),
