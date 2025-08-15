@@ -74,6 +74,7 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Сбросить ${0}$ к ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Отслеживать ветку...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Сравнение веток</x:String>
+  <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Неверно</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">УДАЛЁННЫЙ</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">ОТСЛЕЖИВАНИЕ</x:String>
   <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL-АДРЕС</x:String>
@@ -185,6 +186,7 @@
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Диапазон:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Ветка</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Ревизия</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">Удалённый</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Репозиторий</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Метка</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Ждать для выполения выхода</x:String>
@@ -282,6 +284,9 @@
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Также удалите внешнюю ветку ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Удаление нескольких веток</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Вы пытаетесь удалить несколько веток одновременно. Обязательно перепроверьте, прежде чем предпринимать какие-либо действия!</x:String>
+  <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Удалить несколько меток</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.DeleteFromRemotes" xml:space="preserve">Удалить их с удалённого</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.Tip" xml:space="preserve">Вы пытаетесь удалить сразу несколько меток. Перепроверьте обязательно перед выполнением!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Удалить внешний репозиторий</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Путь:</x:String>
@@ -526,6 +531,7 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ВИД</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Шрифт по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Редактировать ширину вкладки</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EnableCompactFolders" xml:space="preserve">Включить компактные каталоги в дереве изменений</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Размер шрифта</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">По умолчанию</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Редактор</x:String>
@@ -615,6 +621,7 @@
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">Адрес:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Адрес внешнего репозитория git</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Копировать адрес</x:String>
+  <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Пользовательские действия</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Удалить...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Редактировать...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Извлечь</x:String>
@@ -791,6 +798,7 @@
   <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Копировать имя метки</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Удалить выбранные метки ({0})...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Обновление подмодулей</x:String>
