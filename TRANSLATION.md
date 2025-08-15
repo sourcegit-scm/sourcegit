@@ -6,12 +6,13 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.15%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.03%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.BranchTree.InvalidUpstream
+- Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.Scope.Remote
 - Text.DeleteMultiTags
 - Text.DeleteMultiTags.DeleteFromRemotes
@@ -30,9 +31,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.88%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-80.46%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Configure.CustomAction.Arguments.Tip
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-80.56%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -83,7 +91,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.Git.PreferredMergeMode
@@ -209,7 +216,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-85.66%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-85.76%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -248,7 +255,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
@@ -341,7 +347,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-80.46%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-80.56%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -393,7 +399,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.Git.PreferredMergeMode
@@ -518,7 +523,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-73.64%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-73.73%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -582,7 +587,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Branch
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
@@ -754,9 +758,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.88%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-80.58%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Configure.CustomAction.Arguments.Tip
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-80.67%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -808,7 +819,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.Git.PreferredMergeMode
@@ -932,7 +942,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-81.73%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-81.83%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -983,7 +993,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
 - Text.Configure.CustomAction.InputControls.Edit
-- Text.Configure.CustomAction.InputControls.Tip
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
