@@ -452,6 +452,7 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Format de date</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Historique de commits</x:String>
+  <x:String x:Key="Text.Preferences.General.SaveDiscardChanges" xml:space="preserve">Enregistre les rejets dans la Corbeille</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Afficher l'heure de l'auteur au lieu de l'heure de validation dans le graphique</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Afficher les enfants dans les détails du commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Afficher les tags dans le graphique des commits</x:String>

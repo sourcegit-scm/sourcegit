@@ -158,6 +158,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _check4UpdatesOnStartup, value);
         }
 
+        public bool DiscardChangedOnBin
+        {
+            get => _discardChangedOnBin;
+            set => SetProperty(ref _discardChangedOnBin, value);
+        }
+
         public bool ShowAuthorTimeInGraph
         {
             get => _showAuthorTimeInGraph;
@@ -712,6 +718,7 @@ namespace SourceGit.ViewModels
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;
         private string _ignoreUpdateTag = string.Empty;
+        private bool _discardChangedOnBin = false;
 
         private bool _showTagsInGraph = true;
         private bool _useTwoColumnsLayoutInHistories = false;

@@ -20,6 +20,7 @@ namespace SourceGit.Native
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
+            bool MoveFileToTrash(string file);
 
             void OpenTerminal(string workdir);
             void OpenInFileManager(string path, bool select);
@@ -205,6 +206,11 @@ namespace SourceGit.Native
         public static void OpenBrowser(string url)
         {
             _backend.OpenBrowser(url);
+        }
+
+        public static bool MoveFileToTrash(string file)
+        {
+            return _backend.MoveFileToTrash(file);
         }
 
         public static void OpenTerminal(string workdir)
