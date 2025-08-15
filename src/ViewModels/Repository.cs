@@ -1976,9 +1976,7 @@ namespace SourceGit.ViewModels
                 if (File.Exists(lockFile))
                     return;
 
-                var now = DateTime.Now;
-                var desire = _lastFetchTime.AddMinutes(_settings.AutoFetchInterval);
-                if (desire > now)
+                if (!Models.UserActivityTracker.Instance.ShouldPerformAutoFetch(_lastFetchTime, _settings.AutoFetchInterval))
                     return;
 
                 IsAutoFetching = true;
