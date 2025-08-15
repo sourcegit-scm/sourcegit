@@ -23,6 +23,8 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新產生</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">套用為提交訊息</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">隱藏 SourceGit</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">顯示所有</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">修補檔:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">選擇修補檔</x:String>
