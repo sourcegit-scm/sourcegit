@@ -768,21 +768,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.08%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.BranchTree.InvalidUpstream
-- Text.Configure.CustomAction.Scope.Remote
-- Text.DeleteMultiTags
-- Text.DeleteMultiTags.DeleteFromRemotes
-- Text.DeleteMultiTags.Tip
-- Text.Preferences.Appearance.EnableCompactFolders
-- Text.RemoteCM.CustomAction
-- Text.TagCM.DeleteMultiple
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-80.58%25-yellow)
 
