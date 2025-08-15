@@ -62,24 +62,7 @@ namespace SourceGit.Commands
                     };
 
                     var type = match.Groups[3].Value;
-                    switch (type)
-                    {
-                        case "A":
-                            change.Set(Models.ChangeState.Added);
-                            break;
-                        case "C":
-                            change.Set(Models.ChangeState.Copied);
-                            break;
-                        case "D":
-                            change.Set(Models.ChangeState.Deleted);
-                            break;
-                        case "M":
-                            change.Set(Models.ChangeState.Modified);
-                            break;
-                        case "T":
-                            change.Set(Models.ChangeState.TypeChanged);
-                            break;
-                    }
+                    change.Set(Models.Change.ChangeStateFromCode(type[0]));
                     changes.Add(change);
                 }
             }
