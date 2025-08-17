@@ -23,6 +23,8 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERAR</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR COMO MENSAJE DE COMMIT</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Ocultar SourceGit</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todo</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Parche</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo del Parche:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
@@ -177,6 +179,15 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nombre de la Plantilla:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ACCIÓN PERSONALIZADA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumentos:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Parámetros incorporados: 
+  
+  ${REPO} Ruta del repositorio
+  ${REMOTE} Remoto seleccionado o Remoto de la rama seleccionada
+  ${BRANCH} Rama seleccionada, sin la parte ${REMOTE} para ramas remotas
+  ${BRANCH_FRIENDLY_NAME} Nombre amigable de la rama seleccionada, contiene la parte ${REMOTE} para ramas remotas
+  ${SHA} Hash del commit seleccionado
+  ${TAG} Etiqueta seleccionada
+  $1, $2 ... Valores de control de entrada</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Archivo Ejecutable:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Controles de entrada:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Editar</x:String>
