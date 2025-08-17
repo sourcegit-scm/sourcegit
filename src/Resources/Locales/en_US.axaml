@@ -180,7 +180,7 @@
   ${REPO} Repository's path
   ${REMOTE} Selected remote or selected branch's remote
   ${BRANCH} Selected branch, without ${REMOTE} part for remote branches
-  ${BRANCH_FRIENDLY_NAME} Firendly name of selected branch, contains ${REMOTE} part for remote branches
+  ${BRANCH_FRIENDLY_NAME} Friendly name of selected branch, contains ${REMOTE} part for remote branches
   ${SHA} Selected commit's hash
   ${TAG} Selected tag
   $1, $2 ... Input control values</x:String>
@@ -232,7 +232,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Is Folder:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Label:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Options:</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Use '|' as delimitter for options</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Use '|' as delimiter for options</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Type:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
