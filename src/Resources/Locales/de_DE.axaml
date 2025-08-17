@@ -104,7 +104,7 @@
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Quelle an Commit-Nachricht anhängen</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Alle Änderungen committen</x:String>
-  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Hautplinie:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Hauptlinie:</x:String>
   <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Normalerweise ist es nicht möglich einen Merge zu cherry-picken, da unklar ist welche Seite des Merges die Hauptlinie ist. Diese Option ermöglicht es die Änderungen relativ zum ausgewählten Vorgänger zu wiederholen.</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">Stashes löschen</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Du versuchst alle Stashes zu löschen. Möchtest du wirklich fortfahren?</x:String>
@@ -129,7 +129,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Betreff</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interakives Rebase</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interaktives Rebase</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Entfernen...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Bearbeiten...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Fixup in den Vorgänger...</x:String>
@@ -210,7 +210,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Verwende bitte $1, $2 um auf Regex-Gruppenwerte zuzugreifen.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Bevorzugter Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Der ausgewählte 'Bevorzugte Service' wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Servies verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Der ausgewählte 'Bevorzugte Service' wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Services verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP Proxy für dieses Repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>
@@ -403,7 +403,7 @@
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Führt `git lfs prune` aus um alte LFS Dateien vom lokalen Speicher zu löschen</x:String>
   <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</x:String>
-  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Führt `git lfs pull` aus um alle Git LFS Dasteien für aktuellen Ref &amp; Checkout herunterzuladen</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Führt `git lfs pull` aus um alle Git LFS-Dateien für aktuellen Ref &amp; Checkout herunterzuladen</x:String>
   <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">LFS Objekte pullen</x:String>
   <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Push</x:String>
   <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Pushe große Dateien in der Warteschlange zum Git LFS Endpunkt</x:String>
@@ -507,7 +507,7 @@
   <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">Vor {0} Stunden</x:String>
   <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Gerade eben</x:String>
   <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Letzter Monat</x:String>
-  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Leztes Jahr</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Letztes Jahr</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Vor {0} Minuten</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Vor {0} Monaten</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Vor {0} Jahren</x:String>
@@ -739,7 +739,7 @@
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Optional. Informationen zu diesem Stash</x:String>
   <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Modus:</x:String>
   <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Nur gestagte Änderungen</x:String>
-  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Gestagte und unstagte Änderungen der ausgewähleten Datei(en) werden gestasht!!!</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Gestagte und ungestagte Änderungen der ausgewählten Datei(en) werden gestasht!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Lokale Änderungen stashen</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Anwenden</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Kopiere Nachricht</x:String>
@@ -811,7 +811,7 @@
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Änderungen</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignoriere alle *{0} Dateien</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignoriere *{0} Datein im selben Ordner</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignoriere *{0} Dateien im selben Ordner</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignoriere nicht-verfolgte Dateien in diesem Ordner</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignoriere nur diese Datei</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
