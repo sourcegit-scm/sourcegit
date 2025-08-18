@@ -784,6 +784,7 @@ namespace SourceGit.ViewModels
                 var issuetrackers = new List<Models.IssueTracker>();
                 await CreateIssueTrackerCommand(true).ReadAllAsync(issuetrackers, true).ConfigureAwait(false);
                 await CreateIssueTrackerCommand(false).ReadAllAsync(issuetrackers, false).ConfigureAwait(false);
+                issuetrackers.AddRange(Models.IssueTrackerMigrator.Migrate(_gitDir));
                 Dispatcher.UIThread.Post(() =>
                 {
                     IssueTrackers.Clear();
