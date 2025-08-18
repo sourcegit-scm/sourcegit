@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -24,7 +22,58 @@ namespace SourceGit.ViewModels
                 {
                     Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
                     OnPropertyChanged();
-                    LoadDiffContent();
+
+                    if (_isTextDiff)
+                        LoadContent();
+                }
+            }
+        }
+
+        public bool ShowEntireFile
+        {
+            get => Preferences.Instance.UseFullTextDiff;
+            set
+            {
+                if (value != Preferences.Instance.UseFullTextDiff)
+                {
+                    Preferences.Instance.UseFullTextDiff = value;
+                    OnPropertyChanged();
+
+                    if (Content is TextDiffContext ctx)
+                    {
+                        ctx.Data.File = string.Empty; // Just to ignore both previous `ScrollOffset` and `BlockNavigation`
+                        LoadContent();
+                    }
+                }
+            }
+        }
+
+        public bool UseBlockNavigation
+        {
+            get => Preferences.Instance.UseBlockNavigationInDiffView;
+            set
+            {
+                if (value != Preferences.Instance.UseBlockNavigationInDiffView)
+                {
+                    Preferences.Instance.UseBlockNavigationInDiffView = value;
+                    OnPropertyChanged();
+                    (Content as TextDiffContext)?.ResetBlockNavigation(value);
+                }
+            }
+        }
+
+        public bool UseSideBySide
+        {
+            get => Preferences.Instance.UseSideBySideDiff;
+            set
+            {
+                if (value != Preferences.Instance.UseSideBySideDiff)
+                {
+                    Preferences.Instance.UseSideBySideDiff = value;
+                    OnPropertyChanged();
+
+                    if (Content is TextDiffContext ctx && ctx.IsSideBySide() != value)
+                        Content = ctx.SwitchMode();
                 }
             }
         }
@@ -72,25 +121,19 @@ namespace SourceGit.ViewModels
             else
                 Title = $"{_option.OrgPath} → {_option.Path}";
 
-            LoadDiffContent();
-        }
-
-        public void ToggleFullTextDiff()
-        {
-            Preferences.Instance.UseFullTextDiff = !Preferences.Instance.UseFullTextDiff;
-            LoadDiffContent();
+            LoadContent();
         }
 
         public void IncrUnified()
         {
             UnifiedLines = _unifiedLines + 1;
-            LoadDiffContent();
+            LoadContent();
         }
 
         public void DecrUnified()
         {
             UnifiedLines = Math.Max(4, _unifiedLines - 1);
-            LoadDiffContent();
+            LoadContent();
         }
 
         public void OpenExternalMergeTool()
@@ -98,7 +141,29 @@ namespace SourceGit.ViewModels
             new Commands.DiffTool(_repo, _option).Open();
         }
 
-        private void LoadDiffContent()
+        public void CheckSettings()
+        {
+            if (Content is TextDiffContext ctx)
+            {
+                if ((ShowEntireFile && _info.UnifiedLines != _entireFileLine) ||
+                    (!ShowEntireFile && _info.UnifiedLines == _entireFileLine) ||
+                    (IgnoreWhitespace != _info.IgnoreWhitespace))
+                {
+                    LoadContent();
+                    return;
+                }
+
+                if (ctx.IsSideBySide() != UseSideBySide)
+                {
+                    ctx = ctx.SwitchMode();
+                    Content = ctx;
+                }
+
+                ctx.ResetBlockNavigation(UseBlockNavigation);
+            }
+        }
+
+        private void LoadContent()
         {
             if (_option.Path.EndsWith('/'))
             {
@@ -109,7 +174,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
+                var numLines = Preferences.Instance.UseFullTextDiff ? _entireFileLine : _unifiedLines;
                 var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
 
                 var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace)
@@ -228,12 +293,23 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (_content is Models.TextDiff old && rs is Models.TextDiff cur && old.File == cur.File)
-                        cur.ScrollOffset = old.ScrollOffset;
-
                     FileModeChange = latest.FileModeChange;
-                    Content = rs;
-                    IsTextDiff = rs is Models.TextDiff;
+
+                    if (rs is Models.TextDiff cur)
+                    {
+                        IsTextDiff = true;
+
+                        var hasBlockNavigation = Preferences.Instance.UseBlockNavigationInDiffView;
+                        if (Preferences.Instance.UseSideBySideDiff)
+                            Content = new TwoSideTextDiff(cur, hasBlockNavigation, _content as TwoSideTextDiff);
+                        else
+                            Content = new CombinedTextDiff(cur, hasBlockNavigation, _content as CombinedTextDiff);
+                    }
+                    else
+                    {
+                        IsTextDiff = false;
+                        Content = rs;
+                    }
                 });
             });
         }
@@ -279,6 +355,7 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private readonly int _entireFileLine = 999999999;
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
         private string _fileModeChange = string.Empty;

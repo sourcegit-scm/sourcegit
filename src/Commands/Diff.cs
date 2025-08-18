@@ -20,11 +20,7 @@ namespace SourceGit.Commands
 
         public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
         {
-            _result.TextDiff = new Models.TextDiff()
-            {
-                Repo = repo,
-                Option = opt,
-            };
+            _result.TextDiff = new Models.TextDiff() { Option = opt };
 
             WorkingDirectory = repo;
             Context = repo;

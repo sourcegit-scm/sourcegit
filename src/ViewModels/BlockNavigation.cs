@@ -48,16 +48,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public BlockNavigation(object context)
+        public BlockNavigation(List<Models.TextDiffLine> lines)
         {
             Blocks.Clear();
             Current = -1;
-
-            var lines = new List<Models.TextDiffLine>();
-            if (context is Models.TextDiff combined)
-                lines = combined.Lines;
-            else if (context is TwoSideTextDiff twoSide)
-                lines = twoSide.Old;
 
             if (lines.Count == 0)
                 return;
@@ -96,7 +90,10 @@ namespace SourceGit.ViewModels
 
         public Block GetCurrentBlock()
         {
-            return (_current >= 0 && _current < Blocks.Count) ? Blocks[_current] : null;
+            if (_current >= 0 && _current < Blocks.Count)
+                return Blocks[_current];
+
+            return Blocks.Count > 0 ? Blocks[0] : null;
         }
 
         public Block GotoFirst()
@@ -105,6 +102,7 @@ namespace SourceGit.ViewModels
                 return null;
 
             Current = 0;
+            OnPropertyChanged(nameof(Indicator));
             return Blocks[_current];
         }
 
@@ -117,6 +115,8 @@ namespace SourceGit.ViewModels
                 Current = 0;
             else if (_current > 0)
                 Current = _current - 1;
+
+            OnPropertyChanged(nameof(Indicator));
             return Blocks[_current];
         }
 
@@ -127,6 +127,8 @@ namespace SourceGit.ViewModels
 
             if (_current < Blocks.Count - 1)
                 Current = _current + 1;
+
+            OnPropertyChanged(nameof(Indicator));
             return Blocks[_current];
         }
 
@@ -136,7 +138,33 @@ namespace SourceGit.ViewModels
                 return null;
 
             Current = Blocks.Count - 1;
+            OnPropertyChanged(nameof(Indicator));
             return Blocks[_current];
+        }
+
+        public void AutoUpdate(int start, int end)
+        {
+            if (_current >= 0 && _current < Blocks.Count)
+            {
+                var block = Blocks[_current];
+                if ((block.Start >= start && block.Start <= end) ||
+                    (block.End >= start && block.End <= end) ||
+                    (block.Start <= start && block.End >= end))
+                    return;
+            }
+
+            for (var i = 0; i < Blocks.Count; i++)
+            {
+                var block = Blocks[i];
+                if ((block.Start >= start && block.Start <= end) ||
+                    (block.End >= start && block.End <= end) ||
+                    (block.Start <= start && block.End >= end))
+                {
+                    Current = i;
+                    OnPropertyChanged(nameof(Indicator));
+                    return;
+                }
+            }
         }
 
         private int _current = -1;

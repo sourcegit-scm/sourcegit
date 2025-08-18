@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
@@ -12,50 +11,35 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (DataContext is ViewModels.DiffContext vm)
+                vm.CheckSettings();
+        }
+
         private void OnGotoFirstChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<TextDiffView>()?.GotoFirstChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoFirstChange();
             e.Handled = true;
         }
 
         private void OnGotoPrevChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<TextDiffView>()?.GotoPrevChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoPrevChange();
             e.Handled = true;
         }
 
         private void OnGotoNextChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<TextDiffView>()?.GotoNextChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoNextChange();
             e.Handled = true;
         }
 
         private void OnGotoLastChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<TextDiffView>()?.GotoLastChange();
-            e.Handled = true;
-        }
-
-        private void OnBlockNavigationChanged(object sender, RoutedEventArgs e)
-        {
-            if (sender is TextDiffView textDiff)
-                BlockNavigationIndicator.Text = textDiff.BlockNavigation?.Indicator ?? string.Empty;
-        }
-
-        private void OnUseFullTextDiffClicked(object sender, RoutedEventArgs e)
-        {
-            var textDiffView = this.FindDescendantOfType<TextDiffView>();
-
-            var presenter = textDiffView?.FindDescendantOfType<ThemedTextDiffPresenter>();
-            if (presenter == null)
-                return;
-
-            if (presenter.DataContext is Models.TextDiff combined)
-                combined.ScrollOffset = Vector.Zero;
-            else if (presenter.DataContext is ViewModels.TwoSideTextDiff twoSides)
-                twoSides.File = string.Empty; // Just to reset `SyncScrollOffset` without affect UI refresh.
-
-            (DataContext as ViewModels.DiffContext)?.ToggleFullTextDiff();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoLastChange();
             e.Handled = true;
         }
     }
