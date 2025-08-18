@@ -50,6 +50,13 @@
               <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
             </StackPanel>
           </DataTemplate>
+
+          <DataTemplate x:DataType="m:Remote">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Remote}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
     </Grid>

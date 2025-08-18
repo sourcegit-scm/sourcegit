@@ -21,7 +21,6 @@ namespace SourceGit.Commands
                 Args += "--force ";
 
             Args += remote;
-
         }
 
         public Fetch(string repo, Models.Branch local, Models.Branch remote)

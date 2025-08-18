@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.DeleteMultipleTags"
+             x:DataType="vm:DeleteMultipleTags">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.DeleteMultiTags}" />
+
+    <Border Margin="4,16,0,0"
+            Background="{DynamicResource Brush.Contents}"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource Brush.Border1}"
+            CornerRadius="4"
+            Padding="4">
+      <ListBox MaxHeight="200"
+               BorderThickness="0"
+               Background="Transparent"
+               ItemsSource="{Binding Tags}"
+               SelectionMode="Single"
+               ScrollViewer.HorizontalScrollBarVisibility="Auto"
+               ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="CornerRadius" Value="4"/>
+          </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Tag">
+            <Grid Height="26" ColumnDefinitions="22,*">
+              <Path Grid.Column="0" Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Tag}" />
+              <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="primary" />
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+
+    <CheckBox Margin="4,6,0,0"
+              Height="32"
+              Content="{DynamicResource Text.DeleteMultiTags.DeleteFromRemotes}"
+              IsChecked="{Binding DeleteFromRemote, Mode=TwoWay}"/>
+
+    <TextBlock Margin="4,6,0,0"
+               Text="{DynamicResource Text.DeleteMultiTags.Tip}"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Brush.FG2}"
+               FontStyle="Italic" />
+  </StackPanel>
+</UserControl>

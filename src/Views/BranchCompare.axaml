@@ -125,6 +125,7 @@
           <!-- Changes -->
           <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
             <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
+                                    EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                     Changes="{Binding VisibleChanges}"
                                     SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                     ContextRequested="OnChangeContextRequested"/>

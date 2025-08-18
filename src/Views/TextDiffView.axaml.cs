@@ -1495,9 +1495,15 @@ namespace SourceGit.Views
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (IsPointerOver && DataContext is ViewModels.TwoSideTextDiff diff)
+            if (_scrollViewer == null || DataContext is not ViewModels.TwoSideTextDiff diff)
+                return;
+
+            if (diff.SyncScrollOffset.NearlyEquals(_scrollViewer.Offset))
+                return;
+
+            if (IsPointerOver || !e.OffsetDelta.NearlyEquals(Vector.Zero))
             {
-                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
+                diff.SyncScrollOffset = _scrollViewer.Offset;
 
                 if (!TextArea.TextView.IsPointerOver)
                     TrySetChunk(null);
@@ -1507,7 +1513,7 @@ namespace SourceGit.Views
         private void DirectSyncScrollOffset()
         {
             if (_scrollViewer is not null && DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.SyncScrollOffset = _scrollViewer?.Offset ?? Vector.Zero;
+                diff.SyncScrollOffset = _scrollViewer.Offset;
         }
 
         private ScrollViewer _scrollViewer = null;

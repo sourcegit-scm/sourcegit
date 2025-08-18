@@ -47,7 +47,7 @@ namespace SourceGit.ViewModels
                 if (refs.Count == 0)
                 {
                     var msg = App.Text("Checkout.WarnLostCommits");
-                    var shouldContinue = await App.AskConfirmAsync(msg, null);
+                    var shouldContinue = await App.AskConfirmAsync(msg);
                     if (!shouldContinue)
                     {
                         _repo.SetWatcherEnabled(true);

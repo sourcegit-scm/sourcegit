@@ -129,6 +129,7 @@
                                 SelectionMode="Multiple"
                                 Background="{DynamicResource Brush.Contents}"
                                 ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode}"
+                                EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleUnstaged}"
                                 SelectedChanges="{Binding SelectedUnstaged, Mode=TwoWay}"
                                 ContextRequested="OnUnstagedContextRequested"
@@ -183,6 +184,7 @@
                                 SelectionMode="Multiple"
                                 Background="{DynamicResource Brush.Contents}"
                                 ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode}"
+                                EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleStaged}"
                                 SelectedChanges="{Binding SelectedStaged, Mode=TwoWay}"
                                 ContextRequested="OnStagedContextRequested"
@@ -295,7 +297,7 @@
           <SplitButton.Flyout>
             <MenuFlyout>
               <MenuItem Header="{DynamicResource Text.WorkingCopy.CommitToEdit}"
-                        Command="{Binding Commit}"
+                        Click="OnCommit"
                         IsEnabled="{Binding CommitMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}"/>
             </MenuFlyout>
           </SplitButton.Flyout>
@@ -307,7 +309,7 @@
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
-                Command="{Binding Commit}"
+                Click="OnCommit"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
                 ToolTip.Placement="Top"
@@ -337,7 +339,7 @@
         <Button Grid.Column="5"
                 Width="0" Height="0"
                 Background="Transparent"
-                Command="{Binding CommitWithAutoStage}"
+                Click="OnCommitWithAutoStage"
                 HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}">
           <Button.IsEnabled>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -353,7 +355,7 @@
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
-                Command="{Binding CommitWithPush}"
+                Click="OnCommitWithPush"
                 HotKey="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+Alt+Enter}"
                 ToolTip.Tip="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+⌥+Enter}"
                 ToolTip.Placement="Top"

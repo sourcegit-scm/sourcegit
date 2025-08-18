@@ -58,6 +58,10 @@
 
                   <TextBlock Margin="6,0,0,0"
                              Text="{Binding Upstream, Mode=OneWay, Converter={x:Static c:StringConverters.ToFriendlyUpstream}}"/>
+
+                  <Border Background="OrangeRed" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding IsUpstreamGone}">
+                    <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Classes="primary" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
+                  </Border>
                 </StackPanel>
               </StackPanel>
             </DataTemplate>
@@ -115,7 +119,6 @@
                       Width="12" Height="12"
                       Margin="8,0"
                       Background="Transparent"
-                      ToolTip.Tip="{DynamicResource Text.BranchUpstreamInvalid}"
                       IsVisible="{Binding ShowUpstreamGoneTip}">
                 <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
               </Border>

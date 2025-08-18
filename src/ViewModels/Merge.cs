@@ -79,7 +79,7 @@ namespace SourceGit.ViewModels
 
         private Models.MergeMode AutoSelectMergeMode()
         {
-            var config = new Commands.Config(_repo.FullPath).GetAsync($"branch.{Into}.mergeoptions").Result;
+            var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
             var mode = config switch
             {
                 "--ff-only" => Models.MergeMode.FastForward,

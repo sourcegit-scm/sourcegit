@@ -74,89 +74,83 @@ namespace SourceGit.ViewModels
         private void RefreshViewContent()
         {
             if (_isDiffMode)
-                SetViewContentAsDiff();
-            else
-                SetViewContentAsRevisionFile();
-        }
-
-        private void SetViewContentAsRevisionFile()
-        {
-            var objs = new Commands.QueryRevisionObjects(_repo.FullPath, _revision.SHA, _file).GetResultAsync().Result;
-            if (objs.Count == 0)
             {
-                ViewContent = new FileHistoriesRevisionFile(_file);
+                SetViewContentAsDiff();
                 return;
             }
 
-            var obj = objs[0];
-            switch (obj.Type)
+            Task.Run(async () =>
             {
-                case Models.ObjectType.Blob:
-                    Task.Run(async () =>
+                var objs = await new Commands.QueryRevisionObjects(_repo.FullPath, _revision.SHA, _file)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                if (objs.Count == 0)
+                {
+                    Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file));
+                    return;
+                }
+
+                var revisionContent = await GetRevisionFileContentAsync(objs[0]).ConfigureAwait(false);
+                Dispatcher.UIThread.Post(() => ViewContent = revisionContent);
+            });
+        }
+
+        private async Task<object> GetRevisionFileContentAsync(Models.Object obj)
+        {
+            if (obj.Type == Models.ObjectType.Blob)
+            {
+                var isBinary = await new Commands.IsBinary(_repo.FullPath, _revision.SHA, _file).GetResultAsync().ConfigureAwait(false);
+                if (isBinary)
+                {
+                    var imgDecoder = ImageSource.GetDecoder(_file);
+                    if (imgDecoder != Models.ImageDecoder.None)
                     {
-                        var isBinary = await new Commands.IsBinary(_repo.FullPath, _revision.SHA, _file).GetResultAsync().ConfigureAwait(false);
-                        if (isBinary)
-                        {
-                            var imgDecoder = ImageSource.GetDecoder(_file);
-                            if (imgDecoder != Models.ImageDecoder.None)
-                            {
-                                var source = await ImageSource.FromRevisionAsync(_repo.FullPath, _revision.SHA, _file, imgDecoder).ConfigureAwait(false);
-                                var image = new Models.RevisionImageFile(_file, source.Bitmap, source.Size);
-                                Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file, image, true));
-                            }
-                            else
-                            {
-                                var size = await new Commands.QueryFileSize(_repo.FullPath, _file, _revision.SHA).GetResultAsync().ConfigureAwait(false);
-                                var binaryFile = new Models.RevisionBinaryFile() { Size = size };
-                                Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file, binaryFile, true));
-                            }
+                        var source = await ImageSource.FromRevisionAsync(_repo.FullPath, _revision.SHA, _file, imgDecoder).ConfigureAwait(false);
+                        var image = new Models.RevisionImageFile(_file, source.Bitmap, source.Size);
+                        return new FileHistoriesRevisionFile(_file, image, true);
+                    }
 
-                            return;
-                        }
+                    var size = await new Commands.QueryFileSize(_repo.FullPath, _file, _revision.SHA).GetResultAsync().ConfigureAwait(false);
+                    var binaryFile = new Models.RevisionBinaryFile() { Size = size };
+                    return new FileHistoriesRevisionFile(_file, binaryFile, true);
+                }
 
-                        var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _revision.SHA, _file).ConfigureAwait(false);
-                        var content = await new StreamReader(contentStream).ReadToEndAsync();
-                        var lfs = Models.LFSObject.Parse(content);
-                        if (lfs != null)
-                        {
-                            var imgDecoder = ImageSource.GetDecoder(_file);
-                            if (imgDecoder != Models.ImageDecoder.None)
-                            {
-                                var combined = new RevisionLFSImage(_repo.FullPath, _file, lfs, imgDecoder);
-                                Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file, combined, true));
-                            }
-                            else
-                            {
-                                var rlfs = new Models.RevisionLFSObject() { Object = lfs };
-                                Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file, rlfs, true));
-                            }
-                        }
-                        else
-                        {
-                            var txt = new Models.RevisionTextFile() { FileName = obj.Path, Content = content };
-                            Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file, txt, true));
-                        }
-                    });
-                    break;
-                case Models.ObjectType.Commit:
-                    Task.Run(async () =>
+                var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _revision.SHA, _file).ConfigureAwait(false);
+                var content = await new StreamReader(contentStream).ReadToEndAsync();
+                var lfs = Models.LFSObject.Parse(content);
+                if (lfs != null)
+                {
+                    var imgDecoder = ImageSource.GetDecoder(_file);
+                    if (imgDecoder != Models.ImageDecoder.None)
                     {
-                        var submoduleRoot = Path.Combine(_repo.FullPath, _file);
-                        var commit = await new Commands.QuerySingleCommit(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false);
-                        var message = commit != null ? await new Commands.QueryCommitFullMessage(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false) : null;
-                        var module = new Models.RevisionSubmodule()
-                        {
-                            Commit = commit ?? new Models.Commit() { SHA = obj.SHA },
-                            FullMessage = new Models.CommitFullMessage { Message = message }
-                        };
+                        var combined = new RevisionLFSImage(_repo.FullPath, _file, lfs, imgDecoder);
+                        return new FileHistoriesRevisionFile(_file, combined, true);
+                    }
 
-                        Dispatcher.UIThread.Post(() => ViewContent = new FileHistoriesRevisionFile(_file, module));
-                    });
-                    break;
-                default:
-                    ViewContent = new FileHistoriesRevisionFile(_file);
-                    break;
+                    var rlfs = new Models.RevisionLFSObject() { Object = lfs };
+                    return new FileHistoriesRevisionFile(_file, rlfs, true);
+                }
+
+                var txt = new Models.RevisionTextFile() { FileName = obj.Path, Content = content };
+                return new FileHistoriesRevisionFile(_file, txt, true);
             }
+
+            if (obj.Type == Models.ObjectType.Commit)
+            {
+                var submoduleRoot = Path.Combine(_repo.FullPath, _file);
+                var commit = await new Commands.QuerySingleCommit(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false);
+                var message = commit != null ? await new Commands.QueryCommitFullMessage(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false) : null;
+                var module = new Models.RevisionSubmodule()
+                {
+                    Commit = commit ?? new Models.Commit() { SHA = obj.SHA },
+                    FullMessage = new Models.CommitFullMessage { Message = message }
+                };
+
+                return new FileHistoriesRevisionFile(_file, module);
+            }
+
+            return new FileHistoriesRevisionFile(_file);
         }
 
         private void SetViewContentAsDiff()
@@ -326,7 +320,7 @@ namespace SourceGit.ViewModels
             if (_fullCommitMessages.TryGetValue(sha, out var msg))
                 return msg;
 
-            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResultAsync().Result;
+            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResult();
             _fullCommitMessages[sha] = msg;
             return msg;
         }

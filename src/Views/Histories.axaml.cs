@@ -298,7 +298,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
+        private async void OnCommitListDoubleTapped(object sender, TappedEventArgs e)
         {
             e.Handled = true;
 
@@ -310,12 +310,13 @@ namespace SourceGit.Views
                 if (e.Source is CommitRefsPresenter crp)
                 {
                     var decorator = crp.DecoratorAt(e.GetPosition(crp));
-                    if (histories.CheckoutBranchByDecorator(decorator))
+                    var succ = await histories.CheckoutBranchByDecoratorAsync(decorator);
+                    if (succ)
                         return;
                 }
 
                 if (e.Source is Control { DataContext: Models.Commit c })
-                    histories.CheckoutBranchByCommit(c);
+                    await histories.CheckoutBranchByCommitAsync(c);
             }
         }
 
@@ -811,9 +812,9 @@ namespace SourceGit.Views
                     var item = new MenuItem();
                     item.Icon = App.CreateMenuIcon("Icons.Action");
                     item.Header = label;
-                    item.Click += (_, e) =>
+                    item.Click += async (_, e) =>
                     {
-                        repo.ExecCustomAction(dup, commit);
+                        await repo.ExecCustomActionAsync(dup, commit);
                         e.Handled = true;
                     };
 
@@ -913,14 +914,14 @@ namespace SourceGit.Views
                 fastForward.Header = App.Text("BranchCM.FastForward", upstream);
                 fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = current.TrackStatus.Ahead.Count == 0 && current.TrackStatus.Behind.Count > 0;
-                fastForward.Click += (_, e) =>
+                fastForward.Click += async (_, e) =>
                 {
                     var b = repo.Branches.Find(x => x.FriendlyName == upstream);
                     if (b == null)
                         return;
 
                     if (repo.CanCreatePopup())
-                        repo.ShowAndStartPopup(new ViewModels.Merge(repo, b, current.Name, true));
+                        await repo.ShowAndStartPopupAsync(new ViewModels.Merge(repo, b, current.Name, true));
 
                     e.Handled = true;
                 };
@@ -1011,9 +1012,9 @@ namespace SourceGit.Views
                 var checkout = new MenuItem();
                 checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
                 checkout.Icon = App.CreateMenuIcon("Icons.Check");
-                checkout.Click += (_, e) =>
+                checkout.Click += async (_, e) =>
                 {
-                    repo.CheckoutBranch(branch);
+                    await repo.CheckoutBranchAsync(branch);
                     e.Handled = true;
                 };
                 submenu.Items.Add(checkout);
@@ -1103,9 +1104,9 @@ namespace SourceGit.Views
             var checkout = new MenuItem();
             checkout.Header = App.Text("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
-            checkout.Click += (_, e) =>
+            checkout.Click += async (_, e) =>
             {
-                repo.CheckoutBranch(branch);
+                await repo.CheckoutBranchAsync(branch);
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);

@@ -20,6 +20,26 @@ namespace SourceGit.Commands
             }
         }
 
+        public Dictionary<string, string> ReadAll()
+        {
+            Args = "config -l";
+
+            var output = ReadToEnd();
+            var rs = new Dictionary<string, string>();
+            if (output.IsSuccess)
+            {
+                var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    var parts = line.Split('=', 2);
+                    if (parts.Length == 2)
+                        rs[parts[0]] = parts[1];
+                }
+            }
+
+            return rs;
+        }
+
         public async Task<Dictionary<string, string>> ReadAllAsync()
         {
             Args = "config -l";
@@ -38,6 +58,12 @@ namespace SourceGit.Commands
             }
 
             return rs;
+        }
+
+        public string Get(string key)
+        {
+            Args = $"config {key}";
+            return ReadToEnd().StdOut.Trim();
         }
 
         public async Task<string> GetAsync(string key)

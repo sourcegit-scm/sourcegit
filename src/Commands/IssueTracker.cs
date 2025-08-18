@@ -11,15 +11,25 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            _storage = storage;
+
+            if (string.IsNullOrEmpty(storage))
+            {
+                _isStorageFileExists = true;
+                _baseArg = "config --local";
+            }
+            else
+            {
+                _isStorageFileExists = File.Exists(storage);
+                _baseArg = $"config -f {storage.Quoted()}";
+            }
         }
 
         public async Task ReadAllAsync(List<Models.IssueTracker> outs, bool isShared)
         {
-            if (!File.Exists(_storage))
+            if (!_isStorageFileExists)
                 return;
 
-            Args = $"config -f {_storage.Quoted()} -l";
+            Args = $"{_baseArg} -l";
 
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
@@ -57,12 +67,12 @@ namespace SourceGit.Commands
 
         public async Task<bool> AddAsync(Models.IssueTracker rule)
         {
-            Args = $"config -f {_storage.Quoted()} issuetracker.{rule.Name.Quoted()}.regex {rule.RegexString.Quoted()}";
+            Args = $"{_baseArg} issuetracker.{rule.Name.Quoted()}.regex {rule.RegexString.Quoted()}";
 
             var succ = await ExecAsync().ConfigureAwait(false);
             if (succ)
             {
-                Args = $"config -f {_storage.Quoted()} issuetracker.{rule.Name.Quoted()}.url {rule.URLTemplate.Quoted()}";
+                Args = $"{_baseArg} issuetracker.{rule.Name.Quoted()}.url {rule.URLTemplate.Quoted()}";
                 return await ExecAsync().ConfigureAwait(false);
             }
 
@@ -71,10 +81,10 @@ namespace SourceGit.Commands
 
         public async Task<bool> RemoveAsync(Models.IssueTracker rule)
         {
-            if (!File.Exists(_storage))
+            if (!_isStorageFileExists)
                 return true;
 
-            Args = $"config -f {_storage.Quoted()} --remove-section issuetracker.{rule.Name.Quoted()}";
+            Args = $"{_baseArg} --remove-section issuetracker.{rule.Name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
@@ -89,6 +99,7 @@ namespace SourceGit.Commands
             return rule;
         }
 
-        private readonly string _storage;
+        private readonly bool _isStorageFileExists;
+        private readonly string _baseArg;
     }
 }

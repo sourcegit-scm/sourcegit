@@ -41,19 +41,20 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.SSHKey}"
                  IsVisible="{Binding UseSSH}"/>
-      <TextBox Grid.Row="2" Grid.Column="1"
-               x:Name="TxtSshKey"
-               Height="26"
-               CornerRadius="3"
-               IsVisible="{Binding UseSSH}"
-               Watermark="{DynamicResource Text.SSHKey.Placeholder}"
-               Text="{Binding SSHKey, Mode=TwoWay}">
-        <TextBox.InnerRightContent>
-          <Button Classes="icon_button" Width="30" Height="30" Click="SelectSSHKey">
-            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-          </Button>
-        </TextBox.InnerRightContent>
-      </TextBox>
+      <Border Grid.Row="2" Grid.Column="1" Height="32" IsVisible="{Binding UseSSH}">
+        <TextBox x:Name="TxtSshKey"
+                 Height="26"
+                 VerticalAlignment="Center"
+                 CornerRadius="3"
+                 Watermark="{DynamicResource Text.SSHKey.Placeholder}"
+                 Text="{Binding SSHKey, Mode=TwoWay}">
+          <TextBox.InnerRightContent>
+            <Button Classes="icon_button" Width="30" Height="30" Click="SelectSSHKey">
+              <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+            </Button>
+          </TextBox.InnerRightContent>
+        </TextBox>        
+      </Border>
     </Grid>
   </StackPanel>
 </UserControl>

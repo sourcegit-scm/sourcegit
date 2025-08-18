@@ -158,13 +158,12 @@ namespace SourceGit
             }
         }
 
-        public static async Task<bool> AskConfirmAsync(string message, Action onSure)
+        public static async Task<bool> AskConfirmAsync(string message)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
             {
                 var confirm = new Views.Confirm();
                 confirm.Message.Text = message;
-                confirm.OnSure = onSure;
                 return await confirm.ShowDialog<bool>(owner);
             }
 
@@ -578,7 +577,7 @@ namespace SourceGit
         {
             if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
-                var test = new Commands.QueryRepositoryRootPath(repo).GetResultAsync().Result;
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResult();
                 if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                 {
                     Dispatcher.UIThread.Invoke(() =>

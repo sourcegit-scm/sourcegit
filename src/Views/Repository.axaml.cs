@@ -643,6 +643,14 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnPruneWorktrees(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                await repo.PruneWorktreesAsync();
+
+            e.Handled = true;
+        }
+
         private async void OnSkipInProgress(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

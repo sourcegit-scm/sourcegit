@@ -89,15 +89,7 @@ namespace SourceGit.ViewModels
             return _popup is not { InProgress: true };
         }
 
-        public void StartPopup(Popup popup)
-        {
-            Popup = popup;
-
-            if (popup.CanStartDirectly())
-                ProcessPopup();
-        }
-
-        public async void ProcessPopup()
+        public async Task ProcessPopupAsync()
         {
             if (_popup is { InProgress: false } dump)
             {
@@ -110,7 +102,10 @@ namespace SourceGit.ViewModels
                 {
                     var finished = await dump.Sure();
                     if (finished)
+                    {
+                        dump.Cleanup();
                         Popup = null;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -123,10 +118,10 @@ namespace SourceGit.ViewModels
 
         public void CancelPopup()
         {
-            if (_popup == null)
+            if (_popup == null || _popup.InProgress)
                 return;
-            if (_popup.InProgress)
-                return;
+
+            _popup?.Cleanup();
             Popup = null;
         }
 

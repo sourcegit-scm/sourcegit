@@ -193,6 +193,30 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnCommit(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, false);
+
+            e.Handled = true;
+        }
+
+        private async void OnCommitWithAutoStage(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(true, false);
+
+            e.Handled = true;
+        }
+
+        private async void OnCommitWithPush(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, true);
+
+            e.Handled = true;
+        }
+
         private ContextMenu CreateContextMenuForUnstagedChanges(ViewModels.WorkingCopy vm, string selectedSingleFolder)
         {
             var repo = vm.Repository;
@@ -457,7 +481,7 @@ namespace SourceGit.Views
                         lfs.Header = App.Text("GitLFS");
                         lfs.Icon = App.CreateMenuIcon("Icons.LFS");
 
-                        var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResultAsync().Result;
+                        var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResult();
                         if (!isLFSFiltered)
                         {
                             var filename = Path.GetFileName(change.Path);

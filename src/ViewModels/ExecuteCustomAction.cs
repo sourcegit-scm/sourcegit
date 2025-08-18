@@ -119,35 +119,11 @@ namespace SourceGit.ViewModels
             get;
         } = [];
 
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action)
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action, object scopeTarget)
         {
             _repo = repo;
             CustomAction = action;
-            Target = new Models.Null();
-            PrepareControlParameters();
-        }
-
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Branch branch)
-        {
-            _repo = repo;
-            CustomAction = action;
-            Target = branch;
-            PrepareControlParameters();
-        }
-
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
-        {
-            _repo = repo;
-            CustomAction = action;
-            Target = commit;
-            PrepareControlParameters();
-        }
-
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Tag tag)
-        {
-            _repo = repo;
-            CustomAction = action;
-            Target = tag;
+            Target = scopeTarget ?? new Models.Null();
             PrepareControlParameters();
         }
 
@@ -206,9 +182,10 @@ namespace SourceGit.ViewModels
 
             return Target switch
             {
-                Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName),
+                Models.Branch b => org.Replace("${BRANCH_FRIENDLY_NAME}", b.FriendlyName).Replace("${BRANCH}", b.Name).Replace("${REMOTE}", b.Remote),
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
                 Models.Tag t => org.Replace("${TAG}", t.Name),
+                Models.Remote r => org.Replace("${REMOTE}", r.Name),
                 _ => org
             };
         }

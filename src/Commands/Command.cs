@@ -37,19 +37,6 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
-        public void Exec()
-        {
-            try
-            {
-                var start = CreateGitStartInfo(false);
-                Process.Start(start);
-            }
-            catch (Exception ex)
-            {
-                App.RaiseException(Context, ex.Message);
-            }
-        }
-
         public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
@@ -127,6 +114,28 @@ namespace SourceGit.Commands
             return true;
         }
 
+        protected Result ReadToEnd()
+        {
+            using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
+
+            try
+            {
+                proc.Start();
+            }
+            catch (Exception e)
+            {
+                return Result.Failed(e.Message);
+            }
+
+            var rs = new Result() { IsSuccess = true };
+            rs.StdOut = proc.StandardOutput.ReadToEnd();
+            rs.StdErr = proc.StandardError.ReadToEnd();
+            proc.WaitForExit();
+
+            rs.IsSuccess = proc.ExitCode == 0;
+            return rs;
+        }
+
         protected async Task<Result> ReadToEndAsync()
         {
             using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
@@ -149,7 +158,7 @@ namespace SourceGit.Commands
             return rs;
         }
 
-        private ProcessStartInfo CreateGitStartInfo(bool redirect)
+        protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
@@ -167,8 +176,10 @@ namespace SourceGit.Commands
             // Force using this app as SSH askpass program
             var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
             start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
-            start.Environment.Add("SSH_ASKPASS_REQUIRE", "force");
+            start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
             start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
+            if (!OperatingSystem.IsLinux())
+                start.Environment.Add("DISPLAY", "required");
 
             // If an SSH private key was provided, sets the environment.
             if (!start.Environment.ContainsKey("GIT_SSH_COMMAND") && !string.IsNullOrEmpty(SSHKey))

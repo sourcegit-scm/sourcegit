@@ -121,7 +121,7 @@ namespace SourceGit.Views
 
             if (pref.IsGitConfigured())
             {
-                var config = new Commands.Config(null).ReadAllAsync().Result;
+                var config = new Commands.Config(null).ReadAll();
 
                 if (config.TryGetValue("user.name", out var name))
                     DefaultUser = name;

@@ -20,7 +20,7 @@ namespace SourceGit.ViewModels
         {
             Name = branch.Name;
             Head = branch.Head;
-            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync().Result ?? new Models.Commit() { SHA = branch.Head };
+            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResult() ?? new Models.Commit() { SHA = branch.Head };
         }
     }
 
@@ -69,7 +69,7 @@ namespace SourceGit.ViewModels
             if (!isSubmodule && (_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified))
             {
                 CanUseExternalMergeTool = true;
-                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResultAsync().Result;
+                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
             }
 
             switch (wc.InProgressContext)

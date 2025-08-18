@@ -109,6 +109,15 @@ namespace SourceGit.Views
             set => SetValue(ViewModeProperty, value);
         }
 
+        public static readonly StyledProperty<bool> EnableCompactFoldersProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(EnableCompactFolders), false);
+
+        public bool EnableCompactFolders
+        {
+            get => GetValue(EnableCompactFoldersProperty);
+            set => SetValue(EnableCompactFoldersProperty, value);
+        }
+
         public static readonly StyledProperty<List<Models.Change>> ChangesProperty =
             AvaloniaProperty.Register<ChangeCollectionView, List<Models.Change>>(nameof(Changes));
 
@@ -254,6 +263,9 @@ namespace SourceGit.Views
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
                 UpdateSelection();
+
+            if (change.Property == EnableCompactFoldersProperty && ViewMode == Models.ChangeViewMode.Tree)
+                UpdateDataSource(true);
         }
 
         private void OnRowDataContextChanged(object sender, EventArgs e)
@@ -384,7 +396,7 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, EnableCompactFolders);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);

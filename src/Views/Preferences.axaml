@@ -159,7 +159,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -266,6 +266,11 @@
                       IsChecked="{Binding UseFixedTabWidth, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="8" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Appearance.EnableCompactFolders}"
+                      IsChecked="{Binding EnableCompactFoldersInChangesTree, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseNativeWindowFrame}"
                       IsChecked="{Binding UseSystemWindowFrame, Mode=OneTime}"
@@ -554,10 +559,10 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
           </TabItem.Header>
 
-          <Grid MinHeight="380" Margin="0,8,0,16">
+          <Grid MinHeight="360" Margin="0,8,0,16">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="200"/>
-              <ColumnDefinition Width="*" MaxWidth="400"/>
+              <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
@@ -651,20 +656,8 @@
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Tag}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Remote}"/>
                     </ComboBox>
-
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
-                    <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
-                      <TextBox.InnerRightContent>
-                        <Button Classes="icon_button" Width="30" Height="30" Click="SelectExecutableForCustomAction">
-                          <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-                        </Button>
-                      </TextBox.InnerRightContent>
-                    </TextBox>
-
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
-                    <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>
                     <Button Margin="0,4,0,0" Classes="flat" Height="28" Click="EditCustomActionControls">
@@ -676,7 +669,23 @@
                         </Border>
                       </StackPanel>
                     </Button>
-                    <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
+                    <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
+                      <TextBox.InnerRightContent>
+                        <Button Classes="icon_button" Width="30" Height="30" Click="SelectExecutableForCustomAction">
+                          <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                        </Button>
+                      </TextBox.InnerRightContent>
+                    </TextBox>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
+                    <Grid Margin="0,4,0,0" ColumnDefinitions="*,Auto">
+                      <TextBox Grid.Column="0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
+                      <Border Grid.Column="1" Width="22" Height="28" Background="Transparent" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}">
+                        <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
+                      </Border>
+                    </Grid>
 
                     <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                   </StackPanel>

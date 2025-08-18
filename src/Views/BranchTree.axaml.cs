@@ -352,6 +352,10 @@ namespace SourceGit.Views
 
         private void OnNodePointerPressed(object sender, PointerPressedEventArgs e)
         {
+            var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                return;
+
             var p = e.GetCurrentPoint(this);
             if (!p.Properties.IsLeftButtonPressed)
                 return;
@@ -364,13 +368,6 @@ namespace SourceGit.Views
 
             if (node.Backend is not Models.Branch branch)
                 return;
-
-            if (BranchesPresenter.SelectedItems is { Count: > 0 })
-            {
-                var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-                if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                    return;
-            }
 
             repo.NavigateToCommit(branch.Head);
         }
@@ -519,7 +516,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnDoubleTappedBranchNode(object sender, TappedEventArgs _)
+        private async void OnDoubleTappedBranchNode(object sender, TappedEventArgs _)
         {
             if (sender is Grid { DataContext: ViewModels.BranchTreeNode node })
             {
@@ -529,7 +526,7 @@ namespace SourceGit.Views
                         return;
 
                     if (DataContext is ViewModels.Repository { Settings: not null } repo)
-                        repo.CheckoutBranch(branch);
+                        await repo.CheckoutBranchAsync(branch);
                 }
                 else
                 {
@@ -609,10 +606,10 @@ namespace SourceGit.Views
                         fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                         fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                         fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
-                        fastForward.Click += (_, e) =>
+                        fastForward.Click += async (_, e) =>
                         {
                             if (repo.CanCreatePopup())
-                                repo.ShowAndStartPopup(new ViewModels.Merge(repo, upstream, branch.Name, true));
+                                await repo.ShowAndStartPopupAsync(new ViewModels.Merge(repo, upstream, branch.Name, true));
                             e.Handled = true;
                         };
 
@@ -641,9 +638,9 @@ namespace SourceGit.Views
                     var checkout = new MenuItem();
                     checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
                     checkout.Icon = App.CreateMenuIcon("Icons.Check");
-                    checkout.Click += (_, e) =>
+                    checkout.Click += async (_, e) =>
                     {
-                        repo.CheckoutBranch(branch);
+                        await repo.CheckoutBranchAsync(branch);
                         e.Handled = true;
                     };
                     menu.Items.Add(checkout);
@@ -657,10 +654,10 @@ namespace SourceGit.Views
                     fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
                     fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
-                    fastForward.Click += (_, e) =>
+                    fastForward.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                            repo.ShowAndStartPopup(new ViewModels.ResetWithoutCheckout(repo, branch, upstream));
+                            await repo.ShowAndStartPopupAsync(new ViewModels.ResetWithoutCheckout(repo, branch, upstream));
                         e.Handled = true;
                     };
                     menu.Items.Add(fastForward);
@@ -669,10 +666,10 @@ namespace SourceGit.Views
                     fetchInto.Header = App.Text("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
                     fetchInto.Icon = App.CreateMenuIcon("Icons.Fetch");
                     fetchInto.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
-                    fetchInto.Click += (_, e) =>
+                    fetchInto.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                            repo.ShowAndStartPopup(new ViewModels.FetchInto(repo, branch, upstream));
+                            await repo.ShowAndStartPopupAsync(new ViewModels.FetchInto(repo, branch, upstream));
                         e.Handled = true;
                     };
 
@@ -744,7 +741,7 @@ namespace SourceGit.Views
                     compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                     compareWithWorktree.Click += async (_, e) =>
                     {
-                        await repo.CompareBranchWithWorktree(branch);
+                        await repo.CompareBranchWithWorktreeAsync(branch);
                         e.Handled = true;
                     };
                     menu.Items.Add(compareWithWorktree);
@@ -901,10 +898,10 @@ namespace SourceGit.Views
             var prune = new MenuItem();
             prune.Header = App.Text("RemoteCM.Prune");
             prune.Icon = App.CreateMenuIcon("Icons.Clean");
-            prune.Click += (_, e) =>
+            prune.Click += async (_, e) =>
             {
                 if (repo.CanCreatePopup())
-                    repo.ShowAndStartPopup(new ViewModels.PruneRemote(repo, remote));
+                    await repo.ShowAndStartPopupAsync(new ViewModels.PruneRemote(repo, remote));
                 e.Handled = true;
             };
 
@@ -943,6 +940,7 @@ namespace SourceGit.Views
             menu.Items.Add(edit);
             menu.Items.Add(delete);
             menu.Items.Add(new MenuItem() { Header = "-" });
+            TryToAddCustomActionsToRemoteContextMenu(repo, menu, remote);
             menu.Items.Add(copy);
             return menu;
         }
@@ -955,9 +953,9 @@ namespace SourceGit.Views
             var checkout = new MenuItem();
             checkout.Header = App.Text("BranchCM.Checkout", name);
             checkout.Icon = App.CreateMenuIcon("Icons.Check");
-            checkout.Click += (_, e) =>
+            checkout.Click += async (_, e) =>
             {
-                repo.CheckoutBranch(branch);
+                await repo.CheckoutBranchAsync(branch);
                 e.Handled = true;
             };
             menu.Items.Add(checkout);
@@ -1017,7 +1015,7 @@ namespace SourceGit.Views
                 compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithWorktree.Click += async (_, e) =>
                 {
-                    await repo.CompareBranchWithWorktree(branch);
+                    await repo.CompareBranchWithWorktreeAsync(branch);
                     e.Handled = true;
                 };
                 menu.Items.Add(compareWithWorktree);
@@ -1102,9 +1100,38 @@ namespace SourceGit.Views
                 var item = new MenuItem();
                 item.Icon = App.CreateMenuIcon("Icons.Action");
                 item.Header = label;
-                item.Click += (_, e) =>
+                item.Click += async (_, e) =>
                 {
-                    repo.ExecCustomAction(dup, branch);
+                    await repo.ExecCustomActionAsync(dup, branch);
+                    e.Handled = true;
+                };
+
+                custom.Items.Add(item);
+            }
+
+            menu.Items.Add(custom);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        private void TryToAddCustomActionsToRemoteContextMenu(ViewModels.Repository repo, ContextMenu menu, Models.Remote remote)
+        {
+            var actions = repo.GetCustomActions(Models.CustomActionScope.Remote);
+            if (actions.Count == 0)
+                return;
+
+            var custom = new MenuItem();
+            custom.Header = App.Text("RemoteCM.CustomAction");
+            custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+            foreach (var action in actions)
+            {
+                var (dup, label) = action;
+                var item = new MenuItem();
+                item.Icon = App.CreateMenuIcon("Icons.Action");
+                item.Header = label;
+                item.Click += async (_, e) =>
+                {
+                    await repo.ExecCustomActionAsync(dup, remote);
                     e.Handled = true;
                 };
 

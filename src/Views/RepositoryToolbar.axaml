@@ -103,7 +103,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.Action}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="Cleanup" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
         <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
       </Button>
     </StackPanel>
