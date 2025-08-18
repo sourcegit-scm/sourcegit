@@ -30,12 +30,7 @@ namespace SourceGit.Views
         public void BeginMoveWindow(object _, PointerPressedEventArgs e)
         {
             if (e.ClickCount == 1)
-            {
-                if (OperatingSystem.IsMacOS())
-                    e.Pointer.Capture(this);
-
                 BeginMoveDrag(e);
-            }
 
             e.Handled = true;
         }
