@@ -23,6 +23,8 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">Neu generieren</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Verwende OpenAI, um Commit-Nachrichten zu generieren</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Als Commit-Nachricht verwenden</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit minimieren</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Alles anzeigen</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch-Datei:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Wähle die anzuwendende .patch-Datei</x:String>
@@ -74,6 +76,7 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Setze ${0}$ zurück auf ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Setze verfolgten Branch...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Vergleich</x:String>
+  <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Ungültig</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTE</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">VERFOLGT</x:String>
   <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL</x:String>
@@ -176,6 +179,16 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">BENUTZERDEFINIERTE AKTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumente:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Vordefinierte Parameter:
+
+  ${REPO} Repository-Pfad
+  ${REMOTE} selektierter Remote oder selektierter Branch-Remote
+  ${BRANCH} selektierter Branch, ohne ${REMOTE}-Teil für Remote-Branches
+  ${BRANCH_FRIENDLY_NAME} Freundlicher Name des selektierten Branches, enthält ${REMOTE}-Teil für Remote-Branches
+  ${SHA} Hash des selektierten Commits
+  ${TAG} selektiertes Tag
+  $1, $2 ... Werte der Eingabe-Steuerelemente
+</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Ausführbare Datei:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Eingabe-Steuerelemente:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Bearbeiten</x:String>
@@ -183,6 +196,7 @@
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Geltungsbereich:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">Remote</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repository</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Tag</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Auf Beenden der Aktion warten</x:String>
@@ -280,6 +294,9 @@
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Auch Remote-Branch ${0}$ löschen</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Mehrere Branches löschen</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Du versuchst mehrere Branches auf einmal zu löschen. Kontrolliere noch einmal vor dem Fortfahren!</x:String>
+  <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Mehrere Tags löschen</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.DeleteFromRemotes" xml:space="preserve">von Remotes löschen</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.Tip" xml:space="preserve">Du versuchst, mehrere Tags gleichzeitig zu löschen. Sei dir sicher, das doppelt zu prüfen, bevor du loslegst!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Remote löschen</x:String>
   <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Pfad:</x:String>
@@ -524,6 +541,7 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">DARSTELLUNG</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Standardschriftart</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Editor Tab Breite</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EnableCompactFolders" xml:space="preserve">Aktiviere kompakte Ordner im Änderungsbaum</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Schriftgröße</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Standard</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Texteditor</x:String>
@@ -613,6 +631,7 @@
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Remote Git Repository URL</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">URL kopieren</x:String>
+  <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Löschen...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Bearbeiten...</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
@@ -638,6 +657,7 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Benutzerdefinierte Aktionen</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Keine benutzerdefinierten Aktionen</x:String>
+  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches/Tags/Submodule</x:String>
@@ -652,6 +672,7 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Commit Zeitpunkt</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologie</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
+  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Mehr Optionen...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BENACHRICHTIGUNGEN LÖSCHEN</x:String>
@@ -779,8 +800,15 @@
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Update</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">TAGGER</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">TIME</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Nachricht</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Name</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Tagger</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Name des Tags kopieren</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Lösche ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Selektierte {0} Tags löschen...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Pushe ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Submodule aktualisieren</x:String>
