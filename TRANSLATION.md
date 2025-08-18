@@ -6,32 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.81%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.App.Hide
-- Text.App.ShowAll
-- Text.BranchTree.InvalidUpstream
-- Text.Configure.CustomAction.Arguments.Tip
-- Text.Configure.CustomAction.Scope.Remote
-- Text.DeleteMultiTags
-- Text.DeleteMultiTags.DeleteFromRemotes
-- Text.DeleteMultiTags.Tip
-- Text.Preferences.Appearance.EnableCompactFolders
-- Text.RemoteCM.CustomAction
-- Text.Repository.Dashboard
-- Text.Repository.MoreOptions
-- Text.Tag.Tagger
-- Text.Tag.Time
-- Text.TagCM.Copy.Message
-- Text.TagCM.Copy.Name
-- Text.TagCM.Copy.Tagger
-- Text.TagCM.CopyName
-- Text.TagCM.DeleteMultiple
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
