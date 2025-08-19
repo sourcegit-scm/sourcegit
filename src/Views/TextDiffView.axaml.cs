@@ -1210,7 +1210,7 @@ namespace SourceGit.Views
                     view.Bounds.Height;
 
                 diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
-                TrySetChunk(new (rectStartY, rectEndY - rectStartY, startIdx, endIdx, false, IsOld));
+                TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, false, IsOld));
             }
             else
             {
@@ -1256,7 +1256,7 @@ namespace SourceGit.Views
                     view.Bounds.Height;
 
                 diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
-                TrySetChunk(new (rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
+                TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
             }
         }
 
