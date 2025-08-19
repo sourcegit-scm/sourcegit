@@ -6,11 +6,25 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.88%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-80.37%25-yellow)
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-99.88%25-yellow)
+
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-80.28%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -114,6 +128,7 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Preferences.Appearance.EnableCompactFolders
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Pull.RecurseSubmodules
@@ -188,7 +203,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-85.57%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-85.47%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -272,6 +287,7 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Preferences.Appearance.EnableCompactFolders
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 - Text.Preferences.Git.UseLibsecret
 - Text.Pull.RecurseSubmodules
 - Text.Push.New
@@ -321,7 +337,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-80.37%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-80.28%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -426,6 +442,7 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Preferences.Appearance.EnableCompactFolders
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Pull.RecurseSubmodules
@@ -499,7 +516,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-73.56%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-73.47%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -645,6 +662,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.ShowChildren
 - Text.Preferences.General.ShowTagsInGraph
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.SSLVerify
 - Text.Preferences.Git.UseLibsecret
@@ -736,7 +754,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.65%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.54%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -744,10 +762,11 @@ This document shows the translation status of each locale file in the repository
 - Text.App.Hide
 - Text.App.ShowAll
 - Text.Configure.CustomAction.Arguments.Tip
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-80.48%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-80.39%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -852,6 +871,7 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Preferences.Appearance.EnableCompactFolders
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Pull.RecurseSubmodules
@@ -924,7 +944,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-81.64%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-81.55%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1024,6 +1044,7 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
 - Text.Preferences.Appearance.EnableCompactFolders
+- Text.Preferences.General.UpdateBlockNavigationOnScroll
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Pull.RecurseSubmodules
