@@ -34,13 +34,10 @@ namespace SourceGit.Models
 
             if (isUnstaged)
             {
-                switch (change.WorkTree)
+                if (change.WorkTree is ChangeState.Added or ChangeState.Untracked)
                 {
-                    case ChangeState.Added:
-                    case ChangeState.Untracked:
-                        _extra = "--no-index";
-                        _orgPath = "/dev/null";
-                        break;
+                    _extra = "--no-index";
+                    _orgPath = "/dev/null";
                 }
             }
             else

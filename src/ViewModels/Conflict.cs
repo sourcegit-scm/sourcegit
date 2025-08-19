@@ -72,33 +72,24 @@ namespace SourceGit.ViewModels
                 IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
             }
 
-            switch (wc.InProgressContext)
+            if (wc.InProgressContext is RebaseInProgress rebase)
             {
-                case CherryPickInProgress cherryPick:
-                    Theirs = cherryPick.Head;
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-                case RebaseInProgress rebase:
-                    var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
-                    if (b != null)
-                        Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
-                    else
-                        Theirs = new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
-
-                    Mine = rebase.Onto;
-                    break;
-                case RevertInProgress revert:
-                    Theirs = revert.Head;
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-                case MergeInProgress merge:
-                    Theirs = merge.Source;
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-                default:
-                    Theirs = "Stash or Patch";
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
+                var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
+                Theirs = b != null
+                    ? new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt)
+                    : new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
+                Mine = rebase.Onto;
+            }
+            else
+            {
+                Theirs = wc.InProgressContext switch
+                {
+                    CherryPickInProgress cherryPick => cherryPick.Head,
+                    RevertInProgress revert => revert.Head,
+                    MergeInProgress merge => merge.Source,
+                    _ => "Stash or Patch"
+                };
+                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
             }
         }
 
