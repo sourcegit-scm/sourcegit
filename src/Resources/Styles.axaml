@@ -740,6 +740,7 @@
   </Style>
 
   <Style Selector="ContextMenu">
+    <Setter Property="MaxWidth" Value="1024"/>
     <Setter Property="HorizontalOffset" Value="-4"/>
     <Setter Property="VerticalOffset" Value="-4"/>
     <Setter Property="Template">
