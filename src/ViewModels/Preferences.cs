@@ -158,6 +158,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _check4UpdatesOnStartup, value);
         }
 
+        public bool EnableDangerousHistoryRewrites
+        {
+            get => _enableDangerousHistoryRewrites;
+            set => SetProperty(ref _enableDangerousHistoryRewrites, value);
+        }
+
         public bool ShowAuthorTimeInGraph
         {
             get => _showAuthorTimeInGraph;
@@ -710,6 +716,7 @@ namespace SourceGit.ViewModels
         private bool _showChildren = false;
 
         private bool _check4UpdatesOnStartup = true;
+        private bool _enableDangerousHistoryRewrites = false;
         private double _lastCheckUpdateTime = 0;
         private string _ignoreUpdateTag = string.Empty;
 

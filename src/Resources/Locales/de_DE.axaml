@@ -148,6 +148,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Umformulieren</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Als Patch speichern...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash in den Vorgänger</x:String>
+  <x:String x:Key="Text.CommitCM.ForceSquash" xml:space="preserve">Squash hierher erzwingen...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">geänderte Datei(en)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen...</x:String>
@@ -751,6 +752,19 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Zum Commit wechseln</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">In:</x:String>
+  <x:String x:Key="Text.ForceSquash.Title" xml:space="preserve">Squash über Merges (Historie glätten)</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn" xml:space="preserve">Operation überschreibt die Historie vom gewählten Commit bis HEAD zu einem Commit
+Alle Merge-Commits im Bereich werden entfernt
+Signierte Commits oder Merges verlieren Signaturen
+Anschließend ist ein Force-Push erforderlich
+Schließe oder aktualisiere alle zugehörigen MR/PR</x:String>
+  <x:String x:Key="Text.ForceSquash.CreateBackup" xml:space="preserve">Vor dem Überschreiben Sicherungszweig erstellen</x:String>
+  <x:String x:Key="Text.ForceSquash.AutoStash" xml:space="preserve">Lokale Änderungen automatisch stashen</x:String>
+  <x:String x:Key="Text.ForceSquash.KeepAuthorDate" xml:space="preserve">Originalautor und -datum des Ziel-Commits beibehalten</x:String>
+  <x:String x:Key="Text.ForceSquash.AppendMessages" xml:space="preserve">Nachrichten der gesquashten Commits an den Body anhängen</x:String>
+  <x:String x:Key="Text.ForceSquash.StashPopFailed" xml:space="preserve">Automatischen Stash anwenden fehlgeschlagen.</x:String>
+  <x:String x:Key="Text.ForceSquash.Success" xml:space="preserve">Historie abgeflacht. Sicherungszweig: {0}</x:String>
+  <x:String x:Key="Text.ForceSquash.SuccessNoBackup" xml:space="preserve">Historie abgeflacht.</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH privater Schlüssel:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>

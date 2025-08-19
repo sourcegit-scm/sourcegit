@@ -148,6 +148,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">编辑提交信息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合并此提交到上一个提交</x:String>
+  <x:String x:Key="Text.CommitCM.ForceSquash" xml:space="preserve">强制压缩到此...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">变更对比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">个文件发生变更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
@@ -750,6 +751,19 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">跳转到提交</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">压缩为单个提交</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">合并入：</x:String>
+  <x:String x:Key="Text.ForceSquash.Title" xml:space="preserve">跨合并压缩（扁平化历史）</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn" xml:space="preserve">操作会把从选定提交到 HEAD 的历史重写为一个提交
+范围内的所有合并提交都会被移除
+签名的提交或合并将丢失签名
+之后需要强制推送
+请关闭或更新相关的 MR/PR</x:String>
+  <x:String x:Key="Text.ForceSquash.CreateBackup" xml:space="preserve">重写前创建安全备份分支</x:String>
+  <x:String x:Key="Text.ForceSquash.AutoStash" xml:space="preserve">自动保存本地更改</x:String>
+  <x:String x:Key="Text.ForceSquash.KeepAuthorDate" xml:space="preserve">保留目标提交的原作者/日期</x:String>
+  <x:String x:Key="Text.ForceSquash.AppendMessages" xml:space="preserve">将被压缩提交的消息追加到正文</x:String>
+  <x:String x:Key="Text.ForceSquash.StashPopFailed" xml:space="preserve">应用自动保存失败。</x:String>
+  <x:String x:Key="Text.ForceSquash.Success" xml:space="preserve">历史已扁平化。备份分支：{0}</x:String>
+  <x:String x:Key="Text.ForceSquash.SuccessNoBackup" xml:space="preserve">历史已扁平化。</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH密钥 ：</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>

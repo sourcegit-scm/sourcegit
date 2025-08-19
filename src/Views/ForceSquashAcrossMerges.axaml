@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.ForceSquashAcrossMerges"
+             x:DataType="vm:ForceSquashAcrossMerges">
+  <DockPanel Margin="8,0" Height="400">
+    <v:CommitMessageTextBox DockPanel.Dock="Bottom" Height="120" Margin="0,18,0,0" Text="{Binding Message, Mode=TwoWay}"/>
+    <StackPanel Orientation="Vertical">
+      <TextBlock FontSize="18"
+                 Classes="bold"
+                 Text="{DynamicResource Text.ForceSquash.Title}"/>
+      <TextBlock Margin="0,4,0,0" Foreground="Red" TextWrapping="Wrap" Text="{DynamicResource Text.ForceSquash.Warn}"/>
+      <StackPanel Margin="0,18,0,0">
+        <CheckBox Content="{DynamicResource Text.ForceSquash.CreateBackup}" IsChecked="{Binding CreateBackup, Mode=TwoWay}"/>
+        <CheckBox Content="{DynamicResource Text.ForceSquash.AutoStash}" IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+        <CheckBox Content="{DynamicResource Text.ForceSquash.KeepAuthorDate}" IsChecked="{Binding KeepAuthorDate, Mode=TwoWay}"/>
+        <CheckBox Content="{DynamicResource Text.ForceSquash.AppendMessages}" IsChecked="{Binding AppendMessages, Mode=TwoWay}"/>
+      </StackPanel>
+    </StackPanel>
+  </DockPanel>
+</UserControl>

@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
+using SourceGit.ViewModels;
 
 namespace SourceGit.Views
 {
@@ -705,6 +706,22 @@ namespace SourceGit.Views
 
                         menu.Items.Add(new MenuItem() { Header = "-" });
                         menu.Items.Add(interactiveRebase);
+                    }
+                }
+
+                if (ViewModels.Preferences.Instance.EnableDangerousHistoryRewrites && commit.Parents.Count > 0)
+                {
+                    if (new Commands.IsAncestor(repo.FullPath, commit.SHA, "HEAD").Test())
+                    {
+                        var forceSquash = new MenuItem();
+                        forceSquash.Header = App.Text("CommitCM.ForceSquash");
+                        forceSquash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                        forceSquash.Click += async (_, e) =>
+                        {
+                            await vm.ForceSquashAsync(commit);
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(forceSquash);
                     }
                 }
 
