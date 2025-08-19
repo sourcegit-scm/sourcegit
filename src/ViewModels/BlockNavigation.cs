@@ -93,7 +93,7 @@ namespace SourceGit.ViewModels
             if (_current >= 0 && _current < Blocks.Count)
                 return Blocks[_current];
 
-            return Blocks.Count > 0 ? Blocks[0] : null;
+            return null;
         }
 
         public Block GotoFirst()
@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
             return Blocks[_current];
         }
 
-        public void AutoUpdate(int start, int end)
+        public bool AutoUpdate(int start, int end)
         {
             if (_current >= 0 && _current < Blocks.Count)
             {
@@ -150,7 +150,7 @@ namespace SourceGit.ViewModels
                 if ((block.Start >= start && block.Start <= end) ||
                     (block.End >= start && block.End <= end) ||
                     (block.Start <= start && block.End >= end))
-                    return;
+                    return false;
             }
 
             for (var i = 0; i < Blocks.Count; i++)
@@ -162,9 +162,11 @@ namespace SourceGit.ViewModels
                 {
                     Current = i;
                     OnPropertyChanged(nameof(Indicator));
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private int _current = -1;

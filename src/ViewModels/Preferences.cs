@@ -261,6 +261,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useBlockNavigationInDiffView, value);
         }
 
+        public bool UpdateBlockNavigationOnScroll
+        {
+            get => _updateBlockNavigationOnScroll;
+            set => SetProperty(ref _updateBlockNavigationOnScroll, value);
+        }
+
         public int LFSImageActiveIdx
         {
             get => _lfsImageActiveIdx;
@@ -723,6 +729,7 @@ namespace SourceGit.ViewModels
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
         private bool _useBlockNavigationInDiffView = false;
+        private bool _updateBlockNavigationOnScroll = true;
         private int _lfsImageActiveIdx = 0;
         private bool _enableCompactFoldersInChangesTree = false;
 

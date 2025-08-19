@@ -825,7 +825,13 @@ namespace SourceGit.Views
             }
 
             ctx.DisplayRange = new ViewModels.TextDiffDisplayRange(start, start + count);
-            BlockNavigation?.AutoUpdate(start + 1, start + count);
+
+            if (ViewModels.Preferences.Instance.UpdateBlockNavigationOnScroll)
+            {
+                var changed = BlockNavigation?.AutoUpdate(start + 1, start + count) ?? false;
+                if (changed)
+                    TextArea?.TextView?.Redraw();
+            }
         }
 
         protected void TrySetChunk(ViewModels.TextDiffSelectedChunk chunk)
