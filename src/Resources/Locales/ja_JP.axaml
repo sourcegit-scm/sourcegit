@@ -107,6 +107,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">書き直す</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">パッチとして保存...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">親にスカッシュ</x:String>
+  <x:String x:Key="Text.CommitCM.ForceSquash" xml:space="preserve">ここに強制スクワッシュ...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">変更を検索...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ファイル</x:String>
@@ -609,6 +610,19 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Go to</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">スカッシュコミット</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">宛先:</x:String>
+  <x:String x:Key="Text.ForceSquash.Title" xml:space="preserve">マージをまたいでスクワッシュ（履歴を平坦化）</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn1" xml:space="preserve">選択したコミットからHEADまでの履歴を1つのコミットに書き換えます</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn2" xml:space="preserve">範囲内のすべてのマージコミットは削除されます</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn3" xml:space="preserve">署名付きのコミットやマージは署名を失います</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn4" xml:space="preserve">その後は強制プッシュが必要です</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn5" xml:space="preserve">関連するMR/PRを閉じるか更新してください</x:String>
+  <x:String x:Key="Text.ForceSquash.CreateBackup" xml:space="preserve">書き換え前に安全なバックアップブランチを作成</x:String>
+  <x:String x:Key="Text.ForceSquash.AutoStash" xml:space="preserve">ローカル変更を自動でスタッシュ</x:String>
+  <x:String x:Key="Text.ForceSquash.KeepAuthorDate" xml:space="preserve">対象コミットの元の作者/日付を保持</x:String>
+  <x:String x:Key="Text.ForceSquash.AppendMessages" xml:space="preserve">スクワッシュされたコミットのメッセージを本文に追加</x:String>
+  <x:String x:Key="Text.ForceSquash.StashPopFailed" xml:space="preserve">自動スタッシュの適用に失敗しました。</x:String>
+  <x:String x:Key="Text.ForceSquash.Success" xml:space="preserve">履歴を平坦化しました。バックアップブランチ: {0}</x:String>
+  <x:String x:Key="Text.ForceSquash.SuccessNoBackup" xml:space="preserve">履歴を平坦化しました。</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH プライベートキー:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">プライベートSSHキーストアのパス</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">スタート</x:String>

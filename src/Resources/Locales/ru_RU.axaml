@@ -146,9 +146,10 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Изменить комментарий</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатки...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Объединить с предыдущей ревизией</x:String>
+  <x:String x:Key="Text.CommitCM.ForceSquash" xml:space="preserve">Принудительно объединить сюда...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">изменённый(х) файл(ов)</x:String>
-  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Найти изменения....</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Найти изменения...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ФАЙЛЫ</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Файл LFS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Поиск файлов...</x:String>
@@ -545,6 +546,7 @@
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Инструмент</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">ОСНОВНЫЕ</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Проверить обновления при старте</x:String>
+  <x:String x:Key="Text.Preferences.General.EnableDangerousHistoryRewrites" xml:space="preserve">Включить опасные переписывания истории</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Формат даты</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Язык</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Максимальная длина истории</x:String>
@@ -739,6 +741,19 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Перейти</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Втиснуть ревизии</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">В:</x:String>
+  <x:String x:Key="Text.ForceSquash.Title" xml:space="preserve">Втиснуть через слияния (выпрямить историю)</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn1" xml:space="preserve">Операция перепишет историю от выбранного коммита до HEAD в один коммит</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn2" xml:space="preserve">Все merge-коммиты в диапазоне будут удалены</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn3" xml:space="preserve">Подписи коммитов и merge будут потеряны</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn4" xml:space="preserve">Далее потребуется принудительная отправка</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn5" xml:space="preserve">Закройте или обновите связанные MR/PR</x:String>
+  <x:String x:Key="Text.ForceSquash.CreateBackup" xml:space="preserve">Создать резервную ветку перед переписыванием</x:String>
+  <x:String x:Key="Text.ForceSquash.AutoStash" xml:space="preserve">Авто-сохранение локальных изменений</x:String>
+  <x:String x:Key="Text.ForceSquash.KeepAuthorDate" xml:space="preserve">Сохранить автора и дату целевого коммита</x:String>
+  <x:String x:Key="Text.ForceSquash.AppendMessages" xml:space="preserve">Добавить сообщения объединяемых коммитов в тело</x:String>
+  <x:String x:Key="Text.ForceSquash.StashPopFailed" xml:space="preserve">Не удалось применить авто-стэш.</x:String>
+  <x:String x:Key="Text.ForceSquash.Success" xml:space="preserve">История сплюснута. Резервная ветка: {0}</x:String>
+  <x:String x:Key="Text.ForceSquash.SuccessNoBackup" xml:space="preserve">История сплюснута.</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Приватный ключ SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Путь хранения приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ЗАПУСК</x:String>

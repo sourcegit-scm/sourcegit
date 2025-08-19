@@ -148,6 +148,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">編輯提交訊息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合併此提交到上一個提交</x:String>
+  <x:String x:Key="Text.CommitCM.ForceSquash" xml:space="preserve">強制壓縮到此...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">變更對比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">個檔案已變更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">搜尋變更...</x:String>
@@ -750,6 +751,19 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">前往此提交</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">壓縮為單個提交</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">合併入:</x:String>
+  <x:String x:Key="Text.ForceSquash.Title" xml:space="preserve">跨合併壓縮（扁平化歷史）</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn1" xml:space="preserve">操作會將從選定提交到 HEAD 的歷史重寫為單一提交</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn2" xml:space="preserve">範圍內的所有合併提交都會被移除</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn3" xml:space="preserve">簽名的提交或合併會失去簽章</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn4" xml:space="preserve">之後需要強制推送</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn5" xml:space="preserve">請關閉或更新相關的 MR/PR</x:String>
+  <x:String x:Key="Text.ForceSquash.CreateBackup" xml:space="preserve">重寫前建立安全備份分支</x:String>
+  <x:String x:Key="Text.ForceSquash.AutoStash" xml:space="preserve">自動暫存本地變更</x:String>
+  <x:String x:Key="Text.ForceSquash.KeepAuthorDate" xml:space="preserve">保留目標提交的原作者/日期</x:String>
+  <x:String x:Key="Text.ForceSquash.AppendMessages" xml:space="preserve">將被壓縮的提交訊息附加到正文</x:String>
+  <x:String x:Key="Text.ForceSquash.StashPopFailed" xml:space="preserve">套用自動暫存失敗。</x:String>
+  <x:String x:Key="Text.ForceSquash.Success" xml:space="preserve">歷史已扁平化。備份分支：{0}</x:String>
+  <x:String x:Key="Text.ForceSquash.SuccessNoBackup" xml:space="preserve">歷史已扁平化。</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH 金鑰:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH 金鑰檔案</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開  始</x:String>

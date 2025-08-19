@@ -36,6 +36,7 @@ namespace SourceGit.Commands
         public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
+        public Dictionary<string, string> Envs { get; } = new();
 
         public async Task<bool> ExecAsync()
         {
@@ -191,6 +192,9 @@ namespace SourceGit.Commands
                 start.Environment.Add("LANG", "C");
                 start.Environment.Add("LC_ALL", "C");
             }
+
+            foreach (var kv in Envs)
+                start.Environment[kv.Key] = kv.Value;
 
             var builder = new StringBuilder();
             builder

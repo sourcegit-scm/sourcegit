@@ -331,6 +331,13 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Task ForceSquashAsync(Models.Commit commit)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new ForceSquashAcrossMerges(_repo, commit));
+            return Task.CompletedTask;
+        }
+
         public async Task InteractiveRebaseAsync(Models.Commit commit, Models.InteractiveRebaseAction act)
         {
             var prefill = new InteractiveRebasePrefill(commit.SHA, act);

@@ -108,6 +108,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reformuler</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Enregistrer en tant que patch...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash dans le parent</x:String>
+  <x:String x:Key="Text.CommitCM.ForceSquash" xml:space="preserve">Forcer le squash ici...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CHANGEMENTS</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Rechercher les changements...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FICHIERS</x:String>
@@ -611,6 +612,19 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Aller à</x:String>
   <x:String x:Key="Text.Squash" xml:space="preserve">Squash les commits</x:String>
   <x:String x:Key="Text.Squash.Into" xml:space="preserve">Dans :</x:String>
+  <x:String x:Key="Text.ForceSquash.Title" xml:space="preserve">Squasher à travers les fusions (aplatir l'historique)</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn1" xml:space="preserve">L'opération réécrit l'historique du commit sélectionné jusqu'à HEAD en un seul commit</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn2" xml:space="preserve">Tous les commits de fusion dans l'intervalle seront supprimés</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn3" xml:space="preserve">Les commits ou fusions signés perdent leurs signatures</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn4" xml:space="preserve">Un push forcé est nécessaire ensuite</x:String>
+  <x:String x:Key="Text.ForceSquash.Warn5" xml:space="preserve">Fermez ou mettez à jour toute MR/PR liée</x:String>
+  <x:String x:Key="Text.ForceSquash.CreateBackup" xml:space="preserve">Créer une branche de sauvegarde avant la réécriture</x:String>
+  <x:String x:Key="Text.ForceSquash.AutoStash" xml:space="preserve">Stasher automatiquement les modifications locales</x:String>
+  <x:String x:Key="Text.ForceSquash.KeepAuthorDate" xml:space="preserve">Conserver l'auteur/la date originaux du commit cible</x:String>
+  <x:String x:Key="Text.ForceSquash.AppendMessages" xml:space="preserve">Ajouter les messages des commits squashés au corps</x:String>
+  <x:String x:Key="Text.ForceSquash.StashPopFailed" xml:space="preserve">Échec de l'application de l'auto-stash.</x:String>
+  <x:String x:Key="Text.ForceSquash.Success" xml:space="preserve">Historique aplati. Branche de sauvegarde : {0}</x:String>
+  <x:String x:Key="Text.ForceSquash.SuccessNoBackup" xml:space="preserve">Historique aplati.</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Clé privée SSH :</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Chemin du magasin de clés privées SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
