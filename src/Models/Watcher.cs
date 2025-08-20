@@ -82,19 +82,19 @@ namespace SourceGit.Models
             }
         }
 
-        public void MarkBranchDirtyManually()
+        public void MarkBranchUpdated()
         {
-            _updateBranch = DateTime.Now.ToFileTime() - 1;
+            _updateBranch = 0;
         }
 
-        public void MarkTagDirtyManually()
+        public void MarkTagUpdated()
         {
-            _updateTags = DateTime.Now.ToFileTime() - 1;
+            _updateTags = 0;
         }
 
-        public void MarkWorkingCopyDirtyManually()
+        public void MarkWorkingCopyUpdated()
         {
-            _updateWC = DateTime.Now.ToFileTime() - 1;
+            _updateWC = 0;
         }
 
         public void Dispose()
