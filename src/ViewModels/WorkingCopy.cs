@@ -417,7 +417,7 @@ namespace SourceGit.ViewModels
 
         public async Task SaveChangesToPatchAsync(List<Models.Change> changes, bool isUnstaged, string saveTo)
         {
-            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, isUnstaged, saveTo);
+            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, changes, isUnstaged, saveTo);
             if (succ)
                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
         }
