@@ -549,8 +549,17 @@ namespace SourceGit.ViewModels
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this) { CommitMessage = _settings.LastCommitMessage };
             _stashesPage = new StashesPage(this);
-            _selectedView = _histories;
-            _selectedViewIndex = 0;
+
+            if (Preferences.Instance.ShowLocalChangesByDefault)
+            {
+                _selectedView = _workingCopy;
+                _selectedViewIndex = 1;
+            }
+            else
+            {
+                _selectedView = _histories;
+                _selectedViewIndex = 0;
+            }
 
             _lastFetchTime = DateTime.Now;
             _autoFetchTimer = new Timer(FetchInBackground, null, 5000, 5000);

@@ -119,6 +119,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _layout, value);
         }
 
+        public bool ShowLocalChangesByDefault
+        {
+            get;
+            set;
+        } = false;
+
         public int MaxHistoryCommits
         {
             get => _maxHistoryCommits;
