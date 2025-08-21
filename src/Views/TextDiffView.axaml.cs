@@ -120,8 +120,8 @@ namespace SourceGit.Views
                 InvalidateMeasure();
             }
 
-            private bool _usePresenter = false;
-            private bool _isOld = false;
+            private readonly bool _usePresenter = false;
+            private readonly bool _isOld = false;
         }
 
         public class LineModifyTypeMargin : AbstractMargin
@@ -306,7 +306,7 @@ namespace SourceGit.Views
                 };
             }
 
-            private ThemedTextDiffPresenter _presenter = null;
+            private readonly ThemedTextDiffPresenter _presenter = null;
         }
 
         public class LineStyleTransformer(ThemedTextDiffPresenter presenter) : DocumentColorizingTransformer

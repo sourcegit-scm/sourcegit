@@ -65,13 +65,13 @@ namespace SourceGit.Views
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
-                copyFullPath.Click += async (_, e) =>
+                copyFullPath.Click += async (_, ev) =>
                 {
                     await App.CopyTextAsync(changeFullPath);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(copyFullPath);
-                menu?.Open(view);
+                menu.Open(view);
             }
 
             e.Handled = true;

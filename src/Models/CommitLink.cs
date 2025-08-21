@@ -5,8 +5,8 @@ namespace SourceGit.Models
 {
     public class CommitLink
     {
-        public string Name { get; set; } = null;
-        public string URLPrefix { get; set; } = null;
+        public string Name { get; } = null;
+        public string URLPrefix { get; } = null;
 
         public CommitLink(string name, string prefix)
         {

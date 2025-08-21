@@ -328,12 +328,12 @@ namespace SourceGit.Views
                     var item = new MenuItem();
                     item.Header = workspace.Name;
                     item.Icon = icon;
-                    item.Click += (_, e) =>
+                    item.Click += (_, ev) =>
                     {
                         if (!workspace.IsActive)
                             launcher.SwitchWorkspace(workspace);
 
-                        e.Handled = true;
+                        ev.Handled = true;
                     };
 
                     menu.Items.Add(item);
@@ -343,10 +343,10 @@ namespace SourceGit.Views
 
                 var configure = new MenuItem();
                 configure.Header = App.Text("Workspace.Configure");
-                configure.Click += async (_, e) =>
+                configure.Click += async (_, ev) =>
                 {
                     await App.ShowDialog(new ViewModels.ConfigureWorkspace());
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(configure);
                 menu.Open(btn);

@@ -11,18 +11,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public record InteractiveRebasePrefill(string sha, Models.InteractiveRebaseAction action)
-    {
-        public string SHA { get; } = sha;
-        public Models.InteractiveRebaseAction Action { get; } = action;
-    }
+    public record InteractiveRebasePrefill(string SHA, Models.InteractiveRebaseAction Action);
 
     public class InteractiveRebaseItem : ObservableObject
     {
         public Models.Commit Commit
         {
             get;
-            private set;
         }
 
         public bool CanSquashOrFixup
@@ -88,7 +83,6 @@ namespace SourceGit.ViewModels
         public Models.Commit On
         {
             get;
-            private set;
         }
 
         public bool AutoStash
@@ -111,7 +105,6 @@ namespace SourceGit.ViewModels
         public AvaloniaList<InteractiveRebaseItem> Items
         {
             get;
-            private set;
         } = [];
 
         public InteractiveRebaseItem SelectedItem
@@ -127,7 +120,6 @@ namespace SourceGit.ViewModels
         public CommitDetail DetailContext
         {
             get;
-            private set;
         }
 
         public InteractiveRebase(Repository repo, Models.Commit on, InteractiveRebasePrefill prefill = null)
@@ -151,7 +143,7 @@ namespace SourceGit.ViewModels
                     list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
                 }
 
-                InteractiveRebaseItem selected = list.Count > 0 ? list[0] : null;
+                var selected = list.Count > 0 ? list[0] : null;
                 if (prefill != null)
                 {
                     var item = list.Find(x => x.Commit.SHA.Equals(prefill.SHA, StringComparison.Ordinal));

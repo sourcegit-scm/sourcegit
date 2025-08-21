@@ -110,7 +110,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> EnableCompactFoldersProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(EnableCompactFolders), false);
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(EnableCompactFolders));
 
         public bool EnableCompactFolders
         {

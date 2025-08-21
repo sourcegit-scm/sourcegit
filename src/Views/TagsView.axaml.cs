@@ -280,10 +280,10 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Icon = App.CreateMenuIcon("Icons.Action");
                         item.Header = label;
-                        item.Click += async (_, e) =>
+                        item.Click += async (_, ev) =>
                         {
                             await repo.ExecCustomActionAsync(dup, tag);
-                            e.Handled = true;
+                            ev.Handled = true;
                         };
 
                         custom.Items.Add(item);
@@ -340,12 +340,12 @@ namespace SourceGit.Views
                 var deleteMultiple = new MenuItem();
                 deleteMultiple.Header = App.Text("TagCM.DeleteMultiple", selected.Count);
                 deleteMultiple.Icon = App.CreateMenuIcon("Icons.Clear");
-                deleteMultiple.Click += (_, e) =>
+                deleteMultiple.Click += (_, ev) =>
                 {
                     if (repo.CanCreatePopup())
                         repo.ShowPopup(new ViewModels.DeleteMultipleTags(repo, selected));
 
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var menu = new ContextMenu();

@@ -40,12 +40,6 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-
-        <ComboBox.ItemContainerTheme>
-          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
-          </ControlTheme>
-        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <CheckBox Grid.Row="2" Grid.Column="1"

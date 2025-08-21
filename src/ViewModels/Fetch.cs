@@ -13,8 +13,7 @@ namespace SourceGit.ViewModels
         public bool IsFetchAllRemoteVisible
         {
             get;
-            private set;
-        } = true;
+        }
 
         public bool FetchAllRemotes
         {

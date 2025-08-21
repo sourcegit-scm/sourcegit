@@ -17,6 +17,7 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
+        [StructLayout(LayoutKind.Sequential)]
         internal struct RECT
         {
             public int left;
@@ -393,7 +394,7 @@ namespace SourceGit.Native
 
             try
             {
-                using var proc = Process.Start(startInfo);
+                using var proc = Process.Start(startInfo)!;
                 var output = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
 

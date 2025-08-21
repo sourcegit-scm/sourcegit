@@ -17,7 +17,7 @@ namespace SourceGit.Views
 
         public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
         {
-            if (DataContext is not ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm)
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, node.FullPath);
@@ -98,7 +98,7 @@ namespace SourceGit.Views
 
         public ContextMenu CreateChangeContextMenu(Models.Change change)
         {
-            if (DataContext is not ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm)
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
             var openWithMerger = new MenuItem();
@@ -327,7 +327,7 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change } grid)
+            if (sender is Grid { DataContext: Models.Change change } grid)
                 CreateChangeContextMenu(change)?.Open(grid);
             e.Handled = true;
         }

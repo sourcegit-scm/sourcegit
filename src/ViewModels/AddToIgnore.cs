@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
             var file = StorageFile.GetFullPath(_repo.FullPath, _repo.GitDir);
             if (!File.Exists(file))
             {
-                await File.WriteAllLinesAsync(file, [_pattern]);
+                await File.WriteAllLinesAsync(file!, [_pattern]);
             }
             else
             {

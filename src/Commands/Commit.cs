@@ -34,7 +34,7 @@ namespace SourceGit.Commands
             }
         }
 
-        private readonly string _tmpFile = string.Empty;
-        private readonly string _message = string.Empty;
+        private readonly string _tmpFile;
+        private readonly string _message;
     }
 }

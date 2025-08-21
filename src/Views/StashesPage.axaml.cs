@@ -71,7 +71,7 @@ namespace SourceGit.Views
                 var patch = new MenuItem();
                 patch.Header = App.Text("StashCM.SaveAsPatch");
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
-                patch.Click += async (_, e) =>
+                patch.Click += async (_, ev) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                     if (storageProvider == null)
@@ -86,7 +86,7 @@ namespace SourceGit.Views
                     if (storageFile != null)
                         await vm.SaveStashAsPathAsync(stash, storageFile.Path.LocalPath);
 
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var copy = new MenuItem();
@@ -173,10 +173,10 @@ namespace SourceGit.Views
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
-                copyFullPath.Click += async (_, e) =>
+                copyFullPath.Click += async (_, ev) =>
                 {
                     await App.CopyTextAsync(fullPath);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var menu = new ContextMenu();

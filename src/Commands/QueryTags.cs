@@ -34,8 +34,7 @@ namespace SourceGit.Commands
                 if (!string.IsNullOrEmpty(message) && message.Equals(name, StringComparison.Ordinal))
                     message = null;
 
-                ulong creactorDate = 0;
-                ulong.TryParse(subs[5], out creactorDate);
+                ulong.TryParse(subs[5], out var creatorDate);
 
                 tags.Add(new Models.Tag()
                 {
@@ -43,7 +42,7 @@ namespace SourceGit.Commands
                     IsAnnotated = subs[1].Equals("tag", StringComparison.Ordinal),
                     SHA = string.IsNullOrEmpty(subs[3]) ? subs[2] : subs[3],
                     Creator = Models.User.FindOrAdd(subs[4]),
-                    CreatorDate = creactorDate,
+                    CreatorDate = creatorDate,
                     Message = message,
                 });
             }

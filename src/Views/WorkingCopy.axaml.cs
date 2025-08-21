@@ -415,7 +415,7 @@ namespace SourceGit.Views
                         }
                         else
                         {
-                            var isRooted = change.Path.IndexOf('/') <= 0;
+                            var isRooted = change.Path!.IndexOf('/') <= 0;
                             var singleFile = new MenuItem();
                             singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
                             singleFile.Click += (_, e) =>
@@ -1150,7 +1150,7 @@ namespace SourceGit.Views
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) =>
                 {
-                    var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                    var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                     if (storageProvider == null)
                         return;
 

@@ -229,10 +229,10 @@ namespace SourceGit.Views
                 var copy = new MenuItem();
                 copy.Header = App.Text("Worktree.CopyPath");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                copy.Click += async (_, e) =>
+                copy.Click += async (_, ev) =>
                 {
                     await App.CopyTextAsync(worktree.FullPath);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copy);
@@ -459,10 +459,10 @@ namespace SourceGit.Views
                 reflog.Tag = "--reflog";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
                     reflog.Icon = App.CreateMenuIcon("Icons.Check");
-                reflog.Click += (_, e) =>
+                reflog.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.Reflog);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var firstParentOnly = new MenuItem();
@@ -470,10 +470,10 @@ namespace SourceGit.Views
                 firstParentOnly.Tag = "--first-parent";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
                     firstParentOnly.Icon = App.CreateMenuIcon("Icons.Check");
-                firstParentOnly.Click += (_, e) =>
+                firstParentOnly.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.FirstParentOnly);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var simplifyByDecoration = new MenuItem();
@@ -481,10 +481,10 @@ namespace SourceGit.Views
                 simplifyByDecoration.Tag = "--simplify-by-decoration";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
                     simplifyByDecoration.Icon = App.CreateMenuIcon("Icons.Check");
-                simplifyByDecoration.Click += (_, e) =>
+                simplifyByDecoration.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var order = new MenuItem();

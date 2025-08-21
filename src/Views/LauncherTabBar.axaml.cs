@@ -261,28 +261,28 @@ namespace SourceGit.Views
                 var close = new MenuItem();
                 close.Header = App.Text("PageTabBar.Tab.Close");
                 close.Tag = OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W";
-                close.Click += (_, e) =>
+                close.Click += (_, ev) =>
                 {
                     vm.CloseTab(page);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(close);
 
                 var closeOthers = new MenuItem();
                 closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
-                closeOthers.Click += (_, e) =>
+                closeOthers.Click += (_, ev) =>
                 {
                     vm.CloseOtherTabs();
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(closeOthers);
 
                 var closeRight = new MenuItem();
                 closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
-                closeRight.Click += (_, e) =>
+                closeRight.Click += (_, ev) =>
                 {
                     vm.CloseRightTabs();
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(closeRight);
 
@@ -302,10 +302,10 @@ namespace SourceGit.Views
                         var dupIdx = i;
                         var setter = new MenuItem();
                         setter.Header = icon;
-                        setter.Click += (_, e) =>
+                        setter.Click += (_, ev) =>
                         {
                             page.Node.Bookmark = dupIdx;
-                            e.Handled = true;
+                            ev.Handled = true;
                         };
                         bookmark.Items.Add(setter);
                     }
@@ -315,10 +315,10 @@ namespace SourceGit.Views
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
                     copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyPath.Click += async (_, e) =>
+                    copyPath.Click += async (_, ev) =>
                     {
                         await page.CopyPathAsync();
-                        e.Handled = true;
+                        ev.Handled = true;
                     };
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(copyPath);
@@ -429,7 +429,7 @@ namespace SourceGit.Views
         }
 
         private bool _pressedTab = false;
-        private Point _pressedTabPosition = new Point();
+        private Point _pressedTabPosition = new();
         private bool _startDragTab = false;
     }
 }

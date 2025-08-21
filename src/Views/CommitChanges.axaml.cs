@@ -14,7 +14,7 @@ namespace SourceGit.Views
         {
             e.Handled = true;
 
-            if (sender is not ChangeCollectionView view || DataContext is not ViewModels.CommitDetail vm)
+            if (sender is not ChangeCollectionView view)
                 return;
 
             var detailView = this.FindAncestorOfType<CommitDetail>();

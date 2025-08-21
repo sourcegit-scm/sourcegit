@@ -63,7 +63,7 @@ namespace SourceGit.Commands
 
             try
             {
-                using var proc = Process.Start(starter);
+                using var proc = Process.Start(starter)!;
                 await proc.StandardInput.WriteAsync(_patchBuilder.ToString());
                 proc.StandardInput.Close();
 
@@ -83,7 +83,7 @@ namespace SourceGit.Commands
             }
         }
 
-        private string _repo = "";
-        private StringBuilder _patchBuilder = new StringBuilder();
+        private readonly string _repo;
+        private readonly StringBuilder _patchBuilder = new();
     }
 }

@@ -9,7 +9,7 @@ namespace SourceGit.Commands
     {
         public static async Task RunAsync(string repo, string revision, string file, string saveTo)
         {
-            var dir = Path.GetDirectoryName(saveTo);
+            var dir = Path.GetDirectoryName(saveTo) ?? string.Empty;
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
@@ -42,7 +42,7 @@ namespace SourceGit.Commands
             {
                 try
                 {
-                    using var proc = Process.Start(starter);
+                    using var proc = Process.Start(starter)!;
 
                     if (input != null)
                     {
