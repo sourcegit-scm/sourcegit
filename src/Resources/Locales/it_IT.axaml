@@ -259,7 +259,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Scambia</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Evidenziazione Sintassi</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Avvolgimento delle Parole</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Abilita la navigazione a blocchi</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Apri nello Strumento di Merge</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Mostra Tutte le Righe</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Diminuisci Numero di Righe Visibili</x:String>

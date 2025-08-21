@@ -332,7 +332,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Intercambiar</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Resaltado de Sintaxis</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Ajuste de Línea</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Habilitar navegación en bloque</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Mostrar Todas las Líneas</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Disminuir Número de Líneas Visibles</x:String>

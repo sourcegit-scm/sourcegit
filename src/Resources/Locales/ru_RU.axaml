@@ -321,7 +321,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Подсветка синтаксиса </x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слов в строке</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Разрешить навигацию по блокам</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Открыть в инструменте слияния </x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Показывать все строки</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Меньше видимых строк</x:String>

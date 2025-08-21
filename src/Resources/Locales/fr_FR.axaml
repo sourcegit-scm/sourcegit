@@ -242,7 +242,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Permuter</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Coloration syntaxique</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Retour à la ligne</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Activer la navigation par blocs</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Ouvrir dans l'outil de fusion</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Voir toutes les lignes</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Réduit le nombre de ligne visibles</x:String>

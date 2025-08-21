@@ -332,7 +332,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交换比对双方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">语法高亮</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自动换行</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">启用基于变更块的跳转</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">使用外部合并工具查看</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">显示完整文件</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">减少可见的行数</x:String>
@@ -564,7 +563,6 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交详情页中显示子提交列表</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在提交路线图中显示标签</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
-  <x:String x:Key="Text.Preferences.General.UpdateBlockNavigationOnScroll" xml:space="preserve">启用基于变更块的跳转后，在变更对比页面滚动时更新当前高亮块</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">默认克隆路径</x:String>
