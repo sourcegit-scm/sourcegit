@@ -22,9 +22,7 @@ namespace SourceGit.ViewModels
                 {
                     Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
                     OnPropertyChanged();
-
-                    if (_isTextDiff)
-                        LoadContent();
+                    LoadContent();
                 }
             }
         }
