@@ -46,20 +46,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool UseBlockNavigation
-        {
-            get => Preferences.Instance.UseBlockNavigationInDiffView;
-            set
-            {
-                if (value != Preferences.Instance.UseBlockNavigationInDiffView)
-                {
-                    Preferences.Instance.UseBlockNavigationInDiffView = value;
-                    OnPropertyChanged();
-                    (Content as TextDiffContext)?.ResetBlockNavigation(value);
-                }
-            }
-        }
-
         public bool UseSideBySide
         {
             get => Preferences.Instance.UseSideBySideDiff;
@@ -156,8 +142,6 @@ namespace SourceGit.ViewModels
                     ctx = ctx.SwitchMode();
                     Content = ctx;
                 }
-
-                ctx.ResetBlockNavigation(UseBlockNavigation);
             }
         }
 
@@ -297,11 +281,10 @@ namespace SourceGit.ViewModels
                     {
                         IsTextDiff = true;
 
-                        var hasBlockNavigation = Preferences.Instance.UseBlockNavigationInDiffView;
                         if (Preferences.Instance.UseSideBySideDiff)
-                            Content = new TwoSideTextDiff(cur, hasBlockNavigation, _content as TwoSideTextDiff);
+                            Content = new TwoSideTextDiff(cur, _content as TwoSideTextDiff);
                         else
-                            Content = new CombinedTextDiff(cur, hasBlockNavigation, _content as CombinedTextDiff);
+                            Content = new CombinedTextDiff(cur, _content as CombinedTextDiff);
                     }
                     else
                     {

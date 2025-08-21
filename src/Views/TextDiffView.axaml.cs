@@ -221,8 +221,8 @@ namespace SourceGit.Views
                     return;
 
                 var changeBlock = _presenter.BlockNavigation?.GetCurrentBlock();
-                Brush changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
-                Pen changeBlockFG = new Pen(Brushes.Gray);
+                var changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
+                var changeBlockFG = new Pen(Brushes.Gray);
 
                 var lines = _presenter.GetLines();
                 var width = textView.Bounds.Width;
@@ -496,8 +496,17 @@ namespace SourceGit.Views
 
         public virtual void GotoFirstChange()
         {
-            var blockNavigation = BlockNavigation;
-            var prev = blockNavigation?.GotoFirst();
+            var first = BlockNavigation?.GotoFirst();
+            if (first != null)
+            {
+                TextArea.Caret.Line = first.Start;
+                ScrollToLine(first.Start);
+            }
+        }
+
+        public virtual void GotoPrevChange()
+        {
+            var prev = BlockNavigation?.GotoPrev();
             if (prev != null)
             {
                 TextArea.Caret.Line = prev.Start;
@@ -505,112 +514,19 @@ namespace SourceGit.Views
             }
         }
 
-        public virtual void GotoPrevChange()
-        {
-            var blockNavigation = BlockNavigation;
-            if (blockNavigation != null)
-            {
-                var prev = blockNavigation.GotoPrev();
-                if (prev != null)
-                {
-                    TextArea.Caret.Line = prev.Start;
-                    ScrollToLine(prev.Start);
-                }
-
-                return;
-            }
-
-            if (DataContext is not ViewModels.TextDiffContext { DisplayRange: { } range })
-                return;
-
-            var firstLineIdx = range.Start;
-            if (firstLineIdx <= 1)
-                return;
-
-            var lines = GetLines();
-            var firstLineType = lines[firstLineIdx].Type;
-            var prevLineType = lines[firstLineIdx - 1].Type;
-            var isChangeFirstLine = firstLineType != Models.TextDiffLineType.Normal && firstLineType != Models.TextDiffLineType.Indicator;
-            var isChangePrevLine = prevLineType != Models.TextDiffLineType.Normal && prevLineType != Models.TextDiffLineType.Indicator;
-            if (isChangeFirstLine && isChangePrevLine)
-            {
-                for (var i = firstLineIdx - 2; i >= 0; i--)
-                {
-                    var prevType = lines[i].Type;
-                    if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
-                    {
-                        ScrollToLine(i + 2);
-                        return;
-                    }
-                }
-            }
-
-            var findChange = false;
-            for (var i = firstLineIdx - 1; i >= 0; i--)
-            {
-                var prevType = lines[i].Type;
-                if (prevType == Models.TextDiffLineType.Normal || prevType == Models.TextDiffLineType.Indicator)
-                {
-                    if (findChange)
-                    {
-                        ScrollToLine(i + 2);
-                        return;
-                    }
-                }
-                else if (!findChange)
-                {
-                    findChange = true;
-                }
-            }
-        }
-
         public virtual void GotoNextChange()
         {
-            var blockNavigation = BlockNavigation;
-            if (blockNavigation != null)
+            var next = BlockNavigation?.GotoNext();
+            if (next != null)
             {
-                var next = blockNavigation.GotoNext();
-                if (next != null)
-                {
-                    TextArea.Caret.Line = next.Start;
-                    ScrollToLine(next.Start);
-                }
-
-                return;
-            }
-
-            if (DataContext is not ViewModels.TextDiffContext { DisplayRange: { } range })
-                return;
-
-            var lines = GetLines();
-            var lastLineIdx = range.End;
-            if (lastLineIdx >= lines.Count - 1)
-                return;
-
-            var lastLineType = lines[lastLineIdx].Type;
-            var findNormalLine = lastLineType == Models.TextDiffLineType.Normal || lastLineType == Models.TextDiffLineType.Indicator;
-            for (var idx = lastLineIdx + 1; idx < lines.Count; idx++)
-            {
-                var nextType = lines[idx].Type;
-                if (nextType is Models.TextDiffLineType.None or Models.TextDiffLineType.Added or Models.TextDiffLineType.Deleted)
-                {
-                    if (findNormalLine)
-                    {
-                        ScrollToLine(idx + 1);
-                        return;
-                    }
-                }
-                else if (!findNormalLine)
-                {
-                    findNormalLine = true;
-                }
+                TextArea.Caret.Line = next.Start;
+                ScrollToLine(next.Start);
             }
         }
 
         public virtual void GotoLastChange()
         {
-            var blockNavigation = BlockNavigation;
-            var next = blockNavigation?.GotoLast();
+            var next = BlockNavigation?.GotoLast();
             if (next != null)
             {
                 TextArea.Caret.Line = next.Start;
@@ -640,6 +556,7 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
+            TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.PointerEntered += OnTextViewPointerChanged;
             TextArea.TextView.PointerMoved += OnTextViewPointerChanged;
@@ -658,6 +575,7 @@ namespace SourceGit.Views
 
             TextArea.RemoveHandler(KeyDownEvent, OnTextAreaKeyDown);
 
+            TextArea.Caret.PositionChanged -= OnTextAreaCaretPositionChanged;
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.PointerEntered -= OnTextViewPointerChanged;
             TextArea.TextView.PointerMoved -= OnTextViewPointerChanged;
@@ -720,6 +638,11 @@ namespace SourceGit.Views
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private void OnTextAreaCaretPositionChanged(object sender, EventArgs e)
+        {
+            BlockNavigation?.UpdateByCaretPosition(TextArea?.Caret?.Line ?? 0);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -825,13 +748,6 @@ namespace SourceGit.Views
             }
 
             ctx.DisplayRange = new ViewModels.TextDiffDisplayRange(start, start + count);
-
-            if (ViewModels.Preferences.Instance.UpdateBlockNavigationOnScroll)
-            {
-                var changed = BlockNavigation?.AutoUpdate(start + 1, start + count) ?? false;
-                if (changed)
-                    TextArea?.TextView?.Redraw();
-            }
         }
 
         protected void TrySetChunk(ViewModels.TextDiffSelectedChunk chunk)
@@ -1356,7 +1272,7 @@ namespace SourceGit.Views
 
         private void OnBlockNavigationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("Current", StringComparison.Ordinal))
+            if ("Indicator".Equals(e.PropertyName, StringComparison.Ordinal))
                 TextArea?.TextView?.Redraw();
         }
 

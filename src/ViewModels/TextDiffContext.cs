@@ -5,15 +5,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public record TextDiffSelectedChunk(double y, double h, int start, int end, bool combined, bool isOldSide)
+    public record TextDiffSelectedChunk(double Y, double Height, int StartIdx, int EndIdx, bool Combined, bool IsOldSide)
     {
-        public double Y { get; set; } = y;
-        public double Height { get; set; } = h;
-        public int StartIdx { get; set; } = start;
-        public int EndIdx { get; set; } = end;
-        public bool Combined { get; set; } = combined;
-        public bool IsOldSide { get; set; } = isOldSide;
-
         public static bool IsChanged(TextDiffSelectedChunk oldValue, TextDiffSelectedChunk newValue)
         {
             if (newValue == null)
@@ -31,10 +24,8 @@ namespace SourceGit.ViewModels
         }
     }
 
-    public record TextDiffDisplayRange(int start, int end)
+    public record TextDiffDisplayRange(int Start, int End)
     {
-        public int Start { get; set; } = start;
-        public int End { get; set; } = end;
     }
 
     public class TextDiffContext : ObservableObject
@@ -66,14 +57,6 @@ namespace SourceGit.ViewModels
         {
             get => _selectedChunk;
             set => SetProperty(ref _selectedChunk, value);
-        }
-
-        public void ResetBlockNavigation(bool enabled)
-        {
-            if (!enabled)
-                BlockNavigation = null;
-            else if (_blockNavigation == null)
-                BlockNavigation = CreateBlockNavigation();
         }
 
         public (int, int) FindRangeByIndex(List<Models.TextDiffLine> lines, int lineIdx)
@@ -151,43 +134,37 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        public virtual BlockNavigation CreateBlockNavigation()
-        {
-            return new BlockNavigation(_data.Lines);
-        }
-
         protected Models.TextDiff _data = null;
         protected Vector _scrollOffset = Vector.Zero;
         protected BlockNavigation _blockNavigation = null;
-        protected TextDiffDisplayRange _displayRange = null;
-        protected TextDiffSelectedChunk _selectedChunk = null;
+
+        private TextDiffDisplayRange _displayRange = null;
+        private TextDiffSelectedChunk _selectedChunk = null;
     }
 
     public class CombinedTextDiff : TextDiffContext
     {
-        public CombinedTextDiff(Models.TextDiff diff, bool hasBlockNavigation, CombinedTextDiff previous = null)
+        public CombinedTextDiff(Models.TextDiff diff, CombinedTextDiff previous = null)
         {
             _data = diff;
+            _blockNavigation = new BlockNavigation(_data.Lines);
 
             if (previous != null && previous.File.Equals(File, StringComparison.Ordinal))
                 _scrollOffset = previous.ScrollOffset;
-
-            if (hasBlockNavigation)
-                _blockNavigation = CreateBlockNavigation();
         }
 
         public override TextDiffContext SwitchMode()
         {
-            return new TwoSideTextDiff(_data, _blockNavigation != null);
+            return new TwoSideTextDiff(_data);
         }
     }
 
     public class TwoSideTextDiff : TextDiffContext
     {
-        public List<Models.TextDiffLine> Old { get; } = new List<Models.TextDiffLine>();
-        public List<Models.TextDiffLine> New { get; } = new List<Models.TextDiffLine>();
+        public List<Models.TextDiffLine> Old { get; } = [];
+        public List<Models.TextDiffLine> New { get; } = [];
 
-        public TwoSideTextDiff(Models.TextDiff diff, bool hasBlockNavigation, TwoSideTextDiff previous = null)
+        public TwoSideTextDiff(Models.TextDiff diff, TwoSideTextDiff previous = null)
         {
             _data = diff;
 
@@ -210,12 +187,10 @@ namespace SourceGit.ViewModels
             }
 
             FillEmptyLines();
+            _blockNavigation = new BlockNavigation(Old);
 
             if (previous != null && previous.File.Equals(File, StringComparison.Ordinal))
                 _scrollOffset = previous._scrollOffset;
-
-            if (hasBlockNavigation)
-                _blockNavigation = CreateBlockNavigation();
         }
 
         public override bool IsSideBySide()
@@ -225,12 +200,7 @@ namespace SourceGit.ViewModels
 
         public override TextDiffContext SwitchMode()
         {
-            return new CombinedTextDiff(_data, _blockNavigation != null);
-        }
-
-        public override BlockNavigation CreateBlockNavigation()
-        {
-            return new BlockNavigation(Old);
+            return new CombinedTextDiff(_data);
         }
 
         public void ConvertsToCombinedRange(ref int startLine, ref int endLine, bool isOldSide)

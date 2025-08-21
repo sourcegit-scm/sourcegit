@@ -261,18 +261,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useFullTextDiff, value);
         }
 
-        public bool UseBlockNavigationInDiffView
-        {
-            get => _useBlockNavigationInDiffView;
-            set => SetProperty(ref _useBlockNavigationInDiffView, value);
-        }
-
-        public bool UpdateBlockNavigationOnScroll
-        {
-            get => _updateBlockNavigationOnScroll;
-            set => SetProperty(ref _updateBlockNavigationOnScroll, value);
-        }
-
         public int LFSImageActiveIdx
         {
             get => _lfsImageActiveIdx;
@@ -713,7 +701,7 @@ namespace SourceGit.ViewModels
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;
-        private LayoutInfo _layout = new LayoutInfo();
+        private LayoutInfo _layout = new();
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
@@ -734,8 +722,6 @@ namespace SourceGit.ViewModels
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
-        private bool _useBlockNavigationInDiffView = false;
-        private bool _updateBlockNavigationOnScroll = true;
         private int _lfsImageActiveIdx = 0;
         private bool _enableCompactFoldersInChangesTree = false;
 

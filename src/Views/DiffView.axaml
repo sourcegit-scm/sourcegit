@@ -37,6 +37,7 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"
+                    IsVisible="{Binding IsTextDiff}"
                     HotKey="{OnPlatform Ctrl+Alt+Home, macOS=⌘+Alt+Home}">
               <ToolTip.Tip>
                 <TextBlock>
@@ -45,12 +46,6 @@
                   <Run Text="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Button.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Path="UseBlockNavigation"/>
-                </MultiBinding>
-              </Button.IsVisible>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Top}"/>
             </Button>
 
@@ -69,25 +64,13 @@
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
             </Button>
 
-            <Border>
-              <Border.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Path="UseBlockNavigation"/>
-                </MultiBinding>
-              </Border.IsVisible>
-
-              <ContentControl Content="{Binding Content, Mode=OneWay}">
-                <ContentControl.DataTemplates>
-                  <DataTemplate DataType="vm:TextDiffContext">
-                    <ContentControl Content="{Binding BlockNavigation}"/>
-                  </DataTemplate>
-                  <DataTemplate DataType="vm:BlockNavigation">
-                    <TextBlock Classes="primary" Margin="0,0,0,0" FontSize="11" Text="{Binding Indicator}"/>
-                  </DataTemplate>
-                </ContentControl.DataTemplates>
-              </ContentControl>
-            </Border>
+            <ContentControl Content="{Binding Content, Mode=OneWay}" IsVisible="{Binding IsTextDiff}">
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="vm:TextDiffContext">
+                  <TextBlock Classes="primary" Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
 
             <Button Classes="icon_button"
                     Width="28"
@@ -107,6 +90,7 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
+                    IsVisible="{Binding IsTextDiff}"
                     HotKey="{OnPlatform Ctrl+Alt+End, macOS=⌘+Alt+End}">
               <ToolTip.Tip>
                 <TextBlock>
@@ -115,22 +99,8 @@
                   <Run Text="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Button.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Path="UseBlockNavigation"/>
-                </MultiBinding>
-              </Button.IsVisible>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Bottom}"/>
             </Button>
-
-            <ToggleButton Classes="line_path"
-                          Width="28"
-                          IsChecked="{Binding UseBlockNavigation, Mode=TwoWay}"
-                          IsVisible="{Binding IsTextDiff}"
-                          ToolTip.Tip="{DynamicResource Text.Diff.UseBlockNavigation}">
-              <Path Width="13" Height="13" Data="{StaticResource Icons.CodeBlock}" Margin="0,3,0,0"/>
-            </ToggleButton>
 
             <Button Classes="icon_button"
                     Width="28"
