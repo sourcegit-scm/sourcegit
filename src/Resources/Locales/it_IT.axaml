@@ -208,9 +208,9 @@
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Modalità di Merge Preferita</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">TRACCIAMENTO ISSUE</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Aggiungi una regola di esempio per Azure DevOps</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Aggiungi regola per Gerrit Change-Id Commit</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Aggiungi una regola di esempio per un Issue Gitee</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Aggiungi una regola di esempio per un Pull Request Gitee</x:String>
-  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Aggiungi regola per Gerrit Change-Id Commit</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Aggiungi una regola di esempio per GitHub</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Aggiungi una regola di esempio per Issue GitLab</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Aggiungi una regola di esempio per una Merge Request GitLab</x:String>
@@ -231,8 +231,8 @@
   <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Modifica Controlli Azione Personalizzata</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Valore Selezionato:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Quando selezionato, questo valore sarà usato negli argomenti della riga di comando</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Predefinito:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Descrizione:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Predefinito:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">È una Cartella:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Etichetta:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Opzioni:</x:String>
@@ -246,8 +246,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Trovato un commit vuoto! Vuoi procedere (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">STAGE DI TUTTO E COMMITTA</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Trovato un commit vuoto! Vuoi procedere (--allow-empty) o fare lo stage di tutto e committare?</x:String>
-  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">È necessario riavviare l'applicazione per applicare le modifiche.</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Riavvio Necessario</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">È necessario riavviare l'applicazione per applicare le modifiche.</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Guida Commit Convenzionali</x:String>
   <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Modifica Sostanziale:</x:String>
   <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Issue Chiusa:</x:String>
@@ -268,8 +268,8 @@
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nome Nuovo Branch:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Inserisci il nome del branch.</x:String>
   <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Gli spazi verranno rimpiazzati con dei trattini.</x:String>
-  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Sovrascrivi branch esistente</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Crea Branch Locale</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Sovrascrivi branch esistente</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Crea Tag...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Nuovo Tag Su:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Firma con GPG</x:String>
@@ -350,8 +350,8 @@
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destinazione:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Modifica Gruppo Selezionato</x:String>
   <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Modifica Repository Selezionato</x:String>
-  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Questo repository</x:String>
   <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Destinazione:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Questo repository</x:String>
   <x:String x:Key="Text.Fetch" xml:space="preserve">Recupera</x:String>
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Recupera da tutti i remoti</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Forza la sovrascrittura dei riferimenti locali</x:String>
@@ -444,8 +444,8 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Vai alla pagina precedente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Crea una nuova pagina</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Apri la finestra delle preferenze</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Cambia scheda attiva</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">Cambia workspace attivo</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Cambia scheda attiva</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Committa le modifiche in tsage</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Committa e invia le modifiche in stage</x:String>
@@ -487,8 +487,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Apri nel Browser</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERRORE</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVVISO</x:String>
-  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Schede</x:String>
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Schede</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Unisci Branch</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Personalizza messaggio di merge</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">In:</x:String>
@@ -498,11 +498,11 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit di tutte le modifiche</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategia:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Obiettivi:</x:String>
-  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Sposta Nodo Repository</x:String>
-  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleziona nodo padre per:</x:String>
   <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Sposta Sottomodulo</x:String>
   <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Sposta Verso:</x:String>
   <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Sottomodulo:</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Sposta Nodo Repository</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleziona nodo padre per:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nome:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git NON è configurato. Prima vai su [Preferenze] per configurarlo.</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Apri Cartella Dati App</x:String>
@@ -539,7 +539,6 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ASPETTO</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Larghezza della Tab Editor</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.EnableCompactFolders" xml:space="preserve">Abilita cartelle compatte nell'albero delle modifiche</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Dimensione Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Dimensione Font Predefinita</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Dimensione Font Editor</x:String>
@@ -737,10 +736,10 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Aggiornamento Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Non ci sono aggiornamenti disponibili.</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Imposta Branch del Sottomodulo</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Sottomodulo:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Attuale:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.New" xml:space="preserve">Cambia In:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.New.Tip" xml:space="preserve">Opzionale. Imposta al valore predefinito quando è vuoto.</x:String>
-  <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Sottomodulo:</x:String>
   <x:String x:Key="Text.SetUpstream" xml:space="preserve">Imposta il Branch </x:String>
   <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">Rimuovi upstream</x:String>
@@ -795,8 +794,8 @@
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">non inizializzato</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revisione cambiata</x:String>
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">non unito</x:String>
-  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Aggiorna</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">AUTORE TAG</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">DATA</x:String>
