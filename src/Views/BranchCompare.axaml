@@ -128,7 +128,8 @@
                                     EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                     Changes="{Binding VisibleChanges}"
                                     SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
-                                    ContextRequested="OnChangeContextRequested"/>
+                                    ContextRequested="OnChangeContextRequested"
+                                    KeyDown="OnChangeCollectionViewKeyDown"/>
           </Border>
 
           <!-- Loading Status Icon -->

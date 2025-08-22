@@ -9,11 +9,6 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject, IDisposable
     {
-        public string RepositoryPath
-        {
-            get => _repo.FullPath;
-        }
-
         public List<Models.Stash> Stashes
         {
             get => _stashes;
@@ -144,6 +139,11 @@ namespace SourceGit.ViewModels
         public void ClearSearchFilter()
         {
             SearchFilter = string.Empty;
+        }
+
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo.FullPath, path);
         }
 
         public void Apply(Models.Stash stash)

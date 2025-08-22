@@ -126,8 +126,8 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.StashesPage { SelectedChanges: { Count: 1 } selected } vm &&
                 sender is ChangeCollectionView view)
             {
-                var repo = vm.RepositoryPath;
                 var change = selected[0];
+                var fullPath = vm.GetAbsPath(change.Path);
 
                 var openWithMerger = new MenuItem();
                 openWithMerger.Header = App.Text("OpenInExternalMergeTool");
@@ -139,7 +139,6 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
-                var fullPath = Native.OS.GetAbsPath(repo, change.Path);
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
                 explore.Icon = App.CreateMenuIcon("Icons.Explore");
@@ -191,6 +190,26 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
+        }
+
+        private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.StashesPage vm)
+                return;
+
+            if (sender is not ChangeCollectionView { SelectedChanges: { Count: 1 } selectedChanges })
+                return;
+
+            var change = selectedChanges[0];
+            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
+            {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
+
+                e.Handled = true;
+            }
         }
     }
 }

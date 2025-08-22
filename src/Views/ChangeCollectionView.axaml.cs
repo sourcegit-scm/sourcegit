@@ -33,7 +33,7 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
-        protected override async void OnKeyDown(KeyEventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
         {
             if (SelectedItems is [ViewModels.ChangeTreeNode node])
             {
@@ -41,36 +41,6 @@ namespace SourceGit.Views
                     e.KeyModifiers == KeyModifiers.None)
                 {
                     this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.C &&
-                    e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
-                {
-                    var path = node.FullPath;
-
-                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                    {
-                        do
-                        {
-                            var repoView = this.FindAncestorOfType<Repository>();
-                            if (repoView is { DataContext: ViewModels.Repository repo })
-                            {
-                                path = Native.OS.GetAbsPath(repo.FullPath, path);
-                                break;
-                            }
-
-                            var branchCompareView = this.FindAncestorOfType<BranchCompare>();
-                            if (branchCompareView is { DataContext: ViewModels.BranchCompare branchCompare })
-                            {
-                                path = branchCompare.GetAbsPath(path);
-                                break;
-                            }
-
-                            // NOTE: if there is another window uses ChangeCollectionView, add it here!
-                        } while (false);
-                    }
-
-                    await App.CopyTextAsync(path);
                     e.Handled = true;
                 }
             }

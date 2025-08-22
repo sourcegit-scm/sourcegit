@@ -83,5 +83,25 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.BranchCompare vm)
+                return;
+
+            if (sender is not ChangeCollectionView { SelectedChanges: { Count: 1 } selectedChanges })
+                return;
+
+            var change = selectedChanges[0];
+            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
+            {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
+
+                e.Handled = true;
+            }
+        }
     }
 }

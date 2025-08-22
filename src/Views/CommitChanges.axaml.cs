@@ -1,4 +1,7 @@
+using System;
+
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -34,6 +37,27 @@ namespace SourceGit.Views
             {
                 var menu = detailView.CreateChangeContextMenu(changes[0]);
                 menu.Open(view);
+            }
+        }
+
+        private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.CommitDetail vm)
+                return;
+
+            if (sender is not ChangeCollectionView { SelectedChanges: { Count: 1 } selectedChanges })
+                return;
+
+            var change = selectedChanges[0];
+            if (e.Key == Key.C &&
+                e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
+
+                e.Handled = true;
             }
         }
     }
