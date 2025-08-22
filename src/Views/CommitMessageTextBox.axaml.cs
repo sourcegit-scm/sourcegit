@@ -179,6 +179,7 @@ namespace SourceGit.Views
             {
                 var repo = vm.Repository;
                 var menu = new ContextMenu();
+                menu.MaxWidth = 480;
 
                 var gitTemplate = await new Commands.Config(repo.FullPath).GetAsync("commit.template");
                 var templateCount = repo.Settings.CommitTemplates.Count;
