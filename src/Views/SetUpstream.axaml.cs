@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 
 namespace SourceGit.Views
 {
@@ -7,6 +9,7 @@ namespace SourceGit.Views
         public SetUpstream()
         {
             InitializeComponent();
+            TextSearch.SetTextBinding(RemoteBranchesComboBox, new Binding("Name"));
         }
     }
 }

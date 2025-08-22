@@ -18,6 +18,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.Local}"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
+                x:Name="LocalBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
@@ -58,6 +59,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.To}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
+                x:Name="RemoteBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"

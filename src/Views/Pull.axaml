@@ -46,6 +46,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Pull.Branch}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
+                x:Name="RemoteBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
