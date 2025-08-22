@@ -269,7 +269,7 @@ namespace SourceGit.Views
 
                         menu.Items.Add(item);
                     }
-                    
+
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
                     var clearHistoryItem = new MenuItem()
