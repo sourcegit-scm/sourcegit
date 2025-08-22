@@ -269,6 +269,21 @@ namespace SourceGit.Views
 
                         menu.Items.Add(item);
                     }
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    var clearHistoryItem = new MenuItem()
+                    {
+                        Header = App.Text("WorkingCopy.ClearCommitHistories"),
+                        Icon = App.CreateMenuIcon("Icons.Clear")
+                    };
+                    clearHistoryItem.Click += async (_, e) =>
+                    {
+                        await vm.ClearCommitMessageHistory();
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(clearHistoryItem);
                 }
 
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
