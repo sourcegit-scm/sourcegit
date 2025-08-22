@@ -199,10 +199,10 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
                         item.Icon = App.CreateMenuIcon("Icons.Code");
-                        item.Click += (_, e) =>
+                        item.Click += (_, ev) =>
                         {
                             vm.ApplyCommitMessageTemplate(template);
-                            e.Handled = true;
+                            ev.Handled = true;
                         };
                         menu.Items.Add(item);
                     }
@@ -224,11 +224,11 @@ namespace SourceGit.Views
                         var gitTemplateItem = new MenuItem();
                         gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
                         gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
-                        gitTemplateItem.Click += (_, e) =>
+                        gitTemplateItem.Click += (_, ev) =>
                         {
                             if (File.Exists(gitTemplate))
                                 vm.CommitMessage = File.ReadAllText(gitTemplate);
-                            e.Handled = true;
+                            ev.Handled = true;
                         };
                         menu.Items.Add(gitTemplateItem);
                     }
@@ -261,10 +261,10 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Header = header;
                         item.Icon = App.CreateMenuIcon("Icons.Histories");
-                        item.Click += (_, e) =>
+                        item.Click += (_, ev) =>
                         {
                             vm.CommitMessage = dup;
-                            e.Handled = true;
+                            ev.Handled = true;
                         };
 
                         menu.Items.Add(item);
@@ -272,15 +272,13 @@ namespace SourceGit.Views
 
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
-                    var clearHistoryItem = new MenuItem()
+                    var clearHistoryItem = new MenuItem();
+                    clearHistoryItem.Header = App.Text("WorkingCopy.ClearCommitHistories");
+                    clearHistoryItem.Icon = App.CreateMenuIcon("Icons.Clear");
+                    clearHistoryItem.Click += async (_, ev) =>
                     {
-                        Header = App.Text("WorkingCopy.ClearCommitHistories"),
-                        Icon = App.CreateMenuIcon("Icons.Clear")
-                    };
-                    clearHistoryItem.Click += async (_, e) =>
-                    {
-                        await vm.ClearCommitMessageHistory();
-                        e.Handled = true;
+                        await vm.ClearCommitMessageHistoryAsync();
+                        ev.Handled = true;
                     };
 
                     menu.Items.Add(clearHistoryItem);
@@ -324,10 +322,10 @@ namespace SourceGit.Views
                     var dup = service;
                     var item = new MenuItem();
                     item.Header = service.Name;
-                    item.Click += async (_, e) =>
+                    item.Click += async (_, ev) =>
                     {
                         await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, vm.Staged, t => vm.CommitMessage = t));
-                        e.Handled = true;
+                        ev.Handled = true;
                     };
 
                     menu.Items.Add(item);

@@ -606,13 +606,11 @@ namespace SourceGit.ViewModels
             CommitMessage = tmpl.Apply(_repo.CurrentBranch, _staged);
         }
 
-        public async Task ClearCommitMessageHistory()
+        public async Task ClearCommitMessageHistoryAsync()
         {
-            if (await App.AskConfirmAsync(App.Text("WorkingCopy.ConfirmClearHistories")))
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    _repo.Settings.CommitMessages.Clear();
-                });
+            var sure = await App.AskConfirmAsync(App.Text("WorkingCopy.ClearCommitHistories.Confirm"));
+            if (sure)
+                _repo.Settings.CommitMessages.Clear();
         }
 
         public async Task CommitAsync(bool autoStage, bool autoPush, Models.CommitCheckPassed checkPassed = Models.CommitCheckPassed.None)
