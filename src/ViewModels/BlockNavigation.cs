@@ -130,23 +130,23 @@ namespace SourceGit.ViewModels
                     return;
             }
 
+            _current = -1;
+
             for (var i = 0; i < _blocks.Count; i++)
             {
                 var block = _blocks[i];
-                if (block.End < caretLine)
-                    continue;
-
                 if (block.Start > caretLine)
-                    _current = i - 1;
-                else
-                    _current = i;
+                    break;
 
-                OnPropertyChanged(nameof(Indicator));
-                break;
+                _current = i;
+                if (block.End >= caretLine)
+                    break;
             }
+
+            OnPropertyChanged(nameof(Indicator));
         }
 
         private int _current;
-        private List<Block> _blocks = [];
+        private readonly List<Block> _blocks = [];
     }
 }
