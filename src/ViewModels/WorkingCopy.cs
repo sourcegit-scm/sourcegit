@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -246,15 +247,17 @@ namespace SourceGit.ViewModels
             _commitMessage = string.Empty;
         }
 
-        public void SetData(List<Models.Change> changes)
+        public void SetData(List<Models.Change> changes, CancellationToken cancellationToken)
         {
             if (!IsChanged(_cached, changes))
             {
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
 
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
                     UpdateDetail();
                     UpdateInProgressState();
                 });
@@ -308,6 +311,9 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() =>
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
