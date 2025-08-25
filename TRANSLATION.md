@@ -6,29 +6,31 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.65%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.54%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.65%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.54%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-80.07%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-79.98%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -76,6 +78,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -209,11 +212,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-99.54%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-99.42%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.WorkingCopy.ClearCommitHistories
@@ -221,7 +225,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-80.07%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-79.98%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -270,6 +274,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -402,7 +407,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-73.39%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-73.30%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -463,6 +468,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Children
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -641,9 +647,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.88%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-80.18%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.CommitMessageTextBox.PasteAndReplaceAll
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-80.09%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -692,6 +705,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -823,7 +837,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-81.34%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-81.24%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -871,6 +885,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
