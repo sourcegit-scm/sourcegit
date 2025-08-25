@@ -356,6 +356,26 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void PasteAndReplaceAllText(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var text = await App.GetClipboardTextAsync();
+                if (!string.IsNullOrEmpty(text))
+                {
+                    var parts = text.ReplaceLineEndings("\n").Split("\n", 2);
+                    var subject = parts[0];
+                    Text = parts.Length > 1 ? $"{subject}\n\n{parts[1].Trim()}" : subject;
+                }
+            }
+            catch
+            {
+                // Ignore exceptions.
+            }
+
+            e.Handled = true;
+        }
+
         private TextChangeWay _changingWay = TextChangeWay.None;
     }
 }

@@ -66,7 +66,7 @@
               Background="{DynamicResource Brush.Window}"
               BorderThickness="1,0,0,0"
               CornerRadius="0,0,4,4">
-        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*" Margin="0,4">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*" Margin="0,4">
           <Button Grid.Column="0"
                   Classes="icon_button"
                   Width="24"
@@ -105,7 +105,16 @@
             <Path Width="13" Height="13" Data="{StaticResource Icons.Copy}"/>
           </Button>
 
-          <StackPanel Grid.Column="4"
+          <Button Grid.Column="4"
+                  Classes="icon_button"
+                  Width="24"
+                  Margin="0,0,4,0" Padding="0"
+                  Click="PasteAndReplaceAllText"
+                  ToolTip.Tip="{DynamicResource Text.CommitMessageTextBox.PasteAndReplaceAll}">
+            <Path Width="13" Height="13" Data="{StaticResource Icons.Paste}"/>
+          </Button>
+
+          <StackPanel Grid.Column="5"
                       Margin="0,0,6,0"
                       HorizontalAlignment="Right"
                       VerticalAlignment="Center"

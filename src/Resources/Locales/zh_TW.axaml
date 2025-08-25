@@ -170,6 +170,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">詳細描述</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.PasteAndReplaceAll" xml:space="preserve">粘貼（替換所有內容）</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填寫提交訊息標題</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
