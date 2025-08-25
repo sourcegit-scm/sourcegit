@@ -530,6 +530,7 @@
   <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Name</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Entered value is the name to load API key from ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Enable Streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPEARANCE</x:String>

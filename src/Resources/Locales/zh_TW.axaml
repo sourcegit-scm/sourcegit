@@ -534,6 +534,7 @@
   <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">產生提交訊息提示詞</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名稱</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">從環境變數中（輸入為環境變數名稱）載入金鑰</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">伺服器</x:String>
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">啟用串流輸出</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外觀設定</x:String>

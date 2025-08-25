@@ -117,6 +117,12 @@ namespace SourceGit.Models
             set => SetProperty(ref _apiKey, value);
         }
 
+        public bool ReadApiKeyFromEnv
+        {
+            get => _readApiKeyFromEnv;
+            set => SetProperty(ref _readApiKeyFromEnv, value);
+        }
+
         public string Model
         {
             get => _model;
@@ -176,8 +182,9 @@ namespace SourceGit.Models
 
         public async Task ChatAsync(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
+            var finalKey = _readApiKeyFromEnv ? Environment.GetEnvironmentVariable(_apiKey) : _apiKey;
             var server = new Uri(_server);
-            var key = new ApiKeyCredential(_apiKey);
+            var key = new ApiKeyCredential(finalKey);
             var oaiClient = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
                 ? new AzureOpenAIClient(server, key)
                 : new OpenAIClient(key, new() { Endpoint = server });
@@ -220,6 +227,7 @@ namespace SourceGit.Models
         private string _name;
         private string _server;
         private string _apiKey;
+        private bool _readApiKeyFromEnv = false;
         private string _model;
         private bool _streaming = true;
         private string _analyzeDiffPrompt;

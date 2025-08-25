@@ -534,6 +534,7 @@
   <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">启用流式输出</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>

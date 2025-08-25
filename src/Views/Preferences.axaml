@@ -788,7 +788,10 @@
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Model, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
+                    <CheckBox Margin="0,4,0,0"
+                              Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
+                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>
                     <TextBox Height="120"
