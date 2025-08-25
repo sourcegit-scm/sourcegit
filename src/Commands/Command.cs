@@ -189,6 +189,19 @@ namespace SourceGit.Commands
                 start.Environment.Add("LANG", "C");
                 start.Environment.Add("LC_ALL", "C");
             }
+            else if (OperatingSystem.IsWindows())
+            {
+                // Use WSL git for WSL paths on Windows
+                var wsl = new Models.WSL() { Path = WorkingDirectory };
+                if (wsl.IsWSLPath())
+                {
+                    start.FileName = "wsl";
+                    start.Arguments = $"git {start.Arguments}";
+
+                    wsl.SetEnvironmentForProcess(start);
+                    selfExecFile = start.Environment["SSH_ASKPASS"];
+                }
+            }
 
             var builder = new StringBuilder();
             builder
