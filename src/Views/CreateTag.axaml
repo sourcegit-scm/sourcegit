@@ -41,13 +41,13 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateTag.Name}"/>
-      <TextBox Grid.Row="1" Grid.Column="1"
-               Height="26"
-               VerticalAlignment="Center"
-               CornerRadius="2"
-               Text="{Binding TagName, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+      <v:BranchOrTagNameTextBox Grid.Row="1" Grid.Column="1"
+                                Height="26"
+                                VerticalAlignment="Center"
+                                CornerRadius="2"
+                                Text="{Binding TagName, Mode=TwoWay}"
+                                Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"
+                                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

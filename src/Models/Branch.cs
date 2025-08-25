@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace SourceGit.Models
 {
@@ -30,7 +29,7 @@ namespace SourceGit.Models
         CommitterDate,
     }
 
-    public partial class Branch
+    public class Branch
     {
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -45,13 +44,5 @@ namespace SourceGit.Models
         public bool IsUpstreamGone { get; set; }
 
         public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
-
-        [GeneratedRegex(@"\s+")]
-        private static partial Regex REG_FIX_NAME();
-
-        public static string FixName(string name)
-        {
-            return REG_FIX_NAME().Replace(name, "-");
-        }
     }
 }

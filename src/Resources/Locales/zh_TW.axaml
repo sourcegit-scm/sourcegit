@@ -268,7 +268,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名稱:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">輸入分支名稱。</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">空格將以英文破折號取代</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本機分支</x:String>
   <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">允許覆寫現有分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新增標籤...</x:String>

@@ -189,7 +189,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新しいブランチの名前:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">ブランチの名前を入力</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">スペースはダッシュに置き換えられます。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">ローカルブランチを作成</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">タグを作成...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">付与されるコミット:</x:String>
