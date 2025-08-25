@@ -18,6 +18,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.Local}"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
+                x:Name="LocalBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
@@ -32,12 +33,6 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-
-        <ComboBox.ItemContainerTheme>
-          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
-          </ControlTheme>
-        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
@@ -64,6 +59,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.To}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
+                x:Name="RemoteBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
@@ -85,12 +81,6 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-
-        <ComboBox.ItemContainerTheme>
-          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
-          </ControlTheme>
-        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <CheckBox Grid.Row="3" Grid.Column="1"

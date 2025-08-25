@@ -37,6 +37,7 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"
+                    IsVisible="{Binding IsTextDiff}"
                     HotKey="{OnPlatform Ctrl+Alt+Home, macOS=⌘+Alt+Home}">
               <ToolTip.Tip>
                 <TextBlock>
@@ -45,12 +46,6 @@
                   <Run Text="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Button.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseBlockNavigationInDiffView" Mode="OneWay"/>
-                </MultiBinding>
-              </Button.IsVisible>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Top}"/>
             </Button>
 
@@ -69,16 +64,13 @@
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
             </Button>
 
-            <Border>
-              <Border.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseBlockNavigationInDiffView" Mode="OneWay"/>
-                </MultiBinding>
-              </Border.IsVisible>
-
-              <TextBlock x:Name="BlockNavigationIndicator" Classes="primary" Margin="0,0,0,0" FontSize="11" Text="-/-"/>
-            </Border>
+            <ContentControl Content="{Binding Content, Mode=OneWay}" IsVisible="{Binding IsTextDiff}">
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="vm:TextDiffContext">
+                  <TextBlock Classes="primary" Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
 
             <Button Classes="icon_button"
                     Width="28"
@@ -98,6 +90,7 @@
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
+                    IsVisible="{Binding IsTextDiff}"
                     HotKey="{OnPlatform Ctrl+Alt+End, macOS=⌘+Alt+End}">
               <ToolTip.Tip>
                 <TextBlock>
@@ -106,31 +99,15 @@
                   <Run Text="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Button.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseBlockNavigationInDiffView" Mode="OneWay"/>
-                </MultiBinding>
-              </Button.IsVisible>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Bottom}"/>
             </Button>
-
-            <ToggleButton Classes="line_path"
-                          Width="28"
-                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseBlockNavigationInDiffView, Mode=TwoWay}"
-                          IsVisible="{Binding IsTextDiff}"
-                          ToolTip.Tip="{DynamicResource Text.Diff.UseBlockNavigation}">
-              <Path Width="13" Height="13" Data="{StaticResource Icons.CodeBlock}" Margin="0,3,0,0"/>
-            </ToggleButton>
 
             <Button Classes="icon_button"
                     Width="28"
                     Command="{Binding IncrUnified}"
                     IsVisible="{Binding IsTextDiff}"
+                    IsEnabled="{Binding ShowEntireFile, Mode=OneWay, Converter={x:Static BoolConverters.Not}}"
                     ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
-              <Button.IsEnabled>
-                <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseFullTextDiff" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
-              </Button.IsEnabled>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Incr}"/>
             </Button>
 
@@ -142,7 +119,7 @@
               <Button.IsEnabled>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                   <Binding Path="UnifiedLines" Mode="OneWay" Converter="{x:Static c:IntConverters.IsGreaterThanFour}"/>
-                  <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseFullTextDiff" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
+                  <Binding Path="ShowEntireFile" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
                 </MultiBinding>
               </Button.IsEnabled>
               <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Decr}"/>
@@ -150,8 +127,7 @@
 
             <ToggleButton Classes="line_path"
                           Width="28"
-                          Click="OnUseFullTextDiffClicked"
-                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFullTextDiff, Mode=OneWay}"
+                          IsChecked="{Binding ShowEntireFile, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.All}">
               <Path Width="13" Height="13" Data="{StaticResource Icons.Lines.All}" Margin="0,3,0,0"/>
@@ -172,8 +148,8 @@
                           ToolTip.Tip="{DynamicResource Text.Diff.ToggleWordWrap}">
               <ToggleButton.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
-                  <Binding Path="IsTextDiff"/>
-                  <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseSideBySideDiff" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
+                  <Binding Path="IsTextDiff" Mode="OneWay"/>
+                  <Binding Path="UseSideBySide" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
                 </MultiBinding>
               </ToggleButton.IsVisible>
 
@@ -197,7 +173,7 @@
 
             <ToggleButton Classes="line_path"
                           Width="28" Height="18"
-                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSideBySideDiff, Mode=TwoWay}"
+                          IsChecked="{Binding UseSideBySide, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Layout}" Margin="0,2,0,0"/>
@@ -361,10 +337,8 @@
           </DataTemplate>
 
           <!-- Text Diff -->
-          <DataTemplate DataType="m:TextDiff">
-            <v:TextDiffView UseSideBySideDiff="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSideBySideDiff, Mode=OneWay}"
-                            UseBlockNavigation="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseBlockNavigationInDiffView, Mode=OneWay}"
-                            BlockNavigationChanged="OnBlockNavigationChanged"/>
+          <DataTemplate DataType="vm:TextDiffContext">
+            <v:TextDiffView SelectedChunk="{Binding SelectedChunk, Mode=OneWay}"/>
           </DataTemplate>
 
           <!-- Empty or only EOL changes -->

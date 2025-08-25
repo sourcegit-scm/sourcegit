@@ -96,7 +96,7 @@
                                           IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                           IsVisible="{Binding !IsBranch}"/>
 
-            <!-- Content Area (allows double-click) -->
+            <!-- Content Area (allows double-clicking) -->
             <Grid Grid.Column="1"
                   Background="Transparent"
                   ColumnDefinitions="18,*,Auto,Auto"

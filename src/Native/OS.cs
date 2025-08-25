@@ -110,7 +110,7 @@ namespace SourceGit.Native
             }
             else
             {
-                throw new Exception("Platform unsupported!!!");
+                throw new PlatformNotSupportedException();
             }
         }
 
@@ -124,7 +124,7 @@ namespace SourceGit.Native
             if (OperatingSystem.IsWindows())
             {
                 var execFile = Process.GetCurrentProcess().MainModule!.FileName;
-                var portableDir = Path.Combine(Path.GetDirectoryName(execFile), "data");
+                var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
                 if (Directory.Exists(portableDir))
                 {
                     DataDir = portableDir;
@@ -250,7 +250,7 @@ namespace SourceGit.Native
 
             try
             {
-                using var proc = Process.Start(start);
+                using var proc = Process.Start(start)!;
                 var rs = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
                 if (proc.ExitCode == 0 && !string.IsNullOrWhiteSpace(rs))

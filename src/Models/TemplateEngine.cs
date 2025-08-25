@@ -285,7 +285,7 @@ namespace SourceGit.Models
                 switch (c)
                 {
                     case ESCAPE:
-                        // allow to escape only }
+                        // allow to escape only right-brace
                         if (Peek() == VARIABLE_END)
                         {
                             esc = true;

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
-             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitChanges"
              x:DataType="vm:CommitDetail">
@@ -51,7 +50,8 @@
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleChanges}"
                                 SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
-                                ContextRequested="OnChangeContextRequested"/>
+                                ContextRequested="OnChangeContextRequested"
+                                KeyDown="OnChangeCollectionViewKeyDown"/>
       </Border>
 
       <!-- Summary -->
@@ -59,7 +59,7 @@
         <TextBlock Margin="4,0,0,0"
                    Foreground="{DynamicResource Brush.FG2}"
                    HorizontalAlignment="Left" VerticalAlignment="Center">
-          <Run Text="{Binding Changes, Converter={x:Static c:ListConverters.Count}, Mode=OneWay}" FontWeight="Bold"/>
+          <Run Text="{Binding Changes.Count, Mode=OneWay}" FontWeight="Bold"/>
           <Run Text="{DynamicResource Text.CommitDetail.Changes.Count}"/>
         </TextBlock>
       </Border>

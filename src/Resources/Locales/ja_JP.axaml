@@ -241,7 +241,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">スワップ</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">シンタックスハイライト</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">行の折り返し</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">ブロックナビゲーションを有効化</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">マージツールで開く</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">すべての行を表示</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">表示する行数を減らす</x:String>

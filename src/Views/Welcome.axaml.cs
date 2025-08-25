@@ -101,7 +101,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
+        private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs ev)
         {
             if (sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
@@ -204,7 +204,7 @@ namespace SourceGit.Views
                 menu.Open(grid);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
         private void OnPointerPressedTreeNode(object sender, PointerPressedEventArgs e)

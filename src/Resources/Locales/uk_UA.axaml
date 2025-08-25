@@ -246,7 +246,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Поміняти місцями</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Підсвітка синтаксису</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слів</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Увімкнути навігацію блоками</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Відкрити в інструменті злиття</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Показати всі рядки</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Зменшити кількість видимих рядків</x:String>

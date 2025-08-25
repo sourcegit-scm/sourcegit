@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -24,7 +25,8 @@ namespace SourceGit.Views
                 DataContext is ViewModels.RevisionFileTreeNode { IsFolder: true } node)
             {
                 var tree = this.FindAncestorOfType<RevisionFileTreeView>();
-                await tree?.ToggleNodeIsExpandedAsync(node);
+                if (tree != null)
+                    await tree.ToggleNodeIsExpandedAsync(node);
             }
 
             e.Handled = true;
@@ -117,7 +119,8 @@ namespace SourceGit.Views
                     (node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
                 {
                     var tree = this.FindAncestorOfType<RevisionFileTreeView>();
-                    await tree?.ToggleNodeIsExpandedAsync(node);
+                    if (tree != null)
+                        await tree.ToggleNodeIsExpandedAsync(node);
                     e.Handled = true;
                 }
                 else if (e.Key == Key.C &&
@@ -330,7 +333,7 @@ namespace SourceGit.Views
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm &&
+            if (DataContext is ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm &&
                 sender is Grid { DataContext: ViewModels.RevisionFileTreeNode { Backend: { } obj } } grid)
             {
                 var menu = obj.Type switch

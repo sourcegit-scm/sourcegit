@@ -169,9 +169,6 @@ namespace SourceGit.Views
 
         private void OnButtonActionClicked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.InteractiveRebase vm)
-                return;
-
             if (sender is not Button { DataContext: ViewModels.InteractiveRebaseItem item } button)
                 return;
 

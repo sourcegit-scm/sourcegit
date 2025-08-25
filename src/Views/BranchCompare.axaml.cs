@@ -64,10 +64,10 @@ namespace SourceGit.Views
                 copyFullPath.Header = App.Text("CopyFullPath");
                 copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
-                copyFullPath.Click += async (_, e) =>
+                copyFullPath.Click += async (_, ev) =>
                 {
                     await App.CopyTextAsync(Native.OS.GetAbsPath(repo, change.Path));
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(copyFullPath);
                 menu.Open(view);
@@ -82,6 +82,26 @@ namespace SourceGit.Views
                 vm.NavigateTo(block.Text);
 
             e.Handled = true;
+        }
+
+        private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.BranchCompare vm)
+                return;
+
+            if (sender is not ChangeCollectionView { SelectedChanges: { Count: 1 } selectedChanges })
+                return;
+
+            var change = selectedChanges[0];
+            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
+            {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
+
+                e.Handled = true;
+            }
         }
     }
 }

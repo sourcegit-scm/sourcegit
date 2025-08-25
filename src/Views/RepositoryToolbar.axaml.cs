@@ -16,7 +16,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OpenWithExternalTools(object sender, RoutedEventArgs e)
+        private void OpenWithExternalTools(object sender, RoutedEventArgs ev)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
@@ -100,7 +100,7 @@ namespace SourceGit.Views
                 }
 
                 menu.Open(button);
-                e.Handled = true;
+                ev.Handled = true;
             }
         }
 
@@ -185,7 +185,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
+        private void OpenGitFlowMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
             {
@@ -248,10 +248,10 @@ namespace SourceGit.Views
                 menu.Open(control);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
-        private void OpenGitLFSMenu(object sender, RoutedEventArgs e)
+        private void OpenGitLFSMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
             {
@@ -387,7 +387,7 @@ namespace SourceGit.Views
                 menu.Open(control);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
         private async void StartBisect(object sender, RoutedEventArgs e)
@@ -415,7 +415,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OpenCustomActionMenu(object sender, RoutedEventArgs e)
+        private void OpenCustomActionMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
             {
@@ -448,7 +448,7 @@ namespace SourceGit.Views
                 menu.Open(control);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
         private async void OpenGitLogs(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -246,15 +247,17 @@ namespace SourceGit.ViewModels
             _commitMessage = string.Empty;
         }
 
-        public void SetData(List<Models.Change> changes)
+        public void SetData(List<Models.Change> changes, CancellationToken cancellationToken)
         {
             if (!IsChanged(_cached, changes))
             {
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
 
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
                     UpdateDetail();
                     UpdateInProgressState();
                 });
@@ -308,6 +311,9 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() =>
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 _isLoadingData = true;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
@@ -417,7 +423,7 @@ namespace SourceGit.ViewModels
 
         public async Task SaveChangesToPatchAsync(List<Models.Change> changes, bool isUnstaged, string saveTo)
         {
-            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, isUnstaged, saveTo);
+            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, changes, isUnstaged, saveTo);
             if (succ)
                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
         }
@@ -604,6 +610,13 @@ namespace SourceGit.ViewModels
         public void ApplyCommitMessageTemplate(Models.CommitTemplate tmpl)
         {
             CommitMessage = tmpl.Apply(_repo.CurrentBranch, _staged);
+        }
+
+        public async Task ClearCommitMessageHistoryAsync()
+        {
+            var sure = await App.AskConfirmAsync(App.Text("WorkingCopy.ClearCommitHistories.Confirm"));
+            if (sure)
+                _repo.Settings.CommitMessages.Clear();
         }
 
         public async Task CommitAsync(bool autoStage, bool autoPush, Models.CommitCheckPassed checkPassed = Models.CommitCheckPassed.None)

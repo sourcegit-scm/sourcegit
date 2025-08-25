@@ -38,7 +38,6 @@ namespace SourceGit.ViewModels
         public CommitDetail Detail
         {
             get => _detail;
-            private set => SetProperty(ref _detail, value);
         }
 
         public DirHistories(Repository repo, string dir, string revision = null)

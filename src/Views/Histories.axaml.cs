@@ -188,9 +188,9 @@ namespace SourceGit.Views
             SetCurrentValue(IsScrollToTopVisibleProperty, startY >= rowHeight);
 
             var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
-            if (_lastGraphStartY != startY ||
-                _lastGraphClipWidth != clipWidth ||
-                _lastGraphRowHeight != rowHeight)
+            if (Math.Abs(_lastGraphStartY - startY) > 0.01 ||
+                Math.Abs(_lastGraphClipWidth - clipWidth) > 0.01 ||
+                Math.Abs(_lastGraphRowHeight - rowHeight) > 0.01)
             {
                 _lastGraphStartY = startY;
                 _lastGraphClipWidth = clipWidth;
@@ -292,8 +292,6 @@ namespace SourceGit.Views
                         repo.ShowPopup(new ViewModels.CreateTag(repo, commit));
                         e.Handled = true;
                     }
-
-                    return;
                 }
             }
         }
@@ -775,7 +773,7 @@ namespace SourceGit.Views
                     {
                         var folder = selected[0];
                         var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
-                        await repo.SaveCommitAsPatchAsync(commit, folderPath, 0);
+                        await repo.SaveCommitAsPatchAsync(commit, folderPath);
                     }
                 }
                 catch (Exception exception)

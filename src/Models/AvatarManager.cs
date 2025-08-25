@@ -190,9 +190,6 @@ namespace SourceGit.Models
                     image = Bitmap.DecodeToWidth(stream, 128);
                 }
 
-                if (image == null)
-                    return;
-
                 _resources[email] = image;
 
                 lock (_synclock)

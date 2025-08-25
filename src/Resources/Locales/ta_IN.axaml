@@ -241,7 +241,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">இடமாற்று</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">தொடரியல் சிறப்பம்சமாக்கல்</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">வரி சொல் மடக்கு</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">தடுப்பு-வழிசெலுத்தலை இயக்கு</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">ஒன்றிணை கருவியில் திற</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">அனைத்து வரிகளையும் காட்டு</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">தெரியும் வரிகளின் எண்ணிக்கையைக் குறை</x:String>

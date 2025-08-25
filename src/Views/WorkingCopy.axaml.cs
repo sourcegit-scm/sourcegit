@@ -113,6 +113,18 @@ namespace SourceGit.Views
                     vm.OpenWithDefaultEditor(vm.SelectedUnstaged[0]);
                     e.Handled = true;
                 }
+                else if (e.Key is Key.C &&
+                         e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                         vm.SelectedUnstaged is { Count: 1 })
+                {
+                    var change = vm.SelectedUnstaged[0];
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                        await App.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
+                    else
+                        await App.CopyTextAsync(change.Path);
+
+                    e.Handled = true;
+                }
             }
         }
 
@@ -132,6 +144,18 @@ namespace SourceGit.Views
                     vm.SelectedStaged is { Count: 1 })
                 {
                     vm.OpenWithDefaultEditor(vm.SelectedStaged[0]);
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.C &&
+                         e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                         vm.SelectedStaged is { Count: 1 })
+                {
+                    var change = vm.SelectedStaged[0];
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                        await App.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
+                    else
+                        await App.CopyTextAsync(change.Path);
+
                     e.Handled = true;
                 }
             }
@@ -415,7 +439,7 @@ namespace SourceGit.Views
                         }
                         else
                         {
-                            var isRooted = change.Path.IndexOf('/') <= 0;
+                            var isRooted = change.Path!.IndexOf('/') <= 0;
                             var singleFile = new MenuItem();
                             singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
                             singleFile.Click += (_, e) =>
@@ -1150,7 +1174,7 @@ namespace SourceGit.Views
                 patch.Icon = App.CreateMenuIcon("Icons.Diff");
                 patch.Click += async (_, e) =>
                 {
-                    var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                    var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                     if (storageProvider == null)
                         return;
 

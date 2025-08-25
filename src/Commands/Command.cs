@@ -48,8 +48,8 @@ namespace SourceGit.Commands
             proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
             proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
 
-            Process dummy = null;
-            var dummyProcLock = new object();
+            var captured = new CapturedProcess() { Process = proc };
+            var capturedLock = new object();
             try
             {
                 proc.Start();
@@ -57,13 +57,12 @@ namespace SourceGit.Commands
                 // Not safe, please only use `CancellationToken` in readonly commands.
                 if (CancellationToken.CanBeCanceled)
                 {
-                    dummy = proc;
                     CancellationToken.Register(() =>
                     {
-                        lock (dummyProcLock)
+                        lock (capturedLock)
                         {
-                            if (dummy is { HasExited: false })
-                                dummy.Kill();
+                            if (captured is { Process: { HasExited: false } })
+                                captured.Process.Kill();
                         }
                     });
                 }
@@ -89,12 +88,9 @@ namespace SourceGit.Commands
                 HandleOutput(e.Message, errs);
             }
 
-            if (dummy != null)
+            lock (capturedLock)
             {
-                lock (dummyProcLock)
-                {
-                    dummy = null;
-                }
+                captured.Process = null;
             }
 
             Log?.AppendLine(string.Empty);
@@ -116,7 +112,8 @@ namespace SourceGit.Commands
 
         protected Result ReadToEnd()
         {
-            using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
 
             try
             {
@@ -138,7 +135,8 @@ namespace SourceGit.Commands
 
         protected async Task<Result> ReadToEndAsync()
         {
-            using var proc = new Process() { StartInfo = CreateGitStartInfo(true) };
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
 
             try
             {
@@ -243,6 +241,11 @@ namespace SourceGit.Commands
             }
 
             errs.Add(line);
+        }
+
+        private class CapturedProcess
+        {
+            public Process Process { get; set; } = null;
         }
 
         [GeneratedRegex(@"\d+%")]

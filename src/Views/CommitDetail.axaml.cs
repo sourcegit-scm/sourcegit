@@ -17,7 +17,7 @@ namespace SourceGit.Views
 
         public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
         {
-            if (DataContext is not ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm)
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, node.FullPath);
@@ -98,7 +98,7 @@ namespace SourceGit.Views
 
         public ContextMenu CreateChangeContextMenu(Models.Change change)
         {
-            if (DataContext is not ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm)
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
             var openWithMerger = new MenuItem();
@@ -108,6 +108,16 @@ namespace SourceGit.Views
             openWithMerger.Click += (_, ev) =>
             {
                 vm.OpenChangeInMergeTool(change);
+                ev.Handled = true;
+            };
+
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("OpenWith");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = change.Index != Models.ChangeState.Deleted;
+            openWith.Click += async (_, ev) =>
+            {
+                await vm.OpenRevisionFileWithDefaultEditorAsync(change.Path);
                 ev.Handled = true;
             };
 
@@ -167,6 +177,7 @@ namespace SourceGit.Views
 
             var menu = new ContextMenu();
             menu.Items.Add(openWithMerger);
+            menu.Items.Add(openWith);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(history);
@@ -293,24 +304,30 @@ namespace SourceGit.Views
 
         private async void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail &&
-                sender is ListBox { SelectedItem: Models.Change change } &&
+            if (DataContext is not ViewModels.CommitDetail vm)
+                return;
+
+            if (sender is not ListBox { SelectedItem: Models.Change change })
+                return;
+
+            if (e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.Key == Key.C)
-                {
-                    var path = change.Path;
-                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                        path = detail.GetAbsPath(path);
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
 
-                    await App.CopyTextAsync(path);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.D && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                {
-                    detail.OpenChangeInMergeTool(change);
-                    e.Handled = true;
-                }
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.D &&
+                e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+            {
+                vm.OpenChangeInMergeTool(change);
+                e.Handled = true;
             }
         }
 
@@ -327,7 +344,7 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change } grid)
+            if (sender is Grid { DataContext: Models.Change change } grid)
                 CreateChangeContextMenu(change)?.Open(grid);
             e.Handled = true;
         }

@@ -8,11 +8,6 @@ namespace SourceGit.ViewModels
 {
     public class RevisionCompare : ObservableObject, IDisposable
     {
-        public string RepositoryPath
-        {
-            get => _repo;
-        }
-
         public bool IsLoading
         {
             get => _isLoading;
@@ -125,6 +120,11 @@ namespace SourceGit.ViewModels
             SelectedChanges = [];
             IsLoading = true;
             Refresh();
+        }
+
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo, path);
         }
 
         public void SaveAsPatch(string saveTo)
