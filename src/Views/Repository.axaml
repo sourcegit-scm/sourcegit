@@ -777,7 +777,7 @@
           </MultiBinding>
         </Border.IsVisible>
 
-        <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
+        <Grid ColumnDefinitions="Auto,*,Auto">
           <Path Grid.Column="0"
                 Margin="8,0,0,0"
                 Width="12" Height="12"
@@ -791,10 +791,10 @@
                 Fill="{DynamicResource Brush.FG2}"
                 IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
 
-          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.HistoriesFilters}">
+          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding Settings.HistoriesFilters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                <WrapPanel Orientation="Horizontal" ItemHeight="22"/>
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
@@ -804,7 +804,8 @@
                         Margin="0,0,6,0"
                         CornerRadius="12"
                         BorderThickness="1"
-                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}">
+                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}"
+                        VerticalAlignment="Center">
                   <StackPanel Orientation="Horizontal" Margin="8,0">
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
