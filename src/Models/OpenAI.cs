@@ -182,16 +182,19 @@ namespace SourceGit.Models
 
         public async Task ChatAsync(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
-            var finalKey = _readApiKeyFromEnv ? Environment.GetEnvironmentVariable(_apiKey) : _apiKey;
-            var server = new Uri(_server);
-            var key = new ApiKeyCredential(finalKey);
-            var oaiClient = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(server, key)
-                : new OpenAIClient(key, new() { Endpoint = server });
-            var client = oaiClient.GetChatClient(_model);
-            var messages = new List<ChatMessage>();
-            messages.Add(_model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt));
-            messages.Add(new UserChatMessage(question));
+            var key = _readApiKeyFromEnv ? Environment.GetEnvironmentVariable(_apiKey) : _apiKey;
+            var endPoint = new Uri(_server);
+            var credential = new ApiKeyCredential(key);
+            var client = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
+                ? new AzureOpenAIClient(endPoint, credential)
+                : new OpenAIClient(credential, new() { Endpoint = endPoint });
+
+            var chatClient = client.GetChatClient(_model);
+            var messages = new List<ChatMessage>()
+            {
+                _model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt),
+                new UserChatMessage(question),
+            };
 
             try
             {
@@ -199,7 +202,7 @@ namespace SourceGit.Models
 
                 if (_streaming)
                 {
-                    var updates = client.CompleteChatStreamingAsync(messages, null, cancellation);
+                    var updates = chatClient.CompleteChatStreamingAsync(messages, null, cancellation);
 
                     await foreach (var update in updates)
                     {
@@ -209,7 +212,7 @@ namespace SourceGit.Models
                 }
                 else
                 {
-                    var completion = await client.CompleteChatAsync(messages, null, cancellation);
+                    var completion = await chatClient.CompleteChatAsync(messages, null, cancellation);
 
                     if (completion.Value.Content.Count > 0)
                         rsp.Append(completion.Value.Content[0].Text);
