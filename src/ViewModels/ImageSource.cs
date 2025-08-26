@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -52,7 +53,12 @@ namespace SourceGit.ViewModels
             if (string.IsNullOrEmpty(lfs.Oid) || lfs.Size == 0)
                 return new ImageSource(null, 0);
 
-            var stream = await Commands.QueryFileContent.FromLFSAsync(repo, lfs.Oid, lfs.Size).ConfigureAwait(false);
+            var commonDir = await new Commands.QueryGitCommonDir(repo).GetResultAsync().ConfigureAwait(false);
+            var localFile = Path.Combine(commonDir, "lfs", "objects", lfs.Oid.Substring(0, 2), lfs.Oid.Substring(2, 2), lfs.Oid);
+            if (File.Exists(localFile))
+                return await FromFileAsync(localFile, decoder).ConfigureAwait(false);
+
+            await using var stream = await Commands.QueryFileContent.FromLFSAsync(repo, lfs.Oid, lfs.Size).ConfigureAwait(false);
             return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 

@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
             {
                 var source = await ImageSource.FromLFSObjectAsync(repo, lfs, decoder).ConfigureAwait(false);
                 var img = new Models.RevisionImageFile(file, source.Bitmap, source.Size);
-                Dispatcher.UIThread.Invoke(() => Image = img);
+                Dispatcher.UIThread.Post(() => Image = img);
             });
         }
 
