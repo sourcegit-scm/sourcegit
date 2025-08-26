@@ -50,25 +50,27 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote", false);
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote");
             }
             else if (node.Backend is Models.Branch branch)
             {
                 if (branch.IsCurrent)
-                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", true);
+                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", Brushes.Green);
+                else if (branch.IsLocal && !string.IsNullOrEmpty(branch.WorktreePath))
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", Brushes.Cyan);
                 else
-                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", false);
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
             }
             else
             {
                 if (node.IsExpanded)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open", false);
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
                 else
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder", false);
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder");
             }
         }
 
-        private void CreateContent(Thickness margin, string iconKey, bool highlight)
+        private void CreateContent(Thickness margin, string iconKey, IBrush fill = null)
         {
             if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
@@ -83,8 +85,8 @@ namespace SourceGit.Views
                 Data = geo,
             };
 
-            if (highlight)
-                path.Fill = Brushes.Green;
+            if (fill != null)
+                path.Fill = fill;
 
             Content = path;
         }

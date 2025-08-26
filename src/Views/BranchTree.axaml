@@ -43,19 +43,20 @@
               <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                   <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
-                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="8,0,0,0" Text="{Binding FriendlyName}"/>
-                  <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding !IsLocal}">
-                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Classes="primary" Margin="4,0" Foreground="White" VerticalAlignment="Center"/>
-                  </Border>
-                  <Border Background="Gray" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center">
-                    <Border.IsVisible>
+                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" Text="{Binding FriendlyName}"/>
+                  <TextBlock Classes="primary" FontSize="12" Margin="4,0" VerticalAlignment="Center">
+                    <TextBlock.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
                         <Binding Path="IsCurrent" Converter="{x:Static BoolConverters.Not}"/>
                         <Binding Path="WorktreePath" Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
                       </MultiBinding>
-                    </Border.IsVisible>
-                    
-                    <TextBlock Text="{Binding WorktreePath, Mode=OneWay}" FontSize="12" Classes="primary" Margin="4,0" Foreground="White" VerticalAlignment="Center"/>
+                    </TextBlock.IsVisible>
+                    <Run Text="("/>
+                    <Run Text="{Binding WorktreePath, Mode=OneWay}" TextDecorations="Underline"/>
+                    <Run Text=")"/>
+                  </TextBlock>
+                  <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding !IsLocal}">
+                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Classes="primary" Margin="4,0" Foreground="White" VerticalAlignment="Center"/>
                   </Border>
                 </StackPanel>
 
