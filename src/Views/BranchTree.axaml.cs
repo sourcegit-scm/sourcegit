@@ -57,7 +57,7 @@ namespace SourceGit.Views
                 if (branch.IsCurrent)
                     CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", Brushes.Green);
                 else if (branch.IsLocal && !string.IsNullOrEmpty(branch.WorktreePath))
-                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", Brushes.Cyan);
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", Brushes.DarkCyan);
                 else
                     CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
             }
