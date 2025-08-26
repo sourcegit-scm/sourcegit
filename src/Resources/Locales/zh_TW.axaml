@@ -864,6 +864,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交訊息記錄</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">沒有可套用的提交訊息範本</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">繞過 HOOKS 檢查</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">重設作者</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">署名</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暫存</x:String>

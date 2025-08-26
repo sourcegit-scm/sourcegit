@@ -71,6 +71,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableSignOffForCommit = value;
         }
 
+        public bool NoVerifyOnCommit
+        {
+            get => _repo.Settings.NoVerifyOnCommit;
+            set => _repo.Settings.NoVerifyOnCommit = value;
+        }
+
         public bool UseAmend
         {
             get => _useAmend;
@@ -667,14 +673,19 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
-            var signOff = _repo.Settings.EnableSignOffForCommit;
             var log = _repo.CreateLog("Commit");
             var succ = true;
             if (autoStage && _unstaged.Count > 0)
-                succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync().ConfigureAwait(false);
+                succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
 
             if (succ)
-                succ = await new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).RunAsync().ConfigureAwait(false);
+                succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
+                    .Use(log)
+                    .RunAsync()
+                    .ConfigureAwait(false);
 
             log.Complete();
 
