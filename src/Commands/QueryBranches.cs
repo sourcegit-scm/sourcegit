@@ -15,7 +15,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
+            Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)%00%(worktreepath)\"";
         }
 
         public async Task<List<Models.Branch>> GetResultAsync()
@@ -61,7 +61,7 @@ namespace SourceGit.Commands
         private Models.Branch ParseLine(string line)
         {
             var parts = line.Split('\0');
-            if (parts.Length != 6)
+            if (parts.Length != 7)
                 return null;
 
             var branch = new Models.Branch();
@@ -109,6 +109,7 @@ namespace SourceGit.Commands
                 parts[5].Equals("=", StringComparison.Ordinal))
                 branch.TrackStatus = new Models.BranchTrackStatus();
 
+            branch.WorktreePath = parts[6];
             return branch;
         }
     }

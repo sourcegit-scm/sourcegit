@@ -42,6 +42,7 @@ namespace SourceGit.Models
         public BranchTrackStatus TrackStatus { get; set; }
         public string Remote { get; set; }
         public bool IsUpstreamGone { get; set; }
+        public string WorktreePath { get; set; }
 
         public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
     }

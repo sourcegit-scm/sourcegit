@@ -633,22 +633,21 @@ namespace SourceGit.Views
             }
             else
             {
-                if (!repo.IsBare)
-                {
-                    var checkout = new MenuItem();
-                    checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
-                    checkout.Icon = App.CreateMenuIcon("Icons.Check");
-                    checkout.Click += async (_, e) =>
-                    {
-                        await repo.CheckoutBranchAsync(branch);
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(checkout);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                }
+                var hasNoWorktree = string.IsNullOrEmpty(branch.WorktreePath);
 
-                var worktree = repo.Worktrees.Find(x => x.Branch == branch.FullName);
-                if (upstream != null && worktree == null)
+                var checkout = new MenuItem();
+                checkout.Header = App.Text(hasNoWorktree ? "BranchCM.Checkout" : "BranchCM.SwitchToWorktree", branch.Name);
+                checkout.Icon = App.CreateMenuIcon("Icons.Check");
+                checkout.IsEnabled = !repo.IsBare || !hasNoWorktree;
+                checkout.Click += async (_, e) =>
+                {
+                    await repo.CheckoutBranchAsync(branch);
+                    e.Handled = true;
+                };
+                menu.Items.Add(checkout);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                if (upstream != null && hasNoWorktree)
                 {
                     var fastForward = new MenuItem();
                     fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
@@ -705,7 +704,7 @@ namespace SourceGit.Views
                     menu.Items.Add(rebase);
                 }
 
-                if (worktree == null)
+                if (hasNoWorktree)
                 {
                     var selectedCommit = repo.GetSelectedCommitInHistory();
                     if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))

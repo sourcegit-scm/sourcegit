@@ -74,6 +74,7 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">切换到 ${0}$ (工作树)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">不存在</x:String>
@@ -878,6 +879,7 @@
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">复制工作树路径</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">锁定工作树</x:String>
+  <x:String x:Key="Text.Worktree.Open" xml:space="preserve">打开工作树</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
 </ResourceDictionary>
