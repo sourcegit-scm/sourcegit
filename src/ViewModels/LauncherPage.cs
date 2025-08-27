@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
-using Avalonia.Media;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
