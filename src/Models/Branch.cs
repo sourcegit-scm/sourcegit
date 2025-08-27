@@ -44,6 +44,7 @@ namespace SourceGit.Models
         public bool IsUpstreamGone { get; set; }
         public string WorktreePath { get; set; }
 
+        public bool HasWorktree => !IsCurrent && !string.IsNullOrEmpty(WorktreePath);
         public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
     }
 }
