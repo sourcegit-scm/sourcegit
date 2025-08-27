@@ -12,7 +12,7 @@
     <ContentControl Content="{Binding}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="vm:CombinedTextDiff">
-          <Grid ColumnDefinitions="*,1,8">
+          <Grid ColumnDefinitions="*,1,12">
             <v:CombinedTextDiffPresenter Grid.Column="0"
                                          FileName="{Binding File}"
                                          Foreground="{DynamicResource Brush.FG1}"
