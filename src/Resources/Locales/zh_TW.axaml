@@ -551,6 +551,7 @@
   <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">僅在文字編輯器中使用等寬字型</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">佈景主題</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">自訂主題</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">允許滾動條自動隱藏</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">使用固定寬度的分頁標籤</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">對比/合併工具</x:String>

@@ -17,6 +17,7 @@
       <x:Double x:Key="ScrollBarSize">12</x:Double>
     </Style.Resources>
 
+    <Setter Property="AllowAutoHide" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseAutoHideScrollBars, Mode=OneWay}"/>
     <Setter Property="ShowDelay" Value="0:0:0.1"/>
     <Setter Property="HideDelay" Value="0:0:0.2"/>
   </Style>
