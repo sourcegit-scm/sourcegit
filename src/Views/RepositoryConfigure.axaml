@@ -374,8 +374,7 @@
                   <CheckBox Grid.Row="7" Grid.Column="1"
                             Margin="0,4,0,0"
                             Content="{DynamicResource Text.Configure.IssueTracker.Share}"
-                            IsChecked="{Binding IsShared, Mode=TwoWay}"
-                            Click="OnIssueTrackerIsSharedChanged"/>
+                            IsChecked="{Binding IsShared, Mode=TwoWay}"/>
                 </Grid>
               </DataTemplate>
             </ContentControl.DataTemplates>
