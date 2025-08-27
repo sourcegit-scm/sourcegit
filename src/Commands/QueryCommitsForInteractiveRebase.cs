@@ -12,7 +12,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}..HEAD";
+            Args = $"log --topo-order --right-only --max-parents=1 --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}..HEAD";
         }
 
         public async Task<List<Models.InteractiveCommit>> GetResultAsync()
