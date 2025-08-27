@@ -11,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -1405,7 +1406,9 @@ namespace SourceGit.Views
                 return;
 
             var line = Math.Max(1, Math.Min(total, (int)Math.Ceiling(pressedY * total / height)));
-            this.FindAncestorOfType<TextDiffView>()?.ScrollToLine(line);
+            if (this.Parent is Control parent)
+                parent.FindLogicalDescendantOfType<ThemedTextDiffPresenter>()?.ScrollToLine(line);
+
             e.Handled = true;
         }
 
@@ -1456,11 +1459,6 @@ namespace SourceGit.Views
         public TextDiffView()
         {
             InitializeComponent();
-        }
-
-        public void ScrollToLine(int line)
-        {
-            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.ScrollToLine(line);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
