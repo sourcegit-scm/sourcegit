@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
              xmlns:v="using:SourceGit.Views"
@@ -51,7 +52,11 @@
                 <ToolTip.Tip>
                   <Grid>
                     <TextBlock Text="{DynamicResource Text.Welcome}" IsVisible="{Binding !Node.IsRepository}"/>
-                    <TextBlock Text="{Binding Node.Id}" IsVisible="{Binding Node.IsRepository}"/>
+                    <StackPanel Orientation="Horizontal" IsVisible="{Binding Node.IsRepository}">
+                      <TextBlock Text="{Binding Node.Id}"/>
+                      <TextBlock Text="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToDesc}}"
+                                 Foreground="{DynamicResource Brush.FG2}"/>
+                    </StackPanel>
                   </Grid>
                 </ToolTip.Tip>
 
@@ -78,8 +83,8 @@
                              Width="8" Height="8"
                              Margin="0,0,6,0"
                              VerticalAlignment="Center"
-                             IsVisible="{Binding DirtyBrush, Converter={x:Static ObjectConverters.IsNotNull}}"
-                             Fill="{Binding DirtyBrush}"/>
+                             IsVisible="{Binding DirtyState, Converter={x:Static ObjectConverters.IsNotNull}, ConverterParameter={x:Static m:DirtyState.None}}"
+                             Fill="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToBrush}}"/>
 
                     <TextBlock Grid.Column="1"
                                Classes="primary"

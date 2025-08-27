@@ -339,6 +339,9 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
   <x:String x:Key="Text.DirHistories" xml:space="preserve">目錄内容變更歷史</x:String>
+  <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">未提交的本地變更</x:String>
+  <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">當前分支的 HEAD 與上游不匹配</x:String>
+  <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">已更新至最新</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本機未提交的變更。</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">變更:</x:String>
