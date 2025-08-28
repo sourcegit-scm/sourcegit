@@ -75,15 +75,14 @@ namespace SourceGit.Views
             }
             else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && items.Count == 1)
             {
-                var item = items[0];
                 if (e.Key == Key.Up)
                 {
-                    vm.MoveItemUp(item);
+                    vm.MoveItemUp(items[0]);
                     e.Handled = true;
                 }
                 else if (e.Key == Key.Down)
                 {
-                    vm.MoveItemDown(item);
+                    vm.MoveItemDown(items[0]);
                     e.Handled = true;
                 }
             }
@@ -99,6 +98,7 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+            IRItemListBox?.Focus();
         }
 
         public void OpenCommitMessageEditor(ViewModels.InteractiveRebaseItem item)
@@ -108,29 +108,21 @@ namespace SourceGit.Views
             dialog.ShowDialog(this);
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            var list = this.FindDescendantOfType<InteractiveRebaseListBox>();
-            list?.Focus();
-        }
-
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Close();
         }
 
-        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnRowsSelectionChanged(object _, SelectionChangedEventArgs e)
         {
-            if (DataContext is not ViewModels.InteractiveRebase vm || sender is not InteractiveRebaseListBox listBox)
+            if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
             var isFirstTimeHere = !_firstSelectionChangedHandled;
             if (isFirstTimeHere)
                 _firstSelectionChangedHandled = true;
 
-            var selected = listBox.SelectedItems ?? new List<object>();
+            var selected = IRItemListBox.SelectedItems ?? new List<object>();
             var items = new List<ViewModels.InteractiveRebaseItem>();
             foreach (var item in selected)
             {
@@ -270,20 +262,34 @@ namespace SourceGit.Views
             menuItem.Icon = new Ellipse() { Width = 14, Height = 14, Fill = iconBrush };
             menuItem.Header = header;
             menuItem.Tag = hotkey;
-            menuItem.Click += (_, e) =>
-            {
-                if (DataContext is ViewModels.InteractiveRebase vm)
-                {
-                    vm.ChangeAction([item], action);
-
-                    if (action == Models.InteractiveRebaseAction.Reword)
-                        OpenCommitMessageEditor(item);
-                }
-
-                e.Handled = true;
-            };
+            menuItem.Click += (_, __) => ChangeItemsAction(item, action);
 
             flyout.Items.Add(menuItem);
+        }
+
+        private void ChangeItemsAction(ViewModels.InteractiveRebaseItem target, Models.InteractiveRebaseAction action)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
+            }
+
+            if (!items.Contains(target))
+            {
+                items.Clear();
+                items.Add(target);
+            }
+
+            vm.ChangeAction(items, action);
+
+            if (items.Count == 1 && action == Models.InteractiveRebaseAction.Reword)
+                OpenCommitMessageEditor(items[0]);
         }
 
         private bool _firstSelectionChangedHandled = false;
