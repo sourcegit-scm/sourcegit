@@ -32,6 +32,7 @@ namespace SourceGit.ViewModels
         {
             _launcher = launcher;
             UpdateVisiblePages();
+            SelectedPage = launcher.ActivePage;
         }
 
         public void ClearFilter()

@@ -317,6 +317,8 @@ namespace SourceGit.Views
             {
                 var pref = ViewModels.Preferences.Instance;
                 var menu = new ContextMenu();
+                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+                menu.VerticalOffset = -6;
 
                 for (var i = 0; i < pref.Workspaces.Count; i++)
                 {

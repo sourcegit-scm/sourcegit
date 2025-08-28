@@ -21,7 +21,7 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnItemDoubleTapped(object sender, TappedEventArgs e)
+        private void OnItemTapped(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.WorkspaceSwitcher switcher)
             {
