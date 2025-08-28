@@ -27,24 +27,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.52%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.89%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.BranchCM.SwitchToWorktree
-- Text.BranchTree.Worktree
-- Text.CommitMessageTextBox.PasteAndReplaceAll
-- Text.DirtyState.HasLocalChanges
-- Text.DirtyState.HasPendingPullOrPush
-- Text.DirtyState.UpToDate
 - Text.Preferences.AI.ReadApiKeyFromEnv
-- Text.Preferences.Appearance.UseAutoHideScrollBars
-- Text.Preferences.General.ShowChangesPageByDefault
-- Text.WorkingCopy.ClearCommitHistories
-- Text.WorkingCopy.ClearCommitHistories.Confirm
-- Text.WorkingCopy.NoVerify
-- Text.Worktree.Open
 
 </details>
 
