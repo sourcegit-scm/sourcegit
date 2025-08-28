@@ -486,8 +486,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Apri nel Browser</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERRORE</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVVISO</x:String>
-  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Schede</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Unisci Branch</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Personalizza messaggio di merge</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">In:</x:String>

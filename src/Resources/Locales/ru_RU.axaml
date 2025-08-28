@@ -486,8 +486,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Открыть в браузере</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ОШИБКА</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
-  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Рабочие места</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Вкладки</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Рабочие места</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Влить ветку</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Изменить сообщение слияния</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>

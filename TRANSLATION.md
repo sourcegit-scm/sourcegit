@@ -151,8 +151,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
@@ -365,8 +365,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
@@ -585,8 +585,8 @@ This document shows the translation status of each locale file in the repository
 - Text.InProgress.Rebase.StoppedAt
 - Text.InProgress.Revert.Head
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.Merge.Source
 - Text.MergeMultiple
@@ -822,8 +822,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
@@ -1007,8 +1007,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo

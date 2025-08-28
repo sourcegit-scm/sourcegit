@@ -492,8 +492,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在瀏覽器中開啟連結</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">發生錯誤</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
-  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">頁面列表</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作區列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合併分支</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">編輯合併訊息</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目標分支:</x:String>
