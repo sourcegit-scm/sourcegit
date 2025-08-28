@@ -1741,15 +1741,10 @@ namespace SourceGit.ViewModels
 
         private object BuildVisibleTags()
         {
-            switch (_settings.TagSortMode)
-            {
-                case Models.TagSortMode.CreatorDate:
-                    _tags.Sort((l, r) => r.CreatorDate.CompareTo(l.CreatorDate));
-                    break;
-                default:
-                    _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
-                    break;
-            }
+            if (_settings.TagSortMode == Models.TagSortMode.CreatorDate)
+                _tags.Sort((l, r) => r.CreatorDate.CompareTo(l.CreatorDate));
+            else
+                _tags.Sort((l, r) => Models.NumericSort.Compare(l.Name, r.Name));
 
             var visible = new List<Models.Tag>();
             if (string.IsNullOrEmpty(_filter))

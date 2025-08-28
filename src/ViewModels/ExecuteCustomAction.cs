@@ -158,21 +158,13 @@ namespace SourceGit.ViewModels
         {
             foreach (var ctl in CustomAction.Controls)
             {
-                switch (ctl.Type)
+                ControlParameters.Add(ctl.Type switch
                 {
-                    case Models.CustomActionControlType.TextBox:
-                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                    case Models.CustomActionControlType.PathSelector:
-                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                    case Models.CustomActionControlType.CheckBox:
-                        ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
-                        break;
-                    case Models.CustomActionControlType.ComboBox:
-                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                }
+                    Models.CustomActionControlType.PathSelector => new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)),
+                    Models.CustomActionControlType.CheckBox => new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue),
+                    Models.CustomActionControlType.ComboBox => new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)),
+                    _ => new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue))
+                });
             }
         }
 

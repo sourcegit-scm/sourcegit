@@ -63,26 +63,8 @@ namespace SourceGit.Commands
 
             var change = new Models.Change() { Path = match.Groups[2].Value };
             var status = match.Groups[1].Value;
-
-            switch (status[0])
-            {
-                case 'M':
-                    change.Set(Models.ChangeState.Modified);
-                    outs.Add(change);
-                    break;
-                case 'A':
-                    change.Set(Models.ChangeState.Added);
-                    outs.Add(change);
-                    break;
-                case 'D':
-                    change.Set(Models.ChangeState.Deleted);
-                    outs.Add(change);
-                    break;
-                case 'C':
-                    change.Set(Models.ChangeState.Copied);
-                    outs.Add(change);
-                    break;
-            }
+            change.Set(Models.Change.ChangeStateFromCode(status[0]));
+            outs.Add(change);
         }
     }
 }
