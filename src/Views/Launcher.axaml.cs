@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
 
@@ -319,6 +320,18 @@ namespace SourceGit.Views
                 var menu = new ContextMenu();
                 menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
                 menu.VerticalOffset = -6;
+
+                var groupHeader = new TextBlock()
+                {
+                    Text = App.Text("Launcher.Workspaces"),
+                    FontWeight = FontWeight.Bold,
+                };
+
+                var workspaces = new MenuItem();
+                workspaces.Header = groupHeader;
+                workspaces.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+P" : "Ctrl+Shift+P";
+                workspaces.IsEnabled = false;
+                menu.Items.Add(workspaces);
 
                 for (var i = 0; i < pref.Workspaces.Count; i++)
                 {
