@@ -107,28 +107,25 @@ namespace SourceGit.ViewModels
             get;
         } = [];
 
-        public InteractiveRebaseItem SelectedItem
+        public InteractiveRebaseItem PreSelected
         {
-            get => _selectedItem;
-            set
-            {
-                if (SetProperty(ref _selectedItem, value))
-                    DetailContext.Commit = value?.Commit;
-            }
+            get => _preSelected;
+            private set => SetProperty(ref _preSelected, value);
         }
 
-        public CommitDetail DetailContext
+        public object Detail
         {
-            get;
+            get => _detail;
+            private set => SetProperty(ref _detail, value);
         }
 
         public InteractiveRebase(Repository repo, Models.Commit on, InteractiveRebasePrefill prefill = null)
         {
             _repo = repo;
+            _commitDetail = new CommitDetail(repo, false);
             Current = repo.CurrentBranch;
             On = on;
             IsLoading = true;
-            DetailContext = new CommitDetail(repo, false);
 
             Task.Run(async () =>
             {
@@ -157,10 +154,27 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
-                    SelectedItem = selected;
+                    PreSelected = selected;
                     IsLoading = false;
                 });
             });
+        }
+
+        public void SelectCommits(List<InteractiveRebaseItem> items)
+        {
+            if (items.Count == 0)
+            {
+                Detail = null;
+            }
+            else if (items.Count == 1)
+            {
+                _commitDetail.Commit = items[0].Commit;
+                Detail = _commitDetail;
+            }
+            else
+            {
+                Detail = new Models.Count(items.Count);
+            }
         }
 
         public void MoveItemUp(InteractiveRebaseItem item)
@@ -171,7 +185,7 @@ namespace SourceGit.ViewModels
                 var prev = Items[idx - 1];
                 Items.RemoveAt(idx - 1);
                 Items.Insert(idx, prev);
-                SelectedItem = item;
+                PreSelected = item;
                 UpdateItems();
             }
         }
@@ -184,20 +198,27 @@ namespace SourceGit.ViewModels
                 var next = Items[idx + 1];
                 Items.RemoveAt(idx + 1);
                 Items.Insert(idx, next);
-                SelectedItem = item;
+                PreSelected = item;
                 UpdateItems();
             }
         }
 
-        public void ChangeAction(InteractiveRebaseItem item, Models.InteractiveRebaseAction action)
+        public void ChangeAction(List<InteractiveRebaseItem> selected, Models.InteractiveRebaseAction action)
         {
-            if (!item.CanSquashOrFixup)
+            if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
             {
-                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
-                    return;
+                foreach (var item in selected)
+                {
+                    if (item.CanSquashOrFixup)
+                        item.Action = action;
+                }
+            }
+            else
+            {
+                foreach (var item in selected)
+                    item.Action = action;
             }
 
-            item.Action = action;
             UpdateItems();
         }
 
@@ -257,6 +278,8 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private bool _isLoading = false;
-        private InteractiveRebaseItem _selectedItem = null;
+        private InteractiveRebaseItem _preSelected = null;
+        private object _detail = null;
+        private CommitDetail _commitDetail = null;
     }
 }

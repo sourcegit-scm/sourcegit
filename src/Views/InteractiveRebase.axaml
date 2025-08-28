@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:c="using:SourceGit.Converters"
                     xmlns:v="using:SourceGit.Views"
@@ -55,8 +56,8 @@
                                     Focusable="True"
                                     Background="{DynamicResource Brush.Contents}"
                                     ItemsSource="{Binding Items}"
-                                    SelectionMode="Single"
-                                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                                    SelectionMode="Multiple"
+                                    SelectedItem="{Binding PreSelected, Mode=OneWay}"
                                     SelectionChanged="OnRowsSelectionChanged"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -176,21 +177,38 @@
                       BorderThickness="0,1,0,0"
                       BorderBrush="{DynamicResource Brush.Border2}"/>
 
-        <Grid Grid.Row="2">
-          <Path Width="128" Height="128"
-                Data="{StaticResource Icons.Detail}"
-                HorizontalAlignment="Center"
-                Fill="{DynamicResource Brush.FG2}"
-                IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
+        <ContentControl Grid.Row="2">
+          <ContentControl.Content>
+            <Binding Path="Detail">
+              <Binding.TargetNullValue>
+                <Path Width="128" Height="128"
+                      Data="{StaticResource Icons.Detail}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Fill="{DynamicResource Brush.FG2}"/>
+              </Binding.TargetNullValue>
+            </Binding>
+          </ContentControl.Content>
 
-          <ContentControl Content="{Binding DetailContext}" IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
-            <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:CommitDetail">
-                <v:CommitDetail/>
-              </DataTemplate>
-            </ContentControl.DataTemplates>
-          </ContentControl>
-        </Grid>
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Count">
+              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Path Width="128" Height="128"
+                      Data="{StaticResource Icons.Detail}"
+                      HorizontalAlignment="Center"
+                      Fill="{DynamicResource Brush.FG2}"/>
+
+                <TextBlock HorizontalAlignment="Center"
+                           Margin="0,16"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{DynamicResource Brush.FG2}"
+                           Text="{Binding Value, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+              </StackPanel>
+            </DataTemplate>
+            <DataTemplate DataType="vm:CommitDetail">
+              <v:CommitDetail/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
       </Grid>
     </Border>
 
