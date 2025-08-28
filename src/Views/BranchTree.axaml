@@ -57,7 +57,12 @@
                   <StackPanel Grid.Row="0" Grid.Column="1"
                               Margin="8,0,0,0"
                               Orientation="Horizontal">
-                    <TextBlock Text="{Binding Upstream, Mode=OneWay, Converter={x:Static c:StringConverters.ToFriendlyUpstream}}"/>
+                    <TextBlock Text="{Binding Upstream, Mode=OneWay, Converter={x:Static c:StringConverters.ToFriendlyUpstream}}"
+                               IsVisible="{Binding Upstream, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock IsVisible="{Binding Upstream, Mode=OneWay, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                      <Run Text="---"/>
+                      <Run Text="(none)" Foreground="{DynamicResource Brush.FG2}"/>
+                    </TextBlock>
 
                     <Border Background="OrangeRed" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding IsUpstreamGone}">
                       <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Classes="primary" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
