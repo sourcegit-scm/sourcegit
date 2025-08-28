@@ -33,31 +33,37 @@ namespace SourceGit.Views
             if (e.Key == Key.P)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Pick);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.E)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Edit);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.R)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Reword);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.S)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Squash);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.F)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Fixup);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.D)
             {
                 vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
