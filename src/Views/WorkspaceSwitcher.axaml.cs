@@ -32,14 +32,28 @@ namespace SourceGit.Views
 
         private void OnSearchBoxKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Down && WorkspaceListBox.ItemCount > 0)
+            if (WorkspaceListBox.ItemCount == 0)
+                return;
+
+            if (e.Key == Key.Down)
             {
                 WorkspaceListBox.Focus(NavigationMethod.Directional);
 
-                if (WorkspaceListBox.SelectedIndex < 0)
-                    WorkspaceListBox.SelectedIndex = 0;
-                else if (WorkspaceListBox.SelectedIndex < WorkspaceListBox.ItemCount)
+                if (WorkspaceListBox.SelectedIndex < WorkspaceListBox.ItemCount - 1)
                     WorkspaceListBox.SelectedIndex++;
+                else
+                    WorkspaceListBox.SelectedIndex = 0;
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Up)
+            {
+                WorkspaceListBox.Focus(NavigationMethod.Directional);
+
+                if (WorkspaceListBox.SelectedIndex > 0)
+                    WorkspaceListBox.SelectedIndex--;
+                else
+                    WorkspaceListBox.SelectedIndex = WorkspaceListBox.ItemCount - 1;
 
                 e.Handled = true;
             }
