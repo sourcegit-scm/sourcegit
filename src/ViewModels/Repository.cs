@@ -1182,7 +1182,7 @@ namespace SourceGit.ViewModels
                     if (_workingCopy != null)
                         _workingCopy.HasRemotes = remotes.Count > 0;
 
-                    var hasPendingPullOrPush = CurrentBranch?.TrackStatus.IsVisible ?? false;
+                    var hasPendingPullOrPush = CurrentBranch?.IsTrackStatusVisible ?? false;
                     GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !hasPendingPullOrPush);
                 });
             }, token);
@@ -1465,9 +1465,9 @@ namespace SourceGit.ViewModels
                 {
                     if (b.IsLocal &&
                         b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
-                        b.TrackStatus.Ahead.Count == 0)
+                        b.Ahead.Count == 0)
                     {
-                        if (b.TrackStatus.Behind.Count > 0)
+                        if (b.Behind.Count > 0)
                             ShowPopup(new CheckoutAndFastForward(this, b, branch));
                         else if (!b.IsCurrent)
                             await CheckoutBranchAsync(b);

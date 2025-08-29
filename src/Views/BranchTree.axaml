@@ -74,7 +74,7 @@
                              Margin="0,4,0,0"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
                              Text="{DynamicResource Text.BranchTree.Status}"
-                             IsVisible="{Binding TrackStatus.IsVisible, Mode=OneWay}"/>
+                             IsVisible="{Binding IsTrackStatusVisible, Mode=OneWay}"/>
                   <v:BranchTreeNodeTrackStatusTooltip Grid.Row="1" Grid.Column="1"
                                                       Margin="8,4,0,0"/>
 

@@ -183,11 +183,11 @@ namespace SourceGit.Views
 
             if (DataContext is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
             {
-                var status = branch.TrackStatus.ToString();
-                if (!string.IsNullOrEmpty(status))
+                var desc = branch.TrackStatusDescription;
+                if (!string.IsNullOrEmpty(desc))
                 {
                     _label = new FormattedText(
-                        status,
+                        desc,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface(FontFamily),
@@ -212,22 +212,18 @@ namespace SourceGit.Views
 
             Text = string.Empty;
 
-            if (DataContext is not Models.Branch { TrackStatus: { IsVisible: true } track })
+            if (DataContext is not Models.Branch { IsTrackStatusVisible: true } branch)
             {
                 SetCurrentValue(IsVisibleProperty, false);
                 return;
             }
 
-            if (track.Ahead.Count > 0)
-            {
-                Text = track.Behind.Count > 0 ?
-                    App.Text("BranchTree.AheadBehind", track.Ahead.Count, track.Behind.Count) :
-                    App.Text("BranchTree.Ahead", track.Ahead.Count);
-            }
-            else if (track.Behind.Count > 0)
-            {
-                Text = App.Text("BranchTree.Behind", track.Behind.Count);
-            }
+            var ahead = branch.Ahead.Count;
+            var behind = branch.Behind.Count;
+            if (ahead > 0)
+                Text = behind > 0 ? App.Text("BranchTree.AheadBehind", ahead, behind) : App.Text("BranchTree.Ahead", ahead);
+            else
+                Text = App.Text("BranchTree.Behind", behind);
 
             SetCurrentValue(IsVisibleProperty, true);
         }
@@ -638,7 +634,7 @@ namespace SourceGit.Views
                         var fastForward = new MenuItem();
                         fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                         fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                        fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
+                        fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
                         fastForward.Click += async (_, e) =>
                         {
                             if (repo.CanCreatePopup())
@@ -685,7 +681,7 @@ namespace SourceGit.Views
                     var fastForward = new MenuItem();
                     fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
+                    fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
                     fastForward.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -697,7 +693,7 @@ namespace SourceGit.Views
                     var fetchInto = new MenuItem();
                     fetchInto.Header = App.Text("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
                     fetchInto.Icon = App.CreateMenuIcon("Icons.Fetch");
-                    fetchInto.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                    fetchInto.IsEnabled = branch.Ahead.Count == 0;
                     fetchInto.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())

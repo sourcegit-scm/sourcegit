@@ -26,15 +26,16 @@ namespace SourceGit.Commands
                 return branches;
 
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            var remoteHeads = new Dictionary<string, string>();
+            var mismatched = new HashSet<string>();
+            var remotes = new Dictionary<string, Models.Branch>();
             foreach (var line in lines)
             {
-                var b = ParseLine(line);
+                var b = ParseLine(line, mismatched);
                 if (b != null)
                 {
                     branches.Add(b);
                     if (!b.IsLocal)
-                        remoteHeads.Add(b.FullName, b.Head);
+                        remotes.Add(b.FullName, b);
                 }
             }
 
@@ -42,15 +43,16 @@ namespace SourceGit.Commands
             {
                 if (b.IsLocal && !string.IsNullOrEmpty(b.Upstream))
                 {
-                    if (remoteHeads.TryGetValue(b.Upstream, out var upstreamHead))
+                    if (remotes.TryGetValue(b.Upstream, out var upstream))
                     {
                         b.IsUpstreamGone = false;
-                        b.TrackStatus ??= await new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).GetResultAsync().ConfigureAwait(false);
+
+                        if (mismatched.Contains(b.FullName))
+                            await new QueryTrackStatus(WorkingDirectory).GetResultAsync(b, upstream).ConfigureAwait(false);
                     }
                     else
                     {
                         b.IsUpstreamGone = true;
-                        b.TrackStatus ??= new Models.BranchTrackStatus();
                     }
                 }
             }
@@ -58,7 +60,7 @@ namespace SourceGit.Commands
             return branches;
         }
 
-        private Models.Branch ParseLine(string line)
+        private Models.Branch ParseLine(string line, HashSet<string> mismatched)
         {
             var parts = line.Split('\0');
             if (parts.Length != 7)
@@ -103,11 +105,11 @@ namespace SourceGit.Commands
             branch.Upstream = parts[4];
             branch.IsUpstreamGone = false;
 
-            if (!branch.IsLocal ||
-                string.IsNullOrEmpty(branch.Upstream) ||
-                string.IsNullOrEmpty(parts[5]) ||
-                parts[5].Equals("=", StringComparison.Ordinal))
-                branch.TrackStatus = new Models.BranchTrackStatus();
+            if (branch.IsLocal &&
+                !string.IsNullOrEmpty(branch.Upstream) &&
+                !string.IsNullOrEmpty(parts[5]) &&
+                !parts[5].Equals("=", StringComparison.Ordinal))
+                mismatched.Add(branch.FullName);
 
             branch.WorktreePath = parts[6];
             return branch;
