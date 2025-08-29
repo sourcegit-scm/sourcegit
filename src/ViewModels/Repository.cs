@@ -925,7 +925,15 @@ namespace SourceGit.ViewModels
 
         public void SetWatcherEnabled(bool enabled)
         {
-            _watcher?.SetEnabled(enabled);
+            var wsl = new Models.WSL() { Path = FullPath };
+            if (wsl.IsWSLPath())
+            {
+                _watcher?.MarkBranchDirtyManually();
+            }
+            else
+            {
+                _watcher?.SetEnabled(enabled);
+            }
         }
 
         public void MarkBranchesDirtyManually()
