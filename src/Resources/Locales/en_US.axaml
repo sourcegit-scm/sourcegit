@@ -74,7 +74,7 @@
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Set Tracking Branch...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Compare</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} commit(s) ahead</x:String>
-  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit(s) ahead, {1} commits behind</x:String>
+  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit(s) ahead, {1} commit(s) behind</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit(s) behind</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Invalid</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTE</x:String>
