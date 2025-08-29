@@ -737,6 +737,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">修補檔已成功儲存!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">掃描存放庫</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">頂層目錄:</x:String>
+  <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">掃描其他自訂目錄</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">檢查更新...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">軟體有版本更新:</x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">取得最新版本資訊失敗!</x:String>
