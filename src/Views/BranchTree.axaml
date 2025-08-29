@@ -49,7 +49,7 @@
                   </Border>
                 </StackPanel>
 
-                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0" IsVisible="{Binding IsLocal, Mode=OneWay}">
+                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0" IsVisible="{Binding IsLocal, Mode=OneWay}">
                   <TextBlock Grid.Row="0" Grid.Column="0"
                              Classes="info_label"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -73,9 +73,18 @@
                              Classes="info_label"
                              Margin="0,4,0,0"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                             Text="{DynamicResource Text.BranchTree.Status}"
+                             IsVisible="{Binding TrackStatus.IsVisible, Mode=OneWay}"/>
+                  <v:BranchTreeNodeTrackStatusTooltip Grid.Row="1" Grid.Column="1"
+                                                      Margin="8,4,0,0"/>
+
+                  <TextBlock Grid.Row="2" Grid.Column="0"
+                             Classes="info_label"
+                             Margin="0,4,0,0"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
                              Text="{DynamicResource Text.BranchTree.Worktree}"
                              IsVisible="{Binding HasWorktree}"/>
-                  <TextBlock Grid.Row="1" Grid.Column="1"
+                  <TextBlock Grid.Row="2" Grid.Column="1"
                              Margin="8,4,0,0"
                              Text="{Binding WorktreePath, Mode=OneWay}"
                              IsVisible="{Binding HasWorktree}"/>

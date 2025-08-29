@@ -202,6 +202,37 @@ namespace SourceGit.Views
         private FormattedText _label = null;
     }
 
+    public class BranchTreeNodeTrackStatusTooltip : TextBlock
+    {
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            Text = string.Empty;
+
+            if (DataContext is not Models.Branch { TrackStatus: { IsVisible: true } track })
+            {
+                SetCurrentValue(IsVisibleProperty, false);
+                return;
+            }
+
+            if (track.Ahead.Count > 0)
+            {
+                Text = track.Behind.Count > 0 ?
+                    App.Text("BranchTree.AheadBehind", track.Ahead.Count, track.Behind.Count) :
+                    App.Text("BranchTree.Ahead", track.Ahead.Count);
+            }
+            else if (track.Behind.Count > 0)
+            {
+                Text = App.Text("BranchTree.Behind", track.Behind.Count);
+            }
+
+            SetCurrentValue(IsVisibleProperty, true);
+        }
+    }
+
     public partial class BranchTree : UserControl
     {
         public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
