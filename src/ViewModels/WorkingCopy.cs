@@ -664,8 +664,12 @@ namespace SourceGit.ViewModels
             {
                 if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    await App.ShowDialog(new ConfirmEmptyCommit(this, autoPush, _cached.Count));
-                    return;
+                    var rs = await App.AskConfirmEmptyCommitAsync(_cached.Count > 0);
+                    if (rs == Models.ConfirmEmptyCommitResult.Cancel)
+                        return;
+
+                    if (rs == Models.ConfirmEmptyCommitResult.StageAllAndCommit)
+                        autoStage = true;
                 }
             }
 

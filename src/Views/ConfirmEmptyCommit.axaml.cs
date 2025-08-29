@@ -9,25 +9,19 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private async void StageAllThenCommit(object _1, RoutedEventArgs _2)
+        private void StageAllThenCommit(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is ViewModels.ConfirmEmptyCommit vm)
-                await vm.StageAllThenCommitAsync();
-
-            Close();
+            Close(Models.ConfirmEmptyCommitResult.StageAllAndCommit);
         }
 
-        private async void Continue(object _1, RoutedEventArgs _2)
+        private void Continue(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is ViewModels.ConfirmEmptyCommit vm)
-                await vm.ContinueAsync();
-
-            Close();
+            Close(Models.ConfirmEmptyCommitResult.CreateEmptyCommit);
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
-            Close();
+            Close(Models.ConfirmEmptyCommitResult.Cancel);
         }
     }
 }
