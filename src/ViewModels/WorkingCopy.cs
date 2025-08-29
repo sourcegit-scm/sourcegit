@@ -625,7 +625,7 @@ namespace SourceGit.ViewModels
                 _repo.Settings.CommitMessages.Clear();
         }
 
-        public async Task CommitAsync(bool autoStage, bool autoPush, Models.CommitCheckPassed checkPassed = Models.CommitCheckPassed.None)
+        public async Task CommitAsync(bool autoStage, bool autoPush)
         {
             if (string.IsNullOrWhiteSpace(_commitMessage))
                 return;
@@ -642,25 +642,23 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < Models.CommitCheckPassed.DetachedHead)
+            if (_repo.CurrentBranch is { IsDetachedHead: true })
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
                 var sure = await App.AskConfirmAsync(msg);
-                if (sure)
-                    await CommitAsync(autoStage, autoPush, Models.CommitCheckPassed.DetachedHead);
-                return;
+                if (!sure)
+                    return;
             }
 
-            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < Models.CommitCheckPassed.Filter)
+            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count)
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
                 var sure = await App.AskConfirmAsync(msg);
-                if (sure)
-                    await CommitAsync(autoStage, autoPush, Models.CommitCheckPassed.Filter);
-                return;
+                if (!sure)
+                    return;
             }
 
-            if (checkPassed < Models.CommitCheckPassed.FileCount && !_useAmend)
+            if (!_useAmend)
             {
                 if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
