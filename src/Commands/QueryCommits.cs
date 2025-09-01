@@ -18,40 +18,39 @@ namespace SourceGit.Commands
 
         public QueryCommits(string repo, string filter, Models.CommitSearchMethod method, bool onlyCurrentBranch)
         {
-            string search = onlyCurrentBranch ? string.Empty : "--branches --remotes ";
+            var builder = new StringBuilder();
+            builder.Append("log -1000 --date-order --no-show-signature --decorate=full --format=%H%x00%P%x00%D%x00%aN±%aE%x00%at%x00%cN±%cE%x00%ct%x00%s ");
+
+            if (!onlyCurrentBranch)
+                builder.Append("--branches --remotes ");
 
             if (method == Models.CommitSearchMethod.ByAuthor)
             {
-                search += $"-i --author={filter.Quoted()}";
+                builder.Append("-i --author=").Append(filter.Quoted());
             }
             else if (method == Models.CommitSearchMethod.ByCommitter)
             {
-                search += $"-i --committer={filter.Quoted()}";
+                builder.Append("-i --committer=").Append(filter.Quoted());
             }
             else if (method == Models.CommitSearchMethod.ByMessage)
             {
-                var argsBuilder = new StringBuilder();
-                argsBuilder.Append(search);
-
                 var words = filter.Split([' ', '\t', '\r'], StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
-                    argsBuilder.Append("--grep=").Append(word.Trim().Quoted()).Append(' ');
-                argsBuilder.Append("--all-match -i");
-
-                search = argsBuilder.ToString();
+                    builder.Append("--grep=").Append(word.Trim().Quoted()).Append(' ');
+                builder.Append("--all-match -i");
             }
             else if (method == Models.CommitSearchMethod.ByPath)
             {
-                search += $"-- {filter.Quoted()}";
+                builder.Append("-- ").Append(filter.Quoted());
             }
             else
             {
-                search = $"-G{filter.Quoted()}";
+                builder.Append("-G").Append(filter.Quoted());
             }
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log -1000 --date-order --no-show-signature --decorate=full --format=%H%x00%P%x00%D%x00%aN±%aE%x00%at%x00%cN±%cE%x00%ct%x00%s {search}";
+            Args = builder.ToString();
             _findFirstMerged = false;
         }
 
@@ -87,7 +86,20 @@ namespace SourceGit.Commands
                 await proc.WaitForExitAsync().ConfigureAwait(false);
 
                 if (_findFirstMerged && !_isHeadFound && commits.Count > 0)
-                    await MarkFirstMergedAsync(commits).ConfigureAwait(false);
+                {
+                    var set = await new QueryCurrentBranchCommitHashes(WorkingDirectory, commits[^1].CommitterTime)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    foreach (var c in commits)
+                    {
+                        if (set.Contains(c.SHA))
+                        {
+                            c.IsMerged = true;
+                            break;
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -95,27 +107,6 @@ namespace SourceGit.Commands
             }
 
             return commits;
-        }
-
-        private async Task MarkFirstMergedAsync(List<Models.Commit> commits)
-        {
-            Args = $"log --since={commits[^1].CommitterTimeStr.Quoted()} --format=\"%H\"";
-
-            var rs = await ReadToEndAsync().ConfigureAwait(false);
-            var shas = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            if (shas.Length == 0)
-                return;
-
-            var set = new HashSet<string>(shas);
-
-            foreach (var c in commits)
-            {
-                if (set.Contains(c.SHA))
-                {
-                    c.IsMerged = true;
-                    break;
-                }
-            }
         }
 
         private bool _findFirstMerged = false;

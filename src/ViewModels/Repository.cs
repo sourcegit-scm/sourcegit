@@ -905,14 +905,38 @@ namespace SourceGit.ViewModels
                         var commit = await new Commands.QuerySingleCommit(FullPath, _searchCommitFilter)
                             .GetResultAsync()
                             .ConfigureAwait(false);
+
+                        commit.IsMerged = await new Commands.IsAncestor(FullPath, commit.SHA, "HEAD")
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
+
                         visible.Add(commit);
                     }
                 }
-                else
+                else if (_onlySearchCommitsInCurrentBranch)
                 {
-                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch)
+                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, true)
                         .GetResultAsync()
                         .ConfigureAwait(false);
+
+                    foreach (var c in visible)
+                        c.IsMerged = true;
+                }
+                else
+                {
+                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, false)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    if (visible.Count > 0)
+                    {
+                        var set = await new Commands.QueryCurrentBranchCommitHashes(FullPath, visible[^1].CommitterTime)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
+
+                        foreach (var c in visible)
+                            c.IsMerged = set.Contains(c.SHA);
+                    }
                 }
 
                 Dispatcher.UIThread.Post(() =>
