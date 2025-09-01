@@ -242,6 +242,9 @@ namespace SourceGit.ViewModels
 
         public async Task CheckoutBranchByCommitAsync(Models.Commit commit)
         {
+            if (commit == null)
+                return;
+
             if (commit.IsCurrentHead)
                 return;
 
@@ -265,7 +268,7 @@ namespace SourceGit.ViewModels
                         continue;
 
                     var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
-                    if (lb.Ahead.Count == 0)
+                    if (lb != null && lb.Behind.Count > 0 && lb.Ahead.Count == 0)
                     {
                         if (_repo.CanCreatePopup())
                             _repo.ShowPopup(new CheckoutAndFastForward(_repo, lb, rb));
