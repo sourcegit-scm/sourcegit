@@ -60,10 +60,21 @@ namespace SourceGit.ViewModels
             private set;
         } = false;
 
+        public Models.Change Change 
+        {
+            get => _change;
+        }
+
+        public Repository Repository 
+        {
+            get => _repo;
+        }
+
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
             _wc = wc;
             _change = change;
+            _repo = repo;
 
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
             if (!isSubmodule && (_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified))
@@ -119,5 +130,6 @@ namespace SourceGit.ViewModels
 
         private WorkingCopy _wc = null;
         private Models.Change _change = null;
+        private Repository _repo = null;
     }
 }
