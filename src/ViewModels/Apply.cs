@@ -43,7 +43,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Apply patch...";
 
             var log = _repo.CreateLog("Apply Patch");
@@ -54,7 +54,6 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

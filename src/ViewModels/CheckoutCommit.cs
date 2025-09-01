@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Checkout Commit '{Commit.SHA}' ...";
 
             var log = _repo.CreateLog("Checkout Commit");
@@ -49,10 +49,7 @@ namespace SourceGit.ViewModels
                     var msg = App.Text("Checkout.WarnLostCommits");
                     var shouldContinue = await App.AskConfirmAsync(msg);
                     if (!shouldContinue)
-                    {
-                        _repo.SetWatcherEnabled(true);
                         return true;
-                    }
                 }
             }
 
@@ -70,7 +67,6 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
-                        _repo.SetWatcherEnabled(true);
                         return false;
                     }
 
@@ -100,7 +96,6 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

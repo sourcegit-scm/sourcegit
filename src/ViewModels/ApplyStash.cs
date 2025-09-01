@@ -30,7 +30,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Applying stash: {Stash.Name}";
 
             var log = _repo.CreateLog("Apply Stash");
@@ -40,13 +40,21 @@ namespace SourceGit.ViewModels
                 .Use(log)
                 .ApplyAsync(Stash.Name, RestoreIndex);
 
-            if (succ && DropAfterApply)
-                await new Commands.Stash(_repo.FullPath)
-                    .Use(log)
-                    .DropAsync(Stash.Name);
+            if (succ)
+            {
+                _repo.MarkWorkingCopyDirtyManually();
+
+                if (DropAfterApply)
+                {
+                    await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .DropAsync(Stash.Name);
+
+                    _repo.MarkStashesDirtyManually();
+                }
+            }
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

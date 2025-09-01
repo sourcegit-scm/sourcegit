@@ -52,7 +52,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Stash changes ...";
 
             var log = _repo.CreateLog("Stash Local Changes");
@@ -103,7 +103,7 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
+            _repo.MarkStashesDirtyManually();
             return succ;
         }
 

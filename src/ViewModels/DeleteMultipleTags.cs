@@ -24,7 +24,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Deleting multiple tags...";
 
             var log = _repo.CreateLog("Delete Multiple Tags");
@@ -47,7 +47,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkTagsDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

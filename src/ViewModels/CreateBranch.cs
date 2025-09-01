@@ -116,7 +116,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog($"Create Branch '{_name}'");
             Use(log);
@@ -131,10 +131,7 @@ namespace SourceGit.ViewModels
                         var msg = App.Text("Checkout.WarnLostCommits");
                         var shouldContinue = await App.AskConfirmAsync(msg);
                         if (!shouldContinue)
-                        {
-                            _repo.SetWatcherEnabled(true);
                             return true;
-                        }
                     }
                 }
             }
@@ -154,7 +151,6 @@ namespace SourceGit.ViewModels
                         if (!succ)
                         {
                             log.Complete();
-                            _repo.SetWatcherEnabled(true);
                             return false;
                         }
 
@@ -225,7 +221,6 @@ namespace SourceGit.ViewModels
             }
 
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
 
             if (CheckoutAfterCreated)
             {

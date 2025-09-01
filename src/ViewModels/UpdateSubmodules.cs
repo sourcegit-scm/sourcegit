@@ -88,7 +88,7 @@ namespace SourceGit.ViewModels
                 return true;
 
             var log = _repo.CreateLog("Update Submodule");
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             Use(log);
 
             await new Commands.Submodule(_repo.FullPath)
@@ -96,7 +96,6 @@ namespace SourceGit.ViewModels
                 .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

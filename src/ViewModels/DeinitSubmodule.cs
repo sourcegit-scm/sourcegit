@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "De-initialize Submodule";
 
             var log = _repo.CreateLog("De-initialize Submodule");
@@ -36,7 +36,6 @@ namespace SourceGit.ViewModels
                 .DeinitAsync(Submodule, false);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

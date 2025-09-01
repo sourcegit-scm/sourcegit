@@ -362,7 +362,8 @@ namespace SourceGit.ViewModels
 
             IsStaging = true;
             _selectedUnstaged = next != null ? [next] : [];
-            _repo.SetWatcherEnabled(false);
+
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Stage");
             if (count == _unstaged.Count)
@@ -384,7 +385,6 @@ namespace SourceGit.ViewModels
             log.Complete();
 
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             IsStaging = false;
         }
 
@@ -396,7 +396,8 @@ namespace SourceGit.ViewModels
 
             IsUnstaging = true;
             _selectedStaged = next != null ? [next] : [];
-            _repo.SetWatcherEnabled(false);
+
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Unstage");
             if (_useAmend)
@@ -423,7 +424,6 @@ namespace SourceGit.ViewModels
             log.Complete();
 
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             IsUnstaging = false;
         }
 
@@ -447,7 +447,7 @@ namespace SourceGit.ViewModels
 
         public async Task UseTheirsAsync(List<Models.Change> changes)
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var files = new List<string>();
             var needStage = new List<string>();
@@ -489,12 +489,11 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
         }
 
         public async Task UseMineAsync(List<Models.Change> changes)
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var files = new List<string>();
             var needStage = new List<string>();
@@ -536,7 +535,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
         }
 
         public async Task<bool> UseExternalMergeToolAsync(Models.Change change)
@@ -553,8 +551,8 @@ namespace SourceGit.ViewModels
         {
             if (_inProgressContext != null)
             {
+                using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
-                _repo.SetWatcherEnabled(false);
 
                 var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
                 if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
@@ -564,7 +562,6 @@ namespace SourceGit.ViewModels
                 if (succ)
                     CommitMessage = string.Empty;
 
-                _repo.SetWatcherEnabled(true);
                 IsCommitting = false;
             }
             else
@@ -577,14 +574,13 @@ namespace SourceGit.ViewModels
         {
             if (_inProgressContext != null)
             {
+                using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
-                _repo.SetWatcherEnabled(false);
 
                 var succ = await _inProgressContext.SkipAsync();
                 if (succ)
                     CommitMessage = string.Empty;
 
-                _repo.SetWatcherEnabled(true);
                 IsCommitting = false;
             }
             else
@@ -597,14 +593,13 @@ namespace SourceGit.ViewModels
         {
             if (_inProgressContext != null)
             {
+                using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
-                _repo.SetWatcherEnabled(false);
 
                 var succ = await _inProgressContext.AbortAsync();
                 if (succ)
                     CommitMessage = string.Empty;
 
-                _repo.SetWatcherEnabled(true);
                 IsCommitting = false;
             }
             else
@@ -671,9 +666,9 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            using var lockWatcher = _repo.LockWatcher();
             IsCommitting = true;
             _repo.Settings.PushCommitMessage(_commitMessage);
-            _repo.SetWatcherEnabled(false);
 
             var log = _repo.CreateLog("Commit");
             var succ = true;
@@ -710,7 +705,6 @@ namespace SourceGit.ViewModels
             }
 
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
             IsCommitting = false;
         }
 

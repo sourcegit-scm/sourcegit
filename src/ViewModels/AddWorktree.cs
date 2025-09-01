@@ -106,7 +106,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding worktree ...";
 
             var branchName = _selectedBranch;
@@ -120,7 +120,6 @@ namespace SourceGit.ViewModels
                 .AddAsync(_path, branchName, _createNewBranch, tracking);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

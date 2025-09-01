@@ -113,7 +113,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Pull");
             Use(log);
@@ -133,7 +133,6 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
-                        _repo.SetWatcherEnabled(true);
                         return false;
                     }
 
@@ -163,7 +162,6 @@ namespace SourceGit.ViewModels
 
             var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
             _repo.NavigateToCommit(head, true);
-            _repo.SetWatcherEnabled(true);
             return rs;
         }
 

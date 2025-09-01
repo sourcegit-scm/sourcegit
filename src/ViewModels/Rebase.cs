@@ -42,7 +42,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             _repo.ClearCommitMessage();
             ProgressDescription = "Rebasing ...";
 
@@ -54,7 +54,6 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

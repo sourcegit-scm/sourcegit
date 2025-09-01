@@ -11,7 +11,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Clear all stashes...";
 
             var log = _repo.CreateLog("Clear Stashes");
@@ -22,7 +22,7 @@ namespace SourceGit.ViewModels
                 .ClearAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
+            _repo.MarkStashesDirtyManually();
             return true;
         }
 

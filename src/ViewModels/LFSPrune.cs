@@ -11,7 +11,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "LFS prune ...";
 
             var log = _repo.CreateLog("LFS Prune");
@@ -22,7 +22,6 @@ namespace SourceGit.ViewModels
                 .PruneAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

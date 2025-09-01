@@ -40,7 +40,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Checkout and Fast-Forward '{LocalBranch.Name}' ...";
 
             var log = _repo.CreateLog($"Checkout and Fast-Forward '{LocalBranch.Name}' ...");
@@ -54,10 +54,7 @@ namespace SourceGit.ViewModels
                     var msg = App.Text("Checkout.WarnLostCommits");
                     var shouldContinue = await App.AskConfirmAsync(msg);
                     if (!shouldContinue)
-                    {
-                        _repo.SetWatcherEnabled(true);
                         return true;
-                    }
                 }
             }
 
@@ -75,7 +72,6 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
-                        _repo.SetWatcherEnabled(true);
                         return false;
                     }
 
@@ -110,7 +106,6 @@ namespace SourceGit.ViewModels
                 _repo.SetBranchFilterMode(LocalBranch, Models.FilterMode.Included, false, false);
 
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
 
             ProgressDescription = "Waiting for branch updated...";
             await Task.Delay(400);

@@ -24,7 +24,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Deleting tag '{Target.Name}' ...";
 
             var remotes = PushToRemotes ? _repo.Remotes : [];
@@ -45,7 +45,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkTagsDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

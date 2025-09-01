@@ -160,7 +160,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var remoteBranchName = _selectedRemoteBranch.Name;
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
@@ -179,7 +179,6 @@ namespace SourceGit.ViewModels
                 ForcePush).Use(log).RunAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

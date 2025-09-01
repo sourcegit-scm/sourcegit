@@ -14,6 +14,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Dropping stash: {Stash.Name}";
 
             var log = _repo.CreateLog("Drop Stash");
@@ -24,6 +25,7 @@ namespace SourceGit.ViewModels
                 .DropAsync(Stash.Name);
 
             log.Complete();
+            _repo.MarkStashesDirtyManually();
             return true;
         }
 

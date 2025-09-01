@@ -1506,7 +1506,7 @@ namespace SourceGit.Views
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            repo.SetWatcherEnabled(false);
+            using var lockWatcher = repo.LockWatcher();
 
             if (!selection.HasLeftChanges)
             {
@@ -1535,7 +1535,6 @@ namespace SourceGit.Views
             }
 
             repo.MarkWorkingCopyDirtyManually();
-            repo.SetWatcherEnabled(true);
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
@@ -1555,7 +1554,7 @@ namespace SourceGit.Views
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            repo.SetWatcherEnabled(false);
+            using var lockWatcher = repo.LockWatcher();
 
             if (!selection.HasLeftChanges)
             {
@@ -1580,7 +1579,6 @@ namespace SourceGit.Views
             }
 
             repo.MarkWorkingCopyDirtyManually();
-            repo.SetWatcherEnabled(true);
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
@@ -1601,7 +1599,7 @@ namespace SourceGit.Views
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            repo.SetWatcherEnabled(false);
+            using var lockWatcher = repo.LockWatcher();
 
             if (!selection.HasLeftChanges)
             {
@@ -1630,7 +1628,6 @@ namespace SourceGit.Views
             }
 
             repo.MarkWorkingCopyDirtyManually();
-            repo.SetWatcherEnabled(true);
         }
     }
 }

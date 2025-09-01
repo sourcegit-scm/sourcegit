@@ -34,8 +34,8 @@ namespace SourceGit.ViewModels
             if (oldPath.Equals(newPath, StringComparison.Ordinal))
                 return true;
 
+            using var lockWatcher = _repo.LockWatcher();
             var log = _repo.CreateLog("Move Submodule");
-            _repo.SetWatcherEnabled(false);
             Use(log);
 
             var succ = await new Commands.Move(_repo.FullPath, oldPath, newPath, false)
@@ -43,7 +43,6 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

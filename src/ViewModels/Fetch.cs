@@ -66,7 +66,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
@@ -97,7 +97,6 @@ namespace SourceGit.ViewModels
             }
 
             _repo.MarkFetched();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 
