@@ -169,7 +169,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -276,6 +276,11 @@
                       IsChecked="{Binding UseFixedTabWidth, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="8" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Appearance.UseAutoHideScrollBars}"
+                      IsChecked="{Binding UseAutoHideScrollBars, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseNativeWindowFrame}"
                       IsChecked="{Binding UseSystemWindowFrame, Mode=OneTime}"
@@ -788,7 +793,10 @@
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Model, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
+                    <CheckBox Margin="0,4,0,0"
+                              Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
+                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>
                     <TextBox Height="120"

@@ -190,7 +190,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nom de la nouvelle branche :</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Entrez le nom de la branche.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Les espaces seront remplacés par des tirets.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Créer une branche locale</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Créer un tag...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Nouveau tag à :</x:String>

@@ -70,12 +70,18 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ on ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rename ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Reset ${0}$ to ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Switch to ${0}$ (worktree)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Set Tracking Branch...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Compare</x:String>
+  <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} commit(s) ahead</x:String>
+  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit(s) ahead, {1} commit(s) behind</x:String>
+  <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit(s) behind</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Invalid</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTE</x:String>
+  <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">STATUS</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">TRACKING</x:String>
   <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.BranchTree.Worktree" xml:space="preserve">WORKTREE</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">CANCEL</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Reset to Parent Revision</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Reset to This Revision</x:String>
@@ -166,6 +172,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signer:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Description</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.PasteAndReplaceAll" xml:space="preserve">Paste (Replace all)</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJECT</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Enter commit subject</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
@@ -263,7 +270,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">New Branch Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Spaces will be replaced with dashes.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
   <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Overwrite existing branch</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag...</x:String>
@@ -334,6 +340,9 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Increase Number of Visible Lines</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECT FILE TO VIEW CHANGES</x:String>
   <x:String x:Key="Text.DirHistories" xml:space="preserve">Dir History</x:String>
+  <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">Has Local Changes</x:String>
+  <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">Mismatched with Upstream</x:String>
+  <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">Already Up-To-Date</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">Discard Changes</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">All local changes in working copy.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Changes:</x:String>
@@ -483,8 +492,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Open in Browser</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">NOTICE</x:String>
-  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Tabs</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Customize merge message</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Into:</x:String>
@@ -530,6 +539,7 @@
   <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Name</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Entered value is the name to load API key from ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Enable Streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPEARANCE</x:String>
@@ -542,6 +552,7 @@
   <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Use monospace font only in text editor</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Theme</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Use auto-hide scrollbars</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
@@ -726,6 +737,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch has been saved successfully!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Scan Repositories</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Root Dir:</x:String>
+  <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Scan another custom directory</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Check for Updates...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">New version of this software is available: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Check for updates failed!</x:String>
@@ -858,6 +870,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO COMMIT TEMPLATES</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">No-Verify</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Reset Author</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">SignOff</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">STAGED</x:String>
@@ -873,6 +886,7 @@
   <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Copy Path</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Lock</x:String>
+  <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
 </ResourceDictionary>

@@ -7,20 +7,21 @@ namespace SourceGit.Commands
 {
     public class IssueTracker : Command
     {
-        public IssueTracker(string repo, string storage)
+        public IssueTracker(string repo, bool isShared)
         {
             WorkingDirectory = repo;
             Context = repo;
 
-            if (string.IsNullOrEmpty(storage))
+            if (isShared)
             {
-                _isStorageFileExists = true;
-                _baseArg = "config --local";
+                var storage = $"{repo}/.issuetracker";
+                _isStorageFileExists = File.Exists(storage);
+                _baseArg = $"config -f {storage.Quoted()}";
             }
             else
             {
-                _isStorageFileExists = File.Exists(storage);
-                _baseArg = $"config -f {storage.Quoted()}";
+                _isStorageFileExists = true;
+                _baseArg = "config --local";
             }
         }
 
@@ -79,12 +80,24 @@ namespace SourceGit.Commands
             return false;
         }
 
-        public async Task<bool> RemoveAsync(Models.IssueTracker rule)
+        public async Task<bool> UpdateRegexAsync(Models.IssueTracker rule)
+        {
+            Args = $"{_baseArg} issuetracker.{rule.Name.Quoted()}.regex {rule.RegexString.Quoted()}";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> UpdateURLTemplateAsync(Models.IssueTracker rule)
+        {
+            Args = $"{_baseArg} issuetracker.{rule.Name.Quoted()}.url {rule.URLTemplate.Quoted()}";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> RemoveAsync(string name)
         {
             if (!_isStorageFileExists)
                 return true;
 
-            Args = $"{_baseArg} --remove-section issuetracker.{rule.Name.Quoted()}";
+            Args = $"{_baseArg} --remove-section issuetracker.{name.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 

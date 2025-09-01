@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -16,13 +17,17 @@ namespace SourceGit.Commands
             var tool = Native.OS.GetDiffMergeTool(false);
             if (tool == null)
             {
-                App.RaiseException(Context, "Invalid merge tool in preference setting!");
+                App.RaiseException(Context, "Invalid diff/merge tool in preference setting!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(tool.Cmd))
             {
-                Args = $"mergetool {_file}";
+                var ok = await CheckGitConfigurationAsync();
+                if (!ok)
+                    return false;
+
+                Args = $"mergetool -g --no-prompt {_file}";
             }
             else
             {
@@ -31,6 +36,28 @@ namespace SourceGit.Commands
             }
 
             return await ExecAsync().ConfigureAwait(false);
+        }
+
+        private async Task<bool> CheckGitConfigurationAsync()
+        {
+            var tool = await new Config(WorkingDirectory).GetAsync("merge.guitool");
+            if (string.IsNullOrEmpty(tool))
+                tool = await new Config(WorkingDirectory).GetAsync("merge.tool");
+
+            if (string.IsNullOrEmpty(tool))
+            {
+                App.RaiseException(Context, "Missing git configuration: merge.guitool");
+                return false;
+            }
+
+            if (tool.StartsWith("vimdiff", StringComparison.Ordinal) ||
+                tool.StartsWith("nvimdiff", StringComparison.Ordinal))
+            {
+                App.RaiseException(Context, $"CLI based merge tool \"{tool}\" is not supported by this app!");
+                return false;
+            }
+
+            return true;
         }
 
         private string _file;

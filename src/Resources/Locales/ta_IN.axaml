@@ -189,7 +189,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">புதிய கிளை பெயர்:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">கிளை பெயரை உள்ளிடவும்.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">இடைவெளிகள் கோடுகளால் மாற்றப்படும்.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">உள்ளக கிளையை உருவாக்கு</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">குறிச்சொல்லை உருவாக்கு...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">இங்கு புதிய குறிச்சொல்:</x:String>

@@ -291,7 +291,7 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = null;
+            _changes = [];
             _requestingRevisionFiles = false;
             _revisionFiles = null;
 
@@ -426,9 +426,6 @@ namespace SourceGit.ViewModels
 
         private void RefreshVisibleChanges()
         {
-            if (_changes == null)
-                return;
-
             if (string.IsNullOrEmpty(_searchChangeFilter))
             {
                 VisibleChanges = _changes;
@@ -578,8 +575,8 @@ namespace SourceGit.ViewModels
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
         private List<string> _children = null;
-        private List<Models.Change> _changes = null;
-        private List<Models.Change> _visibleChanges = null;
+        private List<Models.Change> _changes = [];
+        private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;

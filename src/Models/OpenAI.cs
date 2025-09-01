@@ -117,6 +117,12 @@ namespace SourceGit.Models
             set => SetProperty(ref _apiKey, value);
         }
 
+        public bool ReadApiKeyFromEnv
+        {
+            get => _readApiKeyFromEnv;
+            set => SetProperty(ref _readApiKeyFromEnv, value);
+        }
+
         public string Model
         {
             get => _model;
@@ -176,15 +182,19 @@ namespace SourceGit.Models
 
         public async Task ChatAsync(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
-            var server = new Uri(_server);
-            var key = new ApiKeyCredential(_apiKey);
-            var oaiClient = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(server, key)
-                : new OpenAIClient(key, new() { Endpoint = server });
-            var client = oaiClient.GetChatClient(_model);
-            var messages = new List<ChatMessage>();
-            messages.Add(_model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt));
-            messages.Add(new UserChatMessage(question));
+            var key = _readApiKeyFromEnv ? Environment.GetEnvironmentVariable(_apiKey) : _apiKey;
+            var endPoint = new Uri(_server);
+            var credential = new ApiKeyCredential(key);
+            var client = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
+                ? new AzureOpenAIClient(endPoint, credential)
+                : new OpenAIClient(credential, new() { Endpoint = endPoint });
+
+            var chatClient = client.GetChatClient(_model);
+            var messages = new List<ChatMessage>()
+            {
+                _model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt),
+                new UserChatMessage(question),
+            };
 
             try
             {
@@ -192,7 +202,7 @@ namespace SourceGit.Models
 
                 if (_streaming)
                 {
-                    var updates = client.CompleteChatStreamingAsync(messages, null, cancellation);
+                    var updates = chatClient.CompleteChatStreamingAsync(messages, null, cancellation);
 
                     await foreach (var update in updates)
                     {
@@ -202,7 +212,7 @@ namespace SourceGit.Models
                 }
                 else
                 {
-                    var completion = await client.CompleteChatAsync(messages, null, cancellation);
+                    var completion = await chatClient.CompleteChatAsync(messages, null, cancellation);
 
                     if (completion.Value.Content.Count > 0)
                         rsp.Append(completion.Value.Content[0].Text);
@@ -220,6 +230,7 @@ namespace SourceGit.Models
         private string _name;
         private string _server;
         private string _apiKey;
+        private bool _readApiKeyFromEnv = false;
         private string _model;
         private bool _streaming = true;
         private string _analyzeDiffPrompt;

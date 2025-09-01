@@ -16,14 +16,6 @@ namespace SourceGit.Models
         ByContent,
     }
 
-    public enum CommitCheckPassed
-    {
-        None = 0,
-        DetachedHead,
-        Filter,
-        FileCount,
-    }
-
     public class Commit
     {
         // As retrieved by: git mktree </dev/null

@@ -17,6 +17,7 @@
       <x:Double x:Key="ScrollBarSize">12</x:Double>
     </Style.Resources>
 
+    <Setter Property="AllowAutoHide" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseAutoHideScrollBars, Mode=OneWay}"/>
     <Setter Property="ShowDelay" Value="0:0:0.1"/>
     <Setter Property="HideDelay" Value="0:0:0.2"/>
   </Style>
@@ -306,7 +307,6 @@
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Margin" Value="10,0,0,0"/>
   </Style>
   <Style Selector="TextBlock.table_header">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>

@@ -268,7 +268,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Neuer Branch-Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Branch-Name</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Leerzeichen werden durch Bindestriche ersetzt.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Lokalen Branch erstellen</x:String>
   <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Überschreibe existierenden Branch</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Tag erstellen...</x:String>
@@ -488,8 +487,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">In Browser öffnen</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">FEHLER</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">INFO</x:String>
-  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Tabs</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">Branch mergen</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Merge-Nachricht anpassen</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ziel-Branch:</x:String>

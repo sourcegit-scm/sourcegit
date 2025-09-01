@@ -198,24 +198,16 @@ namespace SourceGit.ViewModels
 
         public async Task CheckoutSingleFileAsync(Models.Change change)
         {
-            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
-            var log = _repo.CreateLog($"Reset File to '{_selectedStash.SHA}'");
+            var revision = _selectedStash.SHA;
+            if (_untracked.Contains(change) && _selectedStash.Parents.Count == 3)
+                revision = _selectedStash.Parents[2];
+            else if (change.Index == Models.ChangeState.Added && _selectedStash.Parents.Count > 1)
+                revision = _selectedStash.Parents[1];
 
-            if (_untracked.Contains(change))
-            {
-                await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _selectedStash.Parents[2], change.Path, fullPath);
-            }
-            else if (change.Index == Models.ChangeState.Added)
-            {
-                await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _selectedStash.SHA, change.Path, fullPath);
-            }
-            else
-            {
-                await new Commands.Checkout(_repo.FullPath)
+            var log = _repo.CreateLog($"Reset File to '{_selectedStash.Name}'");
+            await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .FileWithRevisionAsync(change.Path, $"{_selectedStash.SHA}");
-            }
-
+                    .FileWithRevisionAsync(change.Path, revision);
             log.Complete();
         }
 

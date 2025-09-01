@@ -158,6 +158,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool NoVerifyOnCommit
+        {
+            get;
+            set;
+        } = false;
+
         public bool IncludeUntrackedWhenStash
         {
             get;

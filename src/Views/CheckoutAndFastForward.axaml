@@ -32,11 +32,11 @@
                 VerticalAlignment="Center"
                 CornerRadius="9"
                 Background="{DynamicResource Brush.Badge}"
-                IsVisible="{Binding LocalBranch.TrackStatus.IsVisible}">
+                IsVisible="{Binding LocalBranch.IsTrackStatusVisible, Mode=OneWay}">
           <TextBlock Foreground="{DynamicResource Brush.BadgeFG}"
                      FontFamily="{DynamicResource Fonts.Monospace}"
                      FontSize="10"
-                     Text="{Binding LocalBranch.TrackStatus}"/>
+                     Text="{Binding LocalBranch.TrackStatusDescription, Mode=OneWay}"/>
         </Border>
       </StackPanel>
 

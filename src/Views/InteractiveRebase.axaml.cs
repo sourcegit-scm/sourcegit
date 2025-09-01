@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -14,17 +15,19 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
-        /// <summary>
-        ///     Prevent ListBox handle the arrow keys.
-        /// </summary>
-        /// <param name="e"></param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (DataContext is not ViewModels.InteractiveRebase vm)
+            if (DataContext is not ViewModels.InteractiveRebase vm || SelectedItems == null)
                 return;
 
-            var item = vm.SelectedItem;
-            if (item == null)
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in SelectedItems)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
+            }
+
+            if (items.Count == 0)
             {
                 base.OnKeyDown(e);
                 return;
@@ -32,44 +35,54 @@ namespace SourceGit.Views
 
             if (e.Key == Key.P)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Pick);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Pick);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.E)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Edit);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Edit);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.R)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Reword);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Reword);
+                if (items.Count == 1)
+                    this.FindAncestorOfType<InteractiveRebase>()?.OpenCommitMessageEditor(items[0]);
+                else
+                    MoveSelection(NavigationDirection.Next);
+
                 e.Handled = true;
             }
             else if (e.Key == Key.S)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Squash);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Squash);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.F)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Fixup);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Fixup);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.D)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Drop);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
-            else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && items.Count == 1)
             {
                 if (e.Key == Key.Up)
                 {
-                    vm.MoveItemUp(item);
+                    vm.MoveItemUp(items[0]);
                     e.Handled = true;
                 }
                 else if (e.Key == Key.Down)
                 {
-                    vm.MoveItemDown(item);
+                    vm.MoveItemDown(items[0]);
                     e.Handled = true;
                 }
             }
@@ -85,14 +98,14 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+            IRItemListBox?.Focus();
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
+        public void OpenCommitMessageEditor(ViewModels.InteractiveRebaseItem item)
         {
-            base.OnLoaded(e);
-
-            var list = this.FindDescendantOfType<InteractiveRebaseListBox>();
-            list?.Focus();
+            var dialog = new CommitMessageEditor();
+            dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
+            dialog.ShowDialog(this);
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
@@ -100,21 +113,27 @@ namespace SourceGit.Views
             Close();
         }
 
-        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnRowsSelectionChanged(object _, SelectionChangedEventArgs e)
         {
-            if (!_firstSelectionChangedHandled &&
-                sender is InteractiveRebaseListBox list &&
-                list.SelectedItem is ViewModels.InteractiveRebaseItem item)
-            {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            var isFirstTimeHere = !_firstSelectionChangedHandled;
+            if (isFirstTimeHere)
                 _firstSelectionChangedHandled = true;
 
-                if (item.Action == Models.InteractiveRebaseAction.Reword)
-                {
-                    var dialog = new CommitMessageEditor();
-                    dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
-                    dialog.ShowDialog(this);
-                }
+            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
             }
+
+            vm.SelectCommits(items);
+
+            if (items.Count == 1 && isFirstTimeHere && items[0].Action == Models.InteractiveRebaseAction.Reword)
+                OpenCommitMessageEditor(items[0]);
         }
 
         private void OnSetupRowHeaderDragDrop(object sender, RoutedEventArgs e)
@@ -195,11 +214,7 @@ namespace SourceGit.Views
         private void OnOpenCommitMessageEditor(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: ViewModels.InteractiveRebaseItem item })
-            {
-                var dialog = new CommitMessageEditor();
-                dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
-                dialog.ShowDialog(this);
-            }
+                OpenCommitMessageEditor(item);
 
             e.Handled = true;
         }
@@ -247,15 +262,34 @@ namespace SourceGit.Views
             menuItem.Icon = new Ellipse() { Width = 14, Height = 14, Fill = iconBrush };
             menuItem.Header = header;
             menuItem.Tag = hotkey;
-            menuItem.Click += (_, e) =>
-            {
-                if (DataContext is ViewModels.InteractiveRebase vm)
-                    vm.ChangeAction(item, action);
-
-                e.Handled = true;
-            };
+            menuItem.Click += (_, __) => ChangeItemsAction(item, action);
 
             flyout.Items.Add(menuItem);
+        }
+
+        private void ChangeItemsAction(ViewModels.InteractiveRebaseItem target, Models.InteractiveRebaseAction action)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
+            }
+
+            if (!items.Contains(target))
+            {
+                items.Clear();
+                items.Add(target);
+            }
+
+            vm.ChangeAction(items, action);
+
+            if (items.Count == 1 && action == Models.InteractiveRebaseAction.Reword)
+                OpenCommitMessageEditor(items[0]);
         }
 
         private bool _firstSelectionChangedHandled = false;

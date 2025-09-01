@@ -13,7 +13,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CreateBranch.Title}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,32,Auto,Auto,Auto" ColumnDefinitions="140,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,Auto" ColumnDefinitions="140,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -48,26 +48,20 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateBranch.Name}"/>
-      <TextBox Grid.Row="1" Grid.Column="1"
-               Height="26"
-               VerticalAlignment="Center"
-               CornerRadius="2"
-               Text="{Binding Name, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.CreateBranch.Name.Placeholder}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
-      <StackPanel Grid.Row="2" Grid.Column="1"
-                  Orientation="Horizontal"
-                  IsVisible="{Binding Name, Converter={x:Static c:StringConverters.ContainsSpaces}}">
-        <Path Width="10" Height="10" Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
-        <TextBlock Classes="small" Text="{DynamicResource Text.CreateBranch.Name.WarnSpace}" Margin="4,0,0,0"/>
-      </StackPanel>
+      <v:BranchOrTagNameTextBox Grid.Row="1" Grid.Column="1"
+                                Height="26"
+                                VerticalAlignment="Center"
+                                CornerRadius="2"
+                                Text="{Binding Name, Mode=TwoWay}"
+                                Watermark="{DynamicResource Text.CreateBranch.Name.Placeholder}"
+                                v:AutoFocusBehaviour.IsEnabled="True"/>
 
-      <TextBlock Grid.Row="3" Grid.Column="0"
+      <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.CreateBranch.LocalChanges}"
                  IsVisible="{Binding !IsBareRepository}"/>
-      <Border Grid.Row="3" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
+      <Border Grid.Row="2" Grid.Column="1" MinHeight="32" IsVisible="{Binding !IsBareRepository}">
         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
           <RadioButton GroupName="LocalChanges"
                        Margin="0,0,8,0"
@@ -78,17 +72,17 @@
         </WrapPanel>
       </Border>
 
-      <CheckBox Grid.Row="4" Grid.Column="1"
+      <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.OverwriteExisting}"
                 IsChecked="{Binding AllowOverwrite, Mode=TwoWay}"
                 ToolTip.Tip="checkout -B or branch -f"/>
 
-      <CheckBox Grid.Row="5" Grid.Column="1"
+      <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.Checkout}"
                 IsChecked="{Binding CheckoutAfterCreated, Mode=TwoWay}"
                 IsVisible="{Binding !IsBareRepository}"/>
 
-      <CheckBox Grid.Row="6" Grid.Column="1"
+      <CheckBox Grid.Row="5" Grid.Column="1"
                 Content="{DynamicResource Text.Checkout.RecurseSubmodules}"
                 IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
                 ToolTip.Tip="--recurse-submodules">

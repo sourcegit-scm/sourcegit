@@ -740,39 +740,6 @@ namespace SourceGit.ViewModels
             return log;
         }
 
-        public async Task<Models.IssueTracker> AddIssueTrackerAsync(string name, string regex, string url)
-        {
-            var rule = new Models.IssueTracker()
-            {
-                IsShared = false,
-                Name = name,
-                RegexString = regex,
-                URLTemplate = url,
-            };
-
-            var succ = await CreateIssueTrackerCommand(false).AddAsync(rule);
-            if (succ)
-            {
-                IssueTrackers.Add(rule);
-                return rule;
-            }
-
-            return null;
-        }
-
-        public async Task RemoveIssueTrackerAsync(Models.IssueTracker rule)
-        {
-            var succ = await CreateIssueTrackerCommand(rule.IsShared).RemoveAsync(rule);
-            if (succ)
-                IssueTrackers.Remove(rule);
-        }
-
-        public async Task ChangeIssueTrackerShareModeAsync(Models.IssueTracker rule)
-        {
-            await CreateIssueTrackerCommand(!rule.IsShared).RemoveAsync(rule);
-            await CreateIssueTrackerCommand(rule.IsShared).AddAsync(rule);
-        }
-
         public void RefreshAll()
         {
             RefreshCommits();
@@ -786,8 +753,8 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var issuetrackers = new List<Models.IssueTracker>();
-                await CreateIssueTrackerCommand(true).ReadAllAsync(issuetrackers, true).ConfigureAwait(false);
-                await CreateIssueTrackerCommand(false).ReadAllAsync(issuetrackers, false).ConfigureAwait(false);
+                await new Commands.IssueTracker(FullPath, true).ReadAllAsync(issuetrackers, true).ConfigureAwait(false);
+                await new Commands.IssueTracker(FullPath, false).ReadAllAsync(issuetrackers, false).ConfigureAwait(false);
                 Dispatcher.UIThread.Post(() =>
                 {
                     IssueTrackers.Clear();
@@ -1215,7 +1182,7 @@ namespace SourceGit.ViewModels
                     if (_workingCopy != null)
                         _workingCopy.HasRemotes = remotes.Count > 0;
 
-                    var hasPendingPullOrPush = CurrentBranch?.TrackStatus.IsVisible ?? false;
+                    var hasPendingPullOrPush = CurrentBranch?.IsTrackStatusVisible ?? false;
                     GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !hasPendingPullOrPush);
                 });
             }, token);
@@ -1498,9 +1465,9 @@ namespace SourceGit.ViewModels
                 {
                     if (b.IsLocal &&
                         b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
-                        b.TrackStatus.Ahead.Count == 0)
+                        b.Ahead.Count == 0)
                     {
-                        if (b.TrackStatus.Behind.Count > 0)
+                        if (b.Behind.Count > 0)
                             ShowPopup(new CheckoutAndFastForward(this, b, branch));
                         else if (!b.IsCurrent)
                             await CheckoutBranchAsync(b);
@@ -1741,11 +1708,6 @@ namespace SourceGit.ViewModels
             }
 
             return null;
-        }
-
-        private Commands.IssueTracker CreateIssueTrackerCommand(bool shared)
-        {
-            return new Commands.IssueTracker(FullPath, shared ? $"{FullPath}/.issuetracker" : null);
         }
 
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)

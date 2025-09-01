@@ -74,12 +74,18 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">切换到 ${0}$ (工作树)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
+  <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">领先 {0} 个提交</x:String>
+  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">领先 {0} 个提交，落后 {1} 个提交</x:String>
+  <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">落后 {0} 个提交</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">不存在</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">远程</x:String>
+  <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">状态</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">上游分支</x:String>
   <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">远程地址</x:String>
+  <x:String x:Key="Text.BranchTree.Worktree" xml:space="preserve">工作树</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取    消</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重置文件到上一版本</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">重置文件到该版本</x:String>
@@ -170,6 +176,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">签名者 ：</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">浏览器中查看</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">详细描述</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.PasteAndReplaceAll" xml:space="preserve">粘贴（替换全部）</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填写提交信息主题</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">仓库配置</x:String>
@@ -267,7 +274,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填写分支名称。</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">空格将被替换为'-'符号</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">创建本地分支</x:String>
   <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">允许重置已存在的分支</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">新建标签 ...</x:String>
@@ -338,6 +344,9 @@
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可见的行数</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">请选择需要对比的文件</x:String>
   <x:String x:Key="Text.DirHistories" xml:space="preserve">目录内容变更历史</x:String>
+  <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">未提交的本地变更</x:String>
+  <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">当前分支HEAD与远端不一致</x:String>
+  <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">已是最新</x:String>
   <x:String x:Key="Text.Discard" xml:space="preserve">放弃更改确认</x:String>
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本仓库未提交的修改。</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">变更 ：</x:String>
@@ -487,8 +496,8 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在浏览器中访问</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
-  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作区列表</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">页面列表</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作区列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">编辑合并信息</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
@@ -534,6 +543,7 @@
   <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">启用流式输出</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
@@ -546,6 +556,7 @@
   <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">仅在文本编辑器中使用等宽字体</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">主题自定义</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">允许滚动条自动隐藏</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">主标签使用固定宽度</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系统默认窗体样式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">对比/合并工具</x:String>
@@ -730,6 +741,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">补丁已成功保存！</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">扫描仓库</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">根路径 ：</x:String>
+  <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">扫描其他自定义路径</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">检测更新...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">检测到软件有版本更新: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">获取最新版本信息失败！</x:String>
@@ -862,6 +874,7 @@
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">没有提交信息记录</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">没有可应用的提交信息模板</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">跳过GIT钩子</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">重置提交者</x:String>
   <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">署名</x:String>
   <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">已暂存</x:String>
@@ -877,6 +890,7 @@
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">复制工作树路径</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">锁定工作树</x:String>
+  <x:String x:Key="Text.Worktree.Open" xml:space="preserve">打开工作树</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
 </ResourceDictionary>

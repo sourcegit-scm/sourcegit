@@ -535,7 +535,7 @@ namespace SourceGit.Views
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                App.ShowWindow(new ViewModels.FileHistories(repo, file.Path, commit.SHA));
+                App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, file.Path, commit.SHA));
                 ev.Handled = true;
             };
 

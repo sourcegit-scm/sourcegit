@@ -6,29 +6,35 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.65%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.96%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
+- Text.BranchTree.Status
+- Text.BranchTree.Worktree
+- Text.CommitMessageTextBox.PasteAndReplaceAll
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
+- Text.Preferences.AI.ReadApiKeyFromEnv
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.ShowChangesPageByDefault
+- Text.ScanRepositories.UseCustomDir
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
+- Text.WorkingCopy.NoVerify
+- Text.Worktree.Open
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.65%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Preferences.General.ShowChangesPageByDefault
-- Text.WorkingCopy.ClearCommitHistories
-- Text.WorkingCopy.ClearCommitHistories.Confirm
-
-</details>
-
-### ![fr__FR](https://img.shields.io/badge/fr__FR-80.07%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-78.68%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -48,10 +54,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
 - Text.BranchTree.Remote
+- Text.BranchTree.Status
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
+- Text.BranchTree.Worktree
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -76,6 +88,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -116,6 +129,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
 - Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
@@ -125,12 +141,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
+- Text.Preferences.AI.ReadApiKeyFromEnv
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
@@ -160,6 +178,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.ScanRepositories.UseCustomDir
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -205,23 +224,40 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
+- Text.Worktree.Open
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-99.54%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-97.85%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
+- Text.BranchTree.Status
+- Text.BranchTree.Worktree
+- Text.CommitMessageTextBox.PasteAndReplaceAll
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
+- Text.Preferences.AI.ReadApiKeyFromEnv
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
+- Text.ScanRepositories.UseCustomDir
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
+- Text.WorkingCopy.NoVerify
+- Text.Worktree.Open
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-80.07%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-78.68%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -242,10 +278,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
 - Text.BranchTree.Remote
+- Text.BranchTree.Status
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
+- Text.BranchTree.Worktree
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -270,6 +312,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -310,6 +353,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
 - Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
@@ -319,12 +365,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
+- Text.Preferences.AI.ReadApiKeyFromEnv
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
@@ -355,6 +403,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.ScanRepositories.UseCustomDir
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -398,11 +447,13 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
+- Text.Worktree.Open
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-73.39%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-72.22%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -430,10 +481,16 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CustomAction
 - Text.BranchCM.MergeMultiBranches
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
 - Text.BranchTree.Remote
+- Text.BranchTree.Status
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
+- Text.BranchTree.Worktree
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -463,6 +520,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Children
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -494,7 +552,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
 - Text.CopyFullPath
-- Text.CreateBranch.Name.WarnSpace
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
@@ -514,6 +571,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
 - Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
@@ -530,8 +590,8 @@ This document shows the translation status of each locale file in the repository
 - Text.InProgress.Rebase.StoppedAt
 - Text.InProgress.Revert.Head
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.Merge.Source
 - Text.MergeMultiple
@@ -541,8 +601,10 @@ This document shows the translation status of each locale file in the repository
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
+- Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.EditorTabWidth
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
@@ -586,6 +648,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.ScanRepositories.UseCustomDir
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -636,14 +699,16 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
 - Text.WorkingCopy.SignOff
+- Text.Worktree.Open
 
 </details>
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-80.18%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-78.80%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -664,10 +729,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
 - Text.BranchTree.Remote
+- Text.BranchTree.Status
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
+- Text.BranchTree.Worktree
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -692,6 +763,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -732,6 +804,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
 - Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
@@ -741,12 +816,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
+- Text.Preferences.AI.ReadApiKeyFromEnv
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
@@ -776,6 +853,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.ScanRepositories.UseCustomDir
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -819,11 +897,13 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
+- Text.Worktree.Open
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-81.34%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-79.93%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -843,10 +923,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.BranchCM.ResetToSelectedCommit
+- Text.BranchCM.SwitchToWorktree
+- Text.BranchTree.Ahead
+- Text.BranchTree.AheadBehind
+- Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
 - Text.BranchTree.Remote
+- Text.BranchTree.Status
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
+- Text.BranchTree.Worktree
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -871,6 +957,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.Info.Key
 - Text.CommitDetail.Info.Signer
+- Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.CommitMessageTextBox.SubjectCount
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -907,6 +994,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
 - Text.DirHistories
+- Text.DirtyState.HasLocalChanges
+- Text.DirtyState.HasPendingPullOrPush
+- Text.DirtyState.UpToDate
 - Text.Discard.IncludeUntracked
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
@@ -916,12 +1006,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
-- Text.Launcher.Workspaces
 - Text.Launcher.Pages
+- Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
+- Text.Preferences.AI.ReadApiKeyFromEnv
+- Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
@@ -951,6 +1043,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ResetWithoutCheckout
 - Text.ResetWithoutCheckout.MoveTo
 - Text.ResetWithoutCheckout.Target
+- Text.ScanRepositories.UseCustomDir
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -989,7 +1082,9 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
+- Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
+- Text.Worktree.Open
 
 </details>
 

@@ -7,7 +7,7 @@ namespace SourceGit.ViewModels
     public class CreateBranch : Popup
     {
         [Required(ErrorMessage = "Branch name is required!")]
-        [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w\-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(CreateBranch), nameof(ValidateBranchName))]
         public string Name
         {
@@ -101,10 +101,9 @@ namespace SourceGit.ViewModels
             {
                 if (!creator._allowOverwrite)
                 {
-                    var fixedName = Models.Branch.FixName(name);
                     foreach (var b in creator._repo.Branches)
                     {
-                        if (b.FriendlyName.Equals(fixedName, StringComparison.Ordinal))
+                        if (b.FriendlyName.Equals(name, StringComparison.Ordinal))
                             return new ValidationResult("A branch with same name already exists!");
                     }
                 }
@@ -119,8 +118,7 @@ namespace SourceGit.ViewModels
         {
             _repo.SetWatcherEnabled(false);
 
-            var fixedName = Models.Branch.FixName(_name);
-            var log = _repo.CreateLog($"Create Branch '{fixedName}'");
+            var log = _repo.CreateLog($"Create Branch '{_name}'");
             Use(log);
 
             if (CheckoutAfterCreated)
@@ -166,7 +164,7 @@ namespace SourceGit.ViewModels
 
                 succ = await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .BranchAsync(fixedName, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);
+                    .BranchAsync(_name, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);
 
                 if (succ)
                 {
@@ -187,7 +185,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                succ = await new Commands.Branch(_repo.FullPath, fixedName)
+                succ = await new Commands.Branch(_repo.FullPath, _name)
                     .Use(log)
                     .CreateAsync(_baseOnRevision, _allowOverwrite);
             }
@@ -205,7 +203,7 @@ namespace SourceGit.ViewModels
                 }
 
                 if (autoSetUpstream)
-                    await new Commands.Branch(_repo.FullPath, fixedName)
+                    await new Commands.Branch(_repo.FullPath, _name)
                         .Use(log)
                         .SetUpstreamAsync(basedOn);
             }
@@ -214,7 +212,7 @@ namespace SourceGit.ViewModels
 
             if (succ && CheckoutAfterCreated)
             {
-                var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{fixedName}" };
+                var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
                 if (BasedOn is Models.Branch { IsLocal: false } based)
                     fake.Upstream = based.FullName;
 
@@ -223,8 +221,7 @@ namespace SourceGit.ViewModels
                     _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
 
                 if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
-                    _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, true, false);
-
+                    _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, false, false);
             }
 
             _repo.MarkBranchesDirtyManually();

@@ -34,6 +34,7 @@ namespace SourceGit.ViewModels
 
             var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
             var signOff = _repo.Settings.EnableSignOffForCommit;
+            var noVerify = _repo.Settings.NoVerifyOnCommit;
             var needAutoStash = false;
             var succ = false;
 
@@ -64,7 +65,7 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             if (succ)
-                succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false)
+                succ = await new Commands.Commit(_repo.FullPath, _message, signOff, noVerify, true, false)
                     .Use(log)
                     .RunAsync();
 

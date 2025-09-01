@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -19,20 +18,6 @@ namespace SourceGit.Views
             get => GetValue(IsScrollerVisibleProperty);
             set => SetValue(IsScrollerVisibleProperty, value);
         }
-
-        public static readonly StyledProperty<string> SearchFilterProperty =
-            AvaloniaProperty.Register<LauncherTabBar, string>(nameof(SearchFilter));
-
-        public string SearchFilter
-        {
-            get => GetValue(SearchFilterProperty);
-            set => SetValue(SearchFilterProperty, value);
-        }
-
-        public AvaloniaList<ViewModels.LauncherPage> SelectablePages
-        {
-            get;
-        } = [];
 
         public LauncherTabBar()
         {
@@ -139,14 +124,6 @@ namespace SourceGit.Views
             var fill = this.FindResource("Brush.ToolBar") as IBrush;
             var stroke = new Pen(this.FindResource("Brush.Border0") as IBrush);
             context.DrawGeometry(fill, stroke, geo);
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == SearchFilterProperty)
-                UpdateSelectablePages();
         }
 
         private void ScrollTabs(object _, PointerWheelEventArgs e)
@@ -335,97 +312,6 @@ namespace SourceGit.Views
                 vm.CloseTab(btn.DataContext as ViewModels.LauncherPage);
 
             e.Handled = true;
-        }
-
-        private void OnTabsDropdownOpened(object sender, EventArgs e)
-        {
-            UpdateSelectablePages();
-        }
-
-        private void OnTabsDropdownClosed(object sender, EventArgs e)
-        {
-            SelectablePages.Clear();
-            SearchFilter = string.Empty;
-        }
-
-        private void OnTabsDropdownKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                PageSelector.Flyout?.Hide();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Enter)
-            {
-                if (TabsDropdownList.SelectedItem is ViewModels.LauncherPage page &&
-                    DataContext is ViewModels.Launcher vm)
-                {
-                    vm.ActivePage = page;
-                    PageSelector.Flyout?.Hide();
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void OnTabsDropdownSearchBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Down && TabsDropdownList.ItemCount > 0)
-            {
-                TabsDropdownList.Focus(NavigationMethod.Directional);
-
-                if (TabsDropdownList.SelectedIndex < 0)
-                    TabsDropdownList.SelectedIndex = 0;
-                else if (TabsDropdownList.SelectedIndex < TabsDropdownList.ItemCount)
-                    TabsDropdownList.SelectedIndex++;
-
-                e.Handled = true;
-            }
-        }
-
-        private void OnTabsDropdownLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is Control { IsFocused: false, IsKeyboardFocusWithin: false })
-                PageSelector.Flyout?.Hide();
-        }
-
-        private void OnClearSearchFilter(object sender, RoutedEventArgs e)
-        {
-            SearchFilter = string.Empty;
-        }
-
-        private void OnTabsDropdownItemTapped(object sender, TappedEventArgs e)
-        {
-            if (sender is Control { DataContext: ViewModels.LauncherPage page } &&
-                DataContext is ViewModels.Launcher vm)
-            {
-                vm.ActivePage = page;
-                PageSelector.Flyout?.Hide();
-                e.Handled = true;
-            }
-        }
-
-        private void UpdateSelectablePages()
-        {
-            if (DataContext is not ViewModels.Launcher vm)
-                return;
-
-            SelectablePages.Clear();
-
-            var pages = vm.Pages;
-            var filter = SearchFilter?.Trim() ?? "";
-            if (string.IsNullOrEmpty(filter))
-            {
-                SelectablePages.AddRange(pages);
-                return;
-            }
-
-            foreach (var page in pages)
-            {
-                var node = page.Node;
-                if (node.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    (node.IsRepository && node.Id.Contains(filter, StringComparison.OrdinalIgnoreCase)))
-                    SelectablePages.Add(page);
-            }
         }
 
         private bool _pressedTab = false;

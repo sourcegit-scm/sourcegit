@@ -194,7 +194,6 @@
   <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Назва нової гілки:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Введіть назву гілки.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Пробіли будуть замінені на тире.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Створити локальну гілку</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Створити тег...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Новий тег для:</x:String>

@@ -52,11 +52,11 @@
                       VerticalAlignment="Center"
                       CornerRadius="9"
                       Background="{DynamicResource Brush.Badge}"
-                      IsVisible="{Binding TrackStatus.IsVisible}">
+                      IsVisible="{Binding IsTrackStatusVisible}">
                 <TextBlock Foreground="{DynamicResource Brush.BadgeFG}"
                            FontFamily="{DynamicResource Fonts.Monospace}"
                            FontSize="10"
-                           Text="{Binding TrackStatus}"/>
+                           Text="{Binding TrackStatusDescription, Mode=OneWay}"/>
               </Border>
             </Grid>
           </DataTemplate>

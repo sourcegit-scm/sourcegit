@@ -11,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -1334,6 +1335,8 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
+            context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, Bounds.Width, Bounds.Height));
+
             var total = 0;
             if (DataContext is ViewModels.TwoSideTextDiff twoSideDiff)
             {
@@ -1369,6 +1372,44 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
             InvalidateVisual();
+        }
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+
+            var range = DisplayRange;
+            if (range == null || range.End == 0)
+                return;
+
+            var total = 0;
+            if (DataContext is ViewModels.TwoSideTextDiff twoSideDiff)
+            {
+                var halfWidth = Bounds.Width * 0.5;
+                total = Math.Max(twoSideDiff.Old.Count, twoSideDiff.New.Count);
+            }
+            else if (DataContext is ViewModels.CombinedTextDiff combined)
+            {
+                var data = combined.Data;
+                total = data.Lines.Count;
+            }
+            else
+            {
+                return;
+            }
+
+            var height = Bounds.Height;
+            var startY = range.Start / (total * 1.0) * height;
+            var endY = range.End / (total * 1.0) * height;
+            var pressedY = e.GetPosition(this).Y;
+            if (pressedY >= startY && pressedY <= endY)
+                return;
+
+            var line = Math.Max(1, Math.Min(total, (int)Math.Ceiling(pressedY * total / height)));
+            if (this.Parent is Control parent)
+                parent.FindLogicalDescendantOfType<ThemedTextDiffPresenter>()?.ScrollToLine(line);
+
+            e.Handled = true;
         }
 
         private void RenderSingleSide(DrawingContext context, List<Models.TextDiffLine> lines, double x, double width)
@@ -1414,6 +1455,7 @@ namespace SourceGit.Views
             get => GetValue(SelectedChunkProperty);
             set => SetValue(SelectedChunkProperty, value);
         }
+
         public TextDiffView()
         {
             InitializeComponent();

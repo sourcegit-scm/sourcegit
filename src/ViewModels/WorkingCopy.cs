@@ -71,6 +71,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableSignOffForCommit = value;
         }
 
+        public bool NoVerifyOnCommit
+        {
+            get => _repo.Settings.NoVerifyOnCommit;
+            set => _repo.Settings.NoVerifyOnCommit = value;
+        }
+
         public bool UseAmend
         {
             get => _useAmend;
@@ -619,7 +625,7 @@ namespace SourceGit.ViewModels
                 _repo.Settings.CommitMessages.Clear();
         }
 
-        public async Task CommitAsync(bool autoStage, bool autoPush, Models.CommitCheckPassed checkPassed = Models.CommitCheckPassed.None)
+        public async Task CommitAsync(bool autoStage, bool autoPush)
         {
             if (string.IsNullOrWhiteSpace(_commitMessage))
                 return;
@@ -636,30 +642,32 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < Models.CommitCheckPassed.DetachedHead)
+            if (_repo.CurrentBranch is { IsDetachedHead: true })
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
                 var sure = await App.AskConfirmAsync(msg);
-                if (sure)
-                    await CommitAsync(autoStage, autoPush, Models.CommitCheckPassed.DetachedHead);
-                return;
+                if (!sure)
+                    return;
             }
 
-            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < Models.CommitCheckPassed.Filter)
+            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count)
             {
                 var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
                 var sure = await App.AskConfirmAsync(msg);
-                if (sure)
-                    await CommitAsync(autoStage, autoPush, Models.CommitCheckPassed.Filter);
-                return;
+                if (!sure)
+                    return;
             }
 
-            if (checkPassed < Models.CommitCheckPassed.FileCount && !_useAmend)
+            if (!_useAmend)
             {
                 if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
                 {
-                    await App.ShowDialog(new ConfirmEmptyCommit(this, autoPush, _cached.Count));
-                    return;
+                    var rs = await App.AskConfirmEmptyCommitAsync(_cached.Count > 0);
+                    if (rs == Models.ConfirmEmptyCommitResult.Cancel)
+                        return;
+
+                    if (rs == Models.ConfirmEmptyCommitResult.StageAllAndCommit)
+                        autoStage = true;
                 }
             }
 
@@ -667,14 +675,19 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
             _repo.SetWatcherEnabled(false);
 
-            var signOff = _repo.Settings.EnableSignOffForCommit;
             var log = _repo.CreateLog("Commit");
             var succ = true;
             if (autoStage && _unstaged.Count > 0)
-                succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync().ConfigureAwait(false);
+                succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
 
             if (succ)
-                succ = await new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).RunAsync().ConfigureAwait(false);
+                succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
+                    .Use(log)
+                    .RunAsync()
+                    .ConfigureAwait(false);
 
             log.Complete();
 

@@ -50,25 +50,27 @@ namespace SourceGit.Views
 
             if (node.Backend is Models.Remote)
             {
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote", false);
+                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Remote");
             }
             else if (node.Backend is Models.Branch branch)
             {
                 if (branch.IsCurrent)
-                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", true);
+                    CreateContent(new Thickness(0, 0, 0, 0), "Icons.CheckCircled", Brushes.Green);
+                else if (branch.IsLocal && !string.IsNullOrEmpty(branch.WorktreePath))
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", Brushes.DarkCyan);
                 else
-                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch", false);
+                    CreateContent(new Thickness(2, 0, 0, 0), "Icons.Branch");
             }
             else
             {
                 if (node.IsExpanded)
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open", false);
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
                 else
-                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder", false);
+                    CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder");
             }
         }
 
-        private void CreateContent(Thickness margin, string iconKey, bool highlight)
+        private void CreateContent(Thickness margin, string iconKey, IBrush fill = null)
         {
             if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
@@ -83,8 +85,8 @@ namespace SourceGit.Views
                 Data = geo,
             };
 
-            if (highlight)
-                path.Fill = Brushes.Green;
+            if (fill != null)
+                path.Fill = fill;
 
             Content = path;
         }
@@ -181,11 +183,11 @@ namespace SourceGit.Views
 
             if (DataContext is ViewModels.BranchTreeNode { Backend: Models.Branch branch })
             {
-                var status = branch.TrackStatus.ToString();
-                if (!string.IsNullOrEmpty(status))
+                var desc = branch.TrackStatusDescription;
+                if (!string.IsNullOrEmpty(desc))
                 {
                     _label = new FormattedText(
-                        status,
+                        desc,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface(FontFamily),
@@ -198,6 +200,33 @@ namespace SourceGit.Views
         }
 
         private FormattedText _label = null;
+    }
+
+    public class BranchTreeNodeTrackStatusTooltip : TextBlock
+    {
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            Text = string.Empty;
+
+            if (DataContext is not Models.Branch { IsTrackStatusVisible: true } branch)
+            {
+                SetCurrentValue(IsVisibleProperty, false);
+                return;
+            }
+
+            var ahead = branch.Ahead.Count;
+            var behind = branch.Behind.Count;
+            if (ahead > 0)
+                Text = behind > 0 ? App.Text("BranchTree.AheadBehind", ahead, behind) : App.Text("BranchTree.Ahead", ahead);
+            else
+                Text = App.Text("BranchTree.Behind", behind);
+
+            SetCurrentValue(IsVisibleProperty, true);
+        }
     }
 
     public partial class BranchTree : UserControl
@@ -605,7 +634,7 @@ namespace SourceGit.Views
                         var fastForward = new MenuItem();
                         fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                         fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                        fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
+                        fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
                         fastForward.Click += async (_, e) =>
                         {
                             if (repo.CanCreatePopup())
@@ -633,27 +662,26 @@ namespace SourceGit.Views
             }
             else
             {
-                if (!repo.IsBare)
-                {
-                    var checkout = new MenuItem();
-                    checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
-                    checkout.Icon = App.CreateMenuIcon("Icons.Check");
-                    checkout.Click += async (_, e) =>
-                    {
-                        await repo.CheckoutBranchAsync(branch);
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(checkout);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                }
+                var hasNoWorktree = string.IsNullOrEmpty(branch.WorktreePath);
 
-                var worktree = repo.Worktrees.Find(x => x.Branch == branch.FullName);
-                if (upstream != null && worktree == null)
+                var checkout = new MenuItem();
+                checkout.Header = App.Text(hasNoWorktree ? "BranchCM.Checkout" : "BranchCM.SwitchToWorktree", branch.Name);
+                checkout.Icon = App.CreateMenuIcon("Icons.Check");
+                checkout.IsEnabled = !repo.IsBare || !hasNoWorktree;
+                checkout.Click += async (_, e) =>
+                {
+                    await repo.CheckoutBranchAsync(branch);
+                    e.Handled = true;
+                };
+                menu.Items.Add(checkout);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                if (upstream != null && hasNoWorktree)
                 {
                     var fastForward = new MenuItem();
                     fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
-                    fastForward.IsEnabled = branch.TrackStatus.Ahead.Count == 0 && branch.TrackStatus.Behind.Count > 0;
+                    fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
                     fastForward.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -665,7 +693,7 @@ namespace SourceGit.Views
                     var fetchInto = new MenuItem();
                     fetchInto.Header = App.Text("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
                     fetchInto.Icon = App.CreateMenuIcon("Icons.Fetch");
-                    fetchInto.IsEnabled = branch.TrackStatus.Ahead.Count == 0;
+                    fetchInto.IsEnabled = branch.Ahead.Count == 0;
                     fetchInto.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -705,7 +733,7 @@ namespace SourceGit.Views
                     menu.Items.Add(rebase);
                 }
 
-                if (worktree == null)
+                if (hasNoWorktree)
                 {
                     var selectedCommit = repo.GetSelectedCommitInHistory();
                     if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))

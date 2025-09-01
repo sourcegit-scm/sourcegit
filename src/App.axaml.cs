@@ -170,6 +170,19 @@ namespace SourceGit
             return false;
         }
 
+        public static async Task<Models.ConfirmEmptyCommitResult> AskConfirmEmptyCommitAsync(bool hasLocalChanges)
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var confirm = new Views.ConfirmEmptyCommit();
+                confirm.TxtMessage.Text = Text(hasLocalChanges ? "ConfirmEmptyCommit.WithLocalChanges" : "ConfirmEmptyCommit.NoLocalChanges");
+                confirm.BtnStageAllAndCommit.IsVisible = hasLocalChanges;
+                return await confirm.ShowDialog<Models.ConfirmEmptyCommitResult>(owner);
+            }
+
+            return Models.ConfirmEmptyCommitResult.Cancel;
+        }
+
         public static void RaiseException(string context, string message)
         {
             if (Current is App { _launcher: not null } app)

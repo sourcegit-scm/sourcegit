@@ -190,6 +190,17 @@ namespace SourceGit.Views
             {
                 var menu = new ContextMenu();
 
+                var switchTo = new MenuItem();
+                switchTo.Header = App.Text("Worktree.Open");
+                switchTo.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                switchTo.Click += (_, ev) =>
+                {
+                    repo.OpenWorktree(worktree);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(switchTo);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
                 if (worktree.IsLocked)
                 {
                     var unlock = new MenuItem();
