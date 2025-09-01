@@ -6,31 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.96%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.BranchCM.SwitchToWorktree
-- Text.BranchTree.Ahead
-- Text.BranchTree.AheadBehind
-- Text.BranchTree.Behind
-- Text.BranchTree.Status
-- Text.BranchTree.Worktree
-- Text.CommitMessageTextBox.PasteAndReplaceAll
-- Text.DirtyState.HasLocalChanges
-- Text.DirtyState.HasPendingPullOrPush
-- Text.DirtyState.UpToDate
-- Text.Preferences.AI.ReadApiKeyFromEnv
-- Text.Preferences.Appearance.UseAutoHideScrollBars
-- Text.Preferences.General.ShowChangesPageByDefault
-- Text.ScanRepositories.UseCustomDir
-- Text.WorkingCopy.ClearCommitHistories
-- Text.WorkingCopy.ClearCommitHistories.Confirm
-- Text.WorkingCopy.NoVerify
-- Text.Worktree.Open
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
