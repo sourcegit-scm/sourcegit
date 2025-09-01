@@ -65,6 +65,14 @@ namespace SourceGit.Models
             return SHA[..10];
         }
 
+        public void ParseParents(string data)
+        {
+            if (data.Length < 8)
+                return;
+
+            Parents.AddRange(data.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+        }
+
         public void ParseDecorators(string data)
         {
             if (data.Length < 3)

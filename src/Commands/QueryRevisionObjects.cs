@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -23,38 +23,44 @@ namespace SourceGit.Commands
         public async Task<List<Models.Object>> GetResultAsync()
         {
             var outs = new List<Models.Object>();
-            var rs = await ReadToEndAsync().ConfigureAwait(false);
-            if (rs.IsSuccess)
+
+            try
             {
-                var sr = new StringReader(rs.StdOut);
-                while (sr.ReadLine() is { } line)
-                    Parse(outs, line);
+                using var proc = new Process();
+                proc.StartInfo = CreateGitStartInfo(true);
+                proc.Start();
+
+                while (await proc.StandardOutput.ReadLineAsync() is { } line)
+                {
+                    var match = REG_FORMAT().Match(line);
+                    if (!match.Success)
+                        continue;
+
+                    var obj = new Models.Object();
+                    obj.SHA = match.Groups[2].Value;
+                    obj.Type = Models.ObjectType.Blob;
+                    obj.Path = match.Groups[3].Value;
+
+                    obj.Type = match.Groups[1].Value switch
+                    {
+                        "blob" => Models.ObjectType.Blob,
+                        "tree" => Models.ObjectType.Tree,
+                        "tag" => Models.ObjectType.Tag,
+                        "commit" => Models.ObjectType.Commit,
+                        _ => obj.Type,
+                    };
+
+                    outs.Add(obj);
+                }
+
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                // Ignore exceptions.
             }
 
             return outs;
-        }
-
-        private void Parse(List<Models.Object> outs, string line)
-        {
-            var match = REG_FORMAT().Match(line);
-            if (!match.Success)
-                return;
-
-            var obj = new Models.Object();
-            obj.SHA = match.Groups[2].Value;
-            obj.Type = Models.ObjectType.Blob;
-            obj.Path = match.Groups[3].Value;
-
-            obj.Type = match.Groups[1].Value switch
-            {
-                "blob" => Models.ObjectType.Blob,
-                "tree" => Models.ObjectType.Tree,
-                "tag" => Models.ObjectType.Tag,
-                "commit" => Models.ObjectType.Commit,
-                _ => obj.Type,
-            };
-
-            outs.Add(obj);
         }
     }
 }
