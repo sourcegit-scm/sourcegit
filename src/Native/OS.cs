@@ -229,6 +229,19 @@ namespace SourceGit.Native
             return fullpath;
         }
 
+        public static string GetRelativePathToHome(string path)
+        {
+            if (OperatingSystem.IsWindows())
+                return path;
+
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+            if (path.StartsWith(home, StringComparison.Ordinal))
+                return $"~{path.AsSpan(prefixLen)}";
+
+            return path;
+        }
+
         private static void UpdateGitVersion()
         {
             if (string.IsNullOrEmpty(_gitExecutable) || !File.Exists(_gitExecutable))
