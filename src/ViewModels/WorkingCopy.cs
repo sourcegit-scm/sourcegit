@@ -342,17 +342,6 @@ namespace SourceGit.ViewModels
                 Native.OS.OpenWithDefaultEditor(absPath);
         }
 
-        public async Task StashAllAsync(bool autoStart)
-        {
-            if (!_repo.CanCreatePopup())
-                return;
-
-            if (autoStart)
-                await _repo.ShowAndStartPopupAsync(new StashChanges(_repo, _cached, false));
-            else
-                _repo.ShowPopup(new StashChanges(_repo, _cached, false));
-        }
-
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
         {
             var canStaged = await GetCanStageChangesAsync(changes);

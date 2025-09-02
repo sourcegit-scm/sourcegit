@@ -1112,8 +1112,14 @@ namespace SourceGit.ViewModels
 
         public async Task StashAllAsync(bool autoStart)
         {
-            if (_workingCopy != null)
-                await _workingCopy.StashAllAsync(autoStart);
+            if (!CanCreatePopup())
+                return;
+
+            var popup = new StashChanges(this, null);
+            if (autoStart)
+                await ShowAndStartPopupAsync(popup);
+            else
+                ShowPopup(popup);
         }
 
         public async Task SkipMergeAsync()
