@@ -837,13 +837,10 @@ namespace SourceGit.Views
                 if (i == endIdx)
                 {
                     if (endPosition.Column - 1 < line.Content.Length)
-                    {
                         builder.Append(line.Content.AsSpan(0, endPosition.Column - 1));
-                    }
                     else
-                    {
                         builder.Append(line.Content);
-                    }
+
                     break;
                 }
 
