@@ -122,6 +122,7 @@ namespace SourceGit.Models
             var now = DateTime.Now.ToFileTime();
             var refreshCommits = false;
             var refreshSubmodules = false;
+            var refreshWC = false;
 
             var oldUpdateBranch = Interlocked.Exchange(ref _updateBranch, -1);
             if (oldUpdateBranch > 0)
@@ -130,6 +131,7 @@ namespace SourceGit.Models
                 {
                     refreshCommits = true;
                     refreshSubmodules = _repo.MayHaveSubmodules();
+                    refreshWC = true;
 
                     _repo.RefreshBranches();
                     _repo.RefreshWorktrees();
@@ -140,13 +142,21 @@ namespace SourceGit.Models
                 }
             }
 
-            var oldUpdateWC = Interlocked.Exchange(ref _updateWC, -1);
-            if (oldUpdateWC > 0)
+            if (refreshWC)
             {
-                if (now > oldUpdateWC)
-                    _repo.RefreshWorkingCopyChanges();
-                else
-                    Interlocked.CompareExchange(ref _updateWC, oldUpdateWC, -1);
+                Interlocked.Exchange(ref _updateWC, -1);
+                _repo.RefreshWorkingCopyChanges();
+            }
+            else
+            {
+                var oldUpdateWC = Interlocked.Exchange(ref _updateWC, -1);
+                if (oldUpdateWC > 0)
+                {
+                    if (now > oldUpdateWC)
+                        _repo.RefreshWorkingCopyChanges();
+                    else
+                        Interlocked.CompareExchange(ref _updateWC, oldUpdateWC, -1);
+                }
             }
 
             if (refreshSubmodules)
