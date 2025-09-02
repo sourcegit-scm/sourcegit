@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Avalonia;
-using Avalonia.Media;
-
 namespace SourceGit.Models
 {
     public enum CommitSearchMethod
@@ -18,14 +15,7 @@ namespace SourceGit.Models
 
     public class Commit
     {
-        // As retrieved by: git mktree </dev/null
         public const string EmptyTreeSHA1 = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-
-        public static double OpacityForNotMerged
-        {
-            get;
-            set;
-        } = 0.65;
 
         public string SHA { get; set; } = string.Empty;
         public User Author { get; set; } = User.Invalid;
@@ -35,22 +25,19 @@ namespace SourceGit.Models
         public string Subject { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new();
         public List<Decorator> Decorators { get; set; } = new();
-        public bool HasDecorators => Decorators.Count > 0;
+
+        public bool IsMerged { get; set; } = false;
+        public int Color { get; set; } = 0;
+        public double LeftMargin { get; set; } = 0;
 
         public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
         public string CommitterTimeStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
         public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
         public string CommitterTimeShortStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
 
-        public bool IsMerged { get; set; } = false;
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
-
-        public int Color { get; set; } = 0;
-        public double Opacity => IsMerged ? 1 : OpacityForNotMerged;
-        public FontWeight FontWeight => IsCurrentHead ? FontWeight.Bold : FontWeight.Regular;
-        public Thickness Margin { get; set; } = new(0);
-        public IBrush Brush => CommitGraph.Pens[Color].Brush;
+        public bool HasDecorators => Decorators.Count > 0;
 
         public string GetFriendlyName()
         {
