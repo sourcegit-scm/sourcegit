@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitDetail"
              x:DataType="vm:CommitDetail">
-  <TabControl SelectedIndex="{Binding ActivePageIndex, Mode=TwoWay}" Padding="4">
+  <TabControl SelectedIndex="{Binding ActiveTabIndex, Mode=TwoWay}" Padding="4">
     <!-- Information Page -->
     <TabItem>
       <TabItem.Header>

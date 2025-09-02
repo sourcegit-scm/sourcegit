@@ -472,12 +472,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isAutoFetching, value);
         }
 
-        public int CommitDetailActivePageIndex
-        {
-            get;
-            set;
-        } = 0;
-
         public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
             get;

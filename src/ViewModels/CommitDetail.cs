@@ -10,6 +10,20 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public class CommitDetailSharedData
+    {
+        public int ActiveTabIndex
+        {
+            get;
+            set;
+        }
+
+        public CommitDetailSharedData()
+        {
+            ActiveTabIndex = Preferences.Instance.ShowChangesInCommitDetailByDefault ? 1 : 0;
+        }
+    }
+
     public partial class CommitDetail : ObservableObject, IDisposable
     {
         public Repository Repository
@@ -17,17 +31,13 @@ namespace SourceGit.ViewModels
             get => _repo;
         }
 
-        public int ActivePageIndex
+        public int ActiveTabIndex
         {
-            get => _rememberActivePageIndex ? _repo.CommitDetailActivePageIndex : _activePageIndex;
+            get => _sharedData.ActiveTabIndex;
             set
             {
-                if (_rememberActivePageIndex)
-                    _repo.CommitDetailActivePageIndex = value;
-                else
-                    _activePageIndex = value;
-
-                OnPropertyChanged();
+                if (value != _sharedData.ActiveTabIndex)
+                    _sharedData.ActiveTabIndex = value;
             }
         }
 
@@ -142,10 +152,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _canOpenRevisionFileWithDefaultEditor, value);
         }
 
-        public CommitDetail(Repository repo, bool rememberActivePageIndex)
+        public CommitDetail(Repository repo, CommitDetailSharedData sharedData)
         {
             _repo = repo;
-            _rememberActivePageIndex = rememberActivePageIndex;
+            _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 
@@ -569,8 +579,7 @@ namespace SourceGit.ViewModels
         private static partial Regex REG_SHA_FORMAT();
 
         private Repository _repo = null;
-        private bool _rememberActivePageIndex = true;
-        private int _activePageIndex = 0;
+        private CommitDetailSharedData _sharedData = null;
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;

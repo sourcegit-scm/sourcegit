@@ -89,6 +89,7 @@ namespace SourceGit.ViewModels
         public Histories(Repository repo)
         {
             _repo = repo;
+            _commitDetailSharedData = new CommitDetailSharedData();
         }
 
         public void Dispose()
@@ -173,7 +174,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo, true);
+                    var commitDetail = new CommitDetail(_repo, _commitDetailSharedData);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -392,7 +393,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var commitDetail = new CommitDetail(_repo, true);
+                    var commitDetail = new CommitDetail(_repo, _commitDetailSharedData);
                     commitDetail.Commit = commit;
                     DetailContext = commitDetail;
                 }
@@ -400,6 +401,7 @@ namespace SourceGit.ViewModels
         }
 
         private Repository _repo = null;
+        private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;

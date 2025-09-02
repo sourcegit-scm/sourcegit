@@ -122,7 +122,7 @@ namespace SourceGit.ViewModels
         public InteractiveRebase(Repository repo, Models.Commit on, InteractiveRebasePrefill prefill = null)
         {
             _repo = repo;
-            _commitDetail = new CommitDetail(repo, false);
+            _commitDetail = new CommitDetail(repo, null);
             Current = repo.CurrentBranch;
             On = on;
             IsLoading = true;
