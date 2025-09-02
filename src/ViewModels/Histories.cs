@@ -242,9 +242,6 @@ namespace SourceGit.ViewModels
 
         public async Task CheckoutBranchByCommitAsync(Models.Commit commit)
         {
-            if (commit == null)
-                return;
-
             if (commit.IsCurrentHead)
                 return;
 
