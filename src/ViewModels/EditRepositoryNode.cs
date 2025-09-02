@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -16,6 +17,11 @@ namespace SourceGit.ViewModels
         {
             get => _name;
             set => SetProperty(ref _name, value, true);
+        }
+
+        public List<int> Bookmarks
+        {
+            get;
         }
 
         public int Bookmark
@@ -37,6 +43,10 @@ namespace SourceGit.ViewModels
             _name = node.Name;
             _isRepository = node.IsRepository;
             _bookmark = node.Bookmark;
+
+            Bookmarks = new List<int>();
+            for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
+                Bookmarks.Add(i);
         }
 
         public override Task<bool> Sure()

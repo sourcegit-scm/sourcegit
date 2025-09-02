@@ -24,13 +24,9 @@ namespace SourceGit.Models
         public bool IsUpstreamGone { get; set; }
         public string WorktreePath { get; set; }
 
-        public bool IsTrackStatusVisible
-        {
-            get
-            {
-                return Ahead.Count + Behind.Count > 0;
-            }
-        }
+        public bool HasWorktree => !IsCurrent && !string.IsNullOrEmpty(WorktreePath);
+        public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
+        public bool IsTrackStatusVisible => Ahead.Count + Behind.Count > 0;
 
         public string TrackStatusDescription
         {
@@ -44,8 +40,5 @@ namespace SourceGit.Models
                 return behind > 0 ? $"{behind}↓" : string.Empty;
             }
         }
-
-        public bool HasWorktree => !IsCurrent && !string.IsNullOrEmpty(WorktreePath);
-        public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
     }
 }

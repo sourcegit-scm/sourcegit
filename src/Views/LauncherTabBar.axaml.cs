@@ -269,12 +269,12 @@ namespace SourceGit.Views
                     bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                     bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
 
-                    for (int i = 0; i < Models.Bookmarks.Supported.Count; i++)
+                    for (int i = 0; i < Models.Bookmarks.Brushes.Length; i++)
                     {
+                        var brush = Models.Bookmarks.Brushes[i];
                         var icon = App.CreateMenuIcon("Icons.Bookmark");
-
-                        if (i != 0)
-                            icon.Fill = Models.Bookmarks.Brushes[i];
+                        if (brush != null)
+                            icon.Fill = brush;
 
                         var dupIdx = i;
                         var setter = new MenuItem();

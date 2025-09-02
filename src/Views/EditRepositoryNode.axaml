@@ -34,16 +34,16 @@
       <ComboBox Grid.Column="1"
                 BorderThickness="0"
                 Height="28"
-                ItemsSource="{x:Static m:Bookmarks.Supported}"
+                ItemsSource="{Binding Bookmarks}"
                 SelectedIndex="{Binding Bookmark, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate>
-            <Border Height="20" VerticalAlignment="Center">
+            <Grid Height="20">
               <Path Width="12" Height="12"
                     Fill="{Binding Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
                     HorizontalAlignment="Center" VerticalAlignment="Center"
                     Data="{StaticResource Icons.Bookmark}"/>
-            </Border>
+            </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
