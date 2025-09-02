@@ -203,7 +203,7 @@ namespace SourceGit.Views
             protected override void OnDataContextChanged(EventArgs e)
             {
                 base.OnDataContextChanged(e);
-                InvalidateMeasure();
+                InvalidateVisual();
             }
         }
 
