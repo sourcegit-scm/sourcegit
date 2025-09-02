@@ -78,7 +78,7 @@ namespace SourceGit.Models
             var match = REG_TO_VISIT_URL_CAPTURE().Match(URL);
             if (match.Success)
             {
-                url = $"https://{match.Groups[1].Value}/{match.Groups[2].Value}";
+                url = $"http://{match.Groups[1].Value}/{match.Groups[2].Value}";
                 return true;
             }
 
