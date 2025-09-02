@@ -98,3 +98,10 @@ The project uses the following third-party libraries or assets
 - **Commit**: 0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355
 - **License**: MIT License
 - **License Link**: https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355/LICENSE
+
+### vuejs-language-tools
+
+- **Source**: https://github.com/vuejs/language-tools
+- **Commit**: 68d98dc57f8486c2946ae28dc86bf8e91d45da4d
+- **License**: MIT License
+- **License Link**: https://github.com/vuejs/language-tools/blob/68d98dc57f8486c2946ae28dc86bf8e91d45da4d/LICENSE

@@ -26,6 +26,7 @@ namespace SourceGit.Models
             new ExtraGrammar("source.hx", [".hx"], "haxe.json"),
             new ExtraGrammar("source.hxml", [".hxml"], "hxml.json"),
             new ExtraGrammar("text.html.jsp", [".jsp", ".jspf", ".tag"], "jsp.json"),
+            new ExtraGrammar("source.vue", [".vue"], "vue.json"),
         ];
 
         public static string GetScope(string file, RegistryOptions reg)
