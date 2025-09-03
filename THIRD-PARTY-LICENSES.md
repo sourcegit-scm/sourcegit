@@ -7,7 +7,7 @@ The project uses the following third-party libraries or assets
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.3.3
+- **Version**: 11.3.5
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
@@ -42,7 +42,7 @@ The project uses the following third-party libraries or assets
 ### Azure.AI.OpenAI
 
 - **Source**: https://github.com/Azure/azure-sdk-for-net
-- **Version**: 2.2.0-beta.5
+- **Version**: 2.3.0-beta.2
 - **License**: MIT License
 - **License Link**: https://github.com/Azure/azure-sdk-for-net/blob/main/LICENSE.txt
 
