@@ -44,6 +44,8 @@ namespace SourceGit.Views
 
         private async void OnPastingFromClipboard(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
+
             try
             {
                 var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
@@ -54,9 +56,9 @@ namespace SourceGit.Views
                         OnTextInput(new TextInputEventArgs() { Text = text });
                 }
             }
-            finally
+            catch
             {
-                e.Handled = true;
+                // Ignore exceptions
             }
         }
     }
