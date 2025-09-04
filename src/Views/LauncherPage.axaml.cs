@@ -5,6 +5,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -92,6 +93,11 @@ namespace SourceGit.Views
                 else
                     presenter.Content = App.CreateViewForViewModel(presenter.DataContext);
             }
+        }
+
+        private void OnToolBarPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            this.FindAncestorOfType<ChromelessWindow>()?.BeginMoveWindow(sender, e);
         }
     }
 }
