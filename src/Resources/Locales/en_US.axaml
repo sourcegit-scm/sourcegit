@@ -163,6 +163,9 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Check refs that contains this commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT IS CONTAINED BY</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Copy Email</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Copy Name</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Copy Name &amp; Email</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Shows only the first 100 changes. See all changes on the CHANGES tab.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Key:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">MESSAGE</x:String>

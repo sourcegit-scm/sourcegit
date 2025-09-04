@@ -167,6 +167,9 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">查看包含此提交的分支/标签</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">本提交已被以下分支/标签包含</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">复制电子邮箱</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">复制用户名</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">复制用户名及邮箱</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">仅显示前100项变更。请前往【变更对比】页面查看全部。</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">签名密钥 ：</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交信息</x:String>

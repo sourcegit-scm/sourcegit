@@ -19,14 +19,16 @@
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
             <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
-              <Grid Margin="0,10,0,8" ColumnDefinitions="Auto,*" ClipToBounds="True">
-                <v:EnhancedSelectableTextBlock Grid.Column="0" Text="{Binding Author.Name}" Margin="2,0,8,0"/>
-                <v:EnhancedSelectableTextBlock Grid.Column="1" Text="{Binding Author.Email}" ToolTip.Tip="{Binding Author.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
-              </Grid>
-              <v:EnhancedSelectableTextBlock Text="{Binding AuthorTimeStr}"
-                                             Margin="2,0,0,0"
-                                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                                             Foreground="{DynamicResource Brush.FG2}"/>
+              <Border Margin="0,10,0,8" Background="Transparent" ToolTip.Tip="{Binding Author}" Tag="{Binding Author}" ContextRequested="OnUserContextRequested">
+                <TextBlock TextTrimming="CharacterEllipsis">
+                  <Run Text="{Binding Author.Name, Mode=OneWay}"/>
+                  <Run Text="{Binding Author.Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </Border>
+              <TextBlock Text="{Binding AuthorTimeStr}"
+                         Margin="2,0,0,0"
+                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
 
@@ -35,14 +37,16 @@
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Committer}"/>
             <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
-              <Grid Margin="0,10,0,8" ColumnDefinitions="Auto,*" ClipToBounds="True">
-                <v:EnhancedSelectableTextBlock Grid.Column="0" Text="{Binding Committer.Name}" Margin="2,0,8,0"/>
-                <v:EnhancedSelectableTextBlock Grid.Column="1" Text="{Binding Committer.Email}" ToolTip.Tip="{Binding Committer.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
-              </Grid>
-              <v:EnhancedSelectableTextBlock Text="{Binding CommitterTimeStr}"
-                                             Margin="2,0,0,0"
-                                             FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                                             Foreground="{DynamicResource Brush.FG2}"/>
+              <Border Margin="0,10,0,8" Background="Transparent" ToolTip.Tip="{Binding Committer}" Tag="{Binding Committer}" ContextRequested="OnUserContextRequested">
+                <TextBlock TextTrimming="CharacterEllipsis">
+                  <Run Text="{Binding Committer.Name, Mode=OneWay}"/>
+                  <Run Text="{Binding Committer.Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                </TextBlock>
+              </Border>
+              <TextBlock Text="{Binding CommitterTimeStr}"
+                         Margin="2,0,0,0"
+                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
         </UniformGrid>
