@@ -20,9 +20,9 @@
             <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
               <Border Margin="0,10,0,8" Background="Transparent" ToolTip.Tip="{Binding Author}" Tag="{Binding Author}" ContextRequested="OnUserContextRequested">
-                <TextBlock TextTrimming="CharacterEllipsis">
-                  <Run Text="{Binding Author.Name, Mode=OneWay}"/>
-                  <Run Text="{Binding Author.Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                <TextBlock Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis">
+                  <Run Text="{Binding Author.Name, Mode=OneWay}" Foreground="{DynamicResource Brush.FG1}"/>
+                  <Run Text="{Binding Author.Email, Mode=OneWay}"/>
                 </TextBlock>
               </Border>
               <TextBlock Text="{Binding AuthorTimeStr}"
@@ -38,9 +38,9 @@
             <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
               <Border Margin="0,10,0,8" Background="Transparent" ToolTip.Tip="{Binding Committer}" Tag="{Binding Committer}" ContextRequested="OnUserContextRequested">
-                <TextBlock TextTrimming="CharacterEllipsis">
-                  <Run Text="{Binding Committer.Name, Mode=OneWay}"/>
-                  <Run Text="{Binding Committer.Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                <TextBlock Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis">
+                  <Run Text="{Binding Committer.Name, Mode=OneWay}" Foreground="{DynamicResource Brush.FG1}"/>
+                  <Run Text="{Binding Committer.Email, Mode=OneWay}"/>
                 </TextBlock>
               </Border>
               <TextBlock Text="{Binding CommitterTimeStr}"
