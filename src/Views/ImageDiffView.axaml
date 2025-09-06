@@ -129,11 +129,11 @@
 
         <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
           <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}"/>
             <TextBlock Classes="primary"
-                       Margin="8,0,0,0"
+                       Margin="0,0,8,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}"/>
           </StackPanel>
 
           <Slider Grid.Column="1"
