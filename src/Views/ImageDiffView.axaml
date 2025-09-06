@@ -3,12 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ImageDiffView"
              x:DataType="m:ImageDiff">
-  <TabControl Margin="0,0,0,8" TabStripPlacement="Bottom">
+  <TabControl SelectedIndex="{Binding Source={x:Static vm:Preferences.Instance}, Path=ImageDiffActiveIdx, Mode=TwoWay}" Margin="0,0,0,8" TabStripPlacement="Bottom">
     <TabControl.Styles>
       <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
         <Setter Property="HorizontalAlignment" Value="Center"/>
