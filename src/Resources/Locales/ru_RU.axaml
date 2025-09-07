@@ -264,6 +264,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Тип изменения:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Копировать весь текст</x:String>
+  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Копировать имя файла</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Копировать полный путь</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Копировать путь</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Создать ветку...</x:String>

@@ -298,8 +298,19 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+             var copyFileName = new MenuItem();
+            copyFileName.Header = App.Text("CopyFileName");
+            copyFileName.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFileName.Tag = OperatingSystem.IsMacOS() ? "⌘+⌥+C" : "Ctrl+Alt+C";
+            copyFileName.Click += async (_, e) =>
+            {
+                await App.CopyTextAsync(Path.GetFileName(fullPath));
+                e.Handled = true;
+            };
+
             menu.Items.Add(copyPath);
             menu.Items.Add(copyFullPath);
+            menu.Items.Add(copyFileName);
             return menu;
         }
 

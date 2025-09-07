@@ -562,6 +562,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
+- Text.CopyFileName
 - Text.CopyFullPath
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
