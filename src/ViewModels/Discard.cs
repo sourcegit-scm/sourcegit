@@ -64,7 +64,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
 
             var log = _repo.CreateLog("Discard all");
@@ -77,7 +77,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

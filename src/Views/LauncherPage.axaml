@@ -11,7 +11,11 @@
              x:DataType="vm:LauncherPage">
   <Grid RowDefinitions="36,*">
     <!-- ToolBar -->
-    <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
+    <Border Grid.Row="0"
+            BorderBrush="{DynamicResource Brush.Border0}"
+            BorderThickness="0,0,0,1"
+            Background="{DynamicResource Brush.ToolBar}"
+            PointerPressed="OnToolBarPointerPressed">
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">

@@ -19,7 +19,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Deleting multiple branches...";
 
             var log = _repo.CreateLog("Delete Multiple Branches");
@@ -50,7 +50,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

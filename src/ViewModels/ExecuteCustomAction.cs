@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Run custom action ...";
 
             var cmdline = PrepareStringByTarget(CustomAction.Arguments);
@@ -150,7 +150,6 @@ namespace SourceGit.ViewModels
                 _ = Task.Run(() => Run(cmdline));
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

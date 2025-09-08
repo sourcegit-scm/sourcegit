@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
 
             var lineIdx = 0;
             var blockStartIdx = 0;
-            var isNewBlock = true;
+            var isReadingBlock = false;
             var blocks = new List<Block>();
 
             foreach (var line in lines)
@@ -45,24 +45,24 @@ namespace SourceGit.ViewModels
                 lineIdx++;
                 if (line.Type is Models.TextDiffLineType.Added or Models.TextDiffLineType.Deleted or Models.TextDiffLineType.None)
                 {
-                    if (isNewBlock)
+                    if (!isReadingBlock)
                     {
-                        isNewBlock = false;
+                        isReadingBlock = true;
                         blockStartIdx = lineIdx;
                     }
                 }
                 else
                 {
-                    if (!isNewBlock)
+                    if (isReadingBlock)
                     {
                         blocks.Add(new Block(blockStartIdx, lineIdx - 1));
-                        isNewBlock = true;
+                        isReadingBlock = false;
                     }
                 }
             }
 
-            if (!isNewBlock)
-                blocks.Add(new Block(blockStartIdx, lines.Count - 1));
+            if (isReadingBlock)
+                blocks.Add(new Block(blockStartIdx, lines.Count));
 
             _blocks.AddRange(blocks);
         }

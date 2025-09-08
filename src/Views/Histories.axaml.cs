@@ -627,12 +627,9 @@ namespace SourceGit.Views
 
                     if (commit.IsMerged && commit.Parents.Count > 0)
                     {
-                        var interactiveRebase = new MenuItem();
-                        interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase");
-                        interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
-
                         var manually = new MenuItem();
                         manually.Header = App.Text("CommitCM.InteractiveRebase.Manually", current.Name, target);
+                        manually.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                         manually.Click += async (_, e) =>
                         {
                             await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
@@ -641,6 +638,7 @@ namespace SourceGit.Views
 
                         var reword = new MenuItem();
                         reword.Header = App.Text("CommitCM.InteractiveRebase.Reword");
+                        reword.Icon = App.CreateMenuIcon("Icons.Rename");
                         reword.Click += async (_, e) =>
                         {
                             await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Reword);
@@ -649,6 +647,7 @@ namespace SourceGit.Views
 
                         var edit = new MenuItem();
                         edit.Header = App.Text("CommitCM.InteractiveRebase.Edit");
+                        edit.Icon = App.CreateMenuIcon("Icons.Edit");
                         edit.Click += async (_, e) =>
                         {
                             await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Edit);
@@ -657,6 +656,7 @@ namespace SourceGit.Views
 
                         var squash = new MenuItem();
                         squash.Header = App.Text("CommitCM.InteractiveRebase.Squash");
+                        squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
                         squash.Click += async (_, e) =>
                         {
                             await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Squash);
@@ -665,6 +665,7 @@ namespace SourceGit.Views
 
                         var fixup = new MenuItem();
                         fixup.Header = App.Text("CommitCM.InteractiveRebase.Fixup");
+                        fixup.Icon = App.CreateMenuIcon("Icons.Fix");
                         fixup.Click += async (_, e) =>
                         {
                             await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Fixup);
@@ -673,12 +674,16 @@ namespace SourceGit.Views
 
                         var drop = new MenuItem();
                         drop.Header = App.Text("CommitCM.InteractiveRebase.Drop");
+                        drop.Icon = App.CreateMenuIcon("Icons.Clear");
                         drop.Click += async (_, e) =>
                         {
                             await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Drop);
                             e.Handled = true;
                         };
 
+                        var interactiveRebase = new MenuItem();
+                        interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase");
+                        interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
                         interactiveRebase.Items.Add(manually);
                         interactiveRebase.Items.Add(new MenuItem() { Header = "-" });
                         interactiveRebase.Items.Add(reword);

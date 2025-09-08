@@ -125,6 +125,12 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
+        public bool ShowChangesInCommitDetailByDefault
+        {
+            get;
+            set;
+        } = false;
+
         public int MaxHistoryCommits
         {
             get => _maxHistoryCommits;

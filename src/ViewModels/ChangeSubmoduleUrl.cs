@@ -39,7 +39,7 @@ namespace SourceGit.ViewModels
             if (_url.Equals(Submodule.URL, StringComparison.Ordinal))
                 return true;
 
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Change submodule's url...";
 
             var log = _repo.CreateLog("Change Submodule's URL");
@@ -50,7 +50,6 @@ namespace SourceGit.ViewModels
                 .SetURLAsync(Submodule.Path, _url);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

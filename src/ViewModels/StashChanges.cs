@@ -15,7 +15,7 @@ namespace SourceGit.ViewModels
 
         public bool HasSelectedFiles
         {
-            get;
+            get => _changes != null;
         }
 
         public bool IncludeUntracked
@@ -43,16 +43,15 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.ChangesAfterStashing = value;
         }
 
-        public StashChanges(Repository repo, List<Models.Change> changes, bool hasSelectedFiles)
+        public StashChanges(Repository repo, List<Models.Change> selectedChanges)
         {
             _repo = repo;
-            _changes = changes;
-            HasSelectedFiles = hasSelectedFiles;
+            _changes = selectedChanges;
         }
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Stash changes ...";
 
             var log = _repo.CreateLog("Stash Local Changes");
@@ -62,7 +61,7 @@ namespace SourceGit.ViewModels
             var keepIndex = mode == DealWithChangesAfterStashing.KeepIndex;
             bool succ;
 
-            if (!HasSelectedFiles)
+            if (_changes == null)
             {
                 if (OnlyStaged)
                 {
@@ -74,8 +73,12 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
+                        var all = await new Commands.QueryLocalChanges(_repo.FullPath, false)
+                            .Use(log)
+                            .GetResultAsync();
+
                         var staged = new List<Models.Change>();
-                        foreach (var c in _changes)
+                        foreach (var c in all)
                         {
                             if (c.Index != Models.ChangeState.None && c.Index != Models.ChangeState.Untracked)
                                 staged.Add(c);
@@ -103,7 +106,7 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
+            _repo.MarkStashesDirtyManually();
             return succ;
         }
 

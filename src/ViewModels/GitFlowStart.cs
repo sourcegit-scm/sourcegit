@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Git Flow - Start {Prefix}{_name} ...";
 
             var log = _repo.CreateLog("GitFlow - Start");
@@ -59,7 +59,6 @@ namespace SourceGit.ViewModels
 
             var succ = await Commands.GitFlow.StartAsync(_repo.FullPath, Type, _name, log);
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

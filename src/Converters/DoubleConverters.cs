@@ -1,4 +1,5 @@
-﻿using Avalonia.Data.Converters;
+﻿using Avalonia;
+using Avalonia.Data.Converters;
 
 namespace SourceGit.Converters
 {
@@ -15,5 +16,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<double, string> OneMinusToPercentage =
             new FuncValueConverter<double, string>(v => ((1.0 - v) * 100).ToString("F3") + "%");
+
+        public static readonly FuncValueConverter<double, Thickness> ToLeftMargin =
+            new FuncValueConverter<double, Thickness>(v => new Thickness(v, 0, 0, 0));
     }
 }

@@ -183,7 +183,7 @@ namespace SourceGit.Views
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
-                var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
+                var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
                 var labelSize = FontSize;
                 var requiredHeight = 16.0;
                 var x = 0.0;

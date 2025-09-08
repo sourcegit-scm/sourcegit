@@ -154,7 +154,7 @@ namespace SourceGit.ViewModels
             nodes.Sort((l, r) =>
             {
                 if (l.IsFolder == r.IsFolder)
-                    return Models.NumericSort.Compare(l.FullPath, r.FullPath);
+                    return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
                 return l.IsFolder ? -1 : 1;
             });
         }

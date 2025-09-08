@@ -46,7 +46,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.General.Locale}"
                        HorizontalAlignment="Right"
@@ -136,28 +136,33 @@
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowChangesPageByDefault}"
                       IsChecked="{Binding ShowLocalChangesByDefault, Mode=TwoWay}"/>
-
+            
             <CheckBox Grid.Row="6" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.General.ShowChangesTabInCommitDetailByDefault}"
+                      IsChecked="{Binding ShowChangesInCommitDetailByDefault, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowAuthorTime}"
                       IsChecked="{Binding ShowAuthorTimeInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="7" Grid.Column="1"
+            <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowTagsInGraph}"
                       IsChecked="{Binding ShowTagsInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="8" Grid.Column="1"
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowChildren}"
                       IsChecked="{Binding ShowChildren, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="9" Grid.Column="1"
+            <CheckBox Grid.Row="10" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.EnableCompactFolders}"
                       IsChecked="{Binding EnableCompactFoldersInChangesTree, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="10" Grid.Column="1"
+            <CheckBox Grid.Row="11" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.Check4UpdatesOnStartup}"
                       IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"

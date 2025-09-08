@@ -46,7 +46,7 @@ namespace SourceGit.ViewModels
             if (Target.Name.Equals(_name, StringComparison.Ordinal))
                 return true;
 
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Rename '{Target.Name}'";
 
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
@@ -74,7 +74,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
 
             if (isCurrent)
             {

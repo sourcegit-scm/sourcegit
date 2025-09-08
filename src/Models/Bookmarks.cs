@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace SourceGit.Models
+﻿namespace SourceGit.Models
 {
     public static class Bookmarks
     {
         public static readonly Avalonia.Media.IBrush[] Brushes = [
-            Avalonia.Media.Brushes.Transparent,
+            null,
             Avalonia.Media.Brushes.Red,
             Avalonia.Media.Brushes.Orange,
             Avalonia.Media.Brushes.Gold,
@@ -15,12 +13,9 @@ namespace SourceGit.Models
             Avalonia.Media.Brushes.Purple,
         ];
 
-        public static readonly List<int> Supported = new List<int>();
-
-        static Bookmarks()
+        public static Avalonia.Media.IBrush Get(int i)
         {
-            for (int i = 0; i < Brushes.Length; i++)
-                Supported.Add(i);
+            return (i >= 0 && i < Brushes.Length) ? Brushes[i] : null;
         }
     }
 }

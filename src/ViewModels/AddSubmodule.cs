@@ -42,7 +42,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding submodule...";
 
             var log = _repo.CreateLog("Add Submodule");
@@ -64,7 +64,6 @@ namespace SourceGit.ViewModels
                 .AddAsync(_url, relativePath, Recursive);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

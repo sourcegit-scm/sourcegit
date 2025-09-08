@@ -102,7 +102,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Init git-flow ...";
 
             var log = _repo.CreateLog("Gitflow - Init");
@@ -120,7 +120,6 @@ namespace SourceGit.ViewModels
                 if (!succ)
                 {
                     log.Complete();
-                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
@@ -134,7 +133,6 @@ namespace SourceGit.ViewModels
                 if (!succ)
                 {
                     log.Complete();
-                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
@@ -162,7 +160,6 @@ namespace SourceGit.ViewModels
                 _repo.GitFlow = gitflow;
             }
 
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

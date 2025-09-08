@@ -31,7 +31,7 @@ namespace SourceGit.ViewModels
             if (string.Compare(_message, _oldMessage, StringComparison.Ordinal) == 0)
                 return true;
 
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Editing HEAD message ...";
 
             var log = _repo.CreateLog("Reword HEAD");
@@ -60,7 +60,6 @@ namespace SourceGit.ViewModels
                 if (!succ)
                 {
                     log.Complete();
-                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
@@ -75,7 +74,6 @@ namespace SourceGit.ViewModels
                     .PopAsync("stash@{0}");
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

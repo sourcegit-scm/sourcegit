@@ -372,7 +372,7 @@ namespace SourceGit.Views
                     stash.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                            repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged, true));
+                            repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged));
 
                         e.Handled = true;
                     };
@@ -769,7 +769,7 @@ namespace SourceGit.Views
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged, true));
+                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged));
 
                     e.Handled = true;
                 };
@@ -956,7 +956,7 @@ namespace SourceGit.Views
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged, true));
+                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged));
 
                     e.Handled = true;
                 };
@@ -1164,7 +1164,7 @@ namespace SourceGit.Views
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged, true));
+                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged));
 
                     e.Handled = true;
                 };

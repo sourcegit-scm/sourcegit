@@ -167,6 +167,9 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">查看包含此提交的分支/标签</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">本提交已被以下分支/标签包含</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">复制电子邮箱</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">复制用户名</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">复制用户名及邮箱</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">仅显示前100项变更。请前往【变更对比】页面查看全部。</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">签名密钥 ：</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交信息</x:String>
@@ -571,6 +574,7 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">最大历史提交数</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">在提交路线图中显示修改时间而非提交时间</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">默认显示【本地更改】页</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">在提交详情页默认打开【变更对比】标签页</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交详情页中显示子提交列表</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在提交路线图中显示标签</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using Avalonia.Platform.Storage;
-using SourceGit.ViewModels;
 
 namespace SourceGit.Views
 {
@@ -15,7 +16,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
+        public ContextMenu CreateChangeContextMenuByFolder(ViewModels.ChangeTreeNode node, List<Models.Change> changes)
         {
             if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
@@ -335,7 +336,10 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
             {
-                detail.ActivePageIndex = 1;
+                var tabControl = this.FindLogicalDescendantOfType<TabControl>();
+                if (tabControl != null)
+                    tabControl.SelectedIndex = 1;
+
                 detail.SelectedChanges = new() { change };
             }
 

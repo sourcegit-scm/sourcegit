@@ -7,9 +7,26 @@ namespace SourceGit.Models
 {
     public class Watcher : IDisposable
     {
+        public class LockContext : IDisposable
+        {
+            public LockContext(Watcher target)
+            {
+                _target = target;
+                Interlocked.Increment(ref _target._lockCount);
+            }
+
+            public void Dispose()
+            {
+                Interlocked.Decrement(ref _target._lockCount);
+            }
+
+            private Watcher _target;
+        }
+
         public Watcher(IRepository repo, string fullpath, string gitDir)
         {
             _repo = repo;
+            _root = new DirectoryInfo(fullpath).FullName;
 
             var testGitDir = new DirectoryInfo(Path.Combine(fullpath, ".git")).FullName;
             var desiredDir = new DirectoryInfo(gitDir).FullName;
@@ -59,42 +76,29 @@ namespace SourceGit.Models
             _timer = new Timer(Tick, null, 100, 100);
         }
 
-        public void SetEnabled(bool enabled)
+        public IDisposable Lock()
         {
-            if (enabled)
-            {
-                if (_lockCount > 0)
-                    _lockCount--;
-            }
-            else
-            {
-                _lockCount++;
-            }
-        }
-
-        public void SetSubmodules(List<Submodule> submodules)
-        {
-            lock (_lockSubmodule)
-            {
-                _submodules.Clear();
-                foreach (var submodule in submodules)
-                    _submodules.Add(submodule.Path);
-            }
+            return new LockContext(this);
         }
 
         public void MarkBranchUpdated()
         {
-            _updateBranch = 0;
+            Interlocked.Exchange(ref _updateBranch, 0);
         }
 
         public void MarkTagUpdated()
         {
-            _updateTags = 0;
+            Interlocked.Exchange(ref _updateTags, 0);
         }
 
         public void MarkWorkingCopyUpdated()
         {
-            _updateWC = 0;
+            Interlocked.Exchange(ref _updateWC, 0);
+        }
+
+        public void MarkStashUpdated()
+        {
+            Interlocked.Exchange(ref _updateStashes, 0);
         }
 
         public void Dispose()
@@ -112,57 +116,91 @@ namespace SourceGit.Models
 
         private void Tick(object sender)
         {
-            if (_lockCount > 0)
+            if (Interlocked.Read(ref _lockCount) > 0)
                 return;
 
             var now = DateTime.Now.ToFileTime();
-            if (_updateBranch > 0 && now > _updateBranch)
+            var refreshCommits = false;
+            var refreshSubmodules = false;
+            var refreshWC = false;
+
+            var oldUpdateBranch = Interlocked.Exchange(ref _updateBranch, -1);
+            if (oldUpdateBranch > 0)
             {
-                _updateBranch = 0;
-                _updateWC = 0;
-
-                if (_updateTags > 0)
+                if (now > oldUpdateBranch)
                 {
-                    _updateTags = 0;
-                    _repo.RefreshTags();
-                }
+                    refreshCommits = true;
+                    refreshSubmodules = _repo.MayHaveSubmodules();
+                    refreshWC = true;
 
-                if (_updateSubmodules > 0 || _repo.MayHaveSubmodules())
+                    _repo.RefreshBranches();
+                    _repo.RefreshWorktrees();
+                }
+                else
                 {
-                    _updateSubmodules = 0;
-                    _repo.RefreshSubmodules();
+                    Interlocked.CompareExchange(ref _updateBranch, oldUpdateBranch, -1);
                 }
-
-                _repo.RefreshBranches();
-                _repo.RefreshCommits();
-                _repo.RefreshWorkingCopyChanges();
-                _repo.RefreshWorktrees();
             }
 
-            if (_updateWC > 0 && now > _updateWC)
+            if (refreshWC)
             {
-                _updateWC = 0;
+                Interlocked.Exchange(ref _updateWC, -1);
                 _repo.RefreshWorkingCopyChanges();
             }
-
-            if (_updateSubmodules > 0 && now > _updateSubmodules)
+            else
             {
-                _updateSubmodules = 0;
+                var oldUpdateWC = Interlocked.Exchange(ref _updateWC, -1);
+                if (oldUpdateWC > 0)
+                {
+                    if (now > oldUpdateWC)
+                        _repo.RefreshWorkingCopyChanges();
+                    else
+                        Interlocked.CompareExchange(ref _updateWC, oldUpdateWC, -1);
+                }
+            }
+
+            if (refreshSubmodules)
+            {
+                Interlocked.Exchange(ref _updateSubmodules, -1);
                 _repo.RefreshSubmodules();
             }
-
-            if (_updateStashes > 0 && now > _updateStashes)
+            else
             {
-                _updateStashes = 0;
-                _repo.RefreshStashes();
+                var oldUpdateSubmodule = Interlocked.Exchange(ref _updateSubmodules, -1);
+                if (oldUpdateSubmodule > 0)
+                {
+                    if (now > oldUpdateSubmodule)
+                        _repo.RefreshSubmodules();
+                    else
+                        Interlocked.CompareExchange(ref _updateSubmodules, oldUpdateSubmodule, -1);
+                }
             }
 
-            if (_updateTags > 0 && now > _updateTags)
+            var oldUpdateStashes = Interlocked.Exchange(ref _updateStashes, -1);
+            if (oldUpdateStashes > 0)
             {
-                _updateTags = 0;
-                _repo.RefreshTags();
+                if (now > oldUpdateStashes)
+                    _repo.RefreshStashes();
+                else
+                    Interlocked.CompareExchange(ref _updateStashes, oldUpdateStashes, -1);
+            }
+
+            var oldUpdateTags = Interlocked.Exchange(ref _updateTags, -1);
+            if (oldUpdateTags > 0)
+            {
+                if (now > oldUpdateTags)
+                {
+                    refreshCommits = true;
+                    _repo.RefreshTags();
+                }
+                else
+                {
+                    Interlocked.CompareExchange(ref _updateTags, oldUpdateTags, -1);
+                }
+            }
+
+            if (refreshCommits)
                 _repo.RefreshCommits();
-            }
         }
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
@@ -177,7 +215,7 @@ namespace SourceGit.Models
             if (name.StartsWith(".git/", StringComparison.Ordinal))
                 HandleGitDirFileChanged(name.Substring(5));
             else
-                HandleWorkingCopyFileChanged(name);
+                HandleWorkingCopyFileChanged(name, e.FullPath);
         }
 
         private void OnGitDirChanged(object o, FileSystemEventArgs e)
@@ -200,7 +238,7 @@ namespace SourceGit.Models
                 name.EndsWith("/.git", StringComparison.Ordinal))
                 return;
 
-            HandleWorkingCopyFileChanged(name);
+            HandleWorkingCopyFileChanged(name, e.FullPath);
         }
 
         private void HandleGitDirFileChanged(string name)
@@ -215,23 +253,24 @@ namespace SourceGit.Models
                 if (name.EndsWith("/HEAD", StringComparison.Ordinal) ||
                     name.EndsWith("/ORIG_HEAD", StringComparison.Ordinal))
                 {
-                    _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                    _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+                    var desired = DateTime.Now.AddSeconds(1).ToFileTime();
+                    Interlocked.Exchange(ref _updateSubmodules, desired);
+                    Interlocked.Exchange(ref _updateWC, desired);
                 }
             }
             else if (name.Equals("MERGE_HEAD", StringComparison.Ordinal) ||
                 name.Equals("AUTO_MERGE", StringComparison.Ordinal))
             {
                 if (_repo.MayHaveSubmodules())
-                    _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
+                    Interlocked.Exchange(ref _updateSubmodules, DateTime.Now.AddSeconds(1).ToFileTime());
             }
             else if (name.StartsWith("refs/tags", StringComparison.Ordinal))
             {
-                _updateTags = DateTime.Now.AddSeconds(.5).ToFileTime();
+                Interlocked.Exchange(ref _updateTags, DateTime.Now.AddSeconds(.5).ToFileTime());
             }
             else if (name.StartsWith("refs/stash", StringComparison.Ordinal))
             {
-                _updateStashes = DateTime.Now.AddSeconds(.5).ToFileTime();
+                Interlocked.Exchange(ref _updateStashes, DateTime.Now.AddSeconds(.5).ToFileTime());
             }
             else if (name.Equals("HEAD", StringComparison.Ordinal) ||
                 name.Equals("BISECT_START", StringComparison.Ordinal) ||
@@ -239,52 +278,59 @@ namespace SourceGit.Models
                 name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
                 (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
-                _updateBranch = DateTime.Now.AddSeconds(.5).ToFileTime();
+                Interlocked.Exchange(ref _updateBranch, DateTime.Now.AddSeconds(.5).ToFileTime());
             }
             else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
             {
-                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+                Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());
             }
         }
 
-        private void HandleWorkingCopyFileChanged(string name)
+        private void HandleWorkingCopyFileChanged(string name, string fullpath)
         {
             if (name.StartsWith(".vs/", StringComparison.Ordinal))
                 return;
 
             if (name.Equals(".gitmodules", StringComparison.Ordinal))
             {
-                _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+                var desired = DateTime.Now.AddSeconds(1).ToFileTime();
+                Interlocked.Exchange(ref _updateSubmodules, desired);
+                Interlocked.Exchange(ref _updateWC, desired);
                 return;
             }
 
-            lock (_lockSubmodule)
+            var dir = Directory.Exists(fullpath) ? fullpath : Path.GetDirectoryName(fullpath);
+            if (IsInSubmodule(dir))
             {
-                foreach (var submodule in _submodules)
-                {
-                    if (name.StartsWith(submodule, StringComparison.Ordinal))
-                    {
-                        _updateSubmodules = DateTime.Now.AddSeconds(1).ToFileTime();
-                        return;
-                    }
-                }
+                Interlocked.Exchange(ref _updateSubmodules, DateTime.Now.AddSeconds(1).ToFileTime());
+                return;
             }
 
-            _updateWC = DateTime.Now.AddSeconds(1).ToFileTime();
+            Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());
+        }
+
+        private bool IsInSubmodule(string folder)
+        {
+            if (File.Exists($"{folder}/.git"))
+                return true;
+
+            var parent = Path.GetDirectoryName(folder);
+            if (parent == null || parent.Equals(_root, StringComparison.Ordinal))
+                return false;
+
+            return IsInSubmodule(parent);
         }
 
         private readonly IRepository _repo = null;
+        private readonly string _root = null;
         private List<FileSystemWatcher> _watchers = [];
         private Timer _timer = null;
-        private int _lockCount = 0;
+
+        private long _lockCount = 0;
         private long _updateWC = 0;
         private long _updateBranch = 0;
         private long _updateSubmodules = 0;
         private long _updateStashes = 0;
         private long _updateTags = 0;
-
-        private readonly Lock _lockSubmodule = new();
-        private List<string> _submodules = new List<string>();
     }
 }

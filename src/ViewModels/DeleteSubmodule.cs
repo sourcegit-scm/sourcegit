@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Deleting submodule ...";
 
             var log = _repo.CreateLog("Delete Submodule");
@@ -29,7 +29,6 @@ namespace SourceGit.ViewModels
                 .DeleteAsync(Submodule);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

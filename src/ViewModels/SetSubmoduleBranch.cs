@@ -30,8 +30,8 @@ namespace SourceGit.ViewModels
             if (_changeTo.Equals(Submodule.Branch, StringComparison.Ordinal))
                 return true;
 
+            using var lockWatcher = _repo.LockWatcher();
             var log = _repo.CreateLog("Set Submodule's Branch");
-            _repo.SetWatcherEnabled(false);
             Use(log);
 
             var succ = await new Commands.Submodule(_repo.FullPath)
@@ -39,7 +39,6 @@ namespace SourceGit.ViewModels
                 .SetBranchAsync(Submodule.Path, _changeTo);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

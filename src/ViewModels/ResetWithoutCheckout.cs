@@ -32,7 +32,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Reset {Target.Name} to {_revision} ...";
 
             var log = _repo.CreateLog($"Reset '{Target.Name}' to '{_revision}'");
@@ -44,7 +44,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

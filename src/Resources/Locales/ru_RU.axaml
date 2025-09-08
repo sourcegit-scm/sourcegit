@@ -167,6 +167,9 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">РЕВИЗОР (ИСПОЛНИТЕЛЬ)</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Найти все ветки с этой ревизией</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ВЕТКИ С ЭТОЙ РЕВИЗИЕЙ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Копировать адрес почты</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Копировать имя</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Копировать имя и адрес почты</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Отображаются только первые 100 изменений. Смотрите все изменения на вкладке ИЗМЕНЕНИЯ.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Ключ:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">СООБЩЕНИЕ</x:String>
@@ -571,6 +574,7 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Максимальная длина истории</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени ревизии на графике</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Показывать вкладку «ЛОКАЛЬНЫЕ ИЗМЕНЕНИЯ» по умолчанию</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Показывать вкладку «Изменения» в сведении ревизии по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показывать метки на графике</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Длина темы ревизии</x:String>

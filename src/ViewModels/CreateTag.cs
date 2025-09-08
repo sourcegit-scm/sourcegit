@@ -76,7 +76,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Create tag...";
 
             var remotes = PushToRemotes ? _repo.Remotes : null;
@@ -99,7 +99,6 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

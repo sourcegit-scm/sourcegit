@@ -103,7 +103,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="{Binding Margin}" ClipToBounds="True" Background="Transparent">
+                <Border Padding="{Binding LeftMargin, Converter={x:Static c:DoubleConverters.ToLeftMargin}}" ClipToBounds="True" Background="Transparent">
                   <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
                     <v:CommitStatusIndicator Grid.Column="0"
                                              CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
@@ -140,8 +140,8 @@
                                               LinkForeground="{DynamicResource Brush.Link}"
                                               Subject="{Binding Subject}"
                                               IssueTrackers="{Binding $parent[v:Histories].IssueTrackers}"
-                                              FontWeight="{Binding FontWeight}"
-                                              Opacity="{Binding Opacity}"/>
+                                              FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                                              Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -167,15 +167,15 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             User="{Binding Author}"
-                            Opacity="{Binding Opacity}"
+                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                             IsHitTestVisible="False"/>
 
                   <Border Grid.Column="1" Padding="8,0,4,0" ClipToBounds="True">
                     <TextBlock Classes="primary"
                                Text="{Binding Author.Name}"
-                               FontWeight="{Binding FontWeight}"
-                               HorizontalAlignment="Left"
-                               Opacity="{Binding Opacity}"/>
+                               FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                               Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                               HorizontalAlignment="Left"/>
                   </Border>
                 </Grid>
               </DataTemplate>
@@ -192,8 +192,8 @@
                 <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True">
                   <TextBlock Classes="primary"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                             FontWeight="{Binding FontWeight}"
-                             Opacity="{Binding Opacity}"/>
+                             FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -217,8 +217,8 @@
               <DataTemplate DataType="m:Commit">
                 <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
                   <v:CommitTimeTextBlock Classes="primary"
-                                         FontWeight="{Binding FontWeight}"
-                                         Opacity="{Binding Opacity}"
+                                         FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                                         Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                                          UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
                                          ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
                                          DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat}"/>

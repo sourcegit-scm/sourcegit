@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Squashing ...";
 
             var log = _repo.CreateLog("Squash");
@@ -55,7 +55,6 @@ namespace SourceGit.ViewModels
                 if (!succ)
                 {
                     log.Complete();
-                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
@@ -75,7 +74,6 @@ namespace SourceGit.ViewModels
                     .PopAsync("stash@{0}");
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

@@ -17,7 +17,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Run `prune` on remote ...";
 
             var log = _repo.CreateLog($"Prune Remote '{Remote.Name}'");
@@ -28,7 +28,6 @@ namespace SourceGit.ViewModels
                 .PruneAsync(Remote.Name);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

@@ -122,7 +122,7 @@ namespace SourceGit.ViewModels
         public InteractiveRebase(Repository repo, Models.Commit on, InteractiveRebasePrefill prefill = null)
         {
             _repo = repo;
-            _commitDetail = new CommitDetail(repo, false);
+            _commitDetail = new CommitDetail(repo, null);
             Current = repo.CurrentBranch;
             On = on;
             IsLoading = true;
@@ -222,7 +222,7 @@ namespace SourceGit.ViewModels
 
         public async Task<bool> Start()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var saveFile = Path.Combine(_repo.GitDir, "sourcegit.interactive_rebase");
             var collection = new Models.InteractiveRebaseJobCollection();
@@ -249,7 +249,6 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

@@ -472,12 +472,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isAutoFetching, value);
         }
 
-        public int CommitDetailActivePageIndex
-        {
-            get;
-            set;
-        } = 0;
-
         public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
             get;
@@ -905,14 +899,38 @@ namespace SourceGit.ViewModels
                         var commit = await new Commands.QuerySingleCommit(FullPath, _searchCommitFilter)
                             .GetResultAsync()
                             .ConfigureAwait(false);
+
+                        commit.IsMerged = await new Commands.IsAncestor(FullPath, commit.SHA, "HEAD")
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
+
                         visible.Add(commit);
                     }
                 }
-                else
+                else if (_onlySearchCommitsInCurrentBranch)
                 {
-                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, _onlySearchCommitsInCurrentBranch)
+                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, true)
                         .GetResultAsync()
                         .ConfigureAwait(false);
+
+                    foreach (var c in visible)
+                        c.IsMerged = true;
+                }
+                else
+                {
+                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, false)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    if (visible.Count > 0)
+                    {
+                        var set = await new Commands.QueryCurrentBranchCommitHashes(FullPath, visible[^1].CommitterTime)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
+
+                        foreach (var c in visible)
+                            c.IsMerged = set.Contains(c.SHA);
+                    }
                 }
 
                 Dispatcher.UIThread.Post(() =>
@@ -923,9 +941,9 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void SetWatcherEnabled(bool enabled)
+        public IDisposable LockWatcher()
         {
-            _watcher?.SetEnabled(enabled);
+            return _watcher?.Lock();
         }
 
         public void MarkBranchesDirtyManually()
@@ -948,6 +966,12 @@ namespace SourceGit.ViewModels
         {
             _watcher?.MarkWorkingCopyUpdated();
             RefreshWorkingCopyChanges();
+        }
+
+        public void MarkStashesDirtyManually()
+        {
+            _watcher?.MarkStashUpdated();
+            RefreshStashes();
         }
 
         public void MarkFetched()
@@ -1082,8 +1106,14 @@ namespace SourceGit.ViewModels
 
         public async Task StashAllAsync(bool autoStart)
         {
-            if (_workingCopy != null)
-                await _workingCopy.StashAllAsync(autoStart);
+            if (!CanCreatePopup())
+                return;
+
+            var popup = new StashChanges(this, null);
+            if (autoStart)
+                await ShowAndStartPopupAsync(popup);
+            else
+                ShowPopup(popup);
         }
 
         public async Task SkipMergeAsync()
@@ -1119,8 +1149,8 @@ namespace SourceGit.ViewModels
 
         public async Task ExecBisectCommandAsync(string subcmd)
         {
+            using var lockWatcher = _watcher?.Lock();
             IsBisectCommandRunning = true;
-            SetWatcherEnabled(false);
 
             var log = CreateLog($"Bisect({subcmd})");
 
@@ -1135,7 +1165,6 @@ namespace SourceGit.ViewModels
 
             MarkBranchesDirtyManually();
             NavigateToCommit(head, true);
-            SetWatcherEnabled(true);
             IsBisectCommandRunning = false;
         }
 
@@ -1314,7 +1343,6 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var submodules = await new Commands.QuerySubmodules(FullPath).GetResultAsync().ConfigureAwait(false);
-                _watcher?.SetSubmodules(submodules);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -1608,24 +1636,22 @@ namespace SourceGit.ViewModels
 
         public async Task LockWorktreeAsync(Models.Worktree worktree)
         {
-            SetWatcherEnabled(false);
+            using var lockWatcher = _watcher?.Lock();
             var log = CreateLog("Lock Worktree");
             var succ = await new Commands.Worktree(FullPath).Use(log).LockAsync(worktree.FullPath);
             if (succ)
                 worktree.IsLocked = true;
             log.Complete();
-            SetWatcherEnabled(true);
         }
 
         public async Task UnlockWorktreeAsync(Models.Worktree worktree)
         {
-            SetWatcherEnabled(false);
+            using var lockWatcher = _watcher?.Lock();
             var log = CreateLog("Unlock Worktree");
             var succ = await new Commands.Worktree(FullPath).Use(log).UnlockAsync(worktree.FullPath);
             if (succ)
                 worktree.IsLocked = false;
             log.Complete();
-            SetWatcherEnabled(true);
         }
 
         public List<Models.OpenAIService> GetPreferredOpenAIServices()

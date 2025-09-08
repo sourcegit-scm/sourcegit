@@ -203,7 +203,7 @@ namespace SourceGit.Views
             protected override void OnDataContextChanged(EventArgs e)
             {
                 base.OnDataContextChanged(e);
-                InvalidateMeasure();
+                InvalidateVisual();
             }
         }
 
@@ -837,13 +837,10 @@ namespace SourceGit.Views
                 if (i == endIdx)
                 {
                     if (endPosition.Column - 1 < line.Content.Length)
-                    {
                         builder.Append(line.Content.AsSpan(0, endPosition.Column - 1));
-                    }
                     else
-                    {
                         builder.Append(line.Content);
-                    }
+
                     break;
                 }
 
@@ -1506,7 +1503,7 @@ namespace SourceGit.Views
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            repo.SetWatcherEnabled(false);
+            using var lockWatcher = repo.LockWatcher();
 
             if (!selection.HasLeftChanges)
             {
@@ -1535,7 +1532,6 @@ namespace SourceGit.Views
             }
 
             repo.MarkWorkingCopyDirtyManually();
-            repo.SetWatcherEnabled(true);
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
@@ -1555,7 +1551,7 @@ namespace SourceGit.Views
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            repo.SetWatcherEnabled(false);
+            using var lockWatcher = repo.LockWatcher();
 
             if (!selection.HasLeftChanges)
             {
@@ -1580,7 +1576,6 @@ namespace SourceGit.Views
             }
 
             repo.MarkWorkingCopyDirtyManually();
-            repo.SetWatcherEnabled(true);
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
@@ -1601,7 +1596,7 @@ namespace SourceGit.Views
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
-            repo.SetWatcherEnabled(false);
+            using var lockWatcher = repo.LockWatcher();
 
             if (!selection.HasLeftChanges)
             {
@@ -1630,7 +1625,6 @@ namespace SourceGit.Views
             }
 
             repo.MarkWorkingCopyDirtyManually();
-            repo.SetWatcherEnabled(true);
         }
     }
 }
