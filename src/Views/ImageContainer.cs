@@ -361,4 +361,119 @@ namespace SourceGit.Views
         private static readonly RenderOptions RO_SRC = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
         private static readonly RenderOptions RO_DST = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Plus, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
     }
+
+    public class ImageDifferenceControl : ImageContainer
+    {
+        public static readonly StyledProperty<double> AlphaProperty =
+            AvaloniaProperty.Register<ImageDifferenceControl, double>(nameof(Alpha), 1.0);
+
+        public double Alpha
+        {
+            get => GetValue(AlphaProperty);
+            set => SetValue(AlphaProperty, value);
+        }
+
+        public static readonly StyledProperty<Bitmap> OldImageProperty =
+            AvaloniaProperty.Register<ImageDifferenceControl, Bitmap>(nameof(OldImage));
+
+        public Bitmap OldImage
+        {
+            get => GetValue(OldImageProperty);
+            set => SetValue(OldImageProperty, value);
+        }
+
+        public static readonly StyledProperty<Bitmap> NewImageProperty =
+            AvaloniaProperty.Register<ImageDifferenceControl, Bitmap>(nameof(NewImage));
+
+        public Bitmap NewImage
+        {
+            get => GetValue(NewImageProperty);
+            set => SetValue(NewImageProperty, value);
+        }
+
+        static ImageDifferenceControl()
+        {
+            AffectsMeasure<ImageDifferenceControl>(OldImageProperty, NewImageProperty);
+            AffectsRender<ImageDifferenceControl>(AlphaProperty);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            var alpha = Alpha;
+            var left = OldImage;
+            var right = NewImage;
+            var drawLeft = left != null && alpha < 1.0;
+            var drawRight = right != null && alpha > 0.0;
+
+            if (drawLeft && drawRight)
+            {
+                using (var rt = new RenderTargetBitmap(new PixelSize((int)Bounds.Width, (int)Bounds.Height), right.Dpi))
+                {
+                    using (var dc = rt.CreateDrawingContext())
+                    {
+                        using (dc.PushRenderOptions(RO_SRC))
+                            RenderSingleSide(dc, left, rt.Size.Width, rt.Size.Height, Math.Min(1.0, 2.0 - 2.0 * alpha));
+
+                        using (dc.PushRenderOptions(RO_DST))
+                            RenderSingleSide(dc, right, rt.Size.Width, rt.Size.Height, Math.Min(1.0, 2.0 * alpha));
+                    }
+
+                    context.DrawImage(rt, new Rect(0, 0, Bounds.Width, Bounds.Height));
+                }
+            }
+            else if (drawLeft)
+            {
+                RenderSingleSide(context, left, Bounds.Width, Bounds.Height, 1 - alpha);
+            }
+            else if (drawRight)
+            {
+                RenderSingleSide(context, right, Bounds.Width, Bounds.Height, alpha);
+            }
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var left = OldImage;
+            var right = NewImage;
+
+            if (left == null)
+                return right == null ? availableSize : GetDesiredSize(right.Size, availableSize);
+
+            if (right == null)
+                return GetDesiredSize(left.Size, availableSize);
+
+            var ls = GetDesiredSize(left.Size, availableSize);
+            var rs = GetDesiredSize(right.Size, availableSize);
+            return ls.Width > rs.Width ? ls : rs;
+        }
+
+        private Size GetDesiredSize(Size img, Size available)
+        {
+            var sw = available.Width / img.Width;
+            var sh = available.Height / img.Height;
+            var scale = Math.Min(1, Math.Min(sw, sh));
+            return new Size(scale * img.Width, scale * img.Height);
+        }
+
+        private void RenderSingleSide(DrawingContext context, Bitmap img, double w, double h, double alpha)
+        {
+            var imgW = img.Size.Width;
+            var imgH = img.Size.Height;
+            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
+
+            var scaledW = img.Size.Width * scale;
+            var scaledH = img.Size.Height * scale;
+
+            var src = new Rect(0, 0, imgW, imgH);
+            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+
+            using (context.PushOpacity(alpha))
+                context.DrawImage(img, src, dst);
+        }
+
+        private static readonly RenderOptions RO_SRC = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+        private static readonly RenderOptions RO_DST = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Difference, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+    }
 }
