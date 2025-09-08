@@ -323,6 +323,7 @@
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">混合對比</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">差異比較</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">滑桿對比</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後一個差異</x:String>
