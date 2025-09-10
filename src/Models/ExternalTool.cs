@@ -58,6 +58,21 @@ namespace SourceGit.Models
 
         [JsonPropertyName("isPrerelease")]
         public bool IsPrerelease { get; set; } = false;
+
+        [JsonPropertyName("installationVersion")]
+        public string InstallationVersion { get; set; } = string.Empty;
+
+        [JsonPropertyName("catalog")]
+        public VisualStudioCatalog Catalog { get; set; } = new();
+    }
+
+    public class VisualStudioCatalog
+    {
+        [JsonPropertyName("productLine")]
+        public string ProductLine { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public VisualStudioProductLine ParsedProductLine => Enum.TryParse<VisualStudioProductLine>(ProductLine, out var ppl) ? ppl : VisualStudioProductLine.Dev17;
     }
 
     public class JetBrainsState

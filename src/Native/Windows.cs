@@ -11,6 +11,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using SourceGit.Models;
 
 namespace SourceGit.Native
 {
@@ -404,7 +405,9 @@ namespace SourceGit.Native
                     foreach (var instance in instances)
                     {
                         var exec = instance.ProductPath;
-                        var icon = instance.IsPrerelease ? "vs-preview" : "vs";
+                        var productLine = instance.Catalog?.ParsedProductLine ?? VisualStudioProductLine.Dev17;
+                        var icon = instance.IsPrerelease ? $"vs{(int)productLine}-preview" : $"vs{(int)productLine}";
+                        
                         finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
                     }
                 }
