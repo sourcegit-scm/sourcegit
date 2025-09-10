@@ -59,9 +59,6 @@ namespace SourceGit.Models
         [JsonPropertyName("isPrerelease")]
         public bool IsPrerelease { get; set; } = false;
 
-        [JsonPropertyName("installationVersion")]
-        public string InstallationVersion { get; set; } = string.Empty;
-
         [JsonPropertyName("catalog")]
         public VisualStudioCatalog Catalog { get; set; } = new();
     }

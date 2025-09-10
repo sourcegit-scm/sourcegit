@@ -405,7 +405,7 @@ namespace SourceGit.Native
                     foreach (var instance in instances)
                     {
                         var exec = instance.ProductPath;
-                        var productLine = instance.Catalog?.ParsedProductLine ?? VisualStudioProductLine.Dev17;
+                        var productLine = instance.Catalog.ParsedProductLine;
                         var icon = instance.IsPrerelease ? $"vs{(int)productLine}-preview" : $"vs{(int)productLine}";
                         
                         finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
