@@ -39,19 +39,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.5" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.5" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.5" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.5" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.5" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.6" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.3.0" />
     <PackageReference Include="Azure.AI.OpenAI" Version="2.3.0-beta.2" />
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc5.4" />
-    <PackageReference Include="OpenAI" Version="2.3.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+    <PackageReference Include="OpenAI" Version="2.4.0" />
     <PackageReference Include="Pfim" Version="0.11.3" />
     <PackageReference Include="TextMateSharp" Version="1.0.70" />
     <PackageReference Include="TextMateSharp.Grammars" Version="1.0.70" />
