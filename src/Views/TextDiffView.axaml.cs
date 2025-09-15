@@ -478,6 +478,7 @@ namespace SourceGit.Views
             Options.EnableHyperlinks = false;
             Options.EnableEmailHyperlinks = false;
             Options.ShowEndOfLine = false;
+            Options.AllowScrollBelowDocument = false;
 
             _lineStyleTransformer = new LineStyleTransformer(this);
 
