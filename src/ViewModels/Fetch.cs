@@ -90,7 +90,7 @@ namespace SourceGit.ViewModels
             log.Complete();
 
             var upstream = _repo.CurrentBranch?.Upstream;
-            if (!string.IsNullOrEmpty(upstream))
+            if (!string.IsNullOrEmpty(upstream) && _repo.CurrentBranch.TrackStatus.Ahead.Count == 0)
             {
                 var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
                 _repo.NavigateToCommit(upstreamHead, true);
