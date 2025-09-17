@@ -170,6 +170,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useAutoHideScrollBars, value);
         }
 
+        public bool UseGitHubStyleAvatar
+        {
+            get => _useGitHubStyleAvatar;
+            set => SetProperty(ref _useGitHubStyleAvatar, value);
+        }
+
         public bool Check4UpdatesOnStartup
         {
             get => _check4UpdatesOnStartup;
@@ -725,6 +731,7 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
+        private bool _useGitHubStyleAvatar = true;
         private bool _showAuthorTimeInGraph = false;
         private bool _showChildren = false;
 
