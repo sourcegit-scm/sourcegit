@@ -200,6 +200,7 @@
 
             <!-- Graph -->
             <lvc:CartesianChart Grid.Column="1"
+                                Background="{DynamicResource Brush.Window}"
                                 Margin="0"
                                 Padding="0"
                                 Series="{Binding Series}"
