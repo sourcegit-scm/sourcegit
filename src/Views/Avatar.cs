@@ -69,7 +69,7 @@ namespace SourceGit.Views
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
-                    Bounds.Width * 0.65,
+                    Math.Max(Bounds.Width * 0.65, 10),
                     Brushes.White);
 
                 var chars = fallback.ToCharArray();
