@@ -32,10 +32,12 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"fetch --progress --verbose {remote.Remote} {remote.Name}:{local.Name}";
+            Args = "fetch --progress --verbose ";
 
             if(depth > 0)
                 Args += $"--depth {depth} ";
+
+            Args += $"{remote.Remote} {remote.Name}:{local.Name}";
         }
 
         public async Task<bool> RunAsync()
