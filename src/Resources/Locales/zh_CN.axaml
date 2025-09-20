@@ -125,6 +125,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">父级目录 ：</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">初始化并更新子模块</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
@@ -216,6 +217,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">默认远程</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">默认合并方式</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE追踪</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增匹配Azure DevOps规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">新增匹配Gerrit Change-Id规则</x:String>
@@ -371,6 +373,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不拉取远程标签</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取远程仓库内容</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不跟踪此文件的更改</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">放弃更改...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">放弃 {0} 个文件的更改...</x:String>
@@ -594,6 +597,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">用户名</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">默认GIT用户名</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git 版本</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG签名</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">启用提交签名</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">签名格式</x:String>
@@ -620,6 +624,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">远程 ：</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取并合并）</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用变基方式合并分支</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">推送(push)</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">确保子模块变更已推送</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">启用强制推送</x:String>

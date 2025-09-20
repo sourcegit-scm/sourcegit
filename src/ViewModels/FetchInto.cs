@@ -29,7 +29,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
             Use(log);
 
-            await new Commands.Fetch(_repo.FullPath, Local, Upstream)
+            await new Commands.Fetch(_repo.FullPath, Local, Upstream, _repo.Depth)
                 .Use(log)
                 .RunAsync();
 

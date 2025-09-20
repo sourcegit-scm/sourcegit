@@ -125,6 +125,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">上層目錄:</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">初始化並更新子模組</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">遠端存放庫:</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">關閉</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交訊息編輯器</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">簽出 (checkout) 此提交</x:String>
@@ -216,6 +217,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">預設合併模式</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增符合 Azure DevOps 規則</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">新增符合 Gerrit Change-Id 規則</x:String>
@@ -371,6 +373,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不提取遠端標籤</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">提取遠端存放庫內容</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不追蹤此檔案的變更</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">捨棄變更...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">捨棄已選的 {0} 個檔案變更...</x:String>
@@ -594,6 +597,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">使用者名稱</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">預設 Git 使用者名稱</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git 版本</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG 簽章</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">啟用提交簽章</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">GPG 簽章格式</x:String>
@@ -620,6 +624,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉取 (提取並合併)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用重定基底 (rebase) 合併分支</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">推送 (push)</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">確保已推送子模組</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">啟用強制推送</x:String>
