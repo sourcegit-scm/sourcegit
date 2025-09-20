@@ -16,7 +16,7 @@ namespace SourceGit.Commands
                 Args += "--rebase=true ";
 
             if(depth > 0)
-                Args += $"--depth {depth} --no-single-branch ";
+                Args += $"--depth {depth} ";
 
             Args += $"{remote} {branch}";
         }
