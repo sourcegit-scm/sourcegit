@@ -10,7 +10,7 @@
             Args = "clone --progress --verbose ";
 
             if(depth > 0)
-                Args += $"--depth {depth} ";
+                Args += $"--depth {depth} --no-single-branch ";
 
             if (!string.IsNullOrEmpty(extraArgs))
                 Args += $"{extraArgs} ";

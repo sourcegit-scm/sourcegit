@@ -21,7 +21,7 @@ namespace SourceGit.Commands
                 Args += "--force ";
 
             if(depth > 0)
-                Args += $"--depth {depth} ";
+                Args += $"--depth {depth} --no-single-branch ";
 
             Args += remote;
         }
@@ -35,7 +35,7 @@ namespace SourceGit.Commands
             Args = $"fetch --progress --verbose {remote.Remote} {remote.Name}:{local.Name}";
 
             if(depth > 0)
-                Args += $"--depth {depth} ";
+                Args += $"--depth {depth} --no-single-branch ";
         }
 
         public async Task<bool> RunAsync()
