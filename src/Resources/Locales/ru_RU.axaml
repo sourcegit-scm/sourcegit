@@ -579,6 +579,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показывать метки на графике</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Длина темы ревизии</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Создать Github-подобный аватар по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Включить автозавершение CRLF</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Каталог клонирования по умолчанию</x:String>
