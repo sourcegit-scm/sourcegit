@@ -56,7 +56,7 @@ namespace SourceGit.Native
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 22000))
+            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
             {
                 Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
                 Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
