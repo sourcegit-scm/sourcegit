@@ -167,6 +167,9 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Prüfe Refs, die diesen Commit enthalten</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT ENTHALTEN IN</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Email kopieren</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Name kopieren</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Name &amp; Email kopieren</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Zeigt nur die ersten 100 Änderungen. Alle Änderungen im ÄNDERUNGEN Tab.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Schlüssel:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">COMMIT-NACHRICHT</x:String>
@@ -321,6 +324,7 @@
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Erste Differenz</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignoriere Leerzeichenänderungen</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">Überblenden</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">Differenz</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">Nebeneinander</x:String>
   <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">Wischen</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Letzte Differenz</x:String>
@@ -572,9 +576,11 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Zeige Autor Zeitpunkt anstatt Commit Zeitpunkt</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Standardmäßig Seite `Änderungen` anzeigen</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Standardmäßig Tab `ÄNDERUNGEN` in Commit-Details anzeigen</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Zeige Nachfolger in den Commit Details</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Zeige Tags im Commit Verlauf</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Längenvorgabe für Commit-Nachrichten</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Standard-Avatar im GitHub-Stil generieren</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Aktiviere Auto-CRLF</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Standard Klon-Ordner</x:String>
