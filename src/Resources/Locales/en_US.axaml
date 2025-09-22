@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
+  <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Release Notes</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Add File(s) To Ignore</x:String>
   <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Pattern:</x:String>

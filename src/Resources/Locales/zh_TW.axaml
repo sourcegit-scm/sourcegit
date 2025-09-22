@@ -5,6 +5,7 @@
 
   <x:String x:Key="Text.About" xml:space="preserve">關於</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">關於 SourceGit</x:String>
+  <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">版本說明</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">開源免費的 Git 客戶端</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">新增忽略檔案</x:String>
   <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">比對模式: </x:String>
