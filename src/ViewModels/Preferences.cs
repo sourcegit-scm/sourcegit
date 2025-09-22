@@ -170,6 +170,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useAutoHideScrollBars, value);
         }
 
+        public bool UseGitHubStyleAvatar
+        {
+            get => _useGitHubStyleAvatar;
+            set => SetProperty(ref _useGitHubStyleAvatar, value);
+        }
+
         public bool Check4UpdatesOnStartup
         {
             get => _check4UpdatesOnStartup;
@@ -277,6 +283,12 @@ namespace SourceGit.ViewModels
         {
             get => _lfsImageActiveIdx;
             set => SetProperty(ref _lfsImageActiveIdx, value);
+        }
+
+        public int ImageDiffActiveIdx
+        {
+            get => _imageDiffActiveIdx;
+            set => SetProperty(ref _imageDiffActiveIdx, value);
         }
 
         public bool EnableCompactFoldersInChangesTree
@@ -719,6 +731,7 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
+        private bool _useGitHubStyleAvatar = true;
         private bool _showAuthorTimeInGraph = false;
         private bool _showChildren = false;
 
@@ -736,6 +749,7 @@ namespace SourceGit.ViewModels
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
         private int _lfsImageActiveIdx = 0;
+        private int _imageDiffActiveIdx = 0;
         private bool _enableCompactFoldersInChangesTree = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;

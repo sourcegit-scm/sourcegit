@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
@@ -6,6 +7,7 @@ using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -24,9 +26,25 @@ namespace SourceGit.Views
             set => SetValue(UserProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseGitHubStyleAvatarProperty =
+            AvaloniaProperty.Register<Avatar, bool>(nameof(UseGitHubStyleAvatar));
+
+        public bool UseGitHubStyleAvatar
+        {
+            get => GetValue(UseGitHubStyleAvatarProperty);
+            set => SetValue(UseGitHubStyleAvatarProperty, value);
+        }
+
         public Avatar()
         {
             RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
+
+            this.Bind(UseGitHubStyleAvatarProperty, new Binding()
+            {
+                Mode = BindingMode.OneWay,
+                Source = ViewModels.Preferences.Instance,
+                Path = "UseGitHubStyleAvatar"
+            });
         }
 
         public override void Render(DrawingContext context)
@@ -41,6 +59,34 @@ namespace SourceGit.Views
             if (_img != null)
             {
                 context.DrawImage(_img, rect);
+            }
+            else if (!UseGitHubStyleAvatar)
+            {
+                var fallback = GetFallbackString(User.Name);
+                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
+                var label = new FormattedText(
+                    fallback,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    Math.Max(Bounds.Width * 0.65, 10),
+                    Brushes.White);
+
+                var chars = fallback.ToCharArray();
+                var sum = 0;
+                foreach (var c in chars)
+                    sum += Math.Abs(c);
+
+                var bg = new LinearGradientBrush()
+                {
+                    GradientStops = FALLBACK_GRADIENTS[sum % FALLBACK_GRADIENTS.Length],
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                };
+
+                Point textOrigin = new Point((Bounds.Width - label.Width) * 0.5, (Bounds.Height - label.Height) * 0.5);
+                context.DrawRectangle(bg, null, new Rect(0, 0, Bounds.Width, Bounds.Height), corner, corner);
+                context.DrawText(label, textOrigin);
             }
             else
             {
@@ -129,6 +175,11 @@ namespace SourceGit.Views
 
                 _img = Models.AvatarManager.Instance.Request(User.Email, false);
                 InvalidateVisual();
+            }
+            else if (change.Property == UseGitHubStyleAvatarProperty)
+            {
+                if (_img == null)
+                    InvalidateVisual();
             }
         }
 
@@ -219,6 +270,30 @@ namespace SourceGit.Views
 
             menu.Open(this);
         }
+
+        private string GetFallbackString(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return "?";
+
+            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var chars = new List<char>();
+            foreach (var part in parts)
+                chars.Add(part[0]);
+
+            if (chars.Count >= 2 && char.IsAsciiLetterOrDigit(chars[0]) && char.IsAsciiLetterOrDigit(chars[^1]))
+                return string.Format("{0}{1}", chars[0], chars[^1]);
+
+            return name.Substring(0, 1);
+        }
+
+        private static readonly GradientStops[] FALLBACK_GRADIENTS = [
+            new GradientStops() { new GradientStop(Colors.Orange, 0), new GradientStop(Color.FromRgb(255, 213, 134), 1) },
+            new GradientStops() { new GradientStop(Colors.DodgerBlue, 0), new GradientStop(Colors.LightSkyBlue, 1) },
+            new GradientStops() { new GradientStop(Colors.LimeGreen, 0), new GradientStop(Color.FromRgb(124, 241, 124), 1) },
+            new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
+            new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
+        ];
 
         private Bitmap _img = null;
     }

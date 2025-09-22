@@ -478,6 +478,7 @@ namespace SourceGit.Views
             Options.EnableHyperlinks = false;
             Options.EnableEmailHyperlinks = false;
             Options.ShowEndOfLine = false;
+            Options.AllowScrollBelowDocument = false;
 
             _lineStyleTransformer = new LineStyleTransformer(this);
 
@@ -1259,7 +1260,7 @@ namespace SourceGit.Views
             if (diff.ScrollOffset.NearlyEquals(_scrollViewer.Offset))
                 return;
 
-            if (IsPointerOver || !e.OffsetDelta.NearlyEquals(Vector.Zero))
+            if (IsPointerOver || e.OffsetDelta.SquaredLength > 1.0f)
             {
                 diff.ScrollOffset = _scrollViewer.Offset;
 

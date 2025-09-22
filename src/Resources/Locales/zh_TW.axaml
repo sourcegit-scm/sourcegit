@@ -323,6 +323,7 @@
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">混合對比</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">差異比較</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">並排對比</x:String>
   <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">滑桿對比</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最後一個差異</x:String>
@@ -578,6 +579,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交詳細資訊中顯示後續提交</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在路線圖中顯示標籤</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">提交標題字數偵測</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">生成 GitHub 風格的預設頭像</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">Git 設定</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自動換行轉換</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">預設複製 (clone) 路徑</x:String>

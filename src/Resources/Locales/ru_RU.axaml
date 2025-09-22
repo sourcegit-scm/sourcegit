@@ -103,7 +103,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Предупреждение: После переключения ревизии ваша Голова (HEAD) будет отсоединена</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и примненить повторно</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Обновить все подкаталоги</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Ваша текущая ГОЛОВА содержит ревизию(и), не связанные ни с к какими ветками или метками! Вы хотите продолжить?</x:String>
@@ -323,6 +323,7 @@
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое сравнение</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменения пробелов</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">СМЕСЬ</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">СРАВНЕНИЕ</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">РЯДОМ</x:String>
   <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">СМАХИВАНИЕ</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Последнее сравнение</x:String>
@@ -578,6 +579,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показывать метки на графике</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Длина темы ревизии</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Создать Github-подобный аватар по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Включить автозавершение CRLF</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Каталог клонирования по умолчанию</x:String>

@@ -323,6 +323,7 @@
   <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">混合对比</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">差异比较</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">分列对比</x:String>
   <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">填充对比</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">最后一个差异</x:String>
@@ -578,6 +579,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交详情页中显示子提交列表</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在提交路线图中显示标签</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">生成GitHub风格的默认头像</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">默认克隆路径</x:String>
