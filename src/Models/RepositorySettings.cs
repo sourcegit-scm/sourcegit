@@ -236,6 +236,18 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool UseCustomDepth
+        {
+            get;
+            set;
+        } = false;
+
+        public int Depth
+        {
+            get;
+            set;
+        } = 1;
+
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
             var map = new Dictionary<string, FilterMode>();

@@ -52,6 +52,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _extraArgs, value);
         }
 
+        public bool UseCustomDepth
+        {
+            get => _useCustomDepth;
+            set  => SetProperty(ref _useCustomDepth, value);
+        }
+
+        public int Depth
+        {
+            get  => _depth;
+            set  => SetProperty(ref _depth, value);
+        }
+
         public bool InitAndUpdateSubmodules
         {
             get;
@@ -100,10 +112,11 @@ namespace SourceGit.ViewModels
         {
             ProgressDescription = "Clone ...";
 
+            var depth = _useCustomDepth ? _depth : Preferences.Instance.CustomDepthByDefault ? Preferences.Instance.RepositoryDepth : -1;
             var log = new CommandLog("Clone");
             Use(log);
 
-            var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs)
+            var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", depth, _extraArgs)
                 .Use(log)
                 .ExecAsync();
             if (!succ)
@@ -173,5 +186,7 @@ namespace SourceGit.ViewModels
         private string _parentFolder = string.Empty;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
+        private bool _useCustomDepth = false;
+        private int _depth = 1;
     }
 }

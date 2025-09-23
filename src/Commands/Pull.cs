@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Pull : Command
     {
-        public Pull(string repo, string remote, string branch, bool useRebase)
+        public Pull(string repo, string remote, string branch, bool useRebase, int depth)
         {
             _remote = remote;
 
@@ -14,6 +14,9 @@ namespace SourceGit.Commands
 
             if (useRebase)
                 Args += "--rebase=true ";
+
+            if(depth > 0)
+                Args += $"--depth {depth} ";
 
             Args += $"{remote} {branch}";
         }

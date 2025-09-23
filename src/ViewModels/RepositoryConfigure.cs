@@ -102,6 +102,32 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool UseCustomDepth
+        {
+            get => _repo.Settings.UseCustomDepth;
+            set
+            {
+                if (_repo.Settings.UseCustomDepth != value)
+                {
+                    _repo.Settings.UseCustomDepth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int Depth
+        {
+            get => _repo.Settings.Depth;
+            set
+            {
+                if (_repo.Settings.Depth != value)
+                {
+                    _repo.Settings.Depth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public AvaloniaList<Models.CommitTemplate> CommitTemplates
         {
             get => _repo.Settings.CommitTemplates;

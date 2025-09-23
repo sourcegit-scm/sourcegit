@@ -35,6 +35,11 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public int Depth
+        {
+            get => Settings.UseCustomDepth ? Settings.Depth : Preferences.Instance.CustomDepthByDefault ? Preferences.Instance.RepositoryDepth : -1;
+        }
+
         public Models.GitFlow GitFlow
         {
             get;
@@ -2010,7 +2015,7 @@ namespace SourceGit.ViewModels
                 if (_settings.FetchAllRemotes)
                 {
                     foreach (var remote in remotes)
-                        await new Commands.Fetch(FullPath, remote, false, false) { RaiseError = false }.RunAsync();
+                        await new Commands.Fetch(FullPath, remote, false, false, Depth) { RaiseError = false }.RunAsync();
                 }
                 else if (remotes.Count > 0)
                 {
@@ -2018,7 +2023,7 @@ namespace SourceGit.ViewModels
                         remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
                         remotes[0];
 
-                    await new Commands.Fetch(FullPath, remote, false, false) { RaiseError = false }.RunAsync();
+                    await new Commands.Fetch(FullPath, remote, false, false, Depth) { RaiseError = false }.RunAsync();
                 }
 
                 _lastFetchTime = DateTime.Now;
