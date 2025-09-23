@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
                 var gitDir = Path.Combine(subdir.FullName, ".git");
                 if (Directory.Exists(gitDir) || File.Exists(gitDir))
                 {
-                    var test = await new Commands.QueryRepositoryRootPath(subdir.FullName).GetResultAsync().ConfigureAwait(false);
+                    var test = await new Commands.QueryRepositoryRootPath(subdir.FullName).GetResultAsync();
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
                         var normalized = test.StdOut.Trim().Replace('\\', '/').TrimEnd('/');
@@ -140,7 +140,7 @@ namespace SourceGit.ViewModels
                     continue;
                 }
 
-                var isBare = await new Commands.IsBareRepository(subdir.FullName).GetResultAsync().ConfigureAwait(false);
+                var isBare = await new Commands.IsBareRepository(subdir.FullName).GetResultAsync();
                 if (isBare)
                 {
                     outs.Add(normalizedSelf);
