@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -64,6 +63,14 @@ namespace SourceGit.Views
         {
             if (sender is Button { DataContext: Models.Commit commit })
                 await App.CopyTextAsync(commit.SHA);
+
+            e.Handled = true;
+        }
+
+        private async void OnCopyCommitMessage(object sender, RoutedEventArgs e)
+        {
+            if (FullMessage != null && !string.IsNullOrEmpty(FullMessage.Message))
+                await App.CopyTextAsync(FullMessage.Message);
 
             e.Handled = true;
         }

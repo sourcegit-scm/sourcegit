@@ -1,10 +1,10 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:m="using:SourceGit.Models"
+  xmlns:vm="using:SourceGit.ViewModels"
+  xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitBaseInfo"
@@ -207,27 +207,32 @@
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap">
-            <ToolTip.IsOpen>
-              <MultiBinding Converter="{x:Static BoolConverters.And}">
-                <Binding Path="$self.IsPointerOver"/>
-                <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
-              </MultiBinding>
-            </ToolTip.IsOpen>
+              <ToolTip.IsOpen>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="$self.IsPointerOver"/>
+                  <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                </MultiBinding>
+              </ToolTip.IsOpen>
 
-            <v:CommitMessagePresenter.DataTemplates>
-              <DataTemplate DataType="m:Commit">
-                <StackPanel MinWidth="400" Orientation="Vertical">
-                  <Grid ColumnDefinitions="Auto,*,Auto">
-                    <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                    <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                    <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
-                  </Grid>
+              <v:CommitMessagePresenter.DataTemplates>
+                <DataTemplate DataType="m:Commit">
+                  <StackPanel MinWidth="400" Orientation="Vertical">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                      <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                      <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                      <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                    </Grid>
 
-                  <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
-                </StackPanel>
-              </DataTemplate>
-            </v:CommitMessagePresenter.DataTemplates>
-          </v:CommitMessagePresenter>
+                    <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                  </StackPanel>
+                </DataTemplate>
+              </v:CommitMessagePresenter.DataTemplates>
+            </v:CommitMessagePresenter>
+
+            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnCopyCommitMessage" ToolTip.Tip="{DynamicResource Text.Copy}" VerticalAlignment="Top" Margin="4,0,0,0">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
+            </Button>
+          </StackPanel>
         </Grid>
       </StackPanel>
     </DataTemplate>
