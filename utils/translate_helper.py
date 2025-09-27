@@ -12,8 +12,8 @@ def register_namespaces():
     ET.register_namespace('', XAML_NS)
     ET.register_namespace('x', X_NS)
 
-def get_locale_files(lang_id):
-    """Constructs the absolute paths for the target and reference locale files."""
+def get_locale_dir():
+    """Constructs the absolute path for the locales files"""
     try:
         script_dir = os.path.dirname(os.path.realpath(__file__))
         project_root = os.path.abspath(os.path.join(script_dir, '..'))
@@ -22,6 +22,15 @@ def get_locale_files(lang_id):
         project_root = os.path.abspath(os.getcwd())
         locales_dir = os.path.join(project_root, 'src', 'Resources', 'Locales')
 
+    return locales_dir
+
+def get_locale_files(lang_id):
+    """Constructs the absolute paths for the target and reference locale files."""
+
+    # get the locales dir
+    locales_dir = get_locale_dir()
+
+    # get the target file absolute path
     target_file = os.path.join(locales_dir, f"{lang_id}.axaml")
 
     if not os.path.exists(target_file):
@@ -67,11 +76,14 @@ def get_strings(root):
 
 def add_new_string_tag(root, key, value):
     """Adds a new <x:String> tag to the XML root, maintaining some formatting."""
+
+    # create a new tag with Key<>Value
     new_tag = ET.Element(f"{{{X_NS}}}String")
     new_tag.set(f"{{{X_NS}}}Key", key)
     new_tag.set("xml:space", "preserve")
     new_tag.text = value
 
+    # try to find the last tag in the 
     last_element_index = -1
     children = list(root)
     for i in range(len(children) - 1, -1, -1):
@@ -99,27 +111,33 @@ def save_translations(tree, file_path):
 
 def main():
     """Main function to run the translation helper script."""
-    register_namespaces()
-
     if len(sys.argv) < 2:
         print("Usage: python utils/translate_helper.py <lang_id> [--check]")
         sys.exit(1)
 
+    # get arguments
     lang_id = sys.argv[1]
     is_check_mode = len(sys.argv) > 2 and sys.argv[2] == '--check'
 
+    # setup XML parser
+    register_namespaces()
+
+    # try to find XML files
     target_file_path, ref_file_path = get_locale_files(lang_id)
 
+    # parse files
     parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
     target_tree = ET.parse(target_file_path, parser)
     target_root = target_tree.getroot()
-    
+
     ref_tree = ET.parse(ref_file_path)
     ref_root = ref_tree.getroot()
 
+    # get all translation keys
     target_strings = get_strings(target_root)
     ref_strings = get_strings(ref_root)
 
+    # compute the missing keys between the target and reference files
     missing_keys = sorted([key for key in ref_strings.keys() if key not in target_strings])
 
     if not missing_keys:
@@ -128,26 +146,34 @@ def main():
 
     print(f"Found {len(missing_keys)} missing keys for language '{lang_id}'.")
 
+    # running in check mode will only display the missing keys
     if is_check_mode:
         print("Missing keys:")
         for key in missing_keys:
             print(f"  - {key}")
         return
 
+    # running in normal mode will trigger the translation process
     print("Starting interactive translation...\n")
     changes_made = False
     try:
+        # for each missing key
         for i, key in enumerate(missing_keys):
+
+            # show the original text
             original_text = ref_strings.get(key, "")
             print("-" * 40)
             print(f"({i+1}/{len(missing_keys)}) Key: '{key}'")
             print(f"Original: '{original_text}'")
 
+            # asks for a translated version
             user_input = input("Enter translation (or press Enter to skip, 'q' to save and quit): ")
 
+            # if 'q' quit and save
             if user_input.lower() == 'q':
                 print("\nQuitting and saving changes...")
                 break
+            # if valid input, save
             elif user_input:
                 add_new_string_tag(target_root, key, user_input)
                 changes_made = True
@@ -156,6 +182,7 @@ def main():
     except (KeyboardInterrupt, EOFError):
         print("\n\nProcess interrupted. Saving changes...")
     finally:
+        # if there was any changes, save back to the target file
         if changes_made:
             save_translations(target_tree, target_file_path)
         else:
