@@ -1,4 +1,5 @@
 import sys
+import io
 import os
 import xml.etree.ElementTree as ET
 import re
@@ -86,15 +87,32 @@ def add_new_string_tag(root, key, value):
     # try to find the last tag in the 
     last_element_index = -1
     children = list(root)
-    for i in range(len(children) - 1, -1, -1):
-        if (children[i].tag == f"{{{X_NS}}}String" or 
-            children[i].tag == f"{{{XAML_NS}}}ResourceDictionary.MergedDictionaries"):
-            last_element_index = i
-            break
 
-    if last_element_index != -1:
-        new_tag.tail = root[last_element_index].tail
-        root.insert(last_element_index + 1, new_tag)
+    start = 0
+    end = len(children) - 1
+    middle = -1
+
+    # find the first String tag
+    while (children[start].tag != f"{{{X_NS}}}String"):
+        start = start + 1
+
+    # find where the insert the new tag
+    # so it always keeps the alphabetical order
+    while (end - start) > 1:
+        middle = int((start + end) / 2)
+
+        if (children[middle].tag == f"{{{X_NS}}}String"):
+            middle_key = children[middle].get(f"{{{X_NS}}}Key")
+
+            if key.lower() < middle_key.lower():
+                end = middle
+            else:
+                start = middle
+
+    # insert after the middle or at the end
+    if middle != -1:
+        new_tag.tail = root[middle].tail
+        root.insert(middle + 1, new_tag)
     else:
         new_tag.tail = "\n  "
         root.append(new_tag)
@@ -106,7 +124,7 @@ def save_translations(tree, file_path):
     except AttributeError:
         print("Warning: ET.indent not available. Output formatting may not be ideal.")
         
-    tree.write(file_path, encoding='utf-8', xml_declaration=True)
+    tree.write(file_path, encoding='utf-8', xml_declaration=False)
     print(f"\nSaved changes to {file_path}")
 
 def main():
@@ -114,6 +132,11 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: python utils/translate_helper.py <lang_id> [--check]")
         sys.exit(1)
+
+    # Force sys.stdin to use UTF-8 decoding
+    if sys.stdin.encoding.lower() != 'utf-8':
+        print("Changin input encoding to UTF-8")
+        sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
     # get arguments
     lang_id = sys.argv[1]
