@@ -139,6 +139,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>
+  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">丢弃此提交</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">交互式变基(rebase -i)</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">丢弃...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">编辑...</x:String>
@@ -359,6 +360,9 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包括未跟踪的文件</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">总计{0}项选中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支持回退，请确认后继续！！！</x:String>
+  <x:String x:Key="Text.DropHead" xml:space="preserve">丢弃提交</x:String>
+  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">提交 ：</x:String>
+  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">丢弃后 HEAD ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>

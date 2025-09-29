@@ -610,7 +610,19 @@ namespace SourceGit.Views
                 };
                 menu.Items.Add(revert);
 
-                if (!isHead)
+                if (isHead)
+                {
+                    var dropHead = new MenuItem();
+                    dropHead.Header = App.Text("CommitCM.Drop");
+                    dropHead.Icon = App.CreateMenuIcon("Icons.Clear");
+                    dropHead.Click += async (_, e) =>
+                    {
+                        await vm.DropHeadAsync(commit);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(dropHead);
+                }
+                else
                 {
                     var checkoutCommit = new MenuItem();
                     checkoutCommit.Header = App.Text("CommitCM.Checkout");

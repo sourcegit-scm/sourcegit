@@ -139,6 +139,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自訂動作</x:String>
+  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">捨棄此提交</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">互動式重定基底 (rebase -i)</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">捨棄...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">編輯...</x:String>
@@ -359,6 +360,9 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包含未追蹤檔案</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">將捨棄總計 {0} 項已選取的變更</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">您無法復原此操作，請確認後再繼續!</x:String>
+  <x:String x:Key="Text.DropHead" xml:space="preserve">捨棄提交</x:String>
+  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">提交 ：</x:String>
+  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">捨棄後新的 HEAD ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">書籤:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標:</x:String>
