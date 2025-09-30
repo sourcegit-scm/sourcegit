@@ -1152,8 +1152,17 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _watcher?.Lock();
             IsBisectCommandRunning = true;
 
-            var log = CreateLog($"Bisect({subcmd})");
+            bool hadLocalChanges = LocalChangesCount > 0;
+            string stashName = $"sourcegit-auto-bisect-{DateTime.Now:yyyyMMddHHmmss}";
+            bool stashed = false;
 
+            if (hadLocalChanges) {
+                var stashCmd = new Commands.Stash(FullPath);
+                stashed = await stashCmd.PushAsync(stashName, includeUntracked: true, keepIndex: false);
+                MarkStashesDirtyManually();
+            }
+
+            var log = CreateLog($"Bisect({subcmd})");
             var succ = await new Commands.Bisect(FullPath, subcmd).Use(log).ExecAsync();
             log.Complete();
 
@@ -1165,6 +1174,20 @@ namespace SourceGit.ViewModels
 
             MarkBranchesDirtyManually();
             NavigateToCommit(head, true);
+
+            // Restore stash if we created one
+            if (stashed) {
+                // Find the stash by name
+                var stashes = await new Commands.QueryStashes(FullPath).GetResultAsync();
+                var autoStash = stashes.Find(s => s.Message.Contains(stashName));
+                if (autoStash != null) {
+                    var popCmd = new Commands.Stash(FullPath);
+                    await popCmd.PopAsync(autoStash.Name);
+                    MarkStashesDirtyManually();
+                    MarkWorkingCopyDirtyManually();
+                }
+            }
+
             IsBisectCommandRunning = false;
         }
 
