@@ -139,6 +139,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Субъект</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
+  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">Бросить ревизию</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Интерактивное перемещение</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Бросить...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Редактировать...</x:String>
@@ -359,6 +360,9 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Включить неотслеживаемые файлы</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} изменений будут отменены</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Вы не можете отменить это действие!!!</x:String>
+  <x:String x:Key="Text.DropHead" xml:space="preserve">Бросить ревизию</x:String>
+  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Ревизия:</x:String>
+  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Новая ГОЛОВА:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Закладка:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Новое имя:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Цель:</x:String>
