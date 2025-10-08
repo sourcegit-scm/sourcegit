@@ -146,11 +146,15 @@ namespace SourceGit.Views
                 {
                     Text = string.Empty;
                 }
+                ScrollToEnd();
             }
             else if (change.Property == PureTextProperty)
             {
                 if (!string.IsNullOrEmpty(PureText))
+                {
                     Text = PureText;
+                    ScrollToEnd();
+                }
             }
         }
 
