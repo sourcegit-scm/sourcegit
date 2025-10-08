@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -9,6 +10,12 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.ViewLogs vm && vm.Logs.Count > 0)
+                vm.SelectedLog = vm.Logs[0];
         }
 
         private void OnLogContextRequested(object sender, ContextRequestedEventArgs e)
