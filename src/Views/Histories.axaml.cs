@@ -1032,6 +1032,28 @@ namespace SourceGit.Views
                 };
                 submenu.Items.Add(checkout);
 
+                if (branch.Upstream.Length > 0)
+                {
+                    var upstream = branch.Upstream.Substring(13);
+
+                    var fastForward = new MenuItem();
+                    fastForward.Header = App.Text("BranchCM.FastForward", upstream);
+                    fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
+                    fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
+                    fastForward.Click += async (_, e) =>
+                    {
+                        var b = repo.Branches.Find(x => x.FriendlyName == upstream);
+                        if (b == null)
+                            return;
+
+                        if (repo.CanCreatePopup())
+                            await repo.ShowAndStartPopupAsync(new ViewModels.FetchInto(repo, branch, b));
+
+                        e.Handled = true;
+                    };
+                    submenu.Items.Add(fastForward);
+                }
+
                 var merge = new MenuItem();
                 merge.Header = App.Text("BranchCM.Merge", branch.Name, current.Name);
                 merge.Icon = App.CreateMenuIcon("Icons.Merge");
