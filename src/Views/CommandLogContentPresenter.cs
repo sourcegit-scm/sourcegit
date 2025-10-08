@@ -94,6 +94,7 @@ namespace SourceGit.Views
             TextArea.TextView.Options.EnableHyperlinks = true;
             TextArea.TextView.Options.EnableEmailHyperlinks = true;
             TextArea.TextView.Options.RequireControlModifierForHyperlinkClick = false;
+            TextArea.TextView.Options.AllowScrollBelowDocument = false;
         }
 
         public void OnReceiveCommandLog(string line)
