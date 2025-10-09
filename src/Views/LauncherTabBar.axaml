@@ -47,8 +47,9 @@
                       PointerPressed="OnPointerPressedTab"
                       PointerMoved="OnPointerMovedOverTab"
                       PointerReleased="OnPointerReleasedTab"
-                      Loaded="SetupDragAndDrop"
-                      ContextRequested="OnTabContextRequested">
+                      ContextRequested="OnTabContextRequested"
+                      DragDrop.AllowDrop="True"
+                      DragDrop.Drop="DropTab">
                 <ToolTip.Tip>
                   <Grid>
                     <TextBlock Text="{DynamicResource Text.Welcome}" IsVisible="{Binding !Node.IsRepository}"/>

@@ -136,54 +136,62 @@ namespace SourceGit.Views
                 OpenCommitMessageEditor(items[0]);
         }
 
-        private void OnSetupRowHeaderDragDrop(object sender, RoutedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                DragDrop.SetAllowDrop(border, true);
-                border.AddHandler(DragDrop.DragOverEvent, OnRowHeaderDragOver);
-            }
-        }
-
-        private void OnRowHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        private async void OnRowHeaderPointerPressed(object sender, PointerPressedEventArgs e)
         {
             if (sender is Border { DataContext: ViewModels.InteractiveRebaseItem item })
             {
-                var data = new DataObject();
-                data.Set("InteractiveRebaseItem", item);
-                DragDrop.DoDragDrop(e, data, DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link);
+                var data = new DataTransfer();
+                data.Add(DataTransferItem.Create(_dndItemFormat, item.Commit.SHA));
+                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
             }
         }
 
         private void OnRowHeaderDragOver(object sender, DragEventArgs e)
         {
-            if (DataContext is ViewModels.InteractiveRebase vm &&
-                e.Data.Contains("InteractiveRebaseItem") &&
-                e.Data.Get("InteractiveRebaseItem") is ViewModels.InteractiveRebaseItem src &&
-                sender is Border { DataContext: ViewModels.InteractiveRebaseItem dst } border &&
-                src != dst)
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 6 } sha)
+                return;
+
+            ViewModels.InteractiveRebaseItem src = null;
+            foreach (var item in vm.Items)
             {
-                e.DragEffects = DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link;
-
-                var p = e.GetPosition(border);
-                if (p.Y > border.Bounds.Height * 0.33 && p.Y < border.Bounds.Height * 0.67)
+                if (item.Commit.SHA.Equals(sha, StringComparison.Ordinal))
                 {
-                    var srcIdx = vm.Items.IndexOf(src);
-                    var dstIdx = vm.Items.IndexOf(dst);
-                    if (srcIdx < dstIdx)
-                    {
-                        for (var i = srcIdx; i < dstIdx; i++)
-                            vm.MoveItemDown(src);
-                    }
-                    else
-                    {
-                        for (var i = srcIdx; i > dstIdx; i--)
-                            vm.MoveItemUp(src);
-                    }
+                    src = item;
+                    break;
                 }
-
-                e.Handled = true;
             }
+
+            if (src == null)
+                return;
+
+            if (sender is not Border { DataContext: ViewModels.InteractiveRebaseItem dst } border)
+                return;
+
+            if (src == dst)
+                return;
+
+            var p = e.GetPosition(border);
+            if (p.Y > border.Bounds.Height * 0.33 && p.Y < border.Bounds.Height * 0.67)
+            {
+                var srcIdx = vm.Items.IndexOf(src);
+                var dstIdx = vm.Items.IndexOf(dst);
+                if (srcIdx < dstIdx)
+                {
+                    for (var i = srcIdx; i < dstIdx; i++)
+                        vm.MoveItemDown(src);
+                }
+                else
+                {
+                    for (var i = srcIdx; i > dstIdx; i--)
+                        vm.MoveItemUp(src);
+                }
+            }
+
+            e.DragEffects = DragDropEffects.Move;
+            e.Handled = true;
         }
 
         private void OnButtonActionClicked(object sender, RoutedEventArgs e)
@@ -293,5 +301,6 @@ namespace SourceGit.Views
         }
 
         private bool _firstSelectionChangedHandled = false;
+        private readonly DataFormat<string> _dndItemFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-ir-item");
     }
 }

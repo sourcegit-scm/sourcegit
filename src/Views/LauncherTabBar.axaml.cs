@@ -161,16 +161,6 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private void SetupDragAndDrop(object sender, RoutedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                DragDrop.SetAllowDrop(border, true);
-                border.AddHandler(DragDrop.DropEvent, DropTab);
-            }
-            e.Handled = true;
-        }
-
         private void OnPointerPressedTab(object sender, PointerPressedEventArgs e)
         {
             if (sender is Border border)
@@ -196,7 +186,7 @@ namespace SourceGit.Views
             _startDragTab = false;
         }
 
-        private void OnPointerMovedOverTab(object sender, PointerEventArgs e)
+        private async void OnPointerMovedOverTab(object sender, PointerEventArgs e)
         {
             if (_pressedTab && !_startDragTab && sender is Border { DataContext: ViewModels.LauncherPage page } border)
             {
@@ -207,22 +197,41 @@ namespace SourceGit.Views
 
                 _startDragTab = true;
 
-                var data = new DataObject();
-                data.Set("MovedTab", page);
-                DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+                var data = new DataTransfer();
+                data.Add(DataTransferItem.Create(_dndMainTabFormat, page.Node.Id));
+                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
             }
             e.Handled = true;
         }
 
         private void DropTab(object sender, DragEventArgs e)
         {
-            if (e.Data.Contains("MovedTab") &&
-                e.Data.Get("MovedTab") is ViewModels.LauncherPage moved &&
-                sender is Border { DataContext: ViewModels.LauncherPage to } &&
-                to != moved)
+            if (e.DataTransfer.TryGetValue(_dndMainTabFormat) is not { Length: > 0 } id)
+                return;
+
+            if (DataContext is not ViewModels.Launcher launcher)
+                return;
+
+            ViewModels.LauncherPage target = null;
+            foreach (var page in launcher.Pages)
             {
-                (DataContext as ViewModels.Launcher)?.MoveTab(moved, to);
+                if (page.Node.Id.Equals(id, StringComparison.Ordinal))
+                {
+                    target = page;
+                    break;
+                }
             }
+
+            if (target == null)
+                return;
+
+            if (sender is not Border { DataContext: ViewModels.LauncherPage to })
+                return;
+
+            if (target == to)
+                return;
+
+            launcher.MoveTab(target, to);
 
             _pressedTab = false;
             _startDragTab = false;
@@ -317,5 +326,6 @@ namespace SourceGit.Views
         private bool _pressedTab = false;
         private Point _pressedTabPosition = new();
         private bool _startDragTab = false;
+        private readonly DataFormat<string> _dndMainTabFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-main-tab");
     }
 }

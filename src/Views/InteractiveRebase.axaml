@@ -94,8 +94,9 @@
 
                 <!-- Drag & Drop Anchor -->
                 <Border Grid.Column="0" Background="Transparent"
-                        Loaded="OnSetupRowHeaderDragDrop"
-                        PointerPressed="OnRowHeaderPointerPressed">
+                        PointerPressed="OnRowHeaderPointerPressed"
+                        DragDrop.AllowDrop="True"
+                        DragDrop.DragOver="OnRowHeaderDragOver">
                   <ToolTip.Tip>
                     <TextBlock>
                       <Run Text="{DynamicResource Text.InteractiveRebase.ReorderTip}"/>

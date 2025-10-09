@@ -14,6 +14,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
+using Avalonia.Input.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
@@ -324,7 +325,7 @@ namespace SourceGit
         public static async Task<string> GetClipboardTextAsync()
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
-                return await clipboard.GetTextAsync();
+                return await clipboard.TryGetTextAsync();
             return null;
         }
 

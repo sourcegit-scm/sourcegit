@@ -3,6 +3,7 @@ using System.Text;
 
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -51,7 +52,7 @@ namespace SourceGit.Views
                 var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
                 if (clipboard != null)
                 {
-                    var text = await clipboard.GetTextAsync();
+                    var text = await clipboard.TryGetTextAsync();
                     if (!string.IsNullOrEmpty(text))
                         OnTextInput(new TextInputEventArgs() { Text = text });
                 }
