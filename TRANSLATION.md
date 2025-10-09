@@ -19,19 +19,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.33%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.About.ReleaseNotes
-- Text.CommitCM.Drop
-- Text.DropHead
-- Text.DropHead.Commit
-- Text.DropHead.NewHead
-- Text.Preferences.General.UseGitHubStyleAvatar
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-77.72%25-yellow)
 
