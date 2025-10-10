@@ -635,6 +635,8 @@
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送修訂到遠端存放庫</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到遠端存放庫</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">遠端分支:</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">使用自訂分支名稱</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">輸入自訂分支名稱...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">追蹤遠端分支</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">同時推送標籤</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">推送標籤到遠端存放庫</x:String>

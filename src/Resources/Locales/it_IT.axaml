@@ -610,6 +610,8 @@
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Invia Revisione Al Remoto</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Invia modifiche al remoto</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Branch Remoto:</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">Usa nome branch personalizzato</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">Inserisci nome branch personalizzato...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Imposta come branch di tracciamento</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Invia tutti i tag</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Invia Tag al Remoto</x:String>

@@ -635,6 +635,8 @@
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revisión al Remoto</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Cambios al Remoto</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Rama Remota:</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">Usar nombre de rama personalizado</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">Ingrese nombre de rama personalizado...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Establecer como rama de seguimiento</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push todas las etiquetas</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Push Etiqueta al Remoto</x:String>

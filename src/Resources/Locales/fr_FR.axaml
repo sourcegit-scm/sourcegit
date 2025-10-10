@@ -498,6 +498,8 @@
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Dépôt distant :</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Pousser les changements vers le dépôt distant</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Branche distante :</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">Utiliser un nom de branche personnalisé</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">Saisir un nom de branche personnalisé...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Définir comme branche de suivi</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Pousser tous les tags</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Pousser les tags vers le dépôt distant</x:String>

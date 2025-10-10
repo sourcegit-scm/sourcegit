@@ -497,6 +497,8 @@
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">மாற்றங்களை தொலைக்கு தள்ளு</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">தொலை கிளை:</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">தனிப்பயன் கிளைப் பெயரைப் பயன்படுத்து</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">தனிப்பயன் கிளைப் பெயரை உள்ளிடவும்...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">கண்காணிப்பு கிளையாக அமை</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">அனைத்து குறிச்சொற்களையும் தள்ளு</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">தொலைக்கு குறிச்சொல்லை தள்ளு</x:String>

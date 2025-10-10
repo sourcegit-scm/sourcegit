@@ -635,6 +635,8 @@
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Выложить ревизию на удалёную</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Выложить изменения на внешний репозиторий</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Ветка внешнего репозитория:</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">Использовать пользовательское имя ветки</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">Введите пользовательское имя ветки...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Отслеживать ветку</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Выложить все метки</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">Выложить метку на внешний репозиторий</x:String>

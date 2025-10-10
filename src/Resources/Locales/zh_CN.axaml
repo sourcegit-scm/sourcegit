@@ -635,6 +635,8 @@
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送指定修订到远程仓库</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">推送到远程仓库</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">远程分支 ：</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch" xml:space="preserve">使用自定义分支名称</x:String>
+  <x:String x:Key="Text.Push.To.CustomBranch.Placeholder" xml:space="preserve">输入自定义分支名称...</x:String>
   <x:String x:Key="Text.Push.Tracking" xml:space="preserve">跟踪远程分支</x:String>
   <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">同时推送标签</x:String>
   <x:String x:Key="Text.PushTag" xml:space="preserve">推送标签到远程仓库</x:String>

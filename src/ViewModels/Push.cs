@@ -57,7 +57,66 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selectedRemoteBranch, value, true))
+                {
+                    if (value != null)
+                    {
+                        CustomRemoteBranchName = value.Name;
+                    }
+
                     IsSetTrackOptionVisible = value != null && _selectedLocalBranch.Upstream != value.FullName;
+                }
+            }
+        }
+
+        [Required(ErrorMessage = "Remote branch name is required!!!")]
+        public string CustomRemoteBranchName
+        {
+            get => _customRemoteBranchName;
+            set
+            {
+                if (SetProperty(ref _customRemoteBranchName, value, true))
+                {
+                    if (UseCustomBranchName)
+                    {
+                        var expectedUpstream = $"refs/remotes/{_selectedRemote.Name}/{value}";
+                        IsSetTrackOptionVisible = !string.IsNullOrEmpty(value) &&
+                                                  _selectedLocalBranch.Upstream != expectedUpstream;
+                    }
+                }
+            }
+        }
+
+        public bool UseCustomBranchName
+        {
+            get => _useCustomBranchName;
+            set
+            {
+                if (SetProperty(ref _useCustomBranchName, value))
+                {
+                    if (value)
+                    {
+                        // When switching to custom mode, pre-fill with the selected branch name if available
+                        if (_selectedRemoteBranch != null && string.IsNullOrEmpty(_customRemoteBranchName))
+                            _customRemoteBranchName = _selectedRemoteBranch.Name;
+
+                        // Update tracking visibility for custom branch
+                        if (_selectedLocalBranch != null && _selectedRemote != null && !string.IsNullOrEmpty(_customRemoteBranchName))
+                        {
+                            var expectedUpstream = $"refs/remotes/{_selectedRemote.Name}/{_customRemoteBranchName}";
+                            IsSetTrackOptionVisible = _selectedLocalBranch.Upstream != expectedUpstream;
+                        }
+                    }
+                    else
+                    {
+                        // When switching back to dropdown, update tracking visibility based on selected branch
+                        if (_selectedRemoteBranch != null)
+                        {
+                            IsSetTrackOptionVisible =
+                                _selectedRemoteBranch != null &&
+                                _selectedLocalBranch.Upstream != _selectedRemoteBranch.FullName;
+                        }
+                    }
+                }
             }
         }
 
@@ -155,6 +214,9 @@ namespace SourceGit.ViewModels
 
         public override bool CanStartDirectly()
         {
+            if (UseCustomBranchName)
+                return !string.IsNullOrEmpty(_customRemoteBranchName);
+
             return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
         }
 
@@ -162,7 +224,10 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
-            var remoteBranchName = _selectedRemoteBranch.Name;
+            var remoteBranchName =
+                UseCustomBranchName ?
+                    _customRemoteBranchName :
+                    _selectedRemoteBranch.Name;
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
 
             var log = _repo.CreateLog("Push");
@@ -218,11 +283,7 @@ namespace SourceGit.ViewModels
             }
 
             // Add a fake new branch.
-            var fake = new Models.Branch()
-            {
-                Name = _selectedLocalBranch.Name,
-                Remote = _selectedRemote.Name,
-            };
+            var fake = new Models.Branch { Name = _selectedLocalBranch.Name, Remote = _selectedRemote.Name };
             branches.Add(fake);
             RemoteBranches = branches;
             SelectedRemoteBranch = fake;
@@ -233,6 +294,8 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = [];
         private Models.Branch _selectedRemoteBranch = null;
+        private string _customRemoteBranchName = string.Empty;
+        private bool _useCustomBranchName = false;
         private bool _isSetTrackOptionVisible = false;
     }
 }
