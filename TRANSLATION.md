@@ -6,18 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.44%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.About.ReleaseNotes
-- Text.CommitCM.Drop
-- Text.DropHead
-- Text.DropHead.Commit
-- Text.DropHead.NewHead
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
