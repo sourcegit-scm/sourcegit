@@ -11,7 +11,7 @@
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* Deutsch/English/Español/Français/Italiano/Português/Русский/Українська/简体中文/繁體中文/日本語/தமிழ் (Tamil)
+* Deutsch/English/Español/Bahasa Indonesia/Français/Italiano/Português/Русский/Українська/简体中文/繁體中文/日本語/தமிழ் (Tamil)
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
