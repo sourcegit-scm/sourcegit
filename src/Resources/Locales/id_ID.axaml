@@ -333,23 +333,20 @@
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">TIDAK ADA PERUBAHAN ATAU HANYA PERUBAHAN EOL</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">LAMA</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Perbedaan Sebelumnya</x:String>
-  <x:String x:Key="Text.Diff.SearchTip" xml:space="preserve">TEKAN 'ENTER' UNTUK CARI, 'ESC' UNTUK TUTUP</x:String>
-  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Tampilkan Simbol Tersembunyi</x:String>
-  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">PERUBAHAN SUBMODULE</x:String>
-  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
-  <x:String x:Key="Text.Diff.UseSideBySideDiff" xml:space="preserve">Gunakan Diff Side-By-Side</x:String>
-  <x:String x:Key="Text.Diff.VisualLines" xml:space="preserve">Abaikan Line-Ending</x:String>
-  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">PILIH BERKAS UNTUK MELIHAT PERUBAHAN</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Tampilkan Simbol Tersembunyi</x:String>
   <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diff Side-By-Side</x:String>
+  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">PERUBAHAN SUBMODULE</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">DIHAPUS</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">BARU</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Tukar</x:String>
+  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Word Wrap Baris</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Buka di Merge Tool</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Tampilkan Semua Baris</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Kurangi Jumlah Baris yang Tampak</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Tambah Jumlah Baris yang Tampak</x:String>
+  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">PILIH BERKAS UNTUK MELIHAT PERUBAHAN</x:String>
   <x:String x:Key="Text.DirHistories" xml:space="preserve">Riwayat Direktori</x:String>
   <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">Memiliki Perubahan Lokal</x:String>
   <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">Tidak Cocok dengan Upstream</x:String>

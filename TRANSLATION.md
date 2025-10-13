@@ -217,6 +217,19 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
+### ![id__ID](https://img.shields.io/badge/id__ID-99.44%25-yellow)
+
+<details>
+<summary>Missing keys in id_ID.axaml</summary>
+
+- Text.About.ReleaseNotes
+- Text.CommitCM.Drop
+- Text.DropHead
+- Text.DropHead.Commit
+- Text.DropHead.NewHead
+
+</details>
+
 ### ![it__IT](https://img.shields.io/badge/it__IT-96.64%25-yellow)
 
 <details>
