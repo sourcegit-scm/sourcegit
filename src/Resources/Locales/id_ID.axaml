@@ -1,0 +1,902 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <x:String x:Key="Text.About" xml:space="preserve">Tentang</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Tentang SourceGit</x:String>
+  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Klien Git GUI Opensource &amp; Gratis</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Tambahkan Berkas ke Abaikan</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Pola:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Berkas Penyimpanan:</x:String>
+  <x:String x:Key="Text.AddWorktree" xml:space="preserve">Tambah Worktree</x:String>
+  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Lokasi:</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Jalur untuk worktree ini. Jalur relatif didukung.</x:String>
+  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Nama Branch:</x:String>
+  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Opsional. Standar adalah nama folder tujuan.</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Track remote branch</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Yang Akan Di-Checkout:</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Buat Branch Baru</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch Yang Ada</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">Asisten AI</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">BUAT ULANG</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Gunakan AI untuk membuat pesan commit</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">TERAPKAN SEBAGAI PESAN COMMIT</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Sembunyikan SourceGit</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tampilkan Semua</x:String>
+  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
+  <x:String x:Key="Text.Apply.File" xml:space="preserve">Berkas Patch:</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Pilih berkas .patch untuk diterapkan</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Abaikan perubahan whitespace</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Terapkan Patch</x:String>
+  <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Terapkan Stash</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Hapus setelah diterapkan</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Pulihkan perubahan indeks</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">Stash:</x:String>
+  <x:String x:Key="Text.Archive" xml:space="preserve">Arsip...</x:String>
+  <x:String x:Key="Text.Archive.File" xml:space="preserve">Simpan Arsip Ke:</x:String>
+  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Pilih jalur berkas arsip</x:String>
+  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revisi:</x:String>
+  <x:String x:Key="Text.Archive.Title" xml:space="preserve">Arsip</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Masukkan passphrase:</x:String>
+  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">BERKAS DIASUMSIKAN TIDAK BERUBAH</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">TIDAK ADA BERKAS YANG DIASUMSIKAN TIDAK BERUBAH</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Muat Gambar...</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Segarkan</x:String>
+  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">BERKAS BINARY TIDAK DIDUKUNG!!!</x:String>
+  <x:String x:Key="Text.Bisect">Bisect</x:String>
+  <x:String x:Key="Text.Bisect.Abort">Batalkan</x:String>
+  <x:String x:Key="Text.Bisect.Bad">Buruk</x:String>
+  <x:String x:Key="Text.Bisect.Detecting">Bisect berjalan. Apakah HEAD saat ini baik atau buruk?</x:String>
+  <x:String x:Key="Text.Bisect.Good">Baik</x:String>
+  <x:String x:Key="Text.Bisect.Skip">Lewati</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForRange">Bisect berjalan. Tandai commit saat ini sebagai baik atau buruk dan checkout yang lain.</x:String>
+  <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
+  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME PADA BERKAS INI TIDAK DIDUKUNG!!!</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Bandingkan dengan ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Bandingkan dengan Worktree</x:String>
+  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Salin Nama Branch</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Aksi Kustom</x:String>
+  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Hapus ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Hapus {0} branch yang dipilih</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward ke ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ ke ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Selesaikan ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ ke ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Merge {0} branch yang dipilih ke saat ini</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ ke ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ pada ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Ganti Nama ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Reset ${0}$ ke ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Pindah ke ${0}$ (worktree)</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Atur Tracking Branch...</x:String>
+  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Perbandingan Branch</x:String>
+  <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} commit di depan</x:String>
+  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit di depan, {1} commit di belakang</x:String>
+  <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit di belakang</x:String>
+  <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Tidak Valid</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTE</x:String>
+  <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">STATUS</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">TRACKING</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.BranchTree.Worktree" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Cancel" xml:space="preserve">BATAL</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Reset ke Revisi Parent</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Reset ke Revisi Ini</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Buat pesan commit</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">UBAH MODE TAMPILAN</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Tampilkan sebagai Daftar Berkas dan Direktori</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Tampilkan sebagai Daftar Jalur</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Tampilkan sebagai Pohon Sistem Berkas</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Ubah URL Submodule</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
+  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Peringatan: Dengan melakukan checkout commit, Head akan terlepas</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Perubahan Lokal:</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Buang</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
+  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Perbarui semua submodule</x:String>
+  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">HEAD saat ini mengandung commit yang tidak terhubung ke branch/tag manapun! Lanjutkan?</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward ke:</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Tambahkan sumber ke pesan commit</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit semua perubahan</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Mainline:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Biasanya Anda tidak dapat cherry-pick merge karena tidak tahu sisi mana dari merge yang dianggap mainline. Opsi ini memungkinkan cherry-pick untuk memutar ulang perubahan relatif terhadap parent yang ditentukan.</x:String>
+  <x:String x:Key="Text.ClearStashes" xml:space="preserve">Hapus Stash</x:String>
+  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Anda akan menghapus semua stash. Lanjutkan?</x:String>
+  <x:String x:Key="Text.Clone" xml:space="preserve">Clone Repositori Remote</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Parameter Tambahan:</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Argumen tambahan untuk clone repositori. Opsional.</x:String>
+  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Nama Lokal:</x:String>
+  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nama repositori. Opsional.</x:String>
+  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Folder Parent:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Inisialisasi &amp; perbarui submodule</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL Repositori:</x:String>
+  <x:String x:Key="Text.Close" xml:space="preserve">TUTUP</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick Commit</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Bandingkan dengan HEAD</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Bandingkan dengan Worktree</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Author</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">Pesan</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Subjek</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Aksi Kustom</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Drop...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Edit...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Fixup ke Parent...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Rebase ${0}$ pada ${1}$ secara Interaktif</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Reword...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash ke Parent...</x:String>
+  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge ke ${0}$</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ ke ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ pada ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ ke ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
+  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reword</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch...</x:String>
+  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash ke Parent</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">PERUBAHAN</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">berkas berubah</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Cari Perubahan...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">BERKAS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Berkas LFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Cari Berkas...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
+  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMASI</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">CHILDREN</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Periksa ref yang mengandung commit ini</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">COMMIT TERKANDUNG DALAM</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Salin Email</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Salin Nama</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Salin Nama &amp; Email</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Menampilkan hanya 100 perubahan pertama. Lihat semua perubahan di tab PERUBAHAN.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Kunci:</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">PESAN</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARENTS</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Penanda Tangan:</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Buka di Browser</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Deskripsi</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.PasteAndReplaceAll" xml:space="preserve">Tempel (Ganti semua)</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJEK</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Masukkan subjek commit</x:String>
+  <x:String x:Key="Text.Configure" xml:space="preserve">Konfigurasi Repositori</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">TEMPLATE COMMIT</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Anda dapat menggunakan ${files_num}, ${branch_name}, ${files} dan ${files:N} dimana N adalah jumlah maksimal jalur berkas yang ditampilkan.</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Konten Template:</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nama Template:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">AKSI KUSTOM</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumen:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Parameter bawaan: 
+  
+  ${REPO} Jalur repositori
+  ${REMOTE} Remote yang dipilih atau remote dari branch yang dipilih
+  ${BRANCH} Branch yang dipilih, tanpa bagian ${REMOTE} untuk remote branch
+  ${BRANCH_FRIENDLY_NAME} Nama ramah dari branch yang dipilih, mengandung bagian ${REMOTE} untuk remote branch
+  ${SHA} Hash commit yang dipilih
+  ${TAG} Tag yang dipilih
+  $1, $2 ... Nilai kontrol input</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Berkas Eksekusi:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Kontrol Input:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Sunting</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nama:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Lingkup:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branch</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">Remote</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repositori</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Tag</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Tunggu aksi selesai</x:String>
+  <x:String x:Key="Text.Configure.Email" xml:space="preserve">Alamat Email</x:String>
+  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Alamat email</x:String>
+  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remote secara otomatis</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Menit</x:String>
+  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remote Default</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Mode Merge Pilihan</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Tambah Aturan Azure DevOps</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Tambah Aturan Gerrit Change-Id Commit</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Tambah Aturan Gitee Issue</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Tambah Aturan Gitee Pull Request</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Tambah Aturan GitHub</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Tambah Aturan GitLab Issue</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Tambah Aturan GitLab Merge Request</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Tambah Aturan Jira</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Aturan Baru</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Ekspresi Regex Issue:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Nama Aturan:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Bagikan aturan ini di berkas .issuetracker</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Hasil:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Gunakan $1, $2 untuk mengakses nilai grup regex.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Layanan Pilihan:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Jika 'Layanan Pilihan' diatur, SourceGit hanya akan menggunakannya di repositori ini. Jika tidak, jika ada lebih dari satu layanan yang tersedia, menu konteks untuk memilih salah satunya akan ditampilkan.</x:String>
+  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proksi HTTP</x:String>
+  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proksi HTTP yang digunakan oleh repositori ini</x:String>
+  <x:String x:Key="Text.Configure.User" xml:space="preserve">Nama Pengguna</x:String>
+  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nama pengguna untuk repositori ini</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Sunting Kontrol Aksi Kustom</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Nilai Tercentang:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Saat dicentang, nilai ini akan digunakan dalam argumen command-line</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Deskripsi:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Default:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Adalah Folder:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Label:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Opsi:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Gunakan '|' sebagai pembatas untuk opsi</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Jenis:</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspace</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Warna</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nama</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Pulihkan tab saat startup</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">LANJUTKAN</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Commit kosong terdeteksi! Lanjutkan (--allow-empty)?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">STAGE SEMUA &amp; COMMIT</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Commit kosong terdeteksi! Lanjutkan (--allow-empty) atau stage semua lalu commit?</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Perlu Mulai Ulang</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">Anda perlu memulai ulang aplikasi ini untuk menerapkan perubahan.</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Pembantu Conventional Commit</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Issue Ditutup:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Detail Perubahan:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Lingkup:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Deskripsi Singkat:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Jenis Perubahan:</x:String>
+  <x:String x:Key="Text.Copy" xml:space="preserve">Salin</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Salin Semua Teks</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Salin Jalur Lengkap</x:String>
+  <x:String x:Key="Text.CopyPath" xml:space="preserve">Salin Jalur</x:String>
+  <x:String x:Key="Text.CreateBranch" xml:space="preserve">Buat Branch...</x:String>
+  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Berdasarkan:</x:String>
+  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout branch yang dibuat</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Perubahan Lokal:</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Buang</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
+  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nama Branch Baru:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Masukkan nama branch.</x:String>
+  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Buat Branch Lokal</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Timpa branch yang ada</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">Buat Tag...</x:String>
+  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Tag Baru Pada:</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Tanda tangan GPG</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Pesan Tag:</x:String>
+  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Opsional.</x:String>
+  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Nama Tag:</x:String>
+  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Format rekomendasi: v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push ke semua remote setelah dibuat</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Buat Tag Baru</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Jenis:</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">annotated</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lightweight</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Tahan Ctrl untuk memulai langsung</x:String>
+  <x:String x:Key="Text.Cut" xml:space="preserve">Potong</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">De-initialize Submodule</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Paksa de-init meski mengandung perubahan lokal.</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Hapus Branch</x:String>
+  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Anda akan menghapus remote branch!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Juga hapus remote branch ${0}$</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Hapus Beberapa Branch</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Anda akan menghapus beberapa branch sekaligus. Pastikan untuk memeriksa ulang sebelum bertindak!</x:String>
+  <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Hapus Beberapa Tag</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.DeleteFromRemotes" xml:space="preserve">Hapus dari remote</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.Tip" xml:space="preserve">Anda akan menghapus beberapa tag sekaligus. Pastikan untuk memeriksa ulang sebelum bertindak!</x:String>
+  <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Hapus Remote</x:String>
+  <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Jalur:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">Semua anak akan dihapus dari daftar.</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">Ini hanya akan menghapusnya dari daftar, bukan dari disk!</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Konfirmasi Hapus Grup</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Konfirmasi Hapus Repositori</x:String>
+  <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Hapus Submodule</x:String>
+  <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Jalur Submodule:</x:String>
+  <x:String x:Key="Text.DeleteTag" xml:space="preserve">Hapus Tag</x:String>
+  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Tag:</x:String>
+  <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Hapus dari repositori remote</x:String>
+  <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFF BINARY</x:String>
+  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Mode Berkas Berubah</x:String>
+  <x:String x:Key="Text.Diff.First" xml:space="preserve">Perbedaan Pertama</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Abaikan Semua Perubahan Whitespace</x:String>
+  <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">BLEND</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">DIFFERENCE</x:String>
+  <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">SIDE-BY-SIDE</x:String>
+  <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">SWIPE</x:String>
+  <x:String x:Key="Text.Diff.Last" xml:space="preserve">Perbedaan Terakhir</x:String>
+  <x:String x:Key="Text.Diff.LFS" xml:space="preserve">PERUBAHAN OBJEK LFS</x:String>
+  <x:String x:Key="Text.Diff.New" xml:space="preserve">BARU</x:String>
+  <x:String x:Key="Text.Diff.Next" xml:space="preserve">Perbedaan Berikutnya</x:String>
+  <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">TIDAK ADA PERUBAHAN ATAU HANYA PERUBAHAN EOL</x:String>
+  <x:String x:Key="Text.Diff.Old" xml:space="preserve">LAMA</x:String>
+  <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Perbedaan Sebelumnya</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Tampilkan Simbol Tersembunyi</x:String>
+  <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diff Side-By-Side</x:String>
+  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">PERUBAHAN SUBMODULE</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">DIHAPUS</x:String>
+  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">BARU</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Tukar</x:String>
+  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Word Wrap Baris</x:String>
+  <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Buka di Merge Tool</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Tampilkan Semua Baris</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Kurangi Jumlah Baris yang Tampak</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Tambah Jumlah Baris yang Tampak</x:String>
+  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">PILIH BERKAS UNTUK MELIHAT PERUBAHAN</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">Riwayat Direktori</x:String>
+  <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">Memiliki Perubahan Lokal</x:String>
+  <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">Tidak Cocok dengan Upstream</x:String>
+  <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">Sudah Up-To-Date</x:String>
+  <x:String x:Key="Text.Discard" xml:space="preserve">Buang Perubahan</x:String>
+  <x:String x:Key="Text.Discard.All" xml:space="preserve">Semua perubahan lokal dalam working copy.</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Perubahan:</x:String>
+  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Termasuk berkas yang diabaikan</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Termasuk berkas yang tidak dilacak</x:String>
+  <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} perubahan akan dibuang</x:String>
+  <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Anda tidak dapat membatalkan aksi ini!!!</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Bookmark:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Nama Baru:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Sunting Grup yang Dipilih</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Sunting Repositori yang Dipilih</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Repositori ini</x:String>
+  <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
+  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch semua remote</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Paksa override ref lokal</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch tanpa tag</x:String>
+  <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Perubahan dari Remote</x:String>
+  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Asumsikan tidak berubah</x:String>
+  <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Buang...</x:String>
+  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Buang {0} berkas...</x:String>
+  <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Selesaikan Menggunakan ${0}$</x:String>
+  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch...</x:String>
+  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Stage</x:String>
+  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Stage {0} berkas</x:String>
+  <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Stash...</x:String>
+  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Stash {0} berkas...</x:String>
+  <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Unstage</x:String>
+  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Unstage {0} berkas</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Gunakan Milik Saya (checkout --ours)</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Gunakan Milik Mereka (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileHistory" xml:space="preserve">Riwayat Berkas</x:String>
+  <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">PERUBAHAN</x:String>
+  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">KONTEN</x:String>
+  <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
+  <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Branch Development:</x:String>
+  <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
+  <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Prefix Feature:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW - Selesaikan Feature</x:String>
+  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Selesaikan Hotfix</x:String>
+  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Selesaikan Release</x:String>
+  <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Push ke remote setelah selesai</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash saat merge</x:String>
+  <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
+  <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Prefix Hotfix:</x:String>
+  <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Inisialisasi Git-Flow</x:String>
+  <x:String x:Key="Text.GitFlow.KeepBranchAfterFinish" xml:space="preserve">Simpan branch</x:String>
+  <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Branch Production:</x:String>
+  <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Release:</x:String>
+  <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Prefix Release:</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Mulai Feature...</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW - Mulai Feature</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Mulai Hotfix...</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW - Mulai Hotfix</x:String>
+  <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Masukkan nama</x:String>
+  <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Mulai Release...</x:String>
+  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Mulai Release</x:String>
+  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Prefix Tag Versi:</x:String>
+  <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Tambah Pola Track...</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">Pola adalah nama berkas</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">Pola Kustom:</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Tambah Pola Track ke Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Jalankan `git lfs fetch` untuk mengunduh objek Git LFS. Ini tidak memperbarui working copy.</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch Objek LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Instal hook Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Tampilkan Lock</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">Tidak Ada Berkas Terkunci</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Lock</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Hanya tampilkan lock saya</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">Lock LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Unlock</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Paksa Unlock</x:String>
+  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
+  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Jalankan `git lfs prune` untuk menghapus berkas LFS lama dari penyimpanan lokal</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Jalankan `git lfs pull` untuk mengunduh semua berkas Git LFS untuk ref &amp; checkout saat ini</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull Objek LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Push</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Push berkas besar yang diantre ke endpoint Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Push Objek LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track berkas bernama '{0}'</x:String>
+  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track semua berkas *{0}</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">RIWAYAT</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
+  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">WAKTU AUTHOR</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAFIK &amp; SUBJEK</x:String>
+  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">WAKTU COMMIT</x:String>
+  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">DIPILIH {0} COMMIT</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Tahan 'Ctrl' atau 'Shift' untuk memilih beberapa commit.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Tahan ⌘ atau ⇧ untuk memilih beberapa commit.</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPS:</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Referensi Shortcut Keyboard</x:String>
+  <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clone repositori baru</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Tutup tab saat ini</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Ke tab berikutnya</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Ke tab sebelumnya</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Buat tab baru</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Buka dialog Preferensi</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">Ganti workspace aktif</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Ganti tab aktif</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORI</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit perubahan yang di-stage</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit dan push perubahan yang di-stage</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage semua perubahan dan commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, langsung dimulai</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Mode dashboard (Default)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Mode pencarian commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, langsung dimulai</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, langsung dimulai</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Paksa muat ulang repositori ini</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Pindah ke 'Changes'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Pindah ke 'History'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Pindah ke 'Stashes'</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXT EDITOR</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Tutup panel pencarian</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Cari kecocokan berikutnya</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Cari kecocokan sebelumnya</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Buka dengan diff/merge tool eksternal</x:String>
+  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Buka panel pencarian</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Buang</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
+  <x:String x:Key="Text.Init" xml:space="preserve">Inisialisasi Repositori</x:String>
+  <x:String x:Key="Text.Init.Path" xml:space="preserve">Jalur:</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick sedang berjalan.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Memproses commit</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge sedang berjalan.</x:String>
+  <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">Melakukan merge</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase sedang berjalan.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Berhenti di</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Revert sedang berjalan.</x:String>
+  <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Melakukan revert commit</x:String>
+  <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Interactive Rebase</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Stash &amp; terapkan ulang perubahan lokal</x:String>
+  <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Pada:</x:String>
+  <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">Drag-drop untuk mengurutkan ulang commit</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Branch Target:</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Salin Link</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Buka di Browser</x:String>
+  <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
+  <x:String x:Key="Text.Launcher.Info" xml:space="preserve">PEMBERITAHUAN</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Tab</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Workspace</x:String>
+  <x:String x:Key="Text.Merge" xml:space="preserve">Merge Branch</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Sesuaikan pesan merge</x:String>
+  <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ke:</x:String>
+  <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opsi Merge:</x:String>
+  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Sumber:</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (Beberapa)</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit semua perubahan</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategi:</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Pindahkan Submodule</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Pindahkan Ke:</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Pindahkan Node Repositori</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Pilih node parent untuk:</x:String>
+  <x:String x:Key="Text.Name" xml:space="preserve">Nama:</x:String>
+  <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git BELUM dikonfigurasi. Silakan ke [Preferences] dan konfigurasikan terlebih dahulu.</x:String>
+  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Buka Direktori Penyimpanan Data</x:String>
+  <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Buka di Merge Tool</x:String>
+  <x:String x:Key="Text.OpenWith" xml:space="preserve">Buka dengan...</x:String>
+  <x:String x:Key="Text.Optional" xml:space="preserve">Opsional.</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Buat Tab Baru</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Tutup Tab</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Tutup Tab Lain</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Tutup Tab di Kanan</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Salin Jalur Repositori</x:String>
+  <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositori</x:String>
+  <x:String x:Key="Text.Paste" xml:space="preserve">Tempel</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} hari lalu</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">1 jam lalu</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} jam lalu</x:String>
+  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Baru saja</x:String>
+  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Bulan lalu</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Tahun lalu</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} menit lalu</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} bulan lalu</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} tahun lalu</x:String>
+  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Kemarin</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">Preferensi</x:String>
+  <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Prompt Analisis Diff</x:String>
+  <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
+  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Prompt Generate Subjek</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
+  <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nama</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Nilai yang dimasukkan adalah nama untuk memuat API key dari ENV</x:String>
+  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
+  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Aktifkan Streaming</x:String>
+  <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">TAMPILAN</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Default</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Lebar Tab Editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Ukuran Font</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Default</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Font Monospace</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Gunakan font monospace hanya di text editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Override Tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Gunakan scrollbar auto-hide</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Gunakan lebar tab tetap di titlebar</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Gunakan frame window native</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Jalur Instalasi</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Masukkan jalur untuk diff/merge tool</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Tool</x:String>
+  <x:String x:Key="Text.Preferences.General" xml:space="preserve">UMUM</x:String>
+  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Periksa pembaruan saat startup</x:String>
+  <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Format Tanggal</x:String>
+  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Aktifkan folder kompak di pohon perubahan</x:String>
+  <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Bahasa</x:String>
+  <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commit Riwayat</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Tampilkan waktu author alih-alih waktu commit di grafik</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Tampilkan halaman `LOCAL CHANGES` secara default</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Tampilkan tab `CHANGES` di detail commit secara default</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Tampilkan children di detail commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Tampilkan tag di grafik commit</x:String>
+  <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Panjang Panduan Subjek</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Generate avatar default bergaya GitHub</x:String>
+  <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Aktifkan Auto CRLF</x:String>
+  <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Direktori Clone Default</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email Pengguna</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Email pengguna git global</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Aktifkan --prune saat fetch</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Aktifkan --ignore-cr-at-eol di diff</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) diperlukan oleh aplikasi ini</x:String>
+  <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Jalur Instalasi</x:String>
+  <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Aktifkan HTTP SSL Verify</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Gunakan git-credential-libsecret alih-alih git-credential-manager</x:String>
+  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nama Pengguna</x:String>
+  <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nama pengguna git global</x:String>
+  <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Versi Git</x:String>
+  <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">PENANDATANGANAN GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">Penandatanganan GPG commit</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Format GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path" xml:space="preserve">Jalur Instalasi Program</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path.Placeholder" xml:space="preserve">Masukkan jalur untuk program gpg yang terinstal</x:String>
+  <x:String x:Key="Text.Preferences.GPG.TagEnabled" xml:space="preserve">Penandatanganan GPG tag</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey" xml:space="preserve">Kunci Penandatanganan Pengguna</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">Kunci penandatanganan gpg pengguna</x:String>
+  <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRASI</x:String>
+  <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Jalur</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>
+  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Prune Worktree</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Prune informasi worktree di `$GIT_COMMON_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote Branch:</x:String>
+  <x:String x:Key="Text.Pull.Into" xml:space="preserve">Ke:</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Perubahan Lokal:</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Buang</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
+  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Perbarui semua submodule</x:String>
+  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
+  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Gunakan rebase alih-alih merge</x:String>
+  <x:String x:Key="Text.Push" xml:space="preserve">Push</x:String>
+  <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Pastikan submodule sudah di-push</x:String>
+  <x:String x:Key="Text.Push.Force" xml:space="preserve">Paksa push</x:String>
+  <x:String x:Key="Text.Push.Local" xml:space="preserve">Branch Lokal:</x:String>
+  <x:String x:Key="Text.Push.New" xml:space="preserve">BARU</x:String>
+  <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revisi:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revisi ke Remote</x:String>
+  <x:String x:Key="Text.Push.Title" xml:space="preserve">Push Perubahan ke Remote</x:String>
+  <x:String x:Key="Text.Push.To" xml:space="preserve">Remote Branch:</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Atur sebagai tracking branch</x:String>
+  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push semua tag</x:String>
+  <x:String x:Key="Text.PushTag" xml:space="preserve">Push Tag ke Remote</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push ke semua remote</x:String>
+  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag:</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">Keluar</x:String>
+  <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Branch Saat Ini</x:String>
+  <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; terapkan ulang perubahan lokal</x:String>
+  <x:String x:Key="Text.Rebase.On" xml:space="preserve">Pada:</x:String>
+  <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Tambah Remote</x:String>
+  <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Sunting Remote</x:String>
+  <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nama:</x:String>
+  <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Nama remote</x:String>
+  <x:String x:Key="Text.Remote.URL" xml:space="preserve">URL Repositori:</x:String>
+  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">URL repositori git remote</x:String>
+  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Salin URL</x:String>
+  <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Aksi Kustom</x:String>
+  <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Hapus...</x:String>
+  <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Sunting...</x:String>
+  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
+  <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Buka di Browser</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
+  <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Konfirmasi Hapus Worktree</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Aktifkan Opsi `--force`</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.RenameBranch" xml:space="preserve">Ganti Nama Branch</x:String>
+  <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">Nama Baru:</x:String>
+  <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Nama unik untuk branch ini</x:String>
+  <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Repository.Abort" xml:space="preserve">BATALKAN</x:String>
+  <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Auto fetch perubahan dari remote...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Urut</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">Berdasarkan Tanggal Committer</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">Berdasarkan Nama</x:String>
+  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Bersihkan (GC &amp; Prune)</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Jalankan perintah `git gc` untuk repositori ini.</x:String>
+  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Bersihkan semua</x:String>
+  <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Bersihkan</x:String>
+  <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Konfigurasikan repositori ini</x:String>
+  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">LANJUTKAN</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Aksi Kustom</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Tidak Ada Aksi Kustom</x:String>
+  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Buang semua perubahan</x:String>
+  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Buka di File Browser</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Cari Branch/Tag/Submodule</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilitas di Grafik</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Tidak Diatur</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Sembunyikan di grafik commit</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filter di grafik commit</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">TATA LETAK</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Vertikal</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">URUTAN COMMIT</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Tanggal Commit</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologis</x:String>
+  <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCH LOKAL</x:String>
+  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Opsi lainnya...</x:String>
+  <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigasi ke HEAD</x:String>
+  <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Buat Branch</x:String>
+  <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BERSIHKAN NOTIFIKASI</x:String>
+  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Hanya highlight branch saat ini</x:String>
+  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Buka di {0}</x:String>
+  <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Buka di Tool Eksternal</x:String>
+  <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTE</x:String>
+  <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">Tambah Remote</x:String>
+  <x:String x:Key="Text.Repository.Search" xml:space="preserve">Cari Commit</x:String>
+  <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Author</x:String>
+  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Konten</x:String>
+  <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Pesan</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Jalur</x:String>
+  <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Branch Saat Ini</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Hanya commit yang didekorasi</x:String>
+  <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Hanya first-parent</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">TAMPILKAN FLAG</x:String>
+  <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Tampilkan commit yang hilang</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Tampilkan Submodule sebagai Pohon</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Tampilkan Tag sebagai Pohon</x:String>
+  <x:String x:Key="Text.Repository.Skip" xml:space="preserve">LEWATI</x:String>
+  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Statistik</x:String>
+  <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMODULE</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">Tambah Submodule</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">Perbarui Submodule</x:String>
+  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">TAG</x:String>
+  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">Tag Baru</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Berdasarkan Tanggal Pembuat</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Berdasarkan Nama</x:String>
+  <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Urut</x:String>
+  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Buka di Terminal</x:String>
+  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Gunakan waktu relatif</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Lihat Log</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Kunjungi '{0}' di Browser</x:String>
+  <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">Tambah Worktree</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">Prune</x:String>
+  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">URL Repositori Git</x:String>
+  <x:String x:Key="Text.Reset" xml:space="preserve">Reset Branch Saat Ini ke Revisi</x:String>
+  <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Mode Reset:</x:String>
+  <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Pindah Ke:</x:String>
+  <x:String x:Key="Text.Reset.Target" xml:space="preserve">Branch Saat Ini:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Reset Branch (Tanpa Checkout)</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Pindah Ke:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.RevealFile" xml:space="preserve">Tampilkan di File Explorer</x:String>
+  <x:String x:Key="Text.Revert" xml:space="preserve">Revert Commit</x:String>
+  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit perubahan revert</x:String>
+  <x:String x:Key="Text.Reword" xml:space="preserve">Reword Pesan Commit</x:String>
+  <x:String x:Key="Text.Running" xml:space="preserve">Sedang berjalan. Harap tunggu...</x:String>
+  <x:String x:Key="Text.Save" xml:space="preserve">SIMPAN</x:String>
+  <x:String x:Key="Text.SaveAs" xml:space="preserve">Simpan Sebagai...</x:String>
+  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch berhasil disimpan!</x:String>
+  <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Pindai Repositori</x:String>
+  <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Direktori Root:</x:String>
+  <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Pindai direktori kustom lain</x:String>
+  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Periksa Pembaruan...</x:String>
+  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Versi baru dari perangkat lunak ini tersedia: </x:String>
+  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Pemeriksaan pembaruan gagal!</x:String>
+  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Unduh</x:String>
+  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Lewati Versi Ini</x:String>
+  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Pembaruan Perangkat Lunak</x:String>
+  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Saat ini tidak ada pembaruan yang tersedia.</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Atur Branch Submodule</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Saat Ini:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New" xml:space="preserve">Ubah Ke:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New.Tip" xml:space="preserve">Opsional. Atur ke default jika kosong.</x:String>
+  <x:String x:Key="Text.SetUpstream" xml:space="preserve">Atur Tracking Branch</x:String>
+  <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">Hapus upstream</x:String>
+  <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Salin SHA</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Ke</x:String>
+  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commit</x:String>
+  <x:String x:Key="Text.Squash.Into" xml:space="preserve">Ke:</x:String>
+  <x:String x:Key="Text.SSHKey" xml:space="preserve">Kunci SSH Privat:</x:String>
+  <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Jalur penyimpanan kunci SSH privat</x:String>
+  <x:String x:Key="Text.Start" xml:space="preserve">MULAI</x:String>
+  <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
+  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Termasuk berkas yang tidak dilacak</x:String>
+  <x:String x:Key="Text.Stash.Message" xml:space="preserve">Pesan:</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opsional. Pesan untuk stash ini</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Mode:</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Hanya perubahan yang di-stage</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Perubahan staged dan unstaged dari berkas yang dipilih akan di-stash!!!</x:String>
+  <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Perubahan Lokal</x:String>
+  <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Terapkan</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Salin Pesan</x:String>
+  <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Drop</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch...</x:String>
+  <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</x:String>
+  <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Drop:</x:String>
+  <x:String x:Key="Text.Stashes" xml:space="preserve">STASH</x:String>
+  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">PERUBAHAN</x:String>
+  <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASH</x:String>
+  <x:String x:Key="Text.Statistics" xml:space="preserve">Statistik</x:String>
+  <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">IKHTISAR</x:String>
+  <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">BULAN</x:String>
+  <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">MINGGU</x:String>
+  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHOR: </x:String>
+  <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMIT: </x:String>
+  <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULE</x:String>
+  <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Tambah Submodule</x:String>
+  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">BRANCH</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">Branch</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Jalur Relatif</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">De-initialize</x:String>
+  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch submodule bersarang</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">Riwayat</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Pindahkan Ke</x:String>
+  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Buka Repositori</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Jalur Relatif:</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Folder relatif untuk menyimpan modul ini.</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Hapus</x:String>
+  <x:String x:Key="Text.Submodule.SetBranch" xml:space="preserve">Atur Branch</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">Ubah URL</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">STATUS</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">dimodifikasi</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">tidak diinisialisasi</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revisi berubah</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">belum di-merge</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Perbarui</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">TAGGER</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">WAKTU</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Pesan</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Nama</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Tagger</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Salin Nama Tag</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Aksi Kustom</x:String>
+  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Hapus ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Hapus {0} tag yang dipilih...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ ke ${1}$...</x:String>
+  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Perbarui Submodule</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Semua submodule</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inisialisasi sesuai kebutuhan</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Telusuri submodule secara rekursif</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Perbarui ke remote tracking branch submodule</x:String>
+  <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Log</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">BERSIHKAN SEMUA</x:String>
+  <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">Salin</x:String>
+  <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">Hapus</x:String>
+  <x:String x:Key="Text.Warn" xml:space="preserve">Peringatan</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">Halaman Selamat Datang</x:String>
+  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Buat Grup</x:String>
+  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Buat Sub-Grup</x:String>
+  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Clone Repositori</x:String>
+  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Hapus</x:String>
+  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER DIDUKUNG. PENGELOMPOKAN KUSTOM DIDUKUNG.</x:String>
+  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Sunting</x:String>
+  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Pindah ke Grup Lain</x:String>
+  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Buka Semua Repositori</x:String>
+  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Buka Repositori</x:String>
+  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Buka Terminal</x:String>
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Pindai Ulang Repositori di Direktori Clone Default</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cari Repositori...</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">PERUBAHAN LOKAL</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Abaikan semua berkas *{0}</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Abaikan berkas *{0} di folder yang sama</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Abaikan berkas yang tidak dilacak di folder ini</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Abaikan hanya berkas ini</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Amend</x:String>
+  <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Anda dapat stage berkas ini sekarang.</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">Bersihkan Riwayat</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">Yakin ingin membersihkan semua riwayat pesan commit? Aksi ini tidak dapat dibatalkan.</x:String>
+  <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/Riwayat</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Picu event klik</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Sunting)</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage semua perubahan dan commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Anda membuat commit pada HEAD yang terlepas. Lanjutkan?</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Anda telah stage {0} berkas tetapi hanya {1} berkas yang ditampilkan ({2} berkas disaring). Lanjutkan?</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIK TERDETEKSI</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">BUKA MERGETOOL EKSTERNAL</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">BUKA SEMUA KONFLIK DI MERGETOOL EKSTERNAL</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">KONFLIK BERKAS DISELESAIKAN</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">GUNAKAN MILIK SAYA</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">GUNAKAN MILIK MEREKA</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">TERMASUK BERKAS YANG TIDAK DILACAK</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">TIDAK ADA PESAN INPUT TERBARU</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">TIDAK ADA TEMPLATE COMMIT</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">No-Verify</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Reset Author</x:String>
+  <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">SignOff</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">STAGED</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">UNSTAGE</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">UNSTAGE SEMUA</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">UNSTAGED</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">STAGE</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">STAGE SEMUA</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">LIHAT ASSUME UNCHANGED</x:String>
+  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Template: ${0}$</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">WORKSPACE: </x:String>
+  <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Konfigurasikan Workspace...</x:String>
+  <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Salin Jalur</x:String>
+  <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Lock</x:String>
+  <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Buka</x:String>
+  <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Hapus</x:String>
+  <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
+</ResourceDictionary>

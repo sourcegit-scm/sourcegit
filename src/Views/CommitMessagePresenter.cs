@@ -110,16 +110,17 @@ namespace SourceGit.Views
             if (_lastHover != null)
             {
                 var link = _lastHover.Link;
+                var type = _lastHover.Type;
                 e.Pointer.Capture(null);
 
-                if (_lastHover.Type == Models.InlineElementType.CommitSHA)
+                if (type == Models.InlineElementType.CommitSHA)
                 {
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
                     {
                         if (point.Properties.IsLeftButtonPressed)
                         {
-                            detail.NavigateTo(_lastHover.Link);
+                            detail.NavigateTo(link);
                         }
                         else if (point.Properties.IsRightButtonPressed)
                         {

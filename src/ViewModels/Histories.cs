@@ -332,6 +332,16 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public async Task DropHeadAsync(Models.Commit head)
+        {
+            var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
+            if (parent == null)
+                parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
+
+            if (parent != null && _repo.CanCreatePopup())
+                _repo.ShowPopup(new DropHead(_repo, head, parent));
+        }
+
         public async Task InteractiveRebaseAsync(Models.Commit commit, Models.InteractiveRebaseAction act)
         {
             var prefill = new InteractiveRebasePrefill(commit.SHA, act);

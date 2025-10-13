@@ -76,7 +76,7 @@ namespace SourceGit.ViewModels
             _navigationActiveIndex--;
             OnPropertyChanged(nameof(CanBack));
             OnPropertyChanged(nameof(CanForward));
-            NavigateToCommit(_navigationHistory[_navigationActiveIndex]);
+            NavigateToCommit(_navigationHistory[_navigationActiveIndex], true);
         }
 
         public void Forward()
@@ -87,21 +87,27 @@ namespace SourceGit.ViewModels
             _navigationActiveIndex++;
             OnPropertyChanged(nameof(CanBack));
             OnPropertyChanged(nameof(CanForward));
-            NavigateToCommit(_navigationHistory[_navigationActiveIndex]);
+            NavigateToCommit(_navigationHistory[_navigationActiveIndex], true);
         }
 
-        public void NavigateToCommit(string commitSHA)
+        public void NavigateToCommit(string commitSHA, bool isBackOrForward)
         {
-            if (!_navigationHistory[_navigationActiveIndex].Equals(commitSHA, StringComparison.Ordinal))
+            if (Revision.SHA.StartsWith(commitSHA, StringComparison.Ordinal))
+                return;
+
+            if (!isBackOrForward)
             {
+                var count = _navigationHistory.Count;
+                if (_navigationActiveIndex < count - 1)
+                    _navigationHistory.RemoveRange(_navigationActiveIndex + 1, count - _navigationActiveIndex - 1);
+
                 _navigationHistory.Add(commitSHA);
-                _navigationActiveIndex = _navigationHistory.Count - 1;
+                _navigationActiveIndex++;
                 OnPropertyChanged(nameof(CanBack));
                 OnPropertyChanged(nameof(CanForward));
             }
 
-            if (!Revision.SHA.StartsWith(commitSHA, StringComparison.Ordinal))
-                SetBlameData(commitSHA);
+            SetBlameData(commitSHA);
 
             if (App.GetLauncher() is { Pages: { } pages })
             {

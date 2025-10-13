@@ -176,6 +176,22 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new CreateGroup(null);
         }
 
+        public RepositoryNode FindNodeById(string id, RepositoryNode root = null)
+        {
+            var collection = (root == null) ? Preferences.Instance.RepositoryNodes : root.SubNodes;
+            foreach (var node in collection)
+            {
+                if (node.Id.Equals(id, StringComparison.Ordinal))
+                    return node;
+
+                var sub = FindNodeById(id, node);
+                if (sub != null)
+                    return sub;
+            }
+
+            return null;
+        }
+
         public RepositoryNode FindParentGroup(RepositoryNode node, RepositoryNode group = null)
         {
             var collection = (group == null) ? Preferences.Instance.RepositoryNodes : group.SubNodes;

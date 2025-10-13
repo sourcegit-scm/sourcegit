@@ -223,7 +223,7 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
-                                blame.NavigateToCommit(info.CommitSHA);
+                                blame.NavigateToCommit(info.CommitSHA, false);
 
                             e.Handled = true;
                             break;

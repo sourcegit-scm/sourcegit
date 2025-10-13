@@ -50,7 +50,8 @@
                   Background="{DynamicResource Brush.Accent}"
                   Effect="drop-shadow(0 0 6 #40000000)"
                   Cursor="Hand"
-                  PointerPressed="OnVisitReleaseNotes">
+                  PointerPressed="OnVisitReleaseNotes"
+                  ToolTip.Tip="{DynamicResource Text.About.ReleaseNotes}">
             <TextBlock x:Name="TxtVersion" Classes="primary" Margin="8,0" FontSize="12" Foreground="White"/>
           </Border>
         </StackPanel>

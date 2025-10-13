@@ -598,21 +598,31 @@ namespace SourceGit.Views
                     };
                     menu.Items.Add(cherryPick);
                 }
-                else
+
+                var revert = new MenuItem();
+                revert.Header = App.Text("CommitCM.Revert");
+                revert.Icon = App.CreateMenuIcon("Icons.Undo");
+                revert.Click += (_, e) =>
                 {
-                    var revert = new MenuItem();
-                    revert.Header = App.Text("CommitCM.Revert");
-                    revert.Icon = App.CreateMenuIcon("Icons.Undo");
-                    revert.Click += (_, e) =>
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Revert(repo, commit));
+                    e.Handled = true;
+                };
+                menu.Items.Add(revert);
+
+                if (isHead)
+                {
+                    var dropHead = new MenuItem();
+                    dropHead.Header = App.Text("CommitCM.Drop");
+                    dropHead.Icon = App.CreateMenuIcon("Icons.Clear");
+                    dropHead.Click += async (_, e) =>
                     {
-                        if (repo.CanCreatePopup())
-                            repo.ShowPopup(new ViewModels.Revert(repo, commit));
+                        await vm.DropHeadAsync(commit);
                         e.Handled = true;
                     };
-                    menu.Items.Add(revert);
+                    menu.Items.Add(dropHead);
                 }
-
-                if (!isHead)
+                else
                 {
                     var checkoutCommit = new MenuItem();
                     checkoutCommit.Header = App.Text("CommitCM.Checkout");

@@ -10,9 +10,9 @@ namespace SourceGit.ViewModels
     {
         public bool HasValidUserName
         {
-            get;
-            private set;
-        } = false;
+            get => _hasValidUsername;
+            private set => SetProperty(ref _hasValidUsername, value);
+        }
 
         public bool IsLoading
         {
@@ -99,5 +99,6 @@ namespace SourceGit.ViewModels
         private List<Models.LFSLock> _visibleLocks = [];
         private bool _showOnlyMyLocks = false;
         private string _userName;
+        private bool _hasValidUsername;
     }
 }

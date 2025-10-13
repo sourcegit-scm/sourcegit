@@ -60,8 +60,10 @@
                            ScrollViewer.VerticalScrollBarVisibility="Auto"
                            ItemsSource="{Binding Rows}"
                            SelectionMode="Single"
-                           Loaded="SetupTreeViewDragAndDrop"
-                           LostFocus="OnTreeViewLostFocus">
+                           LostFocus="OnTreeViewLostFocus"
+                           DragDrop.AllowDrop="True"
+                           DragDrop.DragOver="DragOverTreeView"
+                           DragDrop.Drop="DropOnTreeView">
         <ListBox.Styles>
           <Style Selector="ListBox">
             <Setter Property="FocusAdorner">
@@ -106,13 +108,15 @@
                   Height="30"
                   ColumnDefinitions="16,18,Auto,*"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                  Loaded="SetupTreeNodeDragAndDrop"
+                  ClipToBounds="True"
                   ContextRequested="OnTreeNodeContextRequested"
                   PointerPressed="OnPointerPressedTreeNode"
                   PointerMoved="OnPointerMovedOverTreeNode"
                   PointerReleased="OnPointerReleasedOnTreeNode"
                   DoubleTapped="OnDoubleTappedTreeNode"
-                  ClipToBounds="True">
+                  DragDrop.AllowDrop="True"
+                  DragDrop.DragOver="DragOverTreeNode"
+                  DragDrop.Drop="DropOnTreeNode">
               <v:RepositoryTreeNodeToggleButton Grid.Column="0"
                                                 Classes="tree_expander"
                                                 Focusable="False"
