@@ -42,7 +42,8 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:LauncherPage">
-              <Border Height="30"
+              <Border Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30"
+                      Padding="0,2,0,0"
                       Background="Transparent"
                       PointerPressed="OnPointerPressedTab"
                       PointerMoved="OnPointerMovedOverTab"
@@ -61,7 +62,7 @@
                   </Grid>
                 </ToolTip.Tip>
 
-                <Grid Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                <Grid ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
                         Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
@@ -84,7 +85,7 @@
                              Width="8" Height="8"
                              Margin="0,0,6,0"
                              VerticalAlignment="Center"
-                             IsVisible="{Binding DirtyState, Converter={x:Static ObjectConverters.IsNotNull}, ConverterParameter={x:Static m:DirtyState.None}}"
+                             IsVisible="{Binding DirtyState, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:DirtyState.None}}"
                              Fill="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToBrush}}"/>
 
                     <TextBlock Grid.Column="1"
@@ -107,7 +108,7 @@
 
                   <Button Grid.Column="2"
                           Classes="icon_button"
-                          Width="16" Height="16" Margin="12,0"
+                          Width="12" Height="12" Margin="12,0"
                           Click="OnCloseTab">
                     <ToolTip.Tip>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -129,7 +130,7 @@
 
         <Button Classes="icon_button"
                 Width="16" Height="16"
-                Margin="8,0"
+                Margin="8,2,8,0"
                 Command="{Binding AddNewTab}"
                 IsVisible="{Binding !#ThisControl.IsScrollerVisible}">
           <ToolTip.Tip>
