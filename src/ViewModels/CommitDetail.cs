@@ -37,7 +37,12 @@ namespace SourceGit.ViewModels
             set
             {
                 if (value != _sharedData.ActiveTabIndex)
+                {
                     _sharedData.ActiveTabIndex = value;
+
+                    if (value == 1 && DiffContext == null && _selectedChanges is { Count: 1 })
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _selectedChanges[0]));
+                }
             }
         }
 
@@ -94,7 +99,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value is not { Count: 1 })
+                    if (ActiveTabIndex != 1 || value is not { Count: 1 })
                         DiffContext = null;
                     else
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, value[0]), _diffContext);
