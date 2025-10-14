@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -349,14 +350,10 @@ namespace SourceGit.Models
         private delegate string VariableGetter(Context context);
 
         private static readonly IReadOnlyDictionary<string, VariableGetter> s_variables = new Dictionary<string, VariableGetter>() {
-            // legacy variables
             {"branch_name", GetBranchName},
             {"files_num", GetFilesCount},
             {"files", GetFiles},
-            //
-            {"BRANCH", GetBranchName},
-            {"FILES_COUNT", GetFilesCount},
-            {"FILES", GetFiles},
+            {"pure_files", GetPureFiles},
         };
 
         private static string GetBranchName(Context context)
@@ -377,13 +374,19 @@ namespace SourceGit.Models
             return string.Join(", ", paths);
         }
 
+        private static string GetPureFiles(Context context)
+        {
+            var names = new List<string>();
+            foreach (var c in context.changes)
+                names.Add(Path.GetFileName(c.Path));
+            return string.Join(", ", names);
+        }
+
         private delegate string VariableSliceGetter(Context context, int count);
 
         private static readonly IReadOnlyDictionary<string, VariableSliceGetter> s_slicedVariables = new Dictionary<string, VariableSliceGetter>() {
-            // legacy variables
             {"files", GetFilesSliced},
-            //
-            {"FILES", GetFilesSliced},
+            {"pure_files", GetPureFilesSliced}
         };
 
         private static string GetFilesSliced(Context context, int count)
@@ -395,6 +398,21 @@ namespace SourceGit.Models
                 paths.Add(context.changes[i].Path);
 
             sb.AppendJoin(", ", paths);
+            if (max < context.changes.Count)
+                sb.Append($" and {context.changes.Count - max} other files");
+
+            return sb.ToString();
+        }
+
+        private static string GetPureFilesSliced(Context context, int count)
+        {
+            var sb = new StringBuilder();
+            var names = new List<string>();
+            var max = Math.Min(count, context.changes.Count);
+            for (int i = 0; i < max; i++)
+                names.Add(Path.GetFileName(context.changes[i].Path));
+
+            sb.AppendJoin(", ", names);
             if (max < context.changes.Count)
                 sb.Append($" and {context.changes.Count - max} other files");
 

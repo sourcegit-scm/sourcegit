@@ -186,7 +186,14 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填写提交信息主题</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">仓库配置</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交信息模板</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">您可使用 ${files_num}, ${branch_name}, ${files} 或 ${files:N}（N表示最大显示的文件数）</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">内置变量：
+  
+  ${branch_name} 当前分支名
+  ${files_num} 变更文件数量
+  ${files} 变更文件路径列表
+  ${files:N} 变更文件路径列表（仅输出指定 N 条）
+  ${pure_files} 与 ${files} 类似，但仅输出文件名
+  ${pure_files:N} 与 ${files:N} 类似，但仅输出文件名</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">模板内容 ：</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">模板名 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>

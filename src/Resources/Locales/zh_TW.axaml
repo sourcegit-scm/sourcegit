@@ -186,7 +186,14 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">填寫提交訊息標題</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">您可以使用 ${files_num}、${branch_name}、${files} 或 ${files:N}，其中 N 是要輸出的檔案路徑的最大數目。</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">內建參數: 
+  
+  ${branch_name} 目前分支名稱
+  ${files_num} 已變更檔案數
+  ${files} 已變更檔案路徑清單
+  ${files:N} 已變更檔案路徑清單（僅列出前 N 個）
+  ${pure_files} 類似 ${files}, 不含資料夾的純檔案名稱
+  ${pure_files:N} 類似 ${files:N}, 不含資料夾的純檔案名稱</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">範本內容:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">範本名稱:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自訂動作</x:String>

@@ -257,12 +257,14 @@
                   <TextBlock Text="{DynamicResource Text.Configure.CommitMessageTemplate.Name}"/>
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
-                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
-                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="150" Text="{Binding Content, Mode=TwoWay}"/>
-                  <TextBlock Margin="0,2,0,0"
-                             Text="{DynamicResource Text.Configure.CommitMessageTemplate.BuiltinVars}"
-                             Foreground="{DynamicResource Brush.FG2}"
-                             TextWrapping="Wrap"/>
+                  <Grid ColumnDefinitions="*,Auto" Margin="0,12,0,0">
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
+                    <Border Grid.Column="1" Width="14" Height="14" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Configure.CommitMessageTemplate.BuiltinVars}">
+                      <Path Data="{StaticResource Icons.Info}"/>
+                    </Border>
+                  </Grid>
+
+                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="200" Text="{Binding Content, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>
