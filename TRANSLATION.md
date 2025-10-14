@@ -6,9 +6,23 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.89%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
+
+- Text.Configure.CommitMessageTemplate.BuiltinVars
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-99.89%25-yellow)
+
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Configure.CommitMessageTemplate.BuiltinVars
+
+</details>
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-77.72%25-yellow)
 
@@ -217,20 +231,21 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-99.44%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-99.33%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
 - Text.About.ReleaseNotes
 - Text.CommitCM.Drop
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.DropHead
 - Text.DropHead.Commit
 - Text.DropHead.NewHead
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-96.64%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-96.53%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -247,6 +262,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.CopyName
 - Text.CommitDetail.Info.CopyNameAndEmail
 - Text.CommitMessageTextBox.PasteAndReplaceAll
+- Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Diff.Image.Difference
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
@@ -739,7 +755,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.89%25-yellow)
+
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Configure.CommitMessageTemplate.BuiltinVars
+
+</details>
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-77.83%25-yellow)
 
