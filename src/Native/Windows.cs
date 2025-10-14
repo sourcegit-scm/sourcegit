@@ -191,7 +191,7 @@ namespace SourceGit.Native
             finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
-            finder.Zed(() => FindZed(localAppDataDir));
+            finder.Zed(FindZed);
             FindVisualStudio(finder);
             return finder.Tools;
         }
@@ -416,7 +416,7 @@ namespace SourceGit.Native
             }
         }
 
-        private string FindZed(string localAppDataDir)
+        private string FindZed()
         {
             var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
                     Microsoft.Win32.RegistryHive.CurrentUser,
