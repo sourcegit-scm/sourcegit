@@ -155,7 +155,7 @@ This app supports open repository in external tools listed in the table below.
 | Cursor                        | YES     | YES   | YES   |
 | Fleet                         | YES     | YES   | YES   |
 | Sublime Text                  | YES     | YES   | YES   |
-| Zed                           | NO      | YES   | YES   |
+| Zed                           | YES     | YES   | YES   |
 | Visual Studio                 | YES     | NO    | NO    |
 
 > [!NOTE]
