@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -25,7 +24,6 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        [Required(ErrorMessage = "Scan directory is required!!!")]
         public Models.ScanDir Selected
         {
             get => _selected;
@@ -53,11 +51,26 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            var selectedDir = _useCustomDir ? _customDir : _selected?.Path;
-            if (string.IsNullOrEmpty(selectedDir))
+            string selectedDir;
+            if (_useCustomDir)
             {
-                App.RaiseException(null, "Missing root directory to scan!");
-                return false;
+                if (string.IsNullOrEmpty(_customDir))
+                {
+                    App.RaiseException(null, "Missing root directory to scan!");
+                    return false;
+                }
+
+                selectedDir = _customDir;
+            }
+            else
+            {
+                if (_selected == null || string.IsNullOrEmpty(_selected.Path))
+                {
+                    App.RaiseException(null, "Missing root directory to scan!");
+                    return false;
+                }
+
+                selectedDir = _selected.Path;
             }
 
             if (!Directory.Exists(selectedDir))
