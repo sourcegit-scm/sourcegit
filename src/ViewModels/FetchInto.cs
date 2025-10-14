@@ -35,8 +35,12 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).GetResultAsync();
-            _repo.NavigateToCommit(newHead, true);
+            if (_repo.SelectedViewIndex == 0)
+            {
+                var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).GetResultAsync();
+                _repo.NavigateToCommit(newHead, true);
+            }
+
             return true;
         }
 

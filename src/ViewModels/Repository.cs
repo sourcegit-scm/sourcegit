@@ -985,10 +985,10 @@ namespace SourceGit.ViewModels
             {
                 _navigateToCommitDelayed = sha;
             }
-            else if (_histories != null)
+            else
             {
                 SelectedViewIndex = 0;
-                _histories.NavigateTo(sha);
+                _histories?.NavigateTo(sha);
             }
         }
 

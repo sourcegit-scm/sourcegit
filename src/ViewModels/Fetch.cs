@@ -68,6 +68,7 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
+            var navigateToUpstreamHEAD = _repo.SelectedView is Histories { AutoSelectedCommit: { IsCurrentHead: true } };
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
             var log = _repo.CreateLog("Fetch");
@@ -89,11 +90,14 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var upstream = _repo.CurrentBranch?.Upstream;
-            if (!string.IsNullOrEmpty(upstream))
+            if (navigateToUpstreamHEAD)
             {
-                var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
-                _repo.NavigateToCommit(upstreamHead, true);
+                var upstream = _repo.CurrentBranch?.Upstream;
+                if (!string.IsNullOrEmpty(upstream))
+                {
+                    var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
+                    _repo.NavigateToCommit(upstreamHead, true);
+                }
             }
 
             _repo.MarkFetched();
