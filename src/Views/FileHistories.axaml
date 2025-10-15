@@ -84,9 +84,8 @@
               <Grid RowDefinitions="Auto,*">
                 <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,96">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                   <TextBlock Grid.Column="2"
-                             Classes="primary"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              Cursor="Hand"
                              Background="Transparent"
@@ -94,11 +93,11 @@
                              TextDecorations="Underline"
                              Margin="8,0,0,0"
                              PointerPressed="OnPressCommitSHA"/>
-                  <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+                  <TextBlock Grid.Column="3" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
                 </Grid>
 
                 <Border Grid.Row="1" Background="Transparent" DataContextChanged="OnCommitSubjectDataContextChanged" PointerMoved="OnCommitSubjectPointerMoved">
-                  <TextBlock Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                  <TextBlock Text="{Binding Subject}" VerticalAlignment="Bottom"/>
                 </Border>
               </Grid>
             </Border>
@@ -146,7 +145,6 @@
                           <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                             <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
                             <TextBlock Grid.Column="1"
-                                       Classes="primary"
                                        Margin="4,0,0,0"
                                        Text="{Binding Path}"
                                        FontSize="11"
@@ -201,15 +199,15 @@
                     <Grid RowDefinitions="Auto,*">
                       <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                         <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
                         <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
-                          <TextBlock Text="HEAD" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
+                          <TextBlock Text="HEAD" Margin="4,0" Foreground="#FFDDDDDD"/>
                         </Border>
-                        <TextBlock Grid.Column="3" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
-                        <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="3" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
+                        <TextBlock Grid.Column="4" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                       </Grid>
 
-                      <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                      <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
                     </Grid>
                   </DataTemplate>
                 </Grid.DataTemplates>

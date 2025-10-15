@@ -25,11 +25,11 @@
         <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-              <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+              <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
             </Border>
 
-            <TextBlock Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            <TextBlock Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
           </StackPanel>
 
           <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
@@ -44,11 +44,11 @@
         <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-              <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+              <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
             </Border>
 
-            <TextBlock Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            <TextBlock Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
           </StackPanel>
 
           <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
@@ -70,18 +70,18 @@
       <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
-          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
 
           <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+            <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
           </Border>
 
-          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
         </Grid>
 
         <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
@@ -104,18 +104,18 @@
       <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
-          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
 
           <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+            <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
           </Border>
 
-          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
         </Grid>
 
         <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
@@ -130,11 +130,10 @@
 
         <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
           <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Classes="primary"
-                       Margin="0,0,8,0"
+            <TextBlock Margin="0,0,8,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}"/>
+            <TextBlock Text="{DynamicResource Text.Diff.Old}"/>
           </StackPanel>
 
           <Slider Grid.Column="1"
@@ -149,9 +148,8 @@
                   Value="0.5"/>
 
           <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}"/>
-            <TextBlock Classes="primary"
-                       Margin="8,0,0,0"
+            <TextBlock Text="{DynamicResource Text.Diff.New}"/>
+            <TextBlock Margin="8,0,0,0"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
           </StackPanel>
@@ -167,18 +165,18 @@
       <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
           <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
-          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
 
           <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+            <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
           </Border>
 
-          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
         </Grid>
 
         <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
@@ -193,11 +191,10 @@
 
         <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
           <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Classes="primary"
-                       Margin="0,0,8,0"
+            <TextBlock Margin="0,0,8,0"
                        Text="{Binding #ImageDifferenceSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}"/>
+            <TextBlock Text="{DynamicResource Text.Diff.Old}"/>
           </StackPanel>
 
           <Slider Grid.Column="1"
@@ -212,9 +209,8 @@
                   Value="0.5"/>
 
           <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}"/>
-            <TextBlock Classes="primary"
-                       Margin="8,0,0,0"
+            <TextBlock Text="{DynamicResource Text.Diff.New}"/>
+            <TextBlock Margin="8,0,0,0"
                        Text="{Binding #ImageDifferenceSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
           </StackPanel>

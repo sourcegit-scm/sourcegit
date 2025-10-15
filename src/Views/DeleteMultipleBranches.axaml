@@ -44,7 +44,7 @@
           <DataTemplate DataType="m:Branch">
             <Grid Height="26" ColumnDefinitions="22,*,Auto">
               <Path Grid.Column="0" Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Branch}" />
-              <TextBlock Grid.Column="1" Text="{Binding FriendlyName}" Classes="primary" />
+              <TextBlock Grid.Column="1" Text="{Binding FriendlyName}" />
               <Border Grid.Column="2"
                       Height="18"
                       Margin="8,0"

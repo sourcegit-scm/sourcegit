@@ -47,7 +47,7 @@
               <TextBlock Grid.Column="1" Text="{Binding File, Mode=OneWay}" VerticalAlignment="Center"/>
 
               <Border Grid.Column="2" Height="16" Background="{Binding Brush}" CornerRadius="8" VerticalAlignment="Center">
-                <TextBlock Classes="primary" Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
+                <TextBlock Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
               </Border>
             </Grid>
           </DataTemplate>

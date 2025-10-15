@@ -120,7 +120,6 @@
                     <v:CommitRefsPresenter Grid.Column="2"
                                            Background="{DynamicResource Brush.Contents}"
                                            Foreground="{DynamicResource Brush.FG1}"
-                                           FontFamily="{DynamicResource Fonts.Primary}"
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                            FontSize="12"
                                            VerticalAlignment="Center">
@@ -133,7 +132,7 @@
                     </v:CommitRefsPresenter>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
-                                              FontFamily="{DynamicResource Fonts.Primary}"
+                                              FontFamily="{DynamicResource Fonts.Default}"
                                               CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                               InlineCodeBackground="{DynamicResource Brush.InlineCode}"
                                               Foreground="{DynamicResource Brush.FG1}"
@@ -171,8 +170,7 @@
                             IsHitTestVisible="False"/>
 
                   <Border Grid.Column="1" Padding="8,0,4,0" ClipToBounds="True">
-                    <TextBlock Classes="primary"
-                               Text="{Binding Author.Name}"
+                    <TextBlock Text="{Binding Author.Name}"
                                FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                                HorizontalAlignment="Left"/>
@@ -190,8 +188,7 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True">
-                  <TextBlock Classes="primary"
-                             Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                  <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                              Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
@@ -216,8 +213,7 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
-                  <v:CommitTimeTextBlock Classes="primary"
-                                         FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                  <v:CommitTimeTextBlock FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                                          UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
                                          ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories}"

@@ -19,7 +19,7 @@
                  Text="{DynamicResource Text.DropHead.Commit}"/>
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
         <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="1" Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
         <TextBlock Grid.Column="2" Text="{Binding Target.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
       </Grid>
 
@@ -29,7 +29,7 @@
                  Text="{DynamicResource Text.DropHead.NewHead}"/>
       <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
         <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding NewHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="1" Text="{Binding NewHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
         <TextBlock Grid.Column="2" Text="{Binding NewHead.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
       </Grid>
     </Grid>

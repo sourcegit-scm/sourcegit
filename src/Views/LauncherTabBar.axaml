@@ -89,7 +89,6 @@
                              Fill="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToBrush}}"/>
 
                     <TextBlock Grid.Column="1"
-                               Classes="primary"
                                VerticalAlignment="Center"
                                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                                TextAlignment="Center"
@@ -98,7 +97,6 @@
                   </Grid>
 
                   <TextBlock Grid.Column="1"
-                             Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
                              FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                              TextAlignment="Center"

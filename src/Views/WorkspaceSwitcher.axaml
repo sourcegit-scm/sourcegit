@@ -97,7 +97,6 @@
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="1"
                        Margin="8,0,0,0"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{Binding Name}"
                        IsHitTestVisible="False"

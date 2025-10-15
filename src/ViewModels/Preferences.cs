@@ -65,7 +65,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
-                    App.SetFonts(value, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                    App.SetFonts(value, _monospaceFontFamily);
             }
         }
 
@@ -75,17 +75,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, value, _onlyUseMonoFontInEditor);
-            }
-        }
-
-        public bool OnlyUseMonoFontInEditor
-        {
-            get => _onlyUseMonoFontInEditor;
-            set
-            {
-                if (SetProperty(ref _onlyUseMonoFontInEditor, value) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                    App.SetFonts(_defaultFontFamily, value);
             }
         }
 
@@ -721,7 +711,6 @@ namespace SourceGit.ViewModels
         private string _themeOverrides = string.Empty;
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
-        private bool _onlyUseMonoFontInEditor = true;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;

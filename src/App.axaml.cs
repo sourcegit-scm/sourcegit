@@ -262,7 +262,7 @@ namespace SourceGit
             }
         }
 
-        public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
+        public static void SetFonts(string defaultFont, string monospaceFont)
         {
             if (Current is not App app)
                 return;
@@ -294,19 +294,6 @@ namespace SourceGit
                     monospaceFont = $"{monospaceFont},{defaultFont}";
 
                 resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
-            }
-
-            if (onlyUseMonospaceFontInEditor)
-            {
-                if (string.IsNullOrEmpty(defaultFont))
-                    resDic.Add("Fonts.Primary", new FontFamily("fonts:Inter#Inter"));
-                else
-                    resDic.Add("Fonts.Primary", new FontFamily(defaultFont));
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(monospaceFont))
-                    resDic.Add("Fonts.Primary", new FontFamily(monospaceFont));
             }
 
             if (resDic.Count > 0)
@@ -383,7 +370,7 @@ namespace SourceGit
 
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
-            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
+            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily);
         }
 
         public override void OnFrameworkInitializationCompleted()

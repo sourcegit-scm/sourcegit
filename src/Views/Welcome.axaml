@@ -141,7 +141,7 @@
                             IsVisible="{Binding !IsRepository}"/>
 
               <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <TextBlock Classes="primary" VerticalAlignment="Center" Text="{Binding Name}"/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
                 <Path Margin="2,0,0,0"
                       Width="12" Height="12"
                       Data="{StaticResource Icons.Error}"
@@ -150,8 +150,7 @@
               </StackPanel>
 
               <Border Grid.Column="3" Margin="8,0" VerticalAlignment="Center" ClipToBounds="True">
-                <TextBlock Classes="primary"
-                           HorizontalAlignment="Right"
+                <TextBlock HorizontalAlignment="Right"
                            Foreground="{DynamicResource Brush.FG2}"
                            Text="{Binding Id, Converter={x:Static c:PathConverters.RelativeToHome}}"
                            IsVisible="{Binding IsRepository}"/>

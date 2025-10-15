@@ -45,7 +45,7 @@
 
       <TextBlock Grid.Column="3" Margin="48,0,0,0" Text="{DynamicResource Text.InteractiveRebase.On}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
       <Path Grid.Column="4" Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Commit}"/>
-      <TextBlock Grid.Column="5" Classes="primary" VerticalAlignment="Center" Text="{Binding On.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+      <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{Binding On.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
       <TextBlock Grid.Column="6" VerticalAlignment="Center" Text="{Binding On.Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
     </Grid>
 
@@ -115,7 +115,7 @@
                 <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnButtonActionClicked">
                   <StackPanel Orientation="Horizontal">
                     <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
-                    <TextBlock Classes="primary" Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
+                    <TextBlock Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
                   </StackPanel>
                 </Button>
 
@@ -131,7 +131,7 @@
 
                   <v:CommitSubjectPresenter Grid.Column="1"
                                             Margin="0,0,4,0"
-                                            FontFamily="{DynamicResource Fonts.Primary}"
+                                            FontFamily="{DynamicResource Fonts.Default}"
                                             CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                             InlineCodeBackground="{DynamicResource Brush.InlineCode}"
                                             Foreground="{DynamicResource Brush.FG1}"
@@ -150,20 +150,17 @@
 
                 <!-- Author Name -->
                 <Border Grid.Column="4" ClipToBounds="True">
-                  <TextBlock Classes="primary" Margin="6,0,12,0" Text="{Binding Commit.Author.Name}"/>
+                  <TextBlock Margin="6,0,12,0" Text="{Binding Commit.Author.Name}"/>
                 </Border>
 
                 <!-- Commit SHA -->
                 <Border Grid.Column="5" ClipToBounds="True">
-                  <TextBlock Classes="primary"
-                             Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
+                  <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
                 </Border>
 
                 <!-- Commit Time -->
                 <Border Grid.Column="6">
-                  <TextBlock Classes="primary"
-                             Margin="16,0,8,0"
-                             Text="{Binding Commit.CommitterTimeStr}"/>
+                  <TextBlock Margin="16,0,8,0" Text="{Binding Commit.CommitterTimeStr}"/>
                 </Border>
               </Grid>
             </DataTemplate>

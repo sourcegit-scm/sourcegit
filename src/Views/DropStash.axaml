@@ -22,7 +22,7 @@
               HorizontalAlignment="Left" VerticalAlignment="Center"
               Data="{StaticResource Icons.Stashes}"/>
 
-        <TextBlock Grid.Column="1" VerticalAlignment="Center" Classes="primary" Text="{Binding Stash.Name}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Stash.Name}" Foreground="DarkOrange"/>
         <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Stash.Subject}" TextTrimming="CharacterEllipsis" Margin="4,0,0,0"/>
       </Grid>
     </Grid>

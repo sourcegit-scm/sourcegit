@@ -119,7 +119,6 @@
                                          IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
                 <TextBlock Grid.Column="2"
-                           Classes="primary"
                            Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
@@ -233,7 +232,7 @@
               </ToolTip.Tip>
               <Grid ColumnDefinitions="16,*,Auto" Margin="8,0,0,0" VerticalAlignment="Center">
                 <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
-                <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" TextTrimming="CharacterEllipsis"/>
                 <Path Grid.Column="2"
                       Width="8" Height="8"
                       Margin="8,0,12,0"

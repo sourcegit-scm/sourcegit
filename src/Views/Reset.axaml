@@ -28,7 +28,7 @@
                  Text="{DynamicResource Text.Reset.MoveTo}"/>
       <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
         <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Classes="primary" Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="1" Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
         <TextBlock Grid.Column="2" Text="{Binding To.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
       </Grid>
 

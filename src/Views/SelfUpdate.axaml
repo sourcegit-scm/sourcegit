@@ -47,7 +47,7 @@
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
                 <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Available}"/>
                 <Border Margin="4,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
-                  <TextBlock Classes="primary" Margin="8,0" Text="{Binding TagName}" FontSize="12" Foreground="White"/>
+                  <TextBlock Margin="8,0" Text="{Binding TagName}" FontSize="12" Foreground="White"/>
                 </Border>
               </StackPanel>
 

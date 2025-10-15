@@ -88,7 +88,6 @@
                              IsVisible="{Binding !IsComplete}"/>
 
               <TextBlock Grid.Column="1"
-                         Classes="primary"
                          Margin="4,0,0,0"
                          Text="{Binding Name}"
                          VerticalAlignment="Center"
@@ -100,7 +99,6 @@
                          Text="{Binding StartTime, StringFormat=HH:mm:ss}"/>
 
               <v:CommandLogTime Grid.Column="3"
-                                Classes="primary"
                                 Margin="4,0"
                                 Foreground="{DynamicResource Brush.FG2}"
                                 HorizontalAlignment="Right" VerticalAlignment="Center"/>

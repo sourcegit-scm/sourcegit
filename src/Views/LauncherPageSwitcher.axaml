@@ -97,13 +97,11 @@
                   IsVisible="{Binding !Node.IsRepository}"
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{Binding Node.Name}"
                        IsVisible="{Binding Node.IsRepository}"
                        IsHitTestVisible="False"/>
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                        IsVisible="{Binding !Node.IsRepository}"

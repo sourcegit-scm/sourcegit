@@ -17,7 +17,7 @@
                  Text="{DynamicResource Text.RemoveWorktree.Target}"/>
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,*">
         <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Worktree}"/>
-        <TextBlock Grid.Column="1" Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+        <TextBlock Grid.Column="1" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
           <Run Text="{Binding Target.Name}"/>
           <Run Text="{Binding Target.RelativePath}" Foreground="{DynamicResource Brush.FG2}"/>
         </TextBlock>

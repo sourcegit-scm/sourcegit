@@ -14,7 +14,7 @@
         <Path Width="64" Height="64" Data="{StaticResource Icons.Error}" Fill="{DynamicResource Brush.FG2}"/>
         <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-          <TextBlock Classes="primary" Text="{Binding Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
+          <TextBlock Text="{Binding Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
       </StackPanel>
     </DataTemplate>
@@ -39,11 +39,11 @@
 
         <StackPanel Grid.Row="1" Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
           <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{Binding ImageType}" Margin="8,0" FontSize="10" Foreground="White"/>
+            <TextBlock Text="{Binding ImageType}" Margin="8,0" FontSize="10" Foreground="White"/>
           </Border>
 
-          <TextBlock Classes="primary" Text="{Binding ImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Classes="primary" Text="{Binding FileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+          <TextBlock Text="{Binding ImageSize}" Margin="8,0,0,0"/>
+          <TextBlock Text="{Binding FileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
         </StackPanel>
       </Grid>
     </DataTemplate>
@@ -54,7 +54,7 @@
         <Path Width="64" Height="64" Margin="0,24,0,0" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
         <SelectableTextBlock Margin="0,16,0,0" Text="{Binding Object.Oid}" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-          <TextBlock Classes="primary" Text="{Binding Object.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
+          <TextBlock Text="{Binding Object.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
       </StackPanel>
     </DataTemplate>
