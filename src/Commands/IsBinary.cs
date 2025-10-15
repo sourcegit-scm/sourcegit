@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,13 +12,14 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff {Models.Commit.EmptyTreeSHA1} {commit} --numstat -- \"{path}\"";
+            Args = $"diff {Models.Commit.EmptyTreeSHA1} {commit} --numstat -- {path.Quoted()}";
             RaiseError = false;
         }
 
-        public bool Result()
+        public async Task<bool> GetResultAsync()
         {
-            return REG_TEST().IsMatch(ReadToEnd().StdOut);
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return REG_TEST().IsMatch(rs.StdOut.Trim());
         }
     }
 }

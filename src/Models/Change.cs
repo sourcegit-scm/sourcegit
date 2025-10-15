@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SourceGit.Models
+﻿namespace SourceGit.Models
 {
     public enum ChangeViewMode
     {
@@ -64,20 +62,13 @@ namespace SourceGit.Models
 
             if (index == ChangeState.Renamed || workTree == ChangeState.Renamed)
             {
-                var idx = Path.IndexOf('\t', StringComparison.Ordinal);
-                if (idx >= 0)
+                var parts = Path.Split('\t', 2);
+                if (parts.Length < 2)
+                    parts = Path.Split(" -> ", 2);
+                if (parts.Length == 2)
                 {
-                    OriginalPath = Path.Substring(0, idx);
-                    Path = Path.Substring(idx + 1);
-                }
-                else
-                {
-                    idx = Path.IndexOf(" -> ", StringComparison.Ordinal);
-                    if (idx > 0)
-                    {
-                        OriginalPath = Path.Substring(0, idx);
-                        Path = Path.Substring(idx + 4);
-                    }
+                    OriginalPath = parts[0];
+                    Path = parts[1];
                 }
             }
 

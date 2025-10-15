@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
@@ -7,6 +8,55 @@ namespace SourceGit.Models
         Repository,
         Commit,
         Branch,
+        Tag,
+        Remote,
+    }
+
+    public enum CustomActionControlType
+    {
+        TextBox = 0,
+        PathSelector,
+        CheckBox,
+        ComboBox,
+    }
+
+    public class CustomActionControl : ObservableObject
+    {
+        public CustomActionControlType Type
+        {
+            get => _type;
+            set => SetProperty(ref _type, value);
+        }
+
+        public string Label
+        {
+            get => _label;
+            set => SetProperty(ref _label, value);
+        }
+
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        public string StringValue
+        {
+            get => _stringValue;
+            set => SetProperty(ref _stringValue, value);
+        }
+
+        public bool BoolValue
+        {
+            get => _boolValue;
+            set => SetProperty(ref _boolValue, value);
+        }
+
+        private CustomActionControlType _type = CustomActionControlType.TextBox;
+        private string _label = string.Empty;
+        private string _description = string.Empty;
+        private string _stringValue = string.Empty;
+        private bool _boolValue = false;
     }
 
     public class CustomAction : ObservableObject
@@ -34,6 +84,12 @@ namespace SourceGit.Models
             get => _arguments;
             set => SetProperty(ref _arguments, value);
         }
+
+        public AvaloniaList<CustomActionControl> Controls
+        {
+            get;
+            set;
+        } = [];
 
         public bool WaitForExit
         {

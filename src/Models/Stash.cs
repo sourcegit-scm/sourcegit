@@ -11,6 +11,23 @@ namespace SourceGit.Models
         public ulong Time { get; set; } = 0;
         public string Message { get; set; } = "";
 
-        public string TimeStr => DateTime.UnixEpoch.AddSeconds(Time).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
+        public string Subject
+        {
+            get
+            {
+                return Message.Split('\n', 2)[0].Trim();
+            }
+        }
+
+        public string TimeStr
+        {
+            get
+            {
+                return DateTime.UnixEpoch
+                    .AddSeconds(Time)
+                    .ToLocalTime()
+                    .ToString(DateTimeFormat.Active.DateTime);
+            }
+        }
     }
 }

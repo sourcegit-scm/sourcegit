@@ -1,6 +1,4 @@
 namespace SourceGit.Models
 {
-    public class Null
-    {
-    }
+    public class Null;
 }

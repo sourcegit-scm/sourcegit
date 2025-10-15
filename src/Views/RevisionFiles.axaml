@@ -88,9 +88,9 @@
                     <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
                       <StackPanel Orientation="Horizontal">
                         <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-                        <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                        <TextBlock Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                       </StackPanel>
-                      <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                      <TextBlock FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
                     </StackPanel>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -119,10 +119,9 @@
                   Height="26"
                   BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
                   IsVisible="{Binding ViewRevisionFilePath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-            <Grid ColumnDefinitions="Auto,*,Auto">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
               <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="1"
-                         Classes="primary"
                          Margin="4,0,0,0"
                          Text="{Binding ViewRevisionFilePath}"
                          FontSize="11"
@@ -140,8 +139,25 @@
                            Converter="{x:Static c:ObjectConverters.IsTypeOf}"
                            ConverterParameter="{x:Type m:RevisionTextFile}"/>
                 </ToggleButton.IsVisible>
-                <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+                <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,2,0,0"/>
               </ToggleButton>
+
+              <Button Grid.Column="3"
+                      Classes="icon_button"
+                      Width="28"
+                      Background="Transparent"
+                      Click="OnOpenFileWithDefaultEditor"
+                      IsVisible="{Binding CanOpenRevisionFileWithDefaultEditor, Mode=OneWay}"
+                      HotKey="{OnPlatform Ctrl+O, macOS=⌘+O}">
+                <ToolTip.Tip>
+                  <TextBlock>
+                    <Run Text="{DynamicResource Text.OpenWith}"/>
+                    <Run Text=" "/>
+                    <Run Text="{OnPlatform Ctrl+O, macOS=⌘+O}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                  </TextBlock>
+                </ToolTip.Tip>
+                <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+              </Button>
             </Grid>
           </Border>
 

@@ -28,21 +28,20 @@ namespace SourceGit.ViewModels
             SelectedMode = Models.ResetMode.Supported[1];
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Reset current branch to {To.SHA} ...";
 
             var log = _repo.CreateLog($"Reset HEAD to '{To.SHA}'");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Reset(_repo.FullPath, To.SHA, SelectedMode.Arg).Use(log).Exec();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.Reset(_repo.FullPath, To.SHA, SelectedMode.Arg)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo = null;

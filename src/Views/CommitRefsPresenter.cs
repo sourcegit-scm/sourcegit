@@ -17,6 +17,7 @@ namespace SourceGit.Views
             public IBrush Brush { get; set; } = null;
             public bool IsHead { get; set; } = false;
             public double Width { get; set; } = 0.0;
+            public Models.Decorator Decorator { get; set; } = null;
         }
 
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
@@ -93,6 +94,19 @@ namespace SourceGit.Views
                 ShowTagsProperty);
         }
 
+        public Models.Decorator DecoratorAt(Point point)
+        {
+            var x = 0.0;
+            foreach (var item in _items)
+            {
+                x += item.Width;
+                if (point.X < x)
+                    return item.Decorator;
+            }
+
+            return null;
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_items.Count == 0)
@@ -160,19 +174,17 @@ namespace SourceGit.Views
         {
             _items.Clear();
 
-            var commit = DataContext as Models.Commit;
-            if (commit == null)
+            if (DataContext is not Models.Commit commit)
                 return new Size(0, 0);
 
             var refs = commit.Decorators;
-            if (refs != null && refs.Count > 0)
+            if (refs is { Count: > 0 })
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
-                var normalBG = UseGraphColor ? commit.Brush : Brushes.Gray;
+                var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
                 var labelSize = FontSize;
-                var requiredWidth = 0.0;
                 var requiredHeight = 16.0;
                 var x = 0.0;
                 var allowWrap = AllowWrap;
@@ -183,8 +195,7 @@ namespace SourceGit.Views
                     if (!showTags && decorator.Type == Models.DecoratorType.Tag)
                         continue;
 
-                    var isHead = decorator.Type == Models.DecoratorType.CurrentBranchHead ||
-                        decorator.Type == Models.DecoratorType.CurrentCommitHead;
+                    var isHead = decorator.Type is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead;
 
                     var label = new FormattedText(
                         decorator.Name,
@@ -198,7 +209,8 @@ namespace SourceGit.Views
                     {
                         Label = label,
                         Brush = normalBG,
-                        IsHead = isHead
+                        IsHead = isHead,
+                        Decorator = decorator,
                     };
 
                     StreamGeometry geo;
@@ -245,11 +257,9 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (allowWrap && requiredHeight > 16.0)
-                    requiredWidth = availableSize.Width;
-                else
-                    requiredWidth = x + 2;
-
+                var requiredWidth = allowWrap && requiredHeight > 16.0
+                    ? availableSize.Width
+                    : x + 2;
                 InvalidateVisual();
                 return new Size(requiredWidth, requiredHeight);
             }

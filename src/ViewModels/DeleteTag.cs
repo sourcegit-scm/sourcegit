@@ -22,33 +22,30 @@ namespace SourceGit.ViewModels
             Target = tag;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Deleting tag '{Target.Name}' ...";
 
             var remotes = PushToRemotes ? _repo.Remotes : [];
             var log = _repo.CreateLog("Delete Tag");
             Use(log);
 
-            return Task.Run(() =>
+            var succ = await new Commands.Tag(_repo.FullPath, Target.Name)
+                .Use(log)
+                .DeleteAsync();
+
+            if (succ)
             {
-                var succ = Commands.Tag.Delete(_repo.FullPath, Target.Name, log);
-                if (succ)
-                {
-                    foreach (var r in remotes)
-                        new Commands.Push(_repo.FullPath, r.Name, $"refs/tags/{Target.Name}", true).Use(log).Exec();
-                }
+                foreach (var r in remotes)
+                    await new Commands.Push(_repo.FullPath, r.Name, $"refs/tags/{Target.Name}", true)
+                        .Use(log)
+                        .RunAsync();
+            }
 
-                log.Complete();
-
-                CallUIThread(() =>
-                {
-                    _repo.MarkTagsDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return succ;
-            });
+            log.Complete();
+            _repo.MarkTagsDirtyManually();
+            return succ;
         }
 
         private readonly Repository _repo = null;

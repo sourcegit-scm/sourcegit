@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
@@ -11,24 +12,43 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Stash.Title}"/>
-    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,Auto,32,Auto,Auto" ColumnDefinitions="120,*">
+    <Grid Margin="8,20,0,0" RowDefinitions="32,Auto,Auto,Auto,Auto" ColumnDefinitions="100,356">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"
                  Margin="8,0"
+                 Text="{DynamicResource Text.Stash.Mode}"/>
+      <ComboBox Grid.Row="0" Grid.Column="1"
+                MinHeight="28"
+                Padding="8,0"
+                ItemsSource="{Binding Source={x:Static m:DealWithChangesAfterStashing.Supported}}"
+                SelectedIndex="{Binding ChangesAfterStashing, Mode=TwoWay}"
+                HorizontalAlignment="Stretch">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="m:DealWithChangesAfterStashing">
+            <Grid Height="20" ColumnDefinitions="Auto,*">
+              <TextBlock Grid.Column="0" Text="{Binding Label}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top"
+                 Margin="0,8,8,0"
                  Text="{DynamicResource Text.Stash.Message}"/>
-      <TextBox Grid.Row="0" Grid.Column="1"
-               Height="26"
+      <TextBox Grid.Row="1" Grid.Column="1"
+               Height="100"
+               Margin="0,4,0,0"
                CornerRadius="3"
                Text="{Binding Message, Mode=TwoWay}"
                Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
-
-      <CheckBox Grid.Row="1" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Stash.IncludeUntracked}"
-                IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"
-                IsVisible="{Binding !HasSelectedFiles}"
-                ToolTip.Tip="--include-untracked"/>
+               AcceptsReturn="True"
+               AcceptsTab="True"
+               VerticalContentAlignment="Top"
+               Padding="4"
+               v:AutoFocusBehaviour.IsEnabled="True"
+               Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Height="32"
@@ -39,17 +59,19 @@
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Height="32"
-                Content="{DynamicResource Text.Stash.KeepIndex}"
-                IsChecked="{Binding KeepIndex, Mode=TwoWay}"
-                ToolTip.Tip="--keep-index"/>
+                Content="{DynamicResource Text.Stash.IncludeUntracked}"
+                IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"
+                ToolTip.Tip="--include-untracked">
+        <CheckBox.IsVisible>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="HasSelectedFiles" Converter="{x:Static BoolConverters.Not}"/>
+            <Binding Path="OnlyStaged" Converter="{x:Static BoolConverters.Not}"/>
+          </MultiBinding>
+        </CheckBox.IsVisible>
+      </CheckBox>
 
-      <CheckBox Grid.Row="4" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Stash.AutoRestore}"
-                IsChecked="{Binding AutoRestore, Mode=TwoWay}"
-                ToolTip.Tip="{DynamicResource Text.Stash.AutoRestore.Tip}"/>
-
-      <TextBlock Grid.Row="5" Grid.Column="1"
+      <TextBlock Grid.Row="4" Grid.Column="1"
+                 Classes="small"
                  Margin="0,4,0,0"
                  Text="{DynamicResource Text.Stash.TipForSelectedFiles}"
                  TextWrapping="Wrap"

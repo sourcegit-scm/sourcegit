@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -11,9 +10,9 @@ namespace SourceGit.ViewModels
     {
         public bool HasValidUserName
         {
-            get;
-            private set;
-        } = false;
+            get => _hasValidUsername;
+            private set => SetProperty(ref _hasValidUsername, value);
+        }
 
         public bool IsLoading
         {
@@ -41,45 +40,36 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _remote = remote;
-            _userName = new Commands.Config(repo.FullPath).Get("user.name");
 
-            HasValidUserName = !string.IsNullOrEmpty(_userName);
-
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                _cachedLocks = new Commands.LFS(_repo.FullPath).Locks(_remote);
-                Dispatcher.UIThread.Invoke(() =>
+                _userName = await new Commands.Config(repo.FullPath).GetAsync("user.name").ConfigureAwait(false);
+                _cachedLocks = await new Commands.LFS(_repo.FullPath).GetLocksAsync(_remote).ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
                 {
                     UpdateVisibleLocks();
                     IsLoading = false;
+                    HasValidUserName = !string.IsNullOrEmpty(_userName);
                 });
             });
         }
 
-        public void Unlock(Models.LFSLock lfsLock, bool force)
+        public async Task UnlockAsync(Models.LFSLock lfsLock, bool force)
         {
             if (_isLoading)
                 return;
 
             IsLoading = true;
 
-            var log = _repo.CreateLog("Unlock LFS File");
-            Task.Run(() =>
+            var succ = await _repo.UnlockLFSFileAsync(_remote, lfsLock.File, force, false);
+            if (succ)
             {
-                var succ = new Commands.LFS(_repo.FullPath).Unlock(_remote, lfsLock.ID, force, log);
-                log.Complete();
+                _cachedLocks.Remove(lfsLock);
+                UpdateVisibleLocks();
+            }
 
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    if (succ)
-                    {
-                        _cachedLocks.Remove(lfsLock);
-                        UpdateVisibleLocks();
-                    }
-
-                    IsLoading = false;
-                });
-            });
+            IsLoading = false;
         }
 
         private void UpdateVisibleLocks()
@@ -88,14 +78,13 @@ namespace SourceGit.ViewModels
 
             if (!_showOnlyMyLocks)
             {
-                foreach (var lfsLock in _cachedLocks)
-                    visible.Add(lfsLock);
+                visible.AddRange(_cachedLocks);
             }
             else
             {
                 foreach (var lfsLock in _cachedLocks)
                 {
-                    if (lfsLock.User == _userName)
+                    if (lfsLock.User.Equals(_userName, StringComparison.Ordinal))
                         visible.Add(lfsLock);
                 }
             }
@@ -110,5 +99,6 @@ namespace SourceGit.ViewModels
         private List<Models.LFSLock> _visibleLocks = [];
         private bool _showOnlyMyLocks = false;
         private string _userName;
+        private bool _hasValidUsername;
     }
 }

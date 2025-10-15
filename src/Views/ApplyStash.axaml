@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ApplyStash"
              x:DataType="vm:ApplyStash">
@@ -16,14 +15,16 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.ApplyStash.Stash}"/>
-      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-        <Path Width="12" Height="12" Margin="2,0,8,0"
+      <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
+        <Path Grid.Column="0"
+              Width="12" Height="12"
+              Margin="2,0,8,0"
               HorizontalAlignment="Left" VerticalAlignment="Center"
               Data="{StaticResource Icons.Stashes}"/>
 
-        <TextBlock VerticalAlignment="Center" Classes="primary" Text="{Binding Stash.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
-        <TextBlock VerticalAlignment="Center" Text="{Binding Stash.Message}" Margin="8,0,0,0"/>
-      </StackPanel>
+        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Stash.Name}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Stash.Subject}" TextTrimming="CharacterEllipsis" Margin="4,0,0,0"/>
+      </Grid>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
                 Content="{DynamicResource Text.ApplyStash.RestoreIndex}"

@@ -1,31 +1,30 @@
 ﻿using System.Text;
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class GitFlow
     {
-        public static bool Init(string repo, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
+        public static async Task<bool> InitAsync(string repo, string master, string develop, string feature, string release, string hotfix, string version, Models.ICommandLog log)
         {
             var config = new Config(repo);
-            config.Set("gitflow.branch.master", master);
-            config.Set("gitflow.branch.develop", develop);
-            config.Set("gitflow.prefix.feature", feature);
-            config.Set("gitflow.prefix.bugfix", "bugfix/");
-            config.Set("gitflow.prefix.release", release);
-            config.Set("gitflow.prefix.hotfix", hotfix);
-            config.Set("gitflow.prefix.support", "support/");
-            config.Set("gitflow.prefix.versiontag", version, true);
+            await config.SetAsync("gitflow.branch.master", master).ConfigureAwait(false);
+            await config.SetAsync("gitflow.branch.develop", develop).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.feature", feature).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.bugfix", "bugfix/").ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.release", release).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.hotfix", hotfix).ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.support", "support/").ConfigureAwait(false);
+            await config.SetAsync("gitflow.prefix.versiontag", version, true).ConfigureAwait(false);
 
             var init = new Command();
             init.WorkingDirectory = repo;
             init.Context = repo;
             init.Args = "flow init -d";
-            init.Log = log;
-            return init.Exec();
+            return await init.Use(log).ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool Start(string repo, Models.GitFlowBranchType type, string name, Models.ICommandLog log)
+        public static async Task<bool> StartAsync(string repo, Models.GitFlowBranchType type, string name, Models.ICommandLog log)
         {
             var start = new Command();
             start.WorkingDirectory = repo;
@@ -43,15 +42,14 @@ namespace SourceGit.Commands
                     start.Args = $"flow hotfix start {name}";
                     break;
                 default:
-                    Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, "Bad git-flow branch type!!!"));
+                    App.RaiseException(repo, "Bad git-flow branch type!!!");
                     return false;
             }
 
-            start.Log = log;
-            return start.Exec();
+            return await start.Use(log).ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool Finish(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
+        public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
         {
             var builder = new StringBuilder();
             builder.Append("flow ");
@@ -68,7 +66,7 @@ namespace SourceGit.Commands
                     builder.Append("hotfix");
                     break;
                 default:
-                    Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, "Bad git-flow branch type!!!"));
+                    App.RaiseException(repo, "Bad git-flow branch type!!!");
                     return false;
             }
 
@@ -85,8 +83,7 @@ namespace SourceGit.Commands
             finish.WorkingDirectory = repo;
             finish.Context = repo;
             finish.Args = builder.ToString();
-            finish.Log = log;
-            return finish.Exec();
+            return await finish.Use(log).ExecAsync().ConfigureAwait(false);
         }
     }
 }

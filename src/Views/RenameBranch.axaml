@@ -12,7 +12,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.RenameBranch}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -26,20 +26,13 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.RenameBranch.Name}"/>
-      <TextBox Grid.Row="1" Grid.Column="1"
-               Height="26"
-               VerticalAlignment="Center"
-               CornerRadius="2"
-               Text="{Binding Name, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
-
-      <StackPanel Grid.Row="2" Grid.Column="1"
-                  Orientation="Horizontal"
-                  IsVisible="{Binding Name, Converter={x:Static c:StringConverters.ContainsSpaces}}">
-        <Path Width="10" Height="10" Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
-        <TextBlock Classes="small" Text="{DynamicResource Text.CreateBranch.Name.WarnSpace}" Margin="4,0,0,0"/>
-      </StackPanel>
+      <v:BranchOrTagNameTextBox Grid.Row="1" Grid.Column="1"
+                                Height="26"
+                                VerticalAlignment="Center"
+                                CornerRadius="2"
+                                Text="{Binding Name, Mode=TwoWay}"
+                                Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"
+                                v:AutoFocusBehaviour.IsEnabled="True"/>
     </Grid>
   </StackPanel>
 </UserControl>

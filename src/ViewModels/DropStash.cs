@@ -12,19 +12,21 @@ namespace SourceGit.ViewModels
             Stash = stash;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Dropping stash: {Stash.Name}";
 
             var log = _repo.CreateLog("Drop Stash");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Stash(_repo.FullPath).Use(log).Drop(Stash.Name);
-                log.Complete();
-                return true;
-            });
+            await new Commands.Stash(_repo.FullPath)
+                .Use(log)
+                .DropAsync(Stash.Name);
+
+            log.Complete();
+            _repo.MarkStashesDirtyManually();
+            return true;
         }
 
         private readonly Repository _repo;

@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -26,63 +27,68 @@ namespace SourceGit.Commands
             Context = repo;
 
             var based = string.IsNullOrEmpty(start) ? "-R" : start;
-            Args = $"diff --name-status {based} {end} -- \"{path}\"";
+            Args = $"diff --name-status {based} {end} -- {path.Quoted()}";
         }
 
-        public List<Models.Change> Result()
+        public async Task<List<Models.Change>> ReadAsync()
         {
-            var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                return _changes;
-
-            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-                ParseLine(line);
-
-            _changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
-            return _changes;
-        }
-
-        private void ParseLine(string line)
-        {
-            var match = REG_FORMAT().Match(line);
-            if (!match.Success)
+            var changes = new List<Models.Change>();
+            try
             {
-                match = REG_RENAME_FORMAT().Match(line);
-                if (match.Success)
+                using var proc = new Process();
+                proc.StartInfo = CreateGitStartInfo(true);
+                proc.Start();
+
+                while (await proc.StandardOutput.ReadLineAsync() is { } line)
                 {
-                    var renamed = new Models.Change() { Path = match.Groups[1].Value };
-                    renamed.Set(Models.ChangeState.Renamed);
-                    _changes.Add(renamed);
+                    var match = REG_FORMAT().Match(line);
+                    if (!match.Success)
+                    {
+                        match = REG_RENAME_FORMAT().Match(line);
+                        if (match.Success)
+                        {
+                            var renamed = new Models.Change() { Path = match.Groups[1].Value };
+                            renamed.Set(Models.ChangeState.Renamed);
+                            changes.Add(renamed);
+                        }
+
+                        continue;
+                    }
+
+                    var change = new Models.Change() { Path = match.Groups[2].Value };
+                    var status = match.Groups[1].Value;
+
+                    switch (status[0])
+                    {
+                        case 'M':
+                            change.Set(Models.ChangeState.Modified);
+                            changes.Add(change);
+                            break;
+                        case 'A':
+                            change.Set(Models.ChangeState.Added);
+                            changes.Add(change);
+                            break;
+                        case 'D':
+                            change.Set(Models.ChangeState.Deleted);
+                            changes.Add(change);
+                            break;
+                        case 'C':
+                            change.Set(Models.ChangeState.Copied);
+                            changes.Add(change);
+                            break;
+                    }
                 }
 
-                return;
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+
+                changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
             }
-
-            var change = new Models.Change() { Path = match.Groups[2].Value };
-            var status = match.Groups[1].Value;
-
-            switch (status[0])
+            catch
             {
-                case 'M':
-                    change.Set(Models.ChangeState.Modified);
-                    _changes.Add(change);
-                    break;
-                case 'A':
-                    change.Set(Models.ChangeState.Added);
-                    _changes.Add(change);
-                    break;
-                case 'D':
-                    change.Set(Models.ChangeState.Deleted);
-                    _changes.Add(change);
-                    break;
-                case 'C':
-                    change.Set(Models.ChangeState.Copied);
-                    _changes.Add(change);
-                    break;
+                //ignore changes;
             }
-        }
 
-        private readonly List<Models.Change> _changes = new List<Models.Change>();
+            return changes;
+        }
     }
 }

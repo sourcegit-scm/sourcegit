@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -18,6 +17,18 @@ namespace SourceGit.ViewModels
             set;
         } = 720;
 
+        public int LauncherPositionX
+        {
+            get;
+            set;
+        } = int.MinValue;
+
+        public int LauncherPositionY
+        {
+            get;
+            set;
+        } = int.MinValue;
+
         public WindowState LauncherWindowState
         {
             get;
@@ -28,12 +39,6 @@ namespace SourceGit.ViewModels
         {
             get => _repositorySidebarWidth;
             set => SetProperty(ref _repositorySidebarWidth, value);
-        }
-
-        public GridLength HistoriesAuthorColumnWidth
-        {
-            get => _historiesAuthorColumnWidth;
-            set => SetProperty(ref _historiesAuthorColumnWidth, value);
         }
 
         public GridLength WorkingCopyLeftWidth
@@ -60,11 +65,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commitDetailFilesLeftWidth, value);
         }
 
+        public DataGridLength AuthorColumnWidth
+        {
+            get => _authorColumnWidth;
+            set => SetProperty(ref _authorColumnWidth, value);
+        }
+
         private GridLength _repositorySidebarWidth = new GridLength(250, GridUnitType.Pixel);
-        private GridLength _historiesAuthorColumnWidth = new GridLength(120, GridUnitType.Pixel);
         private GridLength _workingCopyLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _stashesLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _commitDetailChangesLeftWidth = new GridLength(256, GridUnitType.Pixel);
         private GridLength _commitDetailFilesLeftWidth = new GridLength(256, GridUnitType.Pixel);
+        private DataGridLength _authorColumnWidth = new DataGridLength(120, DataGridLengthUnitType.Pixel, 120, 120);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class QueryRevisionByRefName : Command
     {
@@ -9,9 +11,19 @@
             Args = $"rev-parse {refname}";
         }
 
-        public string Result()
+        public string GetResult()
         {
-            var rs = ReadToEnd();
+            return Parse(ReadToEnd());
+        }
+
+        public async Task<string> GetResultAsync()
+        {
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return Parse(rs);
+        }
+
+        private string Parse(Result rs)
+        {
             if (rs.IsSuccess && !string.IsNullOrEmpty(rs.StdOut))
                 return rs.StdOut.Trim();
 

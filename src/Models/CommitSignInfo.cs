@@ -13,21 +13,13 @@ namespace SourceGit.Models
         {
             get
             {
-                switch (VerifyResult)
+                return VerifyResult switch
                 {
-                    case 'G':
-                    case 'U':
-                        return Brushes.Green;
-                    case 'X':
-                    case 'Y':
-                    case 'R':
-                        return Brushes.DarkOrange;
-                    case 'B':
-                    case 'E':
-                        return Brushes.Red;
-                    default:
-                        return Brushes.Transparent;
-                }
+                    'G' or 'U' => Brushes.Green,
+                    'X' or 'Y' or 'R' => Brushes.DarkOrange,
+                    'B' or 'E' => Brushes.Red,
+                    _ => Brushes.Transparent,
+                };
             }
         }
 
@@ -35,25 +27,17 @@ namespace SourceGit.Models
         {
             get
             {
-                switch (VerifyResult)
+                return VerifyResult switch
                 {
-                    case 'G':
-                        return "Good signature.";
-                    case 'U':
-                        return "Good signature with unknown validity.";
-                    case 'X':
-                        return "Good signature but has expired.";
-                    case 'Y':
-                        return "Good signature made by expired key.";
-                    case 'R':
-                        return "Good signature made by a revoked key.";
-                    case 'B':
-                        return "Bad signature.";
-                    case 'E':
-                        return "Signature cannot be checked.";
-                    default:
-                        return "No signature.";
-                }
+                    'G' => "Good signature.",
+                    'U' => "Good signature with unknown validity.",
+                    'X' => "Good signature but has expired.",
+                    'Y' => "Good signature made by expired key.",
+                    'R' => "Good signature made by a revoked key.",
+                    'B' => "Bad signature.",
+                    'E' => "Signature cannot be checked.",
+                    _ => "No signature.",
+                };
             }
         }
     }

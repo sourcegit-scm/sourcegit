@@ -14,17 +14,11 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
-        public bool EnableReflog
+        public HistoryShowFlags HistoryShowFlags
         {
             get;
             set;
-        } = false;
-
-        public bool EnableFirstParentInHistories
-        {
-            get;
-            set;
-        } = false;
+        } = HistoryShowFlags.None;
 
         public bool EnableTopoOrderInHistories
         {
@@ -63,6 +57,12 @@ namespace SourceGit.Models
         } = true;
 
         public bool EnableForceOnFetch
+        {
+            get;
+            set;
+        } = false;
+
+        public bool FetchAllRemotes
         {
             get;
             set;
@@ -134,12 +134,6 @@ namespace SourceGit.Models
             set;
         } = [];
 
-        public AvaloniaList<IssueTrackerRule> IssueTrackerRules
-        {
-            get;
-            set;
-        } = [];
-
         public AvaloniaList<CustomAction> CustomActions
         {
             get;
@@ -164,6 +158,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool NoVerifyOnCommit
+        {
+            get;
+            set;
+        } = false;
+
         public bool IncludeUntrackedWhenStash
         {
             get;
@@ -176,17 +176,11 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public bool KeepIndexWhenStash
+        public int ChangesAfterStashing
         {
             get;
             set;
-        } = false;
-
-        public bool AutoRestoreAfterStash
-        {
-            get;
-            set;
-        } = false;
+        } = 0;
 
         public string PreferredOpenAIService
         {
@@ -419,25 +413,6 @@ namespace SourceGit.Models
                 CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
 
             CommitMessages.Insert(0, message);
-        }
-
-        public IssueTrackerRule AddIssueTracker(string name, string regex, string url)
-        {
-            var rule = new IssueTrackerRule()
-            {
-                Name = name,
-                RegexString = regex,
-                URLTemplate = url,
-            };
-
-            IssueTrackerRules.Add(rule);
-            return rule;
-        }
-
-        public void RemoveIssueTracker(IssueTrackerRule rule)
-        {
-            if (rule != null)
-                IssueTrackerRules.Remove(rule);
         }
 
         public CustomAction AddNewCustomAction()

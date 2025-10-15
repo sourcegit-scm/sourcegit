@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Avalonia;
-using Avalonia.Media;
-
 namespace SourceGit.Models
 {
     public enum CommitSearchMethod
@@ -12,20 +9,13 @@ namespace SourceGit.Models
         ByAuthor,
         ByCommitter,
         ByMessage,
-        ByFile,
+        ByPath,
         ByContent,
     }
 
     public class Commit
     {
-        // As retrieved by: git mktree </dev/null
         public const string EmptyTreeSHA1 = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-
-        public static double OpacityForNotMerged
-        {
-            get;
-            set;
-        } = 0.65;
 
         public string SHA { get; set; } = string.Empty;
         public User Author { get; set; } = User.Invalid;
@@ -35,22 +25,40 @@ namespace SourceGit.Models
         public string Subject { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new();
         public List<Decorator> Decorators { get; set; } = new();
-        public bool HasDecorators => Decorators.Count > 0;
+
+        public bool IsMerged { get; set; } = false;
+        public int Color { get; set; } = 0;
+        public double LeftMargin { get; set; } = 0;
 
         public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
         public string CommitterTimeStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
         public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
         public string CommitterTimeShortStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
 
-        public bool IsMerged { get; set; } = false;
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
+        public bool HasDecorators => Decorators.Count > 0;
 
-        public int Color { get; set; } = 0;
-        public double Opacity => IsMerged ? 1 : OpacityForNotMerged;
-        public FontWeight FontWeight => IsCurrentHead ? FontWeight.Bold : FontWeight.Regular;
-        public Thickness Margin { get; set; } = new(0);
-        public IBrush Brush => CommitGraph.Pens[Color].Brush;
+        public string GetFriendlyName()
+        {
+            var branchDecorator = Decorators.Find(x => x.Type is DecoratorType.LocalBranchHead or DecoratorType.RemoteBranchHead);
+            if (branchDecorator != null)
+                return branchDecorator.Name;
+
+            var tagDecorator = Decorators.Find(x => x.Type is DecoratorType.Tag);
+            if (tagDecorator != null)
+                return tagDecorator.Name;
+
+            return SHA[..10];
+        }
+
+        public void ParseParents(string data)
+        {
+            if (data.Length < 8)
+                return;
+
+            Parents.AddRange(data.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+        }
 
         public void ParseDecorators(string data)
         {
@@ -110,10 +118,10 @@ namespace SourceGit.Models
 
             Decorators.Sort((l, r) =>
             {
-                if (l.Type != r.Type)
-                    return (int)l.Type - (int)r.Type;
-                else
-                    return NumericSort.Compare(l.Name, r.Name);
+                var delta = (int)l.Type - (int)r.Type;
+                if (delta != 0)
+                    return delta;
+                return NumericSort.Compare(l.Name, r.Name);
             });
         }
     }

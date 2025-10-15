@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitDetail"
              x:DataType="vm:CommitDetail">
-  <TabControl SelectedIndex="{Binding ActivePageIndex, Mode=TwoWay}" Padding="4">
+  <TabControl SelectedIndex="{Binding ActiveTabIndex, Mode=TwoWay}" Padding="4">
     <!-- Information Page -->
     <TabItem>
       <TabItem.Header>
@@ -33,7 +33,8 @@
           <ListBox Background="Transparent"
                    Margin="64,0,8,4"
                    SelectionMode="Single"
-                   ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}">
+                   ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}"
+                   KeyDown="OnCommitListKeyDown">
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
                 <Setter Property="Padding" Value="0"/>
@@ -58,13 +59,13 @@
                       <Run Text="{Binding IndexDesc, Mode=OneWay}" Foreground="Gray"/>
                     </TextBlock>
                   </ToolTip.Tip>
-                  
+
                   <v:ChangeStatusIcon Grid.Column="0"
                                       Width="14" Height="14"
                                       HorizontalAlignment="Left"
                                       Margin="16,0,0,0"
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>

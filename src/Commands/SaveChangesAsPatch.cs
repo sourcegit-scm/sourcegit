@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class SaveChangesAsPatch
     {
-        public static bool ProcessLocalChanges(string repo, List<Models.Change> changes, bool isUnstaged, string saveTo)
+        public static async Task<bool> ProcessLocalChangesAsync(string repo, List<Models.Change> changes, bool isUnstaged, string saveTo)
         {
-            using (var sw = File.Create(saveTo))
+            await using (var sw = File.Create(saveTo))
             {
                 foreach (var change in changes)
                 {
-                    if (!ProcessSingleChange(repo, new Models.DiffOption(change, isUnstaged), sw))
+                    if (!await ProcessSingleChangeAsync(repo, new Models.DiffOption(change, isUnstaged), sw))
                         return false;
                 }
             }
@@ -23,13 +22,13 @@ namespace SourceGit.Commands
             return true;
         }
 
-        public static bool ProcessRevisionCompareChanges(string repo, List<Models.Change> changes, string baseRevision, string targetRevision, string saveTo)
+        public static async Task<bool> ProcessRevisionCompareChangesAsync(string repo, List<Models.Change> changes, string baseRevision, string targetRevision, string saveTo)
         {
-            using (var sw = File.Create(saveTo))
+            await using (var sw = File.Create(saveTo))
             {
                 foreach (var change in changes)
                 {
-                    if (!ProcessSingleChange(repo, new Models.DiffOption(baseRevision, targetRevision, change), sw))
+                    if (!await ProcessSingleChangeAsync(repo, new Models.DiffOption(baseRevision, targetRevision, change), sw))
                         return false;
                 }
             }
@@ -37,20 +36,20 @@ namespace SourceGit.Commands
             return true;
         }
 
-        public static bool ProcessStashChanges(string repo, List<Models.DiffOption> opts, string saveTo)
+        public static async Task<bool> ProcessStashChangesAsync(string repo, List<Models.DiffOption> opts, string saveTo)
         {
-            using (var sw = File.Create(saveTo))
+            await using (var sw = File.Create(saveTo))
             {
                 foreach (var opt in opts)
                 {
-                    if (!ProcessSingleChange(repo, opt, sw))
+                    if (!await ProcessSingleChangeAsync(repo, opt, sw))
                         return false;
                 }
             }
             return true;
         }
 
-        private static bool ProcessSingleChange(string repo, Models.DiffOption opt, FileStream writer)
+        private static async Task<bool> ProcessSingleChangeAsync(string repo, Models.DiffOption opt, FileStream writer)
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
@@ -63,21 +62,14 @@ namespace SourceGit.Commands
 
             try
             {
-                var proc = new Process() { StartInfo = starter };
-                proc.Start();
-                proc.StandardOutput.BaseStream.CopyTo(writer);
-                proc.WaitForExit();
-                var rs = proc.ExitCode == 0;
-                proc.Close();
-
-                return rs;
+                using var proc = Process.Start(starter)!;
+                await proc.StandardOutput.BaseStream.CopyToAsync(writer).ConfigureAwait(false);
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+                return proc.ExitCode == 0;
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.RaiseException(repo, "Save change to patch failed: " + e.Message);
-                });
+                App.RaiseException(repo, "Save change to patch failed: " + e.Message);
                 return false;
             }
         }

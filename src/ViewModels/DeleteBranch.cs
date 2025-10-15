@@ -39,37 +39,49 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Deleting branch...";
 
             var log = _repo.CreateLog("Delete Branch");
             Use(log);
 
-            return Task.Run(() =>
+            if (Target.IsLocal)
             {
-                if (Target.IsLocal)
-                {
-                    Commands.Branch.DeleteLocal(_repo.FullPath, Target.Name, log);
+                await new Commands.Branch(_repo.FullPath, Target.Name)
+                    .Use(log)
+                    .DeleteLocalAsync();
 
-                    if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
-                        Commands.Branch.DeleteRemote(_repo.FullPath, TrackingRemoteBranch.Remote, TrackingRemoteBranch.Name, log);
-                }
-                else
-                {
-                    Commands.Branch.DeleteRemote(_repo.FullPath, Target.Remote, Target.Name, log);
-                }
+                if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
+                    await DeleteRemoteBranchAsync(TrackingRemoteBranch, log);
+            }
+            else
+            {
+                await DeleteRemoteBranchAsync(Target, log);
+            }
 
-                log.Complete();
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
+            return true;
+        }
 
-                CallUIThread(() =>
-                {
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return true;
-            });
+        private async Task DeleteRemoteBranchAsync(Models.Branch branch, CommandLog log)
+        {
+            var exists = await new Commands.Remote(_repo.FullPath)
+                .HasBranchAsync(branch.Remote, branch.Name)
+                .ConfigureAwait(false);
+
+            if (exists)
+                await new Commands.Push(_repo.FullPath, branch.Remote, $"refs/heads/{branch.Name}", true)
+                    .Use(log)
+                    .RunAsync()
+                    .ConfigureAwait(false);
+            else
+                await new Commands.Branch(_repo.FullPath, branch.Name)
+                    .Use(log)
+                    .DeleteRemoteAsync(branch.Remote)
+                    .ConfigureAwait(false);
         }
 
         private readonly Repository _repo = null;

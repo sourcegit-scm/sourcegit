@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -13,15 +14,15 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"blame -t {revision} -- \"{file}\"";
+            Args = $"blame -t {revision} -- {file.Quoted()}";
             RaiseError = false;
 
             _result.File = file;
         }
 
-        public Models.BlameData Result()
+        public async Task<Models.BlameData> ReadAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return _result;
 
@@ -39,9 +40,7 @@ namespace SourceGit.Commands
                 foreach (var line in _result.LineInfos)
                 {
                     if (line.CommitSHA.Length > _minSHALen)
-                    {
                         line.CommitSHA = line.CommitSHA.Substring(0, _minSHALen);
-                    }
                 }
             }
 
@@ -51,7 +50,7 @@ namespace SourceGit.Commands
 
         private void ParseLine(string line)
         {
-            if (line.Contains('\0', StringComparison.Ordinal))
+            if (line.Contains('\0'))
             {
                 _result.IsBinary = true;
                 _result.LineInfos.Clear();

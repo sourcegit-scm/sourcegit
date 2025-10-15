@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -20,6 +19,11 @@ namespace SourceGit.Commands
                 Context = repo;
                 Args = $"diff --diff-algorithm=minimal {opt}";
             }
+
+            public async Task<Result> ReadAsync()
+            {
+                return await ReadToEndAsync().ConfigureAwait(false);
+            }
         }
 
         public GenerateCommitMessage(Models.OpenAIService service, string repo, List<Models.Change> changes, CancellationToken cancelToken, Action<string> onResponse)
@@ -31,7 +35,7 @@ namespace SourceGit.Commands
             _onResponse = onResponse;
         }
 
-        public void Exec()
+        public async Task ExecAsync()
         {
             try
             {
@@ -47,10 +51,10 @@ namespace SourceGit.Commands
                     responseBuilder.Append("- ");
                     summaryBuilder.Append("- ");
 
-                    var rs = new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadToEnd();
+                    var rs = await new GetDiffContent(_repo, new Models.DiffOption(change, false)).ReadAsync();
                     if (rs.IsSuccess)
                     {
-                        _service.Chat(
+                        await _service.ChatAsync(
                             _service.AnalyzeDiffPrompt,
                             $"Here is the `git diff` output: {rs.StdOut}",
                             _cancelToken,
@@ -63,10 +67,8 @@ namespace SourceGit.Commands
                             });
                     }
 
-                    responseBuilder.Append("\n");
-                    summaryBuilder.Append("(file: ");
-                    summaryBuilder.Append(change.Path);
-                    summaryBuilder.Append(")\n");
+                    responseBuilder.AppendLine();
+                    summaryBuilder.Append("(file: ").Append(change.Path).AppendLine(")");
                 }
 
                 if (_cancelToken.IsCancellationRequested)
@@ -74,7 +76,7 @@ namespace SourceGit.Commands
 
                 var responseBody = responseBuilder.ToString();
                 var subjectBuilder = new StringBuilder();
-                _service.Chat(
+                await _service.ChatAsync(
                     _service.GenerateSubjectPrompt,
                     $"Here are the summaries changes:\n{summaryBuilder}",
                     _cancelToken,
@@ -86,7 +88,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(_repo, $"Failed to generate commit message: {e}"));
+                App.RaiseException(_repo, $"Failed to generate commit message: {e}");
             }
         }
 

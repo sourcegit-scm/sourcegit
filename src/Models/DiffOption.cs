@@ -29,6 +29,8 @@ namespace SourceGit.Models
         {
             _workingCopyChange = change;
             _isUnstaged = isUnstaged;
+            _path = change.Path;
+            _orgPath = change.OriginalPath;
 
             if (isUnstaged)
             {
@@ -37,12 +39,7 @@ namespace SourceGit.Models
                     case ChangeState.Added:
                     case ChangeState.Untracked:
                         _extra = "--no-index";
-                        _path = change.Path;
                         _orgPath = "/dev/null";
-                        break;
-                    default:
-                        _path = change.Path;
-                        _orgPath = change.OriginalPath;
                         break;
                 }
             }
@@ -52,9 +49,6 @@ namespace SourceGit.Models
                     _extra = $"--cached {change.DataForAmend.ParentSHA}";
                 else
                     _extra = "--cached";
-
-                _path = change.Path;
-                _orgPath = change.OriginalPath;
             }
         }
 
@@ -102,7 +96,6 @@ namespace SourceGit.Models
         /// <summary>
         ///     Converts to diff command arguments.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -113,8 +106,8 @@ namespace SourceGit.Models
 
             builder.Append("-- ");
             if (!string.IsNullOrEmpty(_orgPath))
-                builder.Append($"\"{_orgPath}\" ");
-            builder.Append($"\"{_path}\"");
+                builder.Append($"{_orgPath.Quoted()} ");
+            builder.Append(_path.Quoted());
 
             return builder.ToString();
         }

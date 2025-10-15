@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -16,10 +17,10 @@ namespace SourceGit.Commands
             Args = "submodule status";
         }
 
-        public List<string> Result()
+        public async Task<List<string>> GetResultAsync()
         {
             var submodules = new List<string>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
 
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,16 +12,16 @@ namespace SourceGit.Commands
             RaiseError = false;
         }
 
-        public string Result()
+        public async Task<string> GetResultAsync()
         {
-            var rs = ReadToEnd().StdOut;
-            if (string.IsNullOrEmpty(rs))
-                return null;
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            if (!rs.IsSuccess || string.IsNullOrEmpty(rs.StdOut))
+                return string.Empty;
 
-            rs = rs.Trim();
-            if (Path.IsPathRooted(rs))
-                return rs;
-            return Path.GetFullPath(Path.Combine(WorkingDirectory, rs));
+            var dir = rs.StdOut.Trim();
+            if (Path.IsPathRooted(dir))
+                return dir;
+            return Path.GetFullPath(Path.Combine(WorkingDirectory, dir));
         }
     }
 }

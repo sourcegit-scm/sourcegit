@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -24,7 +22,42 @@ namespace SourceGit.ViewModels
                 {
                     Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
                     OnPropertyChanged();
-                    LoadDiffContent();
+                    LoadContent();
+                }
+            }
+        }
+
+        public bool ShowEntireFile
+        {
+            get => Preferences.Instance.UseFullTextDiff;
+            set
+            {
+                if (value != Preferences.Instance.UseFullTextDiff)
+                {
+                    Preferences.Instance.UseFullTextDiff = value;
+                    OnPropertyChanged();
+
+                    if (Content is TextDiffContext ctx)
+                    {
+                        ctx.Data.File = string.Empty; // Just to ignore both previous `ScrollOffset` and `BlockNavigation`
+                        LoadContent();
+                    }
+                }
+            }
+        }
+
+        public bool UseSideBySide
+        {
+            get => Preferences.Instance.UseSideBySideDiff;
+            set
+            {
+                if (value != Preferences.Instance.UseSideBySideDiff)
+                {
+                    Preferences.Instance.UseSideBySideDiff = value;
+                    OnPropertyChanged();
+
+                    if (Content is TextDiffContext ctx && ctx.IsSideBySide() != value)
+                        Content = ctx.SwitchMode();
                 }
             }
         }
@@ -72,35 +105,47 @@ namespace SourceGit.ViewModels
             else
                 Title = $"{_option.OrgPath} → {_option.Path}";
 
-            LoadDiffContent();
-        }
-
-        public void ToggleFullTextDiff()
-        {
-            Preferences.Instance.UseFullTextDiff = !Preferences.Instance.UseFullTextDiff;
-            LoadDiffContent();
+            LoadContent();
         }
 
         public void IncrUnified()
         {
             UnifiedLines = _unifiedLines + 1;
-            LoadDiffContent();
+            LoadContent();
         }
 
         public void DecrUnified()
         {
             UnifiedLines = Math.Max(4, _unifiedLines - 1);
-            LoadDiffContent();
+            LoadContent();
         }
 
         public void OpenExternalMergeTool()
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, _option));
+            new Commands.DiffTool(_repo, _option).Open();
         }
 
-        private void LoadDiffContent()
+        public void CheckSettings()
+        {
+            if (Content is TextDiffContext ctx)
+            {
+                if ((ShowEntireFile && _info.UnifiedLines != _entireFileLine) ||
+                    (!ShowEntireFile && _info.UnifiedLines == _entireFileLine) ||
+                    (IgnoreWhitespace != _info.IgnoreWhitespace))
+                {
+                    LoadContent();
+                    return;
+                }
+
+                if (ctx.IsSideBySide() != UseSideBySide)
+                {
+                    ctx = ctx.SwitchMode();
+                    Content = ctx;
+                }
+            }
+        }
+
+        private void LoadContent()
         {
             if (_option.Path.EndsWith('/'))
             {
@@ -109,18 +154,22 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var numLines = Preferences.Instance.UseFullTextDiff ? 999999999 : _unifiedLines;
+                var numLines = Preferences.Instance.UseFullTextDiff ? _entireFileLine : _unifiedLines;
                 var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
-                var latest = new Commands.Diff(_repo, _option, numLines, ignoreWhitespace).Result();
+
+                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
                 var info = new Info(_option, numLines, ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
                 _info = info;
 
-                var rs = null as object;
+                object rs = null;
                 if (latest.TextDiff != null)
                 {
                     var count = latest.TextDiff.Lines.Count;
@@ -141,9 +190,9 @@ namespace SourceGit.ViewModels
 
                             var sha = line.Content.Substring(18);
                             if (line.Type == Models.TextDiffLineType.Added)
-                                submoduleDiff.New = QuerySubmoduleRevision(submoduleRoot, sha);
+                                submoduleDiff.New = await QuerySubmoduleRevisionAsync(submoduleRoot, sha).ConfigureAwait(false);
                             else if (line.Type == Models.TextDiffLineType.Deleted)
-                                submoduleDiff.Old = QuerySubmoduleRevision(submoduleRoot, sha);
+                                submoduleDiff.Old = await QuerySubmoduleRevisionAsync(submoduleRoot, sha).ConfigureAwait(false);
                         }
 
                         if (isSubmodule)
@@ -167,8 +216,8 @@ namespace SourceGit.ViewModels
 
                         if (_option.Revisions.Count == 2)
                         {
-                            var oldImage = ImageSource.FromRevision(_repo, _option.Revisions[0], oldPath, imgDecoder);
-                            var newImage = ImageSource.FromRevision(_repo, _option.Revisions[1], _option.Path, imgDecoder);
+                            var oldImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[0], oldPath, imgDecoder).ConfigureAwait(false);
+                            var newImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[1], _option.Path, imgDecoder).ConfigureAwait(false);
                             imgDiff.Old = oldImage.Bitmap;
                             imgDiff.OldFileSize = oldImage.Size;
                             imgDiff.New = newImage.Bitmap;
@@ -178,7 +227,7 @@ namespace SourceGit.ViewModels
                         {
                             if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
                             {
-                                var oldImage = ImageSource.FromRevision(_repo, "HEAD", oldPath, imgDecoder);
+                                var oldImage = await ImageSource.FromRevisionAsync(_repo, "HEAD", oldPath, imgDecoder).ConfigureAwait(false);
                                 imgDiff.Old = oldImage.Bitmap;
                                 imgDiff.OldFileSize = oldImage.Size;
                             }
@@ -186,7 +235,7 @@ namespace SourceGit.ViewModels
                             var fullPath = Path.Combine(_repo, _option.Path);
                             if (File.Exists(fullPath))
                             {
-                                var newImage = ImageSource.FromFile(fullPath, imgDecoder);
+                                var newImage = await ImageSource.FromFileAsync(fullPath, imgDecoder).ConfigureAwait(false);
                                 imgDiff.New = newImage.Bitmap;
                                 imgDiff.NewFileSize = newImage.Size;
                             }
@@ -199,13 +248,13 @@ namespace SourceGit.ViewModels
                         var binaryDiff = new Models.BinaryDiff();
                         if (_option.Revisions.Count == 2)
                         {
-                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).Result();
-                            binaryDiff.NewSize = new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).Result();
+                            binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).GetResultAsync().ConfigureAwait(false);
+                            binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
                         }
                         else
                         {
                             var fullPath = Path.Combine(_repo, _option.Path);
-                            binaryDiff.OldSize = new Commands.QueryFileSize(_repo, oldPath, "HEAD").Result();
+                            binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, "HEAD").GetResultAsync().ConfigureAwait(false);
                             binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                         }
                         rs = binaryDiff;
@@ -226,23 +275,33 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (_content is Models.TextDiff old && rs is Models.TextDiff cur && old.File == cur.File)
-                        cur.ScrollOffset = old.ScrollOffset;
-
                     FileModeChange = latest.FileModeChange;
-                    Content = rs;
-                    IsTextDiff = rs is Models.TextDiff;
+
+                    if (rs is Models.TextDiff cur)
+                    {
+                        IsTextDiff = true;
+
+                        if (Preferences.Instance.UseSideBySideDiff)
+                            Content = new TwoSideTextDiff(cur, _content as TwoSideTextDiff);
+                        else
+                            Content = new CombinedTextDiff(cur, _content as CombinedTextDiff);
+                    }
+                    else
+                    {
+                        IsTextDiff = false;
+                        Content = rs;
+                    }
                 });
             });
         }
 
-        private Models.RevisionSubmodule QuerySubmoduleRevision(string repo, string sha)
+        private async Task<Models.RevisionSubmodule> QuerySubmoduleRevisionAsync(string repo, string sha)
         {
-            var commit = new Commands.QuerySingleCommit(repo, sha).Result();
+            var commit = await new Commands.QuerySingleCommit(repo, sha).GetResultAsync().ConfigureAwait(false);
             if (commit == null)
                 return new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = sha } };
 
-            var body = new Commands.QueryCommitFullMessage(repo, sha).Result();
+            var body = await new Commands.QueryCommitFullMessage(repo, sha).GetResultAsync().ConfigureAwait(false);
             return new Models.RevisionSubmodule()
             {
                 Commit = commit,
@@ -277,6 +336,7 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private readonly int _entireFileLine = 999999999;
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
         private string _fileModeChange = string.Empty;

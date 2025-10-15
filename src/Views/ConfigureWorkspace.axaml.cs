@@ -9,6 +9,7 @@ namespace SourceGit.Views
     {
         public ConfigureWorkspace()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

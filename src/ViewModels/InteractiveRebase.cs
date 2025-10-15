@@ -11,12 +11,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public record InteractiveRebasePrefill(string SHA, Models.InteractiveRebaseAction Action);
+
     public class InteractiveRebaseItem : ObservableObject
     {
         public Models.Commit Commit
         {
             get;
-            private set;
         }
 
         public bool CanSquashOrFixup
@@ -52,11 +53,8 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _fullMessage, value))
                 {
                     var normalized = value.ReplaceLineEndings("\n");
-                    var idx = normalized.IndexOf("\n\n", StringComparison.Ordinal);
-                    if (idx > 0)
-                        Subject = normalized.Substring(0, idx).ReplaceLineEndings(" ");
-                    else
-                        Subject = value.ReplaceLineEndings(" ");
+                    var parts = normalized.Split("\n\n", 2);
+                    Subject = parts[0].ReplaceLineEndings(" ");
                 }
             }
         }
@@ -85,7 +83,17 @@ namespace SourceGit.ViewModels
         public Models.Commit On
         {
             get;
-            private set;
+        }
+
+        public bool AutoStash
+        {
+            get;
+            set;
+        } = true;
+
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
+        {
+            get => _repo.IssueTrackers;
         }
 
         public bool IsLoading
@@ -97,52 +105,76 @@ namespace SourceGit.ViewModels
         public AvaloniaList<InteractiveRebaseItem> Items
         {
             get;
-            private set;
         } = [];
 
-        public InteractiveRebaseItem SelectedItem
+        public InteractiveRebaseItem PreSelected
         {
-            get => _selectedItem;
-            set
-            {
-                if (SetProperty(ref _selectedItem, value))
-                    DetailContext.Commit = value?.Commit;
-            }
+            get => _preSelected;
+            private set => SetProperty(ref _preSelected, value);
         }
 
-        public CommitDetail DetailContext
+        public object Detail
         {
-            get;
-            private set;
+            get => _detail;
+            private set => SetProperty(ref _detail, value);
         }
 
-        public InteractiveRebase(Repository repo, Models.Branch current, Models.Commit on)
+        public InteractiveRebase(Repository repo, Models.Commit on, InteractiveRebasePrefill prefill = null)
         {
-            var repoPath = repo.FullPath;
             _repo = repo;
-
-            Current = current;
+            _commitDetail = new CommitDetail(repo, null);
+            Current = repo.CurrentBranch;
             On = on;
             IsLoading = true;
-            DetailContext = new CommitDetail(repo);
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var commits = new Commands.QueryCommitsForInteractiveRebase(repoPath, on.SHA).Result();
-                var list = new List<InteractiveRebaseItem>();
+                var commits = await new Commands.QueryCommitsForInteractiveRebase(_repo.FullPath, on.SHA)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
+                var list = new List<InteractiveRebaseItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
                     list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
                 }
 
-                Dispatcher.UIThread.Invoke(() =>
+                var selected = list.Count > 0 ? list[0] : null;
+                if (prefill != null)
+                {
+                    var item = list.Find(x => x.Commit.SHA.Equals(prefill.SHA, StringComparison.Ordinal));
+                    if (item != null)
+                    {
+                        item.Action = prefill.Action;
+                        selected = item;
+                    }
+                }
+
+                Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
+                    PreSelected = selected;
                     IsLoading = false;
                 });
             });
+        }
+
+        public void SelectCommits(List<InteractiveRebaseItem> items)
+        {
+            if (items.Count == 0)
+            {
+                Detail = null;
+            }
+            else if (items.Count == 1)
+            {
+                _commitDetail.Commit = items[0].Commit;
+                Detail = _commitDetail;
+            }
+            else
+            {
+                Detail = new Models.Count(items.Count);
+            }
         }
 
         public void MoveItemUp(InteractiveRebaseItem item)
@@ -153,7 +185,6 @@ namespace SourceGit.ViewModels
                 var prev = Items[idx - 1];
                 Items.RemoveAt(idx - 1);
                 Items.Insert(idx, prev);
-                SelectedItem = item;
                 UpdateItems();
             }
         }
@@ -166,28 +197,34 @@ namespace SourceGit.ViewModels
                 var next = Items[idx + 1];
                 Items.RemoveAt(idx + 1);
                 Items.Insert(idx, next);
-                SelectedItem = item;
                 UpdateItems();
             }
         }
 
-        public void ChangeAction(InteractiveRebaseItem item, Models.InteractiveRebaseAction action)
+        public void ChangeAction(List<InteractiveRebaseItem> selected, Models.InteractiveRebaseAction action)
         {
-            if (!item.CanSquashOrFixup)
+            if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
             {
-                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
-                    return;
+                foreach (var item in selected)
+                {
+                    if (item.CanSquashOrFixup)
+                        item.Action = action;
+                }
+            }
+            else
+            {
+                foreach (var item in selected)
+                    item.Action = action;
             }
 
-            item.Action = action;
             UpdateItems();
         }
 
-        public Task<bool> Start()
+        public async Task<bool> Start()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
-            var saveFile = Path.Combine(_repo.GitDir, "sourcegit_rebase_jobs.json");
+            var saveFile = Path.Combine(_repo.GitDir, "sourcegit.interactive_rebase");
             var collection = new Models.InteractiveRebaseJobCollection();
             collection.OrigHead = _repo.CurrentBranch.Head;
             collection.Onto = On.SHA;
@@ -201,16 +238,18 @@ namespace SourceGit.ViewModels
                     Message = item.FullMessage,
                 });
             }
-            File.WriteAllText(saveFile, JsonSerializer.Serialize(collection, JsonCodeGen.Default.InteractiveRebaseJobCollection));
+            await using (var stream = File.Create(saveFile))
+            {
+                await JsonSerializer.SerializeAsync(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
+            }
 
             var log = _repo.CreateLog("Interactive Rebase");
-            return Task.Run(() =>
-            {
-                var succ = new Commands.InteractiveRebase(_repo.FullPath, On.SHA).Use(log).Exec();
-                log.Complete();
-                Dispatcher.UIThread.Invoke(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.InteractiveRebase(_repo.FullPath, On.SHA, AutoStash)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            return succ;
         }
 
         private void UpdateItems()
@@ -236,6 +275,8 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private bool _isLoading = false;
-        private InteractiveRebaseItem _selectedItem = null;
+        private InteractiveRebaseItem _preSelected = null;
+        private object _detail = null;
+        private CommitDetail _commitDetail = null;
     }
 }

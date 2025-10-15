@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,12 +12,12 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree {revision} -l -- \"{file}\"";
+            Args = $"ls-tree {revision} -l -- {file.Quoted()}";
         }
 
-        public long Result()
+        public async Task<long> GetResultAsync()
         {
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (rs.IsSuccess)
             {
                 var match = REG_FORMAT().Match(rs.StdOut);

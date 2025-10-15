@@ -9,7 +9,7 @@
              x:DataType="vm:Repository">
   <Grid ColumnDefinitions="*,Auto,*">
     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
-      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
       </Button>
 
@@ -27,7 +27,7 @@
     </StackPanel>
 
     <StackPanel Grid.Column="1" Orientation="Horizontal">
-      <Button Classes="icon_button" Width="32" Click="Fetch" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}">
+      <Button Classes="icon_button" Width="32" Tapped="Fetch">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Fetch}"/>
@@ -37,8 +37,9 @@
 
         <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
       </Button>
+      <Button Width="0" Height="0" Click="FetchDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}">
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Pull}"/>
@@ -48,8 +49,9 @@
 
         <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
       </Button>
+      <Button Width="0" Height="0" Click="PullDirectlyByHotKey" IsVisible="False" IsEnabled="{Binding !IsBare}" HotKey="{OnPlatform Ctrl+Shift+Down, macOS=⌘+Shift+Down}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="Push" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}">
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Push">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Push}"/>
@@ -59,8 +61,9 @@
 
         <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
       </Button>
+      <Button Width="0" Height="0" Click="PushDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Shift+Up, macOS=⌘+Shift+Up}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Click="StashAll" IsVisible="{Binding !IsBare}">
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="StashAll" IsVisible="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Stash}"/>
@@ -92,7 +95,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="StartBisect" ToolTip.Tip="{DynamicResource Text.Bisect}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="StartBisect" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Bisect}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Bisect}"/>
       </Button>
 
@@ -100,7 +103,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.Action}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="Cleanup" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
         <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
       </Button>
     </StackPanel>
@@ -112,7 +115,7 @@
         <ContentControl.Content>
           <Binding Path="CurrentBranch">
             <Binding.TargetNullValue>
-              <TextBlock Classes="primary" Text="--"/>
+              <TextBlock Text="--"/>
             </Binding.TargetNullValue>
           </Binding>
         </ContentControl.Content>
@@ -120,7 +123,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
-              <TextBlock Classes="primary" Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
             </Border>
           </DataTemplate>
         </ContentControl.DataTemplates>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -14,30 +15,27 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)\"";
+            Args = "branch -l --all -v --format=\"%(refname)%00%(committerdate:unix)%00%(objectname)%00%(HEAD)%00%(upstream)%00%(upstream:trackshort)%00%(worktreepath)\"";
         }
 
-        public List<Models.Branch> Result(out int localBranchesCount)
+        public async Task<List<Models.Branch>> GetResultAsync()
         {
-            localBranchesCount = 0;
-
             var branches = new List<Models.Branch>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return branches;
 
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            var remoteHeads = new Dictionary<string, string>();
+            var mismatched = new HashSet<string>();
+            var remotes = new Dictionary<string, Models.Branch>();
             foreach (var line in lines)
             {
-                var b = ParseLine(line);
+                var b = ParseLine(line, mismatched);
                 if (b != null)
                 {
                     branches.Add(b);
                     if (!b.IsLocal)
-                        remoteHeads.Add(b.FullName, b.Head);
-                    else
-                        localBranchesCount++;
+                        remotes.Add(b.FullName, b);
                 }
             }
 
@@ -45,19 +43,16 @@ namespace SourceGit.Commands
             {
                 if (b.IsLocal && !string.IsNullOrEmpty(b.Upstream))
                 {
-                    if (remoteHeads.TryGetValue(b.Upstream, out var upstreamHead))
+                    if (remotes.TryGetValue(b.Upstream, out var upstream))
                     {
                         b.IsUpstreamGone = false;
 
-                        if (b.TrackStatus == null)
-                            b.TrackStatus = new QueryTrackStatus(WorkingDirectory, b.Head, upstreamHead).Result();
+                        if (mismatched.Contains(b.FullName))
+                            await new QueryTrackStatus(WorkingDirectory).GetResultAsync(b, upstream).ConfigureAwait(false);
                     }
                     else
                     {
                         b.IsUpstreamGone = true;
-
-                        if (b.TrackStatus == null)
-                            b.TrackStatus = new Models.BranchTrackStatus();
                     }
                 }
             }
@@ -65,10 +60,10 @@ namespace SourceGit.Commands
             return branches;
         }
 
-        private Models.Branch ParseLine(string line)
+        private Models.Branch ParseLine(string line, HashSet<string> mismatched)
         {
             var parts = line.Split('\0');
-            if (parts.Length != 6)
+            if (parts.Length != 7)
                 return null;
 
             var branch = new Models.Branch();
@@ -87,12 +82,12 @@ namespace SourceGit.Commands
             else if (refName.StartsWith(PREFIX_REMOTE, StringComparison.Ordinal))
             {
                 var name = refName.Substring(PREFIX_REMOTE.Length);
-                var shortNameIdx = name.IndexOf('/', StringComparison.Ordinal);
-                if (shortNameIdx < 0)
+                var nameParts = name.Split('/', 2);
+                if (nameParts.Length != 2)
                     return null;
 
-                branch.Remote = name.Substring(0, shortNameIdx);
-                branch.Name = name.Substring(branch.Remote.Length + 1);
+                branch.Remote = nameParts[0];
+                branch.Name = nameParts[1];
                 branch.IsLocal = false;
             }
             else
@@ -101,19 +96,22 @@ namespace SourceGit.Commands
                 branch.IsLocal = true;
             }
 
+            ulong.TryParse(parts[1], out var committerDate);
+
             branch.FullName = refName;
-            branch.CommitterDate = ulong.Parse(parts[1]);
+            branch.CommitterDate = committerDate;
             branch.Head = parts[2];
             branch.IsCurrent = parts[3] == "*";
             branch.Upstream = parts[4];
             branch.IsUpstreamGone = false;
 
-            if (!branch.IsLocal ||
-                string.IsNullOrEmpty(branch.Upstream) ||
-                string.IsNullOrEmpty(parts[5]) ||
-                parts[5].Equals("=", StringComparison.Ordinal))
-                branch.TrackStatus = new Models.BranchTrackStatus();
+            if (branch.IsLocal &&
+                !string.IsNullOrEmpty(branch.Upstream) &&
+                !string.IsNullOrEmpty(parts[5]) &&
+                !parts[5].Equals("=", StringComparison.Ordinal))
+                mismatched.Add(branch.FullName);
 
+            branch.WorktreePath = parts[6];
             return branch;
         }
     }

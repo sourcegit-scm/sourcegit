@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
@@ -74,11 +73,11 @@ namespace SourceGit.ViewModels
                 {
                     var text = await App.GetClipboardTextAsync();
                     if (Models.Remote.IsValidURL(text))
-                        Dispatcher.UIThread.Invoke(() => Remote = text);
+                        Dispatcher.UIThread.Post(() => Remote = text);
                 }
                 catch
                 {
-                    // ignore
+                    // Ignore
                 }
             });
         }
@@ -97,76 +96,74 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = "Clone ...";
 
             var log = new CommandLog("Clone");
             Use(log);
 
-            return Task.Run(() =>
+            var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs)
+                .Use(log)
+                .ExecAsync();
+            if (!succ)
+                return false;
+
+            var path = _parentFolder;
+            if (!string.IsNullOrEmpty(_local))
             {
-                var cmd = new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs).Use(log);
-                if (!cmd.Exec())
-                    return false;
+                path = Path.GetFullPath(Path.Combine(path, _local));
+            }
+            else
+            {
+                var name = Path.GetFileName(_remote)!;
+                if (name.EndsWith(".git", StringComparison.Ordinal))
+                    name = name.Substring(0, name.Length - 4);
+                else if (name.EndsWith(".bundle", StringComparison.Ordinal))
+                    name = name.Substring(0, name.Length - 7);
 
-                var path = _parentFolder;
-                if (!string.IsNullOrEmpty(_local))
+                path = Path.GetFullPath(Path.Combine(path, name));
+            }
+
+            if (!Directory.Exists(path))
+            {
+                App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
+                return false;
+            }
+
+            if (_useSSH && !string.IsNullOrEmpty(_sshKey))
+            {
+                await new Commands.Config(path)
+                    .Use(log)
+                    .SetAsync("remote.origin.sshkey", _sshKey);
+            }
+
+            if (InitAndUpdateSubmodules)
+            {
+                var submodules = await new Commands.QueryUpdatableSubmodules(path).GetResultAsync();
+                if (submodules.Count > 0)
+                    await new Commands.Submodule(path)
+                        .Use(log)
+                        .UpdateAsync(submodules, true, true);
+            }
+
+            log.Complete();
+
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+            var launcher = App.GetLauncher();
+            LauncherPage page = null;
+            foreach (var one in launcher.Pages)
+            {
+                if (one.Node.Id == _pageId)
                 {
-                    path = Path.GetFullPath(Path.Combine(path, _local));
+                    page = one;
+                    break;
                 }
-                else
-                {
-                    var name = Path.GetFileName(_remote)!;
-                    if (name.EndsWith(".git", StringComparison.Ordinal))
-                        name = name.Substring(0, name.Length - 4);
-                    path = Path.GetFullPath(Path.Combine(path, name));
-                }
+            }
 
-                if (!Directory.Exists(path))
-                {
-                    CallUIThread(() =>
-                    {
-                        App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
-                    });
-                    return false;
-                }
-
-                if (_useSSH && !string.IsNullOrEmpty(_sshKey))
-                {
-                    var config = new Commands.Config(path);
-                    config.Set("remote.origin.sshkey", _sshKey);
-                }
-
-                if (InitAndUpdateSubmodules)
-                {
-                    var submodules = new Commands.QueryUpdatableSubmodules(path).Result();
-                    if (submodules.Count > 0)
-                        new Commands.Submodule(path).Use(log).Update(submodules, true, true);
-                }
-
-                log.Complete();
-
-                CallUIThread(() =>
-                {
-                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
-                    var launcher = App.GetLauncher();
-                    var page = null as LauncherPage;
-                    foreach (var one in launcher.Pages)
-                    {
-                        if (one.Node.Id == _pageId)
-                        {
-                            page = one;
-                            break;
-                        }
-                    }
-
-                    Welcome.Instance.Refresh();
-                    launcher.OpenRepositoryInTab(node, page);
-                });
-
-                return true;
-            });
+            Welcome.Instance.Refresh();
+            launcher.OpenRepositoryInTab(node, page);
+            return true;
         }
 
         private string _pageId = string.Empty;

@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-
 using BitMiracle.LibTiff.Classic;
 using Pfim;
 
@@ -27,46 +27,39 @@ namespace SourceGit.ViewModels
         {
             var ext = (Path.GetExtension(file) ?? ".invalid_img").ToLower(CultureInfo.CurrentCulture);
 
-            switch (ext)
+            return ext switch
             {
-                case ".ico":
-                case ".bmp":
-                case ".gif":
-                case ".jpg":
-                case ".jpeg":
-                case ".png":
-                case ".webp":
-                    return Models.ImageDecoder.Builtin;
-                case ".tga":
-                case ".dds":
-                    return Models.ImageDecoder.Pfim;
-                case ".tif":
-                case ".tiff":
-                    return Models.ImageDecoder.Tiff;
-                default:
-                    return Models.ImageDecoder.None;
-            }
+                ".ico" or ".bmp" or ".gif" or ".jpg" or ".jpeg" or ".png" or ".webp" => Models.ImageDecoder.Builtin,
+                ".tga" or ".dds" => Models.ImageDecoder.Pfim,
+                ".tif" or ".tiff" => Models.ImageDecoder.Tiff,
+                _ => Models.ImageDecoder.None,
+            };
         }
 
-        public static ImageSource FromFile(string fullpath, Models.ImageDecoder decoder)
+        public static async Task<ImageSource> FromFileAsync(string fullpath, Models.ImageDecoder decoder)
         {
-            using (var stream = File.OpenRead(fullpath))
-                return LoadFromStream(stream, decoder);
+            await using var stream = File.OpenRead(fullpath);
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
-        public static ImageSource FromRevision(string repo, string revision, string file, Models.ImageDecoder decoder)
+        public static async Task<ImageSource> FromRevisionAsync(string repo, string revision, string file, Models.ImageDecoder decoder)
         {
-            var stream = Commands.QueryFileContent.Run(repo, revision, file);
-            return LoadFromStream(stream, decoder);
+            await using var stream = await Commands.QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
-        public static ImageSource FromLFSObject(string repo, Models.LFSObject lfs, Models.ImageDecoder decoder)
+        public static async Task<ImageSource> FromLFSObjectAsync(string repo, Models.LFSObject lfs, Models.ImageDecoder decoder)
         {
             if (string.IsNullOrEmpty(lfs.Oid) || lfs.Size == 0)
                 return new ImageSource(null, 0);
 
-            var stream = Commands.QueryFileContent.FromLFS(repo, lfs.Oid, lfs.Size);
-            return LoadFromStream(stream, decoder);
+            var commonDir = await new Commands.QueryGitCommonDir(repo).GetResultAsync().ConfigureAwait(false);
+            var localFile = Path.Combine(commonDir, "lfs", "objects", lfs.Oid.Substring(0, 2), lfs.Oid.Substring(2, 2), lfs.Oid);
+            if (File.Exists(localFile))
+                return await FromFileAsync(localFile, decoder).ConfigureAwait(false);
+
+            await using var stream = await Commands.QueryFileContent.FromLFSAsync(repo, lfs.Oid, lfs.Size).ConfigureAwait(false);
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 
         private static ImageSource LoadFromStream(Stream stream, Models.ImageDecoder decoder)
@@ -89,7 +82,7 @@ namespace SourceGit.ViewModels
                 catch (Exception e)
                 {
                     Console.Out.WriteLine(e.Message);
-                }                
+                }
             }
 
             return new ImageSource(null, 0);
@@ -154,7 +147,7 @@ namespace SourceGit.ViewModels
                 return new ImageSource(bitmap, size);
             }
         }
-    
+
         private static ImageSource DecodeWithTiff(Stream stream, long size)
         {
             using (var tiff = Tiff.ClientOpen($"{Guid.NewGuid()}.tif", "r", stream, new TiffStream()))
@@ -166,7 +159,7 @@ namespace SourceGit.ViewModels
                 var height = tiff.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
                 var pixels = new int[width * height];
 
-                // Currently only supports image when its `BITSPERSAMPLE` is one in [1,2,4,8,16] 
+                // Currently only supports image when its `BITSPERSAMPLE` is one in [1,2,4,8,16]
                 tiff.ReadRGBAImageOriented(width, height, pixels, Orientation.TOPLEFT);
 
                 var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(pixels, 0);

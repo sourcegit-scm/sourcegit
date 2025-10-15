@@ -14,6 +14,7 @@
       <ResourceInclude x:Key="de_DE" Source="/Resources/Locales/de_DE.axaml"/>
       <ResourceInclude x:Key="en_US" Source="/Resources/Locales/en_US.axaml"/>
       <ResourceInclude x:Key="fr_FR" Source="/Resources/Locales/fr_FR.axaml"/>
+      <ResourceInclude x:Key="id_ID" Source="/Resources/Locales/id_ID.axaml"/>
       <ResourceInclude x:Key="it_IT" Source="/Resources/Locales/it_IT.axaml"/>
       <ResourceInclude x:Key="pt_BR" Source="/Resources/Locales/pt_BR.axaml"/>
       <ResourceInclude x:Key="uk_UA" Source="/Resources/Locales/uk_UA.axaml"/>
@@ -28,6 +29,7 @@
 
   <Application.Styles>
     <FluentTheme />
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="/Resources/Styles.axaml"/>
   </Application.Styles>
@@ -40,6 +42,9 @@
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" Gesture="⌘+,"/>
       <NativeMenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}"/>
+      <NativeMenuItemSeparator/>
+      <NativeMenuItem Header="{DynamicResource Text.App.Hide}" Command="{x:Static s:App.HideAppCommand}" Gesture="⌘+H"/>
+      <NativeMenuItem Header="{DynamicResource Text.App.ShowAll}" Command="{x:Static s:App.ShowAppCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" Gesture="⌘+Q"/>
     </NativeMenu>

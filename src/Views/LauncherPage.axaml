@@ -11,7 +11,11 @@
              x:DataType="vm:LauncherPage">
   <Grid RowDefinitions="36,*">
     <!-- ToolBar -->
-    <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
+    <Border Grid.Row="0"
+            BorderBrush="{DynamicResource Brush.Border0}"
+            BorderThickness="0,0,0,1"
+            Background="{DynamicResource Brush.ToolBar}"
+            PointerPressed="OnToolBarPointerPressed">
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
@@ -76,6 +80,9 @@
                               Orientation="Horizontal"
                               HorizontalAlignment="Right"
                               IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                    <Button Width="0" Height="0"
+                            Click="OnPopupSureByHotKey"
+                            HotKey="Enter"/>
                     <Button Classes="flat primary"
                             Width="100" Height="28"
                             Padding="0"
@@ -83,7 +90,7 @@
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Sure}"
                             Click="OnPopupSure"
-                            HotKey="Enter"/>
+                            ToolTip.Tip="Enter"/>
                     <Button Classes="flat"
                             Width="100" Height="28"
                             Margin="8,0,0,0"
@@ -91,7 +98,8 @@
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Cancel}"
-                            Click="OnPopupCancel"/>
+                            Click="OnPopupCancel"
+                            ToolTip.Tip="ESC"/>
                   </StackPanel>
 
                   <!-- Running -->
@@ -137,7 +145,7 @@
                           <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
                         </Button>
                         <Button Grid.Column="3" Classes="icon_button" Width="16" Height="16" Margin="8,0,0,0" Click="OnDismissNotification">
-                          <Path Width="10" Height="10" Data="{StaticResource Icons.Window.Close}"/>
+                          <Path Width="10" Height="10" Data="{StaticResource Icons.Close}"/>
                         </Button>
                       </Grid>
 

@@ -1,12 +1,15 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class Push : Command
     {
         public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force)
         {
+            _remote = remote;
+
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
             Args = "push --progress --verbose ";
 
             if (withTags)
@@ -23,9 +26,10 @@
 
         public Push(string repo, string remote, string refname, bool isDelete)
         {
+            _remote = remote;
+
             WorkingDirectory = repo;
             Context = repo;
-            SSHKey = new Config(repo).Get($"remote.{remote}.sshkey");
             Args = "push ";
 
             if (isDelete)
@@ -33,5 +37,13 @@
 
             Args += $"{remote} {refname}";
         }
+
+        public async Task<bool> RunAsync()
+        {
+            SSHKey = await new Config(WorkingDirectory).GetAsync($"remote.{_remote}.sshkey").ConfigureAwait(false);
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        private readonly string _remote;
     }
 }

@@ -72,25 +72,24 @@ namespace SourceGit.ViewModels
                 builder.Append(")");
             }
 
-            if (string.IsNullOrEmpty(_breakingChanges))
-                builder.Append(": ");
-            else
-                builder.Append("!: ");
+            if (!string.IsNullOrEmpty(_breakingChanges))
+                builder.Append("!");
+            builder.Append(": ");
 
             builder.Append(_description);
-            builder.Append("\n\n");
+            builder.AppendLine().AppendLine();
 
             if (!string.IsNullOrEmpty(_detail))
             {
                 builder.Append(_detail);
-                builder.Append("\n\n");
+                builder.AppendLine().AppendLine();
             }
 
             if (!string.IsNullOrEmpty(_breakingChanges))
             {
                 builder.Append("BREAKING CHANGE: ");
                 builder.Append(_breakingChanges);
-                builder.Append("\n\n");
+                builder.AppendLine().AppendLine();
             }
 
             if (!string.IsNullOrEmpty(_closedIssue))

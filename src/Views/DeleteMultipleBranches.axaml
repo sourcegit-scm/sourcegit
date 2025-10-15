@@ -44,7 +44,7 @@
           <DataTemplate DataType="m:Branch">
             <Grid Height="26" ColumnDefinitions="22,*,Auto">
               <Path Grid.Column="0" Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Branch}" />
-              <TextBlock Grid.Column="1" Text="{Binding FriendlyName}" Classes="primary" />
+              <TextBlock Grid.Column="1" Text="{Binding FriendlyName}" />
               <Border Grid.Column="2"
                       Height="18"
                       Margin="8,0"
@@ -52,11 +52,11 @@
                       VerticalAlignment="Center"
                       CornerRadius="9"
                       Background="{DynamicResource Brush.Badge}"
-                      IsVisible="{Binding TrackStatus.IsVisible}">
+                      IsVisible="{Binding IsTrackStatusVisible}">
                 <TextBlock Foreground="{DynamicResource Brush.BadgeFG}"
                            FontFamily="{DynamicResource Fonts.Monospace}"
                            FontSize="10"
-                           Text="{Binding TrackStatus}"/>
+                           Text="{Binding TrackStatusDescription, Mode=OneWay}"/>
               </Border>
             </Grid>
           </DataTemplate>

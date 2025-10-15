@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-
-using Avalonia.Controls;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
     public class BranchCompare : ObservableObject
     {
+        public string RepositoryPath
+        {
+            get => _repo;
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public Models.Branch Base
         {
             get => _based;
@@ -49,7 +56,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value != null && value.Count == 1)
+                    if (value is { Count: 1 })
                         DiffContext = new DiffContext(_repo, new Models.DiffOption(_based.Head, _to.Head, value[0]), _diffContext);
                     else
                         DiffContext = null;
@@ -63,9 +70,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     RefreshVisible();
-                }
             }
         }
 
@@ -103,6 +108,8 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (Base, To) = (_to, _based);
+
+            VisibleChanges = [];
             SelectedChanges = [];
 
             if (_baseHead != null)
@@ -116,82 +123,37 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
-        public ContextMenu CreateChangeContextMenu()
+        public string GetAbsPath(string path)
         {
-            if (_selectedChanges == null || _selectedChanges.Count != 1)
-                return null;
-
-            var change = _selectedChanges[0];
-            var menu = new ContextMenu();
-
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
-            {
-                var toolType = Preferences.Instance.ExternalMergeToolType;
-                var toolPath = Preferences.Instance.ExternalMergeToolPath;
-                var opt = new Models.DiffOption(_based.Head, _to.Head, change);
-
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
-                ev.Handled = true;
-            };
-            menu.Items.Add(diffWithMerger);
-
-            if (change.Index != Models.ChangeState.Deleted)
-            {
-                var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
-                var explore = new MenuItem();
-                explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
-                explore.IsEnabled = File.Exists(full);
-                explore.Click += (_, ev) =>
-                {
-                    Native.OS.OpenInFileManager(full, true);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(explore);
-            }
-
-            var copyPath = new MenuItem();
-            copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
-            {
-                App.CopyText(change.Path);
-                ev.Handled = true;
-            };
-            menu.Items.Add(copyPath);
-
-            var copyFullPath = new MenuItem();
-            copyFullPath.Header = App.Text("CopyFullPath");
-            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
-            {
-                App.CopyText(Native.OS.GetAbsPath(_repo, change.Path));
-                e.Handled = true;
-            };
-            menu.Items.Add(copyFullPath);
-
-            return menu;
+            return Native.OS.GetAbsPath(_repo, path);
         }
 
         private void Refresh()
         {
-            Task.Run(() =>
+            IsLoading = true;
+
+            Task.Run(async () =>
             {
                 if (_baseHead == null)
                 {
-                    var baseHead = new Commands.QuerySingleCommit(_repo, _based.Head).Result();
-                    var toHead = new Commands.QuerySingleCommit(_repo, _to.Head).Result();
-                    Dispatcher.UIThread.Invoke(() =>
+                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based.Head)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    var toHead = await new Commands.QuerySingleCommit(_repo, _to.Head)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    Dispatcher.UIThread.Post(() =>
                     {
                         BaseHead = baseHead;
                         ToHead = toHead;
                     });
                 }
 
-                _changes = new Commands.CompareRevisions(_repo, _based.Head, _to.Head).Result();
+                _changes = await new Commands.CompareRevisions(_repo, _based.Head, _to.Head)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
 
                 var visible = _changes;
                 if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -204,7 +166,16 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    VisibleChanges = visible;
+                    IsLoading = false;
+
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
             });
         }
 
@@ -231,6 +202,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private bool _isLoading = true;
         private Models.Branch _based = null;
         private Models.Branch _to = null;
         private Models.Commit _baseHead = null;

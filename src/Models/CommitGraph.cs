@@ -6,6 +6,8 @@ using Avalonia.Media;
 
 namespace SourceGit.Models
 {
+    public record CommitGraphLayout(double StartY, double ClipWidth, double RowHeight);
+
     public class CommitGraph
     {
         public static List<Pen> Pens { get; } = [];
@@ -75,7 +77,7 @@ namespace SourceGit.Models
 
             foreach (var commit in commits)
             {
-                var major = null as PathHelper;
+                PathHelper major = null;
                 var isMerged = commit.IsMerged;
 
                 // Update current y offset
@@ -197,8 +199,8 @@ namespace SourceGit.Models
 
                 // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
-                commit.Margin = new Thickness(Math.Max(offsetX, maxOffsetOld) + halfWidth + 2, 0, 0, 0);
                 commit.Color = dotColor;
+                commit.LeftMargin = Math.Max(offsetX, maxOffsetOld) + halfWidth + 2;
             }
 
             // Deal with curves haven't ended yet.

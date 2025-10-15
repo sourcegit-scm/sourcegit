@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.AddToIgnore"
+             x:DataType="vm:AddToIgnore">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.AddToIgnore}"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.AddToIgnore.Pattern}"/>
+      <TextBox Grid.Row="0" Grid.Column="1"
+               Height="28"
+               CornerRadius="3"
+               Text="{Binding Pattern, Mode=TwoWay}"
+               v:AutoFocusBehaviour.IsEnabled="True">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12" Margin="6,0,2,0" Data="{StaticResource Icons.Pattern}" Fill="{DynamicResource Brush.FG2}"/>
+        </TextBox.InnerLeftContent>
+      </TextBox>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.AddToIgnore.Storage}"/>
+      <ComboBox Grid.Row="1" Grid.Column="1"
+                Height="28" Padding="4,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Source={x:Static m:GitIgnoreFile.Supported}}"
+                SelectedItem="{Binding StorageFile, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="m:GitIgnoreFile">
+            <Grid ColumnDefinitions="20,*,Auto">
+              <Path Grid.Column="0"
+                    Width="12" Height="12"
+                    Data="{StaticResource Icons.File}"
+                    Fill="{DynamicResource Brush.FG2}"/>
+
+              <TextBlock Grid.Column="1" Text="{Binding File, Mode=OneWay}" VerticalAlignment="Center"/>
+
+              <Border Grid.Column="2" Height="16" Background="{Binding Brush}" CornerRadius="8" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
+              </Border>
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </Grid>
+  </StackPanel>
+</UserControl>

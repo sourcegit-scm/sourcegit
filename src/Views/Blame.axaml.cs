@@ -90,7 +90,7 @@ namespace SourceGit.Views
             {
                 var view = TextView;
                 var maxWidth = 0.0;
-                if (view != null && view.VisualLinesValid && _editor.BlameData != null)
+                if (view is { VisualLinesValid: true } && _editor.BlameData != null)
                 {
                     var typeface = view.CreateTypeface();
                     var calculated = new HashSet<string>();
@@ -223,7 +223,7 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
-                                blame.NavigateToCommit(info.CommitSHA);
+                                blame.NavigateToCommit(info.CommitSHA, false);
 
                             e.Handled = true;
                             break;
@@ -288,9 +288,9 @@ namespace SourceGit.Views
 
             _textMate = Models.TextMateHelper.CreateForEditor(this);
 
-            TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
+            TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
@@ -306,7 +306,7 @@ namespace SourceGit.Views
                 return;
 
             var view = TextArea.TextView;
-            if (view == null || !view.VisualLinesValid)
+            if (view is not { VisualLinesValid: true })
                 return;
 
             var color = (Color)this.FindResource("SystemAccentColor")!;
@@ -352,10 +352,10 @@ namespace SourceGit.Views
 
             if (change.Property == BlameDataProperty)
             {
-                if (BlameData != null)
+                if (BlameData is { IsBinary: false } blame)
                 {
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, BlameData.File);
-                    Text = BlameData.Content;
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, blame.File);
+                    Text = blame.Content;
                 }
                 else
                 {
@@ -394,9 +394,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(selected);
+                await App.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 

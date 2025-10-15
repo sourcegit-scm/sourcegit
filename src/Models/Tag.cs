@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
 
 namespace SourceGit.Models
 {
@@ -8,20 +8,18 @@ namespace SourceGit.Models
         Name,
     }
 
-    public class Tag : ObservableObject
+    public class Tag
     {
         public string Name { get; set; } = string.Empty;
         public bool IsAnnotated { get; set; } = false;
         public string SHA { get; set; } = string.Empty;
+        public User Creator { get; set; } = null;
         public ulong CreatorDate { get; set; } = 0;
         public string Message { get; set; } = string.Empty;
 
-        public FilterMode FilterMode
+        public string CreatorDateStr
         {
-            get => _filterMode;
-            set => SetProperty(ref _filterMode, value);
+            get => DateTime.UnixEpoch.AddSeconds(CreatorDate).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
         }
-
-        private FilterMode _filterMode = FilterMode.None;
     }
 }

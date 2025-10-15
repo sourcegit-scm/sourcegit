@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-
 using Avalonia.Controls;
-using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -12,21 +10,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public CommitRelationTracking(ViewModels.CommitDetail detail)
+        public async Task SetDataAsync(ViewModels.CommitDetail detail)
         {
-            InitializeComponent();
-
             LoadingIcon.IsVisible = true;
-
-            Task.Run(() =>
-            {
-                var containsIn = detail.GetRefsContainsThisCommit();
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    Container.ItemsSource = containsIn;
-                    LoadingIcon.IsVisible = false;
-                });
-            });
+            var containsIn = await detail.GetRefsContainsThisCommitAsync();
+            Container.ItemsSource = containsIn;
+            LoadingIcon.IsVisible = false;
         }
     }
 }

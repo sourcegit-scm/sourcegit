@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +12,7 @@ namespace SourceGit.ViewModels
         {
             get;
             private set;
-        } = string.Empty;
+        }
 
         public DateTime StartTime
         {
@@ -43,57 +44,53 @@ namespace SourceGit.ViewModels
             Name = name;
         }
 
-        public void Register(Action<string> handler)
+        public void Subscribe(Models.ICommandLogReceiver receiver)
         {
-            if (!IsComplete)
-                _onNewLineReceived += handler;
+            _receivers.Add(receiver);
+        }
+
+        public void Unsubscribe(Models.ICommandLogReceiver receiver)
+        {
+            _receivers.Remove(receiver);
         }
 
         public void AppendLine(string line = null)
         {
-            var newline = line ?? string.Empty;
-
-            Dispatcher.UIThread.Invoke(() =>
+            if (!Dispatcher.UIThread.CheckAccess())
             {
+                Dispatcher.UIThread.Invoke(() => AppendLine(line));
+            }
+            else
+            {
+                var newline = line ?? string.Empty;
                 _builder.AppendLine(newline);
-                _onNewLineReceived?.Invoke(newline);
-            });
+
+                foreach (var receiver in _receivers)
+                    receiver.OnReceiveCommandLog(newline);
+            }
         }
 
         public void Complete()
         {
-            IsComplete = true;
-
-            Dispatcher.UIThread.Invoke(() =>
+            if (!Dispatcher.UIThread.CheckAccess())
             {
-                _content = _builder.ToString();
-                _builder.Clear();
-                _builder = null;
+                Dispatcher.UIThread.Invoke(Complete);
+                return;
+            }
 
-                EndTime = DateTime.Now;
+            IsComplete = true;
+            EndTime = DateTime.Now;
 
-                OnPropertyChanged(nameof(IsComplete));
+            _content = _builder.ToString();
+            _builder.Clear();
+            _receivers.Clear();
+            _builder = null;
 
-                if (_onNewLineReceived != null)
-                {
-                    var dumpHandlers = _onNewLineReceived.GetInvocationList();
-                    foreach (var d in dumpHandlers)
-                        _onNewLineReceived -= (Action<string>)d;
-                }
-            });
+            OnPropertyChanged(nameof(IsComplete));
         }
 
         private string _content = string.Empty;
         private StringBuilder _builder = new StringBuilder();
-        private event Action<string> _onNewLineReceived;
-    }
-
-    public static class CommandExtensions
-    {
-        public static T Use<T>(this T cmd, CommandLog log) where T : Commands.Command
-        {
-            cmd.Log = log;
-            return cmd;
-        }
+        private List<Models.ICommandLogReceiver> _receivers = new List<Models.ICommandLogReceiver>();
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -16,6 +17,7 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
+        [StructLayout(LayoutKind.Sequential)]
         internal struct RECT
         {
             public int left;
@@ -54,7 +56,7 @@ namespace SourceGit.Native
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 22000, 0))
+            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
             {
                 Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
                 Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
@@ -67,7 +69,7 @@ namespace SourceGit.Native
             window.ExtendClientAreaToDecorationsHint = true;
             window.Classes.Add("fix_maximized_padding");
 
-            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
             {
                 // Custom WM_NCHITTEST
                 if (msg == 0x0084)
@@ -94,27 +96,18 @@ namespace SourceGit.Native
                         y = 2;
 
                     var zone = y * 3 + x;
-                    switch (zone)
+                    return zone switch
                     {
-                        case 0:
-                            return 13; // HTTOPLEFT
-                        case 1:
-                            return 12; // HTTOP
-                        case 2:
-                            return 14; // HTTOPRIGHT
-                        case 3:
-                            return 10; // HTLEFT
-                        case 4:
-                            return 1;  // HTCLIENT
-                        case 5:
-                            return 11; // HTRIGHT
-                        case 6:
-                            return 16; // HTBOTTOMLEFT
-                        case 7:
-                            return 15; // HTBOTTOM
-                        default:
-                            return 17; // HTBOTTOMRIGHT
-                    }
+                        0 => 13, // HTTOPLEFT
+                        1 => 12, // HTTOP
+                        2 => 14, // HTTOPRIGHT
+                        3 => 10, // HTLEFT
+                        4 => 1, // HTCLIENT
+                        5 => 11, // HTRIGHT
+                        6 => 16, // HTBOTTOMLEFT
+                        7 => 15, // HTBOTTOM
+                        _ => 17,
+                    };
                 }
 
                 return IntPtr.Zero;
@@ -189,39 +182,46 @@ namespace SourceGit.Native
 
         public List<Models.ExternalTool> FindExternalTools()
         {
+            var localAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
-            finder.Fleet(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Fleet\Fleet.exe");
-            finder.FindJetBrainsFromToolbox(() => $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\JetBrains\Toolbox");
+            finder.Cursor(() => Path.Combine(localAppDataDir, @"Programs\Cursor\Cursor.exe"));
+            finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
-            finder.TryAdd("Visual Studio", "vs", FindVisualStudio, GenerateCommandlineArgsForVisualStudio);
-            return finder.Founded;
+            finder.Zed(FindZed);
+            FindVisualStudio(finder);
+            return finder.Tools;
         }
 
         public void OpenBrowser(string url)
         {
-            var info = new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"");
+            var info = new ProcessStartInfo("cmd", $"""/c start "" {url.Quoted()}""");
             info.CreateNoWindow = true;
             Process.Start(info);
         }
 
         public void OpenTerminal(string workdir)
         {
-            if (!File.Exists(OS.ShellOrTerminal))
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
+            var terminal = OS.ShellOrTerminal;
+
+            if (!File.Exists(terminal))
             {
-                App.RaiseException(workdir, $"Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
+                App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;
             }
 
             var startInfo = new ProcessStartInfo();
-            startInfo.WorkingDirectory = workdir;
-            startInfo.FileName = OS.ShellOrTerminal;
+            startInfo.WorkingDirectory = cwd;
+            startInfo.FileName = terminal;
 
             // Directly launching `Windows Terminal` need to specify the `-d` parameter
-            if (OS.ShellOrTerminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"-d \"{workdir}\"";
+            if (terminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
+                startInfo.Arguments = $"-d {cwd.Quoted()}";
 
             Process.Start(startInfo);
         }
@@ -257,7 +257,7 @@ namespace SourceGit.Native
         public void OpenWithDefaultEditor(string file)
         {
             var info = new FileInfo(file);
-            var start = new ProcessStartInfo("cmd", $"/c start \"\" \"{info.FullName}\"");
+            var start = new ProcessStartInfo("cmd", $"""/c start "" {info.FullName.Quoted()}""");
             start.CreateNoWindow = true;
             Process.Start(start);
         }
@@ -266,7 +266,7 @@ namespace SourceGit.Native
         {
             // Schedule the DWM frame extension to run in the next render frame
             // to ensure proper timing with the window initialization sequence
-            Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatcher.UIThread.Post(() =>
             {
                 var platformHandle = w.TryGetPlatformHandle();
                 if (platformHandle == null)
@@ -378,21 +378,58 @@ namespace SourceGit.Native
             return string.Empty;
         }
 
-        private string FindVisualStudio()
+        private void FindVisualStudio(Models.ExternalToolsFinder finder)
         {
-            var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(
-                    Microsoft.Win32.RegistryHive.LocalMachine,
+            var vswhere = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe");
+            if (!File.Exists(vswhere))
+                return;
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = vswhere;
+            startInfo.Arguments = "-format json -prerelease -utf8";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+
+            try
+            {
+                using var proc = Process.Start(startInfo)!;
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+
+                if (proc.ExitCode == 0)
+                {
+                    var instances = JsonSerializer.Deserialize(output, JsonCodeGen.Default.ListVisualStudioInstance);
+                    foreach (var instance in instances)
+                    {
+                        var exec = instance.ProductPath;
+                        var icon = instance.IsPrerelease ? "vs-preview" : "vs";
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
+                    }
+                }
+            }
+            catch
+            {
+                // Just ignore.
+            }
+        }
+
+        private string FindZed()
+        {
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
                     Microsoft.Win32.RegistryView.Registry64);
 
-            // Get default class for VisualStudio.Launcher.sln - the handler for *.sln files
-            if (localMachine.OpenSubKey(@"SOFTWARE\Classes\VisualStudio.Launcher.sln\CLSID") is Microsoft.Win32.RegistryKey launcher)
-            {
-                // Get actual path to the executable
-                if (launcher.GetValue(string.Empty) is string CLSID &&
-                    localMachine.OpenSubKey(@$"SOFTWARE\Classes\CLSID\{CLSID}\LocalServer32") is Microsoft.Win32.RegistryKey devenv &&
-                    devenv.GetValue(string.Empty) is string localServer32)
-                    return localServer32!.Trim('\"');
-            }
+            // NOTE: this is the official Zed Preview reg data.
+            var preview = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F70E4811-D0E2-4D88-AC99-D63752799F95}_is1");
+            if (preview != null)
+                return preview.GetValue("DisplayIcon") as string;
+
+            var findInPath = new StringBuilder("zed.exe", 512);
+            if (PathFindOnPath(findInPath, null))
+                return findInPath.ToString();
 
             return string.Empty;
         }
@@ -415,7 +452,7 @@ namespace SourceGit.Native
         private string GenerateCommandlineArgsForVisualStudio(string repo)
         {
             var sln = FindVSSolutionFile(new DirectoryInfo(repo), 4);
-            return string.IsNullOrEmpty(sln) ? $"\"{repo}\"" : $"\"{sln}\"";
+            return string.IsNullOrEmpty(sln) ? repo.Quoted() : sln.Quoted();
         }
 
         private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)
@@ -423,7 +460,8 @@ namespace SourceGit.Native
             var files = dir.GetFiles();
             foreach (var f in files)
             {
-                if (f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                if (f.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase) ||
+                    f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
                     return f.FullName;
             }
 

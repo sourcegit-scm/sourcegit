@@ -10,10 +10,19 @@ namespace SourceGit.ViewModels
             get => _repo.Remotes;
         }
 
+        public bool IsFetchAllRemoteVisible
+        {
+            get;
+        }
+
         public bool FetchAllRemotes
         {
             get => _fetchAllRemotes;
-            set => SetProperty(ref _fetchAllRemotes, value);
+            set
+            {
+                if (SetProperty(ref _fetchAllRemotes, value) && IsFetchAllRemoteVisible)
+                    _repo.Settings.FetchAllRemotes = value;
+            }
         }
 
         public Models.Remote SelectedRemote
@@ -37,7 +46,8 @@ namespace SourceGit.ViewModels
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
-            _fetchAllRemotes = preferredRemote == null;
+            IsFetchAllRemoteVisible = repo.Remotes.Count > 1 && preferredRemote == null;
+            _fetchAllRemotes = IsFetchAllRemoteVisible && _repo.Settings.FetchAllRemotes;
 
             if (preferredRemote != null)
             {
@@ -46,10 +56,7 @@ namespace SourceGit.ViewModels
             else if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
             {
                 var def = _repo.Remotes.Find(r => r.Name == _repo.Settings.DefaultRemote);
-                if (def != null)
-                    SelectedRemote = def;
-                else
-                    SelectedRemote = _repo.Remotes[0];
+                SelectedRemote = def ?? _repo.Remotes[0];
             }
             else
             {
@@ -57,48 +64,47 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
+            var navigateToUpstreamHEAD = _repo.SelectedView is Histories { AutoSelectedCommit: { IsCurrentHead: true } };
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
-            return Task.Run(() =>
+            if (FetchAllRemotes)
             {
-                if (FetchAllRemotes)
-                {
-                    foreach (var remote in _repo.Remotes)
-                        new Commands.Fetch(_repo.FullPath, remote.Name, notags, force).Use(log).Exec();
-                }
-                else
-                {
-                    new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force).Use(log).Exec();
-                }
+                foreach (var remote in _repo.Remotes)
+                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
+                        .Use(log)
+                        .RunAsync();
+            }
+            else
+            {
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
+                    .Use(log)
+                    .RunAsync();
+            }
 
-                log.Complete();
+            log.Complete();
 
+            if (navigateToUpstreamHEAD)
+            {
                 var upstream = _repo.CurrentBranch?.Upstream;
-                var upstreamHead = string.Empty;
                 if (!string.IsNullOrEmpty(upstream))
-                    upstreamHead = new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).Result();
-
-                CallUIThread(() =>
                 {
-                    if (!string.IsNullOrEmpty(upstreamHead))
-                        _repo.NavigateToCommit(upstreamHead, true);
+                    var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
+                    _repo.NavigateToCommit(upstreamHead, true);
+                }
+            }
 
-                    _repo.MarkFetched();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
-            });
+            _repo.MarkFetched();
+            return true;
         }
 
         private readonly Repository _repo = null;
-        private bool _fetchAllRemotes;
+        private bool _fetchAllRemotes = false;
     }
 }

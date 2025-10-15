@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -18,11 +20,7 @@ namespace SourceGit.Commands
 
         public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
         {
-            _result.TextDiff = new Models.TextDiff()
-            {
-                Repo = repo,
-                Option = opt,
-            };
+            _result.TextDiff = new Models.TextDiff() { Option = opt };
 
             WorkingDirectory = repo;
             Context = repo;
@@ -35,22 +33,23 @@ namespace SourceGit.Commands
                 Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
         }
 
-        public Models.DiffResult Result()
+        public async Task<Models.DiffResult> ReadAsync()
         {
-            var rs = ReadToEnd();
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
+            try
             {
-                var line = rs.StdOut.Substring(start, end - start);
-                ParseLine(line);
+                using var proc = new Process();
+                proc.StartInfo = CreateGitStartInfo(true);
+                proc.Start();
 
-                start = end + 1;
-                end = rs.StdOut.IndexOf('\n', start);
+                while (await proc.StandardOutput.ReadLineAsync() is { } line)
+                    ParseLine(line);
+
+                await proc.WaitForExitAsync().ConfigureAwait(false);
             }
-
-            if (start < rs.StdOut.Length)
-                ParseLine(rs.StdOut.Substring(start));
+            catch
+            {
+                // Ignore exceptions.
+            }
 
             if (_result.IsBinary || _result.IsLFS || _result.TextDiff.Lines.Count == 0)
             {
@@ -248,14 +247,10 @@ namespace SourceGit.Commands
                         foreach (var chunk in chunks)
                         {
                             if (chunk.DeletedCount > 0)
-                            {
                                 left.Highlights.Add(new Models.TextInlineRange(chunk.DeletedStart, chunk.DeletedCount));
-                            }
 
                             if (chunk.AddedCount > 0)
-                            {
                                 right.Highlights.Add(new Models.TextInlineRange(chunk.AddedStart, chunk.AddedCount));
-                            }
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,7 +12,7 @@ namespace SourceGit.Commands
             Context = repo;
         }
 
-        public bool Branch(string branch, bool force)
+        public async Task<bool> BranchAsync(string branch, bool force)
         {
             var builder = new StringBuilder();
             builder.Append("checkout --progress ");
@@ -20,10 +21,10 @@ namespace SourceGit.Commands
             builder.Append(branch);
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Branch(string branch, string basedOn, bool force, bool allowOverwrite)
+        public async Task<bool> BranchAsync(string branch, string basedOn, bool force, bool allowOverwrite)
         {
             var builder = new StringBuilder();
             builder.Append("checkout --progress ");
@@ -35,48 +36,41 @@ namespace SourceGit.Commands
             builder.Append(basedOn);
 
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Commit(string commitId, bool force)
+        public async Task<bool> CommitAsync(string commitId, bool force)
         {
             var option = force ? "--force" : string.Empty;
             Args = $"checkout {option} --detach --progress {commitId}";
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool UseTheirs(List<string> files)
+        public async Task<bool> UseTheirsAsync(List<string> files)
         {
             var builder = new StringBuilder();
             builder.Append("checkout --theirs --");
             foreach (var f in files)
-            {
-                builder.Append(" \"");
-                builder.Append(f);
-                builder.Append("\"");
-            }
+                builder.Append(' ').Append(f.Quoted());
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool UseMine(List<string> files)
+        public async Task<bool> UseMineAsync(List<string> files)
         {
             var builder = new StringBuilder();
             builder.Append("checkout --ours --");
             foreach (var f in files)
-            {
-                builder.Append(" \"");
-                builder.Append(f);
-                builder.Append("\"");
-            }
+                builder.Append(' ').Append(f.Quoted());
+
             Args = builder.ToString();
-            return Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool FileWithRevision(string file, string revision)
+        public async Task<bool> FileWithRevisionAsync(string file, string revision)
         {
-            Args = $"checkout --no-overlay {revision} -- \"{file}\"";
-            return Exec();
+            Args = $"checkout --no-overlay {revision} -- {file.Quoted()}";
+            return await ExecAsync().ConfigureAwait(false);
         }
     }
 }

@@ -56,10 +56,10 @@ namespace SourceGit.ViewModels
 
         public Statistics(string repo)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var result = new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).Result();
-                Dispatcher.UIThread.Invoke(() =>
+                var result = await new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).ReadAsync().ConfigureAwait(false);
+                Dispatcher.UIThread.Post(() =>
                 {
                     _data = result;
                     RefreshReport();

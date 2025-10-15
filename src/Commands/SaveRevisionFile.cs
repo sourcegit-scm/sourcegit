@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public static class SaveRevisionFile
     {
-        public static void Run(string repo, string revision, string file, string saveTo)
+        public static async Task RunAsync(string repo, string revision, string file, string saveTo)
         {
-            var isLFSFiltered = new IsLFSFiltered(repo, revision, file).Result();
+            var dir = Path.GetDirectoryName(saveTo) ?? string.Empty;
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            var isLFSFiltered = await new IsLFSFiltered(repo, revision, file).GetResultAsync().ConfigureAwait(false);
             if (isLFSFiltered)
             {
-                var pointerStream = QueryFileContent.Run(repo, revision, file);
-                ExecCmd(repo, $"lfs smudge", saveTo, pointerStream);
+                var pointerStream = await QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
+                await ExecCmdAsync(repo, "lfs smudge", saveTo, pointerStream).ConfigureAwait(false);
             }
             else
             {
-                ExecCmd(repo, $"show {revision}:\"{file}\"", saveTo);
+                await ExecCmdAsync(repo, $"show {revision}:{file.Quoted()}", saveTo).ConfigureAwait(false);
             }
         }
 
-        private static bool ExecCmd(string repo, string args, string outputFile, Stream input = null)
+        private static async Task ExecCmdAsync(string repo, string args, string outputFile, Stream input = null)
         {
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = repo;
@@ -35,28 +38,24 @@ namespace SourceGit.Commands
             starter.RedirectStandardOutput = true;
             starter.RedirectStandardError = true;
 
-            using (var sw = File.OpenWrite(outputFile))
+            await using (var sw = File.Create(outputFile))
             {
                 try
                 {
-                    var proc = new Process() { StartInfo = starter };
-                    proc.Start();
-                    if (input != null)
-                        proc.StandardInput.Write(new StreamReader(input).ReadToEnd());
-                    proc.StandardOutput.BaseStream.CopyTo(sw);
-                    proc.WaitForExit();
-                    var rs = proc.ExitCode == 0;
-                    proc.Close();
+                    using var proc = Process.Start(starter)!;
 
-                    return rs;
+                    if (input != null)
+                    {
+                        var inputString = await new StreamReader(input).ReadToEndAsync().ConfigureAwait(false);
+                        await proc.StandardInput.WriteAsync(inputString).ConfigureAwait(false);
+                    }
+
+                    await proc.StandardOutput.BaseStream.CopyToAsync(sw).ConfigureAwait(false);
+                    await proc.WaitForExitAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.RaiseException(repo, "Save file failed: " + e.Message);
-                    });
-                    return false;
+                    App.RaiseException(repo, "Save file failed: " + e.Message);
                 }
             }
         }

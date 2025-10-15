@@ -4,6 +4,7 @@ namespace SourceGit.Views
     {
         public Statistics()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
     }

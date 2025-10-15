@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
@@ -31,17 +32,17 @@ namespace SourceGit.Models
 
             buffer = REG_COT().Replace(buffer, "");
 
-            var startIdx = buffer.IndexOf('<', StringComparison.Ordinal);
+            var startIdx = buffer.IndexOf('<');
             if (startIdx >= 0)
             {
                 if (startIdx > 0)
                     OnReceive(buffer.Substring(0, startIdx));
 
-                var endIdx = buffer.IndexOf(">", startIdx + 1, StringComparison.Ordinal);
+                var endIdx = buffer.IndexOf('>', startIdx + 1);
                 if (endIdx <= startIdx)
                 {
                     if (buffer.Length - startIdx <= 15)
-                        _thinkTail.Append(buffer.Substring(startIdx));
+                        _thinkTail.Append(buffer.AsSpan(startIdx));
                     else
                         OnReceive(buffer.Substring(startIdx));
                 }
@@ -49,7 +50,7 @@ namespace SourceGit.Models
                 {
                     var tag = buffer.Substring(startIdx + 1, endIdx - startIdx - 1);
                     if (_thinkTags.Contains(tag))
-                        _thinkTail.Append(buffer.Substring(startIdx));
+                        _thinkTail.Append(buffer.AsSpan(startIdx));
                     else
                         OnReceive(buffer.Substring(startIdx));
                 }
@@ -84,7 +85,7 @@ namespace SourceGit.Models
                 _hasTrimmedStart = true;
             }
 
-            _onUpdate.Invoke(text);
+            _onUpdate?.Invoke(text);
         }
 
         [GeneratedRegex(@"<(think|thought|thinking|thought_chain)>.*?</\1>", RegexOptions.Singleline)]
@@ -114,6 +115,12 @@ namespace SourceGit.Models
         {
             get => _apiKey;
             set => SetProperty(ref _apiKey, value);
+        }
+
+        public bool ReadApiKeyFromEnv
+        {
+            get => _readApiKeyFromEnv;
+            set => SetProperty(ref _readApiKeyFromEnv, value);
         }
 
         public string Model
@@ -173,25 +180,21 @@ namespace SourceGit.Models
                 """;
         }
 
-        public void Chat(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
+        public async Task ChatAsync(string prompt, string question, CancellationToken cancellation, Action<string> onUpdate)
         {
-            var server = new Uri(_server);
-            var key = new ApiKeyCredential(_apiKey);
-            var client = null as ChatClient;
-            if (_server.Contains("openai.azure.com/", StringComparison.Ordinal))
-            {
-                var azure = new AzureOpenAIClient(server, key);
-                client = azure.GetChatClient(_model);
-            }
-            else
-            {
-                var openai = new OpenAIClient(key, new() { Endpoint = server });
-                client = openai.GetChatClient(_model);
-            }
+            var key = _readApiKeyFromEnv ? Environment.GetEnvironmentVariable(_apiKey) : _apiKey;
+            var endPoint = new Uri(_server);
+            var credential = new ApiKeyCredential(key);
+            var client = _server.Contains("openai.azure.com/", StringComparison.Ordinal)
+                ? new AzureOpenAIClient(endPoint, credential)
+                : new OpenAIClient(credential, new() { Endpoint = endPoint });
 
-            var messages = new List<ChatMessage>();
-            messages.Add(_model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt));
-            messages.Add(new UserChatMessage(question));
+            var chatClient = client.GetChatClient(_model);
+            var messages = new List<ChatMessage>()
+            {
+                _model.Equals("o1-mini", StringComparison.Ordinal) ? new UserChatMessage(prompt) : new SystemChatMessage(prompt),
+                new UserChatMessage(question),
+            };
 
             try
             {
@@ -199,9 +202,9 @@ namespace SourceGit.Models
 
                 if (_streaming)
                 {
-                    var updates = client.CompleteChatStreaming(messages, null, cancellation);
+                    var updates = chatClient.CompleteChatStreamingAsync(messages, null, cancellation);
 
-                    foreach (var update in updates)
+                    await foreach (var update in updates)
                     {
                         if (update.ContentUpdate.Count > 0)
                             rsp.Append(update.ContentUpdate[0].Text);
@@ -209,7 +212,7 @@ namespace SourceGit.Models
                 }
                 else
                 {
-                    var completion = client.CompleteChat(messages, null, cancellation);
+                    var completion = await chatClient.CompleteChatAsync(messages, null, cancellation);
 
                     if (completion.Value.Content.Count > 0)
                         rsp.Append(completion.Value.Content[0].Text);
@@ -227,6 +230,7 @@ namespace SourceGit.Models
         private string _name;
         private string _server;
         private string _apiKey;
+        private bool _readApiKeyFromEnv = false;
         private string _model;
         private bool _streaming = true;
         private string _analyzeDiffPrompt;

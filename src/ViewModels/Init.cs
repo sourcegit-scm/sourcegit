@@ -24,29 +24,25 @@ namespace SourceGit.ViewModels
             Reason = string.IsNullOrEmpty(reason) ? "Invalid repository detected!" : reason;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = $"Initialize git repository at: '{_targetPath}'";
 
             var log = new CommandLog("Initialize");
             Use(log);
 
-            return Task.Run(() =>
+            var succ = await new Commands.Init(_pageId, _targetPath)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+
+            if (succ)
             {
-                var succ = new Commands.Init(_pageId, _targetPath).Use(log).Exec();
-                log.Complete();
-
-                if (succ)
-                {
-                    CallUIThread(() =>
-                    {
-                        Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
-                        Welcome.Instance.Refresh();
-                    });
-                }
-
-                return succ;
-            });
+                Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                Welcome.Instance.Refresh();
+            }
+            return succ;
         }
 
         private readonly string _pageId = null;

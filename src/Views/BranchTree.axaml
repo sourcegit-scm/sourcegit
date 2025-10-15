@@ -1,7 +1,8 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:c="using:SourceGit.Converters"
              xmlns:v="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
@@ -35,8 +36,80 @@
       <DataTemplate DataType="vm:BranchTreeNode">
         <Border Background="Transparent"
                 PointerPressed="OnNodePointerPressed"
-                ToolTip.Tip="{Binding Tooltip}"
+                ToolTip.Tip="{Binding Backend}"
                 ToolTip.Placement="Right">
+          <Border.DataTemplates>
+            <DataTemplate DataType="m:Branch">
+              <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
+                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" Text="{Binding FriendlyName}"/>
+                  <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding !IsLocal}">
+                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Margin="4,0" Foreground="White" VerticalAlignment="Center"/>
+                  </Border>
+                </StackPanel>
+
+                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0" IsVisible="{Binding IsLocal, Mode=OneWay}">
+                  <TextBlock Grid.Row="0" Grid.Column="0"
+                             Classes="info_label"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                             Text="{DynamicResource Text.BranchTree.Tracking}"/>
+                  <StackPanel Grid.Row="0" Grid.Column="1"
+                              Margin="8,0,0,0"
+                              Orientation="Horizontal">
+                    <TextBlock Text="{Binding Upstream, Mode=OneWay, Converter={x:Static c:StringConverters.ToFriendlyUpstream}}"
+                               IsVisible="{Binding Upstream, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock IsVisible="{Binding Upstream, Mode=OneWay, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                      <Run Text="---"/>
+                      <Run Text="(none)" Foreground="{DynamicResource Brush.FG2}"/>
+                    </TextBlock>
+
+                    <Border Background="OrangeRed" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding IsUpstreamGone}">
+                      <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
+                    </Border>
+                  </StackPanel>
+
+                  <TextBlock Grid.Row="1" Grid.Column="0"
+                             Classes="info_label"
+                             Margin="0,4,0,0"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                             Text="{DynamicResource Text.BranchTree.Status}"
+                             IsVisible="{Binding IsTrackStatusVisible, Mode=OneWay}"/>
+                  <v:BranchTreeNodeTrackStatusTooltip Grid.Row="1" Grid.Column="1"
+                                                      Margin="8,4,0,0"/>
+
+                  <TextBlock Grid.Row="2" Grid.Column="0"
+                             Classes="info_label"
+                             Margin="0,4,0,0"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                             Text="{DynamicResource Text.BranchTree.Worktree}"
+                             IsVisible="{Binding HasWorktree}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="1"
+                             Margin="8,4,0,0"
+                             Text="{Binding WorktreePath, Mode=OneWay}"
+                             IsVisible="{Binding HasWorktree}"/>
+                </Grid>
+              </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="m:Remote">
+              <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Remote}"/>
+                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                  <TextBlock Classes="info_label"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                             Text="{DynamicResource Text.BranchTree.URL}"/>
+
+                  <TextBlock Margin="6,0,0,0" Foreground="{DynamicResource Brush.Link}" Text="{Binding URL, Mode=OneWay}"/>
+                </StackPanel>
+              </StackPanel>
+            </DataTemplate>
+          </Border.DataTemplates>
+          
           <Grid Height="24"
                 Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                 ColumnDefinitions="16,*">
@@ -49,7 +122,7 @@
                                           IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                           IsVisible="{Binding !IsBranch}"/>
 
-            <!-- Content Area (allows double-click) -->
+            <!-- Content Area (allows double-clicking) -->
             <Grid Grid.Column="1"
                   Background="Transparent"
                   ColumnDefinitions="18,*,Auto,Auto"
@@ -60,7 +133,6 @@
 
               <!-- Name -->
               <TextBlock Grid.Column="1"
-                         Classes="primary"
                          FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                          TextTrimming="CharacterEllipsis">
                 <Run Text="{Binding Name}"/>
@@ -72,7 +144,6 @@
                       Width="12" Height="12"
                       Margin="8,0"
                       Background="Transparent"
-                      ToolTip.Tip="{DynamicResource Text.BranchUpstreamInvalid}"
                       IsVisible="{Binding ShowUpstreamGoneTip}">
                 <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
               </Border>

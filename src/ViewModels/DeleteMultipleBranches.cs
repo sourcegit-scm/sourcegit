@@ -17,37 +17,40 @@ namespace SourceGit.ViewModels
             Targets = branches;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Deleting multiple branches...";
 
             var log = _repo.CreateLog("Delete Multiple Branches");
             Use(log);
 
-            return Task.Run(() =>
+            if (_isLocal)
             {
-                if (_isLocal)
+                foreach (var target in Targets)
+                    await new Commands.Branch(_repo.FullPath, target.Name)
+                        .Use(log)
+                        .DeleteLocalAsync();
+            }
+            else
+            {
+                foreach (var target in Targets)
                 {
-                    foreach (var target in Targets)
-                        Commands.Branch.DeleteLocal(_repo.FullPath, target.Name, log);
+                    var exists = await new Commands.Remote(_repo.FullPath).HasBranchAsync(target.Remote, target.Name);
+                    if (exists)
+                        await new Commands.Push(_repo.FullPath, target.Remote, $"refs/heads/{target.Name}", true)
+                            .Use(log)
+                            .RunAsync();
+                    else
+                        await new Commands.Branch(_repo.FullPath, target.Name)
+                            .Use(log)
+                            .DeleteRemoteAsync(target.Remote);
                 }
-                else
-                {
-                    foreach (var target in Targets)
-                        Commands.Branch.DeleteRemote(_repo.FullPath, target.Remote, target.Name, log);
-                }
+            }
 
-                log.Complete();
-
-                CallUIThread(() =>
-                {
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return true;
-            });
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
+            return true;
         }
 
         private Repository _repo = null;

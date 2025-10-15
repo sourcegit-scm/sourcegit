@@ -47,44 +47,45 @@ namespace SourceGit.Native
         public string FindGitExecutable()
         {
             var gitPathVariants = new List<string>() {
-                 "/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git", "/opt/homebrew/opt/git/bin/git"
+                "/usr/bin/git",
+                "/usr/local/bin/git",
+                "/opt/homebrew/bin/git",
+                "/opt/homebrew/opt/git/bin/git"
             };
+
             foreach (var path in gitPathVariants)
                 if (File.Exists(path))
                     return path;
+
             return string.Empty;
         }
 
         public string FindTerminal(Models.ShellOrTerminal shell)
         {
-            switch (shell.Type)
+            return shell.Type switch
             {
-                case "mac-terminal":
-                    return "Terminal";
-                case "iterm2":
-                    return "iTerm";
-                case "warp":
-                    return "Warp";
-                case "ghostty":
-                    return "Ghostty";
-                case "kitty":
-                    return "kitty";
-            }
-
-            return string.Empty;
+                "mac-terminal" => "Terminal",
+                "iterm2" => "iTerm",
+                "warp" => "Warp",
+                "ghostty" => "Ghostty",
+                "kitty" => "kitty",
+                _ => string.Empty,
+            };
         }
 
         public List<Models.ExternalTool> FindExternalTools()
         {
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var finder = new Models.ExternalToolsFinder();
             finder.VSCode(() => "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code");
             finder.VSCodeInsiders(() => "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code");
             finder.VSCodium(() => "/Applications/VSCodium.app/Contents/Resources/app/bin/codium");
-            finder.Fleet(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Applications/Fleet.app/Contents/MacOS/Fleet");
-            finder.FindJetBrainsFromToolbox(() => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Library/Application Support/JetBrains/Toolbox");
+            finder.Cursor(() => "/Applications/Cursor.app/Contents/Resources/app/bin/cursor");
+            finder.Fleet(() => Path.Combine(home, "Applications/Fleet.app/Contents/MacOS/Fleet"));
+            finder.FindJetBrainsFromToolbox(() => Path.Combine(home, "Library/Application Support/JetBrains/Toolbox"));
             finder.SublimeText(() => "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl");
             finder.Zed(() => File.Exists("/usr/local/bin/zed") ? "/usr/local/bin/zed" : "/Applications/Zed.app/Contents/MacOS/cli");
-            return finder.Founded;
+            return finder.Tools;
         }
 
         public void OpenBrowser(string url)
@@ -95,21 +96,21 @@ namespace SourceGit.Native
         public void OpenInFileManager(string path, bool select)
         {
             if (Directory.Exists(path))
-                Process.Start("open", $"\"{path}\"");
+                Process.Start("open", path.Quoted());
             else if (File.Exists(path))
-                Process.Start("open", $"\"{path}\" -R");
+                Process.Start("open", $"{path.Quoted()} -R");
         }
 
         public void OpenTerminal(string workdir)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var dir = string.IsNullOrEmpty(workdir) ? home : workdir;
-            Process.Start("open", $"-a {OS.ShellOrTerminal} \"{dir}\"");
+            Process.Start("open", $"-a {OS.ShellOrTerminal} {dir.Quoted()}");
         }
 
         public void OpenWithDefaultEditor(string file)
         {
-            Process.Start("open", $"\"{file}\"");
+            Process.Start("open", file.Quoted());
         }
     }
 }

@@ -9,10 +9,10 @@ on:
 jobs:
   windows:
     name: Package Windows
-    runs-on: windows-2019
+    runs-on: windows-2022
     strategy:
       matrix:
-        runtime: [ win-x64, win-arm64 ]
+        runtime: [win-x64, win-arm64]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -22,11 +22,11 @@ jobs:
           name: sourcegit.${{ matrix.runtime }}
           path: build/SourceGit
       - name: Package
-        shell: bash
+        shell: pwsh
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/scripts/package.windows.sh
+        run: ./build/scripts/package.win.ps1
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:

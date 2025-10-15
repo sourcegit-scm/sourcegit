@@ -84,14 +84,24 @@
 
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Stash">
-            <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4" Background="Transparent" ContextRequested="OnStashContextRequested">
+            <Border Background="Transparent"
+                    BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
+                    Padding="4"
+                    ContextRequested="OnStashContextRequested"
+                    DoubleTapped="OnStashDoubleTapped"
+                    ToolTip.Tip="{Binding Message}">
               <Grid RowDefinitions="Auto,*" >
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                  <TextBlock Grid.Column="0" Classes="primary" Text="{Binding Name}" Foreground="DarkOrange"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="DarkOrange"/>
+                  <TextBlock Grid.Column="1" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                 </Grid>
 
-                <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Message}" VerticalAlignment="Bottom"/>
+                <v:StashSubjectPresenter Grid.Row="1"
+                                         Subject="{Binding Subject}"
+                                         Foreground="{DynamicResource Brush.FG1}"
+                                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
+                                         PrefixBackground="{DynamicResource Brush.InlineCode}"
+                                         VerticalAlignment="Bottom"/>
               </Grid>
             </Border>
           </DataTemplate>
@@ -100,46 +110,30 @@
 
       <!-- Changes Bar -->
       <Border Grid.Row="3" BorderThickness="0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,*">
+        <Grid ColumnDefinitions="Auto,*,Auto">
           <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
           <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
             <Run Text="{DynamicResource Text.Stashes.Changes}"/>
             <Run Text="{Binding Changes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
           </TextBlock>
+
+          <v:ChangeViewModeSwitcher Grid.Column="2"
+                                    Width="14" Height="14"
+                                    Margin="0,0,8,0"
+                                    HorizontalAlignment="Right"
+                                    ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=TwoWay}"/>
         </Grid>
       </Border>
 
       <!-- View Changes -->
-      <ListBox Grid.Row="4"
-               Background="{DynamicResource Brush.Contents}"
-               ItemsSource="{Binding Changes}"
-               SelectedItem="{Binding SelectedChange, Mode=TwoWay}"
-               SelectionMode="Single"
-               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-               ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <ListBox.Styles>
-          <Style Selector="ListBoxItem">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Height" Value="26"/>
-          </Style>
-        </ListBox.Styles>
-
-        <ListBox.ItemsPanel>
-          <ItemsPanelTemplate>
-            <VirtualizingStackPanel Orientation="Vertical"/>
-          </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-
-        <ListBox.ItemTemplate>
-          <DataTemplate DataType="m:Change">
-            <Grid ColumnDefinitions="24,*" Background="Transparent" ContextRequested="OnChangeContextRequested">
-              <v:ChangeStatusIcon Grid.Column="0" Width="14" Height="14" Change="{Binding}"/>
-              <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="4,0,0,0"/>
-            </Grid>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+      <Border Grid.Row="4" Background="{DynamicResource Brush.Contents}">
+        <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=OneWay}"
+                                EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
+                                Changes="{Binding Changes}"
+                                SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                ContextRequested="OnChangeContextRequested"
+                                KeyDown="OnChangeCollectionViewKeyDown"/>
+      </Border>
     </Grid>
 
     <GridSplitter Grid.Column="1"

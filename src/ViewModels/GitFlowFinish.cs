@@ -40,9 +40,9 @@ namespace SourceGit.ViewModels
             Type = type;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Git Flow - Finish {Branch.Name} ...";
 
             var log = _repo.CreateLog("GitFlow - Finish");
@@ -50,14 +50,10 @@ namespace SourceGit.ViewModels
 
             var prefix = _repo.GitFlow.GetPrefix(Type);
             var name = Branch.Name.StartsWith(prefix) ? Branch.Name.Substring(prefix.Length) : Branch.Name;
+            var succ = await Commands.GitFlow.FinishAsync(_repo.FullPath, Type, name, Squash, AutoPush, KeepBranch, log);
 
-            return Task.Run(() =>
-            {
-                var succ = Commands.GitFlow.Finish(_repo.FullPath, Type, name, Squash, AutoPush, KeepBranch, log);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo;

@@ -30,24 +30,24 @@ namespace SourceGit.ViewModels
             To = to;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Reset {Target.Name} to {_revision} ...";
 
             var log = _repo.CreateLog($"Reset '{Target.Name}' to '{_revision}'");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = Commands.Branch.Create(_repo.FullPath, Target.Name, _revision, true, log);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.Branch(_repo.FullPath, Target.Name)
+                .Use(log)
+                .CreateAsync(_revision, true);
+
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
+            return succ;
         }
 
         private readonly Repository _repo = null;
-        private readonly string _revision = string.Empty;
+        private readonly string _revision;
     }
 }

@@ -11,7 +11,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Fetch.Title}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -20,8 +20,13 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Remotes}"
-                SelectedItem="{Binding SelectedRemote, Mode=TwoWay}"
-                IsEnabled="{Binding !FetchAllRemotes}">
+                SelectedItem="{Binding SelectedRemote, Mode=TwoWay}">
+        <ComboBox.IsEnabled>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="IsFetchAllRemoteVisible"/>
+            <Binding Path="FetchAllRemotes" Converter="{x:Static BoolConverters.Not}"/>
+          </MultiBinding>
+        </ComboBox.IsEnabled>
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Remote}">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
@@ -38,8 +43,10 @@
                 ToolTip.Tip="--force"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
+                Height="32"
                 Content="{DynamicResource Text.Fetch.AllRemotes}"
                 IsChecked="{Binding FetchAllRemotes, Mode=TwoWay}"
+                IsVisible="{Binding IsFetchAllRemoteVisible, Mode=OneWay}"
                 ToolTip.Tip="--all"/>
 
       <CheckBox Grid.Row="3" Grid.Column="1"

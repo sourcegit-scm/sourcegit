@@ -60,8 +60,10 @@
                            ScrollViewer.VerticalScrollBarVisibility="Auto"
                            ItemsSource="{Binding Rows}"
                            SelectionMode="Single"
-                           Loaded="SetupTreeViewDragAndDrop"
-                           LostFocus="OnTreeViewLostFocus">
+                           LostFocus="OnTreeViewLostFocus"
+                           DragDrop.AllowDrop="True"
+                           DragDrop.DragOver="DragOverTreeView"
+                           DragDrop.Drop="DropOnTreeView">
         <ListBox.Styles>
           <Style Selector="ListBox">
             <Setter Property="FocusAdorner">
@@ -106,13 +108,15 @@
                   Height="30"
                   ColumnDefinitions="16,18,Auto,*"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                  Loaded="SetupTreeNodeDragAndDrop"
+                  ClipToBounds="True"
                   ContextRequested="OnTreeNodeContextRequested"
                   PointerPressed="OnPointerPressedTreeNode"
                   PointerMoved="OnPointerMovedOverTreeNode"
                   PointerReleased="OnPointerReleasedOnTreeNode"
                   DoubleTapped="OnDoubleTappedTreeNode"
-                  ClipToBounds="True">
+                  DragDrop.AllowDrop="True"
+                  DragDrop.DragOver="DragOverTreeNode"
+                  DragDrop.Drop="DropOnTreeNode">
               <v:RepositoryTreeNodeToggleButton Grid.Column="0"
                                                 Classes="tree_expander"
                                                 Focusable="False"
@@ -137,7 +141,7 @@
                             IsVisible="{Binding !IsRepository}"/>
 
               <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <TextBlock Classes="primary" VerticalAlignment="Center" Text="{Binding Name}"/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
                 <Path Margin="2,0,0,0"
                       Width="12" Height="12"
                       Data="{StaticResource Icons.Error}"
@@ -146,8 +150,7 @@
               </StackPanel>
 
               <Border Grid.Column="3" Margin="8,0" VerticalAlignment="Center" ClipToBounds="True">
-                <TextBlock Classes="primary"
-                           HorizontalAlignment="Right"
+                <TextBlock HorizontalAlignment="Right"
                            Foreground="{DynamicResource Brush.FG2}"
                            Text="{Binding Id, Converter={x:Static c:PathConverters.RelativeToHome}}"
                            IsVisible="{Binding IsRepository}"/>

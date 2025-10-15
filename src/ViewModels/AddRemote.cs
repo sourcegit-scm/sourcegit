@@ -87,32 +87,34 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding remote ...";
 
             var log = _repo.CreateLog("Add Remote");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Remote(_repo.FullPath).Use(log).Add(_name, _url);
-                if (succ)
-                {
-                    new Commands.Config(_repo.FullPath).Use(log).Set($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
-                    new Commands.Fetch(_repo.FullPath, _name, false, false).Use(log).Exec();
-                }
+            var succ = await new Commands.Remote(_repo.FullPath)
+                .Use(log)
+                .AddAsync(_name, _url);
 
-                log.Complete();
-                CallUIThread(() =>
-                {
-                    _repo.MarkFetched();
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
-                return succ;
-            });
+            if (succ)
+            {
+                await new Commands.Config(_repo.FullPath)
+                    .Use(log)
+                    .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+
+                await new Commands.Fetch(_repo.FullPath, _name, false, false)
+                    .Use(log)
+                    .RunAsync();
+            }
+
+            log.Complete();
+
+            _repo.MarkFetched();
+            _repo.MarkBranchesDirtyManually();
+            return succ;
         }
 
         private readonly Repository _repo = null;

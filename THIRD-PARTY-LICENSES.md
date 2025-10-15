@@ -1,50 +1,64 @@
 # Third-Party Licenses
 
-This project incorporates components from the following third parties:
+The project uses the following third-party libraries or assets
 
 ## Packages
 
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.2.5
+- **Version**: 11.3.7
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
 ### AvaloniaEdit
 
 - **Source**: https://github.com/AvaloniaUI/AvaloniaEdit
-- **Version**: 11.2.0
+- **Version**: 11.3.0
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/AvaloniaEdit/blob/master/LICENSE
 
 ### LiveChartsCore.SkiaSharpView.Avalonia
 
 - **Source**: https://github.com/beto-rodriguez/LiveCharts2
-- **Version**: 2.0.0-rc5.4
+- **Version**: 2.0.0-rc6.1
 - **License**: MIT License
 - **License Link**: https://github.com/beto-rodriguez/LiveCharts2/blob/master/LICENSE
 
 ### TextMateSharp
 
 - **Source**: https://github.com/danipen/TextMateSharp
-- **Version**: 1.0.66
+- **Version**: 1.0.70
 - **License**: MIT License
 - **License Link**: https://github.com/danipen/TextMateSharp/blob/master/LICENSE.md
 
 ### OpenAI .NET SDK
 
 - **Source**: https://github.com/openai/openai-dotnet
-- **Version**: 2.2.0-beta2
+- **Version**: 2.5.0
 - **License**: MIT License
 - **License Link**: https://github.com/openai/openai-dotnet/blob/main/LICENSE
 
 ### Azure.AI.OpenAI
 
 - **Source**: https://github.com/Azure/azure-sdk-for-net
-- **Version**: 2.2.0-beta2
+- **Version**: 2.5.0-beta.1
 - **License**: MIT License
 - **License Link**: https://github.com/Azure/azure-sdk-for-net/blob/main/LICENSE.txt
+
+### BitMiracle.LibTiff.NET
+
+- **Source**: https://github.com/BitMiracle/libtiff.net
+- **Version**: 2.4.660
+- **License**: New BSD License
+- **License Link**: https://github.com/BitMiracle/libtiff.net/blob/master/license.txt
+
+### Pfim
+
+- **Source**: https://github.com/nickbabcock/Pfim
+- **Version**: 0.11.3
+- **License**: MIT License
+- **License Link**: https://github.com/nickbabcock/Pfim/blob/master/LICENSE.txt
 
 ## Fonts
 
@@ -84,3 +98,10 @@ This project incorporates components from the following third parties:
 - **Commit**: 0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355
 - **License**: MIT License
 - **License Link**: https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355/LICENSE
+
+### vuejs-language-tools
+
+- **Source**: https://github.com/vuejs/language-tools
+- **Commit**: 68d98dc57f8486c2946ae28dc86bf8e91d45da4d
+- **License**: MIT License
+- **License Link**: https://github.com/vuejs/language-tools/blob/68d98dc57f8486c2946ae28dc86bf8e91d45da4d/LICENSE

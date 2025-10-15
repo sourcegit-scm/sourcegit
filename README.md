@@ -11,7 +11,7 @@
 * Supports Windows/macOS/Linux
 * Opensource/Free
 * Fast
-* Deutsch/English/Español/Français/Italiano/Português/Русский/Українська/简体中文/繁體中文/日本語/தமிழ் (Tamil)
+* Deutsch/English/Español/Bahasa Indonesia/Français/Italiano/Português/Русский/Українська/简体中文/繁體中文/日本語/தமிழ் (Tamil)
 * Built-in light/dark themes
 * Customize theme
 * Visual commit graph
@@ -126,7 +126,7 @@ For **Linux** users:
 
   If your distribution isn't using `dnf`, please refer to the documentation of your distribution on how to add an `rpm` repository.
 * `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your Linux.
+* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) or [git-credential-libsecret](https://pkgs.org/search/?q=git-credential-libsecret) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
 * If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`.
 
@@ -152,9 +152,10 @@ This app supports open repository in external tools listed in the table below.
 | Visual Studio Code            | YES     | YES   | YES   |
 | Visual Studio Code - Insiders | YES     | YES   | YES   |
 | VSCodium                      | YES     | YES   | YES   |
+| Cursor                        | YES     | YES   | YES   |
 | Fleet                         | YES     | YES   | YES   |
 | Sublime Text                  | YES     | YES   | YES   |
-| Zed                           | NO      | YES   | YES   |
+| Zed                           | YES     | YES   | YES   |
 | Visual Studio                 | YES     | NO    | NO    |
 
 > [!NOTE]

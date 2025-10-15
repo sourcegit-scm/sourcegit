@@ -35,9 +35,10 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItems is [ViewModels.ChangeTreeNode { IsFolder: true } node] && e.KeyModifiers == KeyModifiers.None)
+            if (SelectedItems is [ViewModels.ChangeTreeNode node])
             {
-                if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                if (((e.Key == Key.Left && node.IsExpanded) || (e.Key == Key.Right && !node.IsExpanded)) &&
+                    e.KeyModifiers == KeyModifiers.None)
                 {
                     this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
                     e.Handled = true;
@@ -78,6 +79,15 @@ namespace SourceGit.Views
             set => SetValue(ViewModeProperty, value);
         }
 
+        public static readonly StyledProperty<bool> EnableCompactFoldersProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(EnableCompactFolders));
+
+        public bool EnableCompactFolders
+        {
+            get => GetValue(EnableCompactFoldersProperty);
+            set => SetValue(EnableCompactFoldersProperty, value);
+        }
+
         public static readonly StyledProperty<List<Models.Change>> ChangesProperty =
             AvaloniaProperty.Register<ChangeCollectionView, List<Models.Change>>(nameof(Changes));
 
@@ -85,15 +95,6 @@ namespace SourceGit.Views
         {
             get => GetValue(ChangesProperty);
             set => SetValue(ChangesProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> AutoSelectFirstChangeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(AutoSelectFirstChange));
-
-        public bool AutoSelectFirstChange
-        {
-            get => GetValue(AutoSelectFirstChangeProperty);
-            set => SetValue(AutoSelectFirstChangeProperty, value);
         }
 
         public static readonly StyledProperty<List<Models.Change>> SelectedChangesProperty =
@@ -121,7 +122,7 @@ namespace SourceGit.Views
 
         public void ToggleNodeIsExpanded(ViewModels.ChangeTreeNode node)
         {
-            if (Content is ViewModels.ChangeCollectionAsTree tree)
+            if (Content is ViewModels.ChangeCollectionAsTree tree && node.IsFolder)
             {
                 node.IsExpanded = !node.IsExpanded;
 
@@ -164,7 +165,10 @@ namespace SourceGit.Views
 
             var set = new HashSet<string>();
             foreach (var c in selected)
-                set.Add(c.Path);
+            {
+                if (!c.IsConflicted)
+                    set.Add(c.Path);
+            }
 
             if (Content is ViewModels.ChangeCollectionAsTree tree)
             {
@@ -229,6 +233,9 @@ namespace SourceGit.Views
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
                 UpdateSelection();
+
+            if (change.Property == EnableCompactFoldersProperty && ViewMode == Models.ChangeViewMode.Tree)
+                UpdateDataSource(true);
         }
 
         private void OnRowDataContextChanged(object sender, EventArgs e)
@@ -359,30 +366,15 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, EnableCompactFolders);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);
                 tree.Rows.AddRange(rows);
 
-                if (!onlyViewModeChange && AutoSelectFirstChange)
+                if (selected.Count > 0)
                 {
-                    foreach (var row in tree.Rows)
-                    {
-                        if (row.Change != null)
-                        {
-                            tree.SelectedRows.Add(row);
-                            SetCurrentValue(SelectedChangesProperty, [row.Change]);
-                            break;
-                        }
-                    }
-                }
-                else if (selected.Count > 0)
-                {
-                    var sets = new HashSet<Models.Change>();
-                    foreach (var c in selected)
-                        sets.Add(c);
-
+                    var sets = new HashSet<Models.Change>(selected);
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)
                     {
@@ -399,16 +391,8 @@ namespace SourceGit.Views
             {
                 var grid = new ViewModels.ChangeCollectionAsGrid();
                 grid.Changes.AddRange(changes);
-
-                if (!onlyViewModeChange && AutoSelectFirstChange)
-                {
-                    grid.SelectedChanges.Add(changes[0]);
-                    SetCurrentValue(SelectedChangesProperty, [changes[0]]);
-                }
-                else if (selected.Count > 0)
-                {
+                if (selected.Count > 0)
                     grid.SelectedChanges.AddRange(selected);
-                }
 
                 Content = grid;
             }
@@ -416,16 +400,8 @@ namespace SourceGit.Views
             {
                 var list = new ViewModels.ChangeCollectionAsList();
                 list.Changes.AddRange(changes);
-
-                if (!onlyViewModeChange && AutoSelectFirstChange)
-                {
-                    list.SelectedChanges.Add(changes[0]);
-                    SetCurrentValue(SelectedChangesProperty, [changes[0]]);
-                }
-                else if (selected.Count > 0)
-                {
+                if (selected.Count > 0)
                     list.SelectedChanges.AddRange(selected);
-                }
 
                 Content = list;
             }
@@ -447,9 +423,7 @@ namespace SourceGit.Views
 
                 if (selected.Count > 0)
                 {
-                    var sets = new HashSet<Models.Change>();
-                    foreach (var c in selected)
-                        sets.Add(c);
+                    var sets = new HashSet<Models.Change>(selected);
 
                     var nodes = new List<ViewModels.ChangeTreeNode>();
                     foreach (var row in tree.Rows)

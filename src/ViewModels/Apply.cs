@@ -41,20 +41,20 @@ namespace SourceGit.ViewModels
             return new ValidationResult($"File '{file}' can NOT be found!!!");
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Apply patch...";
 
             var log = _repo.CreateLog("Apply Patch");
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null).Use(log).Exec();
-                log.Complete();
+            Use(log);
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, null)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo = null;

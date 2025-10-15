@@ -12,7 +12,7 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Branch name is required!!!")]
-        [RegularExpression(@"^[\w \-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
+        [RegularExpression(@"^[\w\-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(RenameBranch), nameof(ValidateBranchName))]
         public string Name
         {
@@ -31,73 +31,57 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is RenameBranch rename)
             {
-                var fixedName = rename.FixName(name);
                 foreach (var b in rename._repo.Branches)
                 {
-                    if (b.IsLocal && b != rename.Target && b.Name == fixedName)
-                    {
+                    if (b.IsLocal && b != rename.Target && b.Name.Equals(name, StringComparison.Ordinal))
                         return new ValidationResult("A branch with same name already exists!!!");
-                    }
                 }
             }
 
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            var fixedName = FixName(_name);
-            if (fixedName == Target.Name)
-                return null;
+            if (Target.Name.Equals(_name, StringComparison.Ordinal))
+                return true;
 
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Rename '{Target.Name}'";
 
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
-            return Task.Run(() =>
+            var isCurrent = Target.IsCurrent;
+            var oldName = Target.FullName;
+
+            var succ = await new Commands.Branch(_repo.FullPath, Target.Name)
+                .Use(log)
+                .RenameAsync(_name);
+
+            if (succ)
             {
-                var isCurrent = Target.IsCurrent;
-                var oldName = Target.FullName;
-                var succ = Commands.Branch.Rename(_repo.FullPath, Target.Name, fixedName, log);
-                log.Complete();
-
-                CallUIThread(() =>
+                foreach (var filter in _repo.Settings.HistoriesFilters)
                 {
-                    ProgressDescription = "Waiting for branch updated...";
-
-                    if (succ)
+                    if (filter.Type == Models.FilterType.LocalBranch &&
+                        filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                     {
-                        foreach (var filter in _repo.Settings.HistoriesFilters)
-                        {
-                            if (filter.Type == Models.FilterType.LocalBranch &&
-                                filter.Pattern.Equals(oldName, StringComparison.Ordinal))
-                            {
-                                filter.Pattern = $"refs/heads/{fixedName}";
-                                break;
-                            }
-                        }
+                        filter.Pattern = $"refs/heads/{_name}";
+                        break;
                     }
+                }
+            }
 
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                });
+            log.Complete();
+            _repo.MarkBranchesDirtyManually();
 
-                if (isCurrent)
-                    Task.Delay(400).Wait();
+            if (isCurrent)
+            {
+                ProgressDescription = "Waiting for branch updated...";
+                await Task.Delay(400);
+            }
 
-                return succ;
-            });
-        }
-
-        private string FixName(string name)
-        {
-            if (!name.Contains(' '))
-                return name;
-
-            var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            return string.Join("-", parts);
+            return succ;
         }
 
         private readonly Repository _repo;

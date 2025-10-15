@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -57,27 +53,32 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        Task.Run(() =>
+                        Task.Run(async () =>
                         {
-                            var changes = new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA).Result();
-                            var untracked = new List<Models.Change>();
+                            var changes = await new Commands.CompareRevisions(_repo.FullPath, $"{value.SHA}^", value.SHA)
+                                .ReadAsync()
+                                .ConfigureAwait(false);
 
+                            var untracked = new List<Models.Change>();
                             if (value.Parents.Count == 3)
                             {
-                                untracked = new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2]).Result();
+                                untracked = await new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2])
+                                    .ReadAsync()
+                                    .ConfigureAwait(false);
+
                                 var needSort = changes.Count > 0 && untracked.Count > 0;
-
-                                foreach (var c in untracked)
-                                    changes.Add(c);
-
+                                changes.AddRange(untracked);
                                 if (needSort)
                                     changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                             }
 
-                            Dispatcher.UIThread.Invoke(() =>
+                            Dispatcher.UIThread.Post(() =>
                             {
-                                _untracked = untracked;
-                                Changes = changes;
+                                if (value.SHA.Equals(_selectedStash?.SHA ?? string.Empty, StringComparison.Ordinal))
+                                {
+                                    _untracked = untracked;
+                                    Changes = changes;
+                                }
                             });
                         });
                     }
@@ -91,23 +92,23 @@ namespace SourceGit.ViewModels
             private set
             {
                 if (SetProperty(ref _changes, value))
-                    SelectedChange = value is { Count: > 0 } ? value[0] : null;
+                    SelectedChanges = value is { Count: > 0 } ? [value[0]] : [];
             }
         }
 
-        public Models.Change SelectedChange
+        public List<Models.Change> SelectedChanges
         {
-            get => _selectedChange;
+            get => _selectedChanges;
             set
             {
-                if (SetProperty(ref _selectedChange, value))
+                if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value == null)
+                    if (value is not { Count: 1 })
                         DiffContext = null;
-                    else if (_untracked.Contains(value))
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], value), _diffContext);
+                    else if (_untracked.Contains(value[0]))
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], value[0]), _diffContext);
                     else
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value[0]), _diffContext);
                 }
             }
         }
@@ -127,167 +128,12 @@ namespace SourceGit.ViewModels
         {
             _stashes?.Clear();
             _changes?.Clear();
+            _selectedChanges?.Clear();
             _untracked.Clear();
 
             _repo = null;
             _selectedStash = null;
-            _selectedChange = null;
             _diffContext = null;
-        }
-
-        public ContextMenu MakeContextMenu(Models.Stash stash)
-        {
-            if (stash == null)
-                return null;
-
-            var apply = new MenuItem();
-            apply.Header = App.Text("StashCM.Apply");
-            apply.Click += (_, ev) =>
-            {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new ApplyStash(_repo, stash));
-
-                ev.Handled = true;
-            };
-
-            var drop = new MenuItem();
-            drop.Header = App.Text("StashCM.Drop");
-            drop.Click += (_, ev) =>
-            {
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new DropStash(_repo, stash));
-
-                ev.Handled = true;
-            };
-
-            var patch = new MenuItem();
-            patch.Header = App.Text("StashCM.SaveAsPatch");
-            patch.Icon = App.CreateMenuIcon("Icons.Diff");
-            patch.Click += async (_, e) =>
-            {
-                var storageProvider = App.GetStorageProvider();
-                if (storageProvider == null)
-                    return;
-
-                var options = new FilePickerSaveOptions();
-                options.Title = App.Text("StashCM.SaveAsPatch");
-                options.DefaultExtension = ".patch";
-                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
-
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
-                {
-                    var opts = new List<Models.DiffOption>();
-                    foreach (var c in _changes)
-                    {
-                        if (_untracked.Contains(c))
-                            opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
-                        else
-                            opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
-                    }
-
-                    var succ = await Task.Run(() => Commands.SaveChangesAsPatch.ProcessStashChanges(_repo.FullPath, opts, storageFile.Path.LocalPath));
-                    if (succ)
-                        App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
-                }
-
-                e.Handled = true;
-            };
-
-            var menu = new ContextMenu();
-            menu.Items.Add(apply);
-            menu.Items.Add(drop);
-            menu.Items.Add(new MenuItem { Header = "-" });
-            menu.Items.Add(patch);
-            return menu;
-        }
-
-        public ContextMenu MakeContextMenuForChange(Models.Change change)
-        {
-            if (change == null)
-                return null;
-
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
-            {
-                var toolType = Preferences.Instance.ExternalMergeToolType;
-                var toolPath = Preferences.Instance.ExternalMergeToolPath;
-                var opt = new Models.DiffOption($"{_selectedStash.SHA}^", _selectedStash.SHA, change);
-
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo.FullPath, toolType, toolPath, opt));
-                ev.Handled = true;
-            };
-
-            var fullPath = Path.Combine(_repo.FullPath, change.Path);
-            var explore = new MenuItem();
-            explore.Header = App.Text("RevealFile");
-            explore.Icon = App.CreateMenuIcon("Icons.Explore");
-            explore.IsEnabled = File.Exists(fullPath);
-            explore.Click += (_, ev) =>
-            {
-                Native.OS.OpenInFileManager(fullPath, true);
-                ev.Handled = true;
-            };
-
-            var resetToThisRevision = new MenuItem();
-            resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-            resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-            resetToThisRevision.Click += async (_, ev) =>
-            {
-                var log = _repo.CreateLog($"Reset File to '{_selectedStash.SHA}'");
-
-                await Task.Run(() =>
-                {
-                    if (_untracked.Contains(change))
-                    {
-                        Commands.SaveRevisionFile.Run(_repo.FullPath, _selectedStash.Parents[2], change.Path, fullPath);
-                    }
-                    else if (change.Index == Models.ChangeState.Added)
-                    {
-                        Commands.SaveRevisionFile.Run(_repo.FullPath, _selectedStash.SHA, change.Path, fullPath);
-                    }
-                    else
-                    {
-                        new Commands.Checkout(_repo.FullPath)
-                            .Use(log)
-                            .FileWithRevision(change.Path, $"{_selectedStash.SHA}");
-                    }
-                });
-
-                log.Complete();
-                ev.Handled = true;
-            };
-
-            var copyPath = new MenuItem();
-            copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
-            {
-                App.CopyText(change.Path);
-                ev.Handled = true;
-            };
-
-            var copyFullPath = new MenuItem();
-            copyFullPath.Header = App.Text("CopyFullPath");
-            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
-            {
-                App.CopyText(Native.OS.GetAbsPath(_repo.FullPath, change.Path));
-                e.Handled = true;
-            };
-
-            var menu = new ContextMenu();
-            menu.Items.Add(diffWithMerger);
-            menu.Items.Add(explore);
-            menu.Items.Add(new MenuItem { Header = "-" });
-            menu.Items.Add(resetToThisRevision);
-            menu.Items.Add(new MenuItem { Header = "-" });
-            menu.Items.Add(copyPath);
-            menu.Items.Add(copyFullPath);
-
-            return menu;
         }
 
         public void ClearSearchFilter()
@@ -295,10 +141,74 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo.FullPath, path);
+        }
+
+        public void Apply(Models.Stash stash)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new ApplyStash(_repo, stash));
+        }
+
         public void Drop(Models.Stash stash)
         {
-            if (stash != null && _repo.CanCreatePopup())
+            if (_repo.CanCreatePopup())
                 _repo.ShowPopup(new DropStash(_repo, stash));
+        }
+
+        public async Task SaveStashAsPathAsync(Models.Stash stash, string saveTo)
+        {
+            var opts = new List<Models.DiffOption>();
+            var changes = await new Commands.CompareRevisions(_repo.FullPath, $"{stash.SHA}^", stash.SHA)
+                .ReadAsync()
+                .ConfigureAwait(false);
+
+            foreach (var c in changes)
+                opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
+
+            if (stash.Parents.Count == 3)
+            {
+                var untracked = await new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, stash.Parents[2])
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
+                foreach (var c in untracked)
+                    opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
+
+                changes.AddRange(untracked);
+            }
+
+            var succ = await Commands.SaveChangesAsPatch.ProcessStashChangesAsync(_repo.FullPath, opts, saveTo);
+            if (succ)
+                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+        }
+
+        public void OpenChangeWithExternalDiffTool(Models.Change change)
+        {
+            Models.DiffOption opt;
+            if (_untracked.Contains(change))
+                opt = new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], change);
+            else
+                opt = new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, change);
+
+            new Commands.DiffTool(_repo.FullPath, opt).Open();
+        }
+
+        public async Task CheckoutSingleFileAsync(Models.Change change)
+        {
+            var revision = _selectedStash.SHA;
+            if (_untracked.Contains(change) && _selectedStash.Parents.Count == 3)
+                revision = _selectedStash.Parents[2];
+            else if (change.Index == Models.ChangeState.Added && _selectedStash.Parents.Count > 1)
+                revision = _selectedStash.Parents[1];
+
+            var log = _repo.CreateLog($"Reset File to '{_selectedStash.Name}'");
+            await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .FileWithRevisionAsync(change.Path, revision);
+            log.Complete();
         }
 
         private void RefreshVisible()
@@ -327,7 +237,7 @@ namespace SourceGit.ViewModels
         private Models.Stash _selectedStash = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _untracked = [];
-        private Models.Change _selectedChange = null;
+        private List<Models.Change> _selectedChanges = [];
         private DiffContext _diffContext = null;
     }
 }

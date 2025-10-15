@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -116,10 +117,11 @@ namespace SourceGit.Views
         {
             var pref = ViewModels.Preferences.Instance;
             DataContext = pref;
+            CloseOnESC = true;
 
             if (pref.IsGitConfigured())
             {
-                var config = new Commands.Config(null).ListAll();
+                var config = new Commands.Config(null).ReadAll();
 
                 if (config.TryGetValue("user.name", out var name))
                     DefaultUser = name;
@@ -153,13 +155,13 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == GPGFormatProperty)
             {
-                var config = new Commands.Config(null).ListAll();
+                var config = await new Commands.Config(null).ReadAllAsync();
                 if (GPGFormat.Value == "openpgp" && config.TryGetValue("gpg.program", out var openpgp))
                     GPGExecutableFile = openpgp;
                 else if (config.TryGetValue($"gpg.{GPGFormat.Value}.program", out var gpgProgram))
@@ -167,23 +169,23 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnClosing(WindowClosingEventArgs e)
+        protected override async void OnClosing(WindowClosingEventArgs e)
         {
             base.OnClosing(e);
 
             if (Design.IsDesignMode)
                 return;
 
-            var config = new Commands.Config(null).ListAll();
-            SetIfChanged(config, "user.name", DefaultUser, "");
-            SetIfChanged(config, "user.email", DefaultEmail, "");
-            SetIfChanged(config, "user.signingkey", GPGUserKey, "");
-            SetIfChanged(config, "core.autocrlf", CRLFMode?.Value, null);
-            SetIfChanged(config, "fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
-            SetIfChanged(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
-            SetIfChanged(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");
-            SetIfChanged(config, "http.sslverify", EnableHTTPSSLVerify ? "" : "false", "");
-            SetIfChanged(config, "gpg.format", GPGFormat.Value, "openpgp");
+            var config = await new Commands.Config(null).ReadAllAsync();
+            await SetIfChangedAsync(config, "user.name", DefaultUser, "");
+            await SetIfChangedAsync(config, "user.email", DefaultEmail, "");
+            await SetIfChangedAsync(config, "user.signingkey", GPGUserKey, "");
+            await SetIfChangedAsync(config, "core.autocrlf", CRLFMode?.Value, null);
+            await SetIfChangedAsync(config, "fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
+            await SetIfChangedAsync(config, "commit.gpgsign", EnableGPGCommitSigning ? "true" : "false", "false");
+            await SetIfChangedAsync(config, "tag.gpgsign", EnableGPGTagSigning ? "true" : "false", "false");
+            await SetIfChangedAsync(config, "http.sslverify", EnableHTTPSSLVerify ? "" : "false", "");
+            await SetIfChangedAsync(config, "gpg.format", GPGFormat.Value, "openpgp");
 
             if (!GPGFormat.Value.Equals("ssh", StringComparison.Ordinal))
             {
@@ -200,7 +202,7 @@ namespace SourceGit.Views
                     changed = true;
 
                 if (changed)
-                    new Commands.Config(null).Set($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
+                    await new Commands.Config(null).SetAsync($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
             }
 
             ViewModels.Preferences.Instance.Save();
@@ -214,10 +216,15 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preferences.Instance.ThemeOverrides = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    ViewModels.Preferences.Instance.ThemeOverrides = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select theme: {ex.Message}");
             }
 
             e.Handled = true;
@@ -232,11 +239,18 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preferences.Instance.GitInstallPath = selected[0].Path.LocalPath;
-                UpdateGitVersion();
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                {
+                    ViewModels.Preferences.Instance.GitInstallPath = selected[0].Path.LocalPath;
+                    UpdateGitVersion();
+                }
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select git executable: {ex.Message}");
             }
 
             e.Handled = true;
@@ -277,10 +291,15 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                GPGExecutableFile = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    GPGExecutableFile = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select gpg program: {ex.Message}");
             }
 
             e.Handled = true;
@@ -293,16 +312,25 @@ namespace SourceGit.Views
                 return;
 
             var shell = Models.ShellOrTerminal.Supported[type];
-            var options = new FilePickerOpenOptions()
+            var options = new FilePickerOpenOptions() { AllowMultiple = false };
+            if (shell.Type != "custom")
             {
-                FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
-                AllowMultiple = false,
-            };
+                options = new FilePickerOpenOptions()
+                {
+                    FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
+                    AllowMultiple = false,
+                };
+            }
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    ViewModels.Preferences.Instance.ShellOrTerminalPath = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select shell/terminal: {ex.Message}");
             }
 
             e.Handled = true;
@@ -311,7 +339,7 @@ namespace SourceGit.Views
         private async void SelectExternalMergeTool(object _, RoutedEventArgs e)
         {
             var type = ViewModels.Preferences.Instance.ExternalMergeToolType;
-            if (type < 0 || type >= Models.ExternalMerger.Supported.Count)
+            if (type <= 0 || type >= Models.ExternalMerger.Supported.Count)
             {
                 ViewModels.Preferences.Instance.ExternalMergeToolType = 0;
                 e.Handled = true;
@@ -321,20 +349,25 @@ namespace SourceGit.Views
             var tool = Models.ExternalMerger.Supported[type];
             var options = new FilePickerOpenOptions()
             {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatterns() }],
+                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatternsToFindExecFile() }],
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1)
+            try
             {
-                ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 })
+                    ViewModels.Preferences.Instance.ExternalMergeToolPath = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select merge tool: {ex.Message}");
             }
 
             e.Handled = true;
         }
 
-        private void SetIfChanged(Dictionary<string, string> cached, string key, string value, string defValue)
+        private static async Task SetIfChangedAsync(Dictionary<string, string> cached, string key, string value, string defValue)
         {
             bool changed = false;
             if (cached.TryGetValue(key, out var old))
@@ -343,15 +376,15 @@ namespace SourceGit.Views
                 changed = true;
 
             if (changed)
-                new Commands.Config(null).Set(key, value);
+                await new Commands.Config(null).SetAsync(key, value);
         }
 
-        private void OnUseNativeWindowFrameChanged(object sender, RoutedEventArgs e)
+        private async void OnUseNativeWindowFrameChanged(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox box)
             {
                 ViewModels.Preferences.Instance.UseSystemWindowFrame = box.IsChecked == true;
-                App.ShowWindow(new ConfirmRestart(), true);
+                await App.ShowDialog(new ConfirmRestart());
             }
 
             e.Handled = true;
@@ -398,9 +431,16 @@ namespace SourceGit.Views
                 AllowMultiple = false,
             };
 
-            var selected = await StorageProvider.OpenFilePickerAsync(options);
-            if (selected.Count == 1 && sender is Button { DataContext: Models.CustomAction action })
-                action.Executable = selected[0].Path.LocalPath;
+            try
+            {
+                var selected = await StorageProvider.OpenFilePickerAsync(options);
+                if (selected is { Count: 1 } && sender is Button { DataContext: Models.CustomAction action })
+                    action.Executable = selected[0].Path.LocalPath;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(string.Empty, $"Failed to select program for custom action: {ex.Message}");
+            }
 
             e.Handled = true;
         }
@@ -436,6 +476,20 @@ namespace SourceGit.Views
             if (idx < ViewModels.Preferences.Instance.CustomActions.Count - 1)
                 ViewModels.Preferences.Instance.CustomActions.Move(idx + 1, idx);
 
+            e.Handled = true;
+        }
+
+        private async void EditCustomActionControls(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button { DataContext: Models.CustomAction act })
+                return;
+
+            var dialog = new ConfigureCustomActionControls()
+            {
+                DataContext = new ViewModels.ConfigureCustomActionControls(act.Controls)
+            };
+
+            await dialog.ShowDialog(this);
             e.Handled = true;
         }
 

@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.MoveSubmodule"
+             x:DataType="vm:MoveSubmodule">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.MoveSubmodule}"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.MoveSubmodule.Submodule}"/>
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Submodule}"/>
+        <TextBlock Margin="6,0,0,0" Text="{Binding Submodule.Path}"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.MoveSubmodule.MoveTo}"/>
+      <TextBox Grid.Row="1" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="2"
+               Watermark="{DynamicResource Text.Submodule.RelativePath.Placeholder}"
+               Text="{Binding MoveTo, Mode=TwoWay}"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

@@ -82,7 +82,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:Workspace">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Fill="{Binding Brush}"
@@ -97,7 +97,6 @@
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="1"
                        Margin="8,0,0,0"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{Binding Name}"
                        IsHitTestVisible="False"

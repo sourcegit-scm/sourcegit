@@ -1,11 +1,16 @@
 ﻿using System.Text.RegularExpressions;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
-    public class IssueTrackerRule : ObservableObject
+    public class IssueTracker : ObservableObject
     {
+        public bool IsShared
+        {
+            get => _isShared;
+            set => SetProperty(ref _isShared, value);
+        }
+
         public string Name
         {
             get => _name;
@@ -21,12 +26,11 @@ namespace SourceGit.Models
                 {
                     try
                     {
-                        _regex = null;
                         _regex = new Regex(_regexString, RegexOptions.Multiline);
                     }
                     catch
                     {
-                        // Ignore errors.
+                        _regex = null;
                     }
                 }
 
@@ -51,12 +55,8 @@ namespace SourceGit.Models
                 return;
 
             var matches = _regex.Matches(message);
-            for (var i = 0; i < matches.Count; i++)
+            foreach (Match match in matches)
             {
-                var match = matches[i];
-                if (!match.Success)
-                    continue;
-
                 var start = match.Index;
                 var len = match.Length;
                 if (outs.Intersect(start, len) != null)
@@ -74,6 +74,7 @@ namespace SourceGit.Models
             }
         }
 
+        private bool _isShared;
         private string _name;
         private string _regexString;
         private string _urlTemplate;

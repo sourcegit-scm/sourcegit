@@ -3,10 +3,8 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
-                    xmlns:vm="using:SourceGit.ViewModels"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.ConfirmCommit"
-                    x:DataType="vm:ConfirmCommit"
+                    x:Class="SourceGit.Views.Confirm"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Warn}"
@@ -38,7 +36,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock Text="{Binding Message}" MaxWidth="520" TextWrapping="Wrap"/>
+      <TextBlock x:Name="Message" MaxWidth="520" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->

@@ -84,5 +84,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<string, bool> IsNotNullOrWhitespace =
             new FuncValueConverter<string, bool>(v => v != null && v.Trim().Length > 0);
+
+        public static readonly FuncValueConverter<string, string> ToFriendlyUpstream =
+            new FuncValueConverter<string, string>(v => v is { Length: > 13 } ? v.Substring(13) : string.Empty);
     }
 }

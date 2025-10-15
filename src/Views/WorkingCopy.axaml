@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
@@ -74,7 +73,7 @@
                     Width="26" Height="14"
                     Padding="0"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchanged}"
-                    Command="{Binding OpenAssumeUnchanged}">
+                    Click="OnOpenAssumeUnchanged">
               <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
             </Button>
             <ToggleButton Grid.Column="5"
@@ -88,7 +87,7 @@
                     Padding="0"
                     IsVisible="{Binding HasUnsolvedConflicts}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts}"
-                    Command="{Binding OpenExternalMergeToolAllConflicts}">
+                    Click="OnOpenExternalMergeToolAllConflicts">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
             </Button>
             <Button Grid.Column="7"
@@ -99,7 +98,11 @@
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                   <TextBlock Text="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" VerticalAlignment="Center"/>
-                  <TextBlock Margin="16,0,0,0" Text="{OnPlatform Space/Enter, macOS=␣/Enter}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                  <TextBlock Margin="16,0,0,0"
+                             Text="{OnPlatform Space/Enter, macOS=␣/Enter}"
+                             Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                             FontSize="11"
+                             VerticalAlignment="Center"/>
                 </StackPanel>
               </ToolTip.Tip>
               <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
@@ -109,7 +112,7 @@
                     Width="26" Height="14"
                     Padding="0"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.StageAll}"
-                    Command="{Binding StageAll}">
+                    Click="OnStageAllButtonClicked">
               <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
             </Button>
             <v:ChangeViewModeSwitcher Grid.Column="9"
@@ -126,6 +129,7 @@
                                 SelectionMode="Multiple"
                                 Background="{DynamicResource Brush.Contents}"
                                 ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode}"
+                                EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleUnstaged}"
                                 SelectedChanges="{Binding SelectedUnstaged, Mode=TwoWay}"
                                 ContextRequested="OnUnstagedContextRequested"
@@ -154,12 +158,16 @@
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                   <TextBlock Text="{DynamicResource Text.WorkingCopy.Staged.Unstage}" VerticalAlignment="Center"/>
-                  <TextBlock Margin="16,0,0,0" Text="{OnPlatform Space/Enter, macOS=␣/Enter}" Opacity=".6" FontSize="11" VerticalAlignment="Center"/>
+                  <TextBlock Margin="16,0,0,0"
+                             Text="{OnPlatform Space/Enter, macOS=␣/Enter}"
+                             FontSize="11"
+                             VerticalAlignment="Center"
+                             Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </StackPanel>
               </ToolTip.Tip>
               <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
             </Button>
-            <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Command="{Binding UnstageAll}">
+            <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="OnUnstageAllButtonClicked">
               <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
             </Button>
             <v:ChangeViewModeSwitcher Grid.Column="6"
@@ -176,6 +184,7 @@
                                 SelectionMode="Multiple"
                                 Background="{DynamicResource Brush.Contents}"
                                 ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode}"
+                                EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleStaged}"
                                 SelectedChanges="{Binding SelectedStaged, Mode=TwoWay}"
                                 ContextRequested="OnStagedContextRequested"
@@ -235,7 +244,7 @@
       <v:CommitMessageTextBox Grid.Row="2" ShowAdvancedOptions="True" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <CheckBox Grid.Column="0"
                   Height="24"
                   Margin="1,0,0,0"
@@ -250,13 +259,23 @@
                   Height="24"
                   Margin="12,0,0,0"
                   HorizontalAlignment="Left"
+                  IsChecked="{Binding NoVerifyOnCommit, Mode=TwoWay}"
+                  Content="{DynamicResource Text.WorkingCopy.NoVerify}"
+                  ToolTip.Tip="--no-verify"
+                  ToolTip.Placement="Top"
+                  ToolTip.VerticalOffset="0"/>
+
+        <CheckBox Grid.Column="2"
+                  Height="24"
+                  Margin="12,0,0,0"
+                  HorizontalAlignment="Left"
                   IsChecked="{Binding UseAmend, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.Amend}"
                   ToolTip.Tip="--amend"
                   ToolTip.Placement="Top"
                   ToolTip.VerticalOffset="0"/>
 
-        <CheckBox Grid.Column="2"
+        <CheckBox Grid.Column="3"
                   Height="24"
                   Margin="12,0,0,0"
                   HorizontalAlignment="Left"
@@ -267,17 +286,17 @@
                   ToolTip.Placement="Top"
                   ToolTip.VerticalOffset="0"/>
 
-        <v:LoadingIcon Grid.Column="3"
+        <v:LoadingIcon Grid.Column="4"
                        Width="18" Height="18"
                        HorizontalAlignment="Right"
                        IsVisible="{Binding IsCommitting}"/>
 
-        <SplitButton Grid.Column="4"
+        <SplitButton Grid.Column="5"
                      Content="{DynamicResource Text.Repository.Continue}"
                      Height="28"
                      Margin="8,0,0,0"
                      Padding="8,0"
-                     Command="{Binding ContinueMerge}"
+                     Click="OnContinue"
                      IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
           <SplitButton.IsEnabled>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -288,19 +307,19 @@
           <SplitButton.Flyout>
             <MenuFlyout>
               <MenuItem Header="{DynamicResource Text.WorkingCopy.CommitToEdit}"
-                        Command="{Binding Commit}"
+                        Click="OnCommit"
                         IsEnabled="{Binding CommitMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}"/>
             </MenuFlyout>
           </SplitButton.Flyout>
         </SplitButton>
 
-        <Button Grid.Column="4"
+        <Button Grid.Column="5"
                 Classes="flat primary"
                 Content="{DynamicResource Text.WorkingCopy.Commit}"
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
-                Command="{Binding Commit}"
+                Click="OnCommit"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
                 ToolTip.Placement="Top"
@@ -327,10 +346,10 @@
         </Button>
 
         <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
-        <Button Grid.Column="5"
+        <Button Grid.Column="6"
                 Width="0" Height="0"
                 Background="Transparent"
-                Command="{Binding CommitWithAutoStage}"
+                Click="OnCommitWithAutoStage"
                 HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}">
           <Button.IsEnabled>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -340,15 +359,15 @@
           </Button.IsEnabled>
         </Button>
 
-        <Button Grid.Column="6"
+        <Button Grid.Column="7"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
                 Height="28"
                 Margin="8,0,0,0"
                 Padding="8,0"
-                Command="{Binding CommitWithPush}"
-                HotKey="Alt+Enter"
-                ToolTip.Tip="{OnPlatform Alt+Enter, macOS=⌥+Enter}"
+                Click="OnCommitWithPush"
+                HotKey="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+Alt+Enter}"
+                ToolTip.Tip="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+⌥+Enter}"
                 ToolTip.Placement="Top"
                 ToolTip.VerticalOffset="0">
           <Button.IsEnabled>

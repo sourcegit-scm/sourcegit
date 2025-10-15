@@ -12,15 +12,4 @@
             Args += basedOn;
         }
     }
-
-    public class InteractiveRebase : Command
-    {
-        public InteractiveRebase(string repo, string basedOn)
-        {
-            WorkingDirectory = repo;
-            Context = repo;
-            Editor = EditorType.RebaseEditor;
-            Args = $"rebase -i --autosquash {basedOn}";
-        }
-    }
 }

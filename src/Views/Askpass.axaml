@@ -36,7 +36,7 @@
 
     <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
       <Border Margin="16,0">
-        <TextBlock x:Name="TxtDescription" Text="Enter passphrase:" TextWrapping="Wrap"/>
+        <TextBlock x:Name="TxtDescription" Text="{DynamicResource Text.Askpass.Passphrase}" TextWrapping="Wrap"/>
       </Border>
 
       <TextBox x:Name="TxtPassphrase"

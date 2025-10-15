@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -19,7 +20,7 @@ namespace SourceGit.ViewModels
         {
             Name = branch.Name;
             Head = branch.Head;
-            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).Result() ?? new Models.Commit() { SHA = branch.Head };
+            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResult() ?? new Models.Commit() { SHA = branch.Head };
         }
     }
 
@@ -65,58 +66,55 @@ namespace SourceGit.ViewModels
             _change = change;
 
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
-            if (!isSubmodule && (_change.ConflictReason == Models.ConflictReason.BothAdded || _change.ConflictReason == Models.ConflictReason.BothModified))
+            if (!isSubmodule && (_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified))
             {
                 CanUseExternalMergeTool = true;
-                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).Result();
+                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
             }
 
-            var context = wc.InProgressContext;
-            if (context is CherryPickInProgress cherryPick)
+            switch (wc.InProgressContext)
             {
-                Theirs = cherryPick.Head;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-            }
-            else if (context is RebaseInProgress rebase)
-            {
-                var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
-                if (b != null)
-                    Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
-                else
-                    Theirs = new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
+                case CherryPickInProgress cherryPick:
+                    Theirs = cherryPick.Head;
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
+                case RebaseInProgress rebase:
+                    var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
+                    if (b != null)
+                        Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
+                    else
+                        Theirs = new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
 
-                Mine = rebase.Onto;
-            }
-            else if (context is RevertInProgress revert)
-            {
-                Theirs = revert.Head;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-            }
-            else if (context is MergeInProgress merge)
-            {
-                Theirs = merge.Source;
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-            }
-            else
-            {
-                Theirs = "Stash or Patch";
-                Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    Mine = rebase.Onto;
+                    break;
+                case RevertInProgress revert:
+                    Theirs = revert.Head;
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
+                case MergeInProgress merge:
+                    Theirs = merge.Source;
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
+                default:
+                    Theirs = "Stash or Patch";
+                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
+                    break;
             }
         }
 
-        public void UseTheirs()
+        public async Task UseTheirsAsync()
         {
-            _wc.UseTheirs([_change]);
+            await _wc.UseTheirsAsync([_change]);
         }
 
-        public void UseMine()
+        public async Task UseMineAsync()
         {
-            _wc.UseMine([_change]);
+            await _wc.UseMineAsync([_change]);
         }
 
-        public void OpenExternalMergeTool()
+        public async Task OpenExternalMergeToolAsync()
         {
-            _wc.UseExternalMergeTool(_change);
+            await _wc.UseExternalMergeToolAsync(_change);
         }
 
         private WorkingCopy _wc = null;

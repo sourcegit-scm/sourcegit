@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class IsLFSFiltered : Command
     {
@@ -6,7 +8,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"check-attr -z filter \"{path}\"";
+            Args = $"check-attr -z filter {path.Quoted()}";
             RaiseError = false;
         }
 
@@ -14,13 +16,23 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"check-attr --source {sha} -z filter \"{path}\"";
+            Args = $"check-attr --source {sha} -z filter {path.Quoted()}";
             RaiseError = false;
         }
 
-        public bool Result()
+        public bool GetResult()
         {
-            var rs = ReadToEnd();
+            return Parse(ReadToEnd());
+        }
+
+        public async Task<bool> GetResultAsync()
+        {
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return Parse(rs);
+        }
+
+        private bool Parse(Result rs)
+        {
             return rs.IsSuccess && rs.StdOut.Contains("filter\0lfs");
         }
     }

@@ -102,7 +102,7 @@ namespace SourceGit.ViewModels
 
             // Gather all local branches and find current branch.
             LocalBranches = new List<Models.Branch>();
-            var current = null as Models.Branch;
+            Models.Branch current = null;
             foreach (var branch in _repo.Branches)
             {
                 if (branch.IsLocal)
@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
             // Set default remote to the first if it has not been set.
             if (_selectedRemote == null)
             {
-                var remote = null as Models.Remote;
+                Models.Remote remote = null;
                 if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
                     remote = repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
 
@@ -158,9 +158,9 @@ namespace SourceGit.ViewModels
             return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var remoteBranchName = _selectedRemoteBranch.Name;
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
@@ -168,22 +168,18 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Push(
-                    _repo.FullPath,
-                    _selectedLocalBranch.Name,
-                    _selectedRemote.Name,
-                    remoteBranchName,
-                    PushAllTags,
-                    _repo.Submodules.Count > 0 && CheckSubmodules,
-                    _isSetTrackOptionVisible && Tracking,
-                    ForcePush).Use(log).Exec();
+            var succ = await new Commands.Push(
+                _repo.FullPath,
+                _selectedLocalBranch.Name,
+                _selectedRemote.Name,
+                remoteBranchName,
+                PushAllTags,
+                _repo.Submodules.Count > 0 && CheckSubmodules,
+                _isSetTrackOptionVisible && Tracking,
+                ForcePush).Use(log).RunAsync();
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            return succ;
         }
 
         private void AutoSelectBranchByRemote()

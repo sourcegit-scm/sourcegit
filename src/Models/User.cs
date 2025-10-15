@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace SourceGit.Models
 {
@@ -17,10 +16,12 @@ namespace SourceGit.Models
 
         public User(string data)
         {
-            var nameEndIdx = data.IndexOf('±', StringComparison.Ordinal);
+            var parts = data.Split('±', 2);
+            if (parts.Length < 2)
+                parts = [string.Empty, data];
 
-            Name = nameEndIdx > 0 ? data.Substring(0, nameEndIdx) : string.Empty;
-            Email = data.Substring(nameEndIdx + 1);
+            Name = parts[0];
+            Email = parts[1].TrimStart('<').TrimEnd('>');
             _hash = data.GetHashCode();
         }
 

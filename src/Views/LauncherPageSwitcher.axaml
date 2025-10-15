@@ -83,7 +83,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:LauncherPage">
-          <Grid ColumnDefinitions="Auto,6,*" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
+          <Grid ColumnDefinitions="Auto,6,*" Background="Transparent" Tapped="OnItemTapped">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
@@ -97,13 +97,11 @@
                   IsVisible="{Binding !Node.IsRepository}"
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{Binding Node.Name}"
                        IsVisible="{Binding Node.IsRepository}"
                        IsHitTestVisible="False"/>
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                        IsVisible="{Binding !Node.IsRepository}"

@@ -11,15 +11,8 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.BranchCompare}"
-                    MinWidth="1280" MinHeight="720"
-                    WindowStartupLocation="CenterOwner">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="64"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
+                    MinWidth="1280" MinHeight="720">
+  <Grid RowDefinitions="Auto,64,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
@@ -45,7 +38,7 @@
 
     <!-- Compare Targets -->
     <Border Grid.Row="1">
-      <Grid Margin="48,8,48,8" ColumnDefinitions="*,48,*">
+      <Grid Margin="8" ColumnDefinitions="*,48,*">
         <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
           <Grid RowDefinitions="Auto,*">
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
@@ -53,15 +46,15 @@
                         VerticalAlignment="Center"
                         IsHitTestVisible="False"
                         User="{Binding BaseHead.Author}"/>
-              <TextBlock Grid.Column="1" Classes="primary" Text="{Binding BaseHead.Author.Name}" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="1" Text="{Binding BaseHead.Author.Name}" Margin="8,0,0,0"/>
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                <TextBlock Text="{Binding Base.FriendlyName}" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
+                <TextBlock Text="{Binding Base.FriendlyName}" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
-              <TextBlock Grid.Column="3" Classes="primary" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
-              <TextBlock Grid.Column="4" Classes="primary" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="3" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
+              <TextBlock Grid.Column="4" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
             </Grid>
 
-            <TextBlock Grid.Row="1" Classes="primary" Text="{Binding BaseHead.Subject}" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Row="1" Text="{Binding BaseHead.Subject}" VerticalAlignment="Bottom"/>
           </Grid>
         </Border>
 
@@ -77,15 +70,15 @@
                         VerticalAlignment="Center"
                         IsHitTestVisible="False"
                         User="{Binding ToHead.Author}"/>
-              <TextBlock Grid.Column="1" Classes="primary" Text="{Binding ToHead.Author.Name}" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="1" Text="{Binding ToHead.Author.Name}" Margin="8,0,0,0"/>
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                <TextBlock Text="{Binding To.FriendlyName}" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
+                <TextBlock Text="{Binding To.FriendlyName}" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
-              <TextBlock Grid.Column="3" Classes="primary" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
-              <TextBlock Grid.Column="4" Classes="primary" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="3" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
+              <TextBlock Grid.Column="4" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
             </Grid>
 
-            <TextBlock Grid.Row="1" Classes="primary" Text="{Binding ToHead.Subject}" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Row="1" Text="{Binding ToHead.Subject}" VerticalAlignment="Bottom"/>
           </Grid>
         </Border>
       </Grid>
@@ -132,11 +125,18 @@
           <!-- Changes -->
           <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
             <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
+                                    EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                     Changes="{Binding VisibleChanges}"
                                     SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
-                                    AutoSelectFirstChange="True"
-                                    ContextRequested="OnChangeContextRequested"/>
+                                    ContextRequested="OnChangeContextRequested"
+                                    KeyDown="OnChangeCollectionViewKeyDown"/>
           </Border>
+
+          <!-- Loading Status Icon -->
+          <v:LoadingIcon Grid.Row="1"
+                         Width="48" Height="48"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                         IsVisible="{Binding IsLoading}"/>
         </Grid>
 
         <GridSplitter Grid.Column="1"

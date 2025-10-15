@@ -1,0 +1,215 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="230"
+                    x:Class="SourceGit.Views.ConfigureCustomActionControls"
+                    x:DataType="vm:ConfigureCustomActionControls"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.ConfigureCustomActionControls}"
+                    Width="560" SizeToContent="Height"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="14" Height="14"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Settings}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.ConfigureCustomActionControls}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Body -->
+    <Grid Grid.Row="1" ColumnDefinitions="200,*" MinHeight="340" Margin="8,8,8,16">
+      <Border Grid.Column="0"
+              BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+              Background="{DynamicResource Brush.Contents}">
+        <Grid RowDefinitions="*,1,Auto">
+          <ListBox Grid.Row="0"
+                   Background="Transparent"
+                   ItemsSource="{Binding Controls}"
+                   SelectedItem="{Binding Edit, Mode=TwoWay}"
+                   SelectionMode="Single">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="Height" Value="26"/>
+                <Setter Property="Padding" Value="4,2"/>
+              </Style>
+            </ListBox.Styles>
+
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="m:CustomActionControl">
+                <Grid Margin="4,0" ColumnDefinitions="Auto,*">
+                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Parameter}" Fill="{DynamicResource Brush.FG1}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Label, Mode=OneWay}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+          <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto,Auto" Background="{DynamicResource Brush.ToolBar}">
+            <Button Grid.Column="0"
+                    Classes="icon_button"
+                    Width="28" Height="28"
+                    Command="{Binding Add}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+            </Button>
+            <Button Grid.Column="1"
+                    Classes="icon_button"
+                    Width="28" Height="28"
+                    Command="{Binding Remove}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
+            </Button>
+            <Button Grid.Column="3"
+                    Classes="icon_button"
+                    Width="28" Height="28"
+                    Command="{Binding MoveUp}"
+                    IsVisible="{Binding Edit, Converter={x:Static ObjectConverters.IsNotNull}}">
+              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+            </Button>
+            <Button Grid.Column="4"
+                    Classes="icon_button"
+                    Width="28" Height="28"
+                    Command="{Binding MoveDown}"
+                    IsVisible="{Binding Edit, Converter={x:Static ObjectConverters.IsNotNull}}">
+              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+            </Button>
+          </Grid>
+        </Grid>
+      </Border>
+
+      <ContentControl Grid.Column="1" Margin="16,0,0,0">
+        <ContentControl.Content>
+          <Binding Path="Edit">
+            <Binding.TargetNullValue>
+              <Path Width="64" Height="64"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource Brush.FG2}"
+                    Data="{StaticResource Icons.Empty}"/>
+            </Binding.TargetNullValue>
+          </Binding>
+        </ContentControl.Content>
+
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:CustomActionControl">
+            <StackPanel Orientation="Vertical">
+              <!-- Label -->
+              <TextBlock Text="{DynamicResource Text.ConfigureCustomActionControls.Label}"/>
+              <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Label, Mode=TwoWay}"/>
+
+              <!-- Type -->
+              <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.Type}"/>
+              <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Type, Mode=TwoWay}">
+                <ComboBoxItem Content="TextBox"/>
+                <ComboBoxItem Content="PathSelector"/>
+                <ComboBoxItem Content="CheckBox"/>
+                <ComboBoxItem Content="ComboBox"/>
+              </ComboBox>
+
+              <!-- Description -->
+              <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.Description}"/>
+              <TextBox Margin="0,4,0,0"
+                       CornerRadius="3"
+                       Height="28"
+                       Text="{Binding Description, Mode=TwoWay}"/>
+
+              <!-- StringValue -->
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.Options}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}"/>
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}">
+                <TextBlock.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.TextBox}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}"/>
+                  </MultiBinding>
+                </TextBlock.IsVisible>
+              </TextBlock>
+              <TextBox Margin="0,4,0,0"
+                       CornerRadius="3"
+                       Height="28"
+                       Text="{Binding StringValue, Mode=TwoWay}"/>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue.Tip}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.Options.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}">
+              </TextBlock>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}">
+                <TextBlock.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.TextBox}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}"/>
+                  </MultiBinding>
+                </TextBlock.IsVisible>
+              </TextBlock>
+
+              <!-- BoolValue is needed by CheckBox/PathSelector -->
+              <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*">
+                <Grid.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.CheckBox}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}"/>
+                  </MultiBinding>
+                </Grid.IsVisible>
+                <TextBlock Grid.Column="0"
+                           Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}"
+                           IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
+                <TextBlock Grid.Column="0"
+                           Text="{DynamicResource Text.ConfigureCustomActionControls.IsFolder}"
+                           IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.PathSelector}}"/>
+                <CheckBox Grid.Column="1"
+                          Margin="8,0,0,0"
+                          Height="28"
+                          IsChecked="{Binding BoolValue, Mode=TwoWay}"/>
+              </Grid>
+            </StackPanel>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </Grid>
+</v:ChromelessWindow>

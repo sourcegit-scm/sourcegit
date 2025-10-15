@@ -42,8 +42,7 @@ namespace SourceGit.Views
         private void CloseWindow(object _, RoutedEventArgs e)
         {
             var window = this.FindAncestorOfType<Window>();
-            if (window != null)
-                window.Close();
+            window?.Close();
 
             e.Handled = true;
         }

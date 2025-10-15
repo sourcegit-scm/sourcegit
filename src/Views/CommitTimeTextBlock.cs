@@ -3,6 +3,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Threading;
 
 namespace SourceGit.Views
@@ -19,7 +20,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<int> DateTimeFormatProperty =
-            AvaloniaProperty.Register<CommitTimeTextBlock, int>(nameof(DateTimeFormat), 0);
+            AvaloniaProperty.Register<CommitTimeTextBlock, int>(nameof(DateTimeFormat));
 
         public int DateTimeFormat
         {
@@ -51,9 +52,15 @@ namespace SourceGit.Views
                 SetCurrentValue(TextProperty, GetDisplayText());
 
                 if (ShowAsDateTime)
+                {
                     StopTimer();
+                    HorizontalAlignment = HorizontalAlignment.Left;
+                }
                 else
+                {
                     StartTimer();
+                    HorizontalAlignment = HorizontalAlignment.Center;
+                }
             }
             else if (change.Property == DateTimeFormatProperty)
             {
@@ -111,8 +118,7 @@ namespace SourceGit.Views
 
         private string GetDisplayText()
         {
-            var commit = DataContext as Models.Commit;
-            if (commit == null)
+            if (DataContext is not Models.Commit commit)
                 return string.Empty;
 
             if (ShowAsDateTime)

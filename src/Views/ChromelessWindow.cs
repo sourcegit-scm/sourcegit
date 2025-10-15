@@ -13,6 +13,12 @@ namespace SourceGit.Views
             get => Native.OS.UseSystemWindowFrame;
         }
 
+        public bool CloseOnESC
+        {
+            get;
+            set;
+        } = false;
+
         protected override Type StyleKeyOverride => typeof(Window);
 
         public ChromelessWindow()
@@ -68,9 +74,20 @@ namespace SourceGit.Views
             }
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e is { Handled: false, Key: Key.Escape, KeyModifiers: KeyModifiers.None } && CloseOnESC)
+            {
+                Close();
+                e.Handled = true;
+            }
+        }
+
         private void OnWindowBorderPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (sender is Border border && border.Tag is WindowEdge edge && CanResize)
+            if (sender is Border { Tag: WindowEdge edge } && CanResize)
                 BeginResizeDrag(edge, e);
         }
     }

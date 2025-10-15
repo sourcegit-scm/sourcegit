@@ -9,21 +9,20 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Cleanup (GC & prune) ...";
 
             var log = _repo.CreateLog("Cleanup (GC & prune)");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.GC(_repo.FullPath).Use(log).Exec();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            await new Commands.GC(_repo.FullPath)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            return true;
         }
 
         private readonly Repository _repo = null;

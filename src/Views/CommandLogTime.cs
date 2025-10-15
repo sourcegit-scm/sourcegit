@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
@@ -10,15 +9,6 @@ namespace SourceGit.Views
 {
     public class CommandLogTime : TextBlock
     {
-        public static readonly StyledProperty<ViewModels.CommandLog> LogProperty =
-            AvaloniaProperty.Register<CommandLogTime, ViewModels.CommandLog>(nameof(Log), null);
-
-        public ViewModels.CommandLog Log
-        {
-            get => GetValue(LogProperty);
-            set => SetValue(LogProperty, value);
-        }
-
         protected override Type StyleKeyOverride => typeof(TextBlock);
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -27,19 +17,16 @@ namespace SourceGit.Views
             StopTimer();
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            base.OnPropertyChanged(change);
+            base.OnDataContextChanged(e);
 
-            if (change.Property == LogProperty)
-            {
-                StopTimer();
+            StopTimer();
 
-                if (change.NewValue is ViewModels.CommandLog log)
-                    SetupCommandLog(log);
-                else
-                    Text = string.Empty;
-            }
+            if (DataContext is ViewModels.CommandLog log)
+                SetupCommandLog(log);
+            else
+                Text = string.Empty;
         }
 
         private void SetupCommandLog(ViewModels.CommandLog log)
@@ -68,11 +55,18 @@ namespace SourceGit.Views
             }
         }
 
-        private string GetDisplayText(ViewModels.CommandLog log)
+        private static string GetDisplayText(ViewModels.CommandLog log)
         {
             var endTime = log.IsComplete ? log.EndTime : DateTime.Now;
-            var duration = (endTime - log.StartTime).ToString(@"hh\:mm\:ss\.fff");
-            return $"{log.StartTime:T} ({duration})";
+            var duration = endTime - log.StartTime;
+
+            if (duration.TotalMinutes >= 1)
+                return $"{duration.TotalMinutes:G3} min";
+
+            if (duration.TotalSeconds >= 1)
+                return $"{duration.TotalSeconds:G3} s";
+
+            return $"{duration.TotalMilliseconds:G3} ms";
         }
 
         private Timer _refreshTimer = null;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -21,6 +20,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool Edit
+        {
+            get;
+            set;
+        } = false;
+
         public Merge(Repository repo, Models.Branch source, string into, bool forceFastForward)
         {
             _repo = repo;
@@ -28,7 +33,7 @@ namespace SourceGit.ViewModels
 
             Source = source;
             Into = into;
-            Mode = forceFastForward ? Models.MergeMode.Supported[1] : AutoSelectMergeMode();
+            Mode = forceFastForward ? Models.MergeMode.FastForward : AutoSelectMergeMode();
         }
 
         public Merge(Repository repo, Models.Commit source, string into)
@@ -51,50 +56,50 @@ namespace SourceGit.ViewModels
             Mode = AutoSelectMergeMode();
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             _repo.ClearCommitMessage();
             ProgressDescription = $"Merging '{_sourceName}' into '{Into}' ...";
 
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg).Use(log).Exec();
-                log.Complete();
+            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
+                .Use(log)
+                .ExecAsync();
 
-                var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
-                CallUIThread(() =>
-                {
-                    _repo.NavigateToCommit(head, true);
-                    _repo.SetWatcherEnabled(true);
-                });
-                return true;
-            });
+            log.Complete();
+
+            if (_repo.SelectedViewIndex == 0)
+            {
+                var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
+                _repo.NavigateToCommit(head, true);
+            }
+
+            return true;
         }
 
         private Models.MergeMode AutoSelectMergeMode()
         {
+            var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
+            var mode = config switch
+            {
+                "--ff-only" => Models.MergeMode.FastForward,
+                "--no-ff" => Models.MergeMode.NoFastForward,
+                "--squash" => Models.MergeMode.Squash,
+                "--no-commit" or "--no-ff --no-commit" => Models.MergeMode.DontCommit,
+                _ => null,
+            };
+
+            if (mode != null)
+                return mode;
+
             var preferredMergeModeIdx = _repo.Settings.PreferredMergeMode;
             if (preferredMergeModeIdx < 0 || preferredMergeModeIdx > Models.MergeMode.Supported.Length)
-                preferredMergeModeIdx = 0;
+                return Models.MergeMode.Default;
 
-            var defaultMergeMode = Models.MergeMode.Supported[preferredMergeModeIdx];
-            var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
-            if (string.IsNullOrEmpty(config))
-                return defaultMergeMode;
-            if (config.Equals("--ff-only", StringComparison.Ordinal))
-                return Models.MergeMode.Supported[1];
-            if (config.Equals("--no-ff", StringComparison.Ordinal))
-                return Models.MergeMode.Supported[2];
-            if (config.Equals("--squash", StringComparison.Ordinal))
-                return Models.MergeMode.Supported[3];
-            if (config.Equals("--no-commit", StringComparison.Ordinal) || config.Equals("--no-ff --no-commit", StringComparison.Ordinal))
-                return Models.MergeMode.Supported[4];
-
-            return defaultMergeMode;
+            return Models.MergeMode.Supported[preferredMergeModeIdx];
         }
 
         private readonly Repository _repo = null;

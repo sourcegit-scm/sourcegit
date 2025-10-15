@@ -46,7 +46,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.General.Locale}"
                        HorizontalAlignment="Right"
@@ -98,14 +98,20 @@
                        Text="{DynamicResource Text.Preferences.General.SubjectGuideLength}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <NumericUpDown Grid.Row="3" Grid.Column="1"
-                           Minimum="50" Maximum="1000" Increment="1"
-                           Height="28"
-                           Padding="4"
-                           ShowButtonSpinner="False"
-                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
-                           CornerRadius="3"
-                           Value="{Binding SubjectGuideLength, Mode=TwoWay}"/>
+            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,64">
+              <Slider Grid.Column="0"
+                      Minimum="50" Maximum="200"
+                      TickPlacement="BottomRight" TickFrequency="10"
+                      IsSnapToTickEnabled="True"
+                      VerticalAlignment="Center"
+                      Foreground="{DynamicResource Brush.Border1}"
+                      Value="{Binding SubjectGuideLength, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Column="1"
+                         HorizontalAlignment="Right" VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.FG1}"
+                         Text="{Binding SubjectGuideLength, Mode=OneWay}"/>
+            </Grid>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.General.MaxHistoryCommits}"
@@ -128,20 +134,40 @@
 
             <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
+                      Content="{DynamicResource Text.Preferences.General.ShowChangesPageByDefault}"
+                      IsChecked="{Binding ShowLocalChangesByDefault, Mode=TwoWay}"/>
+            
+            <CheckBox Grid.Row="6" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.General.ShowChangesTabInCommitDetailByDefault}"
+                      IsChecked="{Binding ShowChangesInCommitDetailByDefault, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
+                      Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowAuthorTime}"
                       IsChecked="{Binding ShowAuthorTimeInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="6" Grid.Column="1"
+            <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowTagsInGraph}"
                       IsChecked="{Binding ShowTagsInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="7" Grid.Column="1"
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowChildren}"
                       IsChecked="{Binding ShowChildren, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="8" Grid.Column="1"
+            <CheckBox Grid.Row="10" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.General.EnableCompactFolders}"
+                      IsChecked="{Binding EnableCompactFoldersInChangesTree, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="11" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.General.UseGitHubStyleAvatar}"
+                      IsChecked="{Binding UseGitHubStyleAvatar, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="12" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.Check4UpdatesOnStartup}"
                       IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"
@@ -251,13 +277,14 @@
             </TextBox>
 
             <CheckBox Grid.Row="6" Grid.Column="1"
-                      Content="{DynamicResource Text.Preferences.Appearance.OnlyUseMonoFontInEditor}"
-                      IsChecked="{Binding OnlyUseMonoFontInEditor, Mode=TwoWay}"/>
-
-            <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseFixedTabWidth}"
                       IsChecked="{Binding UseFixedTabWidth, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Appearance.UseAutoHideScrollBars}"
+                      IsChecked="{Binding UseAutoHideScrollBars, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
@@ -273,7 +300,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.Path}"
                        HorizontalAlignment="Right"
@@ -360,6 +387,12 @@
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Git.SSLVerify}"
                       IsChecked="{Binding #ThisControl.EnableHTTPSSLVerify, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="8" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Git.UseLibsecret}"
+                      IsChecked="{Binding UseLibsecretInsteadOfGCM, Mode=TwoWay}"
+                      IsVisible="{OnPlatform False, Linux=True}"/>
           </Grid>
         </TabItem>
 
@@ -542,10 +575,10 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
           </TabItem.Header>
 
-          <Grid MinHeight="340" Margin="0,8,0,16">
+          <Grid MinHeight="360" Margin="0,8,0,16">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="200"/>
-              <ColumnDefinition Width="*" MaxWidth="400"/>
+              <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
@@ -594,7 +627,7 @@
                           Classes="icon_button"
                           Width="28" Height="28"
                           Click="OnRemoveSelectedCustomAction">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                   </Button>
                   <Button Grid.Column="3"
                           Classes="icon_button"
@@ -638,7 +671,20 @@
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Repository}"/>
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Tag}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Remote}"/>
                     </ComboBox>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>
+                    <Button Margin="0,4,0,0" Classes="flat" Height="28" Click="EditCustomActionControls">
+                      <StackPanel Orientation="Horizontal">
+                        <Path Width="14" Height="14" Data="{StaticResource Icons.Edit}" Fill="{DynamicResource Brush.FG1}"/>
+                        <TextBlock Margin="4,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Edit}"/>
+                        <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+                          <TextBlock Text="{Binding Controls.Count}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                        </Border>
+                      </StackPanel>
+                    </Button>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
                     <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
@@ -650,8 +696,12 @@
                     </TextBox>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
-                    <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+                    <Grid Margin="0,4,0,0" ColumnDefinitions="*,Auto">
+                      <TextBox Grid.Column="0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
+                      <Border Grid.Column="1" Width="22" Height="28" Background="Transparent" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}">
+                        <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
+                      </Border>
+                    </Grid>
 
                     <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                   </StackPanel>
@@ -715,7 +765,7 @@
                   <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
 
                   <Button Classes="icon_button" Click="OnRemoveSelectedOpenAIService">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Minimize}"/>
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                   </Button>
 
                   <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
@@ -749,7 +799,10 @@
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Model, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*"/>
+                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
+                    <CheckBox Margin="0,4,0,0"
+                              Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
+                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>
                     <TextBox Height="120"

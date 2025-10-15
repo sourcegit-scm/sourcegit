@@ -1,77 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public partial class LFS
+    public partial class LFS : Command
     {
         [GeneratedRegex(@"^(.+)\s+([\w.]+)\s+\w+:(\d+)$")]
         private static partial Regex REG_LOCK();
 
-        private class SubCmd : Command
-        {
-            public SubCmd(string repo, string args, Models.ICommandLog log)
-            {
-                WorkingDirectory = repo;
-                Context = repo;
-                Args = args;
-                Log = log;
-            }
-        }
-
         public LFS(string repo)
         {
-            _repo = repo;
+            WorkingDirectory = repo;
+            Context = repo;
         }
 
-        public bool IsEnabled()
+        public async Task<bool> InstallAsync()
         {
-            var path = Path.Combine(_repo, ".git", "hooks", "pre-push");
-            if (!File.Exists(path))
-                return false;
-
-            var content = File.ReadAllText(path);
-            return content.Contains("git lfs pre-push");
+            Args = "lfs install --local";
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Install(Models.ICommandLog log)
+        public async Task<bool> TrackAsync(string pattern, bool isFilenameMode)
         {
-            return new SubCmd(_repo, "lfs install --local", log).Exec();
+            var builder = new StringBuilder();
+            builder.Append("lfs track ");
+            builder.Append(isFilenameMode ? "--filename " : string.Empty);
+            builder.Append(pattern.Quoted());
+
+            Args = builder.ToString();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Track(string pattern, bool isFilenameMode, Models.ICommandLog log)
+        public async Task FetchAsync(string remote)
         {
-            var opt = isFilenameMode ? "--filename" : "";
-            return new SubCmd(_repo, $"lfs track {opt} \"{pattern}\"", log).Exec();
+            Args = $"lfs fetch {remote}";
+            await ExecAsync().ConfigureAwait(false);
         }
 
-        public void Fetch(string remote, Models.ICommandLog log)
+        public async Task PullAsync(string remote)
         {
-            new SubCmd(_repo, $"lfs fetch {remote}", log).Exec();
+            Args = $"lfs pull {remote}";
+            await ExecAsync().ConfigureAwait(false);
         }
 
-        public void Pull(string remote, Models.ICommandLog log)
+        public async Task PushAsync(string remote)
         {
-            new SubCmd(_repo, $"lfs pull {remote}", log).Exec();
+            Args = $"lfs push {remote}";
+            await ExecAsync().ConfigureAwait(false);
         }
 
-        public void Push(string remote, Models.ICommandLog log)
+        public async Task PruneAsync()
         {
-            new SubCmd(_repo, $"lfs push {remote}", log).Exec();
+            Args = "lfs prune";
+            await ExecAsync().ConfigureAwait(false);
         }
 
-        public void Prune(Models.ICommandLog log)
+        public async Task<List<Models.LFSLock>> GetLocksAsync(string remote)
         {
-            new SubCmd(_repo, "lfs prune", log).Exec();
-        }
+            Args = $"lfs locks --remote={remote}";
 
-        public List<Models.LFSLock> Locks(string remote)
-        {
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             var locks = new List<Models.LFSLock>();
-            var cmd = new SubCmd(_repo, $"lfs locks --remote={remote}", null);
-            var rs = cmd.ReadToEnd();
+
             if (rs.IsSuccess)
             {
                 var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
@@ -93,23 +86,23 @@ namespace SourceGit.Commands
             return locks;
         }
 
-        public bool Lock(string remote, string file, Models.ICommandLog log)
+        public async Task<bool> LockAsync(string remote, string file)
         {
-            return new SubCmd(_repo, $"lfs lock --remote={remote} \"{file}\"", log).Exec();
+            Args = $"lfs lock --remote={remote} {file.Quoted()}";
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public bool Unlock(string remote, string file, bool force, Models.ICommandLog log)
+        public async Task<bool> UnlockAsync(string remote, string file, bool force)
         {
-            var opt = force ? "-f" : "";
-            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} \"{file}\"", log).Exec();
-        }
+            var builder = new StringBuilder();
+            builder
+                .Append("lfs unlock --remote=")
+                .Append(remote)
+                .Append(force ? " -f " : " ")
+                .Append(file.Quoted());
 
-        public bool Unlock(string remote, long id, bool force, Models.ICommandLog log)
-        {
-            var opt = force ? "-f" : "";
-            return new SubCmd(_repo, $"lfs unlock --remote={remote} {opt} --id={id}", log).Exec();
+            Args = builder.ToString();
+            return await ExecAsync().ConfigureAwait(false);
         }
-
-        private readonly string _repo;
     }
 }

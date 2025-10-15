@@ -18,34 +18,63 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _message, value, true);
         }
 
-        public Reword(Repository repo, Models.Commit head)
+        public Reword(Repository repo, Models.Commit head, string oldMessage)
         {
             _repo = repo;
-            _oldMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).Result();
+            _oldMessage = oldMessage;
             _message = _oldMessage;
             Head = head;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             if (string.Compare(_message, _oldMessage, StringComparison.Ordinal) == 0)
-                return null;
+                return true;
 
-            _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Editing head commit message ...";
+            using var lockWatcher = _repo.LockWatcher();
+            ProgressDescription = "Editing HEAD message ...";
 
             var log = _repo.CreateLog("Reword HEAD");
             Use(log);
 
+            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
             var signOff = _repo.Settings.EnableSignOffForCommit;
-            return Task.Run(() =>
+            var noVerify = _repo.Settings.NoVerifyOnCommit;
+            var needAutoStash = false;
+            var succ = false;
+
+            foreach (var c in changes)
             {
-                // For reword (only changes the commit message), disable `--reset-author`
-                var succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).Run();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+                if (c.Index != Models.ChangeState.None)
+                {
+                    needAutoStash = true;
+                    break;
+                }
+            }
+
+            if (needAutoStash)
+            {
+                succ = await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PushAsync("REWORD_AUTO_STASH");
+                if (!succ)
+                {
+                    log.Complete();
+                    return false;
+                }
+            }
+
+            succ = await new Commands.Commit(_repo.FullPath, _message, signOff, noVerify, true, false)
+                .Use(log)
+                .RunAsync();
+
+            if (succ && needAutoStash)
+                await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PopAsync("stash@{0}");
+
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo;

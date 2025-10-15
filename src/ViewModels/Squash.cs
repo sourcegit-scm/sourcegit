@@ -17,51 +17,64 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _message, value, true);
         }
 
-        public Squash(Repository repo, Models.Commit target, string shaToGetPreferMessage)
+        public Squash(Repository repo, Models.Commit target, string message)
         {
             _repo = repo;
-            _message = new Commands.QueryCommitFullMessage(_repo.FullPath, shaToGetPreferMessage).Result();
+            _message = message;
             Target = target;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Squashing ...";
 
             var log = _repo.CreateLog("Squash");
             Use(log);
 
-            return Task.Run(() =>
+            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
+            var signOff = _repo.Settings.EnableSignOffForCommit;
+            var noVerify = _repo.Settings.NoVerifyOnCommit;
+            var needAutoStash = false;
+            var succ = false;
+
+            foreach (var c in changes)
             {
-                var signOff = _repo.Settings.EnableSignOffForCommit;
-                var autoStashed = false;
-                var succ = false;
-
-                if (_repo.LocalChangesCount > 0)
+                if (c.Index != Models.ChangeState.None)
                 {
-                    succ = new Commands.Stash(_repo.FullPath).Use(log).Push("SQUASH_AUTO_STASH");
-                    if (!succ)
-                    {
-                        log.Complete();
-                        CallUIThread(() => _repo.SetWatcherEnabled(true));
-                        return false;
-                    }
-
-                    autoStashed = true;
+                    needAutoStash = true;
+                    break;
                 }
+            }
 
-                succ = new Commands.Reset(_repo.FullPath, Target.SHA, "--soft").Use(log).Exec();
-                if (succ)
-                    succ = new Commands.Commit(_repo.FullPath, _message, signOff, true, false).Use(log).Run();
+            if (needAutoStash)
+            {
+                succ = await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PushAsync("SQUASH_AUTO_STASH");
+                if (!succ)
+                {
+                    log.Complete();
+                    return false;
+                }
+            }
 
-                if (succ && autoStashed)
-                    new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
+            succ = await new Commands.Reset(_repo.FullPath, Target.SHA, "--soft")
+                .Use(log)
+                .ExecAsync();
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            if (succ)
+                succ = await new Commands.Commit(_repo.FullPath, _message, signOff, noVerify, true, false)
+                    .Use(log)
+                    .RunAsync();
+
+            if (succ && needAutoStash)
+                await new Commands.Stash(_repo.FullPath)
+                    .Use(log)
+                    .PopAsync("stash@{0}");
+
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo;

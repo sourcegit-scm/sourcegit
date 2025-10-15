@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.UpdateSubmodules"
@@ -10,7 +11,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.UpdateSubmodules}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,32" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto,32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -19,33 +20,46 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Submodules}"
-                SelectedItem="{Binding SelectedSubmodule, Mode=TwoWay}"
-                IsEnabled="{Binding !UpdateAll}">
+                SelectedItem="{Binding SelectedSubmodule, Mode=TwoWay}">
+        <ComboBox.IsEnabled>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="UpdateAll" Converter="{x:Static BoolConverters.Not}"/>
+            <Binding Path="HasPreSelectedSubmodule" Converter="{x:Static BoolConverters.Not}"/>
+          </MultiBinding>
+        </ComboBox.IsEnabled>
+
         <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="x:String">
+          <DataTemplate x:DataType="m:Submodule">
             <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
               <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Submodule}"/>
-              <TextBlock Text="{Binding}"/>
+              <TextBlock Text="{Binding Path, Mode=OneWay}"/>
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
+                Height="32"
                 Content="{DynamicResource Text.UpdateSubmodules.All}"
-                IsChecked="{Binding UpdateAll, Mode=TwoWay}"/>
+                IsChecked="{Binding UpdateAll, Mode=TwoWay}"
+                IsVisible="{Binding !HasPreSelectedSubmodule, Mode=OneWay}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
+                Height="32"
                 Content="{DynamicResource Text.UpdateSubmodules.Init}"
-                IsChecked="{Binding EnableInit, Mode=TwoWay}"/>
+                IsChecked="{Binding EnableInit, Mode=TwoWay}"
+                IsVisible="{Binding IsEnableInitVisible, Mode=OneWay}"
+                ToolTip.Tip="--init"/>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.UpdateSubmodules.Recursive}"
-                IsChecked="{Binding EnableRecursive, Mode=TwoWay}"/>
+                IsChecked="{Binding EnableRecursive, Mode=TwoWay}"
+                ToolTip.Tip="--recursive"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Content="{DynamicResource Text.UpdateSubmodules.UseRemote}"
-                IsChecked="{Binding EnableRemote, Mode=TwoWay}"/>
+                Content="{DynamicResource Text.UpdateSubmodules.UpdateToRemoteTrackingBranch}"
+                IsChecked="{Binding EnableRemote, Mode=TwoWay}"
+                ToolTip.Tip="--remote"/>
     </Grid>
   </StackPanel>
 </UserControl>

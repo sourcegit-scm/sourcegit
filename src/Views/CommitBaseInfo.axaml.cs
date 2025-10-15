@@ -1,11 +1,10 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -61,10 +60,10 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnCopyCommitSHA(object sender, RoutedEventArgs e)
+        private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Commit commit })
-                App.CopyText(commit.SHA);
+                await App.CopyTextAsync(commit.SHA);
 
             e.Handled = true;
         }
@@ -103,39 +102,32 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenContainsIn(object sender, RoutedEventArgs e)
+        private async void OnOpenContainsIn(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Button button)
             {
-                var tracking = new CommitRelationTracking(detail);
+                var tracking = new CommitRelationTracking();
                 var flyout = new Flyout();
                 flyout.Content = tracking;
                 flyout.ShowAt(button);
+
+                await tracking.SetDataAsync(detail);
             }
 
             e.Handled = true;
         }
 
-        private void OnSHAPointerEntered(object sender, PointerEventArgs e)
+        private async void OnSHAPointerEntered(object sender, PointerEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha } ctl)
             {
                 var tooltip = ToolTip.GetTip(ctl);
-                if (tooltip is Models.Commit commit && commit.SHA == sha)
+                if (tooltip is Models.Commit commit && commit.SHA.Equals(sha, StringComparison.Ordinal))
                     return;
 
-                Task.Run(() =>
-                {
-                    var c = detail.GetParent(sha);
-                    if (c == null)
-                        return;
-
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        if (ctl.IsEffectivelyVisible && ctl.DataContext is string newSHA && newSHA == sha)
-                            ToolTip.SetTip(ctl, c);
-                    });
-                });
+                var c = await detail.GetCommitAsync(sha);
+                if (c is not null && ctl is { IsEffectivelyVisible: true, DataContext: string newSHA } && sha.Equals(newSHA, StringComparison.Ordinal))
+                    ToolTip.SetTip(ctl, c);
             }
 
             e.Handled = true;
@@ -144,12 +136,51 @@ namespace SourceGit.Views
         private void OnSHAPressed(object sender, PointerPressedEventArgs e)
         {
             var point = e.GetCurrentPoint(this);
-
-            if (point.Properties.IsLeftButtonPressed && DataContext is ViewModels.CommitDetail detail && sender is Control { DataContext: string sha })
-            {
+            if (point.Properties.IsLeftButtonPressed &&
+                DataContext is ViewModels.CommitDetail detail &&
+                sender is Control { DataContext: string sha })
                 detail.NavigateTo(sha);
-            }
 
+            e.Handled = true;
+        }
+
+        private void OnUserContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is not Control { Tag: Models.User user } control)
+                return;
+
+            var copyName = new MenuItem();
+            copyName.Header = App.Text("CommitDetail.Info.CopyName");
+            copyName.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyName.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(user.Name);
+                ev.Handled = true;
+            };
+
+            var copyEmail = new MenuItem();
+            copyEmail.Header = App.Text("CommitDetail.Info.CopyEmail");
+            copyEmail.Icon = App.CreateMenuIcon("Icons.Email");
+            copyEmail.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(user.Email);
+                ev.Handled = true;
+            };
+
+            var copyUser = new MenuItem();
+            copyUser.Header = App.Text("CommitDetail.Info.CopyNameAndEmail");
+            copyUser.Icon = App.CreateMenuIcon("Icons.User");
+            copyUser.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(user.ToString());
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(copyName);
+            menu.Items.Add(copyEmail);
+            menu.Items.Add(copyUser);
+            menu.Open(control);
             e.Handled = true;
         }
     }

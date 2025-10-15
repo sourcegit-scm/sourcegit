@@ -6,23 +6,23 @@ jobs:
     strategy:
       matrix:
         include:
-          - name : Windows x64
-            os: windows-2019
+          - name: Windows x64
+            os: windows-2022
             runtime: win-x64
-          - name : Windows ARM64
-            os: windows-2019
+          - name: Windows ARM64
+            os: windows-2022
             runtime: win-arm64
-          - name : macOS (Intel)
+          - name: macOS (Intel)
             os: macos-13
             runtime: osx-x64
-          - name : macOS (Apple Silicon)
+          - name: macOS (Apple Silicon)
             os: macos-latest
             runtime: osx-arm64
-          - name : Linux
+          - name: Linux
             os: ubuntu-latest
             runtime: linux-x64
             container: ubuntu:20.04
-          - name : Linux (arm64)
+          - name: Linux (arm64)
             os: ubuntu-latest
             runtime: linux-arm64
             container: ubuntu:20.04
@@ -31,7 +31,7 @@ jobs:
     container: ${{ matrix.container || '' }}
     steps:
       - name: Install common CLI tools
-        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        if: startsWith(matrix.runtime, 'linux-')
         run: |
           export DEBIAN_FRONTEND=noninteractive
           ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
@@ -45,7 +45,7 @@ jobs:
         with:
           dotnet-version: 9.0.x
       - name: Configure arm64 packages
-        if: ${{ matrix.runtime == 'linux-arm64' }}
+        if: matrix.runtime == 'linux-arm64'
         run: |
           sudo dpkg --add-architecture arm64
           echo 'deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ focal main restricted
@@ -55,7 +55,7 @@ jobs:
           sudo sed -i -e 's/^deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
           sudo sed -i -e 's/^deb mirror/deb [arch=amd64] mirror/g' /etc/apt/sources.list
       - name: Install cross-compiling dependencies
-        if: ${{ matrix.runtime == 'linux-arm64' }}
+        if: matrix.runtime == 'linux-arm64'
         run: |
           sudo apt-get update
           sudo apt-get install -y llvm gcc-aarch64-linux-gnu
@@ -64,10 +64,10 @@ jobs:
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r ${{ matrix.runtime }}
       - name: Rename executable file
-        if: ${{ startsWith(matrix.runtime, 'linux-') }}
+        if: startsWith(matrix.runtime, 'linux-')
         run: mv publish/SourceGit publish/sourcegit
       - name: Tar artifact
-        if: ${{ startsWith(matrix.runtime, 'linux-') || startsWith(matrix.runtime, 'osx-') }}
+        if: startsWith(matrix.runtime, 'linux-') || startsWith(matrix.runtime, 'osx-')
         run: |
           tar -cvf "sourcegit.${{ matrix.runtime }}.tar" -C publish .
           rm -r publish/*

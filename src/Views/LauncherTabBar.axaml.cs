@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 
 using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -19,20 +18,6 @@ namespace SourceGit.Views
             get => GetValue(IsScrollerVisibleProperty);
             set => SetValue(IsScrollerVisibleProperty, value);
         }
-
-        public static readonly StyledProperty<string> SearchFilterProperty =
-            AvaloniaProperty.Register<LauncherTabBar, string>(nameof(SearchFilter));
-
-        public string SearchFilter
-        {
-            get => GetValue(SearchFilterProperty);
-            set => SetValue(SearchFilterProperty, value);
-        }
-
-        public AvaloniaList<ViewModels.LauncherPage> SelectablePages
-        {
-            get;
-        } = [];
 
         public LauncherTabBar()
         {
@@ -53,7 +38,18 @@ namespace SourceGit.Views
             var selectedIdx = LauncherTabsList.SelectedIndex;
             var count = LauncherTabsList.ItemCount;
             var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush, 0.5);
-            var separatorY = (height - 20) * 0.5;
+            var separatorY = (height - 18) * 0.5 + 1;
+
+            if (!IsScrollerVisible && selectedIdx > 0)
+            {
+                var container = LauncherTabsList.ContainerFromIndex(0);
+                if (container != null)
+                {
+                    var x = container.Bounds.Left - startX + LauncherTabsScroller.Bounds.X;
+                    context.DrawLine(separatorPen, new Point(x, separatorY), new Point(x, separatorY + 18));
+                }
+            }
+
             for (var i = 0; i < count; i++)
             {
                 if (i == selectedIdx || i == selectedIdx - 1)
@@ -71,7 +67,7 @@ namespace SourceGit.Views
                     break;
 
                 var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
-                context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 20));
+                context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 18));
             }
 
             var selected = LauncherTabsList.ContainerFromIndex(selectedIdx);
@@ -84,7 +80,7 @@ namespace SourceGit.Views
                 return;
 
             var geo = new StreamGeometry();
-            var angle = Math.PI / 2;
+            const double angle = Math.PI / 2;
             var y = height + 0.5;
             using (var ctx = geo.Open())
             {
@@ -141,14 +137,6 @@ namespace SourceGit.Views
             context.DrawGeometry(fill, stroke, geo);
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == SearchFilterProperty)
-                UpdateSelectablePages();
-        }
-
         private void ScrollTabs(object _, PointerWheelEventArgs e)
         {
             if (!e.KeyModifiers.HasFlag(KeyModifiers.Shift))
@@ -184,16 +172,6 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private void SetupDragAndDrop(object sender, RoutedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                DragDrop.SetAllowDrop(border, true);
-                border.AddHandler(DragDrop.DropEvent, DropTab);
-            }
-            e.Handled = true;
-        }
-
         private void OnPointerPressedTab(object sender, PointerPressedEventArgs e)
         {
             if (sender is Border border)
@@ -219,7 +197,7 @@ namespace SourceGit.Views
             _startDragTab = false;
         }
 
-        private void OnPointerMovedOverTab(object sender, PointerEventArgs e)
+        private async void OnPointerMovedOverTab(object sender, PointerEventArgs e)
         {
             if (_pressedTab && !_startDragTab && sender is Border { DataContext: ViewModels.LauncherPage page } border)
             {
@@ -230,22 +208,41 @@ namespace SourceGit.Views
 
                 _startDragTab = true;
 
-                var data = new DataObject();
-                data.Set("MovedTab", page);
-                DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+                var data = new DataTransfer();
+                data.Add(DataTransferItem.Create(_dndMainTabFormat, page.Node.Id));
+                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
             }
             e.Handled = true;
         }
 
         private void DropTab(object sender, DragEventArgs e)
         {
-            if (e.Data.Contains("MovedTab") &&
-                e.Data.Get("MovedTab") is ViewModels.LauncherPage moved &&
-                sender is Border { DataContext: ViewModels.LauncherPage to } &&
-                to != moved)
+            if (e.DataTransfer.TryGetValue(_dndMainTabFormat) is not { Length: > 0 } id)
+                return;
+
+            if (DataContext is not ViewModels.Launcher launcher)
+                return;
+
+            ViewModels.LauncherPage target = null;
+            foreach (var page in launcher.Pages)
             {
-                (DataContext as ViewModels.Launcher)?.MoveTab(moved, to);
+                if (page.Node.Id.Equals(id, StringComparison.Ordinal))
+                {
+                    target = page;
+                    break;
+                }
             }
+
+            if (target == null)
+                return;
+
+            if (sender is not Border { DataContext: ViewModels.LauncherPage to })
+                return;
+
+            if (target == to)
+                return;
+
+            launcher.MoveTab(target, to);
 
             _pressedTab = false;
             _startDragTab = false;
@@ -254,10 +251,76 @@ namespace SourceGit.Views
 
         private void OnTabContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is Border border && DataContext is ViewModels.Launcher vm)
+            if (sender is Border { DataContext: ViewModels.LauncherPage page } border &&
+                DataContext is ViewModels.Launcher vm)
             {
-                var menu = vm.CreateContextForPageTab(border.DataContext as ViewModels.LauncherPage);
-                menu?.Open(border);
+                var menu = new ContextMenu();
+                var close = new MenuItem();
+                close.Header = App.Text("PageTabBar.Tab.Close");
+                close.Tag = OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W";
+                close.Click += (_, ev) =>
+                {
+                    vm.CloseTab(page);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(close);
+
+                var closeOthers = new MenuItem();
+                closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
+                closeOthers.Click += (_, ev) =>
+                {
+                    vm.CloseOtherTabs();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(closeOthers);
+
+                var closeRight = new MenuItem();
+                closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
+                closeRight.Click += (_, ev) =>
+                {
+                    vm.CloseRightTabs();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(closeRight);
+
+                if (page.Node.IsRepository)
+                {
+                    var bookmark = new MenuItem();
+                    bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
+                    bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
+
+                    for (int i = 0; i < Models.Bookmarks.Brushes.Length; i++)
+                    {
+                        var brush = Models.Bookmarks.Brushes[i];
+                        var icon = App.CreateMenuIcon("Icons.Bookmark");
+                        if (brush != null)
+                            icon.Fill = brush;
+
+                        var dupIdx = i;
+                        var setter = new MenuItem();
+                        setter.Header = icon;
+                        setter.Click += (_, ev) =>
+                        {
+                            page.Node.Bookmark = dupIdx;
+                            ev.Handled = true;
+                        };
+                        bookmark.Items.Add(setter);
+                    }
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(bookmark);
+
+                    var copyPath = new MenuItem();
+                    copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
+                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Click += async (_, ev) =>
+                    {
+                        await page.CopyPathAsync();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copyPath);
+                }
+                menu.Open(border);
             }
 
             e.Handled = true;
@@ -271,99 +334,9 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnTabsDropdownOpened(object sender, EventArgs e)
-        {
-            UpdateSelectablePages();
-        }
-
-        private void OnTabsDropdownClosed(object sender, EventArgs e)
-        {
-            SelectablePages.Clear();
-            SearchFilter = string.Empty;
-        }
-
-        private void OnTabsDropdownKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                PageSelector.Flyout?.Hide();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Enter)
-            {
-                if (TabsDropdownList.SelectedItem is ViewModels.LauncherPage page &&
-                    DataContext is ViewModels.Launcher vm)
-                {
-                    vm.ActivePage = page;
-                    PageSelector.Flyout?.Hide();
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void OnTabsDropdownSearchBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Down && TabsDropdownList.ItemCount > 0)
-            {
-                TabsDropdownList.Focus(NavigationMethod.Directional);
-
-                if (TabsDropdownList.SelectedIndex < 0)
-                    TabsDropdownList.SelectedIndex = 0;
-                else if (TabsDropdownList.SelectedIndex < TabsDropdownList.ItemCount)
-                    TabsDropdownList.SelectedIndex++;
-
-                e.Handled = true;
-            }
-        }
-
-        private void OnTabsDropdownLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is Control { IsFocused: false, IsKeyboardFocusWithin: false })
-                PageSelector.Flyout?.Hide();
-        }
-
-        private void OnClearSearchFilter(object sender, RoutedEventArgs e)
-        {
-            SearchFilter = string.Empty;
-        }
-
-        private void OnTabsDropdownItemTapped(object sender, TappedEventArgs e)
-        {
-            if (sender is Control { DataContext: ViewModels.LauncherPage page } &&
-                DataContext is ViewModels.Launcher vm)
-            {
-                vm.ActivePage = page;
-                PageSelector.Flyout?.Hide();
-                e.Handled = true;
-            }
-        }
-
-        private void UpdateSelectablePages()
-        {
-            if (DataContext is not ViewModels.Launcher vm)
-                return;
-
-            SelectablePages.Clear();
-
-            var pages = vm.Pages;
-            var filter = SearchFilter?.Trim() ?? "";
-            if (string.IsNullOrEmpty(filter))
-            {
-                SelectablePages.AddRange(pages);
-                return;
-            }
-
-            foreach (var page in pages)
-            {
-                var node = page.Node;
-                if (node.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    (node.IsRepository && node.Id.Contains(filter, StringComparison.OrdinalIgnoreCase)))
-                    SelectablePages.Add(page);
-            }
-        }
-
         private bool _pressedTab = false;
-        private Point _pressedTabPosition = new Point();
+        private Point _pressedTabPosition = new();
         private bool _startDragTab = false;
+        private readonly DataFormat<string> _dndMainTabFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-main-tab");
     }
 }

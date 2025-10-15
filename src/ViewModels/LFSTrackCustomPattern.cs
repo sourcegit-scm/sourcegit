@@ -23,21 +23,20 @@ namespace SourceGit.ViewModels
             _repo = repo;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding custom LFS tracking pattern ...";
 
             var log = _repo.CreateLog("LFS Add Custom Pattern");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.LFS(_repo.FullPath).Track(_pattern, IsFilename, log);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.LFS(_repo.FullPath)
+                .Use(log)
+                .TrackAsync(_pattern, IsFilename);
+
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo = null;

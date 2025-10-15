@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Threading.Tasks;
+
+namespace SourceGit.Commands
 {
     public class IsConflictResolved : Command
     {
@@ -11,9 +13,15 @@
             Args = $"diff -a --ignore-cr-at-eol --check {opt}";
         }
 
-        public bool Result()
+        public bool GetResult()
         {
             return ReadToEnd().IsSuccess;
+        }
+
+        public async Task<bool> GetResultAsync()
+        {
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return rs.IsSuccess;
         }
     }
 }

@@ -33,9 +33,7 @@ namespace SourceGit.Models
         }
     }
 
-    public class AlreadyUpToDate
-    {
-    }
+    public class AlreadyUpToDate;
 
     public class SelfUpdateFailed
     {

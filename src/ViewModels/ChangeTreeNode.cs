@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -8,6 +7,7 @@ namespace SourceGit.ViewModels
     public class ChangeTreeNode : ObservableObject
     {
         public string FullPath { get; set; }
+        public string DisplayName { get; set; }
         public int Depth { get; private set; } = 0;
         public Models.Change Change { get; set; } = null;
         public List<ChangeTreeNode> Children { get; set; } = new List<ChangeTreeNode>();
@@ -33,37 +33,36 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public ChangeTreeNode(Models.Change c, int depth)
+        public ChangeTreeNode(Models.Change c)
         {
             FullPath = c.Path;
-            Depth = depth;
+            DisplayName = Path.GetFileName(c.Path);
             Change = c;
             IsExpanded = false;
         }
 
-        public ChangeTreeNode(string path, bool isExpanded, int depth)
+        public ChangeTreeNode(string path, bool isExpanded)
         {
             FullPath = path;
-            Depth = depth;
+            DisplayName = Path.GetFileName(path);
             IsExpanded = isExpanded;
         }
 
-        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded)
+        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, bool compactFolders)
         {
             var nodes = new List<ChangeTreeNode>();
             var folders = new Dictionary<string, ChangeTreeNode>();
 
             foreach (var c in changes)
             {
-                var sepIdx = c.Path.IndexOf('/', StringComparison.Ordinal);
+                var sepIdx = c.Path.IndexOf('/');
                 if (sepIdx == -1)
                 {
-                    nodes.Add(new ChangeTreeNode(c, 0));
+                    nodes.Add(new ChangeTreeNode(c));
                 }
                 else
                 {
                     ChangeTreeNode lastFolder = null;
-                    int depth = 0;
 
                     while (sepIdx != -1)
                     {
@@ -74,27 +73,32 @@ namespace SourceGit.ViewModels
                         }
                         else if (lastFolder == null)
                         {
-                            lastFolder = new ChangeTreeNode(folder, !folded.Contains(folder), depth);
+                            lastFolder = new ChangeTreeNode(folder, !folded.Contains(folder));
                             folders.Add(folder, lastFolder);
                             InsertFolder(nodes, lastFolder);
                         }
                         else
                         {
-                            var cur = new ChangeTreeNode(folder, !folded.Contains(folder), depth);
+                            var cur = new ChangeTreeNode(folder, !folded.Contains(folder));
                             folders.Add(folder, cur);
                             InsertFolder(lastFolder.Children, cur);
                             lastFolder = cur;
                         }
 
-                        depth++;
                         sepIdx = c.Path.IndexOf('/', sepIdx + 1);
                     }
 
-                    lastFolder?.Children.Add(new ChangeTreeNode(c, depth));
+                    lastFolder?.Children.Add(new ChangeTreeNode(c));
                 }
             }
 
-            Sort(nodes);
+            if (compactFolders)
+            {
+                foreach (var node in nodes)
+                    Compact(node);
+            }
+
+            SortAndSetDepth(nodes, 0);
 
             folders.Clear();
             return nodes;
@@ -114,18 +118,43 @@ namespace SourceGit.ViewModels
             collection.Add(subFolder);
         }
 
-        private static void Sort(List<ChangeTreeNode> nodes)
+        private static void Compact(ChangeTreeNode node)
+        {
+            var childrenCount = node.Children.Count;
+            if (childrenCount == 0)
+                return;
+
+            if (childrenCount > 1)
+            {
+                foreach (var c in node.Children)
+                    Compact(c);
+                return;
+            }
+
+            var child = node.Children[0];
+            if (child.Change != null)
+                return;
+
+            node.FullPath = $"{node.FullPath}/{child.DisplayName}";
+            node.DisplayName = $"{node.DisplayName} / {child.DisplayName}";
+            node.IsExpanded = child.IsExpanded;
+            node.Children = child.Children;
+            Compact(node);
+        }
+
+        private static void SortAndSetDepth(List<ChangeTreeNode> nodes, int depth)
         {
             foreach (var node in nodes)
             {
+                node.Depth = depth;
                 if (node.IsFolder)
-                    Sort(node.Children);
+                    SortAndSetDepth(node.Children, depth + 1);
             }
 
             nodes.Sort((l, r) =>
             {
                 if (l.IsFolder == r.IsFolder)
-                    return Models.NumericSort.Compare(l.FullPath, r.FullPath);
+                    return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
                 return l.IsFolder ? -1 : 1;
             });
         }

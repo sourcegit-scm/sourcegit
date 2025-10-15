@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.DropHead"
+             x:DataType="vm:DropHead">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <TextBlock FontSize="18"
+               Classes="bold"
+               Text="{DynamicResource Text.DropHead}"/>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,24" ColumnDefinitions="140,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.DropHead.Commit}"/>
+      <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
+        <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+        <TextBlock Grid.Column="1" Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="2" Text="{Binding Target.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+      </Grid>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.DropHead.NewHead}"/>
+      <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
+        <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+        <TextBlock Grid.Column="1" Text="{Binding NewHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="2" Text="{Binding NewHead.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+      </Grid>
+    </Grid>
+  </StackPanel>
+</UserControl>

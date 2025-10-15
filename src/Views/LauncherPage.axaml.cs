@@ -1,8 +1,11 @@
 using System;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -13,10 +16,40 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnPopupSure(object _, RoutedEventArgs e)
+        private async void OnPopupSureByHotKey(object sender, RoutedEventArgs e)
+        {
+            var children = this.GetLogicalDescendants();
+            foreach (var child in children)
+            {
+                if (child is TextBox { IsFocused: true, Tag: StealHotKey steal } textBox &&
+                    steal is { Key: Key.Enter, KeyModifiers: KeyModifiers.None })
+                {
+                    var fake = new KeyEventArgs()
+                    {
+                        RoutedEvent = KeyDownEvent,
+                        Route = RoutingStrategies.Direct,
+                        Source = textBox,
+                        Key = Key.Enter,
+                        KeyModifiers = KeyModifiers.None,
+                        PhysicalKey = PhysicalKey.Enter,
+                    };
+
+                    textBox.RaiseEvent(fake);
+                    e.Handled = false;
+                    return;
+                }
+            }
+
+            if (DataContext is ViewModels.LauncherPage page)
+                await page.ProcessPopupAsync();
+
+            e.Handled = true;
+        }
+
+        private async void OnPopupSure(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.LauncherPage page)
-                page.ProcessPopup();
+                await page.ProcessPopupAsync();
 
             e.Handled = true;
         }
@@ -34,10 +67,10 @@ namespace SourceGit.Views
             OnPopupCancel(sender, e);
         }
 
-        private void OnCopyNotification(object sender, RoutedEventArgs e)
+        private async void OnCopyNotification(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Notification notice })
-                App.CopyText(notice.Message);
+                await App.CopyTextAsync(notice.Message);
 
             e.Handled = true;
         }
@@ -55,30 +88,16 @@ namespace SourceGit.Views
         {
             if (sender is ContentPresenter presenter)
             {
-                if (presenter.DataContext == null || presenter.DataContext is not ViewModels.Popup)
-                {
+                if (presenter.DataContext is not ViewModels.Popup)
                     presenter.Content = null;
-                    return;
-                }
-
-                var dataTypeName = presenter.DataContext.GetType().FullName;
-                if (string.IsNullOrEmpty(dataTypeName))
-                {
-                    presenter.Content = null;
-                    return;
-                }
-
-                var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
-                var viewType = Type.GetType(viewTypeName);
-                if (viewType == null)
-                {
-                    presenter.Content = null;
-                    return;
-                }
-
-                var view = Activator.CreateInstance(viewType);
-                presenter.Content = view;
+                else
+                    presenter.Content = App.CreateViewForViewModel(presenter.DataContext);
             }
+        }
+
+        private void OnToolBarPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            this.FindAncestorOfType<ChromelessWindow>()?.BeginMoveWindow(sender, e);
         }
     }
 }

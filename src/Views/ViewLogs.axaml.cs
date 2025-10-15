@@ -7,6 +7,7 @@ namespace SourceGit.Views
     {
         public ViewLogs()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 
@@ -18,9 +19,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("ViewLogs.CopyLog");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(log.Content);
+                await App.CopyTextAsync(log.Content);
                 ev.Handled = true;
             };
 

@@ -34,36 +34,36 @@ namespace SourceGit.ViewModels
             SelectedRemote = _repo.Remotes[0];
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
-            ProgressDescription = $"Pushing tag ...";
+            using var lockWatcher = _repo.LockWatcher();
+            ProgressDescription = "Pushing tag ...";
 
             var log = _repo.CreateLog("Push Tag");
             Use(log);
 
-            return Task.Run(() =>
+            var succ = true;
+            var tag = $"refs/tags/{Target.Name}";
+            if (_pushAllRemotes)
             {
-                var succ = true;
-                var tag = $"refs/tags/{Target.Name}";
-                if (_pushAllRemotes)
+                foreach (var remote in _repo.Remotes)
                 {
-                    foreach (var remote in _repo.Remotes)
-                    {
-                        succ = new Commands.Push(_repo.FullPath, remote.Name, tag, false).Use(log).Exec();
-                        if (!succ)
-                            break;
-                    }
+                    succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false)
+                        .Use(log)
+                        .RunAsync();
+                    if (!succ)
+                        break;
                 }
-                else
-                {
-                    succ = new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false).Use(log).Exec();
-                }
+            }
+            else
+            {
+                succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false)
+                    .Use(log)
+                    .RunAsync();
+            }
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo = null;

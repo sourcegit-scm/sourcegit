@@ -82,8 +82,7 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)
         {
-            var creator = ctx.ObjectInstance as AddWorktree;
-            if (creator == null)
+            if (ctx.ObjectInstance is not AddWorktree creator)
                 return new ValidationResult("Missing runtime context to create branch!");
 
             if (string.IsNullOrEmpty(path))
@@ -105,9 +104,9 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding worktree ...";
 
             var branchName = _selectedBranch;
@@ -116,14 +115,12 @@ namespace SourceGit.ViewModels
 
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Worktree(_repo.FullPath).Use(log).Add(_path, branchName, _createNewBranch, tracking);
-                log.Complete();
+            var succ = await new Commands.Worktree(_repo.FullPath)
+                .Use(log)
+                .AddAsync(_path, branchName, _createNewBranch, tracking);
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            return succ;
         }
 
         private Repository _repo = null;

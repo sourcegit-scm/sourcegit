@@ -72,9 +72,7 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == ContentProperty)
-            {
                 Text = Content;
-            }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -84,9 +82,9 @@ namespace SourceGit.Views
                 return;
 
             var copy = new MenuItem() { Header = App.Text("Copy") };
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(selected);
+                await App.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 
@@ -115,6 +113,7 @@ namespace SourceGit.Views
     {
         public AIAssistant()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 

@@ -23,21 +23,20 @@ namespace SourceGit.ViewModels
             Force = false;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "De-initialize Submodule";
 
             var log = _repo.CreateLog("De-initialize Submodule");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Deinit(Submodule, false);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await new Commands.Submodule(_repo.FullPath)
+                .Use(log)
+                .DeinitAsync(Submodule, false);
+
+            log.Complete();
+            return succ;
         }
 
         private Repository _repo;

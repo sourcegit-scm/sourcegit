@@ -108,9 +108,9 @@ namespace SourceGit.Views
                 return;
 
             var copy = new MenuItem() { Header = App.Text("Copy") };
-            copy.Click += (_, ev) =>
+            copy.Click += async (_, ev) =>
             {
-                App.CopyText(selected);
+                await App.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 
@@ -136,8 +136,7 @@ namespace SourceGit.Views
         {
             if (UseSyntaxHighlighting)
             {
-                if (_textMate == null)
-                    _textMate = Models.TextMateHelper.CreateForEditor(this);
+                _textMate ??= Models.TextMateHelper.CreateForEditor(this);
 
                 if (DataContext is Models.RevisionTextFile file)
                     Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);

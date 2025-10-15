@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -8,19 +10,29 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree -r -z --name-only {revision}";
+            Args = $"ls-tree -r --name-only {revision}";
         }
 
-        public List<string> Result()
+        public async Task<List<string>> GetResultAsync()
         {
-            var rs = ReadToEnd();
-            if (!rs.IsSuccess)
-                return [];
-
-            var lines = rs.StdOut.Split('\0', System.StringSplitOptions.RemoveEmptyEntries);
             var outs = new List<string>();
-            foreach (var line in lines)
-                outs.Add(line);
+
+            try
+            {
+                using var proc = new Process();
+                proc.StartInfo = CreateGitStartInfo(true);
+                proc.Start();
+
+                while (await proc.StandardOutput.ReadLineAsync() is { Length: > 0 } line)
+                    outs.Add(line);
+
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                // Ignore exceptions.
+            }
+
             return outs;
         }
     }

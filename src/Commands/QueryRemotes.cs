@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -16,10 +17,10 @@ namespace SourceGit.Commands
             Args = "remote -v";
         }
 
-        public List<Models.Remote> Result()
+        public async Task<List<Models.Remote>> GetResultAsync()
         {
             var outs = new List<Models.Remote>();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return outs;
 

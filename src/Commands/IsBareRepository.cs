@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -10,7 +11,7 @@ namespace SourceGit.Commands
             Args = "rev-parse --is-bare-repository";
         }
 
-        public bool Result()
+        public bool GetResult()
         {
             if (!Directory.Exists(Path.Combine(WorkingDirectory, "refs")) ||
                 !Directory.Exists(Path.Combine(WorkingDirectory, "objects")) ||
@@ -18,6 +19,17 @@ namespace SourceGit.Commands
                 return false;
 
             var rs = ReadToEnd();
+            return rs.IsSuccess && rs.StdOut.Trim() == "true";
+        }
+
+        public async Task<bool> GetResultAsync()
+        {
+            if (!Directory.Exists(Path.Combine(WorkingDirectory, "refs")) ||
+                !Directory.Exists(Path.Combine(WorkingDirectory, "objects")) ||
+                !File.Exists(Path.Combine(WorkingDirectory, "HEAD")))
+                return false;
+
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             return rs.IsSuccess && rs.StdOut.Trim() == "true";
         }
     }

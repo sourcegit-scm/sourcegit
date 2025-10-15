@@ -1,9 +1,12 @@
 using System;
+using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace SourceGit.Views
 {
@@ -57,7 +60,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> ShowAdvancedOptionsProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, bool>(nameof(ShowAdvancedOptions), false);
+            AvaloniaProperty.Register<CommitMessageTextBox, bool>(nameof(ShowAdvancedOptions));
 
         public static readonly StyledProperty<string> TextProperty =
             AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Text), string.Empty);
@@ -105,17 +108,11 @@ namespace SourceGit.Views
             {
                 _changingWay = TextChangeWay.FromSource;
                 var normalized = Text.ReplaceLineEndings("\n");
-                var subjectEnd = normalized.IndexOf("\n\n", StringComparison.Ordinal);
-                if (subjectEnd == -1)
-                {
-                    SetCurrentValue(SubjectProperty, normalized.ReplaceLineEndings(" "));
-                    SetCurrentValue(DescriptionProperty, string.Empty);
-                }
-                else
-                {
-                    SetCurrentValue(SubjectProperty, normalized.Substring(0, subjectEnd).ReplaceLineEndings(" "));
-                    SetCurrentValue(DescriptionProperty, normalized.Substring(subjectEnd + 2));
-                }
+                var parts = normalized.Split("\n\n", 2);
+                if (parts.Length != 2)
+                    parts = [normalized, string.Empty];
+                SetCurrentValue(SubjectProperty, parts[0].ReplaceLineEndings(" "));
+                SetCurrentValue(DescriptionProperty, parts[1]);
                 _changingWay = TextChangeWay.None;
             }
             else if ((change.Property == SubjectProperty || change.Property == DescriptionProperty) && _changingWay == TextChangeWay.None)
@@ -145,17 +142,17 @@ namespace SourceGit.Views
 
                     if (SubjectEditor.CaretIndex == Subject.Length)
                     {
-                        var idx = text.IndexOf('\n');
-                        if (idx == -1)
+                        var parts = text.Split('\n', 2);
+                        if (parts.Length != 2)
                         {
                             SubjectEditor.Paste(text);
                         }
                         else
                         {
-                            SubjectEditor.Paste(text.Substring(0, idx));
+                            SubjectEditor.Paste(parts[0]);
                             DescriptionEditor.Focus();
                             DescriptionEditor.CaretIndex = 0;
-                            DescriptionEditor.Paste(text.Substring(idx + 1).Trim());
+                            DescriptionEditor.Paste(parts[1].Trim());
                         }
                     }
                     else
@@ -176,38 +173,206 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
+        private async void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm)
+            if (sender is Button button && DataContext is ViewModels.WorkingCopy vm && ShowAdvancedOptions)
             {
-                var menu = vm.CreateContextMenuForCommitMessages();
+                var repo = vm.Repository;
+                var menu = new ContextMenu();
+                menu.MaxWidth = 480;
+
+                var gitTemplate = await new Commands.Config(repo.FullPath).GetAsync("commit.template");
+                var templateCount = repo.Settings.CommitTemplates.Count;
+                if (templateCount == 0 && string.IsNullOrEmpty(gitTemplate))
+                {
+                    menu.Items.Add(new MenuItem()
+                    {
+                        Header = App.Text("WorkingCopy.NoCommitTemplates"),
+                        Icon = App.CreateMenuIcon("Icons.Code"),
+                        IsEnabled = false
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < templateCount; i++)
+                    {
+                        var template = repo.Settings.CommitTemplates[i];
+                        var item = new MenuItem();
+                        item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
+                        item.Icon = App.CreateMenuIcon("Icons.Code");
+                        item.Click += (_, ev) =>
+                        {
+                            vm.ApplyCommitMessageTemplate(template);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(item);
+                    }
+
+                    if (!string.IsNullOrEmpty(gitTemplate))
+                    {
+                        if (!Path.IsPathRooted(gitTemplate))
+                            gitTemplate = Native.OS.GetAbsPath(repo.FullPath, gitTemplate);
+
+                        var friendlyName = gitTemplate;
+                        if (!OperatingSystem.IsWindows())
+                        {
+                            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                            var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+                            if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
+                                friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
+                        }
+
+                        var gitTemplateItem = new MenuItem();
+                        gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
+                        gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
+                        gitTemplateItem.Click += (_, ev) =>
+                        {
+                            if (File.Exists(gitTemplate))
+                                vm.CommitMessage = File.ReadAllText(gitTemplate);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(gitTemplateItem);
+                    }
+                }
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var historiesCount = repo.Settings.CommitMessages.Count;
+                if (historiesCount == 0)
+                {
+                    menu.Items.Add(new MenuItem()
+                    {
+                        Header = App.Text("WorkingCopy.NoCommitHistories"),
+                        Icon = App.CreateMenuIcon("Icons.Histories"),
+                        IsEnabled = false
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < historiesCount; i++)
+                    {
+                        var dup = repo.Settings.CommitMessages[i].Trim();
+                        var header = new TextBlock()
+                        {
+                            Text = dup.ReplaceLineEndings(" "),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            TextTrimming = TextTrimming.CharacterEllipsis
+                        };
+
+                        var item = new MenuItem();
+                        item.Header = header;
+                        item.Icon = App.CreateMenuIcon("Icons.Histories");
+                        item.Click += (_, ev) =>
+                        {
+                            vm.CommitMessage = dup;
+                            ev.Handled = true;
+                        };
+
+                        menu.Items.Add(item);
+                    }
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    var clearHistoryItem = new MenuItem();
+                    clearHistoryItem.Header = App.Text("WorkingCopy.ClearCommitHistories");
+                    clearHistoryItem.Icon = App.CreateMenuIcon("Icons.Clear");
+                    clearHistoryItem.Click += async (_, ev) =>
+                    {
+                        await vm.ClearCommitMessageHistoryAsync();
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(clearHistoryItem);
+                }
+
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu?.Open(button);
+                menu.Open(button);
             }
 
             e.Handled = true;
         }
 
-        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        private async void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control)
+            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control && ShowAdvancedOptions)
             {
-                var menu = vm.CreateContextForOpenAI();
-                menu?.Open(control);
+                var repo = vm.Repository;
+
+                if (vm.Staged == null || vm.Staged.Count == 0)
+                {
+                    App.RaiseException(repo.FullPath, "No files added to commit!");
+                    return;
+                }
+
+                var services = repo.GetPreferredOpenAIServices();
+                if (services.Count == 0)
+                {
+                    App.RaiseException(repo.FullPath, "Bad configuration for OpenAI");
+                    return;
+                }
+
+                if (services.Count == 1)
+                {
+                    await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], vm.Staged, t => vm.CommitMessage = t));
+                    return;
+                }
+
+                var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
+                foreach (var service in services)
+                {
+                    var dup = service;
+                    var item = new MenuItem();
+                    item.Header = service.Name;
+                    item.Click += async (_, ev) =>
+                    {
+                        await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, vm.Staged, t => vm.CommitMessage = t));
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(item);
+                }
+                menu.Open(control);
             }
 
             e.Handled = true;
         }
 
-        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
+        private async void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
-            App.ShowWindow(new ViewModels.ConventionalCommitMessageBuilder(text => Text = text), true);
+            var toplevel = TopLevel.GetTopLevel(this);
+            if (toplevel is Window owner)
+            {
+                var vm = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text);
+                var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
+                await builder.ShowDialog(owner);
+            }
+
             e.Handled = true;
         }
 
-        private void CopyAllText(object sender, RoutedEventArgs e)
+        private async void CopyAllText(object sender, RoutedEventArgs e)
         {
-            App.CopyText(Text);
+            await App.CopyTextAsync(Text);
+            e.Handled = true;
+        }
+
+        private async void PasteAndReplaceAllText(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var text = await App.GetClipboardTextAsync();
+                if (!string.IsNullOrEmpty(text))
+                {
+                    var parts = text.ReplaceLineEndings("\n").Split("\n", 2);
+                    var subject = parts[0];
+                    Text = parts.Length > 1 ? $"{subject}\n\n{parts[1].Trim()}" : subject;
+                }
+            }
+            catch
+            {
+                // Ignore exceptions.
+            }
+
             e.Handled = true;
         }
 

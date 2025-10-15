@@ -110,16 +110,17 @@ namespace SourceGit.Views
             if (_lastHover != null)
             {
                 var link = _lastHover.Link;
+                var type = _lastHover.Type;
                 e.Pointer.Capture(null);
 
-                if (_lastHover.Type == Models.InlineElementType.CommitSHA)
+                if (type == Models.InlineElementType.CommitSHA)
                 {
                     var parentView = this.FindAncestorOfType<CommitBaseInfo>();
                     if (parentView is { DataContext: ViewModels.CommitDetail detail })
                     {
                         if (point.Properties.IsLeftButtonPressed)
                         {
-                            detail.NavigateTo(_lastHover.Link);
+                            detail.NavigateTo(link);
                         }
                         else if (point.Properties.IsRightButtonPressed)
                         {
@@ -135,9 +136,9 @@ namespace SourceGit.Views
                             var copy = new MenuItem();
                             copy.Header = App.Text("SHALinkCM.CopySHA");
                             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                            copy.Click += (_, ev) =>
+                            copy.Click += async (_, ev) =>
                             {
-                                App.CopyText(link);
+                                await App.CopyTextAsync(link);
                                 ev.Handled = true;
                             };
 
@@ -168,9 +169,9 @@ namespace SourceGit.Views
                         var copy = new MenuItem();
                         copy.Header = App.Text("IssueLinkCM.CopyLink");
                         copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                        copy.Click += (_, ev) =>
+                        copy.Click += async (_, ev) =>
                         {
-                            App.CopyText(link);
+                            await App.CopyTextAsync(link);
                             ev.Handled = true;
                         };
 
@@ -241,7 +242,6 @@ namespace SourceGit.Views
         {
             var sha = link.Link;
 
-            // If we have already queried this SHA, just use it.
             if (_inlineCommits.TryGetValue(sha, out var exist))
             {
                 ToolTip.SetTip(this, exist);
@@ -251,22 +251,18 @@ namespace SourceGit.Views
             var parentView = this.FindAncestorOfType<CommitBaseInfo>();
             if (parentView is { DataContext: ViewModels.CommitDetail detail })
             {
-                // Record the SHA of current viewing commit in the CommitDetail panel to determine if it is changed after
-                // asynchronous queries.
                 var lastDetailCommit = detail.Commit.SHA;
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
-                    var c = detail.GetParent(sha);
-                    Dispatcher.UIThread.Invoke(() =>
+                    var c = await detail.GetCommitAsync(sha);
+
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        // Make sure the DataContext of CommitBaseInfo is not changed.
                         var currentParent = this.FindAncestorOfType<CommitBaseInfo>();
                         if (currentParent is { DataContext: ViewModels.CommitDetail currentDetail } &&
                             currentDetail.Commit.SHA == lastDetailCommit)
                         {
                             _inlineCommits.TryAdd(sha, c);
-
-                            // Make sure user still hovers the target SHA.
                             if (_lastHover == link && c != null)
                                 ToolTip.SetTip(this, c);
                         }

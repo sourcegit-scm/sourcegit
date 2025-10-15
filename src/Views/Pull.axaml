@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:ac="using:Avalonia.Controls.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Pull"
              x:DataType="vm:Pull">
@@ -47,6 +46,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Pull.Branch}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
+                x:Name="RemoteBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
@@ -61,12 +61,6 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-
-        <ComboBox.ItemContainerTheme>
-          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
-          </ControlTheme>
-        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"

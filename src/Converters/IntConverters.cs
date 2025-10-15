@@ -32,12 +32,6 @@ namespace SourceGit.Converters
             new FuncValueConverter<int, Thickness>(v => new Thickness(v * 16, 0, 0, 0));
 
         public static readonly FuncValueConverter<int, IBrush> ToBookmarkBrush =
-            new FuncValueConverter<int, IBrush>(bookmark =>
-            {
-                if (bookmark == 0)
-                    return Application.Current?.FindResource("Brush.FG1") as IBrush;
-                else
-                    return Models.Bookmarks.Brushes[bookmark];
-            });
+            new FuncValueConverter<int, IBrush>(v => Models.Bookmarks.Get(v) ?? App.Current?.FindResource("Brush.FG1") as IBrush);
     }
 }

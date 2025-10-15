@@ -6,58 +6,43 @@ namespace SourceGit.Models
     {
         public static int Compare(string s1, string s2)
         {
+            var comparer = StringComparer.InvariantCultureIgnoreCase;
+
             int len1 = s1.Length;
             int len2 = s2.Length;
 
             int marker1 = 0;
             int marker2 = 0;
 
-            char[] tmp1 = new char[len1];
-            char[] tmp2 = new char[len2];
-
             while (marker1 < len1 && marker2 < len2)
             {
                 char c1 = s1[marker1];
                 char c2 = s2[marker2];
-                int loc1 = 0;
-                int loc2 = 0;
 
                 bool isDigit1 = char.IsDigit(c1);
                 bool isDigit2 = char.IsDigit(c2);
                 if (isDigit1 != isDigit2)
-                    return c1.CompareTo(c2);
+                    return comparer.Compare(c1.ToString(), c2.ToString());
 
-                do
-                {
-                    tmp1[loc1] = c1;
-                    loc1++;
-                    marker1++;
+                int subLen1 = 1;
+                while (marker1 + subLen1 < len1 && char.IsDigit(s1[marker1 + subLen1]) == isDigit1)
+                    subLen1++;
 
-                    if (marker1 < len1)
-                        c1 = s1[marker1];
-                    else
-                        break;
-                } while (char.IsDigit(c1) == isDigit1);
+                int subLen2 = 1;
+                while (marker2 + subLen2 < len2 && char.IsDigit(s2[marker2 + subLen2]) == isDigit2)
+                    subLen2++;
 
-                do
-                {
-                    tmp2[loc2] = c2;
-                    loc2++;
-                    marker2++;
+                string sub1 = s1.Substring(marker1, subLen1);
+                string sub2 = s2.Substring(marker2, subLen2);
 
-                    if (marker2 < len2)
-                        c2 = s2[marker2];
-                    else
-                        break;
-                } while (char.IsDigit(c2) == isDigit2);
+                marker1 += subLen1;
+                marker2 += subLen2;
 
-                string sub1 = new string(tmp1, 0, loc1);
-                string sub2 = new string(tmp2, 0, loc2);
                 int result;
                 if (isDigit1)
-                    result = loc1 == loc2 ? string.CompareOrdinal(sub1, sub2) : loc1 - loc2;
+                    result = (subLen1 == subLen2) ? string.CompareOrdinal(sub1, sub2) : (subLen1 - subLen2);
                 else
-                    result = string.Compare(sub1, sub2, StringComparison.OrdinalIgnoreCase);
+                    result = comparer.Compare(sub1, sub2);
 
                 if (result != 0)
                     return result;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -88,9 +89,7 @@ namespace SourceGit.Models
         {
             var c = Peek();
             if (c is not null)
-            {
                 _pos++;
-            }
             return c;
         }
 
@@ -102,7 +101,7 @@ namespace SourceGit.Models
         private int? Integer()
         {
             var start = _pos;
-            while (Peek() is char c && c >= '0' && c <= '9')
+            while (Peek() is >= '0' and <= '9')
             {
                 _pos++;
             }
@@ -118,7 +117,7 @@ namespace SourceGit.Models
             // text token start
             var tok = _pos;
             bool esc = false;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 if (esc)
                 {
@@ -129,7 +128,7 @@ namespace SourceGit.Models
                 {
                     case ESCAPE:
                         // allow to escape only \ and $
-                        if (Peek() is char nc && (nc == ESCAPE || nc == VARIABLE_ANCHOR))
+                        if (Peek() is ESCAPE or VARIABLE_ANCHOR)
                         {
                             esc = true;
                             FlushText(tok, _pos - 1);
@@ -172,18 +171,18 @@ namespace SourceGit.Models
         {
             if (Next() != VARIABLE_START)
                 return null;
-            int name_start = _pos;
-            while (Next() is char c)
+            var nameStart = _pos;
+            while (Next() is { } c)
             {
                 // name character, continue advancing
                 if (IsNameChar(c))
                     continue;
 
-                var name_end = _pos - 1;
+                var nameEnd = _pos - 1;
                 // not a name character but name is empty, cancel
-                if (name_start >= name_end)
+                if (nameStart >= nameEnd)
                     return null;
-                var name = new string(_chars, name_start, name_end - name_start);
+                var name = new string(_chars, nameStart, nameEnd - nameStart);
 
                 return c switch
                 {
@@ -228,7 +227,7 @@ namespace SourceGit.Models
             var sb = new StringBuilder();
             var tok = _pos;
             var esc = false;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 if (esc)
                 {
@@ -277,7 +276,7 @@ namespace SourceGit.Models
             var sb = new StringBuilder();
             var tok = _pos;
             var esc = false;
-            while (Next() is char c)
+            while (Next() is { } c)
             {
                 if (esc)
                 {
@@ -287,7 +286,7 @@ namespace SourceGit.Models
                 switch (c)
                 {
                     case ESCAPE:
-                        // allow to escape only }
+                        // allow to escape only right-brace
                         if (Peek() == VARIABLE_END)
                         {
                             esc = true;
@@ -320,9 +319,7 @@ namespace SourceGit.Models
         private static string EvalVariable(Context context, string name)
         {
             if (!s_variables.TryGetValue(name, out var getter))
-            {
                 return string.Empty;
-            }
             return getter(context);
         }
 
@@ -334,9 +331,7 @@ namespace SourceGit.Models
         private static string EvalVariable(Context context, SlicedVariable variable)
         {
             if (!s_slicedVariables.TryGetValue(variable.name, out var getter))
-            {
                 return string.Empty;
-            }
             return getter(context, variable.count);
         }
 
@@ -355,14 +350,10 @@ namespace SourceGit.Models
         private delegate string VariableGetter(Context context);
 
         private static readonly IReadOnlyDictionary<string, VariableGetter> s_variables = new Dictionary<string, VariableGetter>() {
-            // legacy variables
             {"branch_name", GetBranchName},
             {"files_num", GetFilesCount},
             {"files", GetFiles},
-            //
-            {"BRANCH", GetBranchName},
-            {"FILES_COUNT", GetFilesCount},
-            {"FILES", GetFiles},
+            {"pure_files", GetPureFiles},
         };
 
         private static string GetBranchName(Context context)
@@ -383,13 +374,19 @@ namespace SourceGit.Models
             return string.Join(", ", paths);
         }
 
+        private static string GetPureFiles(Context context)
+        {
+            var names = new List<string>();
+            foreach (var c in context.changes)
+                names.Add(Path.GetFileName(c.Path));
+            return string.Join(", ", names);
+        }
+
         private delegate string VariableSliceGetter(Context context, int count);
 
         private static readonly IReadOnlyDictionary<string, VariableSliceGetter> s_slicedVariables = new Dictionary<string, VariableSliceGetter>() {
-            // legacy variables
             {"files", GetFilesSliced},
-            //
-            {"FILES", GetFilesSliced},
+            {"pure_files", GetPureFilesSliced}
         };
 
         private static string GetFilesSliced(Context context, int count)
@@ -401,6 +398,21 @@ namespace SourceGit.Models
                 paths.Add(context.changes[i].Path);
 
             sb.AppendJoin(", ", paths);
+            if (max < context.changes.Count)
+                sb.Append($" and {context.changes.Count - max} other files");
+
+            return sb.ToString();
+        }
+
+        private static string GetPureFilesSliced(Context context, int count)
+        {
+            var sb = new StringBuilder();
+            var names = new List<string>();
+            var max = Math.Min(count, context.changes.Count);
+            for (int i = 0; i < max; i++)
+                names.Add(Path.GetFileName(context.changes[i].Path));
+
+            sb.AppendJoin(", ", names);
             if (max < context.changes.Count)
                 sb.Append($" and {context.changes.Count - max} other files");
 

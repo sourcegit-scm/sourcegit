@@ -7,7 +7,7 @@ namespace SourceGit.ViewModels
     public class Pull : Popup
     {
         public List<Models.Remote> Remotes => _repo.Remotes;
-        public Models.Branch Current => _current;
+        public Models.Branch Current { get; }
 
         public bool HasSpecifiedRemoteBranch
         {
@@ -64,7 +64,7 @@ namespace SourceGit.ViewModels
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
-            _current = repo.CurrentBranch;
+            Current = repo.CurrentBranch;
 
             if (specifiedRemoteBranch != null)
             {
@@ -83,20 +83,20 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var autoSelectedRemote = null as Models.Remote;
-                if (!string.IsNullOrEmpty(_current.Upstream))
+                Models.Remote autoSelectedRemote = null;
+                if (!string.IsNullOrEmpty(Current.Upstream))
                 {
-                    var remoteNameEndIdx = _current.Upstream.IndexOf('/', 13);
+                    var remoteNameEndIdx = Current.Upstream.IndexOf('/', 13);
                     if (remoteNameEndIdx > 0)
                     {
-                        var remoteName = _current.Upstream.Substring(13, remoteNameEndIdx - 13);
+                        var remoteName = Current.Upstream.Substring(13, remoteNameEndIdx - 13);
                         autoSelectedRemote = _repo.Remotes.Find(x => x.Name == remoteName);
                     }
                 }
 
                 if (autoSelectedRemote == null)
                 {
-                    var remote = null as Models.Remote;
+                    Models.Remote remote = null;
                     if (!string.IsNullOrEmpty(_repo.Settings.DefaultRemote))
                         remote = _repo.Remotes.Find(x => x.Name == _repo.Settings.DefaultRemote);
                     _selectedRemote = remote ?? _repo.Remotes[0];
@@ -111,68 +111,62 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Pull");
             Use(log);
 
             var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
-            return Task.Run(() =>
+            var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
+            var needPopStash = false;
+            if (changes > 0)
             {
-                var changes = new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).Result();
-                var needPopStash = false;
-                if (changes > 0)
+                if (DiscardLocalChanges)
                 {
-                    if (DiscardLocalChanges)
+                    await Commands.Discard.AllAsync(_repo.FullPath, false, false, log);
+                }
+                else
+                {
+                    var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH");
+                    if (!succ)
                     {
-                        Commands.Discard.All(_repo.FullPath, false, log);
+                        log.Complete();
+                        return false;
                     }
-                    else
-                    {
-                        var succ = new Commands.Stash(_repo.FullPath).Use(log).Push("PULL_AUTO_STASH");
-                        if (!succ)
-                        {
-                            log.Complete();
-                            CallUIThread(() => _repo.SetWatcherEnabled(true));
-                            return false;
-                        }
 
-                        needPopStash = true;
-                    }
+                    needPopStash = true;
+                }
+            }
+
+            bool rs = await new Commands.Pull(
+                _repo.FullPath,
+                _selectedRemote.Name,
+                !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
+                UseRebase).Use(log).RunAsync();
+            if (rs)
+            {
+                if (updateSubmodules)
+                {
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
+                    if (submodules.Count > 0)
+                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
                 }
 
-                bool rs = new Commands.Pull(
-                    _repo.FullPath,
-                    _selectedRemote.Name,
-                    !string.IsNullOrEmpty(_current.Upstream) && _current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                    UseRebase).Use(log).Exec();
+                if (needPopStash)
+                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+            }
 
-                if (rs)
-                {
-                    if (updateSubmodules)
-                    {
-                        var submodules = new Commands.QueryUpdatableSubmodules(_repo.FullPath).Result();
-                        if (submodules.Count > 0)
-                            new Commands.Submodule(_repo.FullPath).Use(log).Update(submodules, true, true);
-                    }
+            log.Complete();
 
-                    if (needPopStash)
-                        new Commands.Stash(_repo.FullPath).Use(log).Pop("stash@{0}");
-                }
+            if (_repo.SelectedViewIndex == 0)
+            {
+                var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
+                _repo.NavigateToCommit(head, true);
+            }
 
-                log.Complete();
-
-                var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").Result();
-                CallUIThread(() =>
-                {
-                    _repo.NavigateToCommit(head, true);
-                    _repo.SetWatcherEnabled(true);
-                });
-
-                return rs;
-            });
+            return rs;
         }
 
         private void PostRemoteSelected()
@@ -188,12 +182,12 @@ namespace SourceGit.ViewModels
             RemoteBranches = branches;
 
             var autoSelectedBranch = false;
-            if (!string.IsNullOrEmpty(_current.Upstream) &&
-                _current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
+            if (!string.IsNullOrEmpty(Current.Upstream) &&
+                Current.Upstream.StartsWith($"refs/remotes/{remoteName}/", System.StringComparison.Ordinal))
             {
                 foreach (var branch in branches)
                 {
-                    if (_current.Upstream == branch.FullName)
+                    if (Current.Upstream == branch.FullName)
                     {
                         SelectedBranch = branch;
                         autoSelectedBranch = true;
@@ -206,7 +200,7 @@ namespace SourceGit.ViewModels
             {
                 foreach (var branch in branches)
                 {
-                    if (_current.Name == branch.Name)
+                    if (Current.Name == branch.Name)
                     {
                         SelectedBranch = branch;
                         autoSelectedBranch = true;
@@ -220,7 +214,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
-        private readonly Models.Branch _current = null;
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;

@@ -1,72 +1,65 @@
-﻿using System.IO;
-
-using Avalonia.Threading;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public static class MergeTool
+    public class MergeTool : Command
     {
-        public static bool OpenForMerge(string repo, int toolType, string toolPath, string file)
+        public MergeTool(string repo, string file)
         {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.RaiseError = true;
-
-            // NOTE: If no <file> names are specified, 'git mergetool' will run the merge tool program on every file with merge conflicts.
-            var fileArg = string.IsNullOrEmpty(file) ? "" : $"\"{file}\"";
-
-            if (toolType == 0)
-            {
-                cmd.Args = $"mergetool {fileArg}";
-                return cmd.Exec();
-            }
-
-            if (!File.Exists(toolPath))
-            {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, $"Can NOT find external merge tool in '{toolPath}'!"));
-                return false;
-            }
-
-            var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
-            if (supported == null)
-            {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, "Invalid merge tool in preference setting!"));
-                return false;
-            }
-
-            cmd.Args = $"-c mergetool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.Cmd}\" -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {fileArg}";
-            return cmd.Exec();
+            WorkingDirectory = repo;
+            Context = repo;
+            _file = string.IsNullOrEmpty(file) ? string.Empty : file.Quoted();
         }
 
-        public static bool OpenForDiff(string repo, int toolType, string toolPath, Models.DiffOption option)
+        public async Task<bool> OpenAsync()
         {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.RaiseError = true;
-
-            if (toolType == 0)
+            var tool = Native.OS.GetDiffMergeTool(false);
+            if (tool == null)
             {
-                cmd.Args = $"difftool -g --no-prompt {option}";
-                return cmd.Exec();
-            }
-
-            if (!File.Exists(toolPath))
-            {
-                Dispatcher.UIThread.Invoke(() => App.RaiseException(repo, $"Can NOT find external diff tool in '{toolPath}'!"));
+                App.RaiseException(Context, "Invalid diff/merge tool in preference setting!");
                 return false;
             }
 
-            var supported = Models.ExternalMerger.Supported.Find(x => x.Type == toolType);
-            if (supported == null)
+            if (string.IsNullOrEmpty(tool.Cmd))
             {
-                Dispatcher.UIThread.Post(() => App.RaiseException(repo, "Invalid merge tool in preference setting!"));
-                return false;
+                var ok = await CheckGitConfigurationAsync();
+                if (!ok)
+                    return false;
+
+                Args = $"mergetool -g --no-prompt {_file}";
+            }
+            else
+            {
+                var cmd = $"{tool.Exec.Quoted()} {tool.Cmd}";
+                Args = $"-c mergetool.sourcegit.cmd={cmd.Quoted()} -c mergetool.writeToTemp=true -c mergetool.keepBackup=false -c mergetool.trustExitCode=true mergetool --tool=sourcegit {_file}";
             }
 
-            cmd.Args = $"-c difftool.sourcegit.cmd=\"\\\"{toolPath}\\\" {supported.DiffCmd}\" difftool --tool=sourcegit --no-prompt {option}";
-            return cmd.Exec();
+            return await ExecAsync().ConfigureAwait(false);
         }
+
+        private async Task<bool> CheckGitConfigurationAsync()
+        {
+            var tool = await new Config(WorkingDirectory).GetAsync("merge.guitool");
+            if (string.IsNullOrEmpty(tool))
+                tool = await new Config(WorkingDirectory).GetAsync("merge.tool");
+
+            if (string.IsNullOrEmpty(tool))
+            {
+                App.RaiseException(Context, "Missing git configuration: merge.guitool");
+                return false;
+            }
+
+            if (tool.StartsWith("vimdiff", StringComparison.Ordinal) ||
+                tool.StartsWith("nvimdiff", StringComparison.Ordinal))
+            {
+                App.RaiseException(Context, $"CLI based merge tool \"{tool}\" is not supported by this app!");
+                return false;
+            }
+
+            return true;
+        }
+
+        private string _file;
     }
 }

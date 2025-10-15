@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -10,15 +11,14 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnSearchBoxKeyDown(object _, KeyEventArgs e)
+        private async void OnSearchBoxKeyDown(object _, KeyEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             if (e.Key == Key.Enter)
             {
-                FileTree.SetSearchResult(vm.RevisionFileSearchFilter);
+                await FileTree.SetSearchResultAsync(vm.RevisionFileSearchFilter);
                 e.Handled = true;
             }
             else if (e.Key == Key.Down || e.Key == Key.Up)
@@ -38,16 +38,15 @@ namespace SourceGit.Views
             }
         }
 
-        private void OnSearchBoxTextChanged(object _, TextChangedEventArgs e)
+        private async void OnSearchBoxTextChanged(object _, TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(TxtSearchRevisionFiles.Text))
-                FileTree.SetSearchResult(null);
+                await FileTree.SetSearchResultAsync(null);
         }
 
-        private void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
+        private async void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             if (e.Key == Key.Escape)
@@ -59,15 +58,14 @@ namespace SourceGit.Views
             {
                 vm.RevisionFileSearchFilter = content;
                 TxtSearchRevisionFiles.CaretIndex = content.Length;
-                FileTree.SetSearchResult(vm.RevisionFileSearchFilter);
+                await FileTree.SetSearchResultAsync(vm.RevisionFileSearchFilter);
                 e.Handled = true;
             }
         }
 
-        private void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
+        private async void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
         {
-            var vm = DataContext as ViewModels.CommitDetail;
-            if (vm == null)
+            if (DataContext is not ViewModels.CommitDetail vm)
                 return;
 
             var content = (sender as StackPanel)?.DataContext as string;
@@ -75,8 +73,16 @@ namespace SourceGit.Views
             {
                 vm.RevisionFileSearchFilter = content;
                 TxtSearchRevisionFiles.CaretIndex = content.Length;
-                FileTree.SetSearchResult(vm.RevisionFileSearchFilter);
+                await FileTree.SetSearchResultAsync(vm.RevisionFileSearchFilter);
             }
+
+            e.Handled = true;
+        }
+
+        private async void OnOpenFileWithDefaultEditor(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail { CanOpenRevisionFileWithDefaultEditor: true } vm)
+                await vm.OpenRevisionFileWithDefaultEditorAsync(vm.ViewRevisionFilePath);
 
             e.Handled = true;
         }

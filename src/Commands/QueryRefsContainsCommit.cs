@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -12,29 +13,28 @@ namespace SourceGit.Commands
             Args = $"for-each-ref --format=\"%(refname)\" --contains {commit}";
         }
 
-        public List<Models.Decorator> Result()
+        public async Task<List<Models.Decorator>> GetResultAsync()
         {
-            var rs = new List<Models.Decorator>();
+            var outs = new List<Models.Decorator>();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            if (!rs.IsSuccess)
+                return outs;
 
-            var output = ReadToEnd();
-            if (!output.IsSuccess)
-                return rs;
-
-            var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 if (line.EndsWith("/HEAD", StringComparison.Ordinal))
                     continue;
 
                 if (line.StartsWith("refs/heads/", StringComparison.Ordinal))
-                    rs.Add(new() { Name = line.Substring("refs/heads/".Length), Type = Models.DecoratorType.LocalBranchHead });
+                    outs.Add(new() { Name = line.Substring("refs/heads/".Length), Type = Models.DecoratorType.LocalBranchHead });
                 else if (line.StartsWith("refs/remotes/", StringComparison.Ordinal))
-                    rs.Add(new() { Name = line.Substring("refs/remotes/".Length), Type = Models.DecoratorType.RemoteBranchHead });
+                    outs.Add(new() { Name = line.Substring("refs/remotes/".Length), Type = Models.DecoratorType.RemoteBranchHead });
                 else if (line.StartsWith("refs/tags/", StringComparison.Ordinal))
-                    rs.Add(new() { Name = line.Substring("refs/tags/".Length), Type = Models.DecoratorType.Tag });
+                    outs.Add(new() { Name = line.Substring("refs/tags/".Length), Type = Models.DecoratorType.Tag });
             }
 
-            return rs;
+            return outs;
         }
     }
 }

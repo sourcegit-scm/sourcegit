@@ -22,22 +22,21 @@ namespace SourceGit.ViewModels
             AutoCommit = true;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             _repo.ClearCommitMessage();
             ProgressDescription = $"Revert commit '{Target.SHA}' ...";
 
             var log = _repo.CreateLog($"Revert '{Target.SHA}'");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit).Use(log).Exec();
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            await new Commands.Revert(_repo.FullPath, Target.SHA, AutoCommit)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            return true;
         }
 
         private readonly Repository _repo = null;

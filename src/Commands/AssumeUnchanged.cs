@@ -8,7 +8,7 @@
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"update-index {mode} -- \"{file}\"";
+            Args = $"update-index {mode} -- {file.Quoted()}";
         }
     }
 }

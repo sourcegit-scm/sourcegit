@@ -1,4 +1,5 @@
-using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -11,24 +12,16 @@ namespace SourceGit.Commands
             Args = $"log --date-order --branches --remotes -{max} --format=%ct$%aN±%aE";
         }
 
-        public Models.Statistics Result()
+        public async Task<Models.Statistics> ReadAsync()
         {
             var statistics = new Models.Statistics();
-            var rs = ReadToEnd();
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return statistics;
 
-            var start = 0;
-            var end = rs.StdOut.IndexOf('\n', start);
-            while (end > 0)
-            {
-                ParseLine(statistics, rs.StdOut.Substring(start, end - start));
-                start = end + 1;
-                end = rs.StdOut.IndexOf('\n', start);
-            }
-
-            if (start < rs.StdOut.Length)
-                ParseLine(statistics, rs.StdOut.Substring(start));
+            var sr = new StringReader(rs.StdOut);
+            while (sr.ReadLine() is { } line)
+                ParseLine(statistics, line);
 
             statistics.Complete();
             return statistics;
@@ -36,13 +29,9 @@ namespace SourceGit.Commands
 
         private void ParseLine(Models.Statistics statistics, string line)
         {
-            var dateEndIdx = line.IndexOf('$', StringComparison.Ordinal);
-            if (dateEndIdx == -1)
-                return;
-
-            var dateStr = line.AsSpan(0, dateEndIdx);
-            if (double.TryParse(dateStr, out var date))
-                statistics.AddCommit(line.Substring(dateEndIdx + 1), date);
+            var parts = line.Split('$', 2);
+            if (parts.Length == 2 && double.TryParse(parts[0], out var date))
+                statistics.AddCommit(parts[1], date);
         }
     }
 }

@@ -74,33 +74,32 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Create tag...";
 
             var remotes = PushToRemotes ? _repo.Remotes : null;
             var log = _repo.CreateLog("Create Tag");
             Use(log);
 
-            return Task.Run(() =>
+            var cmd = new Commands.Tag(_repo.FullPath, _tagName).Use(log);
+            var succ = false;
+            if (_annotated)
+                succ = await cmd.AddAsync(_basedOn, Message, SignTag);
+            else
+                succ = await cmd.AddAsync(_basedOn);
+
+            if (succ && remotes != null)
             {
-                bool succ;
-                if (_annotated)
-                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, Message, SignTag, log);
-                else
-                    succ = Commands.Tag.Add(_repo.FullPath, _tagName, _basedOn, log);
+                foreach (var remote in remotes)
+                    await new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false)
+                        .Use(log)
+                        .RunAsync();
+            }
 
-                if (succ && remotes != null)
-                {
-                    foreach (var remote in remotes)
-                        new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false).Use(log).Exec();
-                }
-
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo = null;

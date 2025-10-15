@@ -4,18 +4,19 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public partial class Command
     {
-        public class ReadToEndResult
+        public class Result
         {
             public bool IsSuccess { get; set; } = false;
-            public string StdOut { get; set; } = "";
-            public string StdErr { get; set; } = "";
+            public string StdOut { get; set; } = string.Empty;
+            public string StdErr { get; set; } = string.Empty;
+
+            public static Result Failed(string reason) => new Result() { StdErr = reason };
         }
 
         public enum EditorType
@@ -26,41 +27,42 @@ namespace SourceGit.Commands
         }
 
         public string Context { get; set; } = string.Empty;
-        public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public string WorkingDirectory { get; set; } = null;
-        public EditorType Editor { get; set; } = EditorType.CoreEditor; // Only used in Exec() mode
+        public EditorType Editor { get; set; } = EditorType.CoreEditor;
         public string SSHKey { get; set; } = string.Empty;
         public string Args { get; set; } = string.Empty;
+
+        // Only used in `ExecAsync` mode.
+        public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
-        public bool Exec()
+        public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
 
-            var start = CreateGitStartInfo();
             var errs = new List<string>();
-            var proc = new Process() { StartInfo = start };
 
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
             proc.OutputDataReceived += (_, e) => HandleOutput(e.Data, errs);
             proc.ErrorDataReceived += (_, e) => HandleOutput(e.Data, errs);
 
-            var dummy = null as Process;
-            var dummyProcLock = new object();
+            var captured = new CapturedProcess() { Process = proc };
+            var capturedLock = new object();
             try
             {
                 proc.Start();
 
-                // It not safe, please only use `CancellationToken` in readonly commands.
+                // Not safe, please only use `CancellationToken` in readonly commands.
                 if (CancellationToken.CanBeCanceled)
                 {
-                    dummy = proc;
                     CancellationToken.Register(() =>
                     {
-                        lock (dummyProcLock)
+                        lock (capturedLock)
                         {
-                            if (dummy is { HasExited: false })
-                                dummy.Kill();
+                            if (captured is { Process: { HasExited: false } })
+                                captured.Process.Kill();
                         }
                     });
                 }
@@ -68,7 +70,7 @@ namespace SourceGit.Commands
             catch (Exception e)
             {
                 if (RaiseError)
-                    Dispatcher.UIThread.Post(() => App.RaiseException(Context, e.Message));
+                    App.RaiseException(Context, e.Message);
 
                 Log?.AppendLine(string.Empty);
                 return false;
@@ -76,27 +78,30 @@ namespace SourceGit.Commands
 
             proc.BeginOutputReadLine();
             proc.BeginErrorReadLine();
-            proc.WaitForExit();
 
-            if (dummy != null)
+            try
             {
-                lock (dummyProcLock)
-                {
-                    dummy = null;
-                }
+                await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                HandleOutput(e.Message, errs);
             }
 
-            int exitCode = proc.ExitCode;
-            proc.Close();
+            lock (capturedLock)
+            {
+                captured.Process = null;
+            }
+
             Log?.AppendLine(string.Empty);
 
-            if (!CancellationToken.IsCancellationRequested && exitCode != 0)
+            if (!CancellationToken.IsCancellationRequested && proc.ExitCode != 0)
             {
                 if (RaiseError)
                 {
                     var errMsg = string.Join("\n", errs).Trim();
                     if (!string.IsNullOrEmpty(errMsg))
-                        Dispatcher.UIThread.Post(() => App.RaiseException(Context, errMsg));
+                        App.RaiseException(Context, errMsg);
                 }
 
                 return false;
@@ -105,10 +110,10 @@ namespace SourceGit.Commands
             return true;
         }
 
-        public ReadToEndResult ReadToEnd()
+        protected Result ReadToEnd()
         {
-            var start = CreateGitStartInfo();
-            var proc = new Process() { StartInfo = start };
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
 
             try
             {
@@ -116,46 +121,63 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                return new ReadToEndResult()
-                {
-                    IsSuccess = false,
-                    StdOut = string.Empty,
-                    StdErr = e.Message,
-                };
+                return Result.Failed(e.Message);
             }
 
-            var rs = new ReadToEndResult()
-            {
-                StdOut = proc.StandardOutput.ReadToEnd(),
-                StdErr = proc.StandardError.ReadToEnd(),
-            };
-
+            var rs = new Result() { IsSuccess = true };
+            rs.StdOut = proc.StandardOutput.ReadToEnd();
+            rs.StdErr = proc.StandardError.ReadToEnd();
             proc.WaitForExit();
-            rs.IsSuccess = proc.ExitCode == 0;
-            proc.Close();
 
+            rs.IsSuccess = proc.ExitCode == 0;
             return rs;
         }
 
-        private ProcessStartInfo CreateGitStartInfo()
+        protected async Task<Result> ReadToEndAsync()
+        {
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(true);
+
+            try
+            {
+                proc.Start();
+            }
+            catch (Exception e)
+            {
+                return Result.Failed(e.Message);
+            }
+
+            var rs = new Result() { IsSuccess = true };
+            rs.StdOut = await proc.StandardOutput.ReadToEndAsync(CancellationToken).ConfigureAwait(false);
+            rs.StdErr = await proc.StandardError.ReadToEndAsync(CancellationToken).ConfigureAwait(false);
+            await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
+
+            rs.IsSuccess = proc.ExitCode == 0;
+            return rs;
+        }
+
+        protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             var start = new ProcessStartInfo();
             start.FileName = Native.OS.GitExecutable;
-            start.Arguments = "--no-pager -c core.quotepath=off -c credential.helper=manager ";
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
-            start.RedirectStandardOutput = true;
-            start.RedirectStandardError = true;
-            start.StandardOutputEncoding = Encoding.UTF8;
-            start.StandardErrorEncoding = Encoding.UTF8;
+
+            if (redirect)
+            {
+                start.RedirectStandardOutput = true;
+                start.RedirectStandardError = true;
+                start.StandardOutputEncoding = Encoding.UTF8;
+                start.StandardErrorEncoding = Encoding.UTF8;
+            }
 
             // Force using this app as SSH askpass program
             var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
-            if (!OperatingSystem.IsLinux())
-                start.Environment.Add("DISPLAY", "required");
             start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
             start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
             start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
+            if (!OperatingSystem.IsLinux())
+                start.Environment.Add("DISPLAY", "required");
 
             // If an SSH private key was provided, sets the environment.
             if (!start.Environment.ContainsKey("GIT_SSH_COMMAND") && !string.IsNullOrEmpty(SSHKey))
@@ -168,22 +190,27 @@ namespace SourceGit.Commands
                 start.Environment.Add("LC_ALL", "C");
             }
 
-            // Force using this app as git editor.
+            var builder = new StringBuilder();
+            builder
+                .Append("--no-pager -c core.quotepath=off -c credential.helper=")
+                .Append(Native.OS.CredentialHelper)
+                .Append(' ');
+
             switch (Editor)
             {
                 case EditorType.CoreEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --core-editor\" ";
+                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --core-editor" """);
                     break;
                 case EditorType.RebaseEditor:
-                    start.Arguments += $"-c core.editor=\"\\\"{selfExecFile}\\\" --rebase-message-editor\" -c sequence.editor=\"\\\"{selfExecFile}\\\" --rebase-todo-editor\" -c rebase.abbreviateCommands=true ";
+                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --rebase-message-editor" -c sequence.editor="\"{selfExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """);
                     break;
                 default:
-                    start.Arguments += "-c core.editor=true ";
+                    builder.Append("-c core.editor=true ");
                     break;
             }
 
-            // Append command args
-            start.Arguments += Args;
+            builder.Append(Args);
+            start.Arguments = builder.ToString();
 
             // Working directory
             if (!string.IsNullOrEmpty(WorkingDirectory))
@@ -194,7 +221,9 @@ namespace SourceGit.Commands
 
         private void HandleOutput(string line, List<string> errs)
         {
-            line ??= string.Empty;
+            if (line == null)
+                return;
+
             Log?.AppendLine(line);
 
             // Lines to hide in error message.
@@ -212,6 +241,11 @@ namespace SourceGit.Commands
             }
 
             errs.Add(line);
+        }
+
+        private class CapturedProcess
+        {
+            public Process Process { get; set; } = null;
         }
 
         [GeneratedRegex(@"\d+%")]

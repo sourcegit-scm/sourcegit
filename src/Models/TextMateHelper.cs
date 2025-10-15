@@ -26,6 +26,7 @@ namespace SourceGit.Models
             new ExtraGrammar("source.hx", [".hx"], "haxe.json"),
             new ExtraGrammar("source.hxml", [".hxml"], "hxml.json"),
             new ExtraGrammar("text.html.jsp", [".jsp", ".jspf", ".tag"], "jsp.json"),
+            new ExtraGrammar("source.vue", [".vue"], "vue.json"),
         ];
 
         public static string GetScope(string file, RegistryOptions reg)
@@ -33,7 +34,7 @@ namespace SourceGit.Models
             var extension = Path.GetExtension(file);
             if (extension == ".h")
                 extension = ".cpp";
-            else if (extension == ".resx" || extension == ".plist" || extension == ".manifest")
+            else if (extension is ".resx" or ".plist" or ".manifest")
                 extension = ".xml";
             else if (extension == ".command")
                 extension = ".sh";

@@ -40,9 +40,9 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding submodule...";
 
             var log = _repo.CreateLog("Add Submodule");
@@ -59,14 +59,12 @@ namespace SourceGit.ViewModels
                     relativePath = Path.GetFileName(_url);
             }
 
-            return Task.Run(() =>
-            {
-                var succ = new Commands.Submodule(_repo.FullPath).Use(log).Add(_url, relativePath, Recursive);
-                log.Complete();
+            var succ = await new Commands.Submodule(_repo.FullPath)
+                .Use(log)
+                .AddAsync(_url, relativePath, Recursive);
 
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo = null;

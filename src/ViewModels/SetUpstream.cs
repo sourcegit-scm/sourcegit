@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -50,26 +51,32 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
             ProgressDescription = "Setting upstream...";
+            Models.Branch upstream = _unset ? null : SelectedRemoteBranch;
 
-            var upstream = (_unset || SelectedRemoteBranch == null) ? string.Empty : SelectedRemoteBranch.FullName;
-            if (upstream == Local.Upstream)
-                return null;
+            if (upstream == null)
+            {
+                if (string.IsNullOrEmpty(Local.Upstream))
+                    return true;
+            }
+            else if (upstream.FullName.Equals(Local.Upstream, StringComparison.Ordinal))
+            {
+                return true;
+            }
 
             var log = _repo.CreateLog("Set Upstream");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = Commands.Branch.SetUpstream(_repo.FullPath, Local.Name, upstream.Replace("refs/remotes/", ""), log);
-                if (succ)
-                    _repo.RefreshBranches();
+            var succ = await new Commands.Branch(_repo.FullPath, Local.Name)
+                .Use(log)
+                .SetUpstreamAsync(upstream);
 
-                log.Complete();
-                return true;
-            });
+            log.Complete();
+            if (succ)
+                _repo.MarkBranchesDirtyManually();
+            return true;
         }
 
         private readonly Repository _repo;

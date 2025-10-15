@@ -26,10 +26,7 @@ namespace SourceGit.Models
         {
             get
             {
-                if (_instance == null)
-                    _instance = new AvatarManager();
-
-                return _instance;
+                return _instance ??= new AvatarManager();
             }
         }
 
@@ -54,11 +51,11 @@ namespace SourceGit.Models
             LoadDefaultAvatar("noreply@github.com", "github.png");
             LoadDefaultAvatar("unrealbot@epicgames.com", "unreal.png");
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
-                    var email = null as string;
+                    string email = null;
 
                     lock (_synclock)
                     {
@@ -76,25 +73,23 @@ namespace SourceGit.Models
                     }
 
                     var md5 = GetEmailHash(email);
-                    var matchGithubUser = REG_GITHUB_USER_EMAIL().Match(email);
-                    var url = matchGithubUser.Success ?
-                        $"https://avatars.githubusercontent.com/{matchGithubUser.Groups[2].Value}" :
+                    var matchGitHubUser = REG_GITHUB_USER_EMAIL().Match(email);
+                    var url = matchGitHubUser.Success ?
+                        $"https://avatars.githubusercontent.com/{matchGitHubUser.Groups[2].Value}" :
                         $"https://www.gravatar.com/avatar/{md5}?d=404";
 
                     var localFile = Path.Combine(_storePath, md5);
-                    var img = null as Bitmap;
+                    Bitmap img = null;
                     try
                     {
-                        var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(2) };
-                        var task = client.GetAsync(url);
-                        task.Wait();
-
-                        var rsp = task.Result;
+                        using var client = new HttpClient();
+                        client.Timeout = TimeSpan.FromSeconds(2);
+                        var rsp = await client.GetAsync(url);
                         if (rsp.IsSuccessStatusCode)
                         {
                             using (var stream = rsp.Content.ReadAsStream())
                             {
-                                using (var writer = File.OpenWrite(localFile))
+                                using (var writer = File.Create(localFile))
                                 {
                                     stream.CopyTo(writer);
                                 }
@@ -116,7 +111,7 @@ namespace SourceGit.Models
                         _requesting.Remove(email);
                     }
 
-                    Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         _resources[email] = img;
                         NotifyResourceChanged(email, img);
@@ -188,19 +183,19 @@ namespace SourceGit.Models
         {
             try
             {
-                Bitmap image = null;
+                Bitmap image;
 
                 using (var stream = File.OpenRead(file))
                 {
                     image = Bitmap.DecodeToWidth(stream, 128);
                 }
 
-                if (image == null)
-                    return;
-
                 _resources[email] = image;
 
-                _requesting.Remove(email);
+                lock (_synclock)
+                {
+                    _requesting.Remove(email);
+                }
 
                 var store = Path.Combine(_storePath, GetEmailHash(email));
                 File.Copy(file, store, true);

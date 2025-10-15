@@ -49,21 +49,17 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Git Flow - Start {Prefix}{_name} ...";
 
             var log = _repo.CreateLog("GitFlow - Start");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                var succ = Commands.GitFlow.Start(_repo.FullPath, Type, _name, log);
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return succ;
-            });
+            var succ = await Commands.GitFlow.StartAsync(_repo.FullPath, Type, _name, log);
+            log.Complete();
+            return succ;
         }
 
         private readonly Repository _repo;

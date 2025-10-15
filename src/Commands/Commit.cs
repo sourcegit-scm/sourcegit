@@ -1,39 +1,57 @@
 ﻿using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public class Commit : Command
     {
-        public Commit(string repo, string message, bool signOff, bool amend, bool resetAuthor)
+        public Commit(string repo, string message, bool signOff, bool noVerify, bool amend, bool resetAuthor)
         {
             _tmpFile = Path.GetTempFileName();
-            File.WriteAllText(_tmpFile, message);
+            _message = message;
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"commit --allow-empty --file=\"{_tmpFile}\"";
+
+            var builder = new StringBuilder();
+            builder.Append("commit --allow-empty --file=");
+            builder.Append(_tmpFile.Quoted());
+            builder.Append(' ');
+
             if (signOff)
-                Args += " --signoff";
+                builder.Append("--signoff ");
+
+            if (noVerify)
+                builder.Append("--no-verify ");
+
             if (amend)
-                Args += resetAuthor ? " --amend --reset-author --no-edit" : " --amend --no-edit";
+            {
+                builder.Append("--amend ");
+                if (resetAuthor)
+                    builder.Append("--reset-author ");
+                builder.Append("--no-edit");
+            }
+
+            Args = builder.ToString();
         }
 
-        public bool Run()
+        public async Task<bool> RunAsync()
         {
-            var succ = Exec();
-
             try
             {
+                await File.WriteAllTextAsync(_tmpFile, _message).ConfigureAwait(false);
+                var succ = await ExecAsync().ConfigureAwait(false);
                 File.Delete(_tmpFile);
+                return succ;
             }
             catch
             {
-                // Ignore
+                return false;
             }
-
-            return succ;
         }
 
         private readonly string _tmpFile;
+        private readonly string _message;
     }
 }

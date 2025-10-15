@@ -1,5 +1,9 @@
+﻿using System;
+using System.IO;
+
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
 {
@@ -12,8 +16,7 @@ namespace SourceGit.Views
 
         private void OnMainLayoutSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null)
+            if (sender is not Grid grid)
                 return;
 
             var layout = ViewModels.Preferences.Instance.Layout;
@@ -24,36 +27,189 @@ namespace SourceGit.Views
                 layout.StashesLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
         }
 
-        private void OnStashListKeyDown(object sender, KeyEventArgs e)
+        private async void OnStashListKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key is not (Key.Delete or Key.Back))
-                return;
-
-            if (DataContext is not ViewModels.StashesPage vm)
-                return;
-
-            vm.Drop(vm.SelectedStash);
-            e.Handled = true;
+            if (DataContext is ViewModels.StashesPage { SelectedStash: { } stash } vm)
+            {
+                if (e.Key is Key.Delete or Key.Back)
+                {
+                    vm.Drop(stash);
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.C && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+                {
+                    await App.CopyTextAsync(stash.Message);
+                    e.Handled = true;
+                }
+            }
         }
 
         private void OnStashContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.StashesPage vm && sender is Border border)
+            if (DataContext is ViewModels.StashesPage vm &&
+                sender is Border { DataContext: Models.Stash stash } border)
             {
-                var menu = vm.MakeContextMenu(border.DataContext as Models.Stash);
-                menu?.Open(border);
+                var apply = new MenuItem();
+                apply.Header = App.Text("StashCM.Apply");
+                apply.Icon = App.CreateMenuIcon("Icons.CheckCircled");
+                apply.Click += (_, ev) =>
+                {
+                    vm.Apply(stash);
+                    ev.Handled = true;
+                };
+
+                var drop = new MenuItem();
+                drop.Header = App.Text("StashCM.Drop");
+                drop.Icon = App.CreateMenuIcon("Icons.Clear");
+                drop.Tag = "Back/Delete";
+                drop.Click += (_, ev) =>
+                {
+                    vm.Drop(stash);
+                    ev.Handled = true;
+                };
+
+                var patch = new MenuItem();
+                patch.Header = App.Text("StashCM.SaveAsPatch");
+                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Click += async (_, ev) =>
+                {
+                    var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
+                    if (storageProvider == null)
+                        return;
+
+                    var options = new FilePickerSaveOptions();
+                    options.Title = App.Text("StashCM.SaveAsPatch");
+                    options.DefaultExtension = ".patch";
+                    options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                        await vm.SaveStashAsPathAsync(stash, storageFile.Path.LocalPath);
+
+                    ev.Handled = true;
+                };
+
+                var copy = new MenuItem();
+                copy.Header = App.Text("StashCM.CopyMessage");
+                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+                copy.Click += async (_, ev) =>
+                {
+                    await App.CopyTextAsync(stash.Message);
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(apply);
+                menu.Items.Add(drop);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(patch);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(copy);
+                menu.Open(border);
             }
+
+            e.Handled = true;
+        }
+
+        private void OnStashDoubleTapped(object sender, TappedEventArgs e)
+        {
+            if (DataContext is ViewModels.StashesPage vm &&
+                sender is Border { DataContext: Models.Stash stash })
+                vm.Apply(stash);
+
             e.Handled = true;
         }
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.StashesPage vm && sender is Grid grid)
+            if (DataContext is ViewModels.StashesPage { SelectedChanges: { Count: 1 } selected } vm &&
+                sender is ChangeCollectionView view)
             {
-                var menu = vm.MakeContextMenuForChange(grid.DataContext as Models.Change);
-                menu?.Open(grid);
+                var change = selected[0];
+                var fullPath = vm.GetAbsPath(change.Path);
+
+                var openWithMerger = new MenuItem();
+                openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                openWithMerger.Click += (_, ev) =>
+                {
+                    vm.OpenChangeWithExternalDiffTool(change);
+                    ev.Handled = true;
+                };
+
+                var explore = new MenuItem();
+                explore.Header = App.Text("RevealFile");
+                explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                explore.IsEnabled = File.Exists(fullPath);
+                explore.Click += (_, ev) =>
+                {
+                    Native.OS.OpenInFileManager(fullPath, true);
+                    ev.Handled = true;
+                };
+
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += async (_, ev) =>
+                {
+                    await vm.CheckoutSingleFileAsync(change);
+                    ev.Handled = true;
+                };
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+                copyPath.Click += async (_, ev) =>
+                {
+                    await App.CopyTextAsync(change.Path);
+                    ev.Handled = true;
+                };
+
+                var copyFullPath = new MenuItem();
+                copyFullPath.Header = App.Text("CopyFullPath");
+                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+                copyFullPath.Click += async (_, ev) =>
+                {
+                    await App.CopyTextAsync(fullPath);
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(openWithMerger);
+                menu.Items.Add(explore);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(copyPath);
+                menu.Items.Add(copyFullPath);
+                menu.Open(view);
             }
+
             e.Handled = true;
+        }
+
+        private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.StashesPage vm)
+                return;
+
+            if (sender is not ChangeCollectionView { SelectedChanges: { Count: 1 } selectedChanges })
+                return;
+
+            var change = selectedChanges[0];
+            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
+            {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
+
+                e.Handled = true;
+            }
         }
     }
 }

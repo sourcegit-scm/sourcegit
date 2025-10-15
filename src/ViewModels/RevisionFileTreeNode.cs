@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public bool IsFolder
         {
-            get => Backend != null && Backend.Type == Models.ObjectType.Tree;
+            get => Backend?.Type == Models.ObjectType.Tree;
         }
 
         public bool IsExpanded

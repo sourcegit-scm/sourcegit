@@ -12,7 +12,7 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Merge}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="130,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="130,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -29,7 +29,7 @@
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>
@@ -87,6 +87,12 @@
           </DataTemplate>
         </ComboBox.SelectionBoxItemTemplate>
       </ComboBox>
+
+      <CheckBox Grid.Row="3" Grid.Column="1"
+                Height="32"
+                Content="{DynamicResource Text.Merge.Edit}"
+                IsChecked="{Binding Edit, Mode=TwoWay}"
+                ToolTip.Tip="--edit"/>
     </Grid>
   </StackPanel>
 </UserControl>

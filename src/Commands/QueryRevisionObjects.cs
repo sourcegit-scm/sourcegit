@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -12,64 +14,53 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree -z {sha}";
+            Args = $"ls-tree {sha}";
 
             if (!string.IsNullOrEmpty(parentFolder))
-                Args += $" -- \"{parentFolder}\"";
+                Args += $" -- {parentFolder.Quoted()}";
         }
 
-        public List<Models.Object> Result()
+        public async Task<List<Models.Object>> GetResultAsync()
         {
-            var rs = ReadToEnd();
-            if (rs.IsSuccess)
+            var outs = new List<Models.Object>();
+
+            try
             {
-                var start = 0;
-                var end = rs.StdOut.IndexOf('\0', start);
-                while (end > 0)
+                using var proc = new Process();
+                proc.StartInfo = CreateGitStartInfo(true);
+                proc.Start();
+
+                while (await proc.StandardOutput.ReadLineAsync() is { } line)
                 {
-                    var line = rs.StdOut.Substring(start, end - start);
-                    Parse(line);
-                    start = end + 1;
-                    end = rs.StdOut.IndexOf('\0', start);
+                    var match = REG_FORMAT().Match(line);
+                    if (!match.Success)
+                        continue;
+
+                    var obj = new Models.Object();
+                    obj.SHA = match.Groups[2].Value;
+                    obj.Type = Models.ObjectType.Blob;
+                    obj.Path = match.Groups[3].Value;
+
+                    obj.Type = match.Groups[1].Value switch
+                    {
+                        "blob" => Models.ObjectType.Blob,
+                        "tree" => Models.ObjectType.Tree,
+                        "tag" => Models.ObjectType.Tag,
+                        "commit" => Models.ObjectType.Commit,
+                        _ => obj.Type,
+                    };
+
+                    outs.Add(obj);
                 }
 
-                if (start < rs.StdOut.Length)
-                    Parse(rs.StdOut.Substring(start));
+                await proc.WaitForExitAsync().ConfigureAwait(false);
             }
-
-            return _objects;
-        }
-
-        private void Parse(string line)
-        {
-            var match = REG_FORMAT().Match(line);
-            if (!match.Success)
-                return;
-
-            var obj = new Models.Object();
-            obj.SHA = match.Groups[2].Value;
-            obj.Type = Models.ObjectType.Blob;
-            obj.Path = match.Groups[3].Value;
-
-            switch (match.Groups[1].Value)
+            catch
             {
-                case "blob":
-                    obj.Type = Models.ObjectType.Blob;
-                    break;
-                case "tree":
-                    obj.Type = Models.ObjectType.Tree;
-                    break;
-                case "tag":
-                    obj.Type = Models.ObjectType.Tag;
-                    break;
-                case "commit":
-                    obj.Type = Models.ObjectType.Commit;
-                    break;
+                // Ignore exceptions.
             }
 
-            _objects.Add(obj);
+            return outs;
         }
-
-        private List<Models.Object> _objects = new List<Models.Object>();
     }
 }

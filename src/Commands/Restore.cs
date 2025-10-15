@@ -15,16 +15,10 @@ namespace SourceGit.Commands
             Context = repo;
 
             var builder = new StringBuilder();
-            builder.Append("restore --staged -- \"");
-            builder.Append(stagedChange.Path);
-            builder.Append('"');
+            builder.Append("restore --staged -- ").Append(stagedChange.Path.Quoted());
 
             if (stagedChange.Index == Models.ChangeState.Renamed)
-            {
-                builder.Append(" \"");
-                builder.Append(stagedChange.OriginalPath);
-                builder.Append('"');
-            }
+                builder.Append(' ').Append(stagedChange.OriginalPath.Quoted());
 
             Args = builder.ToString();
         }
@@ -43,9 +37,7 @@ namespace SourceGit.Commands
             var builder = new StringBuilder();
             builder.Append("restore ");
             builder.Append(isStaged ? "--staged " : "--worktree --recurse-submodules ");
-            builder.Append("--pathspec-from-file=\"");
-            builder.Append(pathspecFile);
-            builder.Append('"');
+            builder.Append("--pathspec-from-file=").Append(pathspecFile.Quoted());
 
             Args = builder.ToString();
         }

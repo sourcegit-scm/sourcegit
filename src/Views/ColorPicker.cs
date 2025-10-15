@@ -10,7 +10,7 @@ namespace SourceGit.Views
     public class ColorPicker : Control
     {
         public static readonly StyledProperty<uint> ValueProperty =
-            AvaloniaProperty.Register<ColorPicker, uint>(nameof(Value), 0);
+            AvaloniaProperty.Register<ColorPicker, uint>(nameof(Value));
 
         public uint Value
         {

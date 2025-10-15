@@ -71,8 +71,7 @@ namespace SourceGit.Views
 
         private void CreateContent(Thickness margin, string iconKey)
         {
-            var geo = this.FindResource(iconKey) as StreamGeometry;
-            if (geo == null)
+            if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
             Content = new Avalonia.Controls.Shapes.Path()
@@ -164,15 +163,153 @@ namespace SourceGit.Views
         {
             if (sender is Control control && DataContext is ViewModels.Repository repo)
             {
-                if (control.DataContext is ViewModels.SubmoduleTreeNode node && node.Module != null)
+                var submodule = control.DataContext switch
                 {
-                    var menu = repo.CreateContextMenuForSubmodule(node.Module);
-                    menu?.Open(control);
-                }
-                else if (control.DataContext is Models.Submodule m)
+                    ViewModels.SubmoduleTreeNode node => node.Module,
+                    Models.Submodule m => m,
+                    _ => null,
+                };
+
+                if (submodule != null)
                 {
-                    var menu = repo.CreateContextMenuForSubmodule(m);
-                    menu?.Open(control);
+                    var open = new MenuItem();
+                    open.Header = App.Text("Submodule.Open");
+                    open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                    open.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
+                    open.Click += (_, ev) =>
+                    {
+                        repo.OpenSubmodule(submodule.Path);
+                        ev.Handled = true;
+                    };
+
+                    var update = new MenuItem();
+                    update.Header = App.Text("Submodule.Update");
+                    update.Icon = App.CreateMenuIcon("Icons.Loading");
+                    update.Click += (_, ev) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.UpdateSubmodules(repo, submodule));
+                        ev.Handled = true;
+                    };
+
+                    var move = new MenuItem();
+                    move.Header = App.Text("Submodule.Move");
+                    move.Icon = App.CreateMenuIcon("Icons.MoveTo");
+                    move.Click += (_, ev) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.MoveSubmodule(repo, submodule));
+                        ev.Handled = true;
+                    };
+
+                    var setURL = new MenuItem();
+                    setURL.Header = App.Text("Submodule.SetURL");
+                    setURL.Icon = App.CreateMenuIcon("Icons.Edit");
+                    setURL.Click += (_, ev) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.ChangeSubmoduleUrl(repo, submodule));
+                        ev.Handled = true;
+                    };
+
+                    var setBranch = new MenuItem();
+                    setBranch.Header = App.Text("Submodule.SetBranch");
+                    setBranch.Icon = App.CreateMenuIcon("Icons.Track");
+                    setBranch.Click += (_, ev) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.SetSubmoduleBranch(repo, submodule));
+                        ev.Handled = true;
+                    };
+
+                    var deinit = new MenuItem();
+                    deinit.Header = App.Text("Submodule.Deinit");
+                    deinit.Icon = App.CreateMenuIcon("Icons.Undo");
+                    deinit.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
+                    deinit.Click += (_, ev) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.DeinitSubmodule(repo, submodule.Path));
+                        ev.Handled = true;
+                    };
+
+                    var rm = new MenuItem();
+                    rm.Header = App.Text("Submodule.Remove");
+                    rm.Icon = App.CreateMenuIcon("Icons.Clear");
+                    rm.Click += (_, ev) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.DeleteSubmodule(repo, submodule.Path));
+                        ev.Handled = true;
+                    };
+
+                    var histories = new MenuItem();
+                    histories.Header = App.Text("Submodule.Histories");
+                    histories.Icon = App.CreateMenuIcon("Icons.Histories");
+                    histories.Click += (_, ev) =>
+                    {
+                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, submodule.Path));
+                        ev.Handled = true;
+                    };
+
+                    var copySHA = new MenuItem();
+                    copySHA.Header = App.Text("CommitDetail.Info.SHA");
+                    copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
+                    copySHA.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(submodule.SHA);
+                        ev.Handled = true;
+                    };
+
+                    var copyBranch = new MenuItem();
+                    copyBranch.Header = App.Text("Submodule.CopyBranch");
+                    copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
+                    copyBranch.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(submodule.Branch);
+                        ev.Handled = true;
+                    };
+
+                    var copyRelativePath = new MenuItem();
+                    copyRelativePath.Header = App.Text("Submodule.CopyPath");
+                    copyRelativePath.Icon = App.CreateMenuIcon("Icons.Folder");
+                    copyRelativePath.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(submodule.Path);
+                        ev.Handled = true;
+                    };
+
+                    var copyURL = new MenuItem();
+                    copyURL.Header = App.Text("Submodule.URL");
+                    copyURL.Icon = App.CreateMenuIcon("Icons.Link");
+                    copyURL.Click += async (_, ev) =>
+                    {
+                        await App.CopyTextAsync(submodule.URL);
+                        ev.Handled = true;
+                    };
+
+                    var copy = new MenuItem();
+                    copy.Header = App.Text("Copy");
+                    copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copy.Items.Add(copySHA);
+                    copy.Items.Add(copyBranch);
+                    copy.Items.Add(copyRelativePath);
+                    copy.Items.Add(copyURL);
+
+                    var menu = new ContextMenu();
+                    menu.Items.Add(open);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(update);
+                    menu.Items.Add(setURL);
+                    menu.Items.Add(setBranch);
+                    menu.Items.Add(move);
+                    menu.Items.Add(deinit);
+                    menu.Items.Add(rm);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(histories);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(copy);
+                    menu.Open(control);
                 }
             }
 

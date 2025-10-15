@@ -19,7 +19,7 @@ namespace SourceGit.Commands
             _parent = parent;
         }
 
-        public List<Models.Change> Result()
+        public List<Models.Change> GetResult()
         {
             var rs = ReadToEnd();
             if (!rs.IsSuccess)

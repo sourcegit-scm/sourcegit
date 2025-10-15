@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-
-using Avalonia.Controls;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
     public class RevisionCompare : ObservableObject, IDisposable
     {
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public object StartPoint
         {
             get => _startPoint;
@@ -24,10 +26,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _endPoint, value);
         }
 
-        public bool CanSaveAsPatch
-        {
-            get => _canSaveAsPatch;
-        }
+        public bool CanSaveAsPatch { get; }
 
         public List<Models.Change> VisibleChanges
         {
@@ -42,7 +41,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value != null && value.Count == 1)
+                    if (value is { Count: 1 })
                     {
                         var option = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value[0]);
                         DiffContext = new DiffContext(_repo, option, _diffContext);
@@ -61,9 +60,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _searchFilter, value))
-                {
                     RefreshVisible();
-                }
             }
         }
 
@@ -78,9 +75,8 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
-            _canSaveAsPatch = startPoint != null && endPoint != null;
-
-            Task.Run(Refresh);
+            CanSaveAsPatch = startPoint != null && endPoint != null;
+            Refresh();
         }
 
         public void Dispose()
@@ -88,14 +84,17 @@ namespace SourceGit.ViewModels
             _repo = null;
             _startPoint = null;
             _endPoint = null;
-            if (_changes != null)
-                _changes.Clear();
-            if (_visibleChanges != null)
-                _visibleChanges.Clear();
-            if (_selectedChanges != null)
-                _selectedChanges.Clear();
+            _changes?.Clear();
+            _visibleChanges?.Clear();
+            _selectedChanges?.Clear();
             _searchFilter = null;
             _diffContext = null;
+        }
+
+        public void OpenChangeWithExternalDiffTool(Models.Change change)
+        {
+            var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
+            new Commands.DiffTool(_repo, opt).Open();
         }
 
         public void NavigateTo(string commitSHA)
@@ -117,83 +116,30 @@ namespace SourceGit.ViewModels
         public void Swap()
         {
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
+            VisibleChanges = [];
             SelectedChanges = [];
-            Task.Run(Refresh);
+            IsLoading = true;
+            Refresh();
+        }
+
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo, path);
         }
 
         public void SaveAsPatch(string saveTo)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var succ = Commands.SaveChangesAsPatch.ProcessRevisionCompareChanges(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+                var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
                 if (succ)
-                    Dispatcher.UIThread.Invoke(() => App.SendNotification(_repo, App.Text("SaveAsPatchSuccess")));
+                    App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
             });
         }
 
         public void ClearSearchFilter()
         {
             SearchFilter = string.Empty;
-        }
-
-        public ContextMenu CreateChangeContextMenu()
-        {
-            if (_selectedChanges == null || _selectedChanges.Count != 1)
-                return null;
-
-            var change = _selectedChanges[0];
-            var menu = new ContextMenu();
-
-            var diffWithMerger = new MenuItem();
-            diffWithMerger.Header = App.Text("DiffWithMerger");
-            diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            diffWithMerger.Click += (_, ev) =>
-            {
-                var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
-                var toolType = Preferences.Instance.ExternalMergeToolType;
-                var toolPath = Preferences.Instance.ExternalMergeToolPath;
-
-                Task.Run(() => Commands.MergeTool.OpenForDiff(_repo, toolType, toolPath, opt));
-                ev.Handled = true;
-            };
-            menu.Items.Add(diffWithMerger);
-
-            if (change.Index != Models.ChangeState.Deleted)
-            {
-                var full = Path.GetFullPath(Path.Combine(_repo, change.Path));
-                var explore = new MenuItem();
-                explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
-                explore.IsEnabled = File.Exists(full);
-                explore.Click += (_, ev) =>
-                {
-                    Native.OS.OpenInFileManager(full, true);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(explore);
-            }
-
-            var copyPath = new MenuItem();
-            copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyPath.Click += (_, ev) =>
-            {
-                App.CopyText(change.Path);
-                ev.Handled = true;
-            };
-            menu.Items.Add(copyPath);
-
-            var copyFullPath = new MenuItem();
-            copyFullPath.Header = App.Text("CopyFullPath");
-            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-            copyFullPath.Click += (_, e) =>
-            {
-                App.CopyText(Native.OS.GetAbsPath(_repo, change.Path));
-                e.Handled = true;
-            };
-            menu.Items.Add(copyFullPath);
-
-            return menu;
         }
 
         private void RefreshVisible()
@@ -220,20 +166,34 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).Result();
-
-            var visible = _changes;
-            if (!string.IsNullOrWhiteSpace(_searchFilter))
+            Task.Run(async () =>
             {
-                visible = [];
-                foreach (var c in _changes)
-                {
-                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                        visible.Add(c);
-                }
-            }
+                _changes = await new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint))
+                    .ReadAsync()
+                    .ConfigureAwait(false);
 
-            Dispatcher.UIThread.Invoke(() => VisibleChanges = visible);
+                var visible = _changes;
+                if (!string.IsNullOrWhiteSpace(_searchFilter))
+                {
+                    visible = [];
+                    foreach (var c in _changes)
+                    {
+                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                            visible.Add(c);
+                    }
+                }
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    VisibleChanges = visible;
+                    IsLoading = false;
+
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
+            });
         }
 
         private string GetSHA(object obj)
@@ -242,9 +202,9 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private bool _isLoading = true;
         private object _startPoint = null;
         private object _endPoint = null;
-        private bool _canSaveAsPatch = false;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

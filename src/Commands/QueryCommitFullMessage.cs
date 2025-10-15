@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SourceGit.Commands
 {
     public class QueryCommitFullMessage : Command
@@ -9,12 +11,16 @@ namespace SourceGit.Commands
             Args = $"show --no-show-signature --format=%B -s {sha}";
         }
 
-        public string Result()
+        public string GetResult()
         {
             var rs = ReadToEnd();
-            if (rs.IsSuccess)
-                return rs.StdOut.TrimEnd();
-            return string.Empty;
+            return rs.IsSuccess ? rs.StdOut.TrimEnd() : string.Empty;
+        }
+
+        public async Task<string> GetResultAsync()
+        {
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            return rs.IsSuccess ? rs.StdOut.TrimEnd() : string.Empty;
         }
     }
 }

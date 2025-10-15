@@ -38,27 +38,25 @@ namespace SourceGit.ViewModels
             Strategy = Models.MergeStrategy.ForMultiple[0];
         }
 
-        public override Task<bool> Sure()
+        public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             _repo.ClearCommitMessage();
             ProgressDescription = "Merge head(s) ...";
 
             var log = _repo.CreateLog("Merge Multiple Heads");
             Use(log);
 
-            return Task.Run(() =>
-            {
-                new Commands.Merge(
-                    _repo.FullPath,
-                    ConvertTargetToMergeSources(),
-                    AutoCommit,
-                    Strategy.Arg).Use(log).Exec();
+            await new Commands.Merge(
+                _repo.FullPath,
+                ConvertTargetToMergeSources(),
+                AutoCommit,
+                Strategy.Arg)
+                .Use(log)
+                .ExecAsync();
 
-                log.Complete();
-                CallUIThread(() => _repo.SetWatcherEnabled(true));
-                return true;
-            });
+            log.Complete();
+            return true;
         }
 
         private List<string> ConvertTargetToMergeSources()

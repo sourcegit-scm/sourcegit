@@ -1,51 +1,59 @@
 ﻿using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public static class Tag
+    public class Tag : Command
     {
-        public static bool Add(string repo, string name, string basedOn, Models.ICommandLog log)
+        public Tag(string repo, string name)
         {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.Args = $"tag --no-sign {name} {basedOn}";
-            cmd.Log = log;
-            return cmd.Exec();
+            WorkingDirectory = repo;
+            Context = repo;
+            _name = name;
         }
 
-        public static bool Add(string repo, string name, string basedOn, string message, bool sign, Models.ICommandLog log)
+        public async Task<bool> AddAsync(string basedOn)
         {
-            var param = sign ? "--sign -a" : "--no-sign -a";
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.Args = $"tag {param} {name} {basedOn} ";
-            cmd.Log = log;
+            Args = $"tag --no-sign {_name} {basedOn}";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> AddAsync(string basedOn, string message, bool sign)
+        {
+            var builder = new StringBuilder();
+            builder
+                .Append("tag ")
+                .Append(sign ? "--sign -a " : "--no-sign -a ")
+                .Append(_name)
+                .Append(' ')
+                .Append(basedOn);
 
             if (!string.IsNullOrEmpty(message))
             {
                 string tmp = Path.GetTempFileName();
-                File.WriteAllText(tmp, message);
-                cmd.Args += $"-F \"{tmp}\"";
+                await File.WriteAllTextAsync(tmp, message);
+                builder.Append(" -F ").Append(tmp.Quoted());
 
-                var succ = cmd.Exec();
+                Args = builder.ToString();
+                var succ = await ExecAsync().ConfigureAwait(false);
                 File.Delete(tmp);
                 return succ;
             }
 
-            cmd.Args += $"-m {name}";
-            return cmd.Exec();
+            builder.Append(" -m ");
+            builder.Append(_name);
+
+            Args = builder.ToString();
+            return await ExecAsync().ConfigureAwait(false);
         }
 
-        public static bool Delete(string repo, string name, Models.ICommandLog log)
+        public async Task<bool> DeleteAsync()
         {
-            var cmd = new Command();
-            cmd.WorkingDirectory = repo;
-            cmd.Context = repo;
-            cmd.Args = $"tag --delete {name}";
-            cmd.Log = log;
-            return cmd.Exec();
+            Args = $"tag --delete {_name}";
+            return await ExecAsync().ConfigureAwait(false);
         }
+
+        private readonly string _name;
     }
 }

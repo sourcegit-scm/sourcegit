@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -110,15 +113,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedCommitTemplate, value);
         }
 
-        public AvaloniaList<Models.IssueTrackerRule> IssueTrackerRules
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
-            get => _repo.Settings.IssueTrackerRules;
-        }
+            get;
+        } = [];
 
-        public Models.IssueTrackerRule SelectedIssueTrackerRule
+        public Models.IssueTracker SelectedIssueTracker
         {
-            get => _selectedIssueTrackerRule;
-            set => SetProperty(ref _selectedIssueTrackerRule, value);
+            get => _selectedIssueTracker;
+            set => SetProperty(ref _selectedIssueTracker, value);
         }
 
         public List<string> AvailableOpenAIServices
@@ -159,7 +162,7 @@ namespace SourceGit.ViewModels
             if (!AvailableOpenAIServices.Contains(PreferredOpenAIService))
                 PreferredOpenAIService = "---";
 
-            _cached = new Commands.Config(repo.FullPath).ListAll();
+            _cached = new Commands.Config(repo.FullPath).ReadAll();
             if (_cached.TryGetValue("user.name", out var name))
                 UserName = name;
             if (_cached.TryGetValue("user.email", out var email))
@@ -174,6 +177,17 @@ namespace SourceGit.ViewModels
                 HttpProxy = proxy;
             if (_cached.TryGetValue("fetch.prune", out var prune))
                 EnablePruneOnFetch = (prune == "true");
+
+            foreach (var rule in _repo.IssueTrackers)
+            {
+                IssueTrackers.Add(new()
+                {
+                    IsShared = rule.IsShared,
+                    Name = rule.Name,
+                    RegexString = rule.RegexString,
+                    URLTemplate = rule.URLTemplate,
+                });
+            }
         }
 
         public void ClearHttpProxy()
@@ -195,102 +209,37 @@ namespace SourceGit.ViewModels
             SelectedCommitTemplate = null;
         }
 
-        public void AddSampleGithubIssueTracker()
+        public List<string> GetRemoteVisitUrls()
         {
-            var link = "https://github.com/username/repository/issues/$1";
+            var outs = new List<string>();
             foreach (var remote in _repo.Remotes)
             {
-                if (remote.URL.Contains("github.com", System.StringComparison.Ordinal) &&
-                    remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/issues/$1";
-                    break;
-                }
+                if (remote.TryGetVisitURL(out var url))
+                    outs.Add(url);
             }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Github ISSUE", "#(\\d+)", link);
+            return outs;
         }
 
-        public void AddSampleJiraIssueTracker()
+        public void AddIssueTracker(string name, string regex, string url)
         {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Jira Tracker", "PROJ-(\\d+)", "https://jira.yourcompany.com/browse/PROJ-$1");
-        }
-
-        public void AddSampleAzureWorkItemTracker()
-        {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Azure DevOps Tracker", "#(\\d+)", "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
-        }
-
-        public void AddSampleGitLabIssueTracker()
-        {
-            var link = "https://gitlab.com/username/repository/-/issues/$1";
-            foreach (var remote in _repo.Remotes)
+            var rule = new Models.IssueTracker()
             {
-                if (remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/-/issues/$1";
-                    break;
-                }
-            }
+                IsShared = false,
+                Name = name,
+                RegexString = regex,
+                URLTemplate = url,
+            };
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab ISSUE", "#(\\d+)", link);
+            IssueTrackers.Add(rule);
+            SelectedIssueTracker = rule;
         }
 
-        public void AddSampleGitLabMergeRequestTracker()
+        public void RemoveIssueTracker()
         {
-            var link = "https://gitlab.com/username/repository/-/merge_requests/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/-/merge_requests/$1";
-                    break;
-                }
-            }
+            if (_selectedIssueTracker is { } rule)
+                IssueTrackers.Remove(rule);
 
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("GitLab MR", "!(\\d+)", link);
-        }
-
-        public void AddSampleGiteeIssueTracker()
-        {
-            var link = "https://gitee.com/username/repository/issues/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
-                    remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/issues/$1";
-                    break;
-                }
-            }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee ISSUE", "#([0-9A-Z]{6,10})", link);
-        }
-
-        public void AddSampleGiteePullRequestTracker()
-        {
-            var link = "https://gitee.com/username/repository/pulls/$1";
-            foreach (var remote in _repo.Remotes)
-            {
-                if (remote.URL.Contains("gitee.com", System.StringComparison.Ordinal) &&
-                    remote.TryGetVisitURL(out string url))
-                {
-                    link = $"{url}/pulls/$1";
-                }
-            }
-
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("Gitee Pull Request", "!(\\d+)", link);
-        }
-
-        public void NewIssueTracker()
-        {
-            SelectedIssueTrackerRule = _repo.Settings.AddIssueTracker("New Issue Tracker", "#(\\d+)", "https://xxx/$1");
-        }
-
-        public void RemoveSelectedIssueTracker()
-        {
-            _repo.Settings.RemoveIssueTracker(_selectedIssueTrackerRule);
-            SelectedIssueTrackerRule = null;
+            SelectedIssueTracker = null;
         }
 
         public void AddNewCustomAction()
@@ -316,32 +265,78 @@ namespace SourceGit.ViewModels
                 _repo.Settings.MoveCustomActionDown(_selectedCustomAction);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            SetIfChanged("user.name", UserName, "");
-            SetIfChanged("user.email", UserEmail, "");
-            SetIfChanged("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
-            SetIfChanged("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
-            SetIfChanged("user.signingkey", GPGUserSigningKey, "");
-            SetIfChanged("http.proxy", HttpProxy, "");
-            SetIfChanged("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
+            await SetIfChangedAsync("user.name", UserName, "");
+            await SetIfChangedAsync("user.email", UserEmail, "");
+            await SetIfChangedAsync("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
+            await SetIfChangedAsync("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
+            await SetIfChangedAsync("user.signingkey", GPGUserSigningKey, "");
+            await SetIfChangedAsync("http.proxy", HttpProxy, "");
+            await SetIfChangedAsync("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
+
+            await ApplyIssueTrackerChangesAsync();
         }
 
-        private void SetIfChanged(string key, string value, string defValue)
+        private async Task SetIfChangedAsync(string key, string value, string defValue)
         {
-            bool changed = false;
-            if (_cached.TryGetValue(key, out var old))
+            if (value != _cached.GetValueOrDefault(key, defValue))
+                await new Commands.Config(_repo.FullPath).SetAsync(key, value);
+        }
+
+        private async Task ApplyIssueTrackerChangesAsync()
+        {
+            var changed = false;
+            var oldRules = new Dictionary<string, Models.IssueTracker>();
+            foreach (var rule in _repo.IssueTrackers)
+                oldRules.Add(rule.Name, rule);
+
+            foreach (var rule in IssueTrackers)
             {
-                changed = old != value;
+                if (oldRules.TryGetValue(rule.Name, out var old))
+                {
+                    if (old.IsShared != rule.IsShared)
+                    {
+                        changed = true;
+                        await new Commands.IssueTracker(_repo.FullPath, old.IsShared).RemoveAsync(old.Name);
+                        await new Commands.IssueTracker(_repo.FullPath, rule.IsShared).AddAsync(rule);
+                    }
+                    else
+                    {
+                        if (!old.RegexString.Equals(rule.RegexString, StringComparison.Ordinal))
+                        {
+                            changed = true;
+                            await new Commands.IssueTracker(_repo.FullPath, old.IsShared).UpdateRegexAsync(rule);
+                        }
+
+                        if (!old.URLTemplate.Equals(rule.URLTemplate, StringComparison.Ordinal))
+                        {
+                            changed = true;
+                            await new Commands.IssueTracker(_repo.FullPath, old.IsShared).UpdateURLTemplateAsync(rule);
+                        }
+                    }
+
+                    oldRules.Remove(rule.Name);
+                }
+                else
+                {
+                    changed = true;
+                    await new Commands.IssueTracker(_repo.FullPath, rule.IsShared).AddAsync(rule);
+                }
             }
-            else if (!string.IsNullOrEmpty(value) && value != defValue)
+
+            if (oldRules.Count > 0)
             {
                 changed = true;
+
+                foreach (var kv in oldRules)
+                    await new Commands.IssueTracker(_repo.FullPath, kv.Value.IsShared).RemoveAsync(kv.Key);
             }
 
             if (changed)
             {
-                new Commands.Config(_repo.FullPath).Set(key, value);
+                _repo.IssueTrackers.Clear();
+                _repo.IssueTrackers.AddRange(IssueTrackers);
             }
         }
 
@@ -349,7 +344,7 @@ namespace SourceGit.ViewModels
         private readonly Dictionary<string, string> _cached = null;
         private string _httpProxy;
         private Models.CommitTemplate _selectedCommitTemplate = null;
-        private Models.IssueTrackerRule _selectedIssueTrackerRule = null;
+        private Models.IssueTracker _selectedIssueTracker = null;
         private Models.CustomAction _selectedCustomAction = null;
     }
 }
