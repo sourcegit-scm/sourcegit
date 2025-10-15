@@ -93,6 +93,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Батьківська тека:</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Ініціалізувати та оновити підмодулі</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL сховища:</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">ЗАКРИТИ</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Редактор</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Перейти на коміт</x:String>
@@ -148,6 +149,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">хвилин(и)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Віддалене сховище за замовчуванням</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Бажаний режим злиття</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ТРЕКЕР ЗАВДАНЬ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Додати приклад правила для Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Додати приклад правила для Gitee Issue</x:String>
@@ -267,6 +269,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Витягти без тегів</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Віддалений:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Витягти зміни з віддалених репозиторіїв</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Вважати незмінними</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Скасувати...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Скасувати {0} файлів...</x:String>
@@ -469,6 +472,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Ім'я користувача</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Глобальне ім'я користувача git</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Версія Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">ПІДПИС GPG</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">Підпис GPG для комітів</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Формат GPG</x:String>
@@ -494,6 +498,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Віддалене сховище:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Використовувати rebase замість merge</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">Push (Надіслати)</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Переконатися, що підмодулі надіслано</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Примусовий push</x:String>

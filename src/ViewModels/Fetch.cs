@@ -43,6 +43,18 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableForceOnFetch = value;
         }
 
+        public bool UseCustomDepth
+        {
+            get => _useCustomDepth;
+            set => SetProperty(ref _useCustomDepth, value);
+        }
+
+        public int Depth
+        {
+            get => _depth;
+            set => SetProperty(ref _depth, value);
+        }
+
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
@@ -71,19 +83,20 @@ namespace SourceGit.ViewModels
             var navigateToUpstreamHEAD = _repo.SelectedView is Histories { AutoSelectedCommit: { IsCurrentHead: true } };
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
+            var depth = _useCustomDepth ? _depth : _repo.Depth;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
             if (FetchAllRemotes)
             {
                 foreach (var remote in _repo.Remotes)
-                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
+                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, depth)
                         .Use(log)
                         .RunAsync();
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, depth)
                     .Use(log)
                     .RunAsync();
             }
@@ -106,5 +119,7 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private bool _fetchAllRemotes = false;
+        private bool _useCustomDepth = false;
+        private int _depth = 1;
     }
 }

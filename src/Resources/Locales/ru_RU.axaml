@@ -126,6 +126,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Родительский каталог:</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Создать и обновить подмодули</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Адрес репозитория:</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">ЗАКРЫТЬ</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Редактор</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Переключиться на эту ревизию</x:String>
@@ -217,6 +218,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Внешний репозиторий по умолчанию</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Предпочтительный режим слияния</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Добавить пример правила Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Добавить правило Gerrit ревизии идентификатора изменения</x:String>
@@ -375,6 +377,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Извлечь без меток</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Извлечь внешние изменения</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Не отслеживать</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Отклонить...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Отклонить {0} файлов...</x:String>
@@ -597,6 +600,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Имя пользователя</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Общее имя пользователя git</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Версия Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG ПОДПИСЬ</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">GPG подпись ревизии</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Формат GPG</x:String>
@@ -623,6 +627,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Загрузить (Получить и слить)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Использовать перемещение вместо слияния</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">Выложить</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Убедитесь, что подмодули были вставлены</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Принудительно выложить</x:String>

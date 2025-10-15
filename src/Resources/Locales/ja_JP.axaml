@@ -92,6 +92,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">親フォルダ:</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">サブモジュールを初期化して更新</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">リポジトリのURL:</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">閉じる</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">エディタ</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">コミットをチェックアウト</x:String>
@@ -146,6 +147,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">自動的にリモートからフェッチ 間隔:</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">リモートの初期値</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUEトラッカー</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">サンプルのAzure DevOpsルールを追加</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">サンプルのGitee Issueルールを追加</x:String>
@@ -262,6 +264,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">タグなしでフェッチ</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">リモートの変更をフェッチ</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">変更されていないとみなされる</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">破棄...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">{0}個のファイルを破棄...</x:String>
@@ -464,6 +467,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">ユーザー名</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">グローバルのgitユーザー名</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Gitバージョン</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG 署名</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">コミットにGPG署名を行う</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">GPGフォーマット</x:String>
@@ -489,6 +493,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージの代わりにリベースを使用</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">プッシュ</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">サブモジュールがプッシュされていることを確認</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">強制的にプッシュ</x:String>

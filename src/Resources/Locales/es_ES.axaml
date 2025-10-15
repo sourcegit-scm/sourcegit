@@ -126,6 +126,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Carpeta Padre:</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Inicializar y actualizar submódulos</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL del Repositorio:</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CERRAR</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
@@ -217,6 +218,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto por Defecto</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Modo preferido de Merge</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SEGUIMIENTO DE INCIDENCIAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Añadir Regla de Ejemplo para Azure DevOps</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Añadir Regla de "Gerrit Change-Id Commit"</x:String>
@@ -375,6 +377,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch sin etiquetas</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Cambios Remotos</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Asumir como sin cambios</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Descartar...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Descartar {0} archivos...</x:String>
@@ -597,6 +600,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nombre del usuario</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nombre global del usuario git</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Versión de Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">FIRMA GPG</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">Firma GPG en commit</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Formato GPG</x:String>
@@ -623,6 +627,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Usar rebase en lugar de merge</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">Push</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Asegurarse de que los submódulos se hayan hecho push</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Forzar push</x:String>

@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool noTags, bool force)
+        public Fetch(string repo, string remote, bool noTags, bool force, int depth)
         {
             _remoteKey = $"remote.{remote}.sshkey";
 
@@ -20,16 +20,24 @@ namespace SourceGit.Commands
             if (force)
                 Args += "--force ";
 
+            if(depth > 0)
+                Args += $"--depth {depth} ";
+
             Args += remote;
         }
 
-        public Fetch(string repo, Models.Branch local, Models.Branch remote)
+        public Fetch(string repo, Models.Branch local, Models.Branch remote, int depth)
         {
             _remoteKey = $"remote.{remote.Remote}.sshkey";
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"fetch --progress --verbose {remote.Remote} {remote.Name}:{local.Name}";
+            Args = "fetch --progress --verbose ";
+
+            if(depth > 0)
+                Args += $"--depth {depth} ";
+
+            Args += $"{remote.Remote} {remote.Name}:{local.Name}";
         }
 
         public async Task<bool> RunAsync()

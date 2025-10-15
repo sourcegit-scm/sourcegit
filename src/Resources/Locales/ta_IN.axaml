@@ -92,6 +92,7 @@
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">பெற்றோர் கோப்புறை:</x:String>
   <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">துவக்கு &amp; துணை தொகுதிகளைப் புதுப்பி</x:String>
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">களஞ்சிய முகவரி:</x:String>
+  <x:String x:Key="Text.Clone.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">மூடு</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">திருத்தி</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">உறுதிமொழி சரிபார்</x:String>
@@ -146,6 +147,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">தொலைகளை தானாக எடு</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">நிமையங்கள்</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">இயல்புநிலை தொலை</x:String>
+  <x:String x:Key="Text.Configure.Git.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">சிக்கல் கண்காணி</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">மாதிரி அசூர் வளர்பணிகள் விதியைச் சேர்</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">மாதிரி அறிவிலிஈ சிக்கலுக்கான விதியைச் சேர்</x:String>
@@ -262,6 +264,7 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">குறிச்சொற்கள் இல்லாமல் பெறு</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">தொலை மாற்றங்களைப் பெறு</x:String>
+  <x:String x:Key="Text.Fetch.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">மாறாமல் என கருது</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">நிராகரி...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">{0} கோப்புகளை நிராகரி...</x:String>
@@ -464,6 +467,7 @@
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">பயனர் பெயர்</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">உலகளாவிய அறிவிலி பயனர் பெயர்</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">அறிவிலி பதிப்பு</x:String>
+  <x:String x:Key="Text.Preferences.Git.CustomDepthByDefault" xml:space="preserve">Custom Depth By Default</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">சிபிசி கையொப்பமிடுதல்</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">சிபிசி கையொப்பமிடுதல் உறுதிமொழி</x:String>
   <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">சிபிசி வடிவம்</x:String>
@@ -489,6 +493,7 @@
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">இழு (எடுத்து ஒன்றிணை)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">ஒன்றிணை என்பதற்குப் பதிலாக மறுதளத்தைப் பயன்படுத்து</x:String>
+  <x:String x:Key="Text.Pull.UseCustomDepth" xml:space="preserve">Use Custom Depth</x:String>
   <x:String x:Key="Text.Push" xml:space="preserve">தள்ளு</x:String>
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">துணைத் தொகுதிகள் தள்ளப்பட்டது என்பதை உறுதிசெய்</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">கட்டாயமாக தள்ளு</x:String>

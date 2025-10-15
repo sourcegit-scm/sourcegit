@@ -61,6 +61,18 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
         }
 
+        public bool UseCustomDepth
+        {
+            get => _useCustomDepth;
+            set => SetProperty(ref _useCustomDepth, value);
+        }
+
+        public int Depth
+        {
+            get => _depth;
+            set => SetProperty(ref _depth, value);
+        }
+
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
@@ -115,6 +127,7 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
+            var depth = _useCustomDepth ? _depth : _repo.Depth;
             var log = _repo.CreateLog("Pull");
             Use(log);
 
@@ -144,7 +157,8 @@ namespace SourceGit.ViewModels
                 _repo.FullPath,
                 _selectedRemote.Name,
                 !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                UseRebase).Use(log).RunAsync();
+                UseRebase,
+                depth).Use(log).RunAsync();
             if (rs)
             {
                 if (updateSubmodules)
@@ -217,5 +231,7 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;
+        private bool _useCustomDepth = false;
+        private int _depth = 1;
     }
 }

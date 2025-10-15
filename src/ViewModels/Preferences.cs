@@ -127,6 +127,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _maxHistoryCommits, value);
         }
 
+        public bool CustomDepthByDefault
+        {
+            get => _customDepthByDefault;
+            set => SetProperty(ref _customDepthByDefault, value);
+        }
+
+        public int RepositoryDepth
+        {
+            get => _repositoryDepth;
+            set => SetProperty(ref _repositoryDepth, value);
+        }
+
         public int SubjectGuideLength
         {
             get => _subjectGuideLength;
@@ -717,6 +729,8 @@ namespace SourceGit.ViewModels
         private LayoutInfo _layout = new();
 
         private int _maxHistoryCommits = 20000;
+        private bool _customDepthByDefault = false;
+        private int _repositoryDepth = 1;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;

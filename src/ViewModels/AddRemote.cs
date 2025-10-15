@@ -105,7 +105,7 @@ namespace SourceGit.ViewModels
                     .Use(log)
                     .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
-                await new Commands.Fetch(_repo.FullPath, _name, false, false)
+                await new Commands.Fetch(_repo.FullPath, _name, false, false, _repo.Settings.UseCustomDepth ? _repo.Settings.Depth : Preferences.Instance.RepositoryDepth)
                     .Use(log)
                     .RunAsync();
             }

@@ -19,6 +19,7 @@
         <RowDefinition Height="Auto" MinHeight="32"/>
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto"/>
+        <RowDefinition Height="32"/>
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -96,6 +97,23 @@
                 IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
                 IsVisible="{Binding IsRecurseSubmoduleVisible}"
                 ToolTip.Tip="--recurse-submodules"/>
+
+      <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+        <CheckBox x:Name="UseCustomDepth"
+                  Height="32"
+                  Content="{DynamicResource Text.Pull.UseCustomDepth}"
+                  IsChecked="{Binding UseCustomDepth, Mode=TwoWay}"/>
+
+        <NumericUpDown Minimum="1" Maximum="10000" Increment="1"
+                       Height="26" Width="110"
+                       Margin="8,0,0,0" Padding="4"
+                       BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                       CornerRadius="3"
+                       ParsingNumberStyle="Integer"
+                       FormatString="0"
+                       Value="{Binding Depth, Mode=TwoWay, FallbackValue=1}"
+                       IsVisible="{Binding #UseCustomDepth.IsChecked}"/>
+      </StackPanel>
     </Grid>
   </StackPanel>
 </UserControl>
