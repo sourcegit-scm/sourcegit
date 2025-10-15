@@ -54,6 +54,7 @@
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">அறிவிலி ஓட்டம் - முடி ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">${0}$ ஐ ${1}$இல் இணை...</x:String>
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட {0} கிளைகளை தற்பொதையதில்  இணை</x:String>
+  <x:String x:Key="Text.BranchCM.OpenPullRequest" xml:space="preserve">Open Pull Request for '{0}'</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">இழு ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">இழு ${0}$ஐ ${1}$-க்குள்...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">தள்ளு ${0}$</x:String>

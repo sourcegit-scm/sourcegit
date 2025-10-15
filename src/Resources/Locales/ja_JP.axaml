@@ -54,6 +54,7 @@
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">${0}$ を ${1}$ にマージする...</x:String>
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">選択中の{0}個のブランチを現在のブランチにマージする</x:String>
+  <x:String x:Key="Text.BranchCM.OpenPullRequest" xml:space="preserve">Open Pull Request for '{0}'</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">${0}$ をプルする</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">${0}$ を ${1}$ にプルする...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">${0}$ をプッシュする</x:String>

@@ -55,6 +55,7 @@
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Завершити ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Злиття ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Злити вибрані {0} гілок в поточну</x:String>
+  <x:String x:Key="Text.BranchCM.OpenPullRequest" xml:space="preserve">Open Pull Request for '{0}'</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Витягти ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Витягти ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Надіслати ${0}$</x:String>

@@ -1868,6 +1868,19 @@ namespace SourceGit.ViewModels
                 }
 
                 menu.Items.Add(push);
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                // Add Open Pull Request menu item
+                var openPR = new MenuItem();
+                openPR.Header = App.Text("BranchCM.OpenPullRequest", branch.Name);
+                openPR.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openPR.IsEnabled = _remotes.Count > 0;
+                openPR.Click += (_, e) =>
+                {
+                    OpenPullRequest(branch);
+                    e.Handled = true;
+                };
+                menu.Items.Add(openPR);
             }
             else
             {
@@ -2910,6 +2923,81 @@ namespace SourceGit.ViewModels
             catch
             {
                 // DO nothing, but prevent `System.AggregateException`
+            }
+        }
+
+        private string GetDefaultBranch()
+        {
+            var main = _branches.Find(b => b.Name == "main");
+            var master = _branches.Find(b => b.Name == "master");
+            var other = _branches.Find(b => b.Name != _currentBranch.Name);
+            return main != null ? main.Name : (master != null ? master.Name : other.Name);
+        }
+
+        private void OpenPullRequest(Models.Branch branch)
+        {
+            var autoSelectedRemote = null as Models.Remote;
+            if (!string.IsNullOrEmpty(CurrentBranch.Upstream))
+            {
+                var remoteNameEndIdx = CurrentBranch.Upstream.IndexOf('/', 13);
+                if (remoteNameEndIdx > 0)
+                {
+                    var remoteName = CurrentBranch.Upstream.Substring(13, remoteNameEndIdx - 13);
+                    autoSelectedRemote = Remotes.Find(x => x.Name == remoteName);
+                }
+            }
+
+            var _selectedRemote = null as Models.Remote;
+
+            if (autoSelectedRemote == null)
+            {
+                var remote = null as Models.Remote;
+                if (!string.IsNullOrEmpty(Settings.DefaultRemote))
+                    remote = Remotes.Find(x => x.Name == Settings.DefaultRemote);
+                _selectedRemote = remote ?? Remotes[0];
+            }
+            else
+            {
+                _selectedRemote = autoSelectedRemote;
+            }
+
+            if (_selectedRemote == null || !_selectedRemote.TryGetVisitURL(out string baseUrl))
+                return;
+
+            var defaultBranch = GetDefaultBranch();
+            string prUrl = "";
+            if (baseUrl.Contains("github.com"))
+            {
+                prUrl = $"{baseUrl}/compare/{defaultBranch}...{branch.Name}";
+            }
+            else if (baseUrl.Contains("gitlab.com"))
+            {
+                prUrl = $"{baseUrl}/-/merge_requests/new?merge_request[source_branch]={branch.Name}&merge_request[target_branch]={defaultBranch}";
+            }
+            else if (baseUrl.Contains("gitee.com"))
+            {
+                prUrl = $"{baseUrl}/pulls/new?source={branch.Name}&target={defaultBranch}";
+            }
+            else if (baseUrl.Contains("bitbucket.org"))
+            {
+                prUrl = $"{baseUrl}/pull-requests/new?source={branch.Name}&dest={defaultBranch}";
+            }
+            else if (baseUrl.Contains("gitea.com"))
+            {
+                prUrl = $"{baseUrl}/pulls/new?source={branch.Name}&target={defaultBranch}";
+            }
+            else if (baseUrl.Contains("azure.com"))
+            {
+                prUrl = $"{baseUrl}/pullrequestcreate?sourceRef={branch.Name}&targetRef={defaultBranch}";
+            }
+            else
+            {
+                prUrl = $"{baseUrl}";
+            }
+
+            if (!string.IsNullOrEmpty(prUrl))
+            {
+                Native.OS.OpenBrowser(prUrl);
             }
         }
 
