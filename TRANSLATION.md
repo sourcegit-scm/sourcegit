@@ -32,7 +32,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-77.32%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-77.40%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -146,7 +146,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -304,7 +303,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-77.32%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-77.40%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -419,7 +418,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -515,7 +513,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-70.95%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-71.03%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -655,7 +653,6 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.Hotkeys.Global.Clone
-- Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InProgress.CherryPick.Head
@@ -796,7 +793,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-77.43%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-77.52%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -911,7 +908,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -1006,7 +1002,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-78.55%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-78.64%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1116,7 +1112,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Repository
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.Hotkeys.Global.SwitchWorkspace
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
