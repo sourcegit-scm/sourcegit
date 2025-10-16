@@ -644,6 +644,8 @@
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push to all remotes</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Tag:</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">Push to a NEW branch</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Input name of the new remote branch:</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">Quit</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Current Branch</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reapply local changes</x:String>

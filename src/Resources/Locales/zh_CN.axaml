@@ -648,6 +648,8 @@
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">推送到所有远程仓库</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">标签 ：</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">推送到新的分支</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">输入新的远端分支名</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">退出</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">变基(rebase)操作</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>

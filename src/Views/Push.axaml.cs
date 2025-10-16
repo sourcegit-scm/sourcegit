@@ -1,6 +1,6 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Data;
+using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -9,8 +9,23 @@ namespace SourceGit.Views
         public Push()
         {
             InitializeComponent();
-            TextSearch.SetTextBinding(LocalBranchesComboBox, new Binding("Name"));
-            TextSearch.SetTextBinding(RemoteBranchesComboBox, new Binding("Name"));
+        }
+
+        private async void OnPushToNewBranch(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Push push)
+                return;
+
+            var launcher = this.FindAncestorOfType<Launcher>();
+            if (launcher == null)
+                return;
+
+            var dialog = new PushToNewBranch();
+            dialog.SetRemote(push.SelectedRemote.Name);
+
+            var name = await dialog.ShowDialog<string>(launcher);
+            if (!string.IsNullOrEmpty(name))
+                push.PushToNewBranch(name);
         }
     }
 }
