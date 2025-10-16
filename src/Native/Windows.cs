@@ -144,7 +144,7 @@ namespace SourceGit.Native
                         break;
 
                     var binDir = Path.GetDirectoryName(OS.GitExecutable)!;
-                    var bash = Path.Combine(binDir, "bash.exe");
+                    var bash = Path.GetFullPath(Path.Combine(binDir, "..", "git-bash.exe"));
                     if (!File.Exists(bash))
                         break;
 
