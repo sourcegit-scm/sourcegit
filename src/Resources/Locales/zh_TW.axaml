@@ -61,6 +61,8 @@
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">與目前 ${0}$ 比較</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">與本機工作區比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">複製分支名稱</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">建立拉取請求...</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">為上游分支 ${0}$ 建立拉取請求...</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">刪除所選的 {0} 個分支</x:String>

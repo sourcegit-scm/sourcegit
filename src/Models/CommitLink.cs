@@ -22,9 +22,6 @@ namespace SourceGit.Models
             {
                 if (remote.TryGetVisitURL(out var link))
                 {
-                    if (link.EndsWith(".git"))
-                        link = link.Substring(0, link.Length - 4);
-
                     var uri = new Uri(link, UriKind.Absolute);
                     var host = uri.Host;
                     var route = uri.AbsolutePath.TrimStart('/');
