@@ -437,7 +437,6 @@
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">ஒற்றைவெளி எழுத்துரு</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">கருப்பொருள்</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">கருப்பொருள் மேலெழுதப்படுகிறது</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">தலைப்புப்பட்டியில் நிலையான தாவல் அகலத்தைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">சொந்த சாளர சட்டத்தைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">வேறு/ஒன்றிணை கருவி</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">நிறுவல் பாதை</x:String>

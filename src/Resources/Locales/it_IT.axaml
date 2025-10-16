@@ -543,7 +543,6 @@
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Font Monospaziato</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Tema</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Sostituzioni Tema</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usa larghezza fissa per i tab nella barra del titolo</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usa cornice finestra nativa</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">STRUMENTO DI DIFFERENZA/UNIONE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Percorso Installazione</x:String>

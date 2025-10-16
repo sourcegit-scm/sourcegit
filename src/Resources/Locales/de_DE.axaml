@@ -565,7 +565,6 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Design</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Scrollbars automatisch ausblenden</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Verwende nativen Fensterrahmen</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Installationspfad</x:String>

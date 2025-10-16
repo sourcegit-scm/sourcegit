@@ -564,7 +564,6 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Тема</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Переопределение темы</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Автоматически скрывать прокрутку</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Использовать фиксированную ширину табуляции в строке заголовка.</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Использовать системное окно</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ИНСТРУМЕНТ СРАВНЕНИЙ/СЛИЯНИЯ</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Путь установки</x:String>
