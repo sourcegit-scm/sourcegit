@@ -174,6 +174,12 @@ namespace SourceGit.Views
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
+                if (e.Key == Key.P && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                {
+                    // TODO: Command Palette
+                    return;
+                }
+
                 if (e.Key == Key.P)
                 {
                     vm.OpenTabSwitcher();
