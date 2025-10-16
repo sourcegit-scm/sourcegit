@@ -174,13 +174,6 @@ namespace SourceGit.Views
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.P)
-                {
-                    vm.OpenWorkspaceSwitcher();
-                    e.Handled = true;
-                    return;
-                }
-
                 if (e.Key == Key.P)
                 {
                     vm.OpenTabSwitcher();
@@ -329,7 +322,6 @@ namespace SourceGit.Views
 
                 var workspaces = new MenuItem();
                 workspaces.Header = groupHeader;
-                workspaces.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+P" : "Ctrl+Shift+P";
                 workspaces.IsEnabled = false;
                 menu.Items.Add(workspaces);
 

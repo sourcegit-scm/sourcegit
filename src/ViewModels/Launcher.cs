@@ -127,11 +127,6 @@ namespace SourceGit.ViewModels
             _ignoreIndexChange = false;
         }
 
-        public void OpenWorkspaceSwitcher()
-        {
-            Switcher = new WorkspaceSwitcher(this);
-        }
-
         public void OpenTabSwitcher()
         {
             Switcher = new LauncherPageSwitcher(this);

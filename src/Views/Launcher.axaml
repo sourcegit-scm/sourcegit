@@ -118,7 +118,7 @@
       </ContentControl.DataTemplates>
     </ContentControl>
 
-    <!-- Workspace/Pages Switcher -->
+    <!-- Pages Switcher -->
     <Border Grid.Row="0" Grid.RowSpan="2"
             Background="Transparent"
             IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}"
@@ -127,10 +127,6 @@
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
           <ContentControl Margin="16,10,16,12" Content="{Binding Switcher}">
             <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:WorkspaceSwitcher">
-                <v:WorkspaceSwitcher/>
-              </DataTemplate>
-
               <DataTemplate DataType="vm:LauncherPageSwitcher">
                 <v:LauncherPageSwitcher/>
               </DataTemplate>
