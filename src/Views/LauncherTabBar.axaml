@@ -13,7 +13,8 @@
   <Grid ColumnDefinitions="Auto,*,Auto">
     <RepeatButton Grid.Column="0"
                   Classes="icon_button"
-                  Width="18" Height="30"
+                  Width="18" Height="28"
+                  Margin="0,2,0,0"
                   Click="ScrollTabsLeft"
                   IsVisible="{Binding #ThisControl.IsScrollerVisible}">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
@@ -148,11 +149,11 @@
     </ScrollViewer>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollerVisible}">
-      <RepeatButton Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
+      <RepeatButton Classes="icon_button" Width="18" Height="28" Margin="0,2,0,0" Click="ScrollTabsRight">
         <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
       </RepeatButton>
 
-      <Button Classes="icon_button" Width="16" Height="16" Margin="4,0,0,0" Command="{Binding AddNewTab}" HotKey="{OnPlatform Ctrl+T, macOS=⌘+T}">
+      <Button Classes="icon_button" Width="16" Height="28" Margin="4,2,0,0" Command="{Binding AddNewTab}" HotKey="{OnPlatform Ctrl+T, macOS=⌘+T}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
