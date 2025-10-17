@@ -152,7 +152,7 @@
         <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
       </RepeatButton>
 
-      <Button Classes="icon_button" Width="16" Height="16" Margin="4,0,0,0" Command="{Binding AddNewTab}">
+      <Button Classes="icon_button" Width="16" Height="16" Margin="4,0,0,0" Command="{Binding AddNewTab}" HotKey="{OnPlatform Ctrl+T, macOS=⌘+T}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>

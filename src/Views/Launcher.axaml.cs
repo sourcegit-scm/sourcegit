@@ -150,53 +150,34 @@ namespace SourceGit.Views
                 return;
             }
 
-            // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
+            // Register hotkeys for Windows/Linux (macOS has registered these keys in system menu bar)
+            if (!OperatingSystem.IsMacOS())
             {
-                await App.ShowDialog(new Preferences());
-                e.Handled = true;
-                return;
-            }
+                if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
+                {
+                    await App.ShowDialog(new Preferences());
+                    e.Handled = true;
+                    return;
+                }
 
-            // F1 opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
-            {
-                await App.ShowDialog(new Hotkeys());
-                return;
-            }
+                if (e is { KeyModifiers: KeyModifiers.None, Key: Key.F1 })
+                {
+                    await App.ShowDialog(new Hotkeys());
+                    return;
+                }
 
-            // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
-            {
-                App.Quit(0);
-                return;
+                if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
+                {
+                    App.Quit(0);
+                    return;
+                }
             }
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.Key == Key.P && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                {
-                    // TODO: Command Palette
-                    return;
-                }
-
-                if (e.Key == Key.P)
-                {
-                    vm.OpenTabSwitcher();
-                    e.Handled = true;
-                    return;
-                }
-
                 if (e.Key == Key.W)
                 {
                     vm.CloseTab(null);
-                    e.Handled = true;
-                    return;
-                }
-
-                if (e.Key == Key.T && !e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                {
-                    vm.AddNewTab();
                     e.Handled = true;
                     return;
                 }
