@@ -1,9 +1,22 @@
-﻿namespace SourceGit.Models
+﻿using System.Text.Json.Serialization;
+
+namespace SourceGit.Models
 {
+    public class LFSLockOwner
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = string.Empty;
+    }
+
     public class LFSLock
     {
-        public string File { get; set; } = string.Empty;
-        public string User { get; set; } = string.Empty;
-        public long ID { get; set; } = 0;
+        [JsonPropertyName("id")]
+        public string ID { get; set; } = string.Empty;
+
+        [JsonPropertyName("path")]
+        public string Path { get; set; } = string.Empty;
+
+        [JsonPropertyName("owner")]
+        public LFSLockOwner Owner { get; set; } = null;
     }
 }

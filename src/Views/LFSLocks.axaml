@@ -80,10 +80,10 @@
             <Grid ColumnDefinitions="26,*,100,32,32">
               <Path Grid.Column="0" Width="14" Height="14" Margin="8,0,4,0" Data="{StaticResource Icons.File}"/>
               <Border Grid.Column="1" Margin="4,0" ClipToBounds="True">
-                <TextBlock Text="{Binding File}" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Path}" HorizontalAlignment="Left"/>
               </Border>
               <Border Grid.Column="2" Margin="8,0" ClipToBounds="True">
-                <TextBlock Text="{Binding User}" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Owner.Name}" HorizontalAlignment="Left"/>
               </Border>
               <Button Grid.Column="3" Classes="icon_button" Click="OnUnlockButtonClicked" ToolTip.Tip="{DynamicResource Text.GitLFS.Locks.Unlock}">
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Unlock}"/>
