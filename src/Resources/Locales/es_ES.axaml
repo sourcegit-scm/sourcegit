@@ -61,6 +61,8 @@
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Comparar con ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Comparar con Worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copiar Nombre de la Rama</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Crear PR...</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Crear PR para upstream ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Eliminar {0} ramas seleccionadas</x:String>
@@ -637,6 +639,8 @@
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push a todos los remotos</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Etiqueta:</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">Push a una NUEVA rama</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Nombre de entrada de la nueva rama remota:</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">Salir</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Rama Actual</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; reaplicar cambios locales</x:String>
