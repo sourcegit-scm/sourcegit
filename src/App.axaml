@@ -24,6 +24,7 @@
       <ResourceInclude x:Key="es_ES" Source="/Resources/Locales/es_ES.axaml"/>
       <ResourceInclude x:Key="ja_JP" Source="/Resources/Locales/ja_JP.axaml"/>
       <ResourceInclude x:Key="ta_IN" Source="/Resources/Locales/ta_IN.axaml"/>
+      <ResourceInclude x:Key="ko_KR" Source="/Resources/Locales/ko_KR.axaml"/>
     </ResourceDictionary>
   </Application.Resources>
 
