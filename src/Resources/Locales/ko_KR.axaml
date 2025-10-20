@@ -837,7 +837,7 @@
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">서브모듈의 원격 추적 브랜치로 업데이트</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">로그</x:String>
-  <x:String x:Key="Text.ViewLogs.Clear" xml:sxpace="preserve">모두 지우기</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">모두 지우기</x:String>
   <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">복사</x:String>
   <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">삭제</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">경고</x:String>
