@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-<x:String x:Key="Text.About" xml:space="preserve">정보</x:String>
+
+  <x:String x:Key="Text.About" xml:space="preserve">정보</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">SourceGit 정보</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">릴리스 노트</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">오픈소스 &amp; 무료 Git GUI 클라이언트</x:String>
@@ -52,7 +53,6 @@
   <x:String x:Key="Text.Bisect.Skip">건너뛰기</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">이진 탐색 중. 현재 커밋을 '좋음' 또는 '나쁨'으로 표시하고 다른 커밋을 체크아웃하세요.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">블레임</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">이 파일은 블레임을 지원하지 않습니다!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ 체크아웃...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">${0}$와(과) 비교</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">워크트리와 비교</x:String>
@@ -458,7 +458,6 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">이전 탭으로 이동</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">새 탭 만들기</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">환경설정 대화상자 열기</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.SwitchWorkspace" xml:space="preserve">활성 작업 공간 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">활성 탭 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">저장소</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">스테이징된 변경 사항 커밋</x:String>
@@ -558,11 +557,9 @@
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">기본</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">에디터</x:String>
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">고정폭 글꼴</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">텍스트 에디터에서만 고정폭 글꼴 사용</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">테마</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">테마 재정의</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">스크롤바 자동 숨기기 사용</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">제목 표시줄에 고정폭 탭 사용</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">네이티브 윈도우 프레임 사용</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE 도구</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">설치 경로</x:String>
@@ -814,7 +811,6 @@
   <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">수정됨</x:String>
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">초기화 안 됨</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">리비전 변경됨</x:String>
-  <x:String x:Key="Text.Submodule.Status.Unmexrged" xml:space="preserve">병합 안 됨</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">업데이트</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">확인</x:String>

@@ -519,6 +519,21 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
+### ![ko__KR](https://img.shields.io/badge/ko__KR-99.22%25-yellow)
+
+<details>
+<summary>Missing keys in ko_KR.axaml</summary>
+
+- Text.Blame.BlameOnPreviousRevision
+- Text.Blame.TypeNotSupported
+- Text.BranchCM.CreatePR
+- Text.BranchCM.CreatePRForUpstream
+- Text.PushToNewBranch
+- Text.PushToNewBranch.Title
+- Text.Submodule.Status.Unmerged
+
+</details>
+
 ### ![pt__BR](https://img.shields.io/badge/pt__BR-70.95%25-red)
 
 <details>
