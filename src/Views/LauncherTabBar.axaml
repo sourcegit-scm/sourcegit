@@ -107,7 +107,7 @@
 
                   <Button Grid.Column="2"
                           Classes="icon_button"
-                          Width="12" Height="12" Margin="12,0"
+                          Width="14" Height="12" Margin="12,0"
                           Click="OnCloseTab">
                     <ToolTip.Tip>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
