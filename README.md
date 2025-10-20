@@ -45,6 +45,7 @@
 * Custom Action
 * Create PR on GitHub/Gitlab/Gitea/Gitee/Bitbucket...
 * Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
+* Built-in conventional commit message helper.
 
 > [!WARNING]
 > **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
@@ -172,6 +173,27 @@ This app supports open repository in external tools listed in the table below.
 
 > [!NOTE]
 > This app also supports a lot of `JetBrains` IDEs, installing `JetBrains Toolbox` will help this app to find them.
+
+## Conventional Commit Helper
+
+You can define your own conventional commit types (per-repository) by following steps:
+
+1. Create a json file with your own conventional commit type definitions. For example:
+```json
+[
+  {
+    "Name": "New Feature",
+    "Type": "Feature",
+    "Description": "Adding a new feature"
+  },
+  {
+    "Name": "Bug Fixes",
+    "Type": "Fix",
+    "Description": "Fixing a bug"
+  }
+]
+```
+2. Configure the `Conventional Commit Types` in repository configuration window.  
 
 ## Screenshots
 

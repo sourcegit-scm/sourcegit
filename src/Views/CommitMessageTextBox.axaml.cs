@@ -339,13 +339,21 @@ namespace SourceGit.Views
 
         private async void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
-            var toplevel = TopLevel.GetTopLevel(this);
-            if (toplevel is Window owner)
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner == null)
+                return;
+
+            var conventionalTypesOverride = owner switch
             {
-                var vm = new ViewModels.ConventionalCommitMessageBuilder(text => Text = text);
-                var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
-                await builder.ShowDialog(owner);
-            }
+                Launcher { DataContext: ViewModels.Launcher { ActivePage: { Data: ViewModels.Repository repo } } } => repo.Settings.ConventionalTypesOverride,
+                RepositoryConfigure { DataContext: ViewModels.RepositoryConfigure config } => config.ConventionalTypesOverride,
+                CommitMessageEditor editor => editor.ConventionalTypesOverride,
+                _ => string.Empty
+            };
+
+            var vm = new ViewModels.ConventionalCommitMessageBuilder(conventionalTypesOverride, text => Text = text);
+            var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
+            await builder.ShowDialog(owner);
 
             e.Handled = true;
         }

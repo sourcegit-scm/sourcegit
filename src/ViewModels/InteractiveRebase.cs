@@ -96,6 +96,11 @@ namespace SourceGit.ViewModels
             get => _repo.IssueTrackers;
         }
 
+        public string ConventionalTypesOverride
+        {
+            get => _repo.Settings.ConventionalTypesOverride;
+        }
+
         public bool IsLoading
         {
             get => _isLoading;

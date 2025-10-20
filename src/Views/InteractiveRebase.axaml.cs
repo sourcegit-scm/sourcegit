@@ -103,8 +103,11 @@ namespace SourceGit.Views
 
         public void OpenCommitMessageEditor(ViewModels.InteractiveRebaseItem item)
         {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
             var dialog = new CommitMessageEditor();
-            dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
+            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg => item.FullMessage = msg);
             dialog.ShowDialog(this);
         }
 

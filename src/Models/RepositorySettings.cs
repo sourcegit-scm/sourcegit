@@ -236,6 +236,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public string ConventionalTypesOverride
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public Dictionary<string, FilterMode> CollectHistoriesFilters()
         {
             var map = new Dictionary<string, FilterMode>();

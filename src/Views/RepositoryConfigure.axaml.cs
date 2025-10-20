@@ -21,6 +21,21 @@ namespace SourceGit.Views
                 await configure.SaveAsync();
         }
 
+        private async void SelectConventionalTypesFile(object sender, RoutedEventArgs e)
+        {
+            var options = new FilePickerOpenOptions()
+            {
+                FileTypeFilter = [new FilePickerFileType("Conventional Commit Types") { Patterns = ["*.json"] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
+            if (selected.Count == 1 && DataContext is ViewModels.RepositoryConfigure vm)
+                vm.ConventionalTypesOverride = selected[0].Path.LocalPath;
+
+            e.Handled = true;
+        }
+
         private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)
         {
             var options = new FilePickerOpenOptions()

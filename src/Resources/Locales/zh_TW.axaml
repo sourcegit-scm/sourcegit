@@ -226,6 +226,7 @@
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git 設定</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
+  <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">自訂約定式提交類型</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">預設合併模式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>

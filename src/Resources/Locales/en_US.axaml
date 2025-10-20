@@ -222,6 +222,7 @@
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
+  <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Conventional Commit Types</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Default Remote</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Preferred Merge Mode</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ISSUE TRACKER</x:String>
