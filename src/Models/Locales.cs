@@ -21,6 +21,7 @@ namespace SourceGit.Models
             new Locale("繁體中文", "zh_TW"),
             new Locale("日本語", "ja_JP"),
             new Locale("தமிழ் (Tamil)", "ta_IN"),
+            new Locale("한국어", "ko_KR"),
         };
 
         public Locale(string name, string key)
