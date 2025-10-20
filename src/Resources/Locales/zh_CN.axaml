@@ -56,7 +56,8 @@
   <x:String x:Key="Text.Bisect.Skip">无法判定</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">二分定位进行中。请标记当前的提交是 '正确' 还是 '错误'，然后检出另一个提交。</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">对当前版本的前一版本执行逐行追溯操作</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">与当前 ${0}$ 比较</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>

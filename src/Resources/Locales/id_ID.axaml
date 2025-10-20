@@ -55,7 +55,7 @@
   <x:String x:Key="Text.Bisect.Skip">Lewati</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">Bisect berjalan. Tandai commit saat ini sebagai baik atau buruk dan checkout yang lain.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME PADA BERKAS INI TIDAK DIDUKUNG!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME PADA BERKAS INI TIDAK DIDUKUNG!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Bandingkan dengan ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Bandingkan dengan Worktree</x:String>

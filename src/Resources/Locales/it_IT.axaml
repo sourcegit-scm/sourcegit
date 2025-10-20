@@ -55,7 +55,7 @@
   <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Salta</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange" xml:space="preserve">Bisecando. Marca il commit corrente come buono o cattivo e fai checkout di un altro.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Attribuisci</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">L'ATTRIBUZIONE SU QUESTO FILE NON È SUPPORTATA!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">L'ATTRIBUZIONE SU QUESTO FILE NON È SUPPORTATA!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Confronta con ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Confronta con Worktree</x:String>

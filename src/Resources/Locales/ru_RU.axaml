@@ -56,7 +56,7 @@
   <x:String x:Key="Text.Bisect.Skip">Пропустить</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Переключиться на ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Сравнить с ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>

@@ -52,7 +52,8 @@
   <x:String x:Key="Text.Bisect.Skip">Skip</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Mark current commit as good or bad and checkout another one.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame on Previous Revision</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Compare with ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>

@@ -56,7 +56,7 @@
   <x:String x:Key="Text.Bisect.Skip">Überspringen</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Aktuellen Commit als gut oder schlecht markieren und einen anderen auschecken.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAME WIRD BEI DIESER DATEI NICHT UNTERSTÜTZT!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME WIRD BEI DIESER DATEI NICHT UNTERSTÜTZT!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Auschecken von ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Mit ${0}$ vergleichen</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Mit Worktree vergleichen</x:String>
