@@ -61,6 +61,8 @@
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Сравнить с ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копировать имя ветки</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Создать PR...</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Создать PR для основной ветки ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Изменить действие</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Удалить выбранные {0} ветки</x:String>
@@ -186,11 +188,19 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Введите тему ревизии</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Параметры сборки: 
+  
+  ${branch_name} Имя текущей локальной ветки
+  ${files_num} Количество изменённых файлов
+  ${files} Пути изменённых файлов
+  ${files:N} Максимальное количество N путей изменённых файлов
+  ${pure_files} Похожие ${files}, но только чистые имена файлов
+  ${pure_files:N} Похожие ${files:N}, но без каталогов</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Cодержание:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Название:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ПОЛЬЗОВАТЕЛЬСКОЕ ДЕЙСТВИЕ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Аргументы:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Built-in parameters: 
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Параметры сборки: 
   
   ${REPO} Путь репозитория
   ${REMOTE} Выбранная удаённая ветка
@@ -637,6 +647,8 @@
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Выложить на все внешние репозитории</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Метка:</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">Отправить к НОВОЙ ветке</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Введитте имя для новой удалённой ветки:</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">Выйти</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Перемещение текущей ветки</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
