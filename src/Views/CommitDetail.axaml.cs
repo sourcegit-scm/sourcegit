@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -94,6 +95,98 @@ namespace SourceGit.Views
             menu.Items.Add(copyPath);
             menu.Items.Add(copyFullPath);
 
+            return menu;
+        }
+
+        public ContextMenu CreateMultipleChangesContextMenu(List<Models.Change> changes)
+        {
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
+                return null;
+
+            var patch = new MenuItem();
+            patch.Header = App.Text("FileCM.SaveAsPatch");
+            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("FileCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                if (storageFile != null)
+                {
+                    var saveTo = storageFile.Path.LocalPath;
+                    await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                }
+
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(patch);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (!repo.IsBare)
+            {
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += async (_, ev) =>
+                {
+                    await vm.ResetMultipleToThisRevisionAsync(changes);
+                    ev.Handled = true;
+                };
+
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = commit.Parents.Count > 0;
+                resetToFirstParent.Click += async (_, ev) =>
+                {
+                    await vm.ResetMultipleToParentRevisionAsync(changes);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyPath.Click += async (_, ev) =>
+            {
+                var builder = new StringBuilder();
+                foreach (var c in changes)
+                    builder.AppendLine(c.Path);
+
+                await App.CopyTextAsync(builder.ToString());
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+            copyFullPath.Click += async (_, e) =>
+            {
+                var builder = new StringBuilder();
+                foreach (var c in changes)
+                    builder.AppendLine(Native.OS.GetAbsPath(repo.FullPath, c.Path));
+
+                await App.CopyTextAsync(builder.ToString());
+                e.Handled = true;
+            };
+
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
             return menu;
         }
 

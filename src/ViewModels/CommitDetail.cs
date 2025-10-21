@@ -239,7 +239,7 @@ namespace SourceGit.ViewModels
         public async Task ResetToThisRevisionAsync(string path)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
-            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, $"{_commit.SHA}");
+            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, _commit.SHA);
             log.Complete();
         }
 
@@ -251,6 +251,41 @@ namespace SourceGit.ViewModels
                 await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
 
             await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+            log.Complete();
+        }
+
+        public async Task ResetMultipleToThisRevisionAsync(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var c in changes)
+                files.Add(c.Path);
+
+            var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}'");
+            await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(files, _commit.SHA);
+            log.Complete();
+        }
+
+        public async Task ResetMultipleToParentRevisionAsync(List<Models.Change> changes)
+        {
+            var renamed = new List<string>();
+            var modified = new List<string>();
+
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Renamed)
+                    renamed.Add(c.OriginalPath);
+                else
+                    modified.Add(c.Path);
+            }
+
+            var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}~1'");
+
+            if (modified.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(modified, $"{_commit.SHA}~1");
+
+            if (renamed.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(renamed, $"{_commit.SHA}~1");
+
             log.Complete();
         }
 

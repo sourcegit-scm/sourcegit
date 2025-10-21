@@ -61,15 +61,6 @@ namespace SourceGit.Views
             set => SetValue(IsUnstagedChangeProperty, value);
         }
 
-        public static readonly StyledProperty<SelectionMode> SelectionModeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, SelectionMode>(nameof(SelectionMode));
-
-        public SelectionMode SelectionMode
-        {
-            get => GetValue(SelectionModeProperty);
-            set => SetValue(SelectionModeProperty, value);
-        }
-
         public static readonly StyledProperty<Models.ChangeViewMode> ViewModeProperty =
             AvaloniaProperty.Register<ChangeCollectionView, Models.ChangeViewMode>(nameof(ViewMode), Models.ChangeViewMode.Tree);
 

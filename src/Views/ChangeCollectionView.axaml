@@ -33,7 +33,7 @@
       <v:ChangeCollectionContainer Focusable="True"
                                    ItemsSource="{Binding Rows}"
                                    SelectedItems="{Binding SelectedRows, Mode=TwoWay}"
-                                   SelectionMode="{Binding #ThisControl.SelectionMode}"
+                                   SelectionMode="Multiple"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:ChangeTreeNode">
@@ -78,7 +78,7 @@
       <v:ChangeCollectionContainer Focusable="True"
                                    ItemsSource="{Binding Changes}"
                                    SelectedItems="{Binding SelectedChanges, Mode=TwoWay}"
-                                   SelectionMode="{Binding #ThisControl.SelectionMode}"
+                                   SelectionMode="Multiple"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
@@ -110,7 +110,7 @@
       <v:ChangeCollectionContainer Focusable="True"
                                    ItemsSource="{Binding Changes}"
                                    SelectedItems="{Binding SelectedChanges, Mode=TwoWay}"
-                                   SelectionMode="{Binding #ThisControl.SelectionMode}"
+                                   SelectionMode="Multiple"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
