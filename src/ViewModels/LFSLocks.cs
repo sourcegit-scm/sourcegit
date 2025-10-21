@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -66,6 +67,32 @@ namespace SourceGit.ViewModels
             if (succ)
             {
                 _cachedLocks.Remove(lfsLock);
+                UpdateVisibleLocks();
+            }
+
+            IsLoading = false;
+        }
+
+        public async Task UnlockAllMyLocksAsync(bool force = false)
+        {
+            if (_isLoading)
+                return;
+            
+            IsLoading = true;
+
+            List<string> myLocks = [];
+            foreach (LFSLock lfsLock in _cachedLocks)
+            {
+                if (lfsLock.Owner.Name.Equals(_userName, StringComparison.Ordinal))
+                {
+                    myLocks.Add(lfsLock.Path);
+                }
+            }
+
+            bool succ = await _repo.UnlockLFSFilesAsync(_remote, myLocks, force, false);
+            if (succ)
+            {
+                _cachedLocks.RemoveAll(lfsLock => lfsLock.Owner.Name.Equals(_userName, StringComparison.Ordinal));
                 UpdateVisibleLocks();
             }
 

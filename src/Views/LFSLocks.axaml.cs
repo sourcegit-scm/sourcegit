@@ -26,5 +26,13 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private async void OnUnlockAllMyLocksButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.LFSLocks vm)
+                await vm.UnlockAllMyLocksAsync(true);
+
+            e.Handled = true;
+        }
     }
 }
