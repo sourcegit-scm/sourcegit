@@ -260,6 +260,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">选项列表 ：</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">选项之间请使用英文 '|' 作为分隔符</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">内置变量 ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA} 与 ${TAG} 在这里仍然可用</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">类型 ：</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作区</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">颜色</x:String>

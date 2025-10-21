@@ -177,7 +177,7 @@
               <TextBlock Margin="0,2,0,0"
                          Classes="small"
                          TextWrapping="Wrap"
-                         Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.StringValue.Tip}"
                          Foreground="{DynamicResource Brush.FG2}">
                 <TextBlock.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.Or}">
