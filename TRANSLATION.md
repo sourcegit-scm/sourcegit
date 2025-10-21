@@ -21,18 +21,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.22%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.67%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Blame.BlameOnPreviousRevision
-- Text.BranchCM.CreatePR
-- Text.BranchCM.CreatePRForUpstream
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
-- Text.PushToNewBranch
-- Text.PushToNewBranch.Title
 
 </details>
 
