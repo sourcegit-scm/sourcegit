@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.22%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.11%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -16,12 +16,13 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePRForUpstream
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.67%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.55%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -29,10 +30,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Blame.BlameOnPreviousRevision
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-77.23%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-77.15%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -115,6 +117,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -244,7 +247,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-98.66%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-98.55%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -256,6 +259,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.Drop
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.DropHead
 - Text.DropHead.Commit
 - Text.DropHead.NewHead
@@ -264,7 +268,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-95.87%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-95.76%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -286,6 +290,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitMessageTextBox.PasteAndReplaceAll
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.Diff.Image.Difference
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
@@ -309,7 +314,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-77.23%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-77.15%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -393,6 +398,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -521,7 +527,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-99.11%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-99.00%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -531,13 +537,14 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Submodule.Status.Unmerged
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-70.87%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-70.79%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -637,6 +644,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -806,17 +814,18 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.78%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.67%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.Blame.BlameOnPreviousRevision
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-77.34%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-77.26%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -900,6 +909,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
@@ -1027,7 +1037,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-78.46%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-78.37%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1109,6 +1119,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
 - Text.ConfigureWorkspace.Name
 - Text.ConfirmRestart.Title
