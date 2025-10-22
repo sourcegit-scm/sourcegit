@@ -60,14 +60,7 @@ namespace SourceGit.Native
             finder.Zed(() =>
             {
                 var exec = FindExecutable("zeditor");
-                if (string.IsNullOrEmpty(exec))
-                {
-                    exec = FindExecutable("zed");
-                    if (string.IsNullOrEmpty(exec))
-                        exec = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "bin", "zed");
-                }
-
-                return exec;
+                return string.IsNullOrEmpty(exec) ? FindExecutable("zed") : exec;
             });
             return finder.Tools;
         }
@@ -141,7 +134,8 @@ namespace SourceGit.Native
                     return test;
             }
 
-            return string.Empty;
+            var local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "bin", filename);
+            return File.Exists(local) ? local : string.Empty;
         }
 
         private string FindJetBrainsFleet(string localAppDataDir)
