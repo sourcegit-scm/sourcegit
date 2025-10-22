@@ -135,16 +135,27 @@ namespace SourceGit.ViewModels
             if (token is { IsCancellationRequested: true })
                 return;
 
-            if (!_isRepository || !Directory.Exists(_id))
+            if (!_isRepository)
             {
                 Status = null;
 
                 if (SubNodes.Count > 0)
                 {
-                    foreach (var subNode in SubNodes)
-                        await subNode.UpdateStatusAsync(force, token);
+                    // avoid collection was modified while enumerating.
+                    var nodes = new List<RepositoryNode>();
+                    nodes.AddRange(SubNodes);
+
+                    foreach (var node in nodes)
+                        await node.UpdateStatusAsync(force, token);
                 }
 
+                return;
+            }
+
+            if (!Directory.Exists(_id))
+            {
+                _lastUpdateStatus = DateTime.Now;
+                Status = null;
                 return;
             }
 

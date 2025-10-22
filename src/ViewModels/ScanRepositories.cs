@@ -97,13 +97,15 @@ namespace SourceGit.ViewModels
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                 if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                 {
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    await node.UpdateStatusAsync(false, null);
                 }
                 else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                 {
                     var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
                     var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    await node.UpdateStatusAsync(false, null);
                 }
             }
 

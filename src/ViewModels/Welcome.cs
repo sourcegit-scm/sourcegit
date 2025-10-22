@@ -55,8 +55,19 @@ namespace SourceGit.ViewModels
 
         public async Task UpdateStatusAsync(bool force, CancellationToken? token)
         {
-            foreach (var node in Preferences.Instance.RepositoryNodes)
+            if (_isUpdatingStatus)
+                return;
+
+            _isUpdatingStatus = true;
+
+            // avoid collection was modified while enumerating.
+            var nodes = new List<RepositoryNode>();
+            nodes.AddRange(Preferences.Instance.RepositoryNodes);
+
+            foreach (var node in nodes)
                 await node.UpdateStatusAsync(force, token);
+
+            _isUpdatingStatus = false;
         }
 
         public void ToggleNodeIsExpanded(RepositoryNode node)
@@ -130,9 +141,11 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
         }
 
-        public void AddRepository(string path, RepositoryNode parent, bool moveNode, bool open)
+        public async Task AddRepositoryAsync(string path, RepositoryNode parent, bool moveNode, bool open)
         {
             var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, moveNode);
+            await node.UpdateStatusAsync(false, null);
+
             if (open)
                 node.Open();
         }
@@ -277,5 +290,6 @@ namespace SourceGit.ViewModels
         }
 
         private string _searchFilter = string.Empty;
+        private bool _isUpdatingStatus = false;
     }
 }

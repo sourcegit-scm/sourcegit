@@ -279,7 +279,7 @@ namespace SourceGit.Views
                     var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
                     if (!string.IsNullOrEmpty(path))
                     {
-                        ViewModels.Welcome.Instance.AddRepository(path, null, true, false);
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(path, null, true, false);
                         refresh = true;
                     }
                 }
@@ -338,7 +338,7 @@ namespace SourceGit.Views
                     var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
                     if (!string.IsNullOrEmpty(path))
                     {
-                        ViewModels.Welcome.Instance.AddRepository(path, to, true, false);
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(path, to, true, false);
                         refresh = true;
                     }
                 }
