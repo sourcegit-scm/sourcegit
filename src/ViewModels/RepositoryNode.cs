@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -130,8 +131,11 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new DeleteRepositoryNode(this);
         }
 
-        public async Task UpdateStatusAsync(bool force)
+        public async Task UpdateStatusAsync(bool force, CancellationToken? token)
         {
+            if (token is { IsCancellationRequested: true })
+                return;
+
             if (!_isRepository || !Directory.Exists(_id))
             {
                 Status = null;
@@ -139,7 +143,7 @@ namespace SourceGit.ViewModels
                 if (SubNodes.Count > 0)
                 {
                     foreach (var subNode in SubNodes)
-                        await subNode.UpdateStatusAsync(force);
+                        await subNode.UpdateStatusAsync(force, token);
                 }
 
                 return;

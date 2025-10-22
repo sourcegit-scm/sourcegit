@@ -269,7 +269,7 @@ namespace SourceGit.Views
                 else if (vm.ActivePage.Data is ViewModels.Welcome welcome)
                 {
                     e.Handled = true;
-                    await welcome.UpdateStatusAsync(true);
+                    await welcome.UpdateStatusAsync(true, null);
                     return;
                 }
             }

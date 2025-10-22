@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -64,7 +65,13 @@ namespace SourceGit.Views
         protected override async void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-            await ViewModels.Welcome.Instance.UpdateStatusAsync(false);
+            await ViewModels.Welcome.Instance.UpdateStatusAsync(false, _cancellation.Token);
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            _cancellation.Cancel();
+            base.OnUnloaded(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -361,5 +368,6 @@ namespace SourceGit.Views
         private Point _pressedTreeNodePosition = new Point();
         private bool _startDragTreeNode = false;
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
+        private CancellationTokenSource _cancellation = new CancellationTokenSource();
     }
 }

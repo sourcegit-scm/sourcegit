@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -52,10 +53,10 @@ namespace SourceGit.ViewModels
             Rows.AddRange(rows);
         }
 
-        public async Task UpdateStatusAsync(bool force)
+        public async Task UpdateStatusAsync(bool force, CancellationToken? token)
         {
             foreach (var node in Preferences.Instance.RepositoryNodes)
-                await node.UpdateStatusAsync(force);
+                await node.UpdateStatusAsync(force, token);
         }
 
         public void ToggleNodeIsExpanded(RepositoryNode node)
