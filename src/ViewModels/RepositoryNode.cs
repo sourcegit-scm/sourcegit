@@ -64,11 +64,10 @@ namespace SourceGit.ViewModels
             set;
         } = 0;
 
-        [JsonIgnore]
         public Models.RepositoryStatus Status
         {
             get => _status;
-            private set => SetProperty(ref _status, value);
+            set => SetProperty(ref _status, value);
         }
 
         public List<RepositoryNode> SubNodes
