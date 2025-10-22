@@ -54,16 +54,8 @@ namespace SourceGit.ViewModels
 
         public async Task UpdateStatusAsync(bool force)
         {
-            if (!force)
-            {
-                var passed = DateTime.Now - _lastUpdateStatus;
-                if (passed.TotalSeconds < 10.0)
-                    return;
-            }
-
-            _lastUpdateStatus = DateTime.Now;
             foreach (var node in Preferences.Instance.RepositoryNodes)
-                await node.UpdateStatusAsync();
+                await node.UpdateStatusAsync(force);
         }
 
         public void ToggleNodeIsExpanded(RepositoryNode node)
@@ -283,7 +275,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private DateTime _lastUpdateStatus = DateTime.UnixEpoch.ToLocalTime();
         private string _searchFilter = string.Empty;
     }
 }

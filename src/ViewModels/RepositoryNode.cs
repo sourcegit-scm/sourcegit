@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -136,7 +137,7 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new DeleteRepositoryNode(this);
         }
 
-        public async Task UpdateStatusAsync()
+        public async Task UpdateStatusAsync(bool force)
         {
             if (!_isRepository || !Directory.Exists(_id))
             {
@@ -146,12 +147,20 @@ namespace SourceGit.ViewModels
                 if (SubNodes.Count > 0)
                 {
                     foreach (var subNode in SubNodes)
-                        await subNode.UpdateStatusAsync();
+                        await subNode.UpdateStatusAsync(force);
                 }
 
                 return;
             }
 
+            if (!force)
+            {
+                var passed = DateTime.Now - _lastUpdateStatus;
+                if (passed.TotalSeconds < 10.0)
+                    return;
+            }
+
+            _lastUpdateStatus = DateTime.Now;
             LocalChanges = await new Commands.CountLocalChanges(_id, true) { RaiseError = false }.GetResultAsync();
 
             var branches = await new Commands.QueryBranches(_id) { RaiseError = false }.GetResultAsync();
@@ -175,5 +184,6 @@ namespace SourceGit.ViewModels
         private bool _isVisible = true;
         private Models.Branch _currentBranch = null;
         private int _localChanges = 0;
+        private DateTime _lastUpdateStatus = DateTime.UnixEpoch.ToLocalTime();
     }
 }
