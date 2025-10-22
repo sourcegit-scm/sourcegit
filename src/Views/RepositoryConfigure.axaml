@@ -242,13 +242,9 @@
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                 </Button>
 
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-
                 <Button Classes="icon_button" Command="{Binding RemoveSelectedCommitTemplate}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
-
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
               </StackPanel>
             </Grid>
           </Border>
@@ -347,13 +343,10 @@
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                 </Button>
 
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-
                 <Button Classes="icon_button" Click="OnRemoveIssueTracker">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
 
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
               </StackPanel>
             </Grid>
           </Border>
