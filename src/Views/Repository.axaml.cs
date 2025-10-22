@@ -1,105 +1,12 @@
 using System;
-using System.Globalization;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 
 namespace SourceGit.Views
 {
-    public class CounterPresenter : Control
-    {
-        public static readonly StyledProperty<int> CountProperty =
-            AvaloniaProperty.Register<CounterPresenter, int>(nameof(Count));
-
-        public int Count
-        {
-            get => GetValue(CountProperty);
-            set => SetValue(CountProperty, value);
-        }
-
-        public static readonly StyledProperty<FontFamily> FontFamilyProperty =
-            TextBlock.FontFamilyProperty.AddOwner<CounterPresenter>();
-
-        public FontFamily FontFamily
-        {
-            get => GetValue(FontFamilyProperty);
-            set => SetValue(FontFamilyProperty, value);
-        }
-
-        public static readonly StyledProperty<double> FontSizeProperty =
-           TextBlock.FontSizeProperty.AddOwner<CounterPresenter>();
-
-        public double FontSize
-        {
-            get => GetValue(FontSizeProperty);
-            set => SetValue(FontSizeProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> ForegroundProperty =
-            AvaloniaProperty.Register<CounterPresenter, IBrush>(nameof(Foreground), Brushes.White);
-
-        public IBrush Foreground
-        {
-            get => GetValue(ForegroundProperty);
-            set => SetValue(ForegroundProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> BackgroundProperty =
-            AvaloniaProperty.Register<CounterPresenter, IBrush>(nameof(Background), Brushes.White);
-
-        public IBrush Background
-        {
-            get => GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
-        static CounterPresenter()
-        {
-            AffectsMeasure<CounterPresenter>(
-                FontSizeProperty,
-                FontFamilyProperty,
-                ForegroundProperty,
-                CountProperty);
-        }
-
-        public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-
-            if (_label != null)
-            {
-                context.DrawRectangle(Background, null, new RoundedRect(new Rect(0, 0, _label.Width + 18, 18), new CornerRadius(9)));
-                context.DrawText(_label, new Point(9, 9 - _label.Height * 0.5));
-            }
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            if (Count > 0)
-            {
-                _label = new FormattedText(
-                    Count.ToString(),
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(FontFamily),
-                    FontSize,
-                    Foreground);
-            }
-            else
-            {
-                _label = null;
-            }
-
-            InvalidateVisual();
-            return _label != null ? new Size(_label.Width + 18, 18) : new Size(0, 0);
-        }
-
-        private FormattedText _label = null;
-    }
-
     public partial class Repository : UserControl
     {
         public Repository()

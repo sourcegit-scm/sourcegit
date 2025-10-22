@@ -131,14 +131,19 @@
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
-                  <v:CounterPresenter Grid.Column="2"
-                                      Margin="6,0"
-                                      VerticalAlignment="Center"
-                                      Count="{Binding LocalChangesCount}"
-                                      FontFamily="{DynamicResource Fonts.Monospace}"
-                                      FontSize="10"
-                                      Foreground="{DynamicResource Brush.BadgeFG}"
-                                      Background="{DynamicResource Brush.Badge}"/>
+                  <Border Grid.Column="2"
+                          Height="18"
+                          CornerRadius="9"
+                          Padding="9,0"
+                          Margin="6,0"
+                          VerticalAlignment="Center"
+                          Background="{DynamicResource Brush.Badge}"
+                          IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}"
+                               Foreground="{DynamicResource Brush.BadgeFG}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
+                               FontSize="10"/>
+                  </Border>
                   <Path Grid.Column="3"
                         Width="12" Height="12"
                         Margin="0,0,6,0"
@@ -159,14 +164,19 @@
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
-                  <v:CounterPresenter Grid.Column="2"
-                                      Margin="6,0"
-                                      VerticalAlignment="Center"
-                                      Count="{Binding StashesCount}"
-                                      FontFamily="{DynamicResource Fonts.Monospace}"
-                                      FontSize="10"
-                                      Foreground="{DynamicResource Brush.BadgeFG}"
-                                      Background="{DynamicResource Brush.Badge}"/>
+                  <Border Grid.Column="2"
+                          Height="18"
+                          CornerRadius="9"
+                          Padding="6,0"
+                          Margin="6,0"
+                          VerticalAlignment="Center"
+                          Background="{DynamicResource Brush.Badge}"
+                          IsVisible="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Text="{Binding StashesCount, Mode=OneWay}"
+                               Foreground="{DynamicResource Brush.BadgeFG}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
+                               FontSize="10"/>
+                  </Border>
                   <Button Grid.Column="3"
                           Classes="icon_button"
                           Width="26" Height="26"
