@@ -64,17 +64,10 @@ namespace SourceGit.ViewModels
         } = 0;
 
         [JsonIgnore]
-        public Models.Branch CurrentBranch
+        public Models.RepositoryStatus Status
         {
-            get => _currentBranch;
-            private set => SetProperty(ref _currentBranch, value);
-        }
-
-        [JsonIgnore]
-        public int LocalChanges
-        {
-            get => _localChanges;
-            private set => SetProperty(ref _localChanges, value);
+            get => _status;
+            private set => SetProperty(ref _status, value);
         }
 
         public List<RepositoryNode> SubNodes
@@ -141,8 +134,7 @@ namespace SourceGit.ViewModels
         {
             if (!_isRepository || !Directory.Exists(_id))
             {
-                CurrentBranch = null;
-                LocalChanges = 0;
+                Status = null;
 
                 if (SubNodes.Count > 0)
                 {
@@ -161,19 +153,7 @@ namespace SourceGit.ViewModels
             }
 
             _lastUpdateStatus = DateTime.Now;
-            LocalChanges = await new Commands.CountLocalChanges(_id, true) { RaiseError = false }.GetResultAsync();
-
-            var branches = await new Commands.QueryBranches(_id) { RaiseError = false }.GetResultAsync();
-            foreach (var branch in branches)
-            {
-                if (branch.IsCurrent)
-                {
-                    CurrentBranch = branch;
-                    return;
-                }
-            }
-
-            CurrentBranch = null;
+            Status = await new Commands.QueryRepositoryStatus(_id).GetResultAsync();
         }
 
         private string _id = string.Empty;
@@ -182,8 +162,7 @@ namespace SourceGit.ViewModels
         private int _bookmark = 0;
         private bool _isExpanded = false;
         private bool _isVisible = true;
-        private Models.Branch _currentBranch = null;
-        private int _localChanges = 0;
+        private Models.RepositoryStatus _status = null;
         private DateTime _lastUpdateStatus = DateTime.UnixEpoch.ToLocalTime();
     }
 }
