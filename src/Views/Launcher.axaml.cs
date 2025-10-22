@@ -266,6 +266,12 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
+                else if (vm.ActivePage.Data is ViewModels.Welcome welcome)
+                {
+                    e.Handled = true;
+                    await welcome.UpdateStatusAsync(true);
+                    return;
+                }
             }
 
             base.OnKeyDown(e);

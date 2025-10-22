@@ -64,7 +64,7 @@ namespace SourceGit.Views
         protected override async void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-            await ViewModels.Welcome.Instance.UpdateStatusAsync();
+            await ViewModels.Welcome.Instance.UpdateStatusAsync(false);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

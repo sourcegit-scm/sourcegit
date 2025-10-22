@@ -52,8 +52,16 @@ namespace SourceGit.ViewModels
             Rows.AddRange(rows);
         }
 
-        public async Task UpdateStatusAsync()
+        public async Task UpdateStatusAsync(bool force)
         {
+            if (!force)
+            {
+                var passed = DateTime.Now - _lastUpdateStatus;
+                if (passed.TotalSeconds < 10.0)
+                    return;
+            }
+
+            _lastUpdateStatus = DateTime.Now;
             foreach (var node in Preferences.Instance.RepositoryNodes)
                 await node.UpdateStatusAsync();
         }
@@ -275,6 +283,7 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private DateTime _lastUpdateStatus = DateTime.UnixEpoch.ToLocalTime();
         private string _searchFilter = string.Empty;
     }
 }
