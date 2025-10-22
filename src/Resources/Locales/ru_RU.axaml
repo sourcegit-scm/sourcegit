@@ -56,6 +56,7 @@
   <x:String x:Key="Text.Bisect.Skip">Пропустить</x:String>
   <x:String x:Key="Text.Bisect.WaitingForRange">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Переключиться на ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Сравнить с ${0}$</x:String>
@@ -188,19 +189,19 @@
   <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Введите тему ревизии</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН РЕВИЗИИ</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Параметры сборки: 
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Встроенные параметры: 
   
   ${branch_name} Имя текущей локальной ветки
   ${files_num} Количество изменённых файлов
   ${files} Пути изменённых файлов
-  ${files:N} Максимальное количество N путей изменённых файлов
-  ${pure_files} Похожие ${files}, но только чистые имена файлов
-  ${pure_files:N} Похожие ${files:N}, но без каталогов</x:String>
+  ${files:N} Пути изменённых файлов, не более N
+  ${pure_files} То же, что и ${files}, но только имена файлов
+  ${pure_files:N} То же, что и ${files:N}, но только имена файлов</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Cодержание:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Название:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ПОЛЬЗОВАТЕЛЬСКОЕ ДЕЙСТВИЕ</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Аргументы:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Параметры сборки: 
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Встроенные параметры: 
   
   ${REPO} Путь репозитория
   ${REMOTE} Выбранная удаённая ветка
@@ -225,6 +226,7 @@
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автозагрузка изменений</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
+  <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Общепринятые типы ревизии</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Внешний репозиторий по умолчанию</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Предпочтительный режим слияния</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
@@ -258,6 +260,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Опции:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Используйте разделитель «|» для опций</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Встроенные переменные ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, и ${TAG} останутся здесь доступными</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Тип:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Рабочие пространства</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Цвет</x:String>
@@ -266,7 +269,7 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">Сформировать всё и зафиксировать ревизию</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty) или отложить всё, затем зафиксировать ревизию?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Обнаружена пустая ревизия! Вы хотите продолжить (--allow-empty) или отложить всё, а затем зафиксировать ревизию?</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Требуется перезапуск</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">Вы должны перезапустить приложение после применения изменений.</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Общепринятый помощник по ревизии</x:String>
@@ -767,7 +770,7 @@
   <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Загрузка</x:String>
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Пропустить эту версию</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Обновление ПО</x:String>
-  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">В настоящее время обновления недоступны.</x:String>
+  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Сейчас нет обновлений.</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Установить ветку подмодуля</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Подмодуль:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Текущий:</x:String>
