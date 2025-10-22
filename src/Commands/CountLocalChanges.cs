@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public class CountLocalChangesWithoutUntracked : Command
+    public class CountLocalChanges : Command
     {
-        public CountLocalChangesWithoutUntracked(string repo)
+        public CountLocalChanges(string repo, bool includeUntracked)
         {
+            var option = includeUntracked ? "-uall" : "-uno";
             WorkingDirectory = repo;
             Context = repo;
-            Args = "--no-optional-locks status -uno --ignore-submodules=all --porcelain";
+            Args = $"--no-optional-locks status {option} --ignore-submodules=all --porcelain";
         }
 
         public async Task<int> GetResultAsync()

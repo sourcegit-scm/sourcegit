@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -106,7 +107,7 @@
           <DataTemplate DataType="vm:RepositoryNode">
             <Grid Background="Transparent"
                   Height="30"
-                  ColumnDefinitions="16,18,Auto,*"
+                  ColumnDefinitions="16,18,*,Auto,16"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   ClipToBounds="True"
                   ContextRequested="OnTreeNodeContextRequested"
@@ -142,6 +143,14 @@
 
               <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
+                <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Id, StringFormat=({0})}">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="IsRepository"/>
+                      <Binding Path="IsInvalid" Converter="{x:Static BoolConverters.Not}"/>
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
                 <Path Margin="2,0,0,0"
                       Width="12" Height="12"
                       Data="{StaticResource Icons.Error}"
@@ -149,12 +158,48 @@
                       IsVisible="{Binding IsInvalid}"/>
               </StackPanel>
 
-              <Border Grid.Column="3" Margin="8,0" VerticalAlignment="Center" ClipToBounds="True">
-                <TextBlock HorizontalAlignment="Right"
-                           Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding Id, Converter={x:Static c:PathConverters.RelativeToHome}}"
-                           IsVisible="{Binding IsRepository}"/>
-              </Border>
+              <StackPanel Grid.Column="3" Orientation="Horizontal" IsVisible="{Binding IsRepository}">
+                <Border Margin="3,0,0,0"
+                        Height="18"
+                        CornerRadius="9"
+                        Padding="6,0"
+                        Background="{DynamicResource Brush.FG1}"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding LocalChanges, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                  <TextBlock Text="{Binding LocalChanges}"
+                             FontFamily="{DynamicResource Fonts.Monospace}"
+                             FontSize="11"
+                             Foreground="{DynamicResource Brush.Window}"/>
+                </Border>
+
+                <ContentControl Margin="3,0,0,0"
+                                Content="{Binding CurrentBranch}"
+                                IsVisible="{Binding CurrentBranch, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <ContentControl.DataTemplates>
+                    <DataTemplate DataType="m:Branch">
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3,0"
+                                   Text="{Binding TrackStatusDescription}"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
+                                   FontSize="12"
+                                   IsVisible="{Binding IsTrackStatusVisible}"/>
+
+                        <Border Margin="3,0,0,0"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource Brush.FG2}"
+                                Height="20"
+                                CornerRadius="4"
+                                Padding="4,0">
+                          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
+                            <TextBlock Margin="2,0,0,0" Text="{Binding Name}" FontSize="12"/>
+                          </StackPanel>
+                        </Border>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ContentControl.DataTemplates>
+                </ContentControl>
+              </StackPanel>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

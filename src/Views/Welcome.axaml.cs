@@ -61,6 +61,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override async void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            await ViewModels.Welcome.Instance.UpdateStatusAsync();
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
-
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -61,6 +61,20 @@ namespace SourceGit.ViewModels
             get;
             set;
         } = 0;
+
+        [JsonIgnore]
+        public Models.Branch CurrentBranch
+        {
+            get => _currentBranch;
+            private set => SetProperty(ref _currentBranch, value);
+        }
+
+        [JsonIgnore]
+        public int LocalChanges
+        {
+            get => _localChanges;
+            private set => SetProperty(ref _localChanges, value);
+        }
 
         public List<RepositoryNode> SubNodes
         {
@@ -122,11 +136,44 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new DeleteRepositoryNode(this);
         }
 
+        public async Task UpdateStatusAsync()
+        {
+            if (!_isRepository || !Directory.Exists(_id))
+            {
+                CurrentBranch = null;
+                LocalChanges = 0;
+
+                if (SubNodes.Count > 0)
+                {
+                    foreach (var subNode in SubNodes)
+                        await subNode.UpdateStatusAsync();
+                }
+
+                return;
+            }
+
+            LocalChanges = await new Commands.CountLocalChanges(_id, true) { RaiseError = false }.GetResultAsync();
+
+            var branches = await new Commands.QueryBranches(_id) { RaiseError = false }.GetResultAsync();
+            foreach (var branch in branches)
+            {
+                if (branch.IsCurrent)
+                {
+                    CurrentBranch = branch;
+                    return;
+                }
+            }
+
+            CurrentBranch = null;
+        }
+
         private string _id = string.Empty;
         private string _name = string.Empty;
         private bool _isRepository = false;
         private int _bookmark = 0;
         private bool _isExpanded = false;
         private bool _isVisible = true;
+        private Models.Branch _currentBranch = null;
+        private int _localChanges = 0;
     }
 }

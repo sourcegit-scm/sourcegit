@@ -52,6 +52,12 @@ namespace SourceGit.ViewModels
             Rows.AddRange(rows);
         }
 
+        public async Task UpdateStatusAsync()
+        {
+            foreach (var node in Preferences.Instance.RepositoryNodes)
+                await node.UpdateStatusAsync();
+        }
+
         public void ToggleNodeIsExpanded(RepositoryNode node)
         {
             node.IsExpanded = !node.IsExpanded;
