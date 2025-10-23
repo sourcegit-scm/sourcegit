@@ -84,6 +84,7 @@
               <Grid Height="26" Margin="8,0" ClipToBounds="True">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="16"/>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="CommitOrderColumn"/>
                   <ColumnDefinition Width="110"/>
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="32"/>
@@ -111,8 +112,15 @@
                         VerticalAlignment="Center"/>
                 </Border>
 
+                <!-- Original Order -->
+                <TextBlock Grid.Column="1"
+                           Margin="4,0,0,0"
+                           FontFamily="{DynamicResource Fonts.Monospace}"
+                           Text="{Binding OriginalOrder, StringFormat='#{0}'}"
+                           HorizontalAlignment="Center"/>
+                
                 <!-- Action -->
-                <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnButtonActionClicked">
+                <Button Grid.Column="2" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnButtonActionClicked">
                   <StackPanel Orientation="Horizontal">
                     <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
                     <TextBlock Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
@@ -120,7 +128,7 @@
                 </Button>
 
                 <!-- Subject -->
-                <Grid Grid.Column="2" ColumnDefinitions="Auto,*" ClipToBounds="True">
+                <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
                   <Button Grid.Column="0"
                           Classes="icon_button"
                           Margin="0,0,6,0" Padding="0"
@@ -142,24 +150,24 @@
                 </Grid>
 
                 <!-- Author Avatar -->
-                <v:Avatar Grid.Column="3"
+                <v:Avatar Grid.Column="4"
                           Width="16" Height="16"
                           Margin="8,0,0,0"
                           VerticalAlignment="Center"
                           User="{Binding Commit.Author}"/>
 
                 <!-- Author Name -->
-                <Border Grid.Column="4" ClipToBounds="True">
+                <Border Grid.Column="5" ClipToBounds="True">
                   <TextBlock Margin="6,0,12,0" Text="{Binding Commit.Author.Name}"/>
                 </Border>
 
                 <!-- Commit SHA -->
-                <Border Grid.Column="5" ClipToBounds="True">
+                <Border Grid.Column="6" ClipToBounds="True">
                   <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
                 </Border>
 
                 <!-- Commit Time -->
-                <Border Grid.Column="6">
+                <Border Grid.Column="7">
                   <TextBlock Margin="16,0,8,0" Text="{Binding Commit.CommitterTimeStr}"/>
                 </Border>
               </Grid>

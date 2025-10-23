@@ -15,6 +15,11 @@ namespace SourceGit.ViewModels
 
     public class InteractiveRebaseItem : ObservableObject
     {
+        public int OriginalOrder
+        {
+            get;
+        }
+
         public Models.Commit Commit
         {
             get;
@@ -59,8 +64,9 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public InteractiveRebaseItem(Models.Commit c, string message, bool canSquashOrFixup)
+        public InteractiveRebaseItem(int order, Models.Commit c, string message, bool canSquashOrFixup)
         {
+            OriginalOrder = order;
             Commit = c;
             FullMessage = message;
             CanSquashOrFixup = canSquashOrFixup;
@@ -142,7 +148,7 @@ namespace SourceGit.ViewModels
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
-                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
+                    list.Add(new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message, i < commits.Count - 1));
                 }
 
                 var selected = list.Count > 0 ? list[0] : null;
