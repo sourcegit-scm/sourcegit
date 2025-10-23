@@ -769,43 +769,54 @@ namespace SourceGit.ViewModels
 
         private void UpdateInProgressState()
         {
-            if (string.IsNullOrEmpty(_commitMessage))
-            {
-                var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
-                if (File.Exists(mergeMsgFile))
-                    CommitMessage = File.ReadAllText(mergeMsgFile);
-            }
+            var oldType = _inProgressContext != null ? _inProgressContext.GetType() : null;
 
             if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-            {
                 InProgressContext = new CherryPickInProgress(_repo);
-            }
             else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
-            {
-                var rebasing = new RebaseInProgress(_repo);
-                InProgressContext = rebasing;
-
-                if (string.IsNullOrEmpty(_commitMessage))
-                {
-                    var rebaseMsgFile = Path.Combine(_repo.GitDir, "rebase-merge", "message");
-                    if (File.Exists(rebaseMsgFile))
-                        CommitMessage = File.ReadAllText(rebaseMsgFile);
-                    else if (rebasing.StoppedAt != null)
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
-                }
-            }
+                InProgressContext = new RebaseInProgress(_repo);
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-            {
                 InProgressContext = new RevertInProgress(_repo);
-            }
             else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-            {
                 InProgressContext = new MergeInProgress(_repo);
-            }
             else
-            {
                 InProgressContext = null;
-            }
+
+            if (_inProgressContext == null)
+                return;
+
+            if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
+                return;
+
+            do
+            {
+                if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
+                    break;
+
+                if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
+                    break;
+
+                var rebaseProcessingFile = Path.Combine(_repo.GitDir, "rebase-apply", "final-commit");
+                if (File.Exists(rebaseProcessingFile))
+                {
+                    var sha = File.ReadAllText(rebaseProcessingFile);
+                    if (!string.IsNullOrEmpty(sha))
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResult();
+                }
+            } while (false);
+        }
+
+        private bool LoadCommitMessageFromFile(string file)
+        {
+            if (!File.Exists(file))
+                return false;
+
+            var msg = File.ReadAllText(file).Trim();
+            if (string.IsNullOrEmpty(msg))
+                return false;
+
+            CommitMessage = msg;
+            return true;
         }
 
         private void SetDetail(Models.Change change, bool isUnstaged)
