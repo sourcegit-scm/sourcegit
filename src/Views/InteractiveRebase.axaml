@@ -38,15 +38,29 @@
     </Grid>
 
     <!-- Operation Information -->
-    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*" Margin="8">
-      <TextBlock Grid.Column="0" Text="{DynamicResource Text.InteractiveRebase.Target}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-      <Path Grid.Column="1" Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Branch}"/>
-      <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Current.FriendlyName}" Margin="8,0,0,0"/>
+    <Grid Grid.Row="1" Margin="8" ColumnDefinitions="*,Auto">
+      <StackPanel Grid.Column="0" Orientation="Horizontal" ClipToBounds="True">
+        <TextBlock Text="{DynamicResource Text.InteractiveRebase.Target}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+        <Path Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Branch}"/>
+        <TextBlock VerticalAlignment="Center" Text="{Binding Current.FriendlyName}" Margin="8,0,0,0"/>
 
-      <TextBlock Grid.Column="3" Margin="48,0,0,0" Text="{DynamicResource Text.InteractiveRebase.On}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
-      <Path Grid.Column="4" Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Commit}"/>
-      <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{Binding On.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-      <TextBlock Grid.Column="6" VerticalAlignment="Center" Text="{Binding On.Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Margin="16,0,0,0" Text="{DynamicResource Text.InteractiveRebase.On}" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold"/>
+        <Path Width="14" Height="14" Margin="8,0,0,0" Data="{StaticResource Icons.Commit}"/>
+        <TextBlock VerticalAlignment="Center" Text="{Binding On.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+        <TextBlock VerticalAlignment="Center" Text="{Binding On.Subject}" Margin="4,0,0,0"/>
+      </StackPanel>
+
+      <Border Grid.Column="1" Background="Transparent" Width="20" Height="20">
+        <ToolTip.Tip>
+          <TextBlock>
+            <Run Text="{DynamicResource Text.InteractiveRebase.ReorderTip}"/>
+            <Run Text=" "/>
+            <Run Text="{OnPlatform 'Ctrl+Up/Ctrl+Down', macOS='⌘+Up/⌘+Down'}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+          </TextBlock>
+        </ToolTip.Tip>
+
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
+      </Border>
     </Grid>
 
     <!-- Body -->
@@ -81,9 +95,16 @@
 
           <v:InteractiveRebaseListBox.ItemTemplate>
             <DataTemplate DataType="vm:InteractiveRebaseItem">
-              <Grid Height="26" Margin="8,0" ClipToBounds="True">
+              <Grid Height="26"
+                    Margin="8,0"
+                    Background="Transparent"
+                    ClipToBounds="True"
+                    PointerPressed="OnRowPointerPressed"
+                    DragDrop.AllowDrop="True"
+                    DragDrop.DragOver="OnRowDragOver"
+                    DragDrop.DragLeave="OnRowDragLeave"
+                    DragDrop.Drop="OnRowDrop">
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="16"/>
                   <ColumnDefinition Width="Auto" SharedSizeGroup="CommitOrderColumn"/>
                   <ColumnDefinition Width="110"/>
                   <ColumnDefinition Width="*"/>
@@ -93,34 +114,15 @@
                   <ColumnDefinition Width="Auto" SharedSizeGroup="CommitTimeColumn"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Drag & Drop Anchor -->
-                <Border Grid.Column="0" Background="Transparent"
-                        PointerPressed="OnRowHeaderPointerPressed"
-                        DragDrop.AllowDrop="True"
-                        DragDrop.DragOver="OnRowHeaderDragOver">
-                  <ToolTip.Tip>
-                    <TextBlock>
-                      <Run Text="{DynamicResource Text.InteractiveRebase.ReorderTip}"/>
-                      <Run Text=" "/>
-                      <Run Text="{OnPlatform 'Ctrl+Up/Ctrl+Down', macOS='⌘+Up/⌘+Down'}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-                    </TextBlock>
-                  </ToolTip.Tip>
-                  <Path Width="14" Height="14"
-                        Data="{StaticResource Icons.Move}"
-                        Fill="{DynamicResource Brush.FG2}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
-                </Border>
-
                 <!-- Original Order -->
-                <TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="0"
                            Margin="4,0,0,0"
                            FontFamily="{DynamicResource Fonts.Monospace}"
                            Text="{Binding OriginalOrder, StringFormat='#{0}'}"
                            HorizontalAlignment="Center"/>
                 
                 <!-- Action -->
-                <Button Grid.Column="2" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnButtonActionClicked">
+                <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnButtonActionClicked">
                   <StackPanel Orientation="Horizontal">
                     <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
                     <TextBlock Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
@@ -128,7 +130,7 @@
                 </Button>
 
                 <!-- Subject -->
-                <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
+                <Grid Grid.Column="2" ColumnDefinitions="Auto,*" ClipToBounds="True">
                   <Button Grid.Column="0"
                           Classes="icon_button"
                           Margin="0,0,6,0" Padding="0"
@@ -150,26 +152,40 @@
                 </Grid>
 
                 <!-- Author Avatar -->
-                <v:Avatar Grid.Column="4"
+                <v:Avatar Grid.Column="3"
                           Width="16" Height="16"
                           Margin="8,0,0,0"
                           VerticalAlignment="Center"
                           User="{Binding Commit.Author}"/>
 
                 <!-- Author Name -->
-                <Border Grid.Column="5" ClipToBounds="True">
+                <Border Grid.Column="4" ClipToBounds="True">
                   <TextBlock Margin="6,0,12,0" Text="{Binding Commit.Author.Name}"/>
                 </Border>
 
                 <!-- Commit SHA -->
-                <Border Grid.Column="6" ClipToBounds="True">
+                <Border Grid.Column="5" ClipToBounds="True">
                   <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
                 </Border>
 
                 <!-- Commit Time -->
-                <Border Grid.Column="7">
+                <Border Grid.Column="6">
                   <TextBlock Margin="16,0,8,0" Text="{Binding Commit.CommitterTimeStr}"/>
                 </Border>
+
+                <!-- Drop Indicator -->
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="7"
+                           Height="2"
+                           VerticalAlignment="Top"
+                           Fill="{DynamicResource Brush.Accent}"
+                           IsVisible="{Binding IsDropBeforeVisible, Mode=OneWay}"
+                           IsHitTestVisible="False"/>
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="7"
+                           Height="2"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource Brush.Accent}"
+                           IsVisible="{Binding IsDropAfterVisible, Mode=OneWay}"
+                           IsHitTestVisible="False"/>
               </Grid>
             </DataTemplate>
           </v:InteractiveRebaseListBox.ItemTemplate>

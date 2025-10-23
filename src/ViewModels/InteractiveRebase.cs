@@ -64,6 +64,18 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsDropBeforeVisible
+        {
+            get => _isDropBeforeVisible;
+            set => SetProperty(ref _isDropBeforeVisible, value);
+        }
+
+        public bool IsDropAfterVisible
+        {
+            get => _isDropAfterVisible;
+            set => SetProperty(ref _isDropAfterVisible, value);
+        }
+
         public InteractiveRebaseItem(int order, Models.Commit c, string message, bool canSquashOrFixup)
         {
             OriginalOrder = order;
@@ -76,6 +88,8 @@ namespace SourceGit.ViewModels
         private string _subject;
         private string _fullMessage;
         private bool _canSquashOrFixup = true;
+        private bool _isDropBeforeVisible = false;
+        private bool _isDropAfterVisible = false;
     }
 
     public class InteractiveRebase : ObservableObject
@@ -188,30 +202,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public void MoveItemUp(InteractiveRebaseItem item)
-        {
-            var idx = Items.IndexOf(item);
-            if (idx > 0)
-            {
-                var prev = Items[idx - 1];
-                Items.RemoveAt(idx - 1);
-                Items.Insert(idx, prev);
-                UpdateItems();
-            }
-        }
-
-        public void MoveItemDown(InteractiveRebaseItem item)
-        {
-            var idx = Items.IndexOf(item);
-            if (idx < Items.Count - 1)
-            {
-                var next = Items[idx + 1];
-                Items.RemoveAt(idx + 1);
-                Items.Insert(idx, next);
-                UpdateItems();
-            }
-        }
-
         public void ChangeAction(List<InteractiveRebaseItem> selected, Models.InteractiveRebaseAction action)
         {
             if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
@@ -228,6 +218,41 @@ namespace SourceGit.ViewModels
                     item.Action = action;
             }
 
+            UpdateItems();
+        }
+
+        public void Move(List<InteractiveRebaseItem> commits, int index)
+        {
+            var hashes = new HashSet<string>();
+            foreach (var c in commits)
+                hashes.Add(c.Commit.SHA);
+
+            var before = new List<InteractiveRebaseItem>();
+            var ordered = new List<InteractiveRebaseItem>();
+            var after = new List<InteractiveRebaseItem>();
+
+            for (int i = 0; i < index; i++)
+            {
+                var item = Items[i];
+                if (!hashes.Contains(item.Commit.SHA))
+                    before.Add(item);
+                else
+                    ordered.Add(item);
+            }
+
+            for (int i = index; i < Items.Count; i++)
+            {
+                var item = Items[i];
+                if (!hashes.Contains(item.Commit.SHA))
+                    after.Add(item);
+                else
+                    ordered.Add(item);
+            }
+
+            Items.Clear();
+            Items.AddRange(before);
+            Items.AddRange(ordered);
+            Items.AddRange(after);
             UpdateItems();
         }
 
