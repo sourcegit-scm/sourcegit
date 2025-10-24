@@ -76,40 +76,8 @@ namespace SourceGit.Views
             }
             else if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
-                if (e.Key == Key.Up)
-                {
-                    var idx = 0;
-                    for (int i = 0; i < vm.Items.Count; i++)
-                    {
-                        if (items.Contains(vm.Items[i]))
-                        {
-                            idx = Math.Max(0, i - 1);
-                            break;
-                        }
-                    }
-
-                    vm.Move(items, idx);
-                    SelectedItems = items;
-                    Focus();
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    var idx = 0;
-                    for (int i = vm.Items.Count - 1; i >= 0; i--)
-                    {
-                        if (items.Contains(vm.Items[i]))
-                        {
-                            idx = Math.Min(vm.Items.Count, i + 2);
-                            break;
-                        }
-                    }
-
-                    vm.Move(items, idx);
-                    SelectedItems = items;
-                    Focus();
-                    e.Handled = true;
-                }
+                if (e.Key == Key.Up || e.Key == Key.Down)
+                    return;
             }
 
             if (!e.Handled)
@@ -265,7 +233,75 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnButtonActionClicked(object sender, RoutedEventArgs e)
+        private void OnMoveSelectedUp(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (IRItemListBox.SelectedItems is not { Count: > 0 } selected)
+                return;
+
+            var hashes = new HashSet<string>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                {
+                    hashes.Add(irItem.Commit.SHA);
+                    items.Add(irItem);
+                }
+            }
+
+            var idx = 0;
+            for (int i = 0; i < vm.Items.Count; i++)
+            {
+                if (hashes.Contains(vm.Items[i].Commit.SHA))
+                {
+                    idx = Math.Max(0, i - 1);
+                    break;
+                }
+            }
+
+            vm.Move(items, idx);
+            IRItemListBox.SelectedItems = items;
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedDown(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (IRItemListBox.SelectedItems is not { Count: > 0 } selected)
+                return;
+
+            var hashes = new HashSet<string>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                {
+                    hashes.Add(irItem.Commit.SHA);
+                    items.Add(irItem);
+                }
+            }
+
+            var idx = 0;
+            for (int i = vm.Items.Count - 1; i >= 0; i--)
+            {
+                if (hashes.Contains(vm.Items[i].Commit.SHA))
+                {
+                    idx = Math.Min(vm.Items.Count, i + 2);
+                    break;
+                }
+            }
+
+            vm.Move(items, idx);
+            IRItemListBox.SelectedItems = items;
+            e.Handled = true;
+        }
+
+        private void OnShowActionsDropdownMenu(object sender, RoutedEventArgs e)
         {
             if (sender is not Button { DataContext: ViewModels.InteractiveRebaseItem item } button)
                 return;
