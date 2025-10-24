@@ -90,7 +90,7 @@
       </Button>
 
       <!-- Pages Switcher Toggle Button -->
-      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Command="{Binding OpenTabSwitcher}" HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}">
+      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenQuickLauncher" HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{DynamicResource Text.Launcher.Pages}"
@@ -123,17 +123,17 @@
       </ContentControl.DataTemplates>
     </ContentControl>
 
-    <!-- Pages Switcher -->
+    <!-- Quick Launcher Popup -->
     <Border Grid.Row="0" Grid.RowSpan="2"
             Background="Transparent"
-            IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}"
-            PointerPressed="OnCancelSwitcher">
+            IsVisible="{Binding QuickLauncher, Converter={x:Static ObjectConverters.IsNotNull}}"
+            PointerPressed="OnCloseQuickLauncher">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
-          <ContentControl Margin="16,10,16,12" Content="{Binding Switcher}">
+          <ContentControl Margin="16,10,16,12" Content="{Binding QuickLauncher}">
             <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:LauncherPageSwitcher">
-                <v:LauncherPageSwitcher/>
+              <DataTemplate DataType="vm:QuickLauncher">
+                <v:QuickLauncher/>
               </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>

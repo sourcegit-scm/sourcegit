@@ -250,8 +250,8 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (vm.Switcher != null)
-                    vm.CancelSwitcher();
+                if (vm.QuickLauncher != null)
+                    vm.QuickLauncher = null;
                 else
                     vm.ActivePage.CancelPopup();
 
@@ -355,10 +355,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnCancelSwitcher(object sender, PointerPressedEventArgs e)
+        private void OnOpenQuickLauncher(object sender, RoutedEventArgs e)
         {
-            if (e.Source == sender)
-                (DataContext as ViewModels.Launcher)?.CancelSwitcher();
+            if (DataContext is ViewModels.Launcher launcher)
+                launcher.QuickLauncher = new ViewModels.QuickLauncher(launcher);
+            e.Handled = true;
+        }
+
+        private void OnCloseQuickLauncher(object sender, PointerPressedEventArgs e)
+        {
+            if (e.Source == sender && DataContext is ViewModels.Launcher launcher)
+                launcher.QuickLauncher = null;
             e.Handled = true;
         }
 

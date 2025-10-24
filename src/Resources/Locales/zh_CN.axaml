@@ -516,6 +516,7 @@
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在浏览器中访问</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">出错了</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系统提示</x:String>
+  <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">打开其他仓库</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">页面列表</x:String>
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作区列表</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">合并分支</x:String>
