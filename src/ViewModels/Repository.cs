@@ -567,7 +567,11 @@ namespace SourceGit.ViewModels
 
             if (!_isWorktree)
             {
-                _settings.LastCommitMessage = _workingCopy.CommitMessage;
+                if (_workingCopy.InProgressContext != null && !string.IsNullOrEmpty(_workingCopy.CommitMessage))
+                    File.WriteAllText(Path.Combine(GitDir, "MERGE_MSG"), _workingCopy.CommitMessage);
+                else
+                    _settings.LastCommitMessage = _workingCopy.CommitMessage;
+
                 using var stream = File.Create(Path.Combine(_gitCommonDir, "sourcegit.settings"));
                 JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
             }

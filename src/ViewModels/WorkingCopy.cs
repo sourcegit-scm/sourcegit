@@ -796,13 +796,8 @@ namespace SourceGit.ViewModels
                 if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
                     break;
 
-                var rebaseProcessingFile = Path.Combine(_repo.GitDir, "rebase-apply", "final-commit");
-                if (File.Exists(rebaseProcessingFile))
-                {
-                    var sha = File.ReadAllText(rebaseProcessingFile);
-                    if (!string.IsNullOrEmpty(sha))
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResult();
-                }
+                if (_inProgressContext is RebaseInProgress { StoppedAt: { } stopAt })
+                    CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, stopAt.SHA).GetResult();
             } while (false);
         }
 
