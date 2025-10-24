@@ -128,7 +128,7 @@
             Background="Transparent"
             IsVisible="{Binding QuickLauncher, Converter={x:Static ObjectConverters.IsNotNull}}"
             PointerPressed="OnCloseQuickLauncher">
-      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
+      <Border Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
           <ContentControl Margin="16,10,16,12" Content="{Binding QuickLauncher}">
             <ContentControl.DataTemplates>

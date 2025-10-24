@@ -49,7 +49,6 @@
 
     <ListBox Grid.Row="2"
              x:Name="PageListBox"
-             Width="300"
              MaxHeight="250"
              Margin="4,0"
              BorderThickness="0"
@@ -120,7 +119,6 @@
 
     <ListBox Grid.Row="4"
              x:Name="RepoListBox"
-             Width="300"
              MaxHeight="300"
              Margin="4,0"
              BorderThickness="0"
