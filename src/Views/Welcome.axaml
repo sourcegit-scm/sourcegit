@@ -141,9 +141,9 @@
                             IsChecked="{Binding IsExpanded}"
                             IsVisible="{Binding !IsRepository}"/>
 
-              <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <StackPanel Grid.Column="2" Orientation="Horizontal" ClipToBounds="True">
                 <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
-                <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Id, StringFormat=({0})}">
+                <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Id, StringFormat=({0}), Converter={x:Static c:PathConverters.RelativeToHome}}">
                   <TextBlock.IsVisible>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">
                       <Binding Path="IsRepository"/>
@@ -159,6 +159,7 @@
               </StackPanel>
 
               <ContentControl Grid.Column="3"
+                              Margin="6,0,0,0"
                               Content="{Binding Status, Mode=OneWay}"
                               IsVisible="{Binding Status, Converter={x:Static ObjectConverters.NotEqual}}">
                 <ContentControl.DataTemplates>
