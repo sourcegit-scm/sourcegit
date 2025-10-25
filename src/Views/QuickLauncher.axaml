@@ -164,7 +164,7 @@
                        VerticalAlignment="Center"
                        IsHitTestVisible="False">
               <Run Text="{Binding Name, Mode=OneWay}"/>
-              <Run Text="{Binding Id, Mode=OneWay, StringFormat=({0})}" Foreground="{DynamicResource Brush.FG2}"/>
+              <Run Text="{Binding Id, Mode=OneWay, StringFormat=({0}), Converter={x:Static c:PathConverters.RelativeToHome}}" Foreground="{DynamicResource Brush.FG2}"/>
             </TextBlock>
           </Grid>
         </DataTemplate>
