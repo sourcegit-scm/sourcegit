@@ -473,7 +473,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">切換到下一個頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切換到上一個頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新增頁面</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">開啟偏好設定面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">開啟 [偏好設定] 面板</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">切換目前頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">存放庫頁面快速鍵</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暫存區變更</x:String>
@@ -481,6 +481,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenFileHistoryCommandPalette" xml:space="preserve">開啟「檔案歷史記錄」命令面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>

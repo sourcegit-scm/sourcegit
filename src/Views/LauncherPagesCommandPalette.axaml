@@ -79,7 +79,7 @@
 
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Vertical"/>
+          <VirtualizingStackPanel Orientation="Vertical"/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
 
@@ -151,7 +151,7 @@
 
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Vertical"/>
+          <VirtualizingStackPanel Orientation="Vertical"/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
 

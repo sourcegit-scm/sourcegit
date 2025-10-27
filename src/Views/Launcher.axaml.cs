@@ -224,6 +224,10 @@ namespace SourceGit.Views
                             repo.SelectedViewIndex = 2;
                             e.Handled = true;
                             return;
+                        case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            vm.OpenCommandPalette(new ViewModels.FileHistoryCommandPalette(vm, repo.FullPath));
+                            e.Handled = true;
+                            return;
                         case Key.F:
                             repo.IsSearching = true;
                             e.Handled = true;

@@ -135,6 +135,9 @@
               <DataTemplate DataType="vm:LauncherPagesCommandPalette">
                 <v:LauncherPagesCommandPalette/>
               </DataTemplate>
+              <DataTemplate DataType="vm:FileHistoryCommandPalette">
+                <v:FileHistoryCommandPalette/>
+              </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>
         </Border>
