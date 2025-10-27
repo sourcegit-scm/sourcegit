@@ -35,6 +35,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _activePage, value))
                 {
+                    CancelCommandPalette();
                     UpdateTitle();
 
                     if (!_ignoreIndexChange && value is { Data: Repository repo })
@@ -253,6 +254,7 @@ namespace SourceGit.ViewModels
                     last.Popup = null;
                     UpdateTitle();
 
+                    CancelCommandPalette();
                     GC.Collect();
                 }
                 else
