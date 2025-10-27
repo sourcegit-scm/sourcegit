@@ -44,7 +44,7 @@
           <DataTemplate DataType="m:Tag">
             <Grid Height="26" ColumnDefinitions="22,*">
               <Path Grid.Column="0" Width="10" Height="10" Margin="4,0,8,0" Data="{StaticResource Icons.Tag}" />
-              <TextBlock Grid.Column="1" Text="{Binding Name}" Classes="primary" />
+              <TextBlock Grid.Column="1" Text="{Binding Name}" />
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

@@ -76,6 +76,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _httpProxy, value);
         }
 
+        public string ConventionalTypesOverride
+        {
+            get => _repo.Settings.ConventionalTypesOverride;
+            set
+            {
+                if (_repo.Settings.ConventionalTypesOverride != value)
+                {
+                    _repo.Settings.ConventionalTypesOverride = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool EnablePruneOnFetch
         {
             get;

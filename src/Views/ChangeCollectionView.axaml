@@ -33,7 +33,7 @@
       <v:ChangeCollectionContainer Focusable="True"
                                    ItemsSource="{Binding Rows}"
                                    SelectedItems="{Binding SelectedRows, Mode=TwoWay}"
-                                   SelectionMode="{Binding #ThisControl.SelectionMode}"
+                                   SelectionMode="Multiple"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:ChangeTreeNode">
@@ -65,8 +65,8 @@
                                   IsVisible="{Binding !IsFolder}"/>
 
               <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,0,0,0">
-                <TextBlock Classes="primary" Text="{Binding ConflictMarker, Mode=OneWay}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
-                <TextBlock Classes="primary" Text="{Binding DisplayName, Mode=OneWay}"/>
+                <TextBlock Text="{Binding ConflictMarker, Mode=OneWay}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
+                <TextBlock Text="{Binding DisplayName, Mode=OneWay}"/>
               </StackPanel>
             </Grid>
           </DataTemplate>
@@ -78,7 +78,7 @@
       <v:ChangeCollectionContainer Focusable="True"
                                    ItemsSource="{Binding Changes}"
                                    SelectedItems="{Binding SelectedChanges, Mode=TwoWay}"
-                                   SelectionMode="{Binding #ThisControl.SelectionMode}"
+                                   SelectionMode="Multiple"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
@@ -93,12 +93,11 @@
                                   Change="{Binding}" />
 
               <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
-                <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
-                <TextBlock Classes="primary" Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"/>
+                <TextBlock Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
+                <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"/>
               </StackPanel>
 
               <TextBlock Grid.Column="2"
-                         Classes="primary"
                          Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}"
                          Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
@@ -111,7 +110,7 @@
       <v:ChangeCollectionContainer Focusable="True"
                                    ItemsSource="{Binding Changes}"
                                    SelectedItems="{Binding SelectedChanges, Mode=TwoWay}"
-                                   SelectionMode="{Binding #ThisControl.SelectionMode}"
+                                   SelectionMode="Multiple"
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
@@ -126,8 +125,8 @@
                                   Change="{Binding}" />
 
               <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
-                <TextBlock Classes="primary" Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
-                <TextBlock Classes="primary" Text="{Binding Path}"/>
+                <TextBlock Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
+                <TextBlock Text="{Binding Path}"/>
               </StackPanel>
             </Grid>
           </DataTemplate>

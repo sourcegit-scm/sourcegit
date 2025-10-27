@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -18,6 +19,12 @@ namespace SourceGit.ViewModels
         {
             get => _revision;
             private set => SetProperty(ref _revision, value);
+        }
+
+        public Models.Commit PrevRevision
+        {
+            get => _prevRevision;
+            private set => SetProperty(ref _prevRevision, value);
         }
 
         public Models.BlameData Data
@@ -51,10 +58,10 @@ namespace SourceGit.ViewModels
 
             FilePath = file;
             Revision = commit;
+            PrevRevision = null;
 
             _repo = repo;
             _navigationHistory.Add(sha);
-            _commits.Add(sha, commit);
             SetBlameData(sha);
         }
 
@@ -88,6 +95,14 @@ namespace SourceGit.ViewModels
             OnPropertyChanged(nameof(CanBack));
             OnPropertyChanged(nameof(CanForward));
             NavigateToCommit(_navigationHistory[_navigationActiveIndex], true);
+        }
+
+        public void GotoPrevRevision()
+        {
+            if (_prevRevision == null)
+                return;
+
+            NavigateToCommit(_prevRevision.SHA, false);
         }
 
         public void NavigateToCommit(string commitSHA, bool isBackOrForward)
@@ -130,28 +145,28 @@ namespace SourceGit.ViewModels
             _cancellationSource = new CancellationTokenSource();
             var token = _cancellationSource.Token;
 
-            if (_commits.TryGetValue(commitSHA, out var c))
+            Task.Run(async () =>
             {
-                Revision = c;
-            }
-            else
-            {
-                Task.Run(async () =>
-                {
-                    var result = await new Commands.QuerySingleCommit(_repo, commitSHA)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
+                var argsBuilder = new StringBuilder();
+                argsBuilder
+                    .Append("--date-order -n 2 ")
+                    .Append(commitSHA ?? string.Empty)
+                    .Append(" -- ")
+                    .Append(FilePath.Quoted());
 
-                    Dispatcher.UIThread.Post(() =>
+                var commits = await new Commands.QueryCommits(_repo, argsBuilder.ToString(), false)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (!token.IsCancellationRequested)
                     {
-                        if (!token.IsCancellationRequested)
-                        {
-                            _commits.Add(commitSHA, result);
-                            Revision = result ?? new Models.Commit() { SHA = commitSHA };
-                        }
-                    });
-                }, token);
-            }
+                        Revision = commits.Count > 0 ? commits[0] : null;
+                        PrevRevision = commits.Count == 2 ? commits[1] : null;
+                    }
+                });
+            });
 
             Task.Run(async () =>
             {
@@ -169,11 +184,11 @@ namespace SourceGit.ViewModels
 
         private string _repo;
         private Models.Commit _revision;
+        private Models.Commit _prevRevision;
         private CancellationTokenSource _cancellationSource = null;
         private int _navigationActiveIndex = 0;
         private List<string> _navigationHistory = [];
         private Models.BlameData _data = null;
-        private Dictionary<string, Models.Commit> _commits = new();
         private Dictionary<string, string> _commitMessages = new();
     }
 }

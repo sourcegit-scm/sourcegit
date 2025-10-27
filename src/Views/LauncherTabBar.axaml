@@ -13,7 +13,8 @@
   <Grid ColumnDefinitions="Auto,*,Auto">
     <RepeatButton Grid.Column="0"
                   Classes="icon_button"
-                  Width="18" Height="30"
+                  Width="18" Height="28"
+                  Margin="0,2,0,0"
                   Click="ScrollTabsLeft"
                   IsVisible="{Binding #ThisControl.IsScrollerVisible}">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
@@ -42,7 +43,8 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:LauncherPage">
-              <Border Height="30"
+              <Border Width="200" Height="30"
+                      Padding="0,2,0,0"
                       Background="Transparent"
                       PointerPressed="OnPointerPressedTab"
                       PointerMoved="OnPointerMovedOverTab"
@@ -61,7 +63,7 @@
                   </Grid>
                 </ToolTip.Tip>
 
-                <Grid Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                <Grid ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
                         Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
@@ -84,11 +86,10 @@
                              Width="8" Height="8"
                              Margin="0,0,6,0"
                              VerticalAlignment="Center"
-                             IsVisible="{Binding DirtyState, Converter={x:Static ObjectConverters.IsNotNull}, ConverterParameter={x:Static m:DirtyState.None}}"
+                             IsVisible="{Binding DirtyState, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:DirtyState.None}}"
                              Fill="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToBrush}}"/>
 
                     <TextBlock Grid.Column="1"
-                               Classes="primary"
                                VerticalAlignment="Center"
                                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                                TextAlignment="Center"
@@ -97,7 +98,6 @@
                   </Grid>
 
                   <TextBlock Grid.Column="1"
-                             Classes="primary"
                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
                              FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                              TextAlignment="Center"
@@ -107,7 +107,7 @@
 
                   <Button Grid.Column="2"
                           Classes="icon_button"
-                          Width="16" Height="16" Margin="12,0"
+                          Width="14" Height="12" Margin="12,0"
                           Click="OnCloseTab">
                     <ToolTip.Tip>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -129,7 +129,7 @@
 
         <Button Classes="icon_button"
                 Width="16" Height="16"
-                Margin="8,0"
+                Margin="8,2,8,0"
                 Command="{Binding AddNewTab}"
                 IsVisible="{Binding !#ThisControl.IsScrollerVisible}">
           <ToolTip.Tip>
@@ -149,11 +149,11 @@
     </ScrollViewer>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollerVisible}">
-      <RepeatButton Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
+      <RepeatButton Classes="icon_button" Width="18" Height="28" Margin="0,2,0,0" Click="ScrollTabsRight">
         <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
       </RepeatButton>
 
-      <Button Classes="icon_button" Width="16" Height="16" Margin="4,0,0,0" Command="{Binding AddNewTab}">
+      <Button Classes="icon_button" Width="16" Height="28" Margin="4,2,0,0" Command="{Binding AddNewTab}" HotKey="{OnPlatform Ctrl+T, macOS=⌘+T}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>

@@ -47,7 +47,7 @@ namespace SourceGit.Views
                     var repoPath = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(folderPath);
                     if (!string.IsNullOrEmpty(repoPath))
                     {
-                        ViewModels.Welcome.Instance.AddRepository(repoPath, null, false, true);
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(repoPath, null, false, true);
                         ViewModels.Welcome.Instance.Refresh();
                     }
                     else if (Directory.Exists(folderPath))

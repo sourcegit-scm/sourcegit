@@ -38,7 +38,18 @@ namespace SourceGit.Views
             var selectedIdx = LauncherTabsList.SelectedIndex;
             var count = LauncherTabsList.ItemCount;
             var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush, 0.5);
-            var separatorY = (height - 20) * 0.5;
+            var separatorY = (height - 18) * 0.5 + 1;
+
+            if (!IsScrollerVisible && selectedIdx > 0)
+            {
+                var container = LauncherTabsList.ContainerFromIndex(0);
+                if (container != null)
+                {
+                    var x = container.Bounds.Left - startX + LauncherTabsScroller.Bounds.X;
+                    context.DrawLine(separatorPen, new Point(x, separatorY), new Point(x, separatorY + 18));
+                }
+            }
+
             for (var i = 0; i < count; i++)
             {
                 if (i == selectedIdx || i == selectedIdx - 1)
@@ -56,7 +67,7 @@ namespace SourceGit.Views
                     break;
 
                 var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
-                context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 20));
+                context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 18));
             }
 
             var selected = LauncherTabsList.ContainerFromIndex(selectedIdx);

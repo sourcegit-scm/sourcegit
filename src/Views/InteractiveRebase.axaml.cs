@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -73,18 +74,10 @@ namespace SourceGit.Views
                 MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
-            else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && items.Count == 1)
+            else if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
-                if (e.Key == Key.Up)
-                {
-                    vm.MoveItemUp(items[0]);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    vm.MoveItemDown(items[0]);
-                    e.Handled = true;
-                }
+                if (e.Key == Key.Up || e.Key == Key.Down)
+                    return;
             }
 
             if (!e.Handled)
@@ -103,8 +96,11 @@ namespace SourceGit.Views
 
         public void OpenCommitMessageEditor(ViewModels.InteractiveRebaseItem item)
         {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
             var dialog = new CommitMessageEditor();
-            dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
+            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg => item.FullMessage = msg);
             dialog.ShowDialog(this);
         }
 
@@ -136,65 +132,176 @@ namespace SourceGit.Views
                 OpenCommitMessageEditor(items[0]);
         }
 
-        private async void OnRowHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        private async void OnRowPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (sender is Border { DataContext: ViewModels.InteractiveRebaseItem item })
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem item })
+                return;
+
+            var cmdKeyModifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) || e.KeyModifiers.HasFlag(cmdKeyModifier))
+                return;
+
+            var builder = new StringBuilder();
+            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            if (selected.Count > 0 && !selected.Contains(item))
             {
-                var data = new DataTransfer();
-                data.Add(DataTransferItem.Create(_dndItemFormat, item.Commit.SHA));
-                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
+                IRItemListBox.SelectedItem = item;
+                builder.Append(item.Commit.SHA).Append(';');
             }
+            else
+            {
+                foreach (var one in selected)
+                {
+                    if (one is ViewModels.InteractiveRebaseItem rebaseItem)
+                        builder.Append(rebaseItem.Commit.SHA).Append(';');
+                }
+            }
+
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(_dndItemFormat, builder.ToString()));
+            await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
         }
 
-        private void OnRowHeaderDragOver(object sender, DragEventArgs e)
+        private void OnRowDragOver(object sender, DragEventArgs e)
         {
             if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
-            if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 6 } sha)
+            if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 0 } hashes)
                 return;
 
-            ViewModels.InteractiveRebaseItem src = null;
-            foreach (var item in vm.Items)
-            {
-                if (item.Commit.SHA.Equals(sha, StringComparison.Ordinal))
-                {
-                    src = item;
-                    break;
-                }
-            }
-
-            if (src == null)
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst } control)
                 return;
 
-            if (sender is not Border { DataContext: ViewModels.InteractiveRebaseItem dst } border)
+            if (hashes.IndexOf(dst.Commit.SHA, StringComparison.Ordinal) >= 0)
                 return;
 
-            if (src == dst)
-                return;
+            var p = e.GetPosition(control);
+            var before = p.Y < control.Bounds.Height * 0.5;
 
-            var p = e.GetPosition(border);
-            if (p.Y > border.Bounds.Height * 0.33 && p.Y < border.Bounds.Height * 0.67)
-            {
-                var srcIdx = vm.Items.IndexOf(src);
-                var dstIdx = vm.Items.IndexOf(dst);
-                if (srcIdx < dstIdx)
-                {
-                    for (var i = srcIdx; i < dstIdx; i++)
-                        vm.MoveItemDown(src);
-                }
-                else
-                {
-                    for (var i = srcIdx; i > dstIdx; i--)
-                        vm.MoveItemUp(src);
-                }
-            }
-
+            dst.IsDropBeforeVisible = before;
+            dst.IsDropAfterVisible = !before;
             e.DragEffects = DragDropEffects.Move;
             e.Handled = true;
         }
 
-        private void OnButtonActionClicked(object sender, RoutedEventArgs e)
+        private void OnRowDragLeave(object sender, DragEventArgs e)
+        {
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst })
+                return;
+
+            dst.IsDropBeforeVisible = false;
+            dst.IsDropAfterVisible = false;
+            e.Handled = true;
+        }
+
+        private void OnRowDrop(object sender, DragEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 0 } hashes)
+                return;
+
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst } control)
+                return;
+
+            if (hashes.IndexOf(dst.Commit.SHA, StringComparison.Ordinal) >= 0)
+                return;
+
+            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            if (selected.Count == 0)
+                return;
+
+            var p = e.GetPosition(control);
+            var before = p.Y < control.Bounds.Height * 0.5;
+            var idx = vm.Items.IndexOf(dst);
+
+            var commits = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                    commits.Add(irItem);
+            }
+
+            vm.Move(commits, before ? idx : idx + 1);
+            IRItemListBox.SelectedItems = commits;
+
+            dst.IsDropBeforeVisible = false;
+            dst.IsDropAfterVisible = false;
+            e.DragEffects = DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedUp(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (IRItemListBox.SelectedItems is not { Count: > 0 } selected)
+                return;
+
+            var hashes = new HashSet<string>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                {
+                    hashes.Add(irItem.Commit.SHA);
+                    items.Add(irItem);
+                }
+            }
+
+            var idx = 0;
+            for (int i = 0; i < vm.Items.Count; i++)
+            {
+                if (hashes.Contains(vm.Items[i].Commit.SHA))
+                {
+                    idx = Math.Max(0, i - 1);
+                    break;
+                }
+            }
+
+            vm.Move(items, idx);
+            IRItemListBox.SelectedItems = items;
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedDown(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (IRItemListBox.SelectedItems is not { Count: > 0 } selected)
+                return;
+
+            var hashes = new HashSet<string>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                {
+                    hashes.Add(irItem.Commit.SHA);
+                    items.Add(irItem);
+                }
+            }
+
+            var idx = 0;
+            for (int i = vm.Items.Count - 1; i >= 0; i--)
+            {
+                if (hashes.Contains(vm.Items[i].Commit.SHA))
+                {
+                    idx = Math.Min(vm.Items.Count, i + 2);
+                    break;
+                }
+            }
+
+            vm.Move(items, idx);
+            IRItemListBox.SelectedItems = items;
+            e.Handled = true;
+        }
+
+        private void OnShowActionsDropdownMenu(object sender, RoutedEventArgs e)
         {
             if (sender is not Button { DataContext: ViewModels.InteractiveRebaseItem item } button)
                 return;

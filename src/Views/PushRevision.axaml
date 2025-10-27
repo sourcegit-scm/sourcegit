@@ -20,7 +20,6 @@
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
         <TextBlock Grid.Column="1"
-                   Classes="primary"
                    VerticalAlignment="Center"
                    Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                    Foreground="DarkOrange"

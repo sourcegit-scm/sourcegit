@@ -128,6 +128,13 @@ namespace SourceGit.ViewModels
             return Native.OS.GetAbsPath(_repo, path);
         }
 
+        public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
+        {
+            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes, _based.Head, _to.Head, saveTo);
+            if (succ)
+                App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
+        }
+
         private void Refresh()
         {
             IsLoading = true;

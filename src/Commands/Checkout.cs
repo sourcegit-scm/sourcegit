@@ -72,5 +72,20 @@ namespace SourceGit.Commands
             Args = $"checkout --no-overlay {revision} -- {file.Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
+
+        public async Task<bool> MultipleFilesWithRevisionAsync(List<string> files, string revision)
+        {
+            var builder = new StringBuilder();
+            builder
+                .Append("checkout --no-overlay ")
+                .Append(revision)
+                .Append(" --");
+
+            foreach (var f in files)
+                builder.Append(' ').Append(f.Quoted());
+
+            Args = builder.ToString();
+            return await ExecAsync().ConfigureAwait(false);
+        }
     }
 }

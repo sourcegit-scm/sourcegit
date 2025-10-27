@@ -8,6 +8,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -301,34 +302,19 @@ namespace SourceGit.Views
                 _tree.Clear();
                 _searchResult.Clear();
 
-                var vm = DataContext as ViewModels.CommitDetail;
-                if (vm?.Commit == null)
-                {
+                if (DataContext is ViewModels.CommitDetail { ActiveTabIndex: 2 } vm)
+                    await ReloadTreeData(vm);
+                else
                     Rows.Clear();
-                    GC.Collect();
-                    return;
-                }
-
-                var objects = await vm.GetRevisionFilesUnderFolderAsync(null);
-                if (objects == null || objects.Count == 0)
-                {
-                    Rows.Clear();
-                    GC.Collect();
-                    return;
-                }
-
-                foreach (var obj in objects)
-                    _tree.Add(new ViewModels.RevisionFileTreeNode { Backend = obj });
-
-                SortNodes(_tree);
-
-                var topTree = new List<ViewModels.RevisionFileTreeNode>();
-                MakeRows(topTree, _tree, 0);
-
-                Rows.Clear();
-                Rows.AddRange(topTree);
-                GC.Collect();
             }
+        }
+
+        protected override async void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (DataContext is ViewModels.CommitDetail vm && _tree.Count == 0)
+                await ReloadTreeData(vm);
         }
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
@@ -416,7 +402,42 @@ namespace SourceGit.Views
             });
         }
 
-        public ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, string path)
+        private async Task ReloadTreeData(ViewModels.CommitDetail vm)
+        {
+            if (_isReloadingTreeData)
+                return;
+
+            _isReloadingTreeData = true;
+
+            if (vm?.Commit == null)
+            {
+                Rows.Clear();
+                _isReloadingTreeData = false;
+                return;
+            }
+
+            var objects = await vm.GetRevisionFilesUnderFolderAsync(null);
+            if (objects == null || objects.Count == 0)
+            {
+                Rows.Clear();
+                _isReloadingTreeData = false;
+                return;
+            }
+
+            foreach (var obj in objects)
+                _tree.Add(new ViewModels.RevisionFileTreeNode { Backend = obj });
+
+            SortNodes(_tree);
+
+            var topTree = new List<ViewModels.RevisionFileTreeNode>();
+            MakeRows(topTree, _tree, 0);
+
+            Rows.Clear();
+            Rows.AddRange(topTree);
+            _isReloadingTreeData = false;
+        }
+
+        private ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, string path)
         {
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, path);
             var explore = new MenuItem();
@@ -468,7 +489,7 @@ namespace SourceGit.Views
             return menu;
         }
 
-        public ContextMenu CreateRevisionFileContextMenu(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, Models.Object file)
+        private ContextMenu CreateRevisionFileContextMenu(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, Models.Object file)
         {
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, file.Path);
             var menu = new ContextMenu();
@@ -674,5 +695,6 @@ namespace SourceGit.Views
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
         private bool _disableSelectionChangingEvent = false;
         private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
+        private bool _isReloadingTreeData = false;
     }
 }

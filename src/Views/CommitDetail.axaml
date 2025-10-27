@@ -65,7 +65,7 @@
                                       HorizontalAlignment="Left"
                                       Margin="16,0,0,0"
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>

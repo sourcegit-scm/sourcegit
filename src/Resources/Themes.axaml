@@ -32,7 +32,7 @@
       <Color x:Key="Color.Window">#FF252525</Color>
       <Color x:Key="Color.WindowBorder">#FF444444</Color>
       <Color x:Key="Color.TitleBar">#FF1F1F1F</Color>
-      <Color x:Key="Color.ToolBar">#FF2C2C2C</Color>
+      <Color x:Key="Color.ToolBar">#FF2F2F2F</Color>
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
       <Color x:Key="Color.Contents">#FF1C1C1C</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
@@ -85,5 +85,4 @@
 
   <FontFamily x:Key="Fonts.Default">fonts:Inter#Inter</FontFamily>
   <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono</FontFamily>
-  <FontFamily x:Key="Fonts.Primary">fonts:SourceGit#JetBrains Mono</FontFamily>
 </ResourceDictionary>

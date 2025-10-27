@@ -842,6 +842,24 @@ namespace SourceGit.Views
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
+
+            if (upstream != null)
+            {
+                var remote = repo.Remotes.Find(x => x.Name.Equals(upstream.Remote, StringComparison.Ordinal));
+                if (remote != null && remote.TryGetCreatePullRequestURL(out var prURL, upstream.Name))
+                {
+                    var createPR = new MenuItem();
+                    createPR.Header = App.Text("BranchCM.CreatePRForUpstream", upstream.FriendlyName);
+                    createPR.Icon = App.CreateMenuIcon("Icons.CreatePR");
+                    createPR.Click += (_, e) =>
+                    {
+                        Native.OS.OpenBrowser(prURL);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(createPR);
+                }
+            }
             menu.Items.Add(new MenuItem() { Header = "-" });
             TryToAddCustomActionsToBranchContextMenu(repo, menu, branch);
 
@@ -1060,6 +1078,9 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            menu.Items.Add(delete);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
@@ -1080,6 +1101,26 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            menu.Items.Add(createBranch);
+            menu.Items.Add(createTag);
+
+            var remote = repo.Remotes.Find(x => x.Name.Equals(branch.Remote, StringComparison.Ordinal));
+            if (remote != null && remote.TryGetCreatePullRequestURL(out var prURL, branch.Name))
+            {
+                var createPR = new MenuItem();
+                createPR.Header = App.Text("BranchCM.CreatePR");
+                createPR.Icon = App.CreateMenuIcon("Icons.CreatePR");
+                createPR.Click += (_, e) =>
+                {
+                    Native.OS.OpenBrowser(prURL);
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(createPR);
+            }
+
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
             var archive = new MenuItem();
             archive.Icon = App.CreateMenuIcon("Icons.Archive");
             archive.Header = App.Text("Archive");
@@ -1099,16 +1140,10 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
-            menu.Items.Add(delete);
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(createBranch);
-            menu.Items.Add(createTag);
-            menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(archive);
             menu.Items.Add(new MenuItem() { Header = "-" });
             TryToAddCustomActionsToBranchContextMenu(repo, menu, branch);
             menu.Items.Add(copy);
-
             return menu;
         }
 

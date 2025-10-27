@@ -38,7 +38,7 @@
 
     <!-- File -->
     <Border Grid.Row="1" Padding="8,0" >
-      <Grid ColumnDefinitions="Auto,*,Auto,Auto,400">
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto,400,Auto">
         <Path Grid.Column="0"
               Width="14" Height="14"
               Data="{StaticResource Icons.File}"/>
@@ -76,6 +76,15 @@
                        TextTrimming="CharacterEllipsis"/>
           </Grid>
         </Border>
+
+        <Button Grid.Column="5"
+                Classes="icon_button"
+                IsEnabled="{Binding PrevRevision, Converter={x:Static ObjectConverters.IsNotNull}}"
+                Width="18" Margin="4,0,0,0"
+                Command="{Binding GotoPrevRevision}"
+                ToolTip.Tip="{DynamicResource Text.Blame.BlameOnPreviousRevision}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.GotoParent}"/>
+        </Button>
       </Grid>
     </Border>
 
@@ -107,7 +116,7 @@
                   HorizontalAlignment="Center" VerticalAlignment="Center"
                   IsVisible="{Binding IsBinary}">
         <Path Width="64" Height="64" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Error}"/>
-        <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.BlameTypeNotSupported}"/>
+        <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.Blame.TypeNotSupported}"/>
       </StackPanel>
 
       <!-- Loading -->

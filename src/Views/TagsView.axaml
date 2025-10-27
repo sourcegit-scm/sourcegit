@@ -47,9 +47,7 @@
 
                 <v:TagTreeNodeIcon Grid.Column="1" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-                <TextBlock Grid.Column="2"
-                           Classes="primary"
-                           Margin="8,0,0,0">
+                <TextBlock Grid.Column="2" Margin="8,0,0,0">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
                   <Run Text="{Binding TagsCount}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
@@ -92,7 +90,6 @@
                       Data="{StaticResource Icons.Tag}"/>
 
                 <TextBlock Grid.Column="1"
-                           Classes="primary"
                            Text="{Binding Tag.Name}"
                            Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis"/>
@@ -111,7 +108,7 @@
           <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}"/>
           <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Name}"/>
           <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">
-            <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Classes="primary" Margin="4,0" Foreground="White"/>
+            <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Margin="4,0" Foreground="White"/>
           </Border>
         </StackPanel>
 

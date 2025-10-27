@@ -59,10 +59,7 @@
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
-            <TextBlock Classes="primary"
-                       Text="{Binding SHA}"
-                       Margin="12,0,4,0"
-                       VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding SHA}" Margin="12,0,4,0" VerticalAlignment="Center"/>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnCopyCommitSHA" ToolTip.Tip="{DynamicResource Text.Copy}">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
@@ -109,8 +106,7 @@
 
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <TextBlock Classes="primary"
-                           Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
+                <TextBlock Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
                            Cursor="Hand"
@@ -130,11 +126,11 @@
                       <StackPanel MinWidth="400" Orientation="Vertical">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -154,8 +150,7 @@
 
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <TextBlock Classes="primary"
-                           Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
+                <TextBlock Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
                            Cursor="Hand"
@@ -175,11 +170,11 @@
                       <StackPanel MinWidth="400" Orientation="Vertical">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -192,7 +187,6 @@
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
           <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
-                                   FontFamily="{DynamicResource Fonts.Primary}"
                                    FontSize="12"
                                    AllowWrap="True"
                                    Margin="0,4,0,0"
@@ -203,7 +197,6 @@
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
           <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
                                     Margin="12,4,8,0"
-                                    Classes="primary"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap">
@@ -219,11 +212,11 @@
                 <StackPanel MinWidth="400" Orientation="Vertical">
                   <Grid ColumnDefinitions="Auto,*,Auto">
                     <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                    <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                    <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                   </Grid>
 
-                  <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                  <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                 </StackPanel>
               </DataTemplate>
             </v:CommitMessagePresenter.DataTemplates>

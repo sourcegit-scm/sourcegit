@@ -301,9 +301,6 @@
   <Style Selector="TextBlock.italic">
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
-  <Style Selector="TextBlock.primary, SelectableTextBlock.primary">
-    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Primary}"/>
-  </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
@@ -853,7 +850,7 @@
                     <StackPanel Orientation="Horizontal">
                       <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
                       <Border Margin="4,0,0,0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" IsVisible="{Binding IsGlobal}">
-                        <TextBlock Classes="primary" Text="GLOBAL" Margin="8,0" FontSize="10" Foreground="White"/>
+                        <TextBlock Text="GLOBAL" Margin="8,0" FontSize="10" Foreground="White"/>
                       </Border>
                     </StackPanel>
                   </DataTemplate>

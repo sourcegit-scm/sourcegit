@@ -1,12 +1,18 @@
 using System;
 using System.IO;
-
+using System.Text.Json;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
     public partial class CommitMessageEditor : ChromelessWindow
     {
+        public string ConventionalTypesOverride
+        {
+            get;
+            private set;
+        } = string.Empty;
+
         public CommitMessageEditor()
         {
             CloseOnESC = true;
@@ -15,6 +21,25 @@ namespace SourceGit.Views
 
         public void AsStandalone(string file)
         {
+            var gitDir = new Commands.QueryGitDir(Path.GetDirectoryName(file)).GetResult();
+            if (!string.IsNullOrEmpty(gitDir))
+            {
+                var settingsFile = Path.Combine(gitDir, "sourcegit.settings");
+                if (File.Exists(settingsFile))
+                {
+                    try
+                    {
+                        using var stream = File.OpenRead(settingsFile);
+                        var settings = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.RepositorySettings);
+                        ConventionalTypesOverride = settings.ConventionalTypesOverride;
+                    }
+                    catch
+                    {
+                        // Ignore errors
+                    }
+                }
+            }
+
             _onSave = msg => File.WriteAllText(file, msg);
             _shouldExitApp = true;
 
@@ -25,8 +50,10 @@ namespace SourceGit.Views
                 Editor.DescriptionEditor.Text = parts[1].Trim();
         }
 
-        public void AsBuiltin(string msg, Action<string> onSave)
+        public void AsBuiltin(string conventionalTypesOverride, string msg, Action<string> onSave)
         {
+            ConventionalTypesOverride = conventionalTypesOverride;
+
             _onSave = onSave;
             _shouldExitApp = false;
 

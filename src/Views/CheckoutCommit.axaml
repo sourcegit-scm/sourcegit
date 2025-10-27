@@ -26,7 +26,7 @@
                  Text="{DynamicResource Text.Checkout.Commit.Target}" />
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}" />
-        <TextBlock Grid.Column="1" Classes="primary" Foreground="DarkOrange" VerticalAlignment="Center" Margin="8,0" Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" />
+        <TextBlock Grid.Column="1" Foreground="DarkOrange" VerticalAlignment="Center" Margin="8,0" Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" />
         <TextBlock Grid.Column="2" Text="{Binding Commit.Subject}" TextTrimming="CharacterEllipsis"/>
       </Grid>
 

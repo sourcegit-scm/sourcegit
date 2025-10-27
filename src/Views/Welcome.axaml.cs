@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -59,6 +60,18 @@ namespace SourceGit.Views
         public Welcome()
         {
             InitializeComponent();
+        }
+
+        protected override async void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            await ViewModels.Welcome.Instance.UpdateStatusAsync(false, _cancellation.Token);
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            _cancellation.Cancel();
+            base.OnUnloaded(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -266,7 +279,7 @@ namespace SourceGit.Views
                     var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
                     if (!string.IsNullOrEmpty(path))
                     {
-                        ViewModels.Welcome.Instance.AddRepository(path, null, true, false);
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(path, null, true, false);
                         refresh = true;
                     }
                 }
@@ -325,7 +338,7 @@ namespace SourceGit.Views
                     var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
                     if (!string.IsNullOrEmpty(path))
                     {
-                        ViewModels.Welcome.Instance.AddRepository(path, to, true, false);
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(path, to, true, false);
                         refresh = true;
                     }
                 }
@@ -355,5 +368,6 @@ namespace SourceGit.Views
         private Point _pressedTreeNodePosition = new Point();
         private bool _startDragTreeNode = false;
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
+        private CancellationTokenSource _cancellation = new CancellationTokenSource();
     }
 }

@@ -17,7 +17,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
           <Border Height="16" VerticalAlignment="Center" Background="Red" CornerRadius="8">
-            <TextBlock Classes="primary" Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="8,0" FontSize="10"/>
+            <TextBlock Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="8,0" FontSize="10"/>
           </Border>
 
           <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding Description}"/>
@@ -42,11 +42,11 @@
                       <StackPanel MinWidth="400" Orientation="Vertical">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -59,7 +59,6 @@
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Commit}"/>
                 <v:CommitRefsPresenter Margin="8,0,0,0"
                                        Foreground="{DynamicResource Brush.FG1}"
-                                       FontFamily="{DynamicResource Fonts.Primary}"
                                        FontSize="12"
                                        VerticalAlignment="Center"
                                        UseGraphColor="False"/>
@@ -76,11 +75,11 @@
                       <StackPanel MinWidth="400" Orientation="Vertical">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>

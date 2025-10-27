@@ -77,7 +77,6 @@
                           IsChecked="True"/>
 
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{Binding Name}"/>
           </Grid>

@@ -158,7 +158,7 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new DropStash(_repo, stash));
         }
 
-        public async Task SaveStashAsPathAsync(Models.Stash stash, string saveTo)
+        public async Task SaveStashAsPatchAsync(Models.Stash stash, string saveTo)
         {
             var opts = new List<Models.DiffOption>();
             var changes = await new Commands.CompareRevisions(_repo.FullPath, $"{stash.SHA}^", stash.SHA)
@@ -208,6 +208,42 @@ namespace SourceGit.ViewModels
             await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
                     .FileWithRevisionAsync(change.Path, revision);
+            log.Complete();
+        }
+
+        public async Task CheckoutMultipleFileAsync(List<Models.Change> changes)
+        {
+            var untracked = new List<string>();
+            var added = new List<string>();
+            var modified = new List<string>();
+
+            foreach (var c in changes)
+            {
+                if (_untracked.Contains(c) && _selectedStash.Parents.Count == 3)
+                    untracked.Add(c.Path);
+                else if (c.Index == Models.ChangeState.Added && _selectedStash.Parents.Count > 1)
+                    added.Add(c.Path);
+                else
+                    modified.Add(c.Path);
+            }
+
+            var log = _repo.CreateLog($"Reset File to '{_selectedStash.Name}'");
+
+            if (untracked.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(untracked, _selectedStash.Parents[2]);
+
+            if (added.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(added, _selectedStash.Parents[1]);
+
+            if (modified.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(modified, _selectedStash.SHA);
+
             log.Complete();
         }
 

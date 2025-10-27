@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
-
+using System.Threading;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -61,6 +63,12 @@ namespace SourceGit.ViewModels
             get;
             set;
         } = 0;
+
+        public Models.RepositoryStatus Status
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
 
         public List<RepositoryNode> SubNodes
         {
@@ -122,11 +130,53 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new DeleteRepositoryNode(this);
         }
 
+        public async Task UpdateStatusAsync(bool force, CancellationToken? token)
+        {
+            if (token is { IsCancellationRequested: true })
+                return;
+
+            if (!_isRepository)
+            {
+                Status = null;
+
+                if (SubNodes.Count > 0)
+                {
+                    // avoid collection was modified while enumerating.
+                    var nodes = new List<RepositoryNode>();
+                    nodes.AddRange(SubNodes);
+
+                    foreach (var node in nodes)
+                        await node.UpdateStatusAsync(force, token);
+                }
+
+                return;
+            }
+
+            if (!Directory.Exists(_id))
+            {
+                _lastUpdateStatus = DateTime.Now;
+                Status = null;
+                return;
+            }
+
+            if (!force)
+            {
+                var passed = DateTime.Now - _lastUpdateStatus;
+                if (passed.TotalSeconds < 10.0)
+                    return;
+            }
+
+            _lastUpdateStatus = DateTime.Now;
+            Status = await new Commands.QueryRepositoryStatus(_id).GetResultAsync();
+        }
+
         private string _id = string.Empty;
         private string _name = string.Empty;
         private bool _isRepository = false;
         private int _bookmark = 0;
         private bool _isExpanded = false;
         private bool _isVisible = true;
+        private Models.RepositoryStatus _status = null;
+        private DateTime _lastUpdateStatus = DateTime.UnixEpoch.ToLocalTime();
     }
 }

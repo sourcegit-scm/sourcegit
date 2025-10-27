@@ -37,7 +37,12 @@ namespace SourceGit.ViewModels
             set
             {
                 if (value != _sharedData.ActiveTabIndex)
+                {
                     _sharedData.ActiveTabIndex = value;
+
+                    if (value == 1 && DiffContext == null && _selectedChanges is { Count: 1 })
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _selectedChanges[0]));
+                }
             }
         }
 
@@ -94,7 +99,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value is not { Count: 1 })
+                    if (ActiveTabIndex != 1 || value is not { Count: 1 })
                         DiffContext = null;
                     else
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, value[0]), _diffContext);
@@ -234,7 +239,7 @@ namespace SourceGit.ViewModels
         public async Task ResetToThisRevisionAsync(string path)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
-            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, $"{_commit.SHA}");
+            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, _commit.SHA);
             log.Complete();
         }
 
@@ -246,6 +251,41 @@ namespace SourceGit.ViewModels
                 await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
 
             await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+            log.Complete();
+        }
+
+        public async Task ResetMultipleToThisRevisionAsync(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var c in changes)
+                files.Add(c.Path);
+
+            var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}'");
+            await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(files, _commit.SHA);
+            log.Complete();
+        }
+
+        public async Task ResetMultipleToParentRevisionAsync(List<Models.Change> changes)
+        {
+            var renamed = new List<string>();
+            var modified = new List<string>();
+
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Renamed)
+                    renamed.Add(c.OriginalPath);
+                else
+                    modified.Add(c.Path);
+            }
+
+            var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}~1'");
+
+            if (modified.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(modified, $"{_commit.SHA}~1");
+
+            if (renamed.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(renamed, $"{_commit.SHA}~1");
+
             log.Complete();
         }
 

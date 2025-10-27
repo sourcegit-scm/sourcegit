@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -9,11 +10,17 @@ namespace SourceGit.ViewModels
 {
     public class ConventionalCommitMessageBuilder : ObservableValidator
     {
-        [Required(ErrorMessage = "Type of changes can not be null")]
-        public Models.ConventionalCommitType Type
+        public List<Models.ConventionalCommitType> Types
         {
-            get => _type;
-            set => SetProperty(ref _type, value, true);
+            get;
+            private set;
+        } = [];
+
+        [Required(ErrorMessage = "Type of changes can not be null")]
+        public Models.ConventionalCommitType SelectedType
+        {
+            get => _selectedType;
+            set => SetProperty(ref _selectedType, value, true);
         }
 
         public string Scope
@@ -47,8 +54,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _closedIssue, value);
         }
 
-        public ConventionalCommitMessageBuilder(Action<string> onApply)
+        public ConventionalCommitMessageBuilder(string conventionalTypesOverride, Action<string> onApply)
         {
+            Types = Models.ConventionalCommitType.Load(conventionalTypesOverride);
+            SelectedType = Types.Count > 0 ? Types[0] : null;
             _onApply = onApply;
         }
 
@@ -63,7 +72,7 @@ namespace SourceGit.ViewModels
                 return false;
 
             var builder = new StringBuilder();
-            builder.Append(_type.Type);
+            builder.Append(_selectedType.Type);
 
             if (!string.IsNullOrEmpty(_scope))
             {
@@ -103,7 +112,7 @@ namespace SourceGit.ViewModels
         }
 
         private Action<string> _onApply = null;
-        private Models.ConventionalCommitType _type = Models.ConventionalCommitType.Supported[0];
+        private Models.ConventionalCommitType _selectedType = null;
         private string _scope = string.Empty;
         private string _description = string.Empty;
         private string _detail = string.Empty;

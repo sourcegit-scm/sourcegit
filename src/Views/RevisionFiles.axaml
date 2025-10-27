@@ -88,9 +88,9 @@
                     <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
                       <StackPanel Orientation="Horizontal">
                         <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-                        <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                        <TextBlock Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                       </StackPanel>
-                      <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                      <TextBlock FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
                     </StackPanel>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -122,7 +122,6 @@
             <Grid ColumnDefinitions="Auto,*,Auto,Auto">
               <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="1"
-                         Classes="primary"
                          Margin="4,0,0,0"
                          Text="{Binding ViewRevisionFilePath}"
                          FontSize="11"

@@ -43,10 +43,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public IDisposable Switcher
+        public QuickLauncher QuickLauncher
         {
-            get => _switcher;
-            private set => SetProperty(ref _switcher, value);
+            get => _quickLauncher;
+            set => SetProperty(ref _quickLauncher, value);
         }
 
         public Launcher(string startupRepo)
@@ -125,22 +125,6 @@ namespace SourceGit.ViewModels
                 CloseRepositoryInTab(one, false);
 
             _ignoreIndexChange = false;
-        }
-
-        public void OpenWorkspaceSwitcher()
-        {
-            Switcher = new WorkspaceSwitcher(this);
-        }
-
-        public void OpenTabSwitcher()
-        {
-            Switcher = new LauncherPageSwitcher(this);
-        }
-
-        public void CancelSwitcher()
-        {
-            Switcher?.Dispose();
-            Switcher = null;
         }
 
         public void SwitchWorkspace(Workspace to)
@@ -497,6 +481,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
-        private IDisposable _switcher = null;
+        private QuickLauncher _quickLauncher = null;
     }
 }

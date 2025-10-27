@@ -120,10 +120,10 @@
                       VerticalAlignment="Center"
                       Orientation="Horizontal">
             <TextBlock Classes="info_label" FontSize="13" HorizontalAlignment="Left" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
-            <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}" VerticalAlignment="Center"/>
-            <TextBlock Classes="primary" Margin="8,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}" VerticalAlignment="Center"/>
-            <TextBlock Classes="primary" FontSize="11" Text="/" VerticalAlignment="Center"/>
-            <TextBlock Classes="primary" FontSize="11" Text="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength}" VerticalAlignment="Center"/>
+            <TextBlock Margin="8,0,0,0" FontSize="11" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}" VerticalAlignment="Center"/>
+            <TextBlock Margin="8,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #ThisControl.Subject.Length}" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}" VerticalAlignment="Center"/>
+            <TextBlock FontSize="11" Text="/" VerticalAlignment="Center"/>
+            <TextBlock FontSize="11" Text="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength}" VerticalAlignment="Center"/>
             <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #ThisControl.Subject.Length, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
           </StackPanel>
         </Grid>

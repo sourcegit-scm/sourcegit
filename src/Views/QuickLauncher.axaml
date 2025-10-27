@@ -6,21 +6,16 @@
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.LauncherPageSwitcher"
-             x:DataType="vm:LauncherPageSwitcher">
-  <Grid RowDefinitions="Auto,Auto,Auto">
-    <TextBlock Grid.Row="0"
-               Text="{DynamicResource Text.Launcher.Pages}"
-               FontWeight="Bold"
-               HorizontalAlignment="Center"/>
-
-    <TextBox Grid.Row="1"
+             x:Class="SourceGit.Views.QuickLauncher"
+             x:DataType="vm:QuickLauncher">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+    <TextBox Grid.Row="0"
+             x:Name="FilterTextBox"
              Height="24"
              Margin="4,8,4,0"
              BorderThickness="1"
              CornerRadius="12"
              Text="{Binding SearchFilter, Mode=TwoWay}"
-             KeyDown="OnSearchBoxKeyDown"
              BorderBrush="{DynamicResource Brush.Border2}"
              VerticalContentAlignment="Center"
              v:AutoFocusBehaviour.IsEnabled="True">
@@ -46,11 +41,16 @@
       </TextBox.InnerRightContent>
     </TextBox>
 
+    <TextBlock Grid.Row="1"
+               Margin="6,8,0,4"
+               Text="{DynamicResource Text.Launcher.Pages}"
+               FontWeight="Bold"
+               Foreground="{DynamicResource Brush.FG2}"/>
+
     <ListBox Grid.Row="2"
-             x:Name="PagesListBox"
-             Width="300"
-             MaxHeight="400"
-             Margin="4,8,4,0"
+             x:Name="PageListBox"
+             MaxHeight="250"
+             Margin="4,0"
              BorderThickness="0"
              SelectionMode="Single"
              Background="Transparent"
@@ -97,17 +97,75 @@
                   IsVisible="{Binding !Node.IsRepository}"
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{Binding Node.Name}"
                        IsVisible="{Binding Node.IsRepository}"
                        IsHitTestVisible="False"/>
             <TextBlock Grid.Column="2"
-                       Classes="primary"
                        VerticalAlignment="Center"
                        Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                        IsVisible="{Binding !Node.IsRepository}"
                        IsHitTestVisible="False"/>
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <TextBlock Grid.Row="3"
+               Margin="6,8,0,4"
+               Text="{DynamicResource Text.Launcher.OpenRepository}"
+               FontWeight="Bold"
+               Foreground="{DynamicResource Brush.FG2}"/>
+
+    <ListBox Grid.Row="4"
+             x:Name="RepoListBox"
+             MaxHeight="300"
+             Margin="4,0"
+             BorderThickness="0"
+             SelectionMode="Single"
+             Background="Transparent"
+             Focusable="True"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             ItemsSource="{Binding VisibleRepos, Mode=OneWay}"
+             SelectedItem="{Binding SelectedRepo, Mode=TwoWay}">
+      <ListBox.Styles>
+        <Style Selector="ListBoxItem">
+          <Setter Property="Padding" Value="8,0"/>
+          <Setter Property="MinHeight" Value="26"/>
+          <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+
+        <Style Selector="ListBox">
+          <Setter Property="FocusAdorner">
+            <FocusAdornerTemplate>
+              <Grid/>
+            </FocusAdornerTemplate>
+          </Setter>
+        </Style>
+      </ListBox.Styles>
+
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Vertical"/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="vm:RepositoryNode">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+            <Path Grid.Column="0"
+                  Width="12" Height="12"
+                  Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
+                  Data="{StaticResource Icons.Bookmark}"
+                  IsHitTestVisible="False"/>
+            <TextBlock Grid.Column="1"
+                       Margin="6,0,0,0"
+                       VerticalAlignment="Center"
+                       IsHitTestVisible="False">
+              <Run Text="{Binding Name, Mode=OneWay}"/>
+              <Run Text="{Binding Id, Mode=OneWay, StringFormat=({0}), Converter={x:Static c:PathConverters.RelativeToHome}}" Foreground="{DynamicResource Brush.FG2}"/>
+            </TextBlock>
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>

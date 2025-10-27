@@ -127,14 +127,11 @@ namespace SourceGit.ViewModels
             return Native.OS.GetAbsPath(_repo, path);
         }
 
-        public void SaveAsPatch(string saveTo)
+        public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
         {
-            Task.Run(async () =>
-            {
-                var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
-                if (succ)
-                    App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
-            });
+            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes ?? _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+            if (succ)
+                App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
         }
 
         public void ClearSearchFilter()

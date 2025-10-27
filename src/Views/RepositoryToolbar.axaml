@@ -115,7 +115,7 @@
         <ContentControl.Content>
           <Binding Path="CurrentBranch">
             <Binding.TargetNullValue>
-              <TextBlock Classes="primary" Text="--"/>
+              <TextBlock Text="--"/>
             </Binding.TargetNullValue>
           </Binding>
         </ContentControl.Content>
@@ -123,7 +123,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
-              <TextBlock Classes="primary" Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
             </Border>
           </DataTemplate>
         </ContentControl.DataTemplates>

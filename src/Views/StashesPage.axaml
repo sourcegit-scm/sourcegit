@@ -92,8 +92,8 @@
                     ToolTip.Tip="{Binding Message}">
               <Grid RowDefinitions="Auto,*" >
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                  <TextBlock Grid.Column="0" Classes="primary" Text="{Binding Name}" Foreground="DarkOrange"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="DarkOrange"/>
+                  <TextBlock Grid.Column="1" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                 </Grid>
 
                 <v:StashSubjectPresenter Grid.Row="1"

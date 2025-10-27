@@ -45,7 +45,7 @@
                   <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
                   <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" Text="{Binding FriendlyName}"/>
                   <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding !IsLocal}">
-                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Classes="primary" Margin="4,0" Foreground="White" VerticalAlignment="Center"/>
+                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Margin="4,0" Foreground="White" VerticalAlignment="Center"/>
                   </Border>
                 </StackPanel>
 
@@ -65,7 +65,7 @@
                     </TextBlock>
 
                     <Border Background="OrangeRed" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding IsUpstreamGone}">
-                      <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Classes="primary" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
+                      <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
                     </Border>
                   </StackPanel>
 
@@ -133,7 +133,6 @@
 
               <!-- Name -->
               <TextBlock Grid.Column="1"
-                         Classes="primary"
                          FontWeight="{Binding IsCurrent, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                          TextTrimming="CharacterEllipsis">
                 <Run Text="{Binding Name}"/>

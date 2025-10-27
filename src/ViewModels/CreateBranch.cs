@@ -142,7 +142,7 @@ namespace SourceGit.ViewModels
                 var needPopStash = false;
                 if (!DiscardLocalChanges)
                 {
-                    var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
+                    var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                     if (changes > 0)
                     {
                         succ = await new Commands.Stash(_repo.FullPath)

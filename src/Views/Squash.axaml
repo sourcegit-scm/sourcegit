@@ -22,7 +22,6 @@
             Fill="{DynamicResource Brush.FG1}"
             Data="{StaticResource Icons.Commit}"/>
       <TextBlock Grid.Column="2"
-                 Classes="primary"
                  Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                  Foreground="DarkOrange"/>
       <TextBlock Grid.Column="3" Margin="8,0,0,0" Text="{Binding Target.Subject}" TextTrimming="CharacterEllipsis"/>

@@ -26,7 +26,7 @@ namespace SourceGit.Models
 
         public bool HasWorktree => !IsCurrent && !string.IsNullOrEmpty(WorktreePath);
         public string FriendlyName => IsLocal ? Name : $"{Remote}/{Name}";
-        public bool IsTrackStatusVisible => Ahead.Count + Behind.Count > 0;
+        public bool IsTrackStatusVisible => Ahead.Count > 0 || Behind.Count > 0;
 
         public string TrackStatusDescription
         {

@@ -438,11 +438,29 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            var copyMessage = new MenuItem();
+            copyMessage.Header = App.Text("CommitCM.CopyCommitMessage");
+            copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
+            copyMessage.Click += async (_, e) =>
+            {
+                var vm = DataContext as ViewModels.Histories;
+                var messages = new List<string>();
+                foreach (var c in selected)
+                {
+                    var message = await vm.GetCommitFullMessageAsync(c);
+                    messages.Add(message);
+                }
+
+                await App.CopyTextAsync(string.Join("\n-----\n", messages));
+                e.Handled = true;
+            };
+
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Items.Add(copyShas);
             copy.Items.Add(copyInfos);
+            copy.Items.Add(copyMessage);
             menu.Items.Add(copy);
             return menu;
         }
@@ -871,7 +889,8 @@ namespace SourceGit.Views
             copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
             copyMessage.Click += async (_, e) =>
             {
-                await vm.CopyCommitFullMessageAsync(commit);
+                var message = await vm.GetCommitFullMessageAsync(commit);
+                await App.CopyTextAsync(message);
                 e.Handled = true;
             };
 

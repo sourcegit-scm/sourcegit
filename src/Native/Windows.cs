@@ -144,7 +144,7 @@ namespace SourceGit.Native
                         break;
 
                     var binDir = Path.GetDirectoryName(OS.GitExecutable)!;
-                    var bash = Path.Combine(binDir, "bash.exe");
+                    var bash = Path.GetFullPath(Path.Combine(binDir, "..", "git-bash.exe"));
                     if (!File.Exists(bash))
                         break;
 
@@ -187,10 +187,11 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
-            finder.Cursor(FindCursor);
+            finder.Cursor(() => Path.Combine(localAppDataDir, @"Programs\Cursor\Cursor.exe"));
             finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
+            finder.Zed(FindZed);
             FindVisualStudio(finder);
             return finder.Tools;
         }
@@ -415,16 +416,20 @@ namespace SourceGit.Native
             }
         }
 
-        private string FindCursor()
+        private string FindZed()
         {
-            var cursorPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Programs",
-                "Cursor",
-                "Cursor.exe");
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
+                    Microsoft.Win32.RegistryView.Registry64);
 
-            if (File.Exists(cursorPath))
-                return cursorPath;
+            // NOTE: this is the official Zed Preview reg data.
+            var preview = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F70E4811-D0E2-4D88-AC99-D63752799F95}_is1");
+            if (preview != null)
+                return preview.GetValue("DisplayIcon") as string;
+
+            var findInPath = new StringBuilder("zed.exe", 512);
+            if (PathFindOnPath(findInPath, null))
+                return findInPath.ToString();
 
             return string.Empty;
         }

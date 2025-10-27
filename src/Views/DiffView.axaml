@@ -26,11 +26,11 @@
                   Background="{DynamicResource Brush.Badge}"
                   IsVisible="{Binding FileModeChange, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                   ToolTip.Tip="{DynamicResource Text.Diff.FileModeChanged}">
-            <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
           <!-- Title -->
-          <TextBlock Grid.Column="2" Classes="primary" Margin="4,0,0,0" Text="{Binding Title}" ToolTip.Tip="{Binding Title}" FontSize="11" TextTrimming="CharacterEllipsis"/>
+          <TextBlock Grid.Column="2" Margin="4,0,0,0" Text="{Binding Title}" ToolTip.Tip="{Binding Title}" FontSize="11" TextTrimming="CharacterEllipsis"/>
 
           <!-- Toolbar Buttons -->
           <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
@@ -67,7 +67,7 @@
             <ContentControl Content="{Binding Content, Mode=OneWay}" IsVisible="{Binding IsTextDiff}">
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="vm:TextDiffContext">
-                  <TextBlock Classes="primary" Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
+                  <TextBlock Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
                 </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>
@@ -210,16 +210,16 @@
               <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                  <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding OldSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OldSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
 
                 <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                  <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                 </Border>
 
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
               </Grid>
             </StackPanel>
           </DataTemplate>
@@ -235,16 +235,16 @@
               <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto">
                 <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                  <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding Old.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Old.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
 
                 <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                  <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                 </Border>
 
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding New.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
               </Grid>
             </StackPanel>
           </DataTemplate>
@@ -262,7 +262,7 @@
               <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical" Margin="8,0">
                   <Border Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="8" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
+                    <TextBlock Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
 
                   <Border Margin="0,8,0,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -287,7 +287,7 @@
                   </Path>
 
                   <Border Height="16" HorizontalAlignment="Center" Background="Green" CornerRadius="8" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                    <TextBlock Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
 
                   <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">

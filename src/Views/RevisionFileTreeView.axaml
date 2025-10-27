@@ -42,7 +42,7 @@
                                               IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                               IsVisible="{Binding IsFolder}"/>
           <v:RevisionTreeNodeIcon Grid.Column="1" Width="14" Height="14" Node="{Binding}" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding Name}" Margin="6,0,0,0"/>
+          <TextBlock Grid.Column="2" Text="{Binding Name}" Margin="6,0,0,0"/>
         </Grid>
       </DataTemplate>
     </ListBox.ItemTemplate>

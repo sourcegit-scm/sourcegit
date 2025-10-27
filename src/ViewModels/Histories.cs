@@ -358,10 +358,11 @@ namespace SourceGit.ViewModels
                 await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
         }
 
-        public async Task CopyCommitFullMessageAsync(Models.Commit commit)
+        public async Task<string> GetCommitFullMessageAsync(Models.Commit commit)
         {
-            var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA).GetResultAsync();
-            await App.CopyTextAsync(message);
+            return await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA)
+                .GetResultAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<Models.Commit> CompareWithHeadAsync(Models.Commit commit)

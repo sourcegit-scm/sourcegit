@@ -262,7 +262,7 @@ namespace SourceGit
             }
         }
 
-        public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
+        public static void SetFonts(string defaultFont, string monospaceFont)
         {
             if (Current is not App app)
                 return;
@@ -285,7 +285,7 @@ namespace SourceGit
                 if (!string.IsNullOrEmpty(defaultFont))
                 {
                     monospaceFont = $"fonts:SourceGit#JetBrains Mono,{defaultFont}";
-                    resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
+                    resDic.Add("Fonts.Monospace", FontFamily.Parse(monospaceFont));
                 }
             }
             else
@@ -293,20 +293,7 @@ namespace SourceGit
                 if (!string.IsNullOrEmpty(defaultFont) && !monospaceFont.Contains(defaultFont, StringComparison.Ordinal))
                     monospaceFont = $"{monospaceFont},{defaultFont}";
 
-                resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
-            }
-
-            if (onlyUseMonospaceFontInEditor)
-            {
-                if (string.IsNullOrEmpty(defaultFont))
-                    resDic.Add("Fonts.Primary", new FontFamily("fonts:Inter#Inter"));
-                else
-                    resDic.Add("Fonts.Primary", new FontFamily(defaultFont));
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(monospaceFont))
-                    resDic.Add("Fonts.Primary", new FontFamily(monospaceFont));
+                resDic.Add("Fonts.Monospace", FontFamily.Parse(monospaceFont));
             }
 
             if (resDic.Count > 0)
@@ -383,7 +370,7 @@ namespace SourceGit
 
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
-            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
+            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -676,9 +663,8 @@ namespace SourceGit
                 if (string.IsNullOrEmpty(t))
                     continue;
 
-                // Collapse multiple spaces into single space
-                var prevChar = '\0';
                 var sb = new StringBuilder();
+                var prevChar = '\0';
 
                 foreach (var c in t)
                 {
@@ -689,14 +675,16 @@ namespace SourceGit
                 }
 
                 var name = sb.ToString();
-                if (name.Contains('#'))
+                try
                 {
-                    if (!name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
-                        !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))
-                        continue;
+                    var fontFamily = FontFamily.Parse(name);
+                    if (fontFamily.FamilyTypefaces.Count > 0)
+                        trimmed.Add(name);
                 }
-
-                trimmed.Add(name);
+                catch
+                {
+                    // Ignore exceptions.
+                }
             }
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;

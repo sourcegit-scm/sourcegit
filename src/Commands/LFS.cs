@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public partial class LFS : Command
+    public class LFS : Command
     {
-        [GeneratedRegex(@"^(.+)\s+([\w.]+)\s+\w+:(\d+)$")]
-        private static partial Regex REG_LOCK();
-
         public LFS(string repo)
         {
             WorkingDirectory = repo;
@@ -60,30 +56,23 @@ namespace SourceGit.Commands
 
         public async Task<List<Models.LFSLock>> GetLocksAsync(string remote)
         {
-            Args = $"lfs locks --remote={remote}";
+            Args = $"lfs locks --json --remote={remote}";
 
             var rs = await ReadToEndAsync().ConfigureAwait(false);
-            var locks = new List<Models.LFSLock>();
-
             if (rs.IsSuccess)
             {
-                var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-                foreach (var line in lines)
+                try
                 {
-                    var match = REG_LOCK().Match(line);
-                    if (match.Success)
-                    {
-                        locks.Add(new Models.LFSLock()
-                        {
-                            File = match.Groups[1].Value,
-                            User = match.Groups[2].Value,
-                            ID = long.Parse(match.Groups[3].Value),
-                        });
-                    }
+                    var locks = JsonSerializer.Deserialize(rs.StdOut, JsonCodeGen.Default.ListLFSLock);
+                    return locks;
+                }
+                catch
+                {
+                    // Ignore exceptions.
                 }
             }
 
-            return locks;
+            return [];
         }
 
         public async Task<bool> LockAsync(string remote, string file)

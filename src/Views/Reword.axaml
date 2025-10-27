@@ -15,7 +15,7 @@
 
     <StackPanel Margin="8,16,8,0" Orientation="Horizontal" HorizontalAlignment="Right">
       <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-      <TextBlock Classes="primary" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
+      <TextBlock Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
     </StackPanel>
 
     <v:CommitMessageTextBox Height="120" Margin="8,5,8,0" Text="{Binding Message, Mode=TwoWay}"/>

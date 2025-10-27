@@ -18,12 +18,12 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.Local}"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
-                x:Name="LocalBranchesComboBox"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
                 SelectedItem="{Binding SelectedLocalBranch, Mode=TwoWay}"
                 IsTextSearchEnabled="True"
+                TextSearch.TextBinding="{Binding Name, DataType=m:Branch}"
                 IsEnabled="{Binding !HasSpecifiedLocalBranch}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
@@ -58,30 +58,40 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.To}"/>
-      <ComboBox Grid.Row="2" Grid.Column="1"
-                x:Name="RemoteBranchesComboBox"
-                Height="28" Padding="8,0"
-                VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding RemoteBranches}"
-                IsTextSearchEnabled="True"
-                SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type m:Branch}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-              <Border Height="14"
-                      CornerRadius="7"
-                      Margin="4,0,0,0" Padding="6,0"
-                      VerticalAlignment="Center"
-                      Background="Green"
-                      IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
-                <TextBlock Text="{DynamicResource Text.Push.New}" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
-              </Border>
-            </StackPanel>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
+      <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,Auto">
+        <ComboBox Grid.Column="0"
+                  Height="28" Padding="8,0"
+                  VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding RemoteBranches}"
+                  IsTextSearchEnabled="True"
+                  TextSearch.TextBinding="{Binding Name, DataType=m:Branch}"
+                  SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate x:DataType="{x:Type m:Branch}">
+              <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+                <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                <Border Height="14"
+                        CornerRadius="7"
+                        Margin="4,0,0,0" Padding="6,0"
+                        VerticalAlignment="Center"
+                        Background="Green"
+                        IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                  <TextBlock Text="{DynamicResource Text.Push.New}" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
+                </Border>
+              </StackPanel>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Button Grid.Column="1"
+                Classes="icon_button"
+                Width="26" Height="32"
+                Click="OnPushToNewBranch"
+                ToolTip.Tip="{DynamicResource Text.PushToNewBranch}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
+        </Button>
+      </Grid>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Height="32"

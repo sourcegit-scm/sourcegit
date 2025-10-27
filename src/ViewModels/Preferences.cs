@@ -65,7 +65,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
-                    App.SetFonts(value, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                    App.SetFonts(value, _monospaceFontFamily);
             }
         }
 
@@ -75,17 +75,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, value, _onlyUseMonoFontInEditor);
-            }
-        }
-
-        public bool OnlyUseMonoFontInEditor
-        {
-            get => _onlyUseMonoFontInEditor;
-            set
-            {
-                if (SetProperty(ref _onlyUseMonoFontInEditor, value) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                    App.SetFonts(_defaultFontFamily, value);
             }
         }
 
@@ -156,12 +146,6 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged();
                 }
             }
-        }
-
-        public bool UseFixedTabWidth
-        {
-            get => _useFixedTabWidth;
-            set => SetProperty(ref _useFixedTabWidth, value);
         }
 
         public bool UseAutoHideScrollBars
@@ -721,7 +705,6 @@ namespace SourceGit.ViewModels
         private string _themeOverrides = string.Empty;
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
-        private bool _onlyUseMonoFontInEditor = true;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;
@@ -729,7 +712,6 @@ namespace SourceGit.ViewModels
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
-        private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;
         private bool _showAuthorTimeInGraph = false;

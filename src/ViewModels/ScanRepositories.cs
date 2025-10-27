@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -25,7 +24,6 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        [Required(ErrorMessage = "Scan directory is required!!!")]
         public Models.ScanDir Selected
         {
             get => _selected;
@@ -53,11 +51,26 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            var selectedDir = _useCustomDir ? _customDir : _selected?.Path;
-            if (string.IsNullOrEmpty(selectedDir))
+            string selectedDir;
+            if (_useCustomDir)
             {
-                App.RaiseException(null, "Missing root directory to scan!");
-                return false;
+                if (string.IsNullOrEmpty(_customDir))
+                {
+                    App.RaiseException(null, "Missing root directory to scan!");
+                    return false;
+                }
+
+                selectedDir = _customDir;
+            }
+            else
+            {
+                if (_selected == null || string.IsNullOrEmpty(_selected.Path))
+                {
+                    App.RaiseException(null, "Missing root directory to scan!");
+                    return false;
+                }
+
+                selectedDir = _selected.Path;
             }
 
             if (!Directory.Exists(selectedDir))
@@ -84,13 +97,15 @@ namespace SourceGit.ViewModels
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                 if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                 {
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    await node.UpdateStatusAsync(false, null);
                 }
                 else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                 {
                     var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
                     var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    await node.UpdateStatusAsync(false, null);
                 }
             }
 
