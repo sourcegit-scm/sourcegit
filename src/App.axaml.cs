@@ -106,7 +106,7 @@ namespace SourceGit
         #endregion
 
         #region Utility Functions
-        public static object CreateViewForViewModel(object data)
+        public static Control CreateViewForViewModel(object data)
         {
             var dataTypeName = data.GetType().FullName;
             if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
@@ -115,7 +115,7 @@ namespace SourceGit
             var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
             var viewType = Type.GetType(viewTypeName);
             if (viewType != null)
-                return Activator.CreateInstance(viewType);
+                return Activator.CreateInstance(viewType) as Control;
 
             return null;
         }

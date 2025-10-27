@@ -47,6 +47,12 @@ namespace SourceGit.ViewModels
                 _launcher.OpenCommandPalette(sub);
             }));
 
+            _cmds.Add(new("Merge", App.Text("Merge") + "...", false, () =>
+            {
+                var sub = new MergeCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
             _visibleCmds = _cmds;
         }
 

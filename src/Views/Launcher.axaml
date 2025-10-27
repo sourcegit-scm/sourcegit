@@ -132,18 +132,7 @@
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
           <ContentControl Margin="16,10,16,12" Content="{Binding CommandPalette}">
             <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:LauncherPagesCommandPalette">
-                <v:LauncherPagesCommandPalette/>
-              </DataTemplate>
-              <DataTemplate DataType="vm:RepositoryCommandPalette">
-                <v:RepositoryCommandPalette/>
-              </DataTemplate>
-              <DataTemplate DataType="vm:FileHistoryCommandPalette">
-                <v:FileHistoryCommandPalette/>
-              </DataTemplate>
-              <DataTemplate DataType="vm:BlameCommandPalette">
-                <v:BlameCommandPalette/>
-              </DataTemplate>
+              <v:CommandPaletteDataTemplates/>
             </ContentControl.DataTemplates>
           </ContentControl>
         </Border>
