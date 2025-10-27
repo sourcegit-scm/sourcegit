@@ -51,11 +51,19 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await StorageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
-                    await compare.SaveAsPatch(storageFile.Path.LocalPath);
+                try
+                {
+                    var storageFile = await StorageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                        await compare.SaveAsPatch(storageFile.Path.LocalPath);
 
-                NotifyDonePanel.IsVisible = true;
+                    NotifyDonePanel.IsVisible = true;
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(string.Empty, $"Failed to save as patch: {exception.Message}");
+                }
+
                 e.Handled = true;
             }
         }

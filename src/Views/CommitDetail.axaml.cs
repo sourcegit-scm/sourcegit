@@ -56,11 +56,18 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
@@ -117,11 +124,18 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
@@ -259,11 +273,18 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;

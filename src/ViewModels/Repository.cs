@@ -565,15 +565,22 @@ namespace SourceGit.ViewModels
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
             Logs.Clear();
 
-            if (!_isWorktree)
+            if (!_isWorktree && Directory.Exists(_gitCommonDir))
             {
-                if (_workingCopy.InProgressContext != null && !string.IsNullOrEmpty(_workingCopy.CommitMessage))
-                    File.WriteAllText(Path.Combine(GitDir, "MERGE_MSG"), _workingCopy.CommitMessage);
-                else
-                    _settings.LastCommitMessage = _workingCopy.CommitMessage;
+                try
+                {
+                    if (_workingCopy.InProgressContext != null && !string.IsNullOrEmpty(_workingCopy.CommitMessage))
+                        File.WriteAllText(Path.Combine(GitDir, "MERGE_MSG"), _workingCopy.CommitMessage);
+                    else
+                        _settings.LastCommitMessage = _workingCopy.CommitMessage;
 
-                using var stream = File.Create(Path.Combine(_gitCommonDir, "sourcegit.settings"));
-                JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
+                    using var stream = File.Create(Path.Combine(_gitCommonDir, "sourcegit.settings"));
+                    JsonSerializer.Serialize(stream, _settings, JsonCodeGen.Default.RepositorySettings);
+                }
+                catch (Exception)
+                {
+                    // Ignore
+                }
             }
 
             if (_cancellationRefreshBranches is { IsCancellationRequested: false })
