@@ -67,7 +67,10 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            Process.Start("xdg-open", url.Quoted());
+            var browser = Environment.GetEnvironmentVariable("BROWSER");
+            if (string.IsNullOrEmpty(browser))
+                browser = "xdg-open";
+            Process.Start(browser, url.Quoted());
         }
 
         public void OpenInFileManager(string path, bool select)
