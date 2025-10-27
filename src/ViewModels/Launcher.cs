@@ -43,10 +43,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public QuickLauncher QuickLauncher
+        public IDisposable CommandPalette
         {
-            get => _quickLauncher;
-            set => SetProperty(ref _quickLauncher, value);
+            get => _commandPalette;
+            set => SetProperty(ref _commandPalette, value);
         }
 
         public Launcher(string startupRepo)
@@ -376,6 +376,18 @@ namespace SourceGit.ViewModels
                 ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(node.Id);
         }
 
+        public void OpenCommandPalette(IDisposable commandPalette)
+        {
+            _commandPalette?.Dispose();
+            CommandPalette = commandPalette;
+        }
+
+        public void CancelCommandPalette()
+        {
+            _commandPalette?.Dispose();
+            CommandPalette = null;
+        }
+
         public void DispatchNotification(string pageId, string message, bool isError)
         {
             if (!Dispatcher.UIThread.CheckAccess())
@@ -481,6 +493,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
-        private QuickLauncher _quickLauncher = null;
+        private IDisposable _commandPalette = null;
     }
 }
