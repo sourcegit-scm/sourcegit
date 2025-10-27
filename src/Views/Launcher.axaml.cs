@@ -13,8 +13,22 @@ namespace SourceGit.Views
 {
     public class CommandPaletteDataTemplates : IDataTemplate
     {
-        public Control Build(object param) => App.CreateViewForViewModel(param);
-        public bool Match(object data) => true;
+        public Control Build(object param)
+        {
+            return App.CreateViewForViewModel(param);
+        }
+
+        public bool Match(object data)
+        {
+            if (data is not IDisposable)
+                return false;
+
+            var name = data.GetType().FullName;
+            if (!name.EndsWith("CommandPalette", StringComparison.Ordinal) || !name.Contains(".ViewModels.", StringComparison.Ordinal))
+                return false;
+
+            return true;
+        }
     }
 
     public partial class Launcher : ChromelessWindow
