@@ -232,6 +232,10 @@ namespace SourceGit.Views
                             repo.IsSearching = false;
                             e.Handled = true;
                             return;
+                        case Key.P when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            vm.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(vm, repo));
+                            e.Handled = true;
+                            return;
                     }
                 }
                 else

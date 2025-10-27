@@ -84,7 +84,7 @@ namespace SourceGit.ViewModels
             else if (_selectedRepo != null)
                 _launcher.OpenRepositoryInTab(_selectedRepo, null);
 
-            _launcher.CancelCommandPalette();
+            _launcher?.CancelCommandPalette();
         }
 
         private void UpdateVisible()

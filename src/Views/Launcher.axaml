@@ -135,6 +135,15 @@
               <DataTemplate DataType="vm:LauncherPagesCommandPalette">
                 <v:LauncherPagesCommandPalette/>
               </DataTemplate>
+              <DataTemplate DataType="vm:RepositoryCommandPalette">
+                <v:RepositoryCommandPalette/>
+              </DataTemplate>
+              <DataTemplate DataType="vm:FileHistoryCommandPalette">
+                <v:FileHistoryCommandPalette/>
+              </DataTemplate>
+              <DataTemplate DataType="vm:BlameCommandPalette">
+                <v:BlameCommandPalette/>
+              </DataTemplate>
             </ContentControl.DataTemplates>
           </ContentControl>
         </Border>

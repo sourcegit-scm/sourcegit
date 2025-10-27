@@ -481,6 +481,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">開啟命令面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>
@@ -514,6 +515,7 @@
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">複製連結</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">在瀏覽器中開啟連結</x:String>
+  <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">命令列表</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">發生錯誤</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
   <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">開啟存放庫</x:String>
