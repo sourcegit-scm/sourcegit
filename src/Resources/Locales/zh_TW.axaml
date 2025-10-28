@@ -209,6 +209,7 @@
   ${BRANCH_FRIENDLY_NAME} 所選的分支。對於遠端分支，不包含遠端名稱
   ${SHA} 所選的提交編號
   ${TAG} 所選的標籤
+  ${FILE} 所選的檔案，相對於儲存庫根目錄的路徑
   $1, $2 ... 輸入控制項中的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控制項:</x:String>
@@ -217,6 +218,7 @@
   <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">執行範圍:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">選取的分支</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">選取的提交</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.File" xml:space="preserve">選取的檔案</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">遠端存放庫</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">存放庫</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">選取的標籤</x:String>
@@ -260,7 +262,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">選項列表:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">請使用英文「|」符號分隔選項</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">內建變數 ${REPO}、${REMOTE}、${BRANCH}、${BRANCH_FRIENDLY_NAME}、${SHA} 及 ${TAG} 在此處仍可使用</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">內建變數 ${REPO}、${REMOTE}、${BRANCH}、${BRANCH_FRIENDLY_NAME}、${SHA}、${FILE} 及 ${TAG} 在此處仍可使用</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">類型:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">工作區</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">顏色</x:String>
@@ -389,6 +391,7 @@
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">提取遠端存放庫內容</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不追蹤此檔案的變更</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">捨棄變更...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">捨棄已選的 {0} 個檔案變更...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">使用 ${0}$</x:String>

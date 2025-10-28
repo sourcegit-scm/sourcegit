@@ -646,6 +646,8 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
+                TryToAddCustomActionsToContextMenu(repo, menu, change.Path);
+
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -1126,6 +1128,8 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
+                TryToAddCustomActionsToContextMenu(repo, menu, change.Path);
+
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
                 copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -1268,6 +1272,36 @@ namespace SourceGit.Views
             }
 
             return menu;
+        }
+
+        private void TryToAddCustomActionsToContextMenu(ViewModels.Repository repo, ContextMenu menu, string path)
+        {
+            var actions = repo.GetCustomActions(Models.CustomActionScope.File);
+            if (actions.Count == 0)
+                return;
+
+            var target = new Models.CustomActionTargetFile(path, null);
+            var custom = new MenuItem();
+            custom.Header = App.Text("FileCM.CustomAction");
+            custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+            foreach (var action in actions)
+            {
+                var (dup, label) = action;
+                var item = new MenuItem();
+                item.Icon = App.CreateMenuIcon("Icons.Action");
+                item.Header = label;
+                item.Click += async (_, e) =>
+                {
+                    await repo.ExecCustomActionAsync(dup, target);
+                    e.Handled = true;
+                };
+
+                custom.Items.Add(item);
+            }
+
+            menu.Items.Add(custom);
+            menu.Items.Add(new MenuItem() { Header = "-" });
         }
     }
 }

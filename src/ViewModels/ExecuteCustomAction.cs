@@ -185,6 +185,7 @@ namespace SourceGit.ViewModels
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
                 Models.Tag t => org.Replace("${TAG}", t.Name),
                 Models.Remote r => org.Replace("${REMOTE}", r.Name),
+                Models.CustomActionTargetFile f => org.Replace("${FILE}", f.File).Replace("${SHA}", f.Revision?.SHA ?? string.Empty),
                 _ => org
             };
         }

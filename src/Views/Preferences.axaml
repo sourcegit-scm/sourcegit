@@ -668,6 +668,7 @@
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Tag}"/>
                       <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Remote}"/>
+                      <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.File}"/>
                     </ComboBox>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>
