@@ -3,7 +3,18 @@ using System.Collections.Generic;
 
 namespace SourceGit.ViewModels
 {
-    public record RepositoryCommandPaletteCmd(string Name, string Label, bool AutoCloseCommandPalette, Action Action);
+    public class RepositoryCommandPaletteCmd
+    {
+        public string Key { get; set; }
+        public Action Action { get; set; }
+        public string Label => $"{App.Text(Key)}...";
+
+        public RepositoryCommandPaletteCmd(string key, Action action)
+        {
+            Key = key;
+            Action = action;
+        }
+    }
 
     public class RepositoryCommandPalette : ICommandPalette
     {
@@ -34,21 +45,27 @@ namespace SourceGit.ViewModels
             _launcher = launcher;
             _repo = repo;
 
-            _cmds.Add(new("File History", App.Text("FileHistory") + "...", false, () =>
+            _cmds.Add(new("FileHistory", () =>
             {
                 var sub = new FileHistoryCommandPalette(_launcher, _repo.FullPath);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("Blame", App.Text("Blame") + "...", false, () =>
+            _cmds.Add(new("Blame", () =>
             {
                 var sub = new BlameCommandPalette(_launcher, _repo.FullPath);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("Merge", App.Text("Merge") + "...", false, () =>
+            _cmds.Add(new("Merge", () =>
             {
                 var sub = new MergeCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("BranchCompare", () =>
+            {
+                var sub = new BranchCompareCommandPalette(_launcher, _repo);
                 _launcher.OpenCommandPalette(sub);
             }));
 
@@ -72,16 +89,9 @@ namespace SourceGit.ViewModels
 
         public void Exec()
         {
-            if (_selectedCmd == null)
-            {
-                _launcher?.CancelCommandPalette();
-                return;
-            }
-
-            var autoClose = _selectedCmd.AutoCloseCommandPalette;
-            _selectedCmd.Action?.Invoke();
-
-            if (autoClose)
+            if (_selectedCmd != null)
+                _selectedCmd.Action?.Invoke();
+            else
                 _launcher?.CancelCommandPalette();
         }
 
@@ -96,7 +106,7 @@ namespace SourceGit.ViewModels
                 var visible = new List<RepositoryCommandPaletteCmd>();
                 foreach (var cmd in VisibleCmds)
                 {
-                    if (cmd.Name.Contains(_filter, StringComparison.OrdinalIgnoreCase) ||
+                    if (cmd.Key.Contains(_filter, StringComparison.OrdinalIgnoreCase) ||
                         cmd.Label.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                         visible.Add(cmd);
                 }
