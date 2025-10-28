@@ -2,7 +2,6 @@
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -11,26 +10,6 @@ using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
-    public class CommandPaletteDataTemplates : IDataTemplate
-    {
-        public Control Build(object param)
-        {
-            return App.CreateViewForViewModel(param);
-        }
-
-        public bool Match(object data)
-        {
-            if (data is not IDisposable)
-                return false;
-
-            var name = data.GetType().FullName;
-            if (!name.EndsWith("CommandPalette", StringComparison.Ordinal) || !name.Contains(".ViewModels.", StringComparison.Ordinal))
-                return false;
-
-            return true;
-        }
-    }
-
     public partial class Launcher : ChromelessWindow
     {
         public static readonly StyledProperty<GridLength> CaptionHeightProperty =

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
     public record RepositoryCommandPaletteCmd(string Name, string Label, bool AutoCloseCommandPalette, Action Action);
 
-    public class RepositoryCommandPalette : ObservableObject, IDisposable
+    public class RepositoryCommandPalette : ICommandPalette
     {
         public List<RepositoryCommandPaletteCmd> VisibleCmds
         {
@@ -56,7 +55,7 @@ namespace SourceGit.ViewModels
             _visibleCmds = _cmds;
         }
 
-        public void Dispose()
+        public override void Cleanup()
         {
             _launcher = null;
             _repo = null;

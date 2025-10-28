@@ -1,7 +1,4 @@
-using System;
-
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -82,17 +79,6 @@ namespace SourceGit.Views
                 page.Notifications.Remove(notice);
 
             e.Handled = true;
-        }
-
-        private void OnPopupDataContextChanged(object sender, EventArgs e)
-        {
-            if (sender is ContentPresenter presenter)
-            {
-                if (presenter.DataContext is not ViewModels.Popup)
-                    presenter.Content = null;
-                else
-                    presenter.Content = App.CreateViewForViewModel(presenter.DataContext);
-            }
         }
 
         private void OnToolBarPointerPressed(object sender, PointerPressedEventArgs e)
