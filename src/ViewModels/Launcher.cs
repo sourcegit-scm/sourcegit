@@ -389,6 +389,7 @@ namespace SourceGit.ViewModels
         {
             _commandPalette?.Dispose();
             CommandPalette = null;
+            GC.Collect();
         }
 
         public void DispatchNotification(string pageId, string message, bool isError)
