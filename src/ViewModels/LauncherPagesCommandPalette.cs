@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class LauncherPagesCommandPalette : ObservableObject, IDisposable
+    public class LauncherPagesCommandPalette : ICommandPalette
     {
         public List<LauncherPage> VisiblePages
         {
@@ -61,7 +60,7 @@ namespace SourceGit.ViewModels
             UpdateVisible();
         }
 
-        public void Dispose()
+        public override void Cleanup()
         {
             _launcher = null;
             _opened.Clear();

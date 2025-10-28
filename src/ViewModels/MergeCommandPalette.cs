@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class MergeCommandPalette : ObservableObject, IDisposable
+    public class MergeCommandPalette : ICommandPalette
     {
         public List<Models.Branch> Branches
         {
@@ -35,7 +34,7 @@ namespace SourceGit.ViewModels
             UpdateBranches();
         }
 
-        public void Dispose()
+        public override void Cleanup()
         {
             _launcher = null;
             _repo = null;

@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public IDisposable CommandPalette
+        public ICommandPalette CommandPalette
         {
             get => _commandPalette;
             set => SetProperty(ref _commandPalette, value);
@@ -378,10 +378,11 @@ namespace SourceGit.ViewModels
                 ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(node.Id);
         }
 
-        public void OpenCommandPalette(IDisposable commandPalette)
+        public void OpenCommandPalette(ICommandPalette commandPalette)
         {
-            _commandPalette?.Dispose();
+            var old = _commandPalette;
             CommandPalette = commandPalette;
+            old?.Dispose();
         }
 
         public void CancelCommandPalette()
@@ -495,6 +496,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
-        private IDisposable _commandPalette = null;
+        private ICommandPalette _commandPalette = null;
     }
 }

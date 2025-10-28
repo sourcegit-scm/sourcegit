@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class FileHistoryCommandPalette : ObservableObject, IDisposable
+    public class FileHistoryCommandPalette : ICommandPalette
     {
         public bool IsLoading
         {
@@ -57,7 +56,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Dispose()
+        public override void Cleanup()
         {
             _launcher = null;
             _repo = null;
