@@ -16,20 +16,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.22%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Blame.BlameOnPreviousRevision
-- Text.Configure.CommitMessageTemplate.BuiltinVars
-- Text.Configure.Git.ConventionalTypesOverride
-- Text.ConfigureCustomActionControls.StringValue.Tip
-- Text.Hotkeys.Repo.OpenCommandPalette
-- Text.Launcher.Commands
-- Text.Launcher.OpenRepository
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-76.89%25-yellow)
 
