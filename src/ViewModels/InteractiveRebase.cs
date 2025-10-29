@@ -347,7 +347,8 @@ namespace SourceGit.ViewModels
                     item.FullMessage = item.OriginalFullMessage;
 
                 item.CanReword = !hasPendingTarget;
-                item.ShowEditMessageButton = item.CanReword && (item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Reword);
+                item.ShowEditMessageButton = item.CanReword &&
+                    (item.Action == Models.InteractiveRebaseAction.Reword || item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup);
 
                 if (item.Action != Models.InteractiveRebaseAction.Drop)
                     hasPendingTarget = item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup;
