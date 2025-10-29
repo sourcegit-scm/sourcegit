@@ -98,7 +98,7 @@
 
           <v:InteractiveRebaseListBox.ItemTemplate>
             <DataTemplate DataType="vm:InteractiveRebaseItem">
-              <Grid Height="26"
+              <Grid Height="28"
                     Margin="8,0"
                     Background="Transparent"
                     ClipToBounds="True"
@@ -110,6 +110,7 @@
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" SharedSizeGroup="CommitOrderColumn"/>
                   <ColumnDefinition Width="110"/>
+                  <ColumnDefinition Width="24"/>
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="32"/>
                   <ColumnDefinition Width="108"/>
@@ -132,12 +133,18 @@
                   </StackPanel>
                 </Button>
 
+                <!-- Graph -->
+                <v:InteractiveRebasePath Grid.Column="2"
+                                         Fill="{DynamicResource Brush.FG1}"
+                                         Action="{Binding Action, Mode=OneWay}"
+                                         CanReword="{Binding CanReword, Mode=OneWay}"/>
+
                 <!-- Subject -->
-                <Grid Grid.Column="2" ColumnDefinitions="Auto,*" ClipToBounds="True">
+                <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
                   <Button Grid.Column="0"
                           Classes="icon_button"
                           Margin="0,0,6,0" Padding="0"
-                          IsVisible="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.CanEditMessage}}"
+                          IsVisible="{Binding ShowEditMessageButton, Mode=OneWay}"
                           Click="OnOpenCommitMessageEditor">
                     <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
                   </Button>
@@ -151,39 +158,41 @@
                                             LinkForeground="{DynamicResource Brush.Link}"
                                             Subject="{Binding Subject}"
                                             IssueTrackers="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).IssueTrackers}"
-                                            FontWeight="Normal"/>
+                                            FontWeight="Normal"
+                                            Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                                            ShowStrikethrough="{Binding Action, Mode=OneWay, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:InteractiveRebaseAction.Drop}}"/>
                 </Grid>
 
                 <!-- Author Avatar -->
-                <v:Avatar Grid.Column="3"
+                <v:Avatar Grid.Column="4"
                           Width="16" Height="16"
                           Margin="8,0,0,0"
                           VerticalAlignment="Center"
                           User="{Binding Commit.Author}"/>
 
                 <!-- Author Name -->
-                <Border Grid.Column="4" ClipToBounds="True">
+                <Border Grid.Column="5" ClipToBounds="True">
                   <TextBlock Margin="6,0,12,0" Text="{Binding Commit.Author.Name}"/>
                 </Border>
 
                 <!-- Commit SHA -->
-                <Border Grid.Column="5" ClipToBounds="True">
+                <Border Grid.Column="6" ClipToBounds="True">
                   <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
                 </Border>
 
                 <!-- Commit Time -->
-                <Border Grid.Column="6">
+                <Border Grid.Column="7">
                   <TextBlock Margin="16,0,8,0" Text="{Binding Commit.CommitterTimeStr}"/>
                 </Border>
 
                 <!-- Drop Indicator -->
-                <Rectangle Grid.Column="0" Grid.ColumnSpan="7"
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="8"
                            Height="2"
                            VerticalAlignment="Top"
                            Fill="{DynamicResource Brush.Accent}"
                            IsVisible="{Binding IsDropBeforeVisible, Mode=OneWay}"
                            IsHitTestVisible="False"/>
-                <Rectangle Grid.Column="0" Grid.ColumnSpan="7"
+                <Rectangle Grid.Column="0" Grid.ColumnSpan="8"
                            Height="2"
                            VerticalAlignment="Bottom"
                            Fill="{DynamicResource Brush.Accent}"

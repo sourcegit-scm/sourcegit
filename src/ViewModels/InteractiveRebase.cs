@@ -25,19 +25,6 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public bool CanSquashOrFixup
-        {
-            get => _canSquashOrFixup;
-            set
-            {
-                if (SetProperty(ref _canSquashOrFixup, value))
-                {
-                    if (_action == Models.InteractiveRebaseAction.Squash || _action == Models.InteractiveRebaseAction.Fixup)
-                        Action = Models.InteractiveRebaseAction.Pick;
-                }
-            }
-        }
-
         public Models.InteractiveRebaseAction Action
         {
             get => _action;
@@ -64,6 +51,47 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public string OriginalFullMessage
+        {
+            get;
+            set;
+        }
+
+        public bool CanSquashOrFixup
+        {
+            get => _canSquashOrFixup;
+            set
+            {
+                if (SetProperty(ref _canSquashOrFixup, value))
+                {
+                    if (_action == Models.InteractiveRebaseAction.Squash || _action == Models.InteractiveRebaseAction.Fixup)
+                    {
+                        Action = Models.InteractiveRebaseAction.Pick;
+                        FullMessage = OriginalFullMessage;
+                    }
+                }
+            }
+        }
+
+        public bool CanReword
+        {
+            get => _canReword;
+            set
+            {
+                if (SetProperty(ref _canReword, value) && _action == Models.InteractiveRebaseAction.Reword)
+                {
+                    Action = Models.InteractiveRebaseAction.Pick;
+                    FullMessage = OriginalFullMessage;
+                }
+            }
+        }
+
+        public bool ShowEditMessageButton
+        {
+            get => _showEditMessageButton;
+            set => SetProperty(ref _showEditMessageButton, value);
+        }
+
         public bool IsDropBeforeVisible
         {
             get => _isDropBeforeVisible;
@@ -81,6 +109,7 @@ namespace SourceGit.ViewModels
             OriginalOrder = order;
             Commit = c;
             FullMessage = message;
+            OriginalFullMessage = message;
             CanSquashOrFixup = canSquashOrFixup;
         }
 
@@ -88,6 +117,8 @@ namespace SourceGit.ViewModels
         private string _subject;
         private string _fullMessage;
         private bool _canSquashOrFixup = true;
+        private bool _canReword = true;
+        private bool _showEditMessageButton = false;
         private bool _isDropBeforeVisible = false;
         private bool _isDropAfterVisible = false;
     }
@@ -306,6 +337,20 @@ namespace SourceGit.ViewModels
                     item.CanSquashOrFixup = false;
                     hasValidParent = item.Action != Models.InteractiveRebaseAction.Drop;
                 }
+            }
+
+            var hasPendingTarget = false;
+            for (var i = 0; i < Items.Count; i++)
+            {
+                var item = Items[i];
+                if (item.Action == Models.InteractiveRebaseAction.Pick || item.Action == Models.InteractiveRebaseAction.Edit)
+                    item.FullMessage = item.OriginalFullMessage;
+
+                item.CanReword = !hasPendingTarget;
+                item.ShowEditMessageButton = item.CanReword && (item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Reword);
+
+                if (item.Action != Models.InteractiveRebaseAction.Drop)
+                    hasPendingTarget = item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup;
             }
         }
 
