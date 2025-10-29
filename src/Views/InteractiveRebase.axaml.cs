@@ -96,76 +96,63 @@ namespace SourceGit.Views
             set => SetValue(FillProperty, value);
         }
 
-        public static readonly StyledProperty<Models.InteractiveRebaseAction> ActionProperty =
-            AvaloniaProperty.Register<InteractiveRebaseIndicator, Models.InteractiveRebaseAction>(nameof(Action));
+        public static readonly StyledProperty<Models.InteractiveRebasePendingType> PendingTypeProperty =
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, Models.InteractiveRebasePendingType>(nameof(PendingType));
 
-        public Models.InteractiveRebaseAction Action
+        public Models.InteractiveRebasePendingType PendingType
         {
-            get => GetValue(ActionProperty);
-            set => SetValue(ActionProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> CanRewordProperty =
-            AvaloniaProperty.Register<InteractiveRebaseIndicator, bool>(nameof(CanReword));
-
-        public bool CanReword
-        {
-            get => GetValue(CanRewordProperty);
-            set => SetValue(CanRewordProperty, value);
+            get => GetValue(PendingTypeProperty);
+            set => SetValue(PendingTypeProperty, value);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
+            if (PendingType == Models.InteractiveRebasePendingType.None)
+                return;
+
             var startW = 4;
             var endW = Bounds.Width - 4;
             var height = Bounds.Height;
             var halfH = height * 0.5;
-            var action = Action;
             var fill = Fill;
 
-            if (CanReword)
+            if (PendingType == Models.InteractiveRebasePendingType.Last)
             {
-                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
-                {
-                    var center = new Point(startW, halfH);
-                    context.DrawEllipse(fill, null, center, 4, 4);
-                    context.DrawLine(new Pen(fill, 2), center, new Point(startW, height));
-                }
+                var center = new Point(startW, halfH);
+                context.DrawEllipse(fill, null, center, 4, 4);
+                context.DrawLine(new Pen(fill, 2), center, new Point(startW, height));
+            }
+            else if (PendingType == Models.InteractiveRebasePendingType.Ignore)
+            {
+                context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
+            }
+            else if (PendingType == Models.InteractiveRebasePendingType.Pending)
+            {
+                context.DrawEllipse(fill, null, new Point(startW, halfH), 4, 4);
+                context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
             }
             else
             {
-                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
+                var geoPath = new StreamGeometry();
+                using (var ctx = geoPath.Open())
                 {
-                    context.DrawEllipse(fill, null, new Point(startW, halfH), 4, 4);
-                    context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
+                    ctx.BeginFigure(new Point(startW, 0), false);
+                    ctx.QuadraticBezierTo(new Point(startW, halfH), new Point(endW, halfH));
+                    ctx.EndFigure(false);
                 }
-                else if (action == Models.InteractiveRebaseAction.Drop)
-                {
-                    context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
-                }
-                else
-                {
-                    var geoPath = new StreamGeometry();
-                    using (var ctx = geoPath.Open())
-                    {
-                        ctx.BeginFigure(new Point(startW, 0), false);
-                        ctx.QuadraticBezierTo(new Point(startW, halfH), new Point(endW, halfH));
-                        ctx.EndFigure(false);
-                    }
-                    context.DrawGeometry(null, new Pen(fill, 2), geoPath);
+                context.DrawGeometry(null, new Pen(fill, 2), geoPath);
 
-                    var geoArrow = new StreamGeometry();
-                    using (var ctx = geoPath.Open())
-                    {
-                        ctx.BeginFigure(new Point(endW, halfH), true);
-                        ctx.LineTo(new Point(endW - 4, halfH + 2));
-                        ctx.LineTo(new Point(endW - 4, halfH - 2));
-                        ctx.EndFigure(true);
-                    }
-                    context.DrawGeometry(fill, null, geoArrow);
+                var geoArrow = new StreamGeometry();
+                using (var ctx = geoPath.Open())
+                {
+                    ctx.BeginFigure(new Point(endW, halfH), true);
+                    ctx.LineTo(new Point(endW - 4, halfH + 2));
+                    ctx.LineTo(new Point(endW - 4, halfH - 2));
+                    ctx.EndFigure(true);
                 }
+                context.DrawGeometry(fill, null, geoArrow);
             }
         }
 
@@ -174,8 +161,7 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == FillProperty ||
-                change.Property == ActionProperty ||
-                change.Property == CanRewordProperty)
+                change.Property == PendingTypeProperty)
                 InvalidateVisual();
         }
     }
@@ -195,7 +181,14 @@ namespace SourceGit.Views
                 return;
 
             var dialog = new CommitMessageEditor();
-            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg => item.FullMessage = msg);
+            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg =>
+            {
+                if (msg.Equals(item.FullMessage, StringComparison.Ordinal))
+                    return;
+
+                item.FullMessage = msg;
+                item.IsMessageUserEdited = true;
+            });
             dialog.ShowDialog(this);
         }
 
@@ -407,9 +400,7 @@ namespace SourceGit.Views
 
             CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Pick, Brushes.Green, "Use this commit", "P");
             CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Edit, Brushes.Orange, "Stop for amending", "E");
-
-            if (item.CanReword)
-                CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Reword, Brushes.Orange, "Edit the commit message", "R");
+            CreateActionMenuItem(flyout, item, Models.InteractiveRebaseAction.Reword, Brushes.Orange, "Edit the commit message", "R");
 
             if (item.CanSquashOrFixup)
             {

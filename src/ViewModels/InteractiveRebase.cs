@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -29,6 +30,12 @@ namespace SourceGit.ViewModels
         {
             get => _action;
             set => SetProperty(ref _action, value);
+        }
+
+        public Models.InteractiveRebasePendingType PendingType
+        {
+            get => _pendingType;
+            set => SetProperty(ref _pendingType, value);
         }
 
         public string Subject
@@ -63,16 +70,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _canSquashOrFixup, value);
         }
 
-        public bool CanReword
-        {
-            get => _canReword;
-            set => SetProperty(ref _canReword, value);
-        }
-
         public bool ShowEditMessageButton
         {
             get => _showEditMessageButton;
             set => SetProperty(ref _showEditMessageButton, value);
+        }
+
+        public bool IsFullMessageUsed
+        {
+            get => _isFullMessageUsed;
+            set => SetProperty(ref _isFullMessageUsed, value);
         }
 
         public bool IsDropBeforeVisible
@@ -87,6 +94,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isDropAfterVisible, value);
         }
 
+        public bool IsMessageUserEdited
+        {
+            get;
+            set;
+        } = false;
+
         public InteractiveRebaseItem(int order, Models.Commit c, string message, bool canSquashOrFixup)
         {
             OriginalOrder = order;
@@ -97,11 +110,12 @@ namespace SourceGit.ViewModels
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
+        private Models.InteractiveRebasePendingType _pendingType = Models.InteractiveRebasePendingType.None;
         private string _subject;
         private string _fullMessage;
         private bool _canSquashOrFixup = true;
-        private bool _canReword = true;
         private bool _showEditMessageButton = false;
+        private bool _isFullMessageUsed = true;
         private bool _isDropBeforeVisible = false;
         private bool _isDropAfterVisible = false;
     }
@@ -278,16 +292,30 @@ namespace SourceGit.ViewModels
             var collection = new Models.InteractiveRebaseJobCollection();
             collection.OrigHead = _repo.CurrentBranch.Head;
             collection.Onto = On.SHA;
+
+            InteractiveRebaseItem pending = null;
             for (int i = Items.Count - 1; i >= 0; i--)
             {
                 var item = Items[i];
-                collection.Jobs.Add(new Models.InteractiveRebaseJob()
+                var job = new Models.InteractiveRebaseJob()
                 {
                     SHA = item.Commit.SHA,
                     Action = item.Action,
-                    Message = item.FullMessage,
-                });
+                };
+
+                if (pending != null && item.PendingType != Models.InteractiveRebasePendingType.Ignore)
+                    job.Message = pending.FullMessage;
+                else
+                    job.Message = item.FullMessage;
+
+                collection.Jobs.Add(job);
+
+                if (item.PendingType == Models.InteractiveRebasePendingType.Last)
+                    pending = null;
+                else if (item.PendingType == Models.InteractiveRebasePendingType.Target)
+                    pending = item;
             }
+
             await using (var stream = File.Create(saveFile))
             {
                 await JsonSerializer.SerializeAsync(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
@@ -325,19 +353,89 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var hasPendingTarget = false;
+            var hasPending = false;
+            var pendingMessages = new List<string>();
             for (var i = 0; i < Items.Count; i++)
             {
                 var item = Items[i];
-                if (item.Action == Models.InteractiveRebaseAction.Pick || item.Action == Models.InteractiveRebaseAction.Edit)
+
+                if (item.Action == Models.InteractiveRebaseAction.Drop)
+                {
+                    item.IsFullMessageUsed = false;
+                    item.ShowEditMessageButton = false;
+                    item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Ignore : Models.InteractiveRebasePendingType.None;
                     item.FullMessage = item.OriginalFullMessage;
+                    item.IsMessageUserEdited = false;
+                    continue;
+                }
 
-                item.CanReword = !hasPendingTarget;
-                item.ShowEditMessageButton = item.CanReword &&
-                    (item.Action == Models.InteractiveRebaseAction.Reword || item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup);
+                if (item.Action == Models.InteractiveRebaseAction.Fixup ||
+                    item.Action == Models.InteractiveRebaseAction.Squash)
+                {
+                    item.IsFullMessageUsed = false;
+                    item.ShowEditMessageButton = false;
+                    item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Pending : Models.InteractiveRebasePendingType.Last;
+                    item.FullMessage = item.OriginalFullMessage;
+                    item.IsMessageUserEdited = false;
 
-                if (item.Action != Models.InteractiveRebaseAction.Drop)
-                    hasPendingTarget = item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup;
+                    pendingMessages.Add(item.OriginalFullMessage);
+                    hasPending = true;
+                    continue;
+                }
+
+                if (item.Action == Models.InteractiveRebaseAction.Reword ||
+                    item.Action == Models.InteractiveRebaseAction.Edit)
+                {
+                    item.IsFullMessageUsed = true;
+                    item.ShowEditMessageButton = true;
+                    item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Target : Models.InteractiveRebasePendingType.None;
+
+                    if (hasPending)
+                    {
+                        if (!item.IsMessageUserEdited)
+                        {
+                            var builder = new StringBuilder();
+                            builder.Append(item.OriginalFullMessage);
+                            for (var j = pendingMessages.Count - 1; j >= 0; j--)
+                                builder.Append("\n\n").Append(pendingMessages[j]);
+
+                            item.FullMessage = builder.ToString();
+                        }
+
+                        hasPending = false;
+                        pendingMessages.Clear();
+                    }
+
+                    continue;
+                }
+
+                if (item.Action == Models.InteractiveRebaseAction.Pick)
+                {
+                    item.IsFullMessageUsed = true;
+                    item.IsMessageUserEdited = false;
+
+                    if (hasPending)
+                    {
+                        var builder = new StringBuilder();
+                        builder.Append(item.OriginalFullMessage);
+                        for (var j = pendingMessages.Count - 1; j >= 0; j--)
+                            builder.Append("\n").Append(pendingMessages[j]);
+
+                        item.Action = Models.InteractiveRebaseAction.Reword;
+                        item.PendingType = Models.InteractiveRebasePendingType.Target;
+                        item.ShowEditMessageButton = true;
+                        item.FullMessage = builder.ToString();
+
+                        hasPending = false;
+                        pendingMessages.Clear();
+                    }
+                    else
+                    {
+                        item.PendingType = Models.InteractiveRebasePendingType.None;
+                        item.ShowEditMessageButton = false;
+                        item.FullMessage = item.OriginalFullMessage;
+                    }
+                }
             }
         }
 

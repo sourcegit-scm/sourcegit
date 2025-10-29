@@ -136,8 +136,7 @@
                 <!-- Indicator -->
                 <v:InteractiveRebaseIndicator Grid.Column="2"
                                               Fill="{DynamicResource Brush.FG1}"
-                                              Action="{Binding Action, Mode=OneWay}"
-                                              CanReword="{Binding CanReword, Mode=OneWay}"/>
+                                              PendingType="{Binding PendingType, Mode=OneWay}"/>
 
                 <!-- Subject -->
                 <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
@@ -159,7 +158,7 @@
                                             Subject="{Binding Subject}"
                                             IssueTrackers="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).IssueTrackers}"
                                             FontWeight="Normal"
-                                            Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                                            Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                                             ShowStrikethrough="{Binding Action, Mode=OneWay, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:InteractiveRebaseAction.Drop}}"/>
                 </Grid>
 
@@ -169,26 +168,26 @@
                           Margin="8,0,0,0"
                           VerticalAlignment="Center"
                           User="{Binding Commit.Author}"
-                          Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                          Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
 
                 <!-- Author Name -->
                 <Border Grid.Column="5" ClipToBounds="True">
                   <TextBlock Margin="6,0,12,0"
                              Text="{Binding Commit.Author.Name}" 
-                             Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                             Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
 
                 <!-- Commit SHA -->
                 <Border Grid.Column="6" ClipToBounds="True">
                   <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                             Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                             Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
 
                 <!-- Commit Time -->
                 <Border Grid.Column="7">
                   <TextBlock Margin="16,0,8,0"
                              Text="{Binding Commit.CommitterTimeStr}"
-                             Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                             Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
 
                 <!-- Drop Indicator -->
