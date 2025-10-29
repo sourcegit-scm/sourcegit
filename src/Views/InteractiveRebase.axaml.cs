@@ -85,10 +85,10 @@ namespace SourceGit.Views
         }
     }
 
-    public class InteractiveRebasePath : Control
+    public class InteractiveRebaseIndicator : Control
     {
         public static readonly StyledProperty<IBrush> FillProperty =
-            AvaloniaProperty.Register<InteractiveRebasePath, IBrush>(nameof(Fill), Brushes.Transparent);
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, IBrush>(nameof(Fill), Brushes.Transparent);
 
         public IBrush Fill
         {
@@ -97,7 +97,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Models.InteractiveRebaseAction> ActionProperty =
-            AvaloniaProperty.Register<InteractiveRebasePath, Models.InteractiveRebaseAction>(nameof(Action));
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, Models.InteractiveRebaseAction>(nameof(Action));
 
         public Models.InteractiveRebaseAction Action
         {
@@ -106,7 +106,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<bool> CanRewordProperty =
-            AvaloniaProperty.Register<InteractiveRebasePath, bool>(nameof(CanReword));
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, bool>(nameof(CanReword));
 
         public bool CanReword
         {

@@ -133,11 +133,11 @@
                   </StackPanel>
                 </Button>
 
-                <!-- Graph -->
-                <v:InteractiveRebasePath Grid.Column="2"
-                                         Fill="{DynamicResource Brush.FG1}"
-                                         Action="{Binding Action, Mode=OneWay}"
-                                         CanReword="{Binding CanReword, Mode=OneWay}"/>
+                <!-- Indicator -->
+                <v:InteractiveRebaseIndicator Grid.Column="2"
+                                              Fill="{DynamicResource Brush.FG1}"
+                                              Action="{Binding Action, Mode=OneWay}"
+                                              CanReword="{Binding CanReword, Mode=OneWay}"/>
 
                 <!-- Subject -->
                 <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
@@ -168,21 +168,27 @@
                           Width="16" Height="16"
                           Margin="8,0,0,0"
                           VerticalAlignment="Center"
-                          User="{Binding Commit.Author}"/>
+                          User="{Binding Commit.Author}"
+                          Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
 
                 <!-- Author Name -->
                 <Border Grid.Column="5" ClipToBounds="True">
-                  <TextBlock Margin="6,0,12,0" Text="{Binding Commit.Author.Name}"/>
+                  <TextBlock Margin="6,0,12,0"
+                             Text="{Binding Commit.Author.Name}" 
+                             Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
 
                 <!-- Commit SHA -->
                 <Border Grid.Column="6" ClipToBounds="True">
-                  <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
+                  <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
 
                 <!-- Commit Time -->
                 <Border Grid.Column="7">
-                  <TextBlock Margin="16,0,8,0" Text="{Binding Commit.CommitterTimeStr}"/>
+                  <TextBlock Margin="16,0,8,0"
+                             Text="{Binding Commit.CommitterTimeStr}"
+                             Opacity="{Binding CanReword, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
 
                 <!-- Drop Indicator -->
