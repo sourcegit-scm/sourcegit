@@ -60,30 +60,13 @@ namespace SourceGit.ViewModels
         public bool CanSquashOrFixup
         {
             get => _canSquashOrFixup;
-            set
-            {
-                if (SetProperty(ref _canSquashOrFixup, value))
-                {
-                    if (_action == Models.InteractiveRebaseAction.Squash || _action == Models.InteractiveRebaseAction.Fixup)
-                    {
-                        Action = Models.InteractiveRebaseAction.Pick;
-                        FullMessage = OriginalFullMessage;
-                    }
-                }
-            }
+            set => SetProperty(ref _canSquashOrFixup, value);
         }
 
         public bool CanReword
         {
             get => _canReword;
-            set
-            {
-                if (SetProperty(ref _canReword, value) && _action == Models.InteractiveRebaseAction.Reword)
-                {
-                    Action = Models.InteractiveRebaseAction.Pick;
-                    FullMessage = OriginalFullMessage;
-                }
-            }
+            set => SetProperty(ref _canReword, value);
         }
 
         public bool ShowEditMessageButton
@@ -335,6 +318,9 @@ namespace SourceGit.ViewModels
                 else
                 {
                     item.CanSquashOrFixup = false;
+                    if (item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup)
+                        item.Action = Models.InteractiveRebaseAction.Pick;
+
                     hasValidParent = item.Action != Models.InteractiveRebaseAction.Drop;
                 }
             }
