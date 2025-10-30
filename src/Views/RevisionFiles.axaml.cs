@@ -82,7 +82,7 @@ namespace SourceGit.Views
         private async void OnOpenFileWithDefaultEditor(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail { CanOpenRevisionFileWithDefaultEditor: true } vm)
-                await vm.OpenRevisionFileWithDefaultEditorAsync(vm.ViewRevisionFilePath);
+                await vm.OpenRevisionFileAsync(vm.ViewRevisionFilePath, null);
 
             e.Handled = true;
         }

@@ -209,6 +209,44 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("Open");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = change.Index != Models.ChangeState.Deleted;
+            if (openWith.IsEnabled)
+            {
+                var defaultEditor = new MenuItem();
+                defaultEditor.Header = App.Text("Open.SystemDefaultEditor");
+                defaultEditor.Click += async (_, ev) =>
+                {
+                    await vm.OpenRevisionFileAsync(change.Path, null);
+                    ev.Handled = true;
+                };
+
+                openWith.Items.Add(defaultEditor);
+
+                var tools = Native.OS.ExternalTools;
+                if (tools.Count > 0)
+                {
+                    openWith.Items.Add(new MenuItem() { Header = "-" });
+
+                    for (var i = 0; i < tools.Count; i++)
+                    {
+                        var tool = tools[i];
+                        var item = new MenuItem();
+                        item.Header = tool.Name;
+                        item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
+                        item.Click += async (_, ev) =>
+                        {
+                            await vm.OpenRevisionFileAsync(change.Path, tool);
+                            ev.Handled = true;
+                        };
+
+                        openWith.Items.Add(item);
+                    }
+                }
+            }
+
             var openWithMerger = new MenuItem();
             openWithMerger.Header = App.Text("OpenInExternalMergeTool");
             openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
@@ -216,16 +254,6 @@ namespace SourceGit.Views
             openWithMerger.Click += (_, ev) =>
             {
                 vm.OpenChangeInMergeTool(change);
-                ev.Handled = true;
-            };
-
-            var openWith = new MenuItem();
-            openWith.Header = App.Text("OpenWith");
-            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.IsEnabled = change.Index != Models.ChangeState.Deleted;
-            openWith.Click += async (_, ev) =>
-            {
-                await vm.OpenRevisionFileWithDefaultEditorAsync(change.Path);
                 ev.Handled = true;
             };
 
@@ -291,8 +319,8 @@ namespace SourceGit.Views
             };
 
             var menu = new ContextMenu();
-            menu.Items.Add(openWithMerger);
             menu.Items.Add(openWith);
+            menu.Items.Add(openWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(history);

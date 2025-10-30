@@ -335,13 +335,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void OpenWithDefaultEditor(Models.Change c)
-        {
-            var absPath = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
-            if (File.Exists(absPath))
-                Native.OS.OpenWithDefaultEditor(absPath);
-        }
-
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
         {
             var canStaged = await GetCanStageChangesAsync(changes);

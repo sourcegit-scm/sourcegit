@@ -169,7 +169,7 @@
                                     Background="Transparent"
                                     Click="OnOpenFileWithDefaultEditor"
                                     IsVisible="{Binding CanOpenWithDefaultEditor, Mode=OneWay}"
-                                    ToolTip.Tip="{DynamicResource Text.OpenWith}">
+                                    ToolTip.Tip="{DynamicResource Text.Open}">
                               <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
                             </Button>
                           </Grid>

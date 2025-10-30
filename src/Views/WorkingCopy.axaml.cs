@@ -110,7 +110,10 @@ namespace SourceGit.Views
                     e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
                     vm.SelectedUnstaged is { Count: 1 })
                 {
-                    vm.OpenWithDefaultEditor(vm.SelectedUnstaged[0]);
+                    var change = vm.SelectedUnstaged[0];
+                    var fullpath = Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        Native.OS.OpenWithDefaultEditor(fullpath);
                     e.Handled = true;
                 }
                 else if (e.Key is Key.C &&
@@ -143,7 +146,10 @@ namespace SourceGit.Views
                     e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
                     vm.SelectedStaged is { Count: 1 })
                 {
-                    vm.OpenWithDefaultEditor(vm.SelectedStaged[0]);
+                    var change = vm.SelectedStaged[0];
+                    var fullpath = Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        Native.OS.OpenWithDefaultEditor(fullpath);
                     e.Handled = true;
                 }
                 else if (e.Key is Key.C &&
@@ -254,6 +260,7 @@ namespace SourceGit.Views
             {
                 var change = selectedUnstaged[0];
                 var path = Native.OS.GetAbsPath(repo.FullPath, change.Path);
+                TryAddOpenFileToContextMenu(menu, path);
 
                 if (!change.IsConflicted || change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
                 {
@@ -272,18 +279,6 @@ namespace SourceGit.Views
                     };
                     menu.Items.Add(openMerger);
                 }
-
-                var openWith = new MenuItem();
-                openWith.Header = App.Text("OpenWith");
-                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
-                openWith.IsEnabled = File.Exists(path);
-                openWith.Click += (_, e) =>
-                {
-                    vm.OpenWithDefaultEditor(change);
-                    e.Handled = true;
-                };
-                menu.Items.Add(openWith);
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
@@ -934,17 +929,6 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
-                var openWith = new MenuItem();
-                openWith.Header = App.Text("OpenWith");
-                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
-                openWith.IsEnabled = File.Exists(path);
-                openWith.Click += (_, e) =>
-                {
-                    vm.OpenWithDefaultEditor(change);
-                    e.Handled = true;
-                };
-
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
@@ -1005,8 +989,8 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
 
+                TryAddOpenFileToContextMenu(menu, path);
                 menu.Items.Add(openWithMerger);
-                menu.Items.Add(openWith);
                 menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(unstage);
@@ -1272,6 +1256,49 @@ namespace SourceGit.Views
             }
 
             return menu;
+        }
+
+        private void TryAddOpenFileToContextMenu(ContextMenu menu, string fullpath)
+        {
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("Open");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = File.Exists(fullpath);
+            if (openWith.IsEnabled)
+            {
+                var defaultEditor = new MenuItem();
+                defaultEditor.Header = App.Text("Open.SystemDefaultEditor");
+                defaultEditor.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
+                defaultEditor.Click += (_, ev) =>
+                {
+                    Native.OS.OpenWithDefaultEditor(fullpath);
+                    ev.Handled = true;
+                };
+
+                openWith.Items.Add(defaultEditor);
+
+                var tools = Native.OS.ExternalTools;
+                if (tools.Count > 0)
+                {
+                    openWith.Items.Add(new MenuItem() { Header = "-" });
+
+                    for (var i = 0; i < tools.Count; i++)
+                    {
+                        var tool = tools[i];
+                        var item = new MenuItem();
+                        item.Header = tool.Name;
+                        item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
+                        item.Click += (_, e) =>
+                        {
+                            tool.Open(fullpath);
+                            e.Handled = true;
+                        };
+
+                        openWith.Items.Add(item);
+                    }
+                }
+            }
+            menu.Items.Add(openWith);
         }
 
         private void TryToAddCustomActionsToContextMenu(ViewModels.Repository repo, ContextMenu menu, string path)
