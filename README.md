@@ -89,7 +89,7 @@ For **Windows** users:
 * Pre-built binaries can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
 
 > [!NOTE]
-> `git-lfs` is no longer shipped with **Git for Windows** since `2.51.1`. You can use it by following these steps:
+> `git-flow` is no longer shipped with **Git for Windows** since `2.51.1`. You can use it by following these steps:
 >  * Download [git-flow-next](https://github.com/gittower/git-flow-next/releases)
 >  * Unzip & Rename the `git-flow-next` to `git-flow`
 >  * Copy to `$GIT_INSTALL_DIR/cmd` or just add its path to you `PATH` directly
