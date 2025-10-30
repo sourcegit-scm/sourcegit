@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Threading;
 
@@ -82,16 +82,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isFullMessageUsed, value);
         }
 
-        public bool IsDropBeforeVisible
+        public Thickness DropDirectionIndicator
         {
-            get => _isDropBeforeVisible;
-            set => SetProperty(ref _isDropBeforeVisible, value);
-        }
-
-        public bool IsDropAfterVisible
-        {
-            get => _isDropAfterVisible;
-            set => SetProperty(ref _isDropAfterVisible, value);
+            get => _dropDirectionIndicator;
+            set => SetProperty(ref _dropDirectionIndicator, value);
         }
 
         public bool IsMessageUserEdited
@@ -116,8 +110,7 @@ namespace SourceGit.ViewModels
         private bool _canSquashOrFixup = true;
         private bool _showEditMessageButton = false;
         private bool _isFullMessageUsed = true;
-        private bool _isDropBeforeVisible = false;
-        private bool _isDropAfterVisible = false;
+        private Thickness _dropDirectionIndicator = new Thickness(0);
     }
 
     public class InteractiveRebase : ObservableObject

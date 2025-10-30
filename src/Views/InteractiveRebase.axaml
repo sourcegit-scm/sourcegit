@@ -118,6 +118,12 @@
                   <ColumnDefinition Width="Auto" SharedSizeGroup="CommitTimeColumn"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Drop Direction Indicator -->
+                <Border Grid.Column="0" Grid.ColumnSpan="8"
+                        Background="Transparent"
+                        BorderThickness="{Binding DropDirectionIndicator, Mode=OneWay}"
+                        BorderBrush="{DynamicResource Brush.Accent}"/>
+
                 <!-- Original Order -->
                 <TextBlock Grid.Column="0"
                            Margin="4,0,0,0"
@@ -189,20 +195,6 @@
                              Text="{Binding Commit.CommitterTimeStr}"
                              Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
-
-                <!-- Drop Indicator -->
-                <Rectangle Grid.Column="0" Grid.ColumnSpan="8"
-                           Height="2"
-                           VerticalAlignment="Top"
-                           Fill="{DynamicResource Brush.Accent}"
-                           IsVisible="{Binding IsDropBeforeVisible, Mode=OneWay}"
-                           IsHitTestVisible="False"/>
-                <Rectangle Grid.Column="0" Grid.ColumnSpan="8"
-                           Height="2"
-                           VerticalAlignment="Bottom"
-                           Fill="{DynamicResource Brush.Accent}"
-                           IsVisible="{Binding IsDropAfterVisible, Mode=OneWay}"
-                           IsHitTestVisible="False"/>
               </Grid>
             </DataTemplate>
           </v:InteractiveRebaseListBox.ItemTemplate>

@@ -266,9 +266,7 @@ namespace SourceGit.Views
 
             var p = e.GetPosition(control);
             var before = p.Y < control.Bounds.Height * 0.5;
-
-            dst.IsDropBeforeVisible = before;
-            dst.IsDropAfterVisible = !before;
+            dst.DropDirectionIndicator = before ? new Thickness(0, 2, 0, 0) : new Thickness(0, 0, 0, 2);
             e.DragEffects = DragDropEffects.Move;
             e.Handled = true;
         }
@@ -278,8 +276,7 @@ namespace SourceGit.Views
             if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst })
                 return;
 
-            dst.IsDropBeforeVisible = false;
-            dst.IsDropAfterVisible = false;
+            dst.DropDirectionIndicator = new Thickness(0);
             e.Handled = true;
         }
 
@@ -315,8 +312,7 @@ namespace SourceGit.Views
             vm.Move(commits, before ? idx : idx + 1);
             IRItemListBox.SelectedItems = commits;
 
-            dst.IsDropBeforeVisible = false;
-            dst.IsDropAfterVisible = false;
+            dst.DropDirectionIndicator = new Thickness(0);
             e.DragEffects = DragDropEffects.None;
             e.Handled = true;
         }
