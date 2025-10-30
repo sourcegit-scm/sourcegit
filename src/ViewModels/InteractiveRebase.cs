@@ -398,7 +398,7 @@ namespace SourceGit.ViewModels
                             var builder = new StringBuilder();
                             builder.Append(item.OriginalFullMessage);
                             for (var j = pendingMessages.Count - 1; j >= 0; j--)
-                                builder.Append("\n\n").Append(pendingMessages[j]);
+                                builder.Append("\n").Append(pendingMessages[j]);
 
                             item.FullMessage = builder.ToString();
                         }
