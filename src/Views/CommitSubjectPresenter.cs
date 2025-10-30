@@ -129,7 +129,7 @@ namespace SourceGit.Views
                 foreach (var inline in _inlines)
                 {
                     if (inline.X > width)
-                        return;
+                        break;
 
                     if (inline.Element is { Type: Models.InlineElementType.Code })
                     {
