@@ -522,7 +522,6 @@
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git이 구성되지 않았습니다. [환경설정]으로 이동하여 먼저 구성하세요.</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">데이터 저장 디렉터리 열기</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">병합 도구에서 열기</x:String>
-  <x:String x:Key="Text.OpenWith" xml:space="preserve">다음으로 열기...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">선택 사항.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">새 탭 만들기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">북마크</x:String>
