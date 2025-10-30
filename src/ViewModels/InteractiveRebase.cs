@@ -386,6 +386,7 @@ namespace SourceGit.ViewModels
                 if (item.Action == Models.InteractiveRebaseAction.Reword ||
                     item.Action == Models.InteractiveRebaseAction.Edit)
                 {
+                    var oldPendingType = item.PendingType;
                     item.IsFullMessageUsed = true;
                     item.ShowEditMessageButton = true;
                     item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Target : Models.InteractiveRebasePendingType.None;
@@ -404,6 +405,11 @@ namespace SourceGit.ViewModels
 
                         hasPending = false;
                         pendingMessages.Clear();
+                    }
+                    else if (oldPendingType == Models.InteractiveRebasePendingType.Target)
+                    {
+                        if (!item.IsMessageUserEdited)
+                            item.FullMessage = item.OriginalFullMessage;
                     }
 
                     continue;

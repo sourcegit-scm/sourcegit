@@ -113,7 +113,7 @@ namespace SourceGit.Views
                 return;
 
             var startW = 4;
-            var endW = Bounds.Width - 4;
+            var endW = Bounds.Width - 6;
             var height = Bounds.Height;
             var halfH = height * 0.5;
             var fill = Fill;
