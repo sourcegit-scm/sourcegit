@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -325,10 +326,18 @@ namespace SourceGit.ViewModels
         {
             if (head.Parents.Count == 1)
             {
-                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
-                if (parent != null && _repo.CanCreatePopup())
-                    _repo.ShowPopup(new Squash(_repo, parent, message));
+                var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
+                if (parent == null)
+                    return;
+
+                var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                var parentMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+
+                var builder = new StringBuilder();
+                builder.Append(parentMessage).Append("\n\n").Append(headMessage);
+
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Squash(_repo, parent, builder.ToString()));
             }
         }
 
