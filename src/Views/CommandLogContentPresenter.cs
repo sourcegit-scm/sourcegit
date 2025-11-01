@@ -91,8 +91,10 @@ namespace SourceGit.Views
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
             TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.TextView.Options.EnableHyperlinks = false;
-            TextArea.TextView.Options.EnableEmailHyperlinks = false;
+            TextArea.TextView.Options.EnableHyperlinks = true;
+            TextArea.TextView.Options.EnableEmailHyperlinks = true;
+            TextArea.TextView.Options.RequireControlModifierForHyperlinkClick = false;
+            TextArea.TextView.Options.AllowScrollBelowDocument = false;
         }
 
         public void OnReceiveCommandLog(string line)
@@ -144,11 +146,15 @@ namespace SourceGit.Views
                 {
                     Text = string.Empty;
                 }
+                ScrollToEnd();
             }
             else if (change.Property == PureTextProperty)
             {
                 if (!string.IsNullOrEmpty(PureText))
+                {
                     Text = PureText;
+                    ScrollToEnd();
+                }
             }
         }
 

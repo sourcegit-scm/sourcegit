@@ -5,15 +5,16 @@
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:c="using:SourceGit.Converters"
-                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
                     x:Class="SourceGit.Views.ViewLogs"
                     x:DataType="vm:ViewLogs"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.ViewLogs}"
                     Icon="/App.ico"
-                    Width="800" Height="500"
+                    Width="1200" Height="600"
                     CanResize="True"
-                    WindowStartupLocation="CenterOwner">
+                    WindowStartupLocation="CenterOwner"
+                    Loaded="OnLoaded">
   <Grid RowDefinitions="Auto,*,Auto">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
