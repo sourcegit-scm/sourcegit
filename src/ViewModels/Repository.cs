@@ -737,7 +737,7 @@ namespace SourceGit.ViewModels
             log.Complete();
             return succ;
         }
-        
+
         public async Task<bool> UnlockLFSFilesAsync(string remote, List<string> paths, bool force, bool notify)
         {
             CommandLog log = CreateLog("Unlock LFS File");

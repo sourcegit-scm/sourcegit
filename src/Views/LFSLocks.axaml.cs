@@ -35,7 +35,7 @@ namespace SourceGit.Views
                 {
                     Message =
                     {
-                        Text = App.Text("GitLFS.Locks.UnlockAll.Confirm") 
+                        Text = App.Text("GitLFS.Locks.UnlockAll.Confirm")
                     }
                 };
 

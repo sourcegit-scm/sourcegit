@@ -77,7 +77,7 @@ namespace SourceGit.ViewModels
         {
             if (_isLoading)
                 return;
-            
+
             IsLoading = true;
 
             List<string> myLocks = [];
