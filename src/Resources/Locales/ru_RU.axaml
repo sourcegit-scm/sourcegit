@@ -391,6 +391,7 @@
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Извлечь внешние изменения</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Не отслеживать</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Отклонить...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Отклонить {0} файлов...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Взять версию ${0}$</x:String>
@@ -483,6 +484,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Сформировать все изменения и зафиксировать</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Извлечь (fetch), запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по умолчанию)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Открыть палитру команд</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска ревизий</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Загрузить (pull), запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Выложить (push), запускается сразу</x:String>
@@ -516,6 +518,7 @@
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Целевая ветка:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Копировать ссылку</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Открыть в браузере</x:String>
+  <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">Команды</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ОШИБКА</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">УВЕДОМЛЕНИЕ</x:String>
   <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">Открыть репозитории</x:String>
@@ -537,6 +540,8 @@
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Выбрать группу для:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git НЕ был настроен. Пожалуйста, перейдите в [Настройки] и сначала настройте его.</x:String>
+  <x:String x:Key="Text.Open" xml:space="preserve">Открыть</x:String>
+  <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Редактор по умолчанию (Системный)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Открыть каталог данных программы</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Открыть в инструменте слияния</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необязательно.</x:String>
