@@ -77,14 +77,17 @@ namespace SourceGit.ViewModels
             if (_isLoading || string.IsNullOrEmpty(_userName))
                 return;
 
-            IsLoading = true;
-
             var locks = new List<string>();
             foreach (var lfsLock in _cachedLocks)
             {
                 if (lfsLock.Owner.Name.Equals(_userName, StringComparison.Ordinal))
                     locks.Add(lfsLock.Path);
             }
+
+            if (locks.Count == 0)
+                return;
+
+            IsLoading = true;
 
             var log = _repo.CreateLog("Unlock LFS Locks");
             var succ = await new Commands.LFS(_repo.FullPath).Use(log).UnlockMultipleAsync(_remote, locks, true);
