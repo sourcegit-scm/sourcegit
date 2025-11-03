@@ -447,6 +447,8 @@
   <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">仅显示被我锁定的文件</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS对象锁状态</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">解锁</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">解锁所有被我锁定的文件</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">确定要解锁所有被您锁定的文件吗？</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">强制解锁</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">精简本地LFS对象存储</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">运行`git lfs prune`命令，从本地存储中精简当前版本不需要的LFS对象</x:String>

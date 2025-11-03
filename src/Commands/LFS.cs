@@ -94,19 +94,16 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> UnlockAsync(string remote, List<string> files, bool force)
+        public async Task<bool> UnlockMultipleAsync(string remote, List<string> files, bool force)
         {
             var builder = new StringBuilder();
             builder
                 .Append("lfs unlock --remote=")
                 .Append(remote)
-                .Append(force ? " -f " : " ");
+                .Append(force ? " -f" : " ");
 
             foreach (string file in files)
-            {
-                builder.Append(file.Quoted());
-                builder.Append(" ");
-            }
+                builder.Append(' ').Append(file.Quoted());
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);

@@ -441,10 +441,10 @@
   <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">No Locked Files</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Lock</x:String>
   <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Show only my locks</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.UnlockAll.Confirm" xml:space="preserve">Are you sure you want to unlock all your locked files?</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">Unlock all of my locks</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS Locks</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Unlock</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">Unlock all of my locks</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">Are you sure you want to unlock all your locked files?</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Force Unlock</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Run `git lfs prune` to delete old LFS files from local storage</x:String>

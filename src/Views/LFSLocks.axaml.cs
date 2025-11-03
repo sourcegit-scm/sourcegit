@@ -29,23 +29,14 @@ namespace SourceGit.Views
 
         private async void OnUnlockAllMyLocksButtonClicked(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.LFSLocks vm)
-            {
-                Confirm dialog = new()
-                {
-                    Message =
-                    {
-                        Text = App.Text("GitLFS.Locks.UnlockAll.Confirm")
-                    }
-                };
+            if (DataContext is not ViewModels.LFSLocks vm)
+                return;
 
-                bool result = await dialog.ShowDialog<bool>(this);
-                if (result)
-                {
-                    await vm.UnlockAllMyLocksAsync(true);
-                }
-            }
+            var shouldContinue = await App.AskConfirmAsync(App.Text("GitLFS.Locks.UnlockAllMyLocks.Confirm"));
+            if (!shouldContinue)
+                return;
 
+            await vm.UnlockAllMyLocksAsync();
             e.Handled = true;
         }
     }
