@@ -64,7 +64,7 @@
 
       <Border Grid.Row="4"
               Background="{DynamicResource Brush.Window}"
-              BorderThickness="1,0,0,0"
+              BorderThickness="0"
               CornerRadius="0,0,4,4">
         <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*" Margin="0,4">
           <Button Grid.Column="0"
