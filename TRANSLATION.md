@@ -12,8 +12,8 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Open
@@ -27,8 +27,8 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Open
 - Text.Open.SystemDefaultEditor
 
@@ -153,8 +153,8 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -273,8 +273,8 @@ This document shows the translation status of each locale file in the repository
 - Text.DropHead.Commit
 - Text.DropHead.NewHead
 - Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -316,8 +316,8 @@ This document shows the translation status of each locale file in the repository
 - Text.DropHead.Commit
 - Text.DropHead.NewHead
 - Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -459,8 +459,8 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -573,8 +573,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -730,8 +730,8 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.ResolveUsing
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.Clone
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Repo.OpenCommandPalette
@@ -870,8 +870,8 @@ This document shows the translation status of each locale file in the repository
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 
 </details>
 
@@ -995,8 +995,8 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -1211,8 +1211,8 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
-- Text.GitLFS.Locks.UnlockAll.Confirm
 - Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -1307,22 +1307,6 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-99.78%25-yellow)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-<details>
-<summary>Missing keys in zh_CN.axaml</summary>
-
-- Text.GitLFS.Locks.UnlockAll.Confirm
-- Text.GitLFS.Locks.UnlockAllMyLocks
-
-</details>
-
-### ![zh__TW](https://img.shields.io/badge/zh__TW-99.78%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.GitLFS.Locks.UnlockAll.Confirm
-- Text.GitLFS.Locks.UnlockAllMyLocks
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
