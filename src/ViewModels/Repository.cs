@@ -738,6 +738,20 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
+        public async Task<bool> UnlockLFSFilesAsync(string remote, List<string> paths, bool force, bool notify)
+        {
+            CommandLog log = CreateLog("Unlock LFS File");
+            bool succ = await new Commands.LFS(FullPath)
+                .Use(log)
+                .UnlockAsync(remote, paths, force);
+
+            if (succ && notify)
+                App.SendNotification(FullPath, $"Unlocked {paths.Count} files successfully!");
+
+            log.Complete();
+            return succ;
+        }
+
         public CommandLog CreateLog(string name)
         {
             var log = new CommandLog(name);

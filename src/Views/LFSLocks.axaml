@@ -38,18 +38,34 @@
     </Grid>
 
     <!-- Filter and Unlock All -->
-    <CheckBox Grid.Row="1"
-              Margin="8,0,0,0"
-              Content="{DynamicResource Text.GitLFS.Locks.OnlyMine}"
-              IsChecked="{Binding ShowOnlyMyLocks, Mode=TwoWay}"
-              VerticalAlignment="Center">
-      <CheckBox.IsEnabled>
-        <MultiBinding Converter="{x:Static BoolConverters.And}">
-          <Binding Path="HasValidUserName"/>
-          <Binding Path="!IsLoading"/>
-        </MultiBinding>
-      </CheckBox.IsEnabled>
-    </CheckBox>
+    <StackPanel Grid.Row="1"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+      
+      <CheckBox Margin="8,0,4,0"
+                Content="{DynamicResource Text.GitLFS.Locks.OnlyMine}"
+                IsChecked="{Binding ShowOnlyMyLocks, Mode=TwoWay}"
+                VerticalAlignment="Center">
+        <CheckBox.IsEnabled>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="HasValidUserName" />
+            <Binding Path="!IsLoading" />
+          </MultiBinding>
+        </CheckBox.IsEnabled>
+      </CheckBox>
+
+      <Button Margin="4,0,4,0"
+              Content="{DynamicResource Text.GitLFS.Locks.UnlockAllMyLocks}"
+              Click="OnUnlockAllMyLocksButtonClicked">
+        <Button.IsEnabled>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="HasValidUserName" />
+            <Binding Path="!IsLoading" />
+          </MultiBinding>
+        </Button.IsEnabled>
+      </Button>
+      
+    </StackPanel>
 
     <!-- Locked Files -->
     <Grid Grid.Row="2">
