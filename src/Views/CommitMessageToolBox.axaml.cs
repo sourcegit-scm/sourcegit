@@ -104,6 +104,9 @@ namespace SourceGit.Views
             lines.Sort((l, r) => l.StartOffset - r.StartOffset);
 
             var lastSubjectLine = lines[0];
+            if (lastSubjectLine.StartOffset > SubjectLength)
+                return;
+
             for (var i = 1; i < lines.Count; i++)
             {
                 if (lines[i].StartOffset > SubjectLength)
