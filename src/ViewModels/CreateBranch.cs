@@ -216,7 +216,7 @@ namespace SourceGit.ViewModels
                 if (folderEndIdx > 10)
                     _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
 
-                if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
+                if (_repo.HistoryFilterMode == Models.FilterMode.Included)
                     _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, false, false);
             }
 

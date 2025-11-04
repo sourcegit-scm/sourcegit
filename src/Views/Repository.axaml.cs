@@ -586,10 +586,10 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRemoveSelectedHistoriesFilter(object sender, RoutedEventArgs e)
+        private void OnRemoveSelectedHistoryFilter(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter })
-                repo.RemoveHistoriesFilter(filter);
+            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.HistoryFilter filter })
+                repo.RemoveHistoryFilter(filter);
 
             e.Handled = true;
         }

@@ -41,10 +41,15 @@ namespace SourceGit.ViewModels
             set;
         } = new();
 
-        public Models.FilterMode HistoriesFilterMode
+        public Models.HistoryFilterCollection HistoryFilterCollection
         {
-            get => _historiesFilterMode;
-            private set => SetProperty(ref _historiesFilterMode, value);
+            get => _historyFilterCollection;
+        }
+
+        public Models.FilterMode HistoryFilterMode
+        {
+            get => _historyFilterMode;
+            private set => SetProperty(ref _historyFilterMode, value);
         }
 
         public bool HasAllowedSignersFile
@@ -526,6 +531,24 @@ namespace SourceGit.ViewModels
                 _settings = new Models.RepositorySettings();
             }
 
+            var historyFilterFile = Path.Combine(GitDir, "sourcegit.filters");
+            if (File.Exists(historyFilterFile))
+            {
+                try
+                {
+                    using var stream = File.OpenRead(historyFilterFile);
+                    _historyFilterCollection = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.HistoryFilterCollection);
+                }
+                catch
+                {
+                    _historyFilterCollection = new Models.HistoryFilterCollection();
+                }
+            }
+            else
+            {
+                _historyFilterCollection = new Models.HistoryFilterCollection();
+            }
+
             try
             {
                 _watcher = new Models.Watcher(this, FullPath, _gitCommonDir);
@@ -535,11 +558,7 @@ namespace SourceGit.ViewModels
                 App.RaiseException(string.Empty, $"Failed to start watcher for repository: '{FullPath}'. You may need to press 'F5' to refresh repository manually!\n\nReason: {ex.Message}");
             }
 
-            if (_settings.HistoriesFilters.Count > 0)
-                _historiesFilterMode = _settings.HistoriesFilters[0].Mode;
-            else
-                _historiesFilterMode = Models.FilterMode.None;
-
+            _historyFilterMode = _historyFilterCollection.Mode;
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this) { CommitMessage = _settings.LastCommitMessage };
             _stashesPage = new StashesPage(this);
@@ -583,6 +602,16 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            try
+            {
+                using var stream = File.Create(Path.Combine(GitDir, "sourcegit.filters"));
+                JsonSerializer.Serialize(stream, _historyFilterCollection, JsonCodeGen.Default.HistoryFilterCollection);
+            }
+            catch
+            {
+                // Ignore
+            }
+
             if (_cancellationRefreshBranches is { IsCancellationRequested: false })
                 _cancellationRefreshBranches.Cancel();
             if (_cancellationRefreshTags is { IsCancellationRequested: false })
@@ -598,7 +627,7 @@ namespace SourceGit.ViewModels
             _autoFetchTimer = null;
 
             _settings = null;
-            _historiesFilterMode = Models.FilterMode.None;
+            _historyFilterMode = Models.FilterMode.None;
 
             _watcher?.Dispose();
             _histories.Dispose();
@@ -1014,10 +1043,10 @@ namespace SourceGit.ViewModels
             return (_histories?.DetailContext as CommitDetail)?.Commit;
         }
 
-        public void ClearHistoriesFilter()
+        public void ClearHistoryFilters()
         {
-            _settings.HistoriesFilters.Clear();
-            HistoriesFilterMode = Models.FilterMode.None;
+            _historyFilterCollection.Filters.Clear();
+            HistoryFilterMode = Models.FilterMode.None;
 
             ResetBranchTreeFilterMode(LocalBranchTrees);
             ResetBranchTreeFilterMode(RemoteBranchTrees);
@@ -1025,12 +1054,12 @@ namespace SourceGit.ViewModels
             RefreshCommits();
         }
 
-        public void RemoveHistoriesFilter(Models.Filter filter)
+        public void RemoveHistoryFilter(Models.HistoryFilter filter)
         {
-            if (_settings.HistoriesFilters.Remove(filter))
+            if (_historyFilterCollection.Filters.Remove(filter))
             {
-                HistoriesFilterMode = _settings.HistoriesFilters.Count > 0 ? _settings.HistoriesFilters[0].Mode : Models.FilterMode.None;
-                RefreshHistoriesFilters(true);
+                HistoryFilterMode = _historyFilterCollection.Mode;
+                RefreshHistoryFilters(true);
             }
         }
 
@@ -1052,9 +1081,9 @@ namespace SourceGit.ViewModels
 
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
-            var changed = _settings.UpdateHistoriesFilter(tag.Name, Models.FilterType.Tag, mode);
+            var changed = _historyFilterCollection.Update(tag.Name, Models.FilterType.Tag, mode);
             if (changed)
-                RefreshHistoriesFilters(true);
+                RefreshHistoryFilters(true);
         }
 
         public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode, bool clearExists, bool refresh)
@@ -1071,28 +1100,28 @@ namespace SourceGit.ViewModels
 
             if (clearExists)
             {
-                _settings.HistoriesFilters.Clear();
-                HistoriesFilterMode = Models.FilterMode.None;
+                _historyFilterCollection.Filters.Clear();
+                HistoryFilterMode = Models.FilterMode.None;
             }
 
             if (node.Backend is Models.Branch branch)
             {
                 var type = isLocal ? Models.FilterType.LocalBranch : Models.FilterType.RemoteBranch;
-                var changed = _settings.UpdateHistoriesFilter(node.Path, type, mode);
+                var changed = _historyFilterCollection.Update(node.Path, type, mode);
                 if (!changed)
                     return;
 
                 if (isLocal && !string.IsNullOrEmpty(branch.Upstream) && !branch.IsUpstreamGone)
-                    _settings.UpdateHistoriesFilter(branch.Upstream, Models.FilterType.RemoteBranch, mode);
+                    _historyFilterCollection.Update(branch.Upstream, Models.FilterType.RemoteBranch, mode);
             }
             else
             {
                 var type = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
-                var changed = _settings.UpdateHistoriesFilter(node.Path, type, mode);
+                var changed = _historyFilterCollection.Update(node.Path, type, mode);
                 if (!changed)
                     return;
 
-                _settings.RemoveChildrenBranchFilters(node.Path);
+                _historyFilterCollection.RemoveBranchFiltersByPrefix(node.Path);
             }
 
             var parentType = isLocal ? Models.FilterType.LocalBranchFolder : Models.FilterType.RemoteBranchFolder;
@@ -1108,11 +1137,11 @@ namespace SourceGit.ViewModels
                 if (parent == null)
                     break;
 
-                _settings.UpdateHistoriesFilter(parent.Path, parentType, Models.FilterMode.None);
+                _historyFilterCollection.Update(parent.Path, parentType, Models.FilterMode.None);
                 cur = parent;
             } while (true);
 
-            RefreshHistoriesFilters(refresh);
+            RefreshHistoryFilters(refresh);
         }
 
         public async Task StashAllAsync(bool autoStart)
@@ -1304,7 +1333,7 @@ namespace SourceGit.ViewModels
                 if (_settings.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
                     builder.Append("--simplify-by-decoration ");
 
-                var filters = _settings.BuildHistoriesFilter();
+                var filters = _historyFilterCollection.Build();
                 if (string.IsNullOrEmpty(filters))
                     builder.Append("--branches --remotes --tags HEAD");
                 else
@@ -1770,9 +1799,9 @@ namespace SourceGit.ViewModels
                 builder.Run(visibles, remotes, true);
             }
 
-            var historiesFilters = _settings.CollectHistoriesFilters();
-            UpdateBranchTreeFilterMode(builder.Locals, historiesFilters);
-            UpdateBranchTreeFilterMode(builder.Remotes, historiesFilters);
+            var filterMap = _historyFilterCollection.ToMap();
+            UpdateBranchTreeFilterMode(builder.Locals, filterMap);
+            UpdateBranchTreeFilterMode(builder.Remotes, filterMap);
             return builder;
         }
 
@@ -1802,21 +1831,21 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var historiesFilters = _settings.CollectHistoriesFilters();
-            UpdateTagFilterMode(historiesFilters);
+            var filterMap = _historyFilterCollection.ToMap();
+            UpdateTagFilterMode(filterMap);
 
             if (Preferences.Instance.ShowTagsAsTree)
             {
                 var tree = TagCollectionAsTree.Build(visible, _visibleTags as TagCollectionAsTree);
                 foreach (var node in tree.Tree)
-                    node.UpdateFilterMode(historiesFilters);
+                    node.UpdateFilterMode(filterMap);
                 return tree;
             }
             else
             {
                 var list = new TagCollectionAsList(visible);
                 foreach (var item in list.TagItems)
-                    item.FilterMode = historiesFilters.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
+                    item.FilterMode = filterMap.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
                 return list;
             }
         }
@@ -1843,45 +1872,41 @@ namespace SourceGit.ViewModels
                 return new SubmoduleCollectionAsList() { Submodules = visible };
         }
 
-        private void RefreshHistoriesFilters(bool refresh)
+        private void RefreshHistoryFilters(bool refresh)
         {
-            if (_settings.HistoriesFilters.Count > 0)
-                HistoriesFilterMode = _settings.HistoriesFilters[0].Mode;
-            else
-                HistoriesFilterMode = Models.FilterMode.None;
-
+            HistoryFilterMode = _historyFilterCollection.Mode;
             if (!refresh)
                 return;
 
-            var filters = _settings.CollectHistoriesFilters();
-            UpdateBranchTreeFilterMode(LocalBranchTrees, filters);
-            UpdateBranchTreeFilterMode(RemoteBranchTrees, filters);
-            UpdateTagFilterMode(filters);
+            var map = _historyFilterCollection.ToMap();
+            UpdateBranchTreeFilterMode(LocalBranchTrees, map);
+            UpdateBranchTreeFilterMode(RemoteBranchTrees, map);
+            UpdateTagFilterMode(map);
             RefreshCommits();
         }
 
-        private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, Dictionary<string, Models.FilterMode> filters)
+        private void UpdateBranchTreeFilterMode(List<BranchTreeNode> nodes, Dictionary<string, Models.FilterMode> map)
         {
             foreach (var node in nodes)
             {
-                node.FilterMode = filters.GetValueOrDefault(node.Path, Models.FilterMode.None);
+                node.FilterMode = map.GetValueOrDefault(node.Path, Models.FilterMode.None);
 
                 if (!node.IsBranch)
-                    UpdateBranchTreeFilterMode(node.Children, filters);
+                    UpdateBranchTreeFilterMode(node.Children, map);
             }
         }
 
-        private void UpdateTagFilterMode(Dictionary<string, Models.FilterMode> filters)
+        private void UpdateTagFilterMode(Dictionary<string, Models.FilterMode> map)
         {
             if (VisibleTags is TagCollectionAsTree tree)
             {
                 foreach (var node in tree.Tree)
-                    node.UpdateFilterMode(filters);
+                    node.UpdateFilterMode(map);
             }
             else if (VisibleTags is TagCollectionAsList list)
             {
                 foreach (var item in list.TagItems)
-                    item.FilterMode = filters.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
+                    item.FilterMode = map.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
             }
         }
 
@@ -2040,7 +2065,8 @@ namespace SourceGit.ViewModels
         private readonly bool _isWorktree = false;
         private readonly string _gitCommonDir = null;
         private Models.RepositorySettings _settings = null;
-        private Models.FilterMode _historiesFilterMode = Models.FilterMode.None;
+        private Models.HistoryFilterCollection _historyFilterCollection = null;
+        private Models.FilterMode _historyFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
 
         private Models.Watcher _watcher = null;
