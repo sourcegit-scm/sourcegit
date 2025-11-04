@@ -179,7 +179,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signer:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Enter commit message. Please use an empty-line to seperate subject and description!</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Enter commit message. Please use an empty-line to separate subject and description!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJECT</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Configure</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
