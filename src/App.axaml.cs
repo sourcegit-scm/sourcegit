@@ -387,6 +387,9 @@ namespace SourceGit
                         e.Cancel = true;
                 });
 
+                if (TryLaunchAsFileHistoryViewer(desktop))
+                    return;
+
                 if (TryLaunchAsCoreEditor(desktop))
                     return;
 
@@ -510,6 +513,33 @@ namespace SourceGit
                 }
             }
 
+            return true;
+        }
+
+        private bool TryLaunchAsFileHistoryViewer(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args is not { Length: > 1 } || !args[0].Equals("--file-history", StringComparison.Ordinal))
+                return false;
+
+            var file = Path.GetFullPath(args[1]);
+            var dir = Path.GetDirectoryName(file);
+
+            var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+            {
+                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var repo = test.StdOut.Trim();
+            var relFile = Path.GetRelativePath(repo, file);
+            var viewer = new Views.FileHistories()
+            {
+                DataContext = new ViewModels.FileHistories(repo, relFile)
+            };
+            desktop.MainWindow = viewer;
             return true;
         }
 
